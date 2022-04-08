@@ -1,6 +1,4 @@
-﻿# Building Friday Night Funkin': Kade Engine
-
-**Please note** that these instructions are for compiling/building the game. If you just want to play Kade Engine, **play in your browser or download a build instead**: **[play in browser](https://funkin.puyo.xyz) ⋅ [latest stable release](https://github.com/KadeDev/Kade-Engine/releases/latest) ⋅ [latest development build (windows)](https://ci.appveyor.com/project/KadeDev/kade-engine-windows/build/artifacts) ⋅ [latest development build (macOS)](https://ci.appveyor.com/project/daniel11420/kade-engine-macos/build/artifacts) ⋅ [latest development build (linux)](https://ci.appveyor.com/project/daniel11420/kade-engine-linux/build/artifacts)**. If you want to build the game yourself, continue reading.
+﻿# Building Friday Night Funkin': Altronix Engine
 
 **Also note**: you should be familiar with the commandline. If not, read this [quick guide by ninjamuffin](https://ninjamuffin99.newgrounds.com/news/post/1090480).
 
@@ -54,8 +52,8 @@ If you get an error telling you that you need a newer macOS version, you need to
 ## Cloning the repository
 Since you already installed `git` in a previous step, we'll use it to clone the repository.
 1. `cd` to where you want to store the source code (i.e. `C:\Users\username\Desktop` or `~/Desktop`)
-2. `git clone https://github.com/KadeDev/Kade-Engine.git`
-3. `cd` into the source code: `cd Kade-Engine`
+2. `git clone https://github.com/AltronMaxX/Altronix-Engine.git`
+3. `cd` into the source code: `cd Altronix-Engine`
 4. (optional) If you want to build a specific version of Kade Engine, you can use `git checkout` to switch to it (i.e. `git checkout 1.4-KE`) (remember that versions 1.4 and older cannot build to Linux or HTML5)
 - You should **not** do this if you are planning to contribute, as you should always be developing on the latest version.
 
@@ -63,8 +61,8 @@ Since you already installed `git` in a previous step, we'll use it to clone the 
 Finally, we are ready to build.
 
 - Run `lime build <target>`, replacing `<target>` with the platform you want to build to (`windows`, `mac`, `linux`, `html5`) (i.e. `lime build windows`)
-- The build will be in `Kade-Engine/export/release/<target>/bin`, with `<target>` being the target you built to in the previous step. (i.e. `Kade-Engine/export/release/windows/bin`)
-- Incase you added the -debug flag the files will be inside `Kade-Engine/export/debug/<target>/bin`
+- The build will be in `Altronix-Engine/export/release/<target>/bin`, with `<target>` being the target you built to in the previous step. (i.e. `Altronix-Engine/export/release/windows/bin`)
+- Incase you added the -debug flag the files will be inside `Altronix-Engine/export/debug/<target>/bin`
 - Only the `bin` folder is necessary to run the game. The other ones in `export/release/<target>` are not.
 
 ## Troubleshooting

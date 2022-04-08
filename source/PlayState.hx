@@ -772,12 +772,6 @@ class PlayState extends MusicBeatState
 				camPos.set(dad.getGraphicMidpoint().x + 300, dad.getGraphicMidpoint().y);
 			case 'tankman':
 				dad.y += 250;
-			case 'bassmachine' | 'angrybassmachine':
-				if (Stage.curStage == "bass")
-				{
-					dad.x += 150;
-					camPos.set(dad.getGraphicMidpoint().x, dad.getGraphicMidpoint().y);
-				}
 		}
 
 		Stage.update(0);
@@ -2131,48 +2125,9 @@ class PlayState extends MusicBeatState
 				noteTypeCheck = SONG.noteStyle;
 			}
 
-			if (player == 0 && (dad.curCharacter == 'bassmachine' || dad.curCharacter == 'angrybassmachine'))
-			{
-				babyArrow.frames = Paths.getSparrowAtlas('noteskins/HUDNOTEENEMY_assets');
-				for (j in 0...4)
-				{
-					babyArrow.animation.addByPrefix(dataColor[j], 'arrow' + dataSuffix[j]);
-					babyArrow.animation.addByPrefix('dirCon' + j, dataSuffix[j].toLowerCase() + ' confirm', 24, false);
-				}
-
-				var lowerDir:String = dataSuffix[i].toLowerCase();
-
-				babyArrow.animation.addByPrefix('static', 'arrow' + dataSuffix[i]);
-				babyArrow.animation.addByPrefix('pressed', lowerDir + ' press', 24, false);
-				babyArrow.animation.addByPrefix('confirm', lowerDir + ' confirm', 24, false);
-
-				babyArrow.x += Note.swagWidth * i;
-
-				babyArrow.antialiasing = FlxG.save.data.antialiasing;
-				babyArrow.setGraphicSize(Std.int(babyArrow.width * 0.7));
-			}
-			else if (player == 0 && dad.curCharacter == 'riftmanifest')
-			{
-				babyArrow.frames = Paths.getSparrowAtlas('noteskins/manifestnote_assets');
-				for (j in 0...4)
-				{
-					babyArrow.animation.addByPrefix(dataColor[j], dataColor[j] + "0");
-					babyArrow.animation.addByPrefix('dirCon' + j, dataColor[j] + "0", 24, false);
-				}
-
-				var lowerDir:String = dataColor[i];
-
-				babyArrow.animation.addByPrefix('static', dataColor[i] + "0");
-				babyArrow.animation.addByPrefix('pressed', lowerDir + "0", 24, false);
-				babyArrow.animation.addByPrefix('confirm', lowerDir + "0", 24, false);
-
-				babyArrow.x += Note.swagWidth * i;
-
-				babyArrow.antialiasing = FlxG.save.data.antialiasing;
-				babyArrow.setGraphicSize(Std.int(babyArrow.width * 0.7));
-			}
-			else
-			{
+			
+			
+			
 				switch (noteTypeCheck)
 				{
 					case 'pixel':
@@ -2242,7 +2197,7 @@ class PlayState extends MusicBeatState
 						babyArrow.antialiasing = FlxG.save.data.antialiasing;
 						babyArrow.setGraphicSize(Std.int(babyArrow.width * 0.7));						
 				}
-			}
+			
 			babyArrow.updateHitbox();
 			babyArrow.scrollFactor.set();
 
@@ -3124,12 +3079,10 @@ class PlayState extends MusicBeatState
 			skipActive = false;
 		}
 
-		if (FlxG.keys.justPressed.SPACE && skipActive == false)
+		if (FlxG.keys.justPressed.SPACE && !skipActive)
 		{
 			boyfriend.playAnim('hey', true);
 			gf.playAnim('cheer', true);
-			if (dad.curCharacter == "bassmachine")
-				dad.playAnim('like', true);
 		}
 
 		if (startingSong)
@@ -3749,17 +3702,9 @@ class PlayState extends MusicBeatState
 					}
 					daNote.active = false;
 
-					if (health > 0.1 && dad.curCharacter == 'angrybassmachine' && storyDifficulty != 3)
-					{
-						health -= 0.02;
-					}
 					if (storyDifficulty == 3 && !daNote.isSustainNote)
 					{
 						health -= 0.015;
-					}
-					if (dad.curCharacter == 'riftmanifest')
-					{
-						gf.playAnim('scared', true);
 					}
 
 					daNote.kill();
@@ -5149,11 +5094,6 @@ class PlayState extends MusicBeatState
 			{
 				shoot = true;
 				boyfriend.playAnim('dodge', true);
-				if (dad.curCharacter == 'angrybassmachine')
-				{
-					dad.playAnim('shoot', true);
-				}
-				shoot = false;
 			}
 
 			if (note.noteType != 3 || PlayStateChangeables.botPlay)

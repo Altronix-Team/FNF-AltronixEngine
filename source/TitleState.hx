@@ -27,8 +27,8 @@ import flixel.util.FlxTimer;
 import lime.app.Application;
 import openfl.Assets;
 import flixel.input.keyboard.FlxKey;
-//import GameJolt.GameJoltLogin;
-//import GameJolt.GameJoltAPI;
+import GameJolt.GameJoltLogin;
+import GameJolt.GameJoltAPI;
 
 #if desktop
 import Discord.DiscordClient;
@@ -53,6 +53,7 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
+		GameJoltAPI.getTrophy(160503);
 		populateSongData();
 		DiscordClient.initialize();
 		// TODO: Refactor this to use OpenFlAssets.
@@ -66,8 +67,8 @@ class TitleState extends MusicBeatState
 			Debug.logTrace("We loaded " + openfl.Assets.getLibrary("default").assetsLoaded + " assets into the default library");
 		}
 
-		//GameJoltAPI.connect();
-		//GameJoltAPI.authDaUser(FlxG.save.data.gjUser, FlxG.save.data.gjToken);
+		GameJoltAPI.connect();
+		GameJoltAPI.authDaUser(FlxG.save.data.gjUser, FlxG.save.data.gjToken);
 
 		FlxG.autoPause = false;
 
@@ -351,8 +352,8 @@ class TitleState extends MusicBeatState
 
 			new FlxTimer().start(2, function(tmr:FlxTimer)
 			{
-				FlxG.switchState(new MainMenuState());
-				//FlxG.switchState(new GameJoltLogin());
+				//FlxG.switchState(new MainMenuState());
+				FlxG.switchState(new GameJoltLogin());
 				clean();
 		
 			});

@@ -138,6 +138,7 @@
 	<haxelib name="hxvm-luajit" if="desktop"/>
 	<haxelib name="systools" />
 	<ndll name="systools" haxelib="systools" />
+	<haxelib name="tentools" />
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
 
 	<!-- <haxelib name="markdown" /> -->

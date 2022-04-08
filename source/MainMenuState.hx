@@ -19,6 +19,7 @@ import lime.app.Application;
 import flash.text.TextField;
 import flixel.addons.ui.FlxInputText;
 import LoadingState.LoadingsState;
+import GameJolt.GameJoltAPI;
 #if desktop
 import Discord.DiscordClient;
 #end
@@ -72,6 +73,7 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
+		GameJoltAPI.getTrophy(160503);
 		FlxG.mouse.visible = true;
 		camGame = new FlxCamera();
 		inMain = true;

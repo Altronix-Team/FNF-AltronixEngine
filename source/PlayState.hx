@@ -80,6 +80,7 @@ import openfl.filters.ShaderFilter;
 import hscript.Expr;
 import hscript.Parser;
 import hscript.Interp;
+import GameJolt.GameJoltAPI;
 import LoadingState.LoadingsState;
 #if desktop
 import Discord.DiscordClient;
@@ -2549,12 +2550,10 @@ class PlayState extends MusicBeatState
 
 					endingSong = true;
 					luaModchart.executeState('onSongEnd', [PlayState.SONG.songId]);
-					if (!inCutscene)
-					{
-						endSong();
-					}
-					else
-						return;
+					new FlxTimer().start(2, function(timer)
+						{
+							endSong();
+						});
 				}
 			}
 		}
@@ -3949,6 +3948,7 @@ class PlayState extends MusicBeatState
 
 	function endSong():Void
 	{
+		GameJoltAPI.addScore(Math.round(songScore), 716199, SONG.songName);
 		openSubState(new LoadingsState());
 		endingSong = true;
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, handleInput);

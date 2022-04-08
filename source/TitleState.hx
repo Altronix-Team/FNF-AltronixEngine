@@ -353,7 +353,21 @@ class TitleState extends MusicBeatState
 			new FlxTimer().start(2, function(tmr:FlxTimer)
 			{
 				//FlxG.switchState(new MainMenuState());
-				FlxG.switchState(new GameJoltLogin());
+				if (!FlxG.save.data.userLoged)
+					FlxG.switchState(new GameJoltLogin());
+				else
+				{
+					FlxG.switchState(new MainMenuState());
+					Main.gjToastManager.createToast(null, FlxG.save.data.gjUser
+						+ " signed in!",
+						"Time: "
+						+ Date.now()
+						+ "\nGame ID: "
+						+ GJKeys.id
+						+ "\nScore Submitting: "
+						+ (FlxG.save.data.lbToggle ? "Enabled" : "Disabled"),
+						false);
+				}
 				clean();
 		
 			});

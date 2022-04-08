@@ -1,7 +1,7 @@
 # Creating A Custom Week
 
 ## Requirements
-1. The ability to compile Kade Engine from the source code. All information related to building Kade Engine is listed [here.](https://kadedev.github.io/Kade-Engine/building)
+1. The ability to compile Altronix Engine from the source code. All information related to building Altronix Engine is listed [here.](https://kadedev.github.io/Kade-Engine/building)
 2. A text editor. Some form of IDE that can support Haxe is recommended, such as Visual Studio Code.
 
 ---

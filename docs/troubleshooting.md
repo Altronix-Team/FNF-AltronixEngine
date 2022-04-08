@@ -25,7 +25,7 @@ You are using an incorrect version of extension-webm. See **extension-webm.ndll*
 
 ## Could not find haxelib "hxvm-luajit", does it need to be installed?
 
-With Kade Engine v1.7, a new library is used to power ModCharts. You'll need to uninstall the old one and install the new one. Run the following lines in your command prompt:
+With Altronix Engine, a new library is used to power ModCharts. You'll need to uninstall the old one and install the new one. Run the following lines in your command prompt:
 
 ```
 haxelib remove linc_luajit
@@ -40,7 +40,7 @@ See **Could not find haxelib "hxvm-luajit", does it need to be installed?**.
 
 ## ../lib/lua/src/lua.hpp: No such file or directory
 
-This error may occur if you are building Kade Engine v1.7 on a aystem with case sensitive file system (MacOS or Linux). This is an issue with the linc_luajit and a pull request needs to be merged in order to fix it.
+This error may occur if you are building Altronix Engine on a aystem with case sensitive file system (MacOS or Linux). This is an issue with the linc_luajit and a pull request needs to be merged in order to fix it.
 
 In the meantime, run the following lines in your command prompt to use a fork:
 

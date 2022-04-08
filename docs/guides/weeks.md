@@ -1,12 +1,12 @@
 # Creating A Custom Week
 
 ## Requirements
-1. The ability to compile Kade Engine from the source code. All information related to building Kade Engine is listed [here.](https://kadedev.github.io/Kade-Engine/building)
+1. The ability to compile Altronix Engine from the source code. All information related to building Altronix Engine is listed [here.](https://kadedev.github.io/Kade-Engine/building)
 2. A text editor. Some form of IDE that can support Haxe is recommended, such as Visual Studio Code.
 
 ---
 ### Step 1. Navigation
-Navigate to your Kade Engine source code. In the `source` folder, look for `StoryMenuState.hx`. Open it in your text editor.
+Navigate to your Altronix Engine source code. In the `source` folder, look for `StoryMenuState.hx`. Open it in your text editor.
 
 ### Step 2. Songlist
 

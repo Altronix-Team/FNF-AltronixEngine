@@ -1,7 +1,1 @@
 tutorial:gf:0
-rainglint:bassmachine:1
-second:bassmachine:1
-roses:bassmachine:2
-madness:bassmachine:2
-screenplay:bassmachine:2
-ballistic:bassmachine:2

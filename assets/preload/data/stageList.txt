@@ -7,7 +7,3 @@ mallEvil
 school
 schoolEvil
 tank2
-tank2-stress
-bass
-bassrift
-youtube

@@ -254,16 +254,7 @@ class MainMenuState extends MusicBeatState
 
 	function checkpassword(?passwordText:String)
 		{
-			if (passwordText == 'fun')
-			{
-				extra = 1;
-				FlxG.sound.music.stop();
-				goToState();
-				FlxG.sound.play(Paths.sound('ANGRY_TEXT_BOX', 'shared'));
-				Main.isHidden = true;
-				waitforpass = false;
-			}
-			else if (passwordText == 'tankman')
+			if (passwordText == 'tankman')
 			{
 				extra = 2;
 				FlxG.sound.music.stop();
@@ -272,16 +263,7 @@ class MainMenuState extends MusicBeatState
 				Main.isHidden = true;
 				waitforpass = false;
 			}
-			else if (passwordText == 'debug')
-			{
-				extra = 3;
-				FlxG.sound.music.stop();
-				goToState();
-				FlxG.sound.play(Paths.sound('ANGRY_TEXT_BOX', 'shared'));
-				Main.isHidden = true;
-				waitforpass = false;
-			}
-			else if ((passwordText != 'fun' || passwordText != 'tankman' || passwordText != 'debug')&& !inMain)
+			else if ((passwordText != 'tankman')&& !inMain)
 			{
 				FlxG.sound.play(Paths.soundRandom('missnote', 1, 3, 'shared'));
 			}

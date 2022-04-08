@@ -6,7 +6,7 @@
 
 ---
 ### Step 1. Navigation
-Navigate to your Kade Engine source code. In the `source` folder, look for `StoryMenuState.hx`. Open it in your text editor.
+Navigate to your Altronix Engine source code. In the `source` folder, look for `StoryMenuState.hx`. Open it in your text editor.
 
 ### Step 2. Songlist
 

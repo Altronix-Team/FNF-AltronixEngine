@@ -62,27 +62,13 @@ class SecretState extends MusicBeatState
 
 		#if desktop
 		// Updating Discord Rich Presence
-		if (MainMenuState.extra == 1)
-		{
-			if (!FlxG.save.data.language)
-				DiscordClient.changePresence("In Fun Secret Menu", null);
-			else
-				DiscordClient.changePresence("В секретном меню 'Веселья'", null);
-		}
-		else if (MainMenuState.extra == 2)
+		if (MainMenuState.extra == 2)
 		{
 			if (!FlxG.save.data.language)
 				DiscordClient.changePresence("In Tankman Secret Menu", null);
 			else
 				DiscordClient.changePresence("В секретном меню 'Танкмена'", null);
 		}
-		else if (MainMenuState.extra == 3)
-		{
-			if (!FlxG.save.data.language)
-				DiscordClient.changePresence("In Debug Secret Menu", null);
-			else
-				DiscordClient.changePresence("В секретном меню отладки", null);
-		}	
 		#end
 
 		var isDebug:Bool = false;
@@ -90,32 +76,12 @@ class SecretState extends MusicBeatState
 		#if debug
 		isDebug = true;
 		#end
-		if (MainMenuState.extra == 1)
-		{
-			addWeek(['rainglint(old)'], 1, ['bassmachine']);
-			addWeek(['Happy', 'Crimsong'], 2, ['bassmachine']);
-			addWeek(['manifest'], 2, ['riftmanifest']);
-			bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-			add(bg);
-		}
-		else if (MainMenuState.extra == 2)
+		if (MainMenuState.extra == 2)
 		{
 			addWeek(['Ugh', 'Guns', 'Stress'], 1, ['tankman']);
 			bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 			add(bg);
 		}
-		else if (MainMenuState.extra == 3)
-		{
-			addWeek(['South'], 1, ['pico']);
-			addWeek(['Last-Hope'], 1, ['mom']);
-			addWeek(['test'], 1, ['senpai']);
-			bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-			add(bg);
-			var debugText = new FlxText(0, 600, 0, "This is something shit, which you don't want to see", 24);
-			debugText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
-			add(debugText);
-
-		}	
 		// LOAD MUSIC
 
 		// LOAD CHARACTERS

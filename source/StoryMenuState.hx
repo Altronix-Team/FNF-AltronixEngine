@@ -30,9 +30,7 @@ class StoryMenuState extends MusicBeatState
 	static function weekData():Array<Dynamic>
 	{
 		return [
-			['tutorial'],
-			['rainglint', 'second'],
-			['roses', 'madness', 'screenplay', 'ballistic']
+			['tutorial']
 		];
 	}
 
@@ -42,7 +40,7 @@ class StoryMenuState extends MusicBeatState
 
 	var weekCharactersJson:Array<Dynamic>;
 
-	var weekCharacters:Array<Dynamic> = [['', 'bf', 'gf'], ['bassmachine', 'bf', 'gf'], ['bassmachine', 'bf', 'gf']];
+	var weekCharacters:Array<Dynamic> = [['', 'bf', 'gf']];
 
 	var weekNamesJson:Array<String>;
 

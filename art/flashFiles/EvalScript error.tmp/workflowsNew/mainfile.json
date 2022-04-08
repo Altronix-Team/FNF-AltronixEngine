@@ -1,0 +1,236 @@
+{ 
+   "version":"18",
+   "arrangement" : "random",
+   "workflows":[
+      {
+         "guid":"d550bbe0-fe9d-11ea-8ede-1d93180c9e38",
+         "version":5,
+         "url":"https://animate.adobe.com/an/Coachmark/21.0.5/d550bbe0-fe9d-11ea-8ede-1d93180c9e38.zip",
+         "video":"",
+         "assets":[
+            "assets/Hello Kid_Front.ana",
+            "assets/Hello Kid.ana"
+         ],
+         "previewSwf":"",
+         "previewImage":"",
+         "useCaseIndex":0,
+         "stringtable":"stringtable.json"
+      },
+	  {
+         "guid":"2729a130-f295-11ea-81ae-f336446799c7",
+         "version":5,
+         "url":"https://animate.adobe.com/an/Coachmark/21.0.5/2729a130-f295-11ea-81ae-f336446799c7.zip",
+         "video":"",
+         "assets":[
+            "assets/Grey Sky-png.ana",
+            "assets/Running Pig.ana"
+         ],
+         "previewSwf":"additionalfiles/PigRun.swf",
+         "previewImage":"additionalfiles/PigRun.png",
+         "useCaseIndex":1,
+         "stringtable":"stringtable.json"
+      },
+      {
+         "guid":"b9696080-fe93-11ea-bae8-b325f393fd93",
+         "version":4,
+         "url":"https://animate.adobe.com/an/Coachmark/21.0.5/b9696080-fe93-11ea-bae8-b325f393fd93.zip",
+         "video":"",
+         "assets":[
+
+         ],
+         "previewSwf":"",
+         "previewImage":"",
+         "useCaseIndex":0,
+         "stringtable":"stringtable.json"
+      },
+      {
+         "guid":"bdfa1030-f714-11ea-b64f-c3333b411e6e",
+         "version":5,
+         "url":"https://animate.adobe.com/an/Coachmark/21.0.5/bdfa1030-f714-11ea-b64f-c3333b411e6e.zip",
+         "video":"",
+         "assets":[
+            "assets/Pencil_Icon.ana"
+         ],
+         "previewSwf":"additionalfiles/Overview_card.swf",
+         "previewImage":"additionalfiles/Thumbnail.jpg",
+         "useCaseIndex":2,
+         "stringtable":"stringtable.json"
+      },
+      {
+         "guid":"f9acc960-fc82-11ea-ae47-6728ca6bb7f3",
+         "version":5,
+         "url":"https://animate.adobe.com/an/Coachmark/21.0.5/f9acc960-fc82-11ea-ae47-6728ca6bb7f3.zip",
+         "video":"",
+         "assets":[
+            "assets/Farmer.ana",
+            "assets/Jump.ana",
+            "assets/Walk.ana"
+         ],
+         "previewSwf":"additionalfiles/FarmerWalkCycle.swf",
+         "previewImage":"additionalfiles/FarmerWalkCycle.jpg",
+         "useCaseIndex":3,
+         "stringtable":"stringtable.json"
+      },
+	    {
+         "guid":"e8fa2040-c81b-11ea-862e-9ffb97786da0",
+         "version":5,
+         "url":"https://animate.adobe.com/an/Coachmark/21.0.5/e8fa2040-c81b-11ea-862e-9ffb97786da0.zip",
+         "video":"",
+         "assets":[
+
+         ],
+         "previewSwf":"additionalfiles/AmusementParkSwing.swf",
+         "previewImage":"additionalfiles/AmusementParkSwing_450_288.png",
+         "useCaseIndex":4,
+         "stringtable":"stringtable.json"
+      },
+	  
+	   {
+         "guid":"24521e00-cb13-11ea-b352-53dd530ad68b",
+         "version":5,
+         "url":"https://animate.adobe.com/an/Coachmark/21.0.5/24521e00-cb13-11ea-b352-53dd530ad68b.zip",
+         "video":"",
+         "assets":[
+
+         ],
+         "previewSwf":"additionalfiles/DollAnimation.swf",
+         "previewImage":"additionalfiles/DollAnimation_450_288.png",
+         "useCaseIndex":5,
+         "stringtable":"stringtable.json"
+      },
+	  
+      {
+         "guid":"181bc770-07b9-11eb-9d9d-491f8e788e32",
+         "version":3,
+         "url":"https://animate.adobe.com/an/Coachmark/21.0.5/181bc770-07b9-11eb-9d9d-491f8e788e32.zip",
+         "video":"",
+         "assets":[
+
+         ],
+         "previewSwf":"",
+         "previewImage":"",
+         "useCaseIndex":0,
+         "stringtable":"stringtable.json"
+      },
+	  
+	  {
+         "guid":"38361250-c8f2-11ea-87d0-5db9b73330eb",
+         "version":3,
+         "url":"https://animate.adobe.com/an/Coachmark/21.0.5/38361250-c8f2-11ea-87d0-5db9b73330eb.zip",
+         "video":"",
+         "assets":[
+
+         ],
+         "previewSwf":"additionalfiles/BoatAnimation.swf",
+         "previewImage":"additionalfiles/BoatAnimation_450_288.png",
+         "useCaseIndex":0,
+         "stringtable":"stringtable.json"
+      },
+	  
+	  {
+         "guid":"d91eb9b0-cc9e-11ea-81b0-2f1dfe3ad9ee",
+         "version":3,
+         "url":"https://animate.adobe.com/an/Coachmark/21.0.5/d91eb9b0-cc9e-11ea-81b0-2f1dfe3ad9ee.zip",
+         "video":"",
+         "assets":[
+
+         ],
+         "previewSwf":"additionalfiles/EarthRotation.swf",
+         "previewImage":"additionalfiles/EarthRotation_450_288.png",
+         "useCaseIndex":0,
+         "stringtable":"stringtable.json"
+      },	  
+   
+	  {
+         "guid":"ce97d5d0-c401-11ea-99b3-019d8f4ddb88",
+         "version":5,
+         "url":"https://animate.adobe.com/an/Coachmark/21.0.5/ce97d5d0-c401-11ea-99b3-019d8f4ddb88.zip",
+         "video":"",
+         "assets":[
+
+         ],
+         "previewSwf":"additionalfiles/Windmill_Final.swf",
+         "previewImage":"additionalfiles/Windmill_Final.png",
+         "useCaseIndex":6,
+         "stringtable":"stringtable.json"
+      },
+      {
+         "guid":"b8a3b480-b6df-11ea-895d-3b6ecbb6f945",
+         "version":3,
+         "url":"https://animate.adobe.com/an/Coachmark/21.0.5/b8a3b480-b6df-11ea-895d-3b6ecbb6f945.zip",
+         "video":"",
+         "assets":[
+
+         ],
+         "previewSwf":"additionalfiles/DigitalSign.swf",
+         "previewImage":"additionalfiles/DigitalSign_450_288.png",
+         "useCaseIndex":0,
+         "stringtable":"stringtable.json"
+      },
+	  {
+         "guid":"65edeaa0-9c02-11ea-b26f-edc35c4dea86",
+         "version":3,
+         "url":"https://animate.adobe.com/an/Coachmark/21.0.5/65edeaa0-9c02-11ea-b26f-edc35c4dea86.zip",
+         "video":"",
+         "assets":[
+            "assets/night_mountain_trail.ana",
+            "assets/boy_trekker.ana"
+         ],
+         "previewSwf":"walkman_filter.swf",
+         "previewImage":"walkman_filter.png",
+         "useCaseIndex":0,
+         "stringtable":"stringtable.json"
+      },
+       {
+         "guid":"4b40f970-9a97-11ea-8041-b9720091667f",
+         "version":3,
+         "url":"https://animate.adobe.com/an/Coachmark/21.0.5/4b40f970-9a97-11ea-8041-b9720091667f.zip",
+         "video":"",
+         "assets":[
+            "assets/moon_stars.ana"
+         ],
+         "previewSwf":"walkman_filter.swf",
+         "previewImage":"walkman_filter.png",
+         "useCaseIndex":0,
+         "stringtable":"stringtable.json"
+      },
+	  
+      { 
+         "guid":"734710B4-FFE8-49A7-8F83-CA85B7A3EC78",
+         "version":2,
+         "url":"https://animate.adobe.com/an/Coachmark/21.0.5/734710B4-FFE8-49A7-8F83-CA85B7A3EC78.zip",
+         "video":"https://animate.adobe.com/an/Coachmark/21.0.5/en_US/734710B4-FFE8-49A7-8F83-CA85B7A3EC78/intro_video.mp4",
+         "previewSwf":"bouncingBall.swf", 
+         "previewImage":"bouncingBall.png", 
+         "useCaseIndex":0,
+         "stringtable" : "stringtable.json",
+         "localizedVideoUrls" : 
+               {
+                  "de_DE": "https://animate.adobe.com/an/Coachmark/21.0.5/de_DE/734710B4-FFE8-49A7-8F83-CA85B7A3EC78/intro_video.mp4",
+                  "es_ES": "https://animate.adobe.com/an/Coachmark/21.0.5/es_ES/734710B4-FFE8-49A7-8F83-CA85B7A3EC78/intro_video.mp4",
+                  "fr_FR": "https://animate.adobe.com/an/Coachmark/21.0.5/fr_FR/734710B4-FFE8-49A7-8F83-CA85B7A3EC78/intro_video.mp4",
+                  "ja_JP": "https://animate.adobe.com/an/Coachmark/21.0.5/ja_JP/734710B4-FFE8-49A7-8F83-CA85B7A3EC78/intro_video.mp4",
+                  "zh_CN": "https://animate.adobe.com/an/Coachmark/21.0.5/zh_CN/734710B4-FFE8-49A7-8F83-CA85B7A3EC78/intro_video.mp4"
+            }
+      },
+      { 
+         "guid":"2033f26e-077e-4b95-8ae7-5faf3c7f2142",
+         "version":2,
+         "url":"https://animate.adobe.com/an/Coachmark/21.0.5/2033f26e-077e-4b95-8ae7-5faf3c7f2142.zip",
+         "video":"https://animate.adobe.com/an/Coachmark/21.0.5/en_US/2033f26e-077e-4b95-8ae7-5faf3c7f2142/intro_video.mp4",
+         "previewSwf":"dancingflames.swf", 
+         "previewImage":"dancingflames.png", 
+         "useCaseIndex":0,
+         "stringtable" : "stringtable.json",
+         "localizedVideoUrls" : 
+               {
+                  "de_DE": "https://animate.adobe.com/an/Coachmark/21.0.5/de_DE/2033f26e-077e-4b95-8ae7-5faf3c7f2142/intro_video.mp4",
+                  "es_ES": "https://animate.adobe.com/an/Coachmark/21.0.5/es_ES/2033f26e-077e-4b95-8ae7-5faf3c7f2142/intro_video.mp4",
+                  "fr_FR": "https://animate.adobe.com/an/Coachmark/21.0.5/fr_FR/2033f26e-077e-4b95-8ae7-5faf3c7f2142/intro_video.mp4",
+                  "ja_JP": "https://animate.adobe.com/an/Coachmark/21.0.5/ja_JP/2033f26e-077e-4b95-8ae7-5faf3c7f2142/intro_video.mp4",
+                  "zh_CN": "https://animate.adobe.com/an/Coachmark/21.0.5/zh_CN/2033f26e-077e-4b95-8ae7-5faf3c7f2142/intro_video.mp4"
+         }
+      }
+    
+   ]
+}

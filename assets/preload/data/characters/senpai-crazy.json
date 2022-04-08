@@ -1,0 +1,17 @@
+{
+  "name": "Senpai-Crazy",
+  "asset": "characters/senpaiCrazy",
+  "barColorJson": 
+  [
+	0, 0, 0
+  ],
+  "startingAnim": "idle",
+  "graphicsize": "6",
+  "animations": [
+    {
+      "name": "idle",
+      "prefix": "Senpai Pre Explosion instance",
+      "offsets": [0, -19]
+    }
+  ]
+}

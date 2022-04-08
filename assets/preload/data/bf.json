@@ -1,0 +1,39 @@
+{,
+"name": "bf",
+"asset": "character/",
+"barColorJson": [255, 255, 255],
+"graphicsize": "",
+"startingAnim": "idle",
+"animations": [
+{
+"name": "hey",
+"prefix": "",
+"offsets":[-40,232]
+}
+{
+"name": "idle",
+"prefix": "",
+"offsets":[0,200]
+}
+{
+"name": "singDOWN",
+"prefix": "",
+"offsets":[15,147]
+}
+{
+"name": "singRIGHT",
+"prefix": "",
+"offsets":[3,226]
+}
+{
+"name": "singLEFT",
+"prefix": "",
+"offsets":[-21,190]
+}
+{
+"name": "singUP",
+"prefix": "",
+"offsets":[90,265]
+}
+]
+}

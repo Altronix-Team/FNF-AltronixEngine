@@ -1,0 +1,113 @@
+{
+ "song": {
+  "songName": "test",
+  "songId": "test",
+  "player1": "bf",
+  "gfVersion": "gf",
+  "notes": [
+   {
+    "endTime": 1600,
+    "sectionNotes": [],
+    "lengthInSteps": 16,
+    "mustHitSection": false,
+    "startTime": 0
+   },
+   {
+    "endTime": 3200,
+    "sectionNotes": [],
+    "lengthInSteps": 16,
+    "mustHitSection": false,
+    "startTime": 1600
+   },
+   {
+    "endTime": 4800,
+    "sectionNotes": [],
+    "lengthInSteps": 16,
+    "mustHitSection": true,
+    "startTime": 3200
+   },
+   {
+    "endTime": 6400,
+    "sectionNotes": [],
+    "lengthInSteps": 16,
+    "mustHitSection": true,
+    "startTime": 4800
+   },
+   {
+    "endTime": 8000,
+    "sectionNotes": [],
+    "lengthInSteps": 16,
+    "mustHitSection": false,
+    "startTime": 6400
+   },
+   {
+    "endTime": 9600,
+    "sectionNotes": [],
+    "lengthInSteps": 16,
+    "mustHitSection": false,
+    "startTime": 8000
+   },
+   {
+    "endTime": 11200,
+    "sectionNotes": [],
+    "lengthInSteps": 16,
+    "mustHitSection": true,
+    "startTime": 9600
+   },
+   {
+    "endTime": null,
+    "sectionNotes": [],
+    "lengthInSteps": 16,
+    "mustHitSection": true,
+    "startTime": 11200
+   }
+  ],
+  "player2": "bf",
+  "chartVersion": "AE1",
+  "eventObjects": [
+   {
+    "name": "Init BPM",
+    "position": 0,
+    "value": 150,
+    "type": "BPM Change"
+   },
+   {
+    "name": "New Event 31.75",
+    "position": 31.75,
+    "value": "mom",
+    "type": "Change Dad Character"
+   },
+   {
+    "name": "New Event 31",
+    "position": 31.5,
+    "value": "pico-player",
+    "type": "Change BF Character"
+   },
+   {
+    "name": "New Event 31.25",
+    "position": 31.25,
+    "value": "nogf",
+    "type": "Change GF Character"
+   },
+   {
+    "name": "New Event 30.75",
+    "position": 30.75,
+    "value": "150",
+    "type": "Start Countdown"
+   },
+   {
+    "name": "New Event 31.5",
+    "position": 31,
+    "value": "limo",
+    "type": "Change Stage"
+   }
+  ],
+  "offset": 0,
+  "song": "Test",
+  "validScore": true,
+  "needsVoices": true,
+  "noteStyle": "normal",
+  "bpm": 150,
+  "speed": 1.6
+ }
+}

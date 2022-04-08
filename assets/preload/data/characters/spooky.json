@@ -1,0 +1,44 @@
+{
+  "name": "Spooky",
+  "asset": "characters/spooky_kids_assets",
+  "barColorJson": 
+  [
+	213, 126, 0
+  ],
+  "startingAnim": "danceRight",
+  "graphicsize": "",
+  "animations": [
+    {
+      "name": "singLEFT",
+      "prefix": "note sing left",
+      "offsets": [130, -10]
+    },
+    {
+      "name": "singRIGHT",
+      "prefix": "spooky sing right",
+      "offsets": [-130,  -14]
+    },
+    {
+      "name": "singUP",
+      "prefix": "spooky UP NOTE",
+      "offsets": [-20, 26]
+    },
+    {
+      "name": "singDOWN",
+      "prefix": "spooky DOWN note",
+      "offsets": [-50, -130]
+    },  
+    {
+      "name": "danceLeft",
+      "prefix": "spooky dance idle",
+      "offsets": [0, 0],
+	  "frameIndices": [0, 2, 6]
+    },
+	{
+      "name": "danceRight",
+      "prefix": "spooky dance idle",
+      "offsets": [0, 0],
+	  "frameIndices": [8, 10, 12, 14]
+    }
+  ]
+}

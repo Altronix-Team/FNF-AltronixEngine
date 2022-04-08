@@ -1,0 +1,102 @@
+{
+  "name": "AGOTI - BF",
+  "asset": "characters/AGOTI",
+  "barColorJson": 
+  [
+	186, 29, 36
+  ],
+  "startingAnim": "idle",
+  "graphicsize": "1",
+  "animations": [
+    {
+      "name": "singLEFT",
+      "prefix": "BF NOTE LEFT1",
+      "offsets": [12, -6],
+	  "flipX": true
+    },
+    {
+      "name": "singRIGHT",
+      "prefix": "BF NOTE RIGHT1",
+      "offsets": [-38,  -7],
+	  "flipX": true
+    },
+    {
+      "name": "singUP",
+      "prefix": "BF NOTE UP1",
+      "offsets": [-29, 27],
+	  "flipX": true
+    },
+    {
+      "name": "singDOWN",
+      "prefix": "BF NOTE DOWN1",
+      "offsets": [-10, -50],
+	  "flipX": true
+    },  
+    {
+      "name": "idle",
+      "prefix": "BF idle dance1",
+      "offsets": [-5, 0],
+	  "flipX": true
+    },
+	{
+      "name": "hey",
+      "prefix": "BF HEY1",
+      "offsets": [7, 4],
+	  "flipX": true
+    },
+	{
+      "name": "singUPmiss",
+      "prefix": "BF NOTE UP MISS1",
+      "offsets": [-29, 27],
+	  "flipX": true
+    }, 
+	{
+      "name": "singLEFTmiss",
+      "prefix": "BF NOTE LEFT MISS1",
+      "offsets": [12, 24],
+	  "flipX": true
+    }, 
+	{
+      "name": "singRIGHTmiss",
+      "prefix": "BF NOTE RIGHT MISS1",
+      "offsets": [-30, 21],
+	  "flipX": true
+    }, 
+	{
+      "name": "singDOWNmiss",
+      "prefix": "BF NOTE DOWN MISS1",
+      "offsets": [-11, -190],
+	  "flipX": true
+    }, 
+	{
+      "name": "firstDeath",
+      "prefix": "BF dies1",
+      "offsets": [37, 11],
+	  "flipX": true
+    }, 
+	{
+      "name": "deathLoop",
+      "prefix": "BF Dead Loop1",
+      "offsets": [37, 5],
+	  "flipX": true
+    }, 
+	{
+      "name": "deathConfirm",
+      "prefix": "BF Dead confirm1",
+      "offsets": [37, 69],
+	  "flipX": true
+    }, 
+	{
+      "name": "dodge",
+      "prefix": "boyfriend dodge1",
+      "offsets": [-5, 0],
+	  "flipX": true
+    }, 
+	{
+      "name": "scared",
+      "prefix": "BF idle shaking1",
+      "offsets": [-4, 0],
+	  "flipX": true
+    }
+  ]
+}

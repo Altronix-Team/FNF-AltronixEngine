@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="altron.png">
+	<!-- Created with Adobe Animate version 21.0.9.42677 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="down0000" x="0" y="0" width="835" height="781"/>
+	<SubTexture name="idle0000" x="835" y="0" width="835" height="778"/>
+	<SubTexture name="left0000" x="1670" y="0" width="835" height="786"/>
+	<SubTexture name="right0000" x="2505" y="0" width="835" height="785"/>
+	<SubTexture name="up0000" x="0" y="786" width="835" height="786"/>
+</TextureAtlas>

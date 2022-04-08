@@ -1,0 +1,36 @@
+{
+  "name": "Boyfriend-Pixel-Dead",
+  "asset": "characters/bfPixelsDEAD",
+  "barColorJson": 
+  [
+	49, 176, 209
+  ],
+  "startingAnim": "firstDeath",
+  "graphicsize": "6",
+  "animations": [
+    {
+      "name": "firstDeath",
+      "prefix": "BF Dies pixel",
+      "offsets": [0, 0],
+	  "flipX": true
+    },
+    {
+      "name": "deathLoop",
+      "prefix": "Retry Loop",
+      "offsets": [0,  0],
+	  "flipX": true
+    },
+    {
+      "name": "singUP",
+      "prefix": "BF Dies pixel",
+      "offsets": [0, 0],
+	  "flipX": true
+    },
+    {
+      "name": "deathConfirm",
+      "prefix": "RETRY CONFIRM",
+      "offsets": [0, 0],
+	  "flipX": true
+    }
+  ]
+}

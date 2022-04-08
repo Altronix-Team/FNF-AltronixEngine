@@ -1,0 +1,14 @@
+{
+	"image": "senpaiMad",
+	"startingAnim": "idle",
+	"pixelZoom": true,
+	"isDad": true,
+	"animations": 
+	[
+		{
+			"name": "idle",
+			"prefix": "SENPAI ANGRY IMPACT SPEECH instance 1",
+			"offsets": [0, 0]
+		}
+	]
+}

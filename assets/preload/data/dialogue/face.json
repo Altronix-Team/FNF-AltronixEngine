@@ -1,0 +1,14 @@
+{
+	"image": "spiritFaceForward",
+	"startingAnim": "idle",
+	"pixelZoom": true,
+	"isDad": true,
+	"animations": 
+	[
+		{
+			"name": "idle",
+			"prefix": "Face Portrait Enter instance 1",
+			"offsets": [0, 0]
+		}
+	]
+}

@@ -1,0 +1,42 @@
+{
+  "name": "Boyfriend-AltronMaxX",
+  "asset": "characters/BoyFriend_AltronMaxX_Concept",
+  "barColorJson": 
+  [
+	0, 255, 0
+  ],
+  "startingAnim": "idle",
+  "graphicsize": "1",
+  "animations": [
+    {
+      "name": "singLEFT",
+      "prefix": "BF NOTE LEFT 0",
+      "offsets": [12, -6],
+	  "flipX": true
+    },
+    {
+      "name": "singRIGHT",
+      "prefix": "BF NOTE RIGHT 0",
+      "offsets": [-38,  -7],
+	  "flipX": true
+    },
+    {
+      "name": "singUP",
+      "prefix": "BF NOTE UP 0",
+      "offsets": [-29, 27],
+	  "flipX": true
+    },
+    {
+      "name": "singDOWN",
+      "prefix": "BF NOTE DOWN 0",
+      "offsets": [-10, -50],
+	  "flipX": true
+    },  
+    {
+      "name": "idle",
+      "prefix": "BF idle dance ",
+      "offsets": [-5, 0],
+	  "flipX": true
+    }
+  ]
+}

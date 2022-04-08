@@ -1,0 +1,78 @@
+{
+  "name": "BF with GF",
+  "asset": "characters/bfAndGF",
+  "barColorJson": 
+  [
+	49, 176, 209
+  ],
+  "startingAnim": "idle",
+  "graphicsize": "1",
+  "animations": [
+    {
+      "name": "singLEFT",
+      "prefix": "BF NOTE LEFT0",
+      "offsets": [-48, -6],
+	  "flipX": true
+    },
+    {
+      "name": "singRIGHT",
+      "prefix": "BF NOTE RIGHT0",
+      "offsets": [-8,  13],
+	  "flipX": true
+    },
+    {
+      "name": "singUP",
+      "prefix": "BF NOTE UP0",
+      "offsets": [21, -13],
+	  "flipX": true
+    },
+    {
+      "name": "singDOWN",
+      "prefix": "BF NOTE DOWN0",
+      "offsets": [-30, -30],
+	  "flipX": true
+    },  
+    {
+      "name": "idle",
+      "prefix": "BF idle dance w gf",
+      "offsets": [-5, 0],
+	  "flipX": true
+    },
+	{
+      "name": "hey",
+      "prefix": "BF hey w gf",
+      "offsets": [67, 84],
+	  "flipX": true
+    },
+	{
+      "name": "singUPmiss",
+      "prefix": "BF NOTE UP MISS",
+      "offsets": [31, -3],
+	  "flipX": true
+    }, 
+	{
+      "name": "singLEFTmiss",
+      "prefix": "BF NOTE LEFT MISS",
+      "offsets": [-38, -16],
+	  "flipX": true
+    }, 
+	{
+      "name": "singRIGHTmiss",
+      "prefix": "BF NOTE RIGHT MISS",
+      "offsets": [10, 21],
+	  "flipX": true
+    }, 
+	{
+      "name": "singDOWNmiss",
+      "prefix": "BF NOTE DOWN MISS",
+      "offsets": [-41, -20],
+	  "flipX": true
+    },
+	{
+      "name": "catch",
+      "prefix": "BF catches GF",
+      "offsets": [46, 90],
+	  "flipX": true
+    }
+  ]
+}

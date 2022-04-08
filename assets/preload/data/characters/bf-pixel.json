@@ -1,0 +1,66 @@
+{
+  "name": "Boyfriend-Pixel",
+  "asset": "characters/bfPixel",
+  "barColorJson": 
+  [
+	49, 176, 209
+  ],
+  "startingAnim": "idle",
+  "graphicsize": "6",
+  "animations": [
+    {
+      "name": "singLEFT",
+      "prefix": "BF LEFT NOTE",
+      "offsets": [0, 0],
+	  "flipX": true
+    },
+    {
+      "name": "singRIGHT",
+      "prefix": "BF RIGHT NOTE",
+      "offsets": [0,  0],
+	  "flipX": true
+    },
+    {
+      "name": "singUP",
+      "prefix": "BF UP NOTE",
+      "offsets": [0, 0],
+	  "flipX": true
+    },
+    {
+      "name": "singDOWN",
+      "prefix": "BF DOWN NOTE",
+      "offsets": [0, 0],
+	  "flipX": true
+    },  
+    {
+      "name": "idle",
+      "prefix": "BF IDLE",
+      "offsets": [0, 0],
+	  "flipX": true
+    },
+	{
+      "name": "singUPmiss",
+      "prefix": "BF UP MISS",
+      "offsets": [0, 0],
+	  "flipX": true
+    }, 
+	{
+      "name": "singLEFTmiss",
+      "prefix": "BF LEFT MISS",
+      "offsets": [0, 0],
+	  "flipX": true
+    }, 
+	{
+      "name": "singRIGHTmiss",
+      "prefix": "BF RIGHT MISS",
+      "offsets": [0, 0],
+	  "flipX": true
+    }, 
+	{
+      "name": "singDOWNmiss",
+      "prefix": "BF DOWN MISS",
+      "offsets": [0, 0],
+	  "flipX": true
+    }
+  ]
+}

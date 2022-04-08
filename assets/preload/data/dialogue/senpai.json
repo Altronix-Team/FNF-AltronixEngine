@@ -1,0 +1,14 @@
+{
+	"image": "senpaiPortrait",
+	"startingAnim": "idle",
+	"pixelZoom": true,
+	"isDad": true,	
+	"animations": 
+	[
+		{
+			"name": "idle",
+			"prefix": "Senpai Portrait Enter instance 1",
+			"offsets": [0, 0]
+		}
+	]
+}

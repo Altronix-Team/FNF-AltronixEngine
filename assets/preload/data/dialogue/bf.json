@@ -1,0 +1,14 @@
+{
+	"image": "bf_norm",
+	"startingAnim": "idle",
+	"pixelZoom": false,
+	"isDad": false,
+	"animations": 
+	[
+		{
+			"name": "idle",
+			"prefix": "BF Portrait Enter instance 1",
+			"offsets": [100, 100]
+		}
+	]
+}

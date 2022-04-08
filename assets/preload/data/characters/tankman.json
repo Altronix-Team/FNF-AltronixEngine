@@ -1,0 +1,54 @@
+{
+  "name": "Tankman",
+  "asset": "characters/tankmanCaptain",
+  "barColorJson": 
+  [
+	255, 255, 255
+  ],
+  "startingAnim": "idle",
+  "graphicsize": "",
+  "animations": [
+    {
+      "name": "singLEFT",
+      "prefix": "Tankman Note Left ",
+      "offsets": [82, -19],
+	  "flipX": true
+    },
+    {
+      "name": "singRIGHT",
+      "prefix": "Tankman Right Note ",
+      "offsets": [-13,  -20],
+	  "flipX": true
+    },
+    {
+      "name": "singUP",
+      "prefix": "Tankman UP note ",
+      "offsets": [44, 46],
+	  "flipX": true
+    },
+    {
+      "name": "singDOWN",
+      "prefix": "Tankman DOWN note ",
+      "offsets": [64, -104],
+	  "flipX": true
+    },  
+    {
+      "name": "idle",
+      "prefix": "Tankman Idle Dance ",
+      "offsets": [-5, 0],
+	  "flipX": true
+    },
+	{
+      "name": "singUP-alt",
+      "prefix": "TANKMAN UGH ",
+      "offsets": [-20, -9],
+	  "flipX": true
+    },
+	{
+      "name": "singDOWN-alt",
+      "prefix": "PRETTY GOOD tankman ",
+      "offsets": [85, 15],
+	  "flipX": true
+    }
+  ]
+}

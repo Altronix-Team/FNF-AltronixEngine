@@ -33,6 +33,9 @@
 	 - `haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc`
 	 - `haxelib git extension-webm https://github.com/KadeDev/extension-webm`
 	 - `lime rebuild extension-webm <ie. windows, macos, linux>`
+	 - `haxelib git tentools https://github.com/TentaRJ/tentools.git`
+	 - `haxelib git systools https://github.com/haya3218/systools`
+	 - `haxelib run lime rebuild systools [windows, mac, linux]`
 	      - Note: for Linux, you need to install the `g++-multilib` and `gcc-multilib` packages respectively. (use apt to install them.)
 
 ### Windows-only dependencies (only for building *to* Windows. Building html5 on Windows does not require this)

@@ -17,9 +17,9 @@ Links: **[itch.io page](https://ninja-muffin24.itch.io/funkin) ⋅ [Newgrounds](
 # Features
  - **Improved Dialogue System**
  
- -**Improved Character System**
+ - **Improved Character System**
  
- -**Improved Charter**
+ - **Improved Charter**
  
  - **New Input System**
 	 - An improved input system, similar to Quaver or Etterna, with less delays, less dropped inputs and other improvements.

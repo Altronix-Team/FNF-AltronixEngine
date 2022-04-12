@@ -6,7 +6,7 @@
 	216, 85, 142
   ],
   "startingAnim": "idle",
-  "graphicsize": "",
+  "camFollow": [0, 100],
   "animations": [
     {
       "name": "idle",

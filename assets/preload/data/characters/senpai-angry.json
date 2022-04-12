@@ -5,9 +5,11 @@
   [
 	255, 170, 111
   ],
-  "startingAnim": "idle",
-  "graphicsize": "6",
+  "scale": 6,
   "antialiasing": false,
+  "startingAnim": "idle",
+  "camPos": [300, 0],
+  "camFollow": [-250, -330],
   "animations": [
     {
       "name": "idle",

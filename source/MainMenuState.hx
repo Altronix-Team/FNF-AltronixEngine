@@ -73,7 +73,11 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
-		GameJoltAPI.getTrophy(160503);
+		if (!FlxG.save.data.firstLogin || FlxG.save.data.firstLogin == null)
+			{
+				GameJoltAPI.getTrophy(160503);
+				FlxG.save.data.firstLogin = true;
+			}
 		FlxG.mouse.visible = true;
 		camGame = new FlxCamera();
 		inMain = true;

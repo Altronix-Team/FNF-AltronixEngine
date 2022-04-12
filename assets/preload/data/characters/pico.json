@@ -5,38 +5,54 @@
   [
 	183, 216, 85
   ],
+  "flipX": true,
   "startingAnim": "idle",
-  "graphicsize": "",
+  "camPos": [600, 0],
   "animations": [
     {
-      "name": "singLEFT",
-      "prefix": "Pico NOTE LEFT0",
-      "offsets": [-45, 9],
-	  "flipX": true
-    },
-    {
-      "name": "singRIGHT",
-      "prefix": "Pico Note Right0",
-      "offsets": [62,  3],
-	  "flipX": true
+      "name": "idle",
+      "prefix": "Pico Idle Dance",
+      "offsets": [0, 0]
     },
     {
       "name": "singUP",
       "prefix": "pico Up note0",
-      "offsets": [-29, 27],
-	  "flipX": true
+      "offsets": [-29, 27]
+    },
+    {
+      "name": "singLEFT",
+      "prefix": "Pico Note Right0",
+      "offsets": [65, 9]
+    },
+    {
+      "name": "singRIGHT",
+      "prefix": "Pico NOTE LEFT0",
+      "offsets": [-68, -7]
     },
     {
       "name": "singDOWN",
       "prefix": "Pico Down Note0",
-      "offsets": [200, -70],
-	  "flipX": true
-    },  
+      "offsets": [200, -70]
+    },
     {
-      "name": "idle",
-      "prefix": "Pico Idle Dance",
-      "offsets": [0, 0],
-	  "flipX": true
+      "name": "singUPmiss",
+      "prefix": "pico Up note miss",
+      "offsets": [-19, 67]
+    },
+    {
+      "name": "singLEFTmiss",
+      "prefix": "Pico Note Right Miss",
+      "offsets": [62, 64]
+    },
+    {
+      "name": "singRIGHTmiss",
+      "prefix": "Pico NOTE LEFT miss",
+      "offsets": [-60, 41]
+    },
+    {
+      "name": "singDOWNmiss",
+      "prefix": "Pico Down Note MISS",
+      "offsets": [210, -28]
     }
   ]
 }

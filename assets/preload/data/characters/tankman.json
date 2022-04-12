@@ -6,49 +6,48 @@
 	255, 255, 255
   ],
   "startingAnim": "idle",
-  "graphicsize": "",
+  "flipX": true,
+  "charPos": [0,250],
+  "camPos": [0, 0],
   "animations": [
     {
       "name": "singLEFT",
       "prefix": "Tankman Note Left ",
-      "offsets": [82, -19],
-	  "flipX": true
+      "offsets": [82, -19]
     },
     {
       "name": "singRIGHT",
       "prefix": "Tankman Right Note ",
-      "offsets": [-13,  -20],
-	  "flipX": true
+      "offsets": [-13,  -20]
     },
     {
       "name": "singUP",
       "prefix": "Tankman UP note ",
-      "offsets": [44, 46],
-	  "flipX": true
+      "offsets": [44, 46]
     },
     {
       "name": "singDOWN",
       "prefix": "Tankman DOWN note ",
-      "offsets": [64, -104],
-	  "flipX": true
+      "offsets": [64, -104]
     },  
     {
       "name": "idle",
       "prefix": "Tankman Idle Dance ",
-      "offsets": [-5, 0],
-	  "flipX": true
+      "offsets": [-5, 0]
     },
 	{
-      "name": "singUP-alt",
+      "name": "ugh",
       "prefix": "TANKMAN UGH ",
-      "offsets": [-20, -9],
-	  "flipX": true
+	  "interrupt": false,
+	  "nextAnim": "idle",
+      "offsets": [-20, -9]
     },
 	{
-      "name": "singDOWN-alt",
+      "name": "prettygood",
       "prefix": "PRETTY GOOD tankman ",
-      "offsets": [85, 15],
-	  "flipX": true
+	  "interrupt": false,
+	  "nextAnim": "idle",
+      "offsets": [85, 15]
     }
   ]
 }

@@ -1,0 +1,11 @@
+{
+	
+	"image": "Menu_Bassmachine",
+	"position": [
+		0,
+		85
+	],
+	"scale": 0.7,
+	"idle_anim": "M Bassmachine Idle",
+	"confirm_anim": "M Bassmachine Idle"
+}

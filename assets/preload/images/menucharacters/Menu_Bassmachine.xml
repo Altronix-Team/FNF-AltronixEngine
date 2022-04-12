@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="Menu_Bassmachine.png">
+	<!-- Created with Adobe Animate version 21.0.9.42677 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="M Bassmachine Idle0000" x="0" y="0" width="316" height="533"/>
+	<SubTexture name="M Bassmachine Idle0001" x="0" y="0" width="316" height="533"/>
+	<SubTexture name="M Bassmachine Idle0002" x="0" y="0" width="316" height="533"/>
+	<SubTexture name="M Bassmachine Idle0003" x="0" y="0" width="316" height="533"/>
+	<SubTexture name="M Bassmachine Idle0004" x="316" y="0" width="310" height="532" frameX="0" frameY="-1" frameWidth="316" frameHeight="533"/>
+	<SubTexture name="M Bassmachine Idle0005" x="316" y="0" width="310" height="532" frameX="0" frameY="-1" frameWidth="316" frameHeight="533"/>
+	<SubTexture name="M Bassmachine Idle0006" x="316" y="0" width="310" height="532" frameX="0" frameY="-1" frameWidth="316" frameHeight="533"/>
+	<SubTexture name="M Bassmachine Idle0007" x="316" y="0" width="310" height="532" frameX="0" frameY="-1" frameWidth="316" frameHeight="533"/>
+	<SubTexture name="M Bassmachine Idle0008" x="626" y="0" width="306" height="531" frameX="0" frameY="-2" frameWidth="316" frameHeight="533"/>
+	<SubTexture name="M Bassmachine Idle0009" x="626" y="0" width="306" height="531" frameX="0" frameY="-2" frameWidth="316" frameHeight="533"/>
+	<SubTexture name="M Bassmachine Idle0010" x="626" y="0" width="306" height="531" frameX="0" frameY="-2" frameWidth="316" frameHeight="533"/>
+	<SubTexture name="M Bassmachine Idle0011" x="626" y="0" width="306" height="531" frameX="0" frameY="-2" frameWidth="316" frameHeight="533"/>
+	<SubTexture name="M Bassmachine Idle0012" x="932" y="0" width="305" height="532" frameX="0" frameY="-1" frameWidth="316" frameHeight="533"/>
+	<SubTexture name="M Bassmachine Idle0013" x="932" y="0" width="305" height="532" frameX="0" frameY="-1" frameWidth="316" frameHeight="533"/>
+	<SubTexture name="M Bassmachine Idle0014" x="932" y="0" width="305" height="532" frameX="0" frameY="-1" frameWidth="316" frameHeight="533"/>
+	<SubTexture name="M Bassmachine Idle0015" x="932" y="0" width="305" height="532" frameX="0" frameY="-1" frameWidth="316" frameHeight="533"/>
+	<SubTexture name="M Bassmachine Idle0016" x="0" y="0" width="316" height="533"/>
+	<SubTexture name="M Bassmachine Idle0017" x="0" y="0" width="316" height="533"/>
+	<SubTexture name="M Bassmachine Idle0018" x="0" y="0" width="316" height="533"/>
+	<SubTexture name="M Bassmachine Idle0019" x="0" y="0" width="316" height="533"/>
+</TextureAtlas>

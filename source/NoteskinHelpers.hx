@@ -23,7 +23,8 @@ class NoteskinHelpers
 		var count:Int = 0;
 		for (i in FileSystem.readDirectory(FileSystem.absolutePath("assets/shared/images/noteskins")))
 		{
-			if (i.contains("HUDNOTEENEMY_assets") || i.contains("HURTNOTE_assets") || i.contains("manifestnote_assets") || i.contains("noteSplashes") || i.contains("Bullet_Note"))
+			if (i.contains("HUDNOTEENEMY_assets") || i.contains("HURTNOTE_assets") || i.contains("manifestnote_assets")
+				|| i.contains("Bullet_Note") || i.contains("GF_Sing"))
 				continue;
 			else
 			{

@@ -5,10 +5,12 @@
   [
 	255, 60, 110
   ],
-  "startingAnim": "idle",
-  "graphicsize": "6",
+  "scale": 6,
   "antialiasing": false,
   "usePackerAtlas": true,
+  "startingAnim": "idle",
+  "camPos": [300, 0],
+  "hasTrail": true,
   "animations": [
     {
       "name": "idle",
@@ -18,21 +20,29 @@
     {
       "name": "singUP",
       "prefix": "up_",
+	  "interrupt": false,
+	  "nextAnim": "idle",
       "offsets": [-220, -240]
     },
     {
       "name": "singLEFT",
       "prefix": "left_",
+	  "interrupt": false,
+	  "nextAnim": "idle",
       "offsets": [-200, -280]
     },
     {
       "name": "singRIGHT",
       "prefix": "right_",
+	  "interrupt": false,
+	  "nextAnim": "idle",
       "offsets": [-220, -280]
     },
     {
       "name": "singDOWN",
       "prefix": "spirit down_",
+	  "interrupt": false,
+	  "nextAnim": "idle",
       "offsets": [170, 110]
     }
   ]

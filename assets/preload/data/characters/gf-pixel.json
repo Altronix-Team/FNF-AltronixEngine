@@ -5,15 +5,12 @@
   [
 	165, 0, 77
   ],
+  "scale": 6,
+  "antialiasing": false,
   "startingAnim": "danceRight",
-  "graphicsize": "6",
+  "isDancing": true,
+  "replacesGF": true,
   "animations": [
-    {
-      "name": "singUP",
-      "prefix": "GF IDLE",
-      "offsets": [0, 0],
-      "frameIndices": [2]
-    },
     {
       "name": "danceLeft",
       "prefix": "GF IDLE",

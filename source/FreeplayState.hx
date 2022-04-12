@@ -801,17 +801,19 @@ class FreeplayState extends MusicBeatState
 	}
 
 	override function onWindowFocusOut():Void
-	{
-		FlxG.sound.music.pause();
-		vocals.pause();
-	}
-
+		{
+			FlxG.sound.music.pause();
+			if (songListen)
+				vocals.pause();
+		}
+	
 	override function onWindowFocusIn():Void
 	{
 		Debug.logTrace("IM BACK!!!");
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
 		FlxG.sound.music.resume();
-		vocals.resume();
+		if (songListen)
+			vocals.resume();
 	}
 } class FreeplaySongMetadata
 {

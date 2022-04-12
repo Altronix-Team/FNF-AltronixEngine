@@ -236,6 +236,40 @@ class LeftKeybind extends Option
 	}
 }
 
+class AttackKeybind extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+		acceptType = true;
+	}
+
+	public override function onType(text:String)
+	{
+		if (waitingType)
+		{
+			FlxG.save.data.attackBind = text;
+			waitingType = false;
+		}
+	}
+
+	public override function press()
+	{
+		Debug.logTrace("keybind change");
+		waitingType = !waitingType;
+
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		if (!FlxG.save.data.language)
+			return "ATTACK: " + (waitingType ? "> " + FlxG.save.data.attackBind + " <" : FlxG.save.data.attackBind) + "";
+		else
+			return "Атака: " + (waitingType ? "> " + FlxG.save.data.attackBind + " <" : FlxG.save.data.attackBind) + "";
+	}
+}
 class PauseKeybind extends Option
 {
 	public function new(desc:String)

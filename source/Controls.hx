@@ -32,6 +32,7 @@ enum abstract Action(String) to String from String
 	var PAUSE = "pause";
 	var RESET = "reset";
 	var CHEAT = "cheat";
+	var ATTACK = "attack";
 }
 #else
 @:enum
@@ -54,6 +55,7 @@ abstract Action(String) to String from String
 	var PAUSE = "pause";
 	var RESET = "reset";
 	var CHEAT = "cheat";
+	var ATTACK = "attack";
 }
 #end
 
@@ -79,6 +81,7 @@ enum Control
 	BACK;
 	PAUSE;
 	CHEAT;
+	ATTACK;
 }
 
 enum KeyboardScheme
@@ -112,6 +115,7 @@ class Controls extends FlxActionSet
 	var _pause = new FlxActionDigital(Action.PAUSE);
 	var _reset = new FlxActionDigital(Action.RESET);
 	var _cheat = new FlxActionDigital(Action.CHEAT);
+	var _attack = new FlxActionDigital(Action.ATTACK);
 
 	#if (haxe >= "4.0.0")
 	var byName:Map<String, FlxActionDigital> = [];
@@ -207,6 +211,11 @@ class Controls extends FlxActionSet
 	inline function get_CHEAT()
 		return _cheat.check();
 
+	public var ATTACK(get, never):Bool;
+
+	inline function get_ATTACK()
+		return _attack.check();
+
 	#if (haxe >= "4.0.0")
 	public function new(name, scheme = None)
 	{
@@ -229,6 +238,7 @@ class Controls extends FlxActionSet
 		add(_pause);
 		add(_reset);
 		add(_cheat);
+		add(_attack);
 
 		for (action in digitalActions)
 			byName[action.name] = action;
@@ -257,6 +267,7 @@ class Controls extends FlxActionSet
 		add(_pause);
 		add(_reset);
 		add(_cheat);
+		add(_attack);
 
 		for (action in digitalActions)
 			byName[action.name] = action;
@@ -311,6 +322,7 @@ class Controls extends FlxActionSet
 			case PAUSE: _pause;
 			case RESET: _reset;
 			case CHEAT: _cheat;
+			case ATTACK: _attack;
 		}
 	}
 
@@ -356,6 +368,8 @@ class Controls extends FlxActionSet
 				func(_reset, JUST_PRESSED);
 			case CHEAT:
 				func(_cheat, JUST_PRESSED);
+			case ATTACK:
+				func(_attack, JUST_PRESSED);
 		}
 	}
 
@@ -597,6 +611,7 @@ class Controls extends FlxActionSet
 		inline bindKeys(Control.BACK, [ESCAPE]);
 		inline bindKeys(Control.PAUSE, [FlxKey.fromString(FlxG.save.data.pauseBind)]);
 		inline bindKeys(Control.RESET, [FlxKey.fromString(FlxG.save.data.resetBind)]);
+		inline bindKeys(Control.ATTACK, [FlxKey.fromString(FlxG.save.data.attackBind)]);
 
 		FlxG.sound.muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
 		FlxG.sound.volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];

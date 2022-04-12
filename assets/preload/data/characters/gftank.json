@@ -5,8 +5,9 @@
   [
 	165, 0, 77
   ],
-  "startingAnim": "danceRight",
-  "graphicsize": "",
+  "isDancing": true,
+  "holdLength": 4.1,
+  "replacesGF": true,
   "animations": [
     {
       "name": "danceLeft",

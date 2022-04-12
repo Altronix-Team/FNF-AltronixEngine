@@ -3635,7 +3635,13 @@ class PlayState extends MusicBeatState
 						if (daNote.spotInLine != daNote.parent.children.length - 1)
 						{
 							var singData:Int = Std.int(Math.abs(daNote.noteData));
-							dad.playAnim('sing' + dataSuffix[singData] + altAnim, true);
+							switch (daNote.noteType)
+							{
+								case 4:
+									gf.playAnim('sing' + dataSuffix[daNote.noteData], true);
+								default:
+									dad.playAnim('sing' + dataSuffix[singData] + altAnim, true);
+							}
 
 							if (FlxG.save.data.cpuStrums)
 							{
@@ -3669,7 +3675,13 @@ class PlayState extends MusicBeatState
 					else
 					{
 						var singData:Int = Std.int(Math.abs(daNote.noteData));
-						dad.playAnim('sing' + dataSuffix[singData] + altAnim, true);
+						switch (daNote.noteType)
+							{
+								case 4:
+									gf.playAnim('sing' + dataSuffix[daNote.noteData], true);
+								default:
+									dad.playAnim('sing' + dataSuffix[singData] + altAnim, true);
+							}
 
 						if (FlxG.save.data.cpuStrums)
 						{
@@ -4736,6 +4748,9 @@ class PlayState extends MusicBeatState
 				boyfriend.dance();
 		}
 
+		if (controls.ATTACK)
+			boyfriend.playAnim('attack', true);
+
 		playerStrums.forEach(function(spr:StaticArrow)
 		{
 			if (!PlayStateChangeables.botPlay)
@@ -5090,16 +5105,15 @@ class PlayState extends MusicBeatState
 				trace("Alt note on BF");
 			}
 
-			if (note.noteType == 3)
+			switch (note.noteType)
 			{
-				shoot = true;
-				boyfriend.playAnim('dodge', true);
-			}
-
-			if (note.noteType != 3 || PlayStateChangeables.botPlay)
-			{
-				boyfriend.playAnim('sing' + dataSuffix[note.noteData] + altAnim, true);
-			}
+				case 4:
+					gf.playAnim('sing' + dataSuffix[note.noteData], true);
+				case 3:
+					boyfriend.playAnim('dodge', true);
+				default:
+					boyfriend.playAnim('sing' + dataSuffix[note.noteData] + altAnim, true);	
+			}	
 
 			#if FEATURE_LUAMODCHART
 			if (luaModchart != null)

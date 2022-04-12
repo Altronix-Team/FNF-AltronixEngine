@@ -5,32 +5,25 @@
   [
 	49, 176, 209
   ],
+  "flipX": true,
+  "scale": 6,
+  "antialiasing": false,
   "startingAnim": "firstDeath",
-  "graphicsize": "6",
   "animations": [
     {
       "name": "firstDeath",
       "prefix": "BF Dies pixel",
-      "offsets": [0, 0],
-	  "flipX": true
+      "offsets": [0, 0]
     },
     {
       "name": "deathLoop",
       "prefix": "Retry Loop",
-      "offsets": [0,  0],
-	  "flipX": true
-    },
-    {
-      "name": "singUP",
-      "prefix": "BF Dies pixel",
-      "offsets": [0, 0],
-	  "flipX": true
+      "offsets": [-30, -12]
     },
     {
       "name": "deathConfirm",
       "prefix": "RETRY CONFIRM",
-      "offsets": [0, 0],
-	  "flipX": true
+      "offsets": [-30, -12]
     }
   ]
 }

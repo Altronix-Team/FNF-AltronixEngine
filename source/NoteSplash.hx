@@ -31,6 +31,7 @@ import flixel.animation.FlxAnimation;
 
 import openfl.utils.AssetManifest;
 import openfl.utils.AssetLibrary;
+import openfl.utils.Assets as OpenFlAssets;
 
 #if cpp
 import Sys;
@@ -42,22 +43,43 @@ using StringTools;
 
 class NoteSplash extends FlxSprite
 {
-	
+	var curNoteskinSprite:String;
 
     override public function new()
     {
+		curNoteskinSprite = NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin);
+
     	super();
-    	frames = (Paths.getSparrowAtlas("noteskins/noteSplashes"));
-    	//impact 1
-		animation.addByPrefix("note1-0", "note splash blue 1", 24, false);
-		animation.addByPrefix("note2-0", "note splash green 1", 24, false);
-		animation.addByPrefix("note0-0", "note splash purple 1", 24, false);
-		animation.addByPrefix("note3-0", "note splash red 1", 24, false);
-    	//impact 2
-		animation.addByPrefix("note1-1", "note splash blue 2", 24, false);
-		animation.addByPrefix("note2-1", "note splash green 2", 24, false);
-		animation.addByPrefix("note0-1", "note splash purple 2", 24, false);
-		animation.addByPrefix("note3-1", "note splash red 2", 24, false);
+
+		if (OpenFlAssets.exists(Paths.image('notesplashes/$curNoteskinSprite')))
+		{
+			frames = (Paths.getSparrowAtlas('notesplashes/$curNoteskinSprite'));
+			// impact 1
+			animation.addByPrefix("note1-0", "note splash blue 1", 24, false);
+			animation.addByPrefix("note2-0", "note splash green 1", 24, false);
+			animation.addByPrefix("note0-0", "note splash purple 1", 24, false);
+			animation.addByPrefix("note3-0", "note splash red 1", 24, false);
+			// impact 2
+			animation.addByPrefix("note1-1", "note splash blue 2", 24, false);
+			animation.addByPrefix("note2-1", "note splash green 2", 24, false);
+			animation.addByPrefix("note0-1", "note splash purple 2", 24, false);
+			animation.addByPrefix("note3-1", "note splash red 2", 24, false);
+		}
+		else
+		{
+			frames = (Paths.getSparrowAtlas("notesplashes/default"));
+			// impact 1
+			animation.addByPrefix("note1-0", "note splash blue 1", 24, false);
+			animation.addByPrefix("note2-0", "note splash green 1", 24, false);
+			animation.addByPrefix("note0-0", "note splash purple 1", 24, false);
+			animation.addByPrefix("note3-0", "note splash red 1", 24, false);
+			// impact 2
+			animation.addByPrefix("note1-1", "note splash blue 2", 24, false);
+			animation.addByPrefix("note2-1", "note splash green 2", 24, false);
+			animation.addByPrefix("note0-1", "note splash purple 2", 24, false);
+			animation.addByPrefix("note3-1", "note splash red 2", 24, false);
+		}
+		
     }
 
     public function setupNoteSplash(xPos:Float, yPos:Float, note:Int)
@@ -69,9 +91,10 @@ class NoteSplash extends FlxSprite
     	x = xPos;
     	y = yPos;
     	alpha = 0.6;
-    	animation.play("note" + note + "-" + FlxG.random.int(0, 1), true);
+		animation.play("note" + note + "-" + FlxG.random.int(0, 1), true);
     	updateHitbox();
     	offset.set(0.3 * width, 0.3 * height);
+		animation.curAnim.frameRate = 24 + FlxG.random.int(-2, 2);
     }
 
     override public function update(elapsed:Float)

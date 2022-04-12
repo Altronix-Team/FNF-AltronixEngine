@@ -178,6 +178,7 @@ class OptionsMenu extends FlxSubState
 					new RightKeybind("The right note's keybind"), new PauseKeybind("The keybind used to pause the game"),
 					new ResetBind("The keybind used to die instantly"), new MuteBind("The keybind used to mute game audio"),
 					new VolUpBind("The keybind used to turn the volume up"), new VolDownBind("The keybind used to turn the volume down"),
+					new AttackKeybind("The keybind used to attack enemies"),
 					new FullscreenBind("The keybind used to fullscreen the game")], true),
 				new OptionCata(-1, 125, "Editing Judgements", [
 					new SickMSOption("How many milliseconds are in the SICK hit window"),
@@ -244,6 +245,7 @@ class OptionsMenu extends FlxSubState
 					new RightKeybind("Бинд стрелки вправо"), new PauseKeybind("Бинд кнопки паузы"),
 					new ResetBind("Бинд кнопки мгновенной смерти"), new MuteBind("Бинд кнопки заглушения звуков"),
 					new VolUpBind("Бинд кнопки повышения громкости"), new VolDownBind("Бинд кнопки понижения гроскости"),
+					new AttackKeybind("Бинд атаки"),
 					new FullscreenBind("Бинд кнопки для разворачивания игры в полный экран")], true),
 				new OptionCata(-1, 125, "Редактирование оценок", [
 					new SickMSOption("Как много миллисекунд вы можете получить оценку SICK"),

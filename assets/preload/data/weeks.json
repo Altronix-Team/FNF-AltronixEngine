@@ -1,15 +1,12 @@
 {
-	"weekData": 
+	"weekDataFromJson": 
 	[
-		["tutorial"],
-		["rainglint", "second"],
-		["roses", "madness", "screenplay", "ballistic"]
+		["tutorial"]
 	],
-	"weekCharacters": 
+	"weekCharactersFromJson": 
 	[
-		["", "bf", "gf"],
-		["bassmachine", "bf", "gf"],
-		["bassmachine", "bf", "gf"]
+		["", "bf", "gf"]
 	],
-	"weekNames": ["Tutorial", "The Multiverse Traveler", "The Multiverse"]
+	"weekNamesFromJson": ["Tutorial"],
+	"weekImagesFromJson": ["Tutorial"]
 }

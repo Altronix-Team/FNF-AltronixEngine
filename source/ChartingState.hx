@@ -225,6 +225,7 @@ class ChartingState extends MusicBeatState
 				player2: 'dad',
 				gfVersion: 'gf',
 				noteStyle: 'normal',
+				hideGF: false,
 				stage: 'stage',
 				speed: 1,
 				validScore: false
@@ -1000,6 +1001,11 @@ class ChartingState extends MusicBeatState
 			saveLevel();
 		});
 
+		var saveEventButton:FlxButton = new FlxButton(110, 38, "Save Events", function()
+		{
+			saveEvents();
+		});
+
 		var reloadSong:FlxButton = new FlxButton(saveButton.x + saveButton.width + 10, saveButton.y, "Reload Audio", function()
 		{
 			loadSong(_song.songId, true);
@@ -1121,6 +1127,12 @@ class ChartingState extends MusicBeatState
 
 		var noteStyleLabel = new FlxText(10, 280, 64, 'Note Skin');
 
+		var hideGF = new FlxUICheckBox(200, 280, null, null, "Hide GF", 100);
+		hideGF.checked = _song.hideGF;
+		hideGF.callback = function()
+		{
+			_song.hideGF = hideGF.checked;
+		};
 		var hitsounds = new FlxUICheckBox(restart.x, restart.y + 30, null, null, "Play hitsounds", 100);
 		hitsounds.checked = false;
 		hitsounds.callback = function()
@@ -1156,6 +1168,7 @@ class ChartingState extends MusicBeatState
 		tab_group_song.add(check_voices);
 		// tab_group_song.add(check_mute_inst);
 		tab_group_song.add(saveButton);
+		tab_group_song.add(saveEventButton);
 		tab_group_song.add(reloadSong);
 		tab_group_song.add(reloadSongJson);
 		tab_group_song.add(loadAutosaveBtn);
@@ -1189,6 +1202,7 @@ class ChartingState extends MusicBeatState
 		tab_group_assets.add(player2DropDown);
 		tab_group_assets.add(player1Label);
 		tab_group_assets.add(player2Label);
+		tab_group_assets.add(hideGF);
 
 		UI_box.addGroup(tab_group_song);
 		UI_box.addGroup(tab_group_assets);
@@ -1366,6 +1380,7 @@ class ChartingState extends MusicBeatState
 	public var check_naltAnim:FlxUICheckBox;
 	public var bulletnote:FlxUICheckBox;
 	public var hurtnote:FlxUICheckBox;
+	public var gfnote:FlxUICheckBox;
 
 	function addNoteUI():Void
 	{
@@ -1417,6 +1432,25 @@ class ChartingState extends MusicBeatState
 			}
 		}
 
+		gfnote = new FlxUICheckBox(10, 220, null, null, "GF sing Note", 100);
+		gfnote.callback = function()
+		{
+			if (curSelectedNote != null)
+			{
+				for (i in selectedBoxes)
+				{
+					i.connectedNoteData[5] = 4;
+
+					for (ii in _song.notes)
+					{
+						for (n in ii.sectionNotes)
+							if (n[0] == i.connectedNoteData[0] && n[1] == i.connectedNoteData[1])
+								n[5] = i.connectedNoteData[5];
+					}
+				}
+			}
+		}
+
 		check_naltAnim = new FlxUICheckBox(10, 150, null, null, "Toggle Alternative Animation", 100);
 		check_naltAnim.callback = function()
 		{
@@ -1445,6 +1479,7 @@ class ChartingState extends MusicBeatState
 		tab_group_note.add(applyLength);
 		tab_group_note.add(check_naltAnim);
 		tab_group_note.add(hurtnote);
+		tab_group_note.add(gfnote);
 		tab_group_note.add(bulletnote);
 
 		UI_box.addGroup(tab_group_note);
@@ -3148,6 +3183,8 @@ class ChartingState extends MusicBeatState
 				curSelectedNote[5] = 2;
 			else if (bulletnote.checked)
 				curSelectedNote[5] = 3;	
+			else if (gfnote.checked)
+				curSelectedNote[5] = 4;
 			else
 				curSelectedNote[5] = 1;	
 		}
@@ -3515,15 +3552,20 @@ class ChartingState extends MusicBeatState
 		var noteData = Math.floor(FlxG.mouse.x / GRID_SIZE);
 		var noteSus = 0;
 
-		if (FlxG.keys.pressed.ALT || hurtnote.checked)
+		if (hurtnote.checked)
 		{
 			Debug.logTrace('kill note');
 			noteType = 2;
 		}
-		else if (FlxG.keys.pressed.K || bulletnote.checked)
+		else if (bulletnote.checked)
 		{
 			Debug.logTrace('hank note');
 			noteType = 3;
+		}
+		else if (gfnote.checked)
+		{
+			Debug.logTrace('gf note');
+			noteType = 4;
 		}
 		else
 		{
@@ -3531,7 +3573,7 @@ class ChartingState extends MusicBeatState
 			noteType = 1;
 		}
 
-		Debug.logTrace("adding note with " + strum + " from dummyArrow with data " + noteData + "with type" + noteType);
+		Debug.logTrace("adding note with " + strum + " from dummyArrow with data " + noteData + " with type " + noteType);
 
 		if (n != null)
 			section.sectionNotes.push([
@@ -3776,6 +3818,26 @@ class ChartingState extends MusicBeatState
 			}
 		});
 		FlxG.save.flush();
+	}
+
+	private function saveEvents()
+	{
+		var difficultyArray:Array<String> = ["-easy", "", "-hard", "-hard"];
+
+		var json = {
+			"eventObjects": _song.eventObjects
+		};
+
+		var data:String = Json.stringify(json, null, " ");
+
+		if ((data != null) && (data.length > 0))
+		{
+			_file = new FileReference();
+			_file.addEventListener(Event.COMPLETE, onSaveComplete);
+			_file.addEventListener(Event.CANCEL, onSaveCancel);
+			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+			_file.save(data.trim(), "events.json");
+		}
 	}
 
 	private function saveLevel()

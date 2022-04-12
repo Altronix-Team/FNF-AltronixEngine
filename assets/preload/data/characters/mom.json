@@ -6,7 +6,7 @@
 	216, 85, 142
   ],
   "startingAnim": "idle",
-  "graphicsize": "",
+  "camFollow": [0, 100],
   "animations": [
     {
       "name": "idle",
@@ -18,7 +18,8 @@
       "name": "idleLoop",
       "prefix": "Mom Idle",
       "offsets": [0, 0],
-      "frameIndices": [10, 11, 12, 13],
+      "frameIndices": [11, 12],
+      "frameRate": 12,
       "looped": true
     },
     {

@@ -6,26 +6,36 @@
 	165, 0, 77
   ],
   "startingAnim": "danceRight",
-  "graphicsize": "",
+  "isDancing": true,
+  "holdLength": 4.1,
+  "replacesGF": true,
   "animations": [
     {
       "name": "singLEFT",
       "prefix": "GF left note",
+	  "interrupt": false,
+	  "nextAnim": "danceRight",
       "offsets": [0, -19]
     },
     {
       "name": "singRIGHT",
       "prefix": "GF Right Note",
+	  "interrupt": false,
+	  "nextAnim": "danceRight",
       "offsets": [0,  -20]
     },
     {
       "name": "singUP",
       "prefix": "GF Up Note",
+	  "interrupt": false,
+	  "nextAnim": "danceRight",
       "offsets": [0, 4]
     },
     {
       "name": "singDOWN",
       "prefix": "GF Down Note",
+	  "interrupt": false,
+	  "nextAnim": "danceRight",
       "offsets": [0, -20]
     },
     {
@@ -48,6 +58,7 @@
     {
       "name": "hairBlow",
       "prefix": "GF Dancing Beat Hair blowing",
+      "interrupt": false,
       "offsets": [45, -8],
       "frameIndices": [0, 1, 2, 3],
       "looped": true
@@ -55,6 +66,9 @@
     {
       "name": "hairFall",
       "prefix": "GF Dancing Beat Hair Landing",
+      "nextAnim": "danceRight",
+      "interrupt": false,
+      "isDanced": true,
       "offsets": [0, -9],
       "frameIndices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     },

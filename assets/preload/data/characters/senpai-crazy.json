@@ -6,7 +6,7 @@
 	0, 0, 0
   ],
   "startingAnim": "idle",
-  "graphicsize": "6",
+  "scale": "6",
   "animations": [
     {
       "name": "idle",

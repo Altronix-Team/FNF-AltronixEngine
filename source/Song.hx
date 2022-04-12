@@ -48,6 +48,7 @@ typedef SongData =
 	var player1:String;
 	var player2:String;
 	var gfVersion:String;
+	var ?hideGF:Bool;
 	var noteStyle:String;
 	var stage:String;
 	var ?validScore:Bool;
@@ -85,7 +86,13 @@ class Song
 		var rawJson = Paths.loadJSON('songs/$songFile');
 		var rawMetaJson = Paths.loadJSON('songs/$songId/_meta');
 
-		return parseJSONshit(songId, rawJson, rawMetaJson);
+		if (OpenFlAssets.exists(Paths.json('songs/$songId/events')))
+		{
+			var rawEvents = Paths.loadJSON('songs/$songId/events');
+			return parseJSONshit(songId, rawJson, rawMetaJson, rawEvents);
+		}	
+		else
+			return parseJSONshit(songId, rawJson, rawMetaJson);		
 	}
 
 	public static function conversionChecks(song:SongData):SongData
@@ -116,6 +123,9 @@ class Song
 
 		if (song.gfVersion == null)
 			song.gfVersion = "gf";
+
+		if (song.hideGF == null)
+			song.hideGF = false;
 
 		TimingStruct.clearTimings();
 
@@ -187,7 +197,7 @@ class Song
 		return song;
 	}
 
-	public static function parseJSONshit(songId:String, jsonData:Dynamic, jsonMetaData:Dynamic):SongData
+	public static function parseJSONshit(songId:String, jsonData:Dynamic, jsonMetaData:Dynamic, ?jsonEvents:Dynamic):SongData
 	{
 		var songData:SongData = cast jsonData.song;
 
@@ -210,6 +220,12 @@ class Song
 
 		songData.offset = songMetaData.offset != null ? songMetaData.offset : 0;
 
+		if (jsonEvents != null)
+		{
+			var events = cast jsonEvents;
+
+			songData.eventObjects = events.eventObjects;
+		}
 		return Song.conversionChecks(songData);
 	}
 }

@@ -2549,7 +2549,6 @@ class PlayState extends MusicBeatState
 					Debug.logTrace("we're fuckin ending the song ");
 
 					endingSong = true;
-					luaModchart.executeState('onSongEnd', [PlayState.SONG.songId]);
 					new FlxTimer().start(2, function(timer)
 						{
 							endSong();

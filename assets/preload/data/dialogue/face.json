@@ -3,6 +3,8 @@
 	"startingAnim": "idle",
 	"pixelZoom": true,
 	"isDad": true,
+	"portraitX": 310,
+	"portraitY": -160,
 	"animations": 
 	[
 		{

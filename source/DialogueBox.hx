@@ -234,6 +234,8 @@ class DialogueBox extends FlxSpriteGroup
 				portraitRight.visible = false;
 				swagDialogue.alpha -= 1 / 5;
 				dropText.alpha = swagDialogue.alpha;
+				if (PlayState.SONG.songId.toLowerCase() != 'roses')
+					sound.stop();
 			}, 5);
 
 			new FlxTimer().start(1.2, function(tmr:FlxTimer)
@@ -262,6 +264,8 @@ class DialogueBox extends FlxSpriteGroup
 						portraitRight.visible = false;
 						swagDialogue.alpha -= 1 / 5;
 						dropText.alpha = swagDialogue.alpha;
+						if (PlayState.SONG.songId.toLowerCase() != 'roses')
+							sound.stop();
 					}, 5);
 
 					new FlxTimer().start(1.2, function(tmr:FlxTimer)
@@ -282,6 +286,7 @@ class DialogueBox extends FlxSpriteGroup
 	}
 
 	var isEnding:Bool = false;
+	var oldCharacter:String;
 
 	function startDialogue():Void
 	{
@@ -294,7 +299,13 @@ class DialogueBox extends FlxSpriteGroup
 		swagDialogue.resetText(dialogueList[0]);
 		swagDialogue.start(0.04, true);
 
-		parseDataFile();
+		if (curCharacter != oldCharacter)
+		{
+			parseDataFile();
+			oldCharacter = curCharacter;
+		}
+		else
+			return;
 		
 	}
 
@@ -328,6 +339,12 @@ class DialogueBox extends FlxSpriteGroup
 			portraitLeft.updateHitbox();
 			portraitLeft.scrollFactor.set();
 
+			if (data.portraitX != null)
+				portraitLeft.x += data.portraitX;
+
+			if (data.portraitY != null)
+				portraitLeft.y += data.portraitY;
+
 			add(portraitLeft);
 			portraitLeft.visible = false;
 
@@ -352,6 +369,12 @@ class DialogueBox extends FlxSpriteGroup
 
 			portraitRight.updateHitbox();
 			portraitRight.scrollFactor.set();
+
+			if (data.portraitX != null)
+				portraitRight.x += data.portraitX;
+
+			if (data.portraitY != null)
+				portraitRight.y += data.portraitY;
 
 			add(portraitRight);
 
@@ -380,6 +403,8 @@ typedef DialogueCharacter =
 	var animations:Array<DialogueAnimArray>;
 	var startingAnim:String;
 	var pixelZoom:Bool;
+	var ?portraitX:Int;
+	var ?portraitY:Int;
 }
 
 typedef DialogueAnimArray =

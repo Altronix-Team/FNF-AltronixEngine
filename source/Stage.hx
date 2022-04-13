@@ -737,7 +737,7 @@ class Stage extends MusicBeatState
 	// Variables and Functions for Stages
 	var lightningStrikeBeat:Int = 0;
 	var lightningOffset:Int = 8;
-	var curLight:Int = 0;
+	public var curLight:Int = 0;
 
 
 	var tankAngle:Float = FlxG.random.int(-90, 45);

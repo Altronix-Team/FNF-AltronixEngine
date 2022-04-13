@@ -1157,12 +1157,6 @@ class PlayState extends MusicBeatState
 					schoolIntro(doof);
 				case 'thorns':
 					schoolIntro(doof);
-				case 'madness':
-					schoolIntro(doof);
-				case 'ballistic':
-					schoolIntro(doof);
-				case 'screenplay':
-					schoolIntro(doof);
 				default:
 					new FlxTimer().start(1, function(timer)
 					{
@@ -1763,7 +1757,7 @@ class PlayState extends MusicBeatState
 		// Song check real quick
 		switch (curSong)
 		{
-			case 'Bopeebo' | 'Philly Nice' | 'Blammed' | 'Cocoa' | 'Eggnog':
+			case 'bopeebo' | 'philly nice' | 'blammed' | 'cocoa' | 'eggnog':
 				allowedToCheer = true;
 			default:
 				allowedToCheer = false;
@@ -2465,6 +2459,8 @@ class PlayState extends MusicBeatState
 
 	var currentLuaIndex = 0;
 
+	var blammedeventplayed:Bool = false;
+
 	override public function update(elapsed:Float)
 	{
 		#if !debug
@@ -3160,7 +3156,7 @@ class PlayState extends MusicBeatState
 					// Per song treatment since some songs will only have the 'Hey' at certain times
 					switch (curSong)
 					{
-						case 'Philly Nice':
+						case 'philly nice':
 							{
 								// General duration of the song
 								if (curBeat < 250)
@@ -3182,7 +3178,7 @@ class PlayState extends MusicBeatState
 									}
 								}
 							}
-						case 'Bopeebo':
+						case 'bopeebo':
 							{
 								// Where it starts || where it ends
 								if (curBeat > 5 && curBeat < 130)
@@ -3199,7 +3195,7 @@ class PlayState extends MusicBeatState
 										triggeredAlready = false;
 								}
 							}
-						case 'Blammed':
+						case 'blammed':
 							{
 								if (curBeat > 30 && curBeat < 190)
 								{
@@ -3217,8 +3213,29 @@ class PlayState extends MusicBeatState
 											triggeredAlready = false;
 									}
 								}
+								if ((curBeat == 128 || curBeat > 128) && curBeat < 192 && !blammedeventplayed)
+									{
+										switch (Stage.curLight)
+										{
+											case 4:
+												songOverlay("251, 166, 51, 250");
+											case 3:
+												songOverlay("253, 69, 49, 250");
+											case 2:
+												songOverlay("251, 51, 245, 250");
+											case 1:
+												songOverlay("49, 253, 140, 250");
+											case 0:
+												songOverlay("49, 162, 253, 250");
+										}
+									}
+								else if (curBeat > 192 && !blammedeventplayed)
+								{
+									songOverlay('delete');
+									blammedeventplayed = true;
+								}
 							}
-						case 'Cocoa':
+						case 'cocoa':
 							{
 								if (curBeat < 170)
 								{
@@ -3237,7 +3254,7 @@ class PlayState extends MusicBeatState
 									}
 								}
 							}
-						case 'Eggnog':
+						case 'eggnog':
 							{
 								if (curBeat > 10 && curBeat != 111 && curBeat < 220)
 								{
@@ -4106,7 +4123,7 @@ class PlayState extends MusicBeatState
 					FlxTransitionableState.skipNextTransOut = true;
 					prevCamFollow = camFollow;
 
-					PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0], diff);
+					PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase(), diff);
 					FlxG.sound.music.stop();
 
 					LoadingState.loadAndSwitchState(new PlayState());

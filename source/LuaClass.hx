@@ -1460,7 +1460,7 @@ class LuaSprite extends LuaClass
 
 	public var sprite:FlxSprite;
 
-	public static var ListOfSprites:Array<LuaSprite> = [];
+	public static var listOfSprites:Array<LuaSprite> = [];
 
 	public function new(connectedSprite:FlxSprite, name:String)
 	{
@@ -1590,10 +1590,9 @@ class LuaSprite extends LuaClass
 				},
 				setter: SetNumProperty
 			}
-
 		];
 
-		ListOfSprites.push(this);
+		listOfSprites.push(this);
 	}
 
 	private static function findNote(time:Float, data:Int)
@@ -1623,7 +1622,7 @@ class LuaSprite extends LuaClass
 
 		var sprite:FlxSprite = null;
 
-		for (i in ListOfSprites)
+		for (i in listOfSprites)
 		{
 			if (i.className == index)
 				sprite = i.sprite;
@@ -1653,7 +1652,7 @@ class LuaSprite extends LuaClass
 
 		var sprite:FlxSprite = null;
 
-		for (i in ListOfSprites)
+		for (i in listOfSprites)
 		{
 			if (i.className == index)
 				sprite = i.sprite;
@@ -1683,7 +1682,7 @@ class LuaSprite extends LuaClass
 
 		var sprite:FlxSprite = null;
 
-		for (i in ListOfSprites)
+		for (i in listOfSprites)
 		{
 			if (i.className == index)
 				sprite = i.sprite;
@@ -1709,7 +1708,7 @@ class LuaSprite extends LuaClass
 
 		var sprite:FlxSprite = null;
 
-		for (i in ListOfSprites)
+		for (i in listOfSprites)
 		{
 			if (i.className == index)
 				sprite = i.sprite;

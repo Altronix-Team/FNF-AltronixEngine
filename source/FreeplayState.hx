@@ -461,7 +461,6 @@ class FreeplayState extends MusicBeatState
 			{
 				destroyFreeplayVocals();
 				FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
-
 				FlxG.sound.music.fadeIn(4, 0, 0.7);
 				songListen = false;
 			}
@@ -631,9 +630,9 @@ class FreeplayState extends MusicBeatState
 			LoadingState.loadAndSwitchState(new ChartingState(reloadSong));
 		}
 		else
-			{
+		{
 			LoadingState.loadAndSwitchState(new PlayState());
-			}
+		}
 	}
 
 	function changeDiff(change:Int = 0)
@@ -801,12 +800,12 @@ class FreeplayState extends MusicBeatState
 	}
 
 	override function onWindowFocusOut():Void
-		{
-			FlxG.sound.music.pause();
-			if (songListen)
-				vocals.pause();
-		}
-	
+	{
+		FlxG.sound.music.pause();
+		if (songListen)
+			vocals.pause();
+	}
+
 	override function onWindowFocusIn():Void
 	{
 		Debug.logTrace("IM BACK!!!");

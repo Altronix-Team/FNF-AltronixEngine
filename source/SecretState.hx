@@ -69,6 +69,13 @@ class SecretState extends MusicBeatState
 			else
 				DiscordClient.changePresence("В секретном меню 'Танкмена'", null);
 		}
+		else if (MainMenuState.extra == 3)
+		{
+			if (!FlxG.save.data.language)
+				DiscordClient.changePresence("In Debug Secret Menu", null);
+			else
+				DiscordClient.changePresence("В секретном меню отладки", null);
+		}	
 		#end
 
 		var isDebug:Bool = false;
@@ -82,6 +89,16 @@ class SecretState extends MusicBeatState
 			bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 			add(bg);
 		}
+		else if (MainMenuState.extra == 3)
+		{
+			addWeek(['test'], 1, ['senpai']);
+			bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+			add(bg);
+			var debugText = new FlxText(0, 600, 0, "This is something shit, which you don't want to see", 24);
+			debugText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
+			add(debugText);
+
+		}	
 		// LOAD MUSIC
 
 		// LOAD CHARACTERS
@@ -306,7 +323,7 @@ class SecretState extends MusicBeatState
 			else
 			{
 				destroyExtrasVocals();
-				FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
+				FlxG.sound.playMusic(Paths.music('south'), 0);
 
 				FlxG.sound.music.fadeIn(4, 0, 0.7);
 				songListen = false;
@@ -496,20 +513,20 @@ class SecretState extends MusicBeatState
 	}
 
 	override function onWindowFocusOut():Void
-		{
-			FlxG.sound.music.pause();
-			if (songListen)
-				vocals.pause();
-		}
-	
-		override function onWindowFocusIn():Void
-		{
-			Debug.logTrace("IM BACK!!!");
-			(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
-			FlxG.sound.music.resume();
-			if (songListen)
-				vocals.resume();
-		}
+	{
+		FlxG.sound.music.pause();
+		if (songListen)
+			vocals.pause();
+	}
+
+	override function onWindowFocusIn():Void
+	{
+		Debug.logTrace("IM BACK!!!");
+		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
+		FlxG.sound.music.resume();
+		if (songListen)
+			vocals.resume();
+	}
 }
 
 class SongMetadata4

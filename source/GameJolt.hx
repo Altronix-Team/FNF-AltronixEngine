@@ -134,13 +134,14 @@ class GameJoltAPI // Connects to tentools.api.FlxGameJolt
 	 */
 	public static function connect()
 	{
+		leaderboardToggle = FlxG.save.data.lbToggle;
 		trace("Grabbing API keys...");
 		GJApi.init(Std.int(GJKeys.id), Std.string(GJKeys.key), function(data:Bool)
 		{
-			#if debug
-			Main.gjToastManager.createToast(GameJoltInfo.imagePath, "Game " + (data ? "authenticated!" : "not authenticated..."),
-				(!data ? "If you are a developer, check GJKeys.hx\nMake sure the id and key are formatted correctly!" : "Yay!"), false);
-			#end
+			//#if debug
+			//Main.gjToastManager.createToast(GameJoltInfo.imagePath, "Game " + (data ? "authenticated!" : "not authenticated..."),
+				//(!data ? "If you are a developer, check GJKeys.hx\nMake sure the id and key are formatted correctly!" : "Yay!"), false);
+			//#end
 		});
 	}
 
@@ -153,7 +154,7 @@ class GameJoltAPI // Connects to tentools.api.FlxGameJolt
 	public static function authDaUser(in1, in2, ?loginArg:Bool = false)
 	{
 		if (!userLogin)
-		{
+		{	
 			GJApi.authUser(in1, in2, function(v:Bool)
 			{
 				trace("user: " + (in1 == "" ? "n/a" : in1));
@@ -170,8 +171,10 @@ class GameJoltAPI // Connects to tentools.api.FlxGameJolt
 						+ (GameJoltAPI.leaderboardToggle ? "Enabled" : "Disabled"),
 						false);
 					trace("User authenticated!");
+					FlxG.save.data.userLoged = true;
 					FlxG.save.data.gjUser = in1;
 					FlxG.save.data.gjToken = in2;
+					Debug.logTrace(FlxG.save.data.gjUser + '\n' + FlxG.save.data.gjToken);
 					FlxG.save.flush();
 					userLogin = true;
 					startSession();
@@ -230,7 +233,7 @@ class GameJoltAPI // Connects to tentools.api.FlxGameJolt
 				if (data.exists("message"))
 					bool = true;
 				Main.gjToastManager.createToast(GameJoltInfo.imagePath, "Unlocked a new trophy" + (bool ? "... again?" : "!"),
-					"Thank you for testing this out!\nCheck out Vs. King, it's cool", true);
+					"Thank you for testing this out!", true);
 			});
 		}
 	}

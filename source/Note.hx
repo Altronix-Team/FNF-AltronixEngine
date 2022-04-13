@@ -356,19 +356,45 @@ class Note extends FlxSprite
 								antialiasing = true;
 							}
 						default:
-							{							
-								frames = PlayState.noteskinSprite;
-								for (i in 0...4)
-								{
-									animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
-									animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
-									animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
-								}
+							{
+								if (PlayState.dad.curCharacter == 'riftmanifest')
+									{
+										frames = Paths.getSparrowAtlas('noteskins/manifestnote_assets');
 
-								setGraphicSize(Std.int(width * 0.7));
-								updateHitbox();
+										animation.addByPrefix('greenScroll', 'green0');
+										animation.addByPrefix('redScroll', 'red0');
+										animation.addByPrefix('blueScroll', 'blue0');
+										animation.addByPrefix('purpleScroll', 'purple0');
 
-								antialiasing = FlxG.save.data.antialiasing;		
+										animation.addByPrefix('purpleholdend', 'pruple end hold');
+										animation.addByPrefix('greenholdend', 'green hold end');
+										animation.addByPrefix('redholdend', 'red hold end');
+										animation.addByPrefix('blueholdend', 'blue hold end');
+
+										animation.addByPrefix('purplehold', 'purple hold piece');
+										animation.addByPrefix('greenhold', 'green hold piece');
+										animation.addByPrefix('redhold', 'red hold piece');
+										animation.addByPrefix('bluehold', 'blue hold piece');
+
+										setGraphicSize(Std.int(width * 0.7));
+										updateHitbox();
+										antialiasing = true;
+									}
+								else
+									{
+										frames = PlayState.noteskinSprite;
+										for (i in 0...4)
+										{
+											animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
+											animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
+											animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
+										}
+
+										setGraphicSize(Std.int(width * 0.7));
+										updateHitbox();
+
+										antialiasing = FlxG.save.data.antialiasing;
+									}
 							}
 					}
 					

@@ -74,10 +74,10 @@ class MainMenuState extends MusicBeatState
 	override function create()
 	{
 		if (!FlxG.save.data.firstLogin || FlxG.save.data.firstLogin == null)
-			{
-				GameJoltAPI.getTrophy(160503);
-				FlxG.save.data.firstLogin = true;
-			}
+		{
+			GameJoltAPI.getTrophy(160503);
+			FlxG.save.data.firstLogin = true;
+		}
 		FlxG.mouse.visible = true;
 		camGame = new FlxCamera();
 		inMain = true;
@@ -133,13 +133,20 @@ class MainMenuState extends MusicBeatState
 		var charlist:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/characterList'));
 		var rand = random.int(0, charlist.length);
 
-		dance = new Character(0, 0, charlist[rand]);
-		dance.screenCenter(XY);
-		dance.x = FlxG.width - (dance.width + 100);
-		dance.y = FlxG.height - dance.height;
-		dance.scrollFactor.set();
-		dance.dance();
-		add(dance);
+		/*if (charlist[rand] == 'spirit')
+			return;
+		else
+		{
+			dance = new Character(0, 0, charlist[rand]);
+			dance.screenCenter(XY);
+			dance.x = FlxG.width - (dance.width + 100);
+			//dance.y = FlxG.height - dance.height;
+			dance.scrollFactor.set();
+			dance.updateHitbox();
+			add(dance);
+		}	*/
+
+		//dance.dance();
 
 		menuItems = new FlxTypedGroup<FlxSprite>();
 		add(menuItems);
@@ -269,7 +276,16 @@ class MainMenuState extends MusicBeatState
 				Main.isHidden = true;
 				waitforpass = false;
 			}
-			else if ((passwordText != 'tankman')&& !inMain)
+			else if (passwordText == 'debug')
+			{
+				extra = 3;
+				FlxG.sound.music.stop();
+				goToState();
+				FlxG.sound.play(Paths.sound('ANGRY_TEXT_BOX', 'shared'));
+				Main.isHidden = true;
+				waitforpass = false;
+			}
+			else if ((passwordText != 'tankman' || passwordText != 'debug')&& !inMain)
 			{
 				FlxG.sound.play(Paths.soundRandom('missnote', 1, 3, 'shared'));
 			}
@@ -295,8 +311,6 @@ class MainMenuState extends MusicBeatState
 
 		if (!selectedSomethin)
 		{
-			dance.dance();
-
 			var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 
 			if (gamepad != null)

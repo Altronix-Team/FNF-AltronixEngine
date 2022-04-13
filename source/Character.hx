@@ -23,10 +23,15 @@ class Character extends FlxSprite
 	public var barColor:FlxColor;
 
 	public var holdTimer:Float = 0;
-	public var holdLength:Float;
 
-	public var healthColorArray:Array<Int> = [255, 0, 0];
+	public var replacesGF:Bool;
+	public var hasTrail:Bool;
 	public var isDancing:Bool;
+	public var holdLength:Float;
+	public var charPos:Array<Int>;
+	public var camPos:Array<Int>;
+	public var camFollow:Array<Int>;
+	public var healthColorArray:Array<Int> = [255, 0, 0];
 
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
@@ -40,13 +45,7 @@ class Character extends FlxSprite
 		curCharacter = character;
 		this.isPlayer = isPlayer;
 
-		var tex:FlxAtlasFrames;
-		antialiasing = FlxG.save.data.antialiasing;
-
 		parseDataFile();
-
-		if (curCharacter.startsWith('bf'))
-			dance();
 
 		if (isPlayer && frames != null)
 		{
@@ -76,11 +75,7 @@ class Character extends FlxSprite
 		Debug.logInfo('Generating character (${curCharacter}) from JSON data...');
 
 		// Load the data from JSON and cast it to a struct we can easily read.
-		var jsonData;
-		if (OpenFlAssets.exists(Paths.json('characters/${curCharacter}')))
-			jsonData = Paths.loadJSON('characters/${curCharacter}');
-		else
-			jsonData = Paths.loadJSON('modcharacters/${curCharacter}');
+		var	jsonData = Paths.loadJSON('characters/${curCharacter}');
 		if (jsonData == null)
 		{
 			Debug.logError('Failed to parse JSON data for character ${curCharacter}');
@@ -94,7 +89,7 @@ class Character extends FlxSprite
 			tex = Paths.getPackerAtlas(data.asset, 'shared');
 		else
 			tex = Paths.getSparrowAtlas(data.asset, 'shared');
-		
+
 		frames = tex;
 		if (frames != null)
 			for (anim in data.animations)
@@ -123,33 +118,30 @@ class Character extends FlxSprite
 					animNext[anim.name] = anim.nextAnim;
 			}
 
+		this.replacesGF = data.replacesGF == null ? false : data.replacesGF;
+		this.hasTrail = data.hasTrail == null ? false : data.hasTrail;
 		this.isDancing = data.isDancing == null ? false : data.isDancing;
+		this.charPos = data.charPos == null ? [0, 0] : data.charPos;
+		this.camPos = data.camPos == null ? [0, 0] : data.camPos;
+		this.camFollow = data.camFollow == null ? [0, 0] : data.camFollow;
 		this.holdLength = data.holdLength == null ? 4 : data.holdLength;
 
-		if (data.barColorJson != null && data.barColorJson.length > 2)
-			healthColorArray = data.barColorJson;
-		barColor = FlxColor.fromRGB(healthColorArray[0], healthColorArray[1], healthColorArray[2]);
+		flipX = data.flipX == null ? false : data.flipX;
 
-		if (data.graphicsize != null)
+		if (data.scale != null)
 		{
-			setGraphicSize(Std.int(width * Std.parseFloat(data.graphicsize)));
+			setGraphicSize(Std.int(width * data.scale));
 			updateHitbox();
 		}
 
 		antialiasing = data.antialiasing == null ? FlxG.save.data.antialiasing : data.antialiasing;
 
+		if (data.barColorJson != null && data.barColorJson.length > 2)
+			healthColorArray = data.barColorJson;
+
+		barColor = FlxColor.fromRGB(healthColorArray[0], healthColorArray[1], healthColorArray[2]);
+
 		playAnim(data.startingAnim);
-	}
-
-	public function loadOffsetFile(character:String, library:String = 'shared')
-	{
-		var offset:Array<String> = CoolUtil.coolTextFile(Paths.txt('images/characters/' + character + "Offsets", library));
-
-		for (i in 0...offset.length)
-		{
-			var data:Array<String> = offset[i].split(' ');
-			addOffset(data[0], Std.parseInt(data[1]), Std.parseInt(data[2]));
-		}
 	}
 
 	override function update(elapsed:Float)
@@ -277,22 +269,54 @@ typedef CharacterData =
 	var asset:String;
 	var startingAnim:String;
 
-	/**
-	 * The color of this character's health bar.
-	 */
-	var barColorJson:Array<Int>;
+	var ?charPos:Array<Int>;
+	var ?camPos:Array<Int>;
+	var ?camFollow:Array<Int>;
 	var ?holdLength:Float;
 
-	var graphicsize:String;
-	var ?antialiasing:Bool;
-	var ?usePackerAtlas:Bool;
+	var barColorJson:Array<Int>;
+
 	var animations:Array<AnimationData>;
+
+	/**
+	 * The scale of this character.
+	 * Pixel characters typically use 6.
+	 * @default 1
+	 */
+	var ?scale:Int;
+
+	var ?flipX:Bool;
+
+	/**
+	 * Whether this character has antialiasing.
+	 * @default true
+	 */
+	var ?antialiasing:Bool;
+
+	/**
+	 * Whether this character uses PackerAtlas.
+	 * @default false
+	 */
+	var ?usePackerAtlas:Bool;
+
 	/**
 	 * Whether this character uses a dancing idle instead of a regular idle.
-	 * (ex. gf, spooky)
+	 * (ex. gf, spooky)	
 	 * @default false
 	 */
 	var ?isDancing:Bool;
+
+	/**
+	 * Whether this character has a trail behind them.
+	 * @default false
+	 */
+	var ?hasTrail:Bool;
+
+	/**
+	 * Whether this character replaces gf if they are set as dad.
+	 * @default false
+	 */
+	var ?replacesGF:Bool;
 }
 
 typedef AnimationData =

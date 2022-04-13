@@ -53,8 +53,9 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
-		GameJoltAPI.getTrophy(160503);
+		#if !debug
 		populateSongData();
+		#end
 		DiscordClient.initialize();
 		// TODO: Refactor this to use OpenFlAssets.
 		#if FEATURE_FILESYSTEM
@@ -368,6 +369,7 @@ class TitleState extends MusicBeatState
 						+ (FlxG.save.data.lbToggle ? "Enabled" : "Disabled"),
 						false);
 				}
+
 				clean();
 		
 			});

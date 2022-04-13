@@ -130,7 +130,7 @@ class Note extends FlxSprite
 			{
 				case 4:
 					{
-						frames = Paths.getSparrowAtlas('noteskins/GF_Sing');
+						frames = Paths.getSparrowAtlas('specialnotes/GF_Sing');
 
 						animation.addByPrefix('greenScroll', 'green0');
 						animation.addByPrefix('redScroll', 'red0');
@@ -153,7 +153,7 @@ class Note extends FlxSprite
 					}
 				case 3:
 					{
-						frames = Paths.getSparrowAtlas('noteskins/Bullet_Note');
+						frames = Paths.getSparrowAtlas('specialnotes/Bullet_Note');
 
 						animation.addByPrefix('greenScroll', 'green0');
 						animation.addByPrefix('redScroll', 'red0');
@@ -166,7 +166,7 @@ class Note extends FlxSprite
 					}
 				case 2:
 					{
-						frames = Paths.getSparrowAtlas('noteskins/HURTNOTE_assets');
+						frames = Paths.getSparrowAtlas('specialnotes/HURTNOTE_assets');
 
 						animation.addByPrefix('greenScroll', 'green0');
 						animation.addByPrefix('redScroll', 'red0');
@@ -215,32 +215,9 @@ class Note extends FlxSprite
 				case 'pixel':
 					switch (noteType)
 					{
-						/*case 4:
-							{
-								frames = Paths.getSparrowAtlas('noteskins/GF_Sing');
-
-								animation.addByPrefix('greenScroll', 'green0');
-								animation.addByPrefix('redScroll', 'red0');
-								animation.addByPrefix('blueScroll', 'blue0');
-								animation.addByPrefix('purpleScroll', 'purple0');
-
-								animation.addByPrefix('purpleholdend', 'pruple end hold');
-								animation.addByPrefix('greenholdend', 'green hold end');
-								animation.addByPrefix('redholdend', 'red hold end');
-								animation.addByPrefix('blueholdend', 'blue hold end');
-
-								animation.addByPrefix('purplehold', 'purple hold piece');
-								animation.addByPrefix('greenhold', 'green hold piece');
-								animation.addByPrefix('redhold', 'red hold piece');
-								animation.addByPrefix('bluehold', 'blue hold piece');
-
-								setGraphicSize(Std.int(width * 0.7));
-								updateHitbox();
-								antialiasing = true;
-							}*/
 						case 3:
 							{
-								frames = Paths.getSparrowAtlas('noteskins/Bullet_Note');
+								frames = Paths.getSparrowAtlas('specialnotes/Bullet_Note');
 
 								animation.addByPrefix('greenScroll', 'green0');
 								animation.addByPrefix('redScroll', 'red0');
@@ -253,7 +230,7 @@ class Note extends FlxSprite
 							}
 						case 2:
 						{
-							frames = Paths.getSparrowAtlas('noteskins/HURTNOTE_assets');
+							frames = Paths.getSparrowAtlas('specialnotes/HURTNOTE_assets');
 
 							animation.addByPrefix('greenScroll', 'green0');
 							animation.addByPrefix('redScroll', 'red0');
@@ -295,32 +272,9 @@ class Note extends FlxSprite
 				default:
 					switch (noteType)
 					{
-						/*case 4:
-							{
-								frames = Paths.getSparrowAtlas('noteskins/GF_Sing');
-
-								animation.addByPrefix('greenScroll', 'green0');
-								animation.addByPrefix('redScroll', 'red0');
-								animation.addByPrefix('blueScroll', 'blue0');
-								animation.addByPrefix('purpleScroll', 'purple0');
-
-								animation.addByPrefix('purpleholdend', 'pruple end hold');
-								animation.addByPrefix('greenholdend', 'green hold end');
-								animation.addByPrefix('redholdend', 'red hold end');
-								animation.addByPrefix('blueholdend', 'blue hold end');
-
-								animation.addByPrefix('purplehold', 'purple hold piece');
-								animation.addByPrefix('greenhold', 'green hold piece');
-								animation.addByPrefix('redhold', 'red hold piece');
-								animation.addByPrefix('bluehold', 'blue hold piece');
-
-								setGraphicSize(Std.int(width * 0.7));
-								updateHitbox();
-								antialiasing = true;
-							}*/
 						case 3:
 							{
-								frames = Paths.getSparrowAtlas('noteskins/Bullet_Note');
+								frames = Paths.getSparrowAtlas('specialnotes/Bullet_Note');
 
 								animation.addByPrefix('greenScroll', 'green0');
 								animation.addByPrefix('redScroll', 'red0');
@@ -334,7 +288,7 @@ class Note extends FlxSprite
 							}
 						case 2:
 							{
-								frames = Paths.getSparrowAtlas('noteskins/HURTNOTE_assets');
+								frames = Paths.getSparrowAtlas('specialnotes/HURTNOTE_assets');
 
 								animation.addByPrefix('greenScroll', 'green0');
 								animation.addByPrefix('redScroll', 'red0');
@@ -357,44 +311,20 @@ class Note extends FlxSprite
 							}
 						default:
 							{
-								if (PlayState.dad.curCharacter == 'riftmanifest')
-									{
-										frames = Paths.getSparrowAtlas('noteskins/manifestnote_assets');
+								
+								frames = PlayState.noteskinSprite;
+								for (i in 0...4)
+								{
+									animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
+									animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
+									animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
+								}
 
-										animation.addByPrefix('greenScroll', 'green0');
-										animation.addByPrefix('redScroll', 'red0');
-										animation.addByPrefix('blueScroll', 'blue0');
-										animation.addByPrefix('purpleScroll', 'purple0');
+								setGraphicSize(Std.int(width * 0.7));
+								updateHitbox();
 
-										animation.addByPrefix('purpleholdend', 'pruple end hold');
-										animation.addByPrefix('greenholdend', 'green hold end');
-										animation.addByPrefix('redholdend', 'red hold end');
-										animation.addByPrefix('blueholdend', 'blue hold end');
-
-										animation.addByPrefix('purplehold', 'purple hold piece');
-										animation.addByPrefix('greenhold', 'green hold piece');
-										animation.addByPrefix('redhold', 'red hold piece');
-										animation.addByPrefix('bluehold', 'blue hold piece');
-
-										setGraphicSize(Std.int(width * 0.7));
-										updateHitbox();
-										antialiasing = true;
-									}
-								else
-									{
-										frames = PlayState.noteskinSprite;
-										for (i in 0...4)
-										{
-											animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
-											animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
-											animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
-										}
-
-										setGraphicSize(Std.int(width * 0.7));
-										updateHitbox();
-
-										antialiasing = FlxG.save.data.antialiasing;
-									}
+								antialiasing = FlxG.save.data.antialiasing;
+									
 							}
 					}
 					

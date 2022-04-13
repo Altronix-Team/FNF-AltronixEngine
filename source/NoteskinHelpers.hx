@@ -23,24 +23,20 @@ class NoteskinHelpers
 		var count:Int = 0;
 		for (i in FileSystem.readDirectory(FileSystem.absolutePath("assets/shared/images/noteskins")))
 		{
-			if (i.contains("HUDNOTEENEMY_assets") || i.contains("HURTNOTE_assets") || i.contains("manifestnote_assets")
-				|| i.contains("Bullet_Note") || i.contains("GF_Sing"))
+			
+			if (i.contains("-pixel"))
 				continue;
-			else
+			if (i.endsWith(".xml"))
 			{
-				if (i.contains("-pixel"))
-					continue;
-				if (i.endsWith(".xml"))
-				{
-					xmlData.push(sys.io.File.getContent(FileSystem.absolutePath("assets/shared/images/noteskins") + "/" + i));
-					continue;
-				}
-
-				if (!i.endsWith(".png"))
-					continue;
-				noteskinArray.push(i.replace(".png", ""));
-				Debug.logTrace(noteskinArray);
+				xmlData.push(sys.io.File.getContent(FileSystem.absolutePath("assets/shared/images/noteskins") + "/" + i));
+				continue;
 			}
+
+			if (!i.endsWith(".png"))
+				continue;
+			noteskinArray.push(i.replace(".png", ""));
+			Debug.logTrace(noteskinArray);
+			
 		}
 		#else
 		noteskinArray = ["Arrows", "Circles"];

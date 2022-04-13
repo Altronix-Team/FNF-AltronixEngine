@@ -2133,33 +2133,6 @@ class PlayState extends MusicBeatState
 						{
 							babyArrow.animation.add('dirCon' + j, [12 + j, 16 + j], 24, false);
 						}
-
-					case 'agoti':
-						babyArrow.frames = Paths.getSparrowAtlas('noteskins/NOTE_assets');
-
-						babyArrow.animation.addByPrefix('purple', 'purple');
-						babyArrow.animation.addByPrefix('blue', 'blue');
-						babyArrow.animation.addByPrefix('green', 'green');
-						babyArrow.animation.addByPrefix('red', 'red');
-
-						for (j in 0...4)
-						{
-							babyArrow.animation.addByPrefix('dirCon' + j, dataSuffix[j].toLowerCase() + ' confirm', 24, false);
-						}
-
-						var lowerDir:String = dataSuffix[i].toLowerCase();
-
-						babyArrow.animation.addByPrefix('static', 'arrow' + dataSuffix[i]);
-
-						babyArrow.animation.addByPrefix('pressed', dataSuffix[i].toLowerCase() + ' press', 24, false);
-
-						babyArrow.animation.addByPrefix('confirm', dataSuffix[i].toLowerCase() + ' confirm', 24, false);
-
-						babyArrow.x += Note.swagWidth * i;
-
-						babyArrow.antialiasing = FlxG.save.data.antialiasing;
-						babyArrow.setGraphicSize(Std.int(babyArrow.width * 0.7));
-
 					default:
 						babyArrow.frames = noteskinSprite;
 						Debug.logTrace(babyArrow.frames);

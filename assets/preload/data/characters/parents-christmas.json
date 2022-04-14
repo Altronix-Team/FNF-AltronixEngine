@@ -6,12 +6,11 @@
 	154, 0, 248
   ],
   "startingAnim": "idle",
-  "graphicsize": "",
   "animations": [
     {
       "name": "idle",
       "prefix": "Parent Christmas Idle",
-	  "nextAnim": "idleLoop",
+      "nextAnim": "idleLoop",
       "offsets": [0, 0]
     },
     {

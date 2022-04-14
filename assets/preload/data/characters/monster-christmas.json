@@ -6,7 +6,6 @@
 	243, 255, 110
   ],
   "startingAnim": "idle",
-  "graphicsize": "",
   "animations": [
     {
       "name": "idle",

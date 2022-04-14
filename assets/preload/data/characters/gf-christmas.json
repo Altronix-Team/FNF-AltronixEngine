@@ -5,6 +5,7 @@
   [
 	165, 0, 77
   ],
+  "startingAnim": "danceRight",
   "isDancing": true,
   "holdLength": 4.1,
   "replacesGF": true,

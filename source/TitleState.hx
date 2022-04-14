@@ -53,9 +53,6 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
-		#if !debug
-		populateSongData();
-		#end
 		DiscordClient.initialize();
 		// TODO: Refactor this to use OpenFlAssets.
 		#if FEATURE_FILESYSTEM
@@ -129,55 +126,6 @@ class TitleState extends MusicBeatState
 		startIntro();
 		#end
 		#end
-	}
-
-	public static function populateSongData()
-	{
-		var shit = Paths.listSongsToCache();
-
-		for (i in 0...shit.length)
-		{
-			var data:Array<String> = shit[i].split('\n');
-			var songId = data[0];
-
-			var diffs = [];
-			var diffsThatExist = [];
-			#if FEATURE_FILESYSTEM
-			if (Paths.doesTextAssetExist(Paths.json('songs/$songId/$songId-hard')))
-				diffsThatExist.push("Hard");
-			if (Paths.doesTextAssetExist(Paths.json('songs/$songId/$songId-easy')))
-				diffsThatExist.push("Easy");
-			if (Paths.doesTextAssetExist(Paths.json('songs/$songId/$songId')))
-				diffsThatExist.push("Normal");
-			if (Paths.doesTextAssetExist(Paths.json('songs/$songId/$songId-hard')))
-				diffsThatExist.push("Hard P");
-			#else
-			diffsThatExist = ["Easy", "Normal", "Hard", "Hard P"];
-			#end
-
-			if (diffsThatExist.contains("Easy"))
-				FreeplayState.loadDiff(0, songId, diffs);
-			if (diffsThatExist.contains("Normal"))
-				FreeplayState.loadDiff(1, songId, diffs);
-			if (diffsThatExist.contains("Hard"))
-				FreeplayState.loadDiff(2, songId, diffs);
-			if (diffsThatExist.contains("Hard P"))
-				FreeplayState.loadDiff(3, songId, diffs);
-
-
-			if (diffsThatExist.length != 3)
-				trace("I ONLY FOUND " + diffsThatExist);
-
-			#if FEATURE_FILESYSTEM
-			sys.thread.Thread.create(() ->
-			{
-				FlxG.sound.cache(Paths.inst(songId));
-			});
-			#else
-			FlxG.sound.cache(Paths.inst(songId));
-			#end
-			songCached = true;
-		}
 	}
 
 	var logoBl:FlxSprite;

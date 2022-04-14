@@ -75,7 +75,16 @@ class Character extends FlxSprite
 		Debug.logInfo('Generating character (${curCharacter}) from JSON data...');
 
 		// Load the data from JSON and cast it to a struct we can easily read.
-		var	jsonData = Paths.loadJSON('characters/${curCharacter}');
+		var jsonData;
+		if (OpenFlAssets.exists(Paths.json('characters/${curCharacter}')))
+		{
+			jsonData = Paths.loadJSON('characters/${curCharacter}');
+		}
+		else
+		{
+			Debug.logError('There is no character with this name!');
+			jsonData = Paths.loadJSON('characters/dad');
+		}
 		if (jsonData == null)
 		{
 			Debug.logError('Failed to parse JSON data for character ${curCharacter}');

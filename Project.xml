@@ -70,6 +70,10 @@
 		<library name="sm"    preload="true" />
 	</section>
 	
+	<library name="core"
+					 preload="true"
+					 embed="true" />
+	
 	<section if="NO_PRELOAD_ALL">
 		<library name="songs"    preload="false" />
 		<library name="shared"   preload="false" />
@@ -117,6 +121,19 @@
 		NOT USING A DIRECT THING TO THE ASSET!!!
 	-->
 	<assets path="assets/fonts" embed='true'/>
+	
+	<section if="embedAssets">
+		<!-- Exclude .md files to add documentation to the codebase without including them in builds. -->
+		<assets path="assets/core"
+						library="core"
+						embed="true" />
+	</section>
+	
+	<section unless="embedAssets">
+		<assets path="assets/core"
+						library="core"
+						embed="false" />
+	</section>
 	<!-- _______________________________ Libraries ______________________________ -->
 
 	<haxelib name="flixel" />
@@ -139,6 +156,7 @@
 	<haxelib name="systools" />
 	<ndll name="systools" haxelib="systools" />
 	<haxelib name="tentools" />
+	<haxelib name="haxe-strings" />
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
 
 	<!-- <haxelib name="markdown" /> -->

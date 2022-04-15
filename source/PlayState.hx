@@ -1396,45 +1396,53 @@ class PlayState extends MusicBeatState
 		}, 4);
 	}
 
+	var oldvalue:Dynamic;
+
 	function songOverlay(value:Dynamic):Void
 	{
-		if (value != 'delete')
+		if (oldvalue != value)
 		{
-			var valueArray:Array<Dynamic> = [value];
-			var split:Array<String> = [];
-			for (i in 0...valueArray.length)
+			if (value != 'delete')
 			{
-				split = valueArray[i].split(',');
+				var valueArray:Array<Dynamic> = [value];
+				var split:Array<String> = [];
+				for (i in 0...valueArray.length)
+				{
+					split = valueArray[i].split(',');
+				}
+				var red:Int = Std.parseInt(split[0].trim());
+				var green:Int = Std.parseInt(split[1].trim());
+				var blue:Int = Std.parseInt(split[2].trim());
+				var alpha:Int = Std.parseInt(split[3].trim());
+				Debug.logTrace(red + '\n' + green + '\n' + blue + '\n' + alpha);
+				overlayColor = FlxColor.fromRGB(red, green, blue, alpha);
+				Debug.logTrace(split);
+				
+				Debug.logTrace(overlayColor);
+				
+				colorTween = FlxTween.color(overlay, 1, overlay.color, overlayColor, {
+					onComplete: function(twn:FlxTween)
+					{
+						Debug.logTrace('changed overlay color');
+						colorTween = null;
+					}
+				});
 			}
-			var red:Int = Std.parseInt(split[0].trim());
-			var green:Int = Std.parseInt(split[1].trim());
-			var blue:Int = Std.parseInt(split[2].trim());
-			var alpha:Int = Std.parseInt(split[3].trim());
-			Debug.logTrace(red + '\n' + green + '\n' + blue + '\n' + alpha);
-			overlayColor = FlxColor.fromRGB(red, green, blue, alpha);
-			Debug.logTrace(split);
-			
-			Debug.logTrace(overlayColor);
-			
-			colorTween = FlxTween.color(overlay, 1, overlay.color, overlayColor, {
+			else
+			{
+				overlayColor = FlxColor.fromRGB(0, 0, 0, 0);
+				colorTween = FlxTween.color(overlay, 1, overlay.color, overlayColor, {
 				onComplete: function(twn:FlxTween)
 				{
-					Debug.logTrace('changed overlay color');
+					Debug.logTrace('make overlay invisible');
 					colorTween = null;
 				}
-			});
+				});
+			}
+			oldvalue = value;
 		}
 		else
-		{
-			overlayColor = FlxColor.fromRGB(0, 0, 0, 0);
-			colorTween = FlxTween.color(overlay, 1, overlay.color, overlayColor, {
-			onComplete: function(twn:FlxTween)
-			{
-				Debug.logTrace('make overlay invisible');
-				colorTween = null;
-			}
-			});
-		}
+			return;
 	}
 		
 

@@ -95,16 +95,28 @@ class Main extends Sprite
 		Debug.onInitProgram();
 
 		// Gotta run this before any assets get loaded.
-		ModCore.initialize();
+		#if FEATURE_FILESYSTEM
+		Debug.logTrace("App has access to file system. Begin mod check and precaching...");
+		if (ModCore.hasMods())
+		{
+			initialState = ModSplashState;
+		}
+		else
+		{
+			initialState = TitleState;
+		}
+		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
+		#else
+		Debug.logTrace("App has no access to file system. Starting game...");
+		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
+		#end
+		addChild(game);
 
 		#if !mobile
 		fpsCounter = new KadeEngineFPS(10, 3, 0xFFFFFF);
 		bitmapFPS = ImageOutline.renderImage(fpsCounter, 1, 0x000000, true);
 		bitmapFPS.smoothing = true;
-		#end
-
-		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
-		addChild(game);
+		#end	
 
 		#if !mobile
 		addChild(fpsCounter);

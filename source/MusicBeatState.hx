@@ -59,6 +59,7 @@ class MusicBeatState extends FlxUIState
 
 	override function create()
 	{
+		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
 		if (initSave)
 		{
 			if (FlxG.save.data.laneTransparency < 0)

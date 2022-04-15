@@ -1,0 +1,61 @@
+{
+  "name": "Boyfriend-Pixel- Angry",
+  "asset": "characters/bfPixelangry",
+  "barColorJson": 
+  [
+	49, 176, 209
+  ],
+  "flipX": true,
+  "scale": 6,
+  "camPos": [300, -100],
+  "camFollow": [-100, -100],
+  "antialiasing": false,
+  "startingAnim": "idle",
+  "animations": [
+     {
+      "name": "idle",
+      "prefix": "BF IDLE instance 1",
+      "offsets": [0, 0]
+    },
+    {
+      "name": "singUP",
+      "prefix": "BF UP NOTE instance 1",
+      "offsets": [0, 0]
+    },
+    {
+      "name": "singLEFT",
+      "prefix": "BF LEFT NOTE instance 1",
+      "offsets": [0, 0]
+    },
+    {
+      "name": "singRIGHT",
+      "prefix": "BF RIGHT NOTE instance 1",
+      "offsets": [0, 0]
+    },
+    {
+      "name": "singDOWN",
+      "prefix": "BF DOWN NOTE instance 1",
+      "offsets": [0, 0]
+    },
+    {
+      "name": "singUPmiss",
+      "prefix": "BF UP MISS instance 1",
+      "offsets": [0, 0]
+    },
+    {
+      "name": "singLEFTmiss",
+      "prefix": "BF LEFT MISS instance 1",
+      "offsets": [0, 0]
+    },
+    {
+      "name": "singRIGHTmiss",
+      "prefix": "BF RIGHT MISS instance 1",
+      "offsets": [0, 0]
+    },
+    {
+      "name": "singDOWNmiss",
+      "prefix": "BF DOWN MISS instance 1",
+      "offsets": [0, 0]
+    }
+  ]
+}

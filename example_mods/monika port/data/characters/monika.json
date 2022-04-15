@@ -1,0 +1,41 @@
+{
+  "name": "Monika",
+  "asset": "characters/monika",
+  "barColorJson": 
+  [
+	255, 184, 227
+  ],
+  "startingAnim": "idle",
+  "scale": 6,
+  "charPos": [200,300],
+  "camPos": [170,20],
+  "camFollow": [-300,-300],
+  "antialiasing": false,
+  "animations": [
+    {
+      "name": "idle",
+      "prefix": "Monika Idle instance 1",
+      "offsets": [0, 0]
+    },
+    {
+      "name": "singUP",
+      "prefix": "Monika UP NOTE instance 1",
+      "offsets": [-6, 50]
+    },
+    {
+      "name": "singLEFT",
+      "prefix": "Monika LEFT NOTE instance 1",
+      "offsets": [-10, 10]
+    },
+    {
+      "name": "singRIGHT",
+      "prefix": "Monika RIGHT NOTE instance 1",
+      "offsets": [0, 27]
+    },
+    {
+      "name": "singDOWN",
+      "prefix": "Monika DOWN NOTE instance 1",
+      "offsets": [0, -30]
+    }
+  ]
+}

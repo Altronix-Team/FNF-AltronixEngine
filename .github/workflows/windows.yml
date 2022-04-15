@@ -47,7 +47,8 @@ jobs:
           haxelib install actuate 
           haxelib git tentools https://github.com/TentaRJ/tentools.git
           haxelib git systools https://github.com/haya3218/systools
-          haxelib run lime rebuild systools windows
+          haxelib run lime rebuild systools windows\
+          haxelib install haxe-strings 7.0.2 
           haxelib list
           haxelib run lime build windows
           

@@ -78,16 +78,6 @@ class ModCore
 				Debug.logWarn('Failed to save mod configuration.');
 		}	
 
-	public static function initialize()
-	{
-		#if FEATURE_MODCORE
-		Debug.logInfo("Initializing ModCore...");
-		loadModsById(getModIds());
-		#else
-		Debug.logInfo("ModCore not initialized; not supported on this platform.");
-		#end
-	}
-
 	#if FEATURE_MODCORE
 	public static function loadModsById(ids:Array<String>)
 		{

@@ -40,6 +40,7 @@ install:
   - haxelib git tentools https://github.com/TentaRJ/tentools.git
   - haxelib git systools https://github.com/haya3218/systools
   - haxelib run lime rebuild systools windows
+  - haxelib install haxe-strings 7.0.2 
   #- haxelib git extension-webm https://github.com/KadeDev/extension-webm
   #- haxelib run lime rebuild extension-webm windows
   #why here's dublicate lmao

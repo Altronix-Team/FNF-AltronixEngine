@@ -8,12 +8,15 @@
   "startingAnim": "idle",
   "holdLength": 6.1,
   "camPos": [400, 0],
+  "antialiasing": true,
   "animations": [
     {
       "name": "idle",
       "prefix": "Dad idle dance",
       "nextAnim": "idleLoop",
-      "offsets": [0, 0]
+      "offsets": [0, 0],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "idleLoop",
@@ -26,22 +29,30 @@
     {
       "name": "singUP",
       "prefix": "Dad Sing Note UP",
-      "offsets": [-6, 50]
+      "offsets": [-6, 50],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "singLEFT",
       "prefix": "Dad Sing Note LEFT",
-      "offsets": [-10, 10]
+      "offsets": [-10, 10],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "singRIGHT",
       "prefix": "Dad Sing Note RIGHT",
-      "offsets": [0, 27]
+      "offsets": [0, 27],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "singDOWN",
       "prefix": "Dad Sing Note DOWN",
-      "offsets": [0, -30]
+      "offsets": [0, -30],
+	  "frameIndices": [],
+	  "frameRate": 24
     }
   ]
 }

@@ -134,7 +134,6 @@ class GameJoltAPI // Connects to tentools.api.FlxGameJolt
 	 */
 	public static function connect()
 	{
-		leaderboardToggle = FlxG.save.data.lbToggle;
 		trace("Grabbing API keys...");
 		GJApi.init(Std.int(GJKeys.id), Std.string(GJKeys.key), function(data:Bool)
 		{
@@ -275,7 +274,7 @@ class GameJoltAPI // Connects to tentools.api.FlxGameJolt
 	 */
 	public static function addScore(score:Int, tableID:Int, ?extraData:String)
 	{
-		if (GameJoltAPI.leaderboardToggle)
+		if (leaderboardToggle)
 		{
 			trace("Trying to add a score");
 			var formData:String = extraData.split(" ").join("%20");
@@ -447,10 +446,7 @@ class GameJoltLogin extends MusicBeatSubstate
 	// static var trophyCheck:Bool = false;
 	override function create()
 	{
-		if (FlxG.save.data.lbToggle != null)
-		{
-			GameJoltAPI.leaderboardToggle = FlxG.save.data.lbToggle;
-		}
+		GameJoltAPI.leaderboardToggle;
 
 		if (!login)
 		{

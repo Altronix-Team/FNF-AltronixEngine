@@ -16,7 +16,7 @@ import flixel.tweens.FlxTween;
 import LoadingState.LoadingsState;
 import openfl.utils.Assets as OpenFlAssets;
 #if desktop
-import Discord.DiscordClient;
+import DiscordClient;
 #end
 
 using StringTools;
@@ -62,14 +62,14 @@ class SecretState extends MusicBeatState
 
 		#if desktop
 		// Updating Discord Rich Presence
-		if (MainMenuState.extra == 2)
+		if (ExtrasPasswordState.extra == 2)
 		{
 			if (!FlxG.save.data.language)
 				DiscordClient.changePresence("In Tankman Secret Menu", null);
 			else
 				DiscordClient.changePresence("В секретном меню 'Танкмена'", null);
 		}
-		else if (MainMenuState.extra == 3)
+		else if (ExtrasPasswordState.extra == 3)
 		{
 			if (!FlxG.save.data.language)
 				DiscordClient.changePresence("In Debug Secret Menu", null);
@@ -83,13 +83,13 @@ class SecretState extends MusicBeatState
 		#if debug
 		isDebug = true;
 		#end
-		if (MainMenuState.extra == 2)
+		if (ExtrasPasswordState.extra == 2)
 		{
 			addWeek(['Ugh', 'Guns', 'Stress'], 1, ['tankman']);
 			bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 			add(bg);
 		}
-		else if (MainMenuState.extra == 3)
+		else if (ExtrasPasswordState.extra == 3)
 		{
 			addWeek(['test'], 1, ['senpai']);
 			bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));

@@ -15,35 +15,45 @@
     {
       "name": "idle",
       "prefix": "idle spirit_",
-      "offsets": [-220, -280]
+      "offsets": [-220, -280],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "singUP",
       "prefix": "up_",
 	  "interrupt": false,
 	  "nextAnim": "idle",
-      "offsets": [-220, -240]
+      "offsets": [-220, -240],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "singLEFT",
       "prefix": "left_",
 	  "interrupt": false,
 	  "nextAnim": "idle",
-      "offsets": [-200, -280]
+      "offsets": [-200, -280],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "singRIGHT",
       "prefix": "right_",
 	  "interrupt": false,
 	  "nextAnim": "idle",
-      "offsets": [-220, -280]
+      "offsets": [-220, -280],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "singDOWN",
       "prefix": "spirit down_",
 	  "interrupt": false,
 	  "nextAnim": "idle",
-      "offsets": [170, 110]
+      "offsets": [170, 110],
+	  "frameIndices": [],
+	  "frameRate": 24
     }
   ]
 }

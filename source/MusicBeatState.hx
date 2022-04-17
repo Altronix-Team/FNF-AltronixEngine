@@ -6,7 +6,7 @@ import flixel.text.FlxText;
 import lime.app.Application;
 import flixel.FlxBasic;
 #if desktop
-import Discord.DiscordClient;
+import DiscordClient;
 #end
 import flixel.util.FlxColor;
 import openfl.Lib;

@@ -46,6 +46,8 @@
 
 	<assets path="assets/videos" exclude="*.mp3" if="web"/>
 	<assets path="assets/videos" exclude="*.ogg" unless="web"/>
+	
+	<assets path="assets/preload/stages" rename="assets/stages" include="*lua" embed='false' />
 
 	<assets path="plugins/" rename='' if="windows"/>
 	<assets path="dlls/" rename='' if="windows"/>
@@ -225,6 +227,7 @@
   <haxedef name="FEATURE_FILESYSTEM" if="desktop" />
   <!-- Defines whether Lua Modcharts should be enabled. Only works on Windows. -->
   <haxedef name="FEATURE_LUAMODCHART" if="windows" />
+
   <!-- Defines whether WebM videos should be enabled. Currently only enabled on Windows. -->
   <haxedef name="FEATURE_WEBM" if="windows" />
   <!-- Defines whether StepMania files can be loaded. -->
@@ -234,5 +237,7 @@
 
   <!-- Defines whether the Mods menu will display before launching. -->
   <haxedef name="FEATURE_MODCORE" if="desktop" />
+  
+  <haxedef name="LUA_ALLOWED" if="desktop" />
 
 </project>

@@ -53,6 +53,8 @@ typedef SongData =
 	var stage:String;
 	var ?validScore:Bool;
 	var ?offset:Int;
+	var ?scaredbgdancers:Bool;
+	var ?showbgdancers:Bool;
 }
 
 typedef SongMeta =
@@ -126,6 +128,18 @@ class Song
 
 		if (song.hideGF == null)
 			song.hideGF = false;
+
+		if (song.showbgdancers == null)
+			{
+				if (song.songId != 'senpai' && song.songId != 'roses')
+					song.showbgdancers = false;
+				else
+				{
+					song.showbgdancers = true;
+					if (song.songId == 'roses')
+						song.scaredbgdancers = true;
+				}
+			}
 
 		TimingStruct.clearTimings();
 

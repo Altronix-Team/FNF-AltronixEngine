@@ -336,12 +336,14 @@ class ModchartState
 				songLowercase = 'milf';
 		}
 
-		var path = Sys.getCwd() + "assets/data/songs/" + PlayState.SONG.songId + '/';
+		var path = Sys.getCwd() + Paths.image(spritePath) + '/';
+
+		Debug.logTrace(path);
 
 		if (PlayState.isSM)
 			path = PlayState.pathToSm + "/";
 
-		var data:BitmapData = BitmapData.fromFile(path + spritePath + ".png");
+		var data:BitmapData = BitmapData.fromFile(path + ".png");
 
 		var sprite:FlxSprite = new FlxSprite(0, 0);
 		var imgWidth:Float = FlxG.width / data.width;

@@ -7,7 +7,7 @@ import flixel.FlxCamera;
 import flixel.math.FlxPoint;
 import flixel.FlxObject;
 #if desktop
-import Discord.DiscordClient;
+import DiscordClient;
 #end
 import flixel.addons.effects.FlxTrail;
 import flixel.group.FlxGroup.FlxTypedGroup;

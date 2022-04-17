@@ -212,7 +212,7 @@ class ResultsScreen extends FlxSubState
 			{
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 				Conductor.changeBPM(102);
-				FlxG.switchState(new MainMenuState());
+				FlxG.switchState(new StoryMenuState());
 			}
 			else if (PlayState.isExtras)
 			{

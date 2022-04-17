@@ -11,7 +11,9 @@
     {
       "name": "idle",
       "prefix": "Senpai Pre Explosion instance",
-      "offsets": [0, -19]
+      "offsets": [0, -19],
+	  "frameIndices": [],
+	  "frameRate": 24
     }
   ]
 }

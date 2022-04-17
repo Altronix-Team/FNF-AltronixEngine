@@ -39,6 +39,7 @@ class ModMenuState extends XMLLayoutState // extends MusicBeatState
 
 	override function create()
 	{
+		FlxG.mouse.visible = true;
 		super.create();
 		trace('Initialized ModMenuState.');
 
@@ -144,6 +145,7 @@ class ModMenuState extends XMLLayoutState // extends MusicBeatState
 
 	function loadMainGame()
 	{
+		FlxG.mouse.visible = false;
 		// Gotta load any configured mods.
 		ModCore.loadConfiguredMods();
 		#if FEATURE_FILESYSTEM

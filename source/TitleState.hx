@@ -27,11 +27,10 @@ import flixel.util.FlxTimer;
 import lime.app.Application;
 import openfl.Assets;
 import flixel.input.keyboard.FlxKey;
-import GameJolt.GameJoltLogin;
 import GameJolt.GameJoltAPI;
 
 #if desktop
-import Discord.DiscordClient;
+import DiscordClient;
 #end
 
 using StringTools;
@@ -53,7 +52,9 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
+		#if !debug
 		DiscordClient.initialize();
+		#end
 		// TODO: Refactor this to use OpenFlAssets.
 		#if FEATURE_FILESYSTEM
 		if (!sys.FileSystem.exists(Sys.getCwd() + "/assets/replays"))
@@ -301,25 +302,9 @@ class TitleState extends MusicBeatState
 
 			new FlxTimer().start(2, function(tmr:FlxTimer)
 			{
-				//FlxG.switchState(new MainMenuState());
-				if (!FlxG.save.data.userLoged)
-					FlxG.switchState(new GameJoltLogin());
-				else
-				{
+				
 					FlxG.switchState(new MainMenuState());
-					Main.gjToastManager.createToast(null, FlxG.save.data.gjUser
-						+ " signed in!",
-						"Time: "
-						+ Date.now()
-						+ "\nGame ID: "
-						+ GJKeys.id
-						+ "\nScore Submitting: "
-						+ (FlxG.save.data.lbToggle ? "Enabled" : "Disabled"),
-						false);
-				}
-
-				clean();
-		
+					clean();
 			});
 			// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
 		}

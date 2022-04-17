@@ -111,19 +111,35 @@ class DialogueBox extends FlxSpriteGroup
 				box.screenCenter(X);
 
 			default:
-				hasDialog = true;
-				box.frames = Paths.getSparrowAtlas('speech_bubble_talking');
-				box.animation.addByPrefix('normalOpen', 'Speech Bubble Normal Open', 24, false);
-				box.animation.addByPrefix('loudOpen', 'speech bubble loud open', 24, false);
-				box.animation.addByPrefix('loud', 'AHH speech bubble', 24, true);
-				box.animation.addByPrefix('normal', 'speech bubble normal0', 24, true);
-				box.animation.play('normalOpen');
-				box.setGraphicSize(Std.int(box.width * 0.9));
-				box.scrollFactor.set();
-				box.updateHitbox();
-				add(box);
-				box.y += 300;
-				box.screenCenter(X);
+				if (PlayState.SONG.noteStyle == 'pixel')
+					{
+						hasDialog = true;
+						box.frames = Paths.getSparrowAtlas('weeb/pixelUI/dialogueBox-pixel');
+						box.animation.addByPrefix('normalOpen', 'Text Box Appear', 24, false);
+						box.animation.addByIndices('normal', 'Text Box Appear', [4], "", 24);
+						box.animation.play('normalOpen');
+						box.setGraphicSize(Std.int(box.width * CoolUtil.daPixelZoom * 0.9));
+						box.scrollFactor.set();
+						box.updateHitbox();
+						add(box);
+						box.screenCenter(X);
+					}
+				else
+					{
+						hasDialog = true;
+						box.frames = Paths.getSparrowAtlas('speech_bubble_talking');
+						box.animation.addByPrefix('normalOpen', 'Speech Bubble Normal Open', 24, false);
+						box.animation.addByPrefix('loudOpen', 'speech bubble loud open', 24, false);
+						box.animation.addByPrefix('loud', 'AHH speech bubble', 24, true);
+						box.animation.addByPrefix('normal', 'speech bubble normal0', 24, true);
+						box.animation.play('normalOpen');
+						box.setGraphicSize(Std.int(box.width * 0.9));
+						box.scrollFactor.set();
+						box.updateHitbox();
+						add(box);
+						box.y += 300;
+						box.screenCenter(X);
+					}	
 		}
 
 		portraitRight = new FlxSprite(0, 40);
@@ -234,8 +250,6 @@ class DialogueBox extends FlxSpriteGroup
 				portraitRight.visible = false;
 				swagDialogue.alpha -= 1 / 5;
 				dropText.alpha = swagDialogue.alpha;
-				if (PlayState.SONG.songId.toLowerCase() != 'roses')
-					sound.stop();
 			}, 5);
 
 			new FlxTimer().start(1.2, function(tmr:FlxTimer)
@@ -264,8 +278,6 @@ class DialogueBox extends FlxSpriteGroup
 						portraitRight.visible = false;
 						swagDialogue.alpha -= 1 / 5;
 						dropText.alpha = swagDialogue.alpha;
-						if (PlayState.SONG.songId.toLowerCase() != 'roses')
-							sound.stop();
 					}, 5);
 
 					new FlxTimer().start(1.2, function(tmr:FlxTimer)

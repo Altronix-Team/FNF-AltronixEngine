@@ -9,51 +9,64 @@
   "isDancing": true,
   "holdLength": 4.1,
   "replacesGF": true,
+  "antialiasing": true,
   "animations": [
     {
       "name": "singLEFT",
       "prefix": "GF left note",
 	  "interrupt": false,
 	  "nextAnim": "danceRight",
-      "offsets": [0, -19]
+      "offsets": [0, -19],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "singRIGHT",
       "prefix": "GF Right Note",
 	  "interrupt": false,
 	  "nextAnim": "danceRight",
-      "offsets": [0,  -20]
+      "offsets": [0,  -20],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "singUP",
       "prefix": "GF Up Note",
 	  "interrupt": false,
 	  "nextAnim": "danceRight",
-      "offsets": [0, 4]
+      "offsets": [0, 4],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "singDOWN",
       "prefix": "GF Down Note",
 	  "interrupt": false,
 	  "nextAnim": "danceRight",
-      "offsets": [0, -20]
+      "offsets": [0, -20],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "danceLeft",
       "prefix": "GF Dancing Beat",
       "offsets": [0, -9],
-      "frameIndices": [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+      "frameIndices": [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+	  "frameRate": 24
     },
     {
       "name": "danceRight",
       "prefix": "GF Dancing Beat",
       "offsets": [0, -9],
-      "frameIndices": [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29]
+      "frameIndices": [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
+	  "frameRate": 24
     },
     {
       "name": "cheer",
       "prefix": "GF Cheer",
-      "offsets": [0, 0]
+      "offsets": [0, 0],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "hairBlow",
@@ -61,7 +74,8 @@
       "interrupt": false,
       "offsets": [45, -8],
       "frameIndices": [0, 1, 2, 3],
-      "looped": true
+      "looped": true,
+	  "frameRate": 24
     },
     {
       "name": "hairFall",
@@ -70,19 +84,23 @@
       "interrupt": false,
       "isDanced": true,
       "offsets": [0, -9],
-      "frameIndices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+      "frameIndices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+	  "frameRate": 24
     },
     {
       "name": "sad",
       "prefix": "gf sad",
       "offsets": [-2, -21],
-      "frameIndices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+      "frameIndices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+	  "frameRate": 24
     },
     {
       "name": "scared",
       "prefix": "GF FEAR",
       "offsets": [-2, -17],
-      "looped": true
+      "looped": true,
+	  "frameIndices": [],
+	  "frameRate": 24
     }
   ]
 }

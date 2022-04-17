@@ -20,5 +20,6 @@
 		["senpai", "bf", "gf"]	
 	],
 	"weekNamesFromJson": ["Tutorial", "Daddy Dearest", "Spooky Month", "PICO", "MOMMY MUST MURDER", "RED SNOW", "Hating Simulator ft. Moawling"],
-	"weekImagesFromJson": ["Tutorial", "Dad", "Spooky", "PICO", "Mom", "Parents", "Senpai"]
+	"weekBackgroundsFromJson": ["Tutorial", "Dad", "Spooky", "PICO", "Mom", "Parents", "Senpai"],
+	"weekImagesFromJson": ["tutorial", "week1", "week2", "week3", "week4", "week5", "week6"]
 }

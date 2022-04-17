@@ -7,52 +7,71 @@
   ],
   "startingAnim": "idle",
   "flipX": true,
+  "antialiasing": true,
   "animations": [
     {
       "name": "singLEFT",
       "prefix": "Pico NOTE LEFT0",
-      "offsets": [-65, -1]
+      "offsets": [-65, -1],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "singRIGHT",
       "prefix": "Pico Note Right0",
-      "offsets": [52,  -7]
+      "offsets": [52,  -7],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "singUP",
       "prefix": "pico Up note0",
-      "offsets": [-29, 27]
+      "offsets": [-29, 27],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "singDOWN",
       "prefix": "Pico Down Note0",
-      "offsets": [200, -70]
+      "offsets": [200, -70],
+	  "frameIndices": [],
+	  "frameRate": 24
     },  
     {
       "name": "idle",
       "prefix": "Pico Idle Dance",
-      "offsets": [0, 0]
+      "offsets": [0, 0],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
 	{
       "name": "singLEFTmiss",
       "prefix": "Pico NOTE LEFT miss",
-      "offsets": [-48, 34]
+      "offsets": [-48, 34],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "singRIGHTmiss",
       "prefix": "Pico Note Right Miss",
       "offsets": [50,  41],
-	  "flipX": true
+	  "flipX": true,
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "singUPmiss",
       "prefix": "pico Up note miss",
-      "offsets": [-19, 67]
+      "offsets": [-19, 67],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "singDOWNmiss",
       "prefix": "Pico Down Note MISS",
-      "offsets": [210, -28]
+      "offsets": [210, -28],
+	  "frameIndices": [],
+	  "frameRate": 24
     }
   ]
 }

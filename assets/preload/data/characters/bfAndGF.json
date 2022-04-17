@@ -7,61 +7,84 @@
   ],
   "startingAnim": "idle",
   "flipX": true,
+  "antialiasing": true,
   "animations": [
     {
       "name": "singLEFT",
       "prefix": "BF NOTE LEFT0",
-      "offsets": [-8, -6]
+      "offsets": [-8, -6],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "singRIGHT",
       "prefix": "BF NOTE RIGHT0",
-      "offsets": [-48,  13]
+      "offsets": [-48,  13],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "singUP",
       "prefix": "BF NOTE UP0",
-      "offsets": [-69, -3]
+      "offsets": [-69, -3],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "singDOWN",
       "prefix": "BF NOTE DOWN0",
-      "offsets": [-40, -20]
+      "offsets": [-40, -20],
+	  "frameIndices": [],
+	  "frameRate": 24
     },  
     {
       "name": "idle",
       "prefix": "BF idle dance w gf",
-      "offsets": [-5, 0]
+      "offsets": [-5, 0],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
 	{
       "name": "hey",
       "prefix": "BF hey w gf",
-      "offsets": [-3, 94]
+      "offsets": [-3, 94],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
 	{
       "name": "singUPmiss",
       "prefix": "BF NOTE UP MISS",
-      "offsets": [-59, -3]
+      "offsets": [-59, -3],
+	  "frameIndices": [],
+	  "frameRate": 24
     }, 
 	{
       "name": "singLEFTmiss",
       "prefix": "BF NOTE LEFT MISS",
-      "offsets": [-18, -6]
+      "offsets": [-18, -6],
+	  "frameIndices": [],
+	  "frameRate": 24
     }, 
 	{
       "name": "singRIGHTmiss",
       "prefix": "BF NOTE RIGHT MISS",
-      "offsets": [-70, 31]
+      "offsets": [-70, 31],
+	  "frameIndices": [],
+	  "frameRate": 24
     }, 
 	{
       "name": "singDOWNmiss",
       "prefix": "BF NOTE DOWN MISS",
-      "offsets": [-31, -10]
+      "offsets": [-31, -10],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
 	{
       "name": "catch",
       "prefix": "BF catches GF",
-      "offsets": [-14, 80]
+      "offsets": [-14, 80],
+	  "frameIndices": [],
+	  "frameRate": 24
     }
   ]
 }

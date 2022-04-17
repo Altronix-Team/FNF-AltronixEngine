@@ -3,7 +3,7 @@
   "asset": "characters/Monika_Finale",
   "barColorJson": 
   [
-	255, 184, 227
+	201, 206, 255
   ],
   "startingAnim": "idle",
   "antialiasing": false,

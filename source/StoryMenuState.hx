@@ -15,7 +15,7 @@ import flixel.util.FlxTimer;
 import lime.net.curl.CURLCode;
 import LoadingState.LoadingsState;
 #if desktop
-import Discord.DiscordClient;
+import DiscordClient;
 #end
 import flixel.addons.ui.FlxUIState;
 
@@ -26,6 +26,7 @@ typedef WeekJson =
 	var weekDataFromJson:Array<Dynamic>;
 	var weekCharactersFromJson:Array<Dynamic>;
 	var weekNamesFromJson:Array<String>;
+	var weekBackgroundsFromJson:Array<String>;
 	var weekImagesFromJson:Array<String>;
 }
 class StoryMenuState extends MusicBeatState
@@ -35,7 +36,7 @@ class StoryMenuState extends MusicBeatState
 	static var weekDataJson:Array<Dynamic> = [['tutorial']];
 	static var weekCharactersJson:Array<Dynamic> = [['', 'bf', 'gf']];
 	static var weekNamesJson:Array<String> = ['Tutorial'];
-	static var weekImagesJson:Array<String> = ['Tutorial'];
+	static var weekBackgroundsJson:Array<String> = ['Tutorial'];
 	
 	static function weekData():Array<Dynamic>
 	{
@@ -48,7 +49,8 @@ class StoryMenuState extends MusicBeatState
 
 	static var weekCharacters:Array<Dynamic> = [['', 'bf', 'gf']];
 	static var weekNames:Array<String> = ['Tutorial'];
-	static var weekImages:Array<String> = ['Tutorial'];
+	static var weekBackgrounds:Array<String> = ['Tutorial'];
+	static var weekImages:Array<String> = ['tutorial'];
 
 	var txtWeekTitle:FlxText;
 
@@ -95,6 +97,9 @@ class StoryMenuState extends MusicBeatState
 
 		if (data.weekNamesFromJson != null)
 			weekNames = data.weekNamesFromJson;
+
+		if (data.weekBackgroundsFromJson != null)
+			weekBackgrounds = data.weekBackgroundsFromJson;
 
 		if (data.weekImagesFromJson != null)
 			weekImages = data.weekImagesFromJson;
@@ -172,7 +177,7 @@ class StoryMenuState extends MusicBeatState
 
 		weekbackground = new FlxSprite(0, 56);
 		weekbackground.antialiasing = FlxG.save.data.antialiasing;
-		weekbackgroundgenerate('Tutorial');
+		weekbackgroundgenerate(weekBackgrounds[0]);
 		add(weekbackground);
 
 		var blackBarThingie:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, 56, FlxColor.BLACK);
@@ -184,7 +189,7 @@ class StoryMenuState extends MusicBeatState
 
 		for (i in 0...weekData().length)
 		{
-			var weekThing:MenuItem = new MenuItem(0, yellowBG.y + yellowBG.height + 10, i);
+			var weekThing:MenuItem = new MenuItem(0, yellowBG.y + yellowBG.height + 10, weekImages[i]);
 			weekThing.y += ((weekThing.height + 20) * i);
 			weekThing.targetY = i;
 			grpWeekText.add(weekThing);
@@ -533,7 +538,7 @@ class StoryMenuState extends MusicBeatState
 		}
 
 		FlxG.sound.play(Paths.sound('scrollMenu'));
-		weekbackgroundgenerate(weekImages[curWeek]);
+		weekbackgroundgenerate(weekBackgrounds[curWeek]);
 		
 		updateText();
 	}

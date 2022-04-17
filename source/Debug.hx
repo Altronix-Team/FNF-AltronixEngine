@@ -1,4 +1,3 @@
-import Discord.DiscordClient;
 import lime.app.Application;
 import polymod.Polymod.PolymodError;
 import flixel.FlxG;
@@ -11,7 +10,7 @@ import haxe.PosInfos;
 import Song.SongData;
 
 #if desktop
-import Discord.DiscordClient;
+import DiscordClient;
 #end
 
 using StringTools;

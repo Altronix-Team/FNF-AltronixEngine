@@ -20,8 +20,9 @@ import flash.text.TextField;
 import flixel.addons.ui.FlxInputText;
 import LoadingState.LoadingsState;
 import GameJolt.GameJoltAPI;
+import GameJolt.GameJoltLogin;
 #if desktop
-import Discord.DiscordClient;
+import DiscordClient;
 #end
 import flixel.math.FlxMath;
 
@@ -30,27 +31,15 @@ using StringTools;
 class MainMenuState extends MusicBeatState
 {
 	private var camGame:FlxCamera;
-	var enterText:FlxText;
-	var hintText:FlxText;
-	var passwordText:FlxInputText;
 
 	var camFollowPos:FlxObject;
-
-	public static var canMove:Bool = true;
-
-	var extras:FlxSprite;
-	var blackScreen:FlxSprite;
-
-	public static var inMain:Bool = true;
-
-	public static var extra:Int = 1;
 
 	var curSelected:Int = 0;
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
 
 	#if !switch
-	var optionShit:Array<String> = ['story mode', 'freeplay', 'extras', 'credits', 'mods', 'options'];
+	var optionShit:Array<String> = ['story mode', 'freeplay', 'extras', 'gamejolt','credits', 'mods', 'options'];
 	#else
 	var optionShit:Array<String> = ['story mode', 'freeplay'];
 	#end
@@ -78,10 +67,7 @@ class MainMenuState extends MusicBeatState
 			GameJoltAPI.getTrophy(160503);
 			FlxG.save.data.firstLogin = true;
 		}
-		FlxG.mouse.visible = true;
 		camGame = new FlxCamera();
-		inMain = true;
-		canMove = true;
 		trace(0 / 2);
 		clean();
 		PlayState.inDaPlay = false;
@@ -102,9 +88,10 @@ class MainMenuState extends MusicBeatState
 
 		persistentUpdate = persistentDraw = true;
 
+		var yScroll:Float = Math.max(0.25 - (0.05 * (optionShit.length - 4)), 0.1);
 		var bg:FlxSprite = new FlxSprite(-100).loadGraphic(Paths.loadImage('menuBG'));
 		bg.scrollFactor.x = 0;
-		bg.scrollFactor.y = 0.10;
+		bg.scrollFactor.y = yScroll;
 		bg.setGraphicSize(Std.int(bg.width * 1.1));
 		bg.updateHitbox();
 		bg.screenCenter();
@@ -119,7 +106,7 @@ class MainMenuState extends MusicBeatState
 
 		magenta = new FlxSprite(-80).loadGraphic(Paths.loadImage('menuDesat'));
 		magenta.scrollFactor.x = 0;
-		magenta.scrollFactor.y = 0.10;
+		magenta.scrollFactor.y = 0.9;
 		magenta.setGraphicSize(Std.int(magenta.width * 1.1));
 		magenta.updateHitbox();
 		magenta.screenCenter();
@@ -150,38 +137,6 @@ class MainMenuState extends MusicBeatState
 
 		menuItems = new FlxTypedGroup<FlxSprite>();
 		add(menuItems);
-
-		blackScreen = new FlxSprite(-200, -100).makeGraphic(Std.int(FlxG.width * 0.5), Std.int(FlxG.height * 0.5), FlxColor.BLACK);
-		blackScreen.screenCenter();
-		blackScreen.scrollFactor.set(0, 0);
-		blackScreen.visible = false;
-		add(blackScreen);
-
-		enterText = new FlxText(0, 0, 0, "Enter Password:", 48);
-		enterText.setFormat('Pixel Arial 11 Bold', 48, FlxColor.WHITE, CENTER);
-		enterText.screenCenter();
-		enterText.y -= 40;
-		enterText.scrollFactor.set(0, 0);
-		enterText.visible = false;
-		add(enterText);
-
-		hintText = new FlxText(0, 0, 0, "You can find it in game files", 24);
-		hintText.setFormat('Pixel Arial 11 Bold', 24, FlxColor.WHITE, CENTER);
-		hintText.screenCenter();
-		hintText.y = enterText.y + 80;
-		hintText.scrollFactor.set(0, 0);
-		hintText.visible = false;
-		add(hintText);
-
-		passwordText = new FlxInputText(0, 300, 550, '', 36, FlxColor.WHITE, FlxColor.BLACK);
-		passwordText.fieldBorderColor = FlxColor.WHITE;
-		passwordText.fieldBorderThickness = 3;
-		passwordText.maxLength = 20;
-		passwordText.screenCenter(X);
-		passwordText.y += 120;
-		passwordText.scrollFactor.set(0, 0);
-		passwordText.visible = false;
-		add(passwordText);
 
 		var tex = Paths.getSparrowAtlas('FNF_main_menu_assets');
 
@@ -265,34 +220,6 @@ class MainMenuState extends MusicBeatState
 
 	var selectedSomethin:Bool = false;
 
-	function checkpassword(?passwordText:String)
-		{
-			if (passwordText == 'tankman')
-			{
-				extra = 2;
-				FlxG.sound.music.stop();
-				goToState();
-				FlxG.sound.play(Paths.sound('ANGRY_TEXT_BOX', 'shared'));
-				Main.isHidden = true;
-				waitforpass = false;
-			}
-			else if (passwordText == 'debug')
-			{
-				extra = 3;
-				FlxG.sound.music.stop();
-				goToState();
-				FlxG.sound.play(Paths.sound('ANGRY_TEXT_BOX', 'shared'));
-				Main.isHidden = true;
-				waitforpass = false;
-			}
-			else if ((passwordText != 'tankman' || passwordText != 'debug')&& !inMain)
-			{
-				FlxG.sound.play(Paths.soundRandom('missnote', 1, 3, 'shared'));
-			}
-		}
-
-	var waitforpass = false;
-
 	override function update(elapsed:Float)
 	{
 		if (FlxG.sound.music.volume < 0.8)
@@ -300,9 +227,9 @@ class MainMenuState extends MusicBeatState
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
 		}
 
-		if (FlxG.keys.justPressed.SIX)
+		if (FlxG.keys.justPressed.SEVEN)
 		{
-			FlxG.switchState(new AnimationDebug());
+			FlxG.switchState(new MasterEditorMenu());
 			clean();
 		}
 
@@ -339,7 +266,7 @@ class MainMenuState extends MusicBeatState
 				changeItem(1);
 			}
 
-			if (controls.BACK && inMain)
+			if (controls.BACK)
 			{
 				FlxG.switchState(new TitleState());
 			}
@@ -349,31 +276,6 @@ class MainMenuState extends MusicBeatState
 				if (optionShit[curSelected] == 'donate')
 				{
 					fancyOpenURL("https://ninja-muffin24.itch.io/funkin");
-				}
-				else if (optionShit[curSelected] == 'extras')
-				{
-					blackScreen.visible = true;
-					enterText.visible = true;
-					hintText.visible = true;
-					passwordText.visible = true;
-					canMove = false;
-					inMain = false;
-
-					if (controls.BACK && !inMain)
-					{
-						blackScreen.visible = false;
-						enterText.visible = false;
-						passwordText.visible = false;
-						hintText.visible = false;
-						passwordText.text = '';
-						inMain = true;
-						canMove = true;
-						waitforpass = false;
-					}
-					waitforpass = true;
-
-					if (controls.ACCEPT && waitforpass)
-						checkpassword(passwordText.text);
 				}
 				else
 				{
@@ -446,12 +348,17 @@ class MainMenuState extends MusicBeatState
 				trace("Freeplay Menu Selected");
 				FlxG.mouse.visible = false;
 
+			case 'gamejolt':
+				FlxG.switchState(new GameJoltLogin());
+				trace('gamejolt login selected');
+
 			case 'options':
 				openSubState(new LoadingsState());
 				FlxG.switchState(new OptionsDirect());
 				FlxG.mouse.visible = false;
+
 			case 'extras':
-				FlxG.switchState(new SecretState());
+				FlxG.switchState(new ExtrasPasswordState());
 				trace('extras menu selected');
 				FlxG.mouse.visible = false;
 

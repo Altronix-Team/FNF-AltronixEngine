@@ -3,9 +3,14 @@ package;
 import flixel.graphics.FlxGraphic;
 import flixel.FlxG;
 import flixel.graphics.frames.FlxAtlasFrames;
+import lime.utils.Assets;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
 import haxe.Json;
+#if sys
+import sys.io.File;
+import sys.FileSystem;
+#end
 
 using StringTools;
 
@@ -20,7 +25,7 @@ class Paths
 		currentLevel = name.toLowerCase();
 	}
 
-	static function getPath(file:String, type:AssetType, library:Null<String>)
+	static function getPath(file:String, type:AssetType, ?library:Null<String>)
 	{
 		if (library != null)
 			return getLibraryPath(file, library);
@@ -38,6 +43,51 @@ class Paths
 
 		return getPreloadPath(file);
 	}
+
+	static public function getTextFromFile(key:String, ?ignoreMods:Bool = false):String
+		{
+			#if sys
+			if (FileSystem.exists(getPreloadPath(key)))
+				return File.getContent(getPreloadPath(key));
+	
+			if (currentLevel != null)
+			{
+				var levelPath:String = '';
+				if(currentLevel != 'shared') {
+					levelPath = getLibraryPathForce(key, currentLevel);
+					if (FileSystem.exists(levelPath))
+						return File.getContent(levelPath);
+				}
+	
+				levelPath = getLibraryPathForce(key, 'shared');
+				if (FileSystem.exists(levelPath))
+					return File.getContent(levelPath);
+			}
+			#end
+			return Assets.getText(getPath(key, TEXT));
+		}
+	
+	inline static public function atlasImage(key:String, ?library:String):FlxGraphic
+		{
+			// streamlined the assets process more
+			var returnAsset:FlxGraphic = returnGraphic(key, library);
+			return returnAsset;
+		}
+
+	public static var currentTrackedAssets:Map<String, FlxGraphic> = [];
+	public static function returnGraphic(key:String, ?library:String)
+		{
+			var path = getPath('images/$key.png', IMAGE, library);
+			if (OpenFlAssets.exists(path, IMAGE)) {
+				if(!currentTrackedAssets.exists(path)) {
+					var newGraphic:FlxGraphic = FlxG.bitmap.add(path, false, path);
+					currentTrackedAssets.set(path, newGraphic);
+				}
+				return currentTrackedAssets.get(path);
+			}
+			trace('oh no its returning null NOOOO');
+			return null;
+		}
 
 	/**
 	 * For a given key and library for an image, returns the corresponding BitmapData.
@@ -99,6 +149,14 @@ class Paths
 			return null;
 		}
 	}
+
+	inline static public function fileExists(key:String, type:AssetType, ?ignoreMods:Bool = false, ?library:String)
+		{		
+			if(OpenFlAssets.exists(getPath(key, type, library))) {
+				return true;
+			}
+			return false;
+		}
 
 	static public function getLibraryPath(file:String, library = "preload")
 	{

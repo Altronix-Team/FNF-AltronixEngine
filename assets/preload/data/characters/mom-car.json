@@ -7,39 +7,51 @@
   ],
   "startingAnim": "idle",
   "camFollow": [0, 100],
+  "antialiasing": true,
   "animations": [
     {
       "name": "idle",
       "prefix": "Mom Idle",
       "nextAnim": "idleLoop",
-      "offsets": [0, 0]
+      "offsets": [0, 0],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "idleLoop",
       "prefix": "Mom Idle",
       "offsets": [0, 0],
       "frameIndices": [10, 11, 12, 13],
-      "looped": true
+      "looped": true,
+	  "frameRate": 24
     },
     {
       "name": "singUP",
       "prefix": "Mom Up Pose",
-      "offsets": [14, 71]
+      "offsets": [14, 71],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "singLEFT",
       "prefix": "Mom Left Pose",
-      "offsets": [250, -23]
+      "offsets": [250, -23],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "singRIGHT",
       "prefix": "Mom Pose Left",
-      "offsets": [10, -60]
+      "offsets": [10, -60],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "singDOWN",
       "prefix": "MOM DOWN POSE",
-      "offsets": [20, -160]
+      "offsets": [20, -160],
+	  "frameIndices": [],
+	  "frameRate": 24
     }
   ]
 }

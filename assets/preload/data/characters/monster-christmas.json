@@ -6,31 +6,42 @@
 	243, 255, 110
   ],
   "startingAnim": "idle",
+  "antialiasing": true,
   "animations": [
     {
       "name": "idle",
       "prefix": "monster idle",
-      "offsets": [0, 0]
+      "offsets": [0, 0],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "singUP",
       "prefix": "monster up note",
-      "offsets": [-20, 50]
+      "offsets": [-20, 50],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "singLEFT",
       "prefix": "Monster left note",
-      "offsets": [-30, 0]
+      "offsets": [-30, 0],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "singRIGHT",
       "prefix": "Monster Right note",
-      "offsets": [-51, 0]
+      "offsets": [-51, 0],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "singDOWN",
       "prefix": "monster down",
-      "offsets": [-40, -94]
+      "offsets": [-40, -94],
+	  "frameIndices": [],
+	  "frameRate": 24
     }
   ]
 }

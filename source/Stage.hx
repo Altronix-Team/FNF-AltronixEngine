@@ -14,6 +14,9 @@ import flixel.math.FlxMath;
 import flixel.math.FlxAngle;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
+#if sys
+import sys.FileSystem;
+#end
 
 class Stage extends MusicBeatState
 {
@@ -351,7 +354,7 @@ class Stage extends MusicBeatState
 					bgGirls.scrollFactor.set(0.9, 0.9);
 
 					// if (PlayState.SONG.songId.toLowerCase() == 'roses')
-					if (GameplayCustomizeState.freeplaySong == 'roses')
+					if (GameplayCustomizeState.freeplaySong == 'roses' || PlayState.SONG.scaredbgdancers)
 					{
 						if (FlxG.save.data.distractions)
 							bgGirls.getScared();
@@ -364,6 +367,12 @@ class Stage extends MusicBeatState
 						swagBacks['bgGirls'] = bgGirls;
 						toAdd.push(bgGirls);
 					}
+					if (PlayState.SONG.showbgdancers)
+					{
+						bgGirls.visible = true;	
+					}
+					else
+						bgGirls.visible = false;
 				}
 			case 'schoolEvil':
 				{
@@ -552,10 +561,47 @@ class Stage extends MusicBeatState
 					swagBacks['tank3'] = tank3;
 					layInFront[2].push(tank3);
 				}
+			case 'stage':
+				{
+					camZoom = 0.9;
+					var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.loadImage('stageback', 'shared'));
+					bg.antialiasing = FlxG.save.data.antialiasing;
+					bg.scrollFactor.set(0.9, 0.9);
+					bg.active = false;
+					swagBacks['bg'] = bg;
+					toAdd.push(bg);
+
+					var stageFront:FlxSprite = new FlxSprite(-650, 600).loadGraphic(Paths.loadImage('stagefront', 'shared'));
+					stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
+					stageFront.updateHitbox();
+					stageFront.antialiasing = FlxG.save.data.antialiasing;
+					stageFront.scrollFactor.set(0.9, 0.9);
+					stageFront.active = false;
+					swagBacks['stageFront'] = stageFront;
+					toAdd.push(stageFront);
+
+					var stageCurtains:FlxSprite = new FlxSprite(-500, -300).loadGraphic(Paths.loadImage('stagecurtains', 'shared'));
+					stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
+					stageCurtains.updateHitbox();
+					stageCurtains.antialiasing = FlxG.save.data.antialiasing;
+					stageCurtains.scrollFactor.set(1.3, 1.3);
+					stageCurtains.active = false;
+
+					swagBacks['stageCurtains'] = stageCurtains;
+					toAdd.push(stageCurtains);	
+				}
 			default:
 				{
-						camZoom = 0.9;
+					var stageLua:FunkinLua = null;
+					if (FileSystem.exists(Paths.getPreloadPath('stages/' + curStage + '.lua')))
+					{
+						Debug.logTrace('trying to execute funkin lua');
+						stageLua = new FunkinLua(Paths.getPreloadPath('stages/' + curStage + '.lua'));
+					}
+					else
+					{
 						curStage = 'stage';
+						camZoom = 0.9;
 						var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.loadImage('stageback', 'shared'));
 						bg.antialiasing = FlxG.save.data.antialiasing;
 						bg.scrollFactor.set(0.9, 0.9);
@@ -581,7 +627,7 @@ class Stage extends MusicBeatState
 
 						swagBacks['stageCurtains'] = stageCurtains;
 						toAdd.push(stageCurtains);
-					
+					}
 				}
 		}
 	}

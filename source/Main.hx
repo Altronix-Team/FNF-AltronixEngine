@@ -3,7 +3,7 @@ package;
 import openfl.display.Bitmap;
 import lime.app.Application;
 #if desktop
-import Discord.DiscordClient;
+import DiscordClient;
 #end
 import openfl.display.BlendMode;
 import openfl.text.TextFormat;
@@ -20,6 +20,8 @@ import GameJolt.GJToastManager;
 
 class Main extends Sprite
 {
+	var modsToLoad = [];
+	var configFound = false;
 	public static var gjToastManager:GJToastManager;
 	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	var gameHeight:Int = 720; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
@@ -94,29 +96,14 @@ class Main extends Sprite
 		// Run this first so we can see logs.
 		Debug.onInitProgram();
 
-		// Gotta run this before any assets get loaded.
-		#if FEATURE_FILESYSTEM
-		Debug.logTrace("App has access to file system. Begin mod check and precaching...");
-		if (ModCore.hasMods())
-		{
-			initialState = ModSplashState;
-		}
-		else
-		{
-			initialState = TitleState;
-		}
-		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
-		#else
-		Debug.logTrace("App has no access to file system. Starting game...");
-		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
-		#end
-		addChild(game);
-
 		#if !mobile
 		fpsCounter = new KadeEngineFPS(10, 3, 0xFFFFFF);
 		bitmapFPS = ImageOutline.renderImage(fpsCounter, 1, 0x000000, true);
 		bitmapFPS.smoothing = true;
 		#end	
+
+		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
+		addChild(game);
 
 		#if !mobile
 		addChild(fpsCounter);
@@ -128,6 +115,17 @@ class Main extends Sprite
 
 		// Finish up loading debug tools.
 		Debug.onGameStart();
+		
+		#if FEATURE_MODCORE
+		modsToLoad = ModCore.getConfiguredMods();
+		configFound = (modsToLoad != null && modsToLoad.length > 0);
+		#else
+		configFound = false;
+		#end
+
+		if (configFound)
+			ModCore.loadConfiguredMods();
+
 	}
 
 	var game:FlxGame;

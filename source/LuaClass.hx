@@ -1589,6 +1589,34 @@ class LuaSprite extends LuaClass
 					return 1;
 				},
 				setter: SetNumProperty
+			},
+
+			"scrollFactor" => {
+				defaultValue: 0,
+				getter: function(l:State, data:Any)
+				{
+					Lua.pushcfunction(l, scrollFactorC);
+					return 1;
+				},
+				setter: function(l:State)
+				{
+					LuaL.error(l, "scrollFactor is read-only.");
+					return 0;
+				}
+			},
+
+			"graphicSize" => {
+				defaultValue: 0,
+				getter: function(l:State, data:Any)
+				{
+					Lua.pushcfunction(l, graphicSizeC);
+					return 1;
+				},
+				setter: function(l:State)
+				{
+					LuaL.error(l, "graphicSize is read-only.");
+					return 0;
+				}
 			}
 		];
 
@@ -1726,10 +1754,72 @@ class LuaSprite extends LuaClass
 		return 0;
 	}
 
+	private static function scrollFactor(l:StatePointer):Int
+	{
+		// 1 = self
+		// 2 = x
+		// 3 = y
+		var xp = LuaL.checknumber(state, 2);
+		var yp = LuaL.checknumber(state, 3);
+
+		Lua.getfield(state, 1, "id");
+		var index = Lua.tostring(state, -1);
+
+		var sprite:FlxSprite = null;
+
+		for (i in listOfSprites)
+		{
+			if (i.className == index)
+				sprite = i.sprite;
+		}
+
+		if (sprite == null)
+		{
+			LuaL.error(state, "Failure to set scrollfactor (couldn't find sprite " + index + ")");
+			return 0;
+		}
+
+		sprite.scrollFactor.set(xp, yp);
+	
+		return 0;
+	}
+
+	private static function graphicSize(l:StatePointer):Int
+		{
+			// 1 = self
+			// 2 = x
+			// 3 = y
+			var xp = LuaL.checknumber(state, 2);
+			var yp = LuaL.checknumber(state, 3);
+	
+			Lua.getfield(state, 1, "id");
+			var index = Lua.tostring(state, -1);
+	
+			var sprite:FlxSprite = null;
+	
+			for (i in listOfSprites)
+			{
+				if (i.className == index)
+					sprite = i.sprite;
+			}
+	
+			if (sprite == null)
+			{
+				LuaL.error(state, "Failure to set graphic size (couldn't find sprite " + index + ")");
+				return 0;
+			}
+	
+			sprite.setGraphicSize(Std.int(xp),Std.int(yp));
+		
+			return 0;
+		}
+
 	private static var destroyC:cpp.Callable<StatePointer->Int> = cpp.Callable.fromStaticFunction(destroy);
 	private static var tweenPosC:cpp.Callable<StatePointer->Int> = cpp.Callable.fromStaticFunction(tweenPos);
 	private static var tweenAngleC:cpp.Callable<StatePointer->Int> = cpp.Callable.fromStaticFunction(tweenAngle);
 	private static var tweenAlphaC:cpp.Callable<StatePointer->Int> = cpp.Callable.fromStaticFunction(tweenAlpha);
+	private static var scrollFactorC:cpp.Callable<StatePointer->Int> = cpp.Callable.fromStaticFunction(scrollFactor);
+	private static var graphicSizeC:cpp.Callable<StatePointer->Int> = cpp.Callable.fromStaticFunction(graphicSize);
 
 	private function SetNumProperty(l:State)
 	{

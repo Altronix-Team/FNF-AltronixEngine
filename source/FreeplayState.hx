@@ -25,7 +25,7 @@ import flixel.tweens.FlxTween;
 import openfl.utils.Assets as OpenFlAssets;
 import LoadingState.LoadingsState;
 #if desktop
-import Discord.DiscordClient;
+import DiscordClient;
 #end
 
 using StringTools;

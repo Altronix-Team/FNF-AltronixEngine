@@ -8,6 +8,7 @@
   "startingAnim": "danceRight",
   "isDancing": true,
   "holdLength": 4.1,
+  "antialiasing": true,
   "animations": [
     {
       "name": "danceLeft",
@@ -26,22 +27,30 @@
     {
       "name": "singUP",
       "prefix": "spooky UP NOTE",
-      "offsets": [-20, 26]
+      "offsets": [-20, 26],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "singLEFT",
       "prefix": "note sing left",
-      "offsets": [130, -10]
+      "offsets": [130, -10],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "singRIGHT",
       "prefix": "spooky sing right",
-      "offsets": [-130, -14]
+      "offsets": [-130, -14],
+	  "frameIndices": [],
+	  "frameRate": 24
     },
     {
       "name": "singDOWN",
       "prefix": "spooky DOWN note",
-      "offsets": [-50, -130]
+      "offsets": [-50, -130],
+	  "frameIndices": [],
+	  "frameRate": 24
     }
   ]
 }

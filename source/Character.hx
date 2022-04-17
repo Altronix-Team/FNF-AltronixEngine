@@ -12,6 +12,7 @@ using StringTools;
 
 class Character extends FlxSprite
 {
+	public static var DEFAULT_CHARACTER:String = 'bf';
 	public var animOffsets:Map<String, Array<Dynamic>>;
 	public var animInterrupt:Map<String, Bool>;
 	public var animNext:Map<String, String>;
@@ -28,10 +29,19 @@ class Character extends FlxSprite
 	public var hasTrail:Bool;
 	public var isDancing:Bool;
 	public var holdLength:Float;
-	public var charPos:Array<Int>;
-	public var camPos:Array<Int>;
-	public var camFollow:Array<Int>;
+	public var charPos:Array<Float>;
+	public var camPos:Array<Float>;
+	public var camFollow:Array<Float>;
 	public var healthColorArray:Array<Int> = [255, 0, 0];
+	public var animationsArray:Array<AnimationData> = [];
+	public var asset:String = '';
+	public var jsonScale:Float = 1;
+	public var positionArray:Array<Float> = [0, 0];
+	public var cameraPosition:Array<Float> = [0, 0];
+	public var originalFlipX:Bool = false;
+	public var charAntialiasing:Bool = false;
+	public var startingAnim:String = '';
+	public var interruptAnim:Bool = true;
 
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
@@ -103,12 +113,12 @@ class Character extends FlxSprite
 		if (frames != null)
 			for (anim in data.animations)
 			{
-				var frameRate = anim.frameRate == null ? 24 : anim.frameRate;
+				var frameRate = anim.frameRate;
 				var looped = anim.looped == null ? false : anim.looped;
 				var flipX = anim.flipX == null ? false : anim.flipX;
 				var flipY = anim.flipY == null ? false : anim.flipY;
 
-				if (anim.frameIndices != null)
+				if (anim.frameIndices.length > 1)
 				{
 					animation.addByIndices(anim.name, anim.prefix, anim.frameIndices, "", frameRate, looped, flipX, flipY);
 				}
@@ -137,13 +147,20 @@ class Character extends FlxSprite
 
 		flipX = data.flipX == null ? false : data.flipX;
 
-		if (data.scale != null)
-		{
-			setGraphicSize(Std.int(width * data.scale));
-			updateHitbox();
-		}
+		animationsArray = data.animations;
+		asset = data.asset;
+		jsonScale = data.scale;
+		positionArray = data.charPos;
+		cameraPosition = data.camPos;
+		originalFlipX = data.flipX;
+		startingAnim = data.startingAnim;
 
-		antialiasing = data.antialiasing == null ? FlxG.save.data.antialiasing : data.antialiasing;
+		setGraphicSize(Std.int(width * jsonScale));
+		updateHitbox();
+
+		charAntialiasing = data.antialiasing;
+
+		antialiasing = data.antialiasing;
 
 		if (data.barColorJson != null && data.barColorJson.length > 2)
 			healthColorArray = data.barColorJson;
@@ -155,17 +172,20 @@ class Character extends FlxSprite
 
 	override function update(elapsed:Float)
 	{
-		if (!isPlayer)
+		if(!debugMode && animation.curAnim != null)
 		{
-			if (animation.curAnim.name.startsWith('sing'))
-				holdTimer += elapsed;
-
-			if (holdTimer >= Conductor.stepCrochet * holdLength * 0.001)
+			if (!isPlayer)
 			{
-				if (isDancing)
-					playAnim('danceLeft'); // overridden by dance correctly later
-				dance();
-				holdTimer = 0;
+				if (animation.curAnim.name.startsWith('sing'))
+					holdTimer += elapsed;
+
+				if (holdTimer >= Conductor.stepCrochet * holdLength * 0.001)
+				{
+					if (isDancing)
+						playAnim('danceLeft'); // overridden by dance correctly later
+					dance();
+					holdTimer = 0;
+				}
 			}
 		}
 
@@ -270,6 +290,11 @@ class Character extends FlxSprite
 	{
 		animOffsets[name] = [x, y];
 	}
+
+	public function quickAnimAdd(name:String, anim:String)
+		{
+			animation.addByPrefix(name, anim, 24, false);
+		}
 }
 
 typedef CharacterData =
@@ -278,29 +303,20 @@ typedef CharacterData =
 	var asset:String;
 	var startingAnim:String;
 
-	var ?charPos:Array<Int>;
-	var ?camPos:Array<Int>;
-	var ?camFollow:Array<Int>;
+	var ?charPos:Array<Float>;
+	var ?camPos:Array<Float>;
+	var ?camFollow:Array<Float>;
 	var ?holdLength:Float;
 
 	var barColorJson:Array<Int>;
 
 	var animations:Array<AnimationData>;
 
-	/**
-	 * The scale of this character.
-	 * Pixel characters typically use 6.
-	 * @default 1
-	 */
-	var ?scale:Int;
+	var scale:Int;
 
 	var ?flipX:Bool;
 
-	/**
-	 * Whether this character has antialiasing.
-	 * @default true
-	 */
-	var ?antialiasing:Bool;
+	var antialiasing:Bool;
 
 	/**
 	 * Whether this character uses PackerAtlas.
@@ -332,7 +348,7 @@ typedef AnimationData =
 {
 	var name:String;
 	var prefix:String;
-	var ?offsets:Array<Int>;
+	var offsets:Array<Int>;
 
 	/**
 	 * Whether this animation is looped.
@@ -343,13 +359,9 @@ typedef AnimationData =
 	var ?flipX:Bool;
 	var ?flipY:Bool;
 
-	/**
-	 * The frame rate of this animation.
-	 		* @default 24
-	 */
-	var ?frameRate:Int;
+	var frameRate:Int;
 
-	var ?frameIndices:Array<Int>;
+	var frameIndices:Array<Int>;
 
 	/**
 	 * Whether this animation can be interrupted by the dance function.

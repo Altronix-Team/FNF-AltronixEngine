@@ -34,9 +34,7 @@ class NoteskinHelpers
 
 			if (!i.endsWith(".png"))
 				continue;
-			noteskinArray.push(i.replace(".png", ""));
-			Debug.logTrace(noteskinArray);
-			
+			noteskinArray.push(i.replace(".png", ""));	
 		}
 		#else
 		noteskinArray = ["Arrows", "Circles"];

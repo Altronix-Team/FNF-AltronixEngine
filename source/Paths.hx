@@ -89,6 +89,11 @@ class Paths
 			return null;
 		}
 
+	public static inline function songMeta(key:String, ?library:String)
+		{
+			return getPath('data/songs/$key/_meta.json', TEXT, library);
+		}
+
 	/**
 	 * For a given key and library for an image, returns the corresponding BitmapData.
 	 		* We can probably move the cache handling here.

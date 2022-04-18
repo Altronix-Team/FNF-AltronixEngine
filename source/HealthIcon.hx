@@ -37,7 +37,7 @@ class HealthIcon extends FlxSprite
 
 	public function changeIcon(char:String)
 	{
-		if (OpenFlAssets.exists(Paths.loadImage('icons/icon-' + char)))
+		if (OpenFlAssets.exists(Paths.image('icons/icon-' + char)))
 			{
 				loadGraphic(Paths.loadImage('icons/icon-' + char), true, 150, 150);
 
@@ -53,6 +53,7 @@ class HealthIcon extends FlxSprite
 			{
 				loadGraphic(Paths.loadImage('icon-face'), true, 150, 150);
 
+				antialiasing = FlxG.save.data.antialiasing;
 				animation.add('face', [0, 1], 0, false, isPlayer);
 				animation.play('face');
 			}

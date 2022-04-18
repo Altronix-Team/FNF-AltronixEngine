@@ -79,6 +79,27 @@ class Song
 		return parseJSONshit("rawsong", jsonData, ["name" => jsonData.name]);
 	}
 
+	public static function loadMetadata(songId:String):SongMeta
+		{
+			var rawMetaJson = null;
+			if (OpenFlAssets.exists(Paths.songMeta(songId)))
+			{
+				rawMetaJson = Paths.loadJSON('songs/$songId/_meta');
+			}
+			else
+			{
+				Debug.logInfo('Hey, you didn\'t include a _meta.json with your song files (id ${songId}).Won\'t break anything but you should probably add one anyway.');
+			}
+			if (rawMetaJson == null)
+			{
+				return null;
+			}
+			else
+			{
+				return cast rawMetaJson;
+			}
+		}
+
 	public static function loadFromJson(songId:String, difficulty:String):SongData
 	{
 		var songFile = '$songId/$songId$difficulty';
@@ -86,15 +107,16 @@ class Song
 		Debug.logInfo('Loading song JSON: $songFile');
 
 		var rawJson = Paths.loadJSON('songs/$songFile');
-		var rawMetaJson = Paths.loadJSON('songs/$songId/_meta');
+
+		var metaData:SongMeta = loadMetadata(songId);
 
 		if (OpenFlAssets.exists(Paths.json('songs/$songId/events')))
 		{
 			var rawEvents = Paths.loadJSON('songs/$songId/events');
-			return parseJSONshit(songId, rawJson, rawMetaJson, rawEvents);
+			return parseJSONshit(songId, rawJson, metaData, rawEvents);
 		}	
 		else
-			return parseJSONshit(songId, rawJson, rawMetaJson);		
+			return parseJSONshit(songId, rawJson, metaData);		
 	}
 
 	public static function conversionChecks(song:SongData):SongData
@@ -223,16 +245,24 @@ class Song
 
 		// Inject info from _meta.json.
 		var songMetaData:SongMeta = cast jsonMetaData;
-		if (songMetaData.name != null)
-		{
-			songData.songName = songMetaData.name;
+
+		if (songMetaData != null)
+		{		
+			if (songMetaData.name != null)
+			{
+				songData.songName = songMetaData.name;
+			}
+			else
+			{
+				songData.songName = songId.split('-').join(' ');
+			}
+
+			songData.offset = songMetaData.offset != null ? songMetaData.offset : 0;
 		}
 		else
 		{
 			songData.songName = songId.split('-').join(' ');
 		}
-
-		songData.offset = songMetaData.offset != null ? songMetaData.offset : 0;
 
 		if (jsonEvents != null)
 		{
@@ -240,6 +270,7 @@ class Song
 
 			songData.eventObjects = events.eventObjects;
 		}
+
 		return Song.conversionChecks(songData);
 	}
 }

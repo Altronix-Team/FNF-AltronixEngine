@@ -118,7 +118,7 @@ class Character extends FlxSprite
 				var flipX = anim.flipX == null ? false : anim.flipX;
 				var flipY = anim.flipY == null ? false : anim.flipY;
 
-				if (anim.frameIndices.length > 1)
+				if (anim.frameIndices.length > 0)
 				{
 					animation.addByIndices(anim.name, anim.prefix, anim.frameIndices, "", frameRate, looped, flipX, flipY);
 				}

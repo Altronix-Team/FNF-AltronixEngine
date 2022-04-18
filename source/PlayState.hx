@@ -3373,15 +3373,15 @@ class PlayState extends MusicBeatState
 					offsetY = luaModchart.getVar("followYOffset", "float");
 				}
 				#end
-				camFollow.setPosition(dad.getMidpoint().x + 150 + offsetX, dad.getMidpoint().y - 100 + offsetY);
+				camFollow.setPosition(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
 				#if FEATURE_LUAMODCHART
 				if (luaModchart != null)
 					luaModchart.executeState('playerTwoTurn', []);
 				#end
 				// camFollow.setPosition(lucky.getMidpoint().x - 120, lucky.getMidpoint().y + 210);
 
-				camFollow.x += dad.camFollow[0];
-				camFollow.y += dad.camFollow[1];
+				camFollow.x += dad.camPos[0];
+				camFollow.y += dad.camPos[1];
 			}
 
 			if (currentSection.mustHitSection && camFollow.x != boyfriend.getMidpoint().x - 100)
@@ -3395,7 +3395,7 @@ class PlayState extends MusicBeatState
 					offsetY = luaModchart.getVar("followYOffset", "float");
 				}
 				#end
-				camFollow.setPosition(boyfriend.getMidpoint().x - 100 + offsetX, boyfriend.getMidpoint().y - 100 + offsetY);
+				camFollow.setPosition(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
 
 				#if FEATURE_LUAMODCHART
 				if (luaModchart != null)
@@ -3416,8 +3416,8 @@ class PlayState extends MusicBeatState
 							camFollow.y = boyfriend.getMidpoint().y - 200;
 					}
 				
-				camFollow.x += boyfriend.camFollow[0];
-				camFollow.y += boyfriend.camFollow[1];
+				camFollow.x += boyfriend.camPos[0];
+				camFollow.y += boyfriend.camPos[1];
 			}
 		}
 

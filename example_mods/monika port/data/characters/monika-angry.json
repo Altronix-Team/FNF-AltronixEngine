@@ -1,62 +1,134 @@
 {
-  "name": "Monika-Angry",
-  "asset": "characters/Monika_Finale",
-  "barColorJson": 
-  [
-	201, 206, 255
-  ],
-  "startingAnim": "idle",
-  "antialiasing": false,
-  "scale": 6,
-  "charPos": [150, 23],
-  "camPos": [200, -50],
-  "camFollow": [-400, -200],
-  "replacesGF": true,
-  "animations": [
-    {
-      "name": "idle",
-      "prefix": "MONIKA IDLE",
-      "offsets": [0, 0]
-    },
-    {
-      "name": "singUP",
-      "prefix": "MONIKA UP NOTE",
-      "offsets": [0, 0]
-    },
-    {
-      "name": "singLEFT",
-      "prefix": "MONIKA LEFT NOTE",
-      "offsets": [0, 0]
-    },
-    {
-      "name": "singRIGHT",
-      "prefix": "MONIKA RIGHT NOTE",
-      "offsets": [0, 0]
-    },
-    {
-      "name": "singDOWN",
-      "prefix": "MONIKA DOWN NOTE",
-      "offsets": [0, 0]
-    },
-    {
-      "name": "singUP-alt",
-      "prefix": "MONIKA UP GLITCH",
-      "offsets": [60, -6]
-    },
-    {
-      "name": "singLEFT-alt",
-      "prefix": "MONIKA LEFT GLITCH",
-      "offsets": [60, -6]
-    },
-    {
-      "name": "singRIGHT-alt",
-      "prefix": "MONIKA RIGHT GLITCH",
-      "offsets": [60, -6]
-    },
-    {
-      "name": "singDOWN-alt",
-      "prefix": "MONIKA DOWN GLITCH",
-      "offsets": [60, -6]
-    }
-  ]
+	"animations": [
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"frameRate": 24,
+			"frameIndices": [],
+			"prefix": "MONIKA UP NOTE",
+			"interrupt": true,
+			"name": "singUP",
+			"looped": false
+		},
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"frameRate": 24,
+			"frameIndices": [],
+			"prefix": "MONIKA LEFT NOTE",
+			"interrupt": true,
+			"name": "singLEFT",
+			"looped": false
+		},
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"frameRate": 24,
+			"frameIndices": [],
+			"prefix": "MONIKA RIGHT NOTE",
+			"interrupt": true,
+			"name": "singRIGHT",
+			"looped": false
+		},
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"frameRate": 24,
+			"frameIndices": [],
+			"prefix": "MONIKA DOWN NOTE",
+			"interrupt": true,
+			"name": "singDOWN",
+			"looped": false
+		},
+		{
+			"offsets": [
+				60,
+				-6
+			],
+			"frameRate": 24,
+			"frameIndices": [],
+			"prefix": "MONIKA UP GLITCH",
+			"interrupt": true,
+			"name": "singUP-alt",
+			"looped": false
+		},
+		{
+			"offsets": [
+				60,
+				-6
+			],
+			"frameRate": 24,
+			"frameIndices": [],
+			"prefix": "MONIKA LEFT GLITCH",
+			"interrupt": true,
+			"name": "singLEFT-alt",
+			"looped": false
+		},
+		{
+			"offsets": [
+				60,
+				-6
+			],
+			"frameRate": 24,
+			"frameIndices": [],
+			"prefix": "MONIKA RIGHT GLITCH",
+			"interrupt": true,
+			"name": "singRIGHT-alt",
+			"looped": false
+		},
+		{
+			"offsets": [
+				60,
+				-6
+			],
+			"frameRate": 24,
+			"frameIndices": [],
+			"prefix": "MONIKA DOWN GLITCH",
+			"interrupt": true,
+			"name": "singDOWN-alt",
+			"looped": false
+		},
+		{
+			"frameIndices": [],
+			"prefix": "MONIKA IDLE",
+			"offsets": [
+				0,
+				0
+			],
+			"frameRate": 24,
+			"interrupt": true,
+			"name": "idle",
+			"looped": false
+		}
+	],
+	"hasTrail": false,
+	"camPos": [
+		-600,
+		-290
+	],
+	"holdLength": 4,
+	"charPos": [
+		150,
+		23
+	],
+	"flipX": false,
+	"asset": "characters/Monika_Finale",
+	"startingAnim": "idle",
+	"antialiasing": false,
+	"name": "characters/Monika_Finale",
+	"barColorJson": [
+		201,
+		206,
+		255
+	],
+	"replacesGF": true,
+	"scale": 6
 }

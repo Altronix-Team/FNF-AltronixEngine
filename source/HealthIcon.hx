@@ -37,15 +37,25 @@ class HealthIcon extends FlxSprite
 
 	public function changeIcon(char:String)
 	{
-		loadGraphic(Paths.loadImage('icons/icon-' + char), true, 150, 150);
+		if (OpenFlAssets.exists(Paths.loadImage('icons/icon-' + char)))
+			{
+				loadGraphic(Paths.loadImage('icons/icon-' + char), true, 150, 150);
 
-		if (char.contains('pixel') || char.startsWith('senpai') || char.startsWith('spirit'))
-			antialiasing = false
+				if (char.contains('pixel') || char.startsWith('senpai') || char.startsWith('spirit'))
+					antialiasing = false
+				else
+					antialiasing = FlxG.save.data.antialiasing;
+
+				animation.add(char, [0, 1], 0, false, isPlayer);
+				animation.play(char);
+			}
 		else
-			antialiasing = FlxG.save.data.antialiasing;
+			{
+				loadGraphic(Paths.loadImage('icon-face'), true, 150, 150);
 
-		animation.add(char, [0, 1], 0, false, isPlayer);
-		animation.play(char);
+				animation.add('face', [0, 1], 0, false, isPlayer);
+				animation.play('face');
+			}
 	}
 
 	override function update(elapsed:Float)

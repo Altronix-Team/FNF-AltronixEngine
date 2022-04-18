@@ -157,6 +157,12 @@ class ModCore
 			Debug.logInfo('Installed mods have replaced ${fileList.length} sound files.');
 			for (item in fileList)
 				Debug.logTrace('  * $item');
+
+			fileList = Polymod.listModFiles("UNKNOWN");
+			Debug.logInfo('Installed mods have replaced ${fileList.length} file.');
+			for (item in fileList)
+				Debug.logTrace('  * $item');
+
 			#else
 			Debug.logWarn("Attempted to load mods when Polymod was not supported!");
 			#end
@@ -200,6 +206,7 @@ class ModCore
 				"shared" => "./",
 				"tutorial" => "./tutorial",
 				"scripts" => "./scripts",
+				"stages" => "./stages",
 				"week1" => "./week1",
 				"week2" => "./week2",
 				"week3" => "./week3",

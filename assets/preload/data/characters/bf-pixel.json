@@ -1,79 +1,140 @@
 {
-  "name": "Boyfriend-Pixel",
-  "asset": "characters/bfPixel",
-  "barColorJson": 
-  [
-	49, 176, 209
-  ],
-  "flipX": true,
-  "scale": 6,
-  "camPos": [-100, -100],
-  "camFollow": [-100, -100],
-  "antialiasing": false,
-  "startingAnim": "idle",
-  "animations": [
-     {
-      "name": "idle",
-      "prefix": "BF IDLE",
-      "offsets": [0, 0],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singUP",
-      "prefix": "BF UP NOTE",
-      "offsets": [0, 0],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singLEFT",
-      "prefix": "BF LEFT NOTE",
-      "offsets": [0, 0],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singRIGHT",
-      "prefix": "BF RIGHT NOTE",
-      "offsets": [0, 0],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singDOWN",
-      "prefix": "BF DOWN NOTE",
-      "offsets": [0, 0],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singUPmiss",
-      "prefix": "BF UP MISS",
-      "offsets": [0, 0],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singLEFTmiss",
-      "prefix": "BF LEFT MISS",
-      "offsets": [0, 0],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singRIGHTmiss",
-      "prefix": "BF RIGHT MISS",
-      "offsets": [0, 0],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singDOWNmiss",
-      "prefix": "BF DOWN MISS",
-      "offsets": [0, 0],
-	  "frameIndices": [],
-	  "frameRate": 24
-    }
-  ]
+	"animations": [
+		{
+			"frameIndices": [],
+			"prefix": "BF IDLE",
+			"offsets": [
+				0,
+				0
+			],
+			"nextAnim": "idle",
+			"frameRate": 24,
+			"interrupt": true,
+			"name": "idle",
+			"looped": false
+		},
+		{
+			"frameIndices": [],
+			"prefix": "BF UP NOTE",
+			"offsets": [
+				0,
+				0
+			],
+			"nextAnim": "idle",
+			"frameRate": 24,
+			"interrupt": true,
+			"name": "singUP",
+			"looped": false
+		},
+		{
+			"frameIndices": [],
+			"prefix": "BF LEFT NOTE",
+			"offsets": [
+				0,
+				0
+			],
+			"nextAnim": "idle",
+			"frameRate": 24,
+			"interrupt": true,
+			"name": "singLEFT",
+			"looped": false
+		},
+		{
+			"frameIndices": [],
+			"prefix": "BF RIGHT NOTE",
+			"offsets": [
+				0,
+				0
+			],
+			"nextAnim": "idle",
+			"frameRate": 24,
+			"interrupt": true,
+			"name": "singRIGHT",
+			"looped": false
+		},
+		{
+			"frameIndices": [],
+			"prefix": "BF DOWN NOTE",
+			"offsets": [
+				0,
+				0
+			],
+			"nextAnim": "idle",
+			"frameRate": 24,
+			"interrupt": true,
+			"name": "singDOWN",
+			"looped": false
+		},
+		{
+			"frameIndices": [],
+			"prefix": "BF UP MISS",
+			"offsets": [
+				0,
+				0
+			],
+			"nextAnim": "idle",
+			"frameRate": 24,
+			"interrupt": true,
+			"name": "singUPmiss",
+			"looped": false
+		},
+		{
+			"frameIndices": [],
+			"prefix": "BF LEFT MISS",
+			"offsets": [
+				0,
+				0
+			],
+			"nextAnim": "idle",
+			"frameRate": 24,
+			"interrupt": true,
+			"name": "singLEFTmiss",
+			"looped": false
+		},
+		{
+			"frameIndices": [],
+			"prefix": "BF RIGHT MISS",
+			"offsets": [
+				0,
+				0
+			],
+			"nextAnim": "idle",
+			"frameRate": 24,
+			"interrupt": true,
+			"name": "singRIGHTmiss",
+			"looped": false
+		},
+		{
+			"frameIndices": [],
+			"prefix": "BF DOWN MISS",
+			"offsets": [
+				0,
+				0
+			],
+			"nextAnim": "idle",
+			"frameRate": 24,
+			"interrupt": true,
+			"name": "singDOWNmiss",
+			"looped": false
+		}
+	],
+	"hasTrail": false,
+	"camPos": [
+		-200,
+		-200
+	],
+	"holdLength": 4,
+	"charPos": null,
+	"flipX": true,
+	"asset": "characters/bfPixel",
+	"startingAnim": "idle",
+	"antialiasing": false,
+	"name": "characters/bfPixel",
+	"barColorJson": [
+		49,
+		176,
+		209
+	],
+	"replacesGF": false,
+	"scale": 6
 }

@@ -14,6 +14,7 @@ import flixel.math.FlxMath;
 import flixel.math.FlxAngle;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
+import StageData;
 #if sys
 import sys.FileSystem;
 #end
@@ -327,22 +328,6 @@ class Stage extends MusicBeatState
 					swagBacks['treeLeaves'] = treeLeaves;
 					toAdd.push(treeLeaves);
 
-					var widShit = Std.int(bgSky.width * 6);
-
-					bgSky.setGraphicSize(widShit);
-					bgSchool.setGraphicSize(widShit);
-					bgStreet.setGraphicSize(widShit);
-					bgTrees.setGraphicSize(Std.int(widShit * 1.4));
-					fgTrees.setGraphicSize(Std.int(widShit * 0.8));
-					treeLeaves.setGraphicSize(widShit);
-
-					fgTrees.updateHitbox();
-					bgSky.updateHitbox();
-					bgSchool.updateHitbox();
-					bgStreet.updateHitbox();
-					bgTrees.updateHitbox();
-					treeLeaves.updateHitbox();
-
 					var bgGirls = new BackgroundGirls(-100, 190);
 					bgGirls.scrollFactor.set(0.9, 0.9);
 
@@ -366,6 +351,22 @@ class Stage extends MusicBeatState
 					}
 					else
 						bgGirls.visible = false;
+
+					var widShit = Std.int(bgSky.width * 6);
+
+					bgSky.setGraphicSize(widShit);
+					bgSchool.setGraphicSize(widShit);
+					bgStreet.setGraphicSize(widShit);
+					bgTrees.setGraphicSize(Std.int(widShit * 1.4));
+					fgTrees.setGraphicSize(Std.int(widShit * 0.8));
+					treeLeaves.setGraphicSize(widShit);
+
+					fgTrees.updateHitbox();
+					bgSky.updateHitbox();
+					bgSchool.updateHitbox();
+					bgStreet.updateHitbox();
+					bgTrees.updateHitbox();
+					treeLeaves.updateHitbox();
 				}
 			case 'schoolEvil':
 				{
@@ -551,6 +552,11 @@ class Stage extends MusicBeatState
 					{
 						Debug.logTrace('trying to execute funkin lua');
 						stageLua = new FunkinLua(Paths.getPreloadPath('stages/' + curStage + '.lua'));
+					}
+					else if (FileSystem.exists(Paths.temporaryStagePath(curStage)))
+					{
+						Debug.logTrace('temporary fix');
+						stageLua = new FunkinLua(Paths.temporaryStagePath(curStage));
 					}
 					else
 					{

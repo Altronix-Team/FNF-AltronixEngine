@@ -1,5 +1,4 @@
 import flixel.FlxG;
-import polymod.Polymod;
 #if FEATURE_MODCORE
 import polymod.backends.OpenFLBackend;
 import polymod.backends.PolymodAssets.PolymodAssetType;
@@ -294,4 +293,5 @@ class ModCoreBackend extends OpenFLBackend
 		return super.list(type);
 	}
 }
+
 #end

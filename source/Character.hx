@@ -29,14 +29,13 @@ class Character extends FlxSprite
 	public var hasTrail:Bool;
 	public var isDancing:Bool;
 	public var holdLength:Float;
-	public var charPos:Array<Float>;
+	public var positionArray:Array<Float>;
 	public var camPos:Array<Float>;
 	public var camFollow:Array<Float>;
 	public var healthColorArray:Array<Int> = [255, 0, 0];
 	public var animationsArray:Array<AnimationData> = [];
 	public var asset:String = '';
 	public var jsonScale:Float = 1;
-	public var positionArray:Array<Float> = [0, 0];
 	public var cameraPosition:Array<Float> = [0, 0];
 	public var originalFlipX:Bool = false;
 	public var charAntialiasing:Bool = false;
@@ -140,7 +139,7 @@ class Character extends FlxSprite
 		this.replacesGF = data.replacesGF == null ? false : data.replacesGF;
 		this.hasTrail = data.hasTrail == null ? false : data.hasTrail;
 		this.isDancing = data.isDancing == null ? false : data.isDancing;
-		this.charPos = data.charPos == null ? [0, 0] : data.charPos;
+		this.positionArray = data.charPos == null ? [0, 0] : data.charPos;
 		this.camPos = data.camPos == null ? [0, 0] : data.camPos;
 		this.camFollow = data.camFollow == null ? [0, 0] : data.camFollow;
 		this.holdLength = data.holdLength == null ? 4 : data.holdLength;
@@ -150,7 +149,6 @@ class Character extends FlxSprite
 		animationsArray = data.animations;
 		asset = data.asset;
 		jsonScale = data.scale;
-		positionArray = data.charPos;
 		cameraPosition = data.camPos;
 		originalFlipX = data.flipX;
 		startingAnim = data.startingAnim;

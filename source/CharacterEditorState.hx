@@ -508,8 +508,8 @@ class CharacterEditorState extends MusicBeatState
 			char.hasTrail = hasTrailCheckBox.checked;
 		};
 
-		positionXStepper = new FlxUINumericStepper(flipXCheckBox.x + 110, flipXCheckBox.y, 10, char.charPos[0], -9000, 9000, 0);
-		positionYStepper = new FlxUINumericStepper(positionXStepper.x + 60, positionXStepper.y, 10, char.charPos[1], -9000, 9000, 0);
+		positionXStepper = new FlxUINumericStepper(flipXCheckBox.x + 110, flipXCheckBox.y, 10, char.positionArray[0], -9000, 9000, 0);
+		positionYStepper = new FlxUINumericStepper(positionXStepper.x + 60, positionXStepper.y, 10, char.positionArray[1], -9000, 9000, 0);
 		
 		positionCameraXStepper = new FlxUINumericStepper(positionXStepper.x, positionXStepper.y + 40, 10, char.camPos[0], -9000, 9000, 0);
 		positionCameraYStepper = new FlxUINumericStepper(positionYStepper.x, positionYStepper.y + 40, 10, char.camPos[1], -9000, 9000, 0);
@@ -747,8 +747,8 @@ class CharacterEditorState extends MusicBeatState
 			}
 			else if(sender == positionXStepper)
 			{
-				char.charPos[0] = positionXStepper.value;
-				char.x = char.charPos[0] + OFFSET_X + 100;
+				char.positionArray[0] = positionXStepper.value;
+				char.x = char.positionArray[0] + OFFSET_X + 100;
 				updatePointerPos();
 			}
 			else if(sender == singDurationStepper)
@@ -757,8 +757,8 @@ class CharacterEditorState extends MusicBeatState
 			}
 			else if(sender == positionYStepper)
 			{
-				char.charPos[1] = positionYStepper.value;
-				char.y = char.charPos[1];
+				char.positionArray[1] = positionYStepper.value;
+				char.y = char.positionArray[1];
 				updatePointerPos();
 			}
 			else if(sender == positionCameraXStepper)
@@ -903,7 +903,7 @@ class CharacterEditorState extends MusicBeatState
 		charLayer.add(ghostChar);
 		charLayer.add(char);
 
-		char.setPosition(char.charPos[0] + OFFSET_X + 100, char.charPos[1]);
+		char.setPosition(char.positionArray[0] + OFFSET_X + 100, char.positionArray[1]);
 
 		if(blahBlahBlah) {
 			genBoyOffsets();
@@ -953,10 +953,10 @@ class CharacterEditorState extends MusicBeatState
 			hasTrailCheckBox.checked = char.hasTrail;
 			resetHealthBarColor();
 			leHealthIcon.changeIcon(charDropDown.selectedLabel);
-			if (char.charPos != null)
+			if (char.positionArray != null)
 			{
-				positionXStepper.value = char.charPos[0];
-				positionYStepper.value = char.charPos[1];
+				positionXStepper.value = char.positionArray[0];
+				positionYStepper.value = char.positionArray[1];
 			}
 			else
 			{

@@ -1,77 +1,113 @@
 {
-  "name": "Pico",
-  "asset": "characters/Pico_FNF_assetss",
-  "barColorJson": 
-  [
-	183, 216, 85
-  ],
-  "flipX": true,
-  "startingAnim": "idle",
-  "camPos": [600, 0],
-  "antialiasing": true,
-  "animations": [
-    {
-      "name": "idle",
-      "prefix": "Pico Idle Dance",
-      "offsets": [0, 0],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singUP",
-      "prefix": "pico Up note0",
-      "offsets": [-29, 27],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singLEFT",
-      "prefix": "Pico Note Right0",
-      "offsets": [65, 9],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singRIGHT",
-      "prefix": "Pico NOTE LEFT0",
-      "offsets": [-68, -7],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singDOWN",
-      "prefix": "Pico Down Note0",
-      "offsets": [200, -70],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singUPmiss",
-      "prefix": "pico Up note miss",
-      "offsets": [-19, 67],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singLEFTmiss",
-      "prefix": "Pico Note Right Miss",
-      "offsets": [62, 64],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singRIGHTmiss",
-      "prefix": "Pico NOTE LEFT miss",
-      "offsets": [-60, 41],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singDOWNmiss",
-      "prefix": "Pico Down Note MISS",
-      "offsets": [210, -28],
-	  "frameIndices": [],
-	  "frameRate": 24
-    }
-  ]
+	"animations": [
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"frameRate": 24,
+			"prefix": "Pico Idle Dance",
+			"frameIndices": [],
+			"name": "idle"
+		},
+		{
+			"offsets": [
+				-29,
+				27
+			],
+			"frameRate": 24,
+			"prefix": "pico Up note0",
+			"frameIndices": [],
+			"name": "singUP"
+		},
+		{
+			"offsets": [
+				65,
+				9
+			],
+			"frameRate": 24,
+			"prefix": "Pico Note Right0",
+			"frameIndices": [],
+			"name": "singLEFT"
+		},
+		{
+			"offsets": [
+				-68,
+				-7
+			],
+			"frameRate": 24,
+			"prefix": "Pico NOTE LEFT0",
+			"frameIndices": [],
+			"name": "singRIGHT"
+		},
+		{
+			"offsets": [
+				200,
+				-70
+			],
+			"frameRate": 24,
+			"prefix": "Pico Down Note0",
+			"frameIndices": [],
+			"name": "singDOWN"
+		},
+		{
+			"offsets": [
+				-19,
+				67
+			],
+			"frameRate": 24,
+			"prefix": "pico Up note miss",
+			"frameIndices": [],
+			"name": "singUPmiss"
+		},
+		{
+			"offsets": [
+				62,
+				64
+			],
+			"frameRate": 24,
+			"prefix": "Pico Note Right Miss",
+			"frameIndices": [],
+			"name": "singLEFTmiss"
+		},
+		{
+			"offsets": [
+				-60,
+				41
+			],
+			"frameRate": 24,
+			"prefix": "Pico NOTE LEFT miss",
+			"frameIndices": [],
+			"name": "singRIGHTmiss"
+		},
+		{
+			"offsets": [
+				210,
+				-28
+			],
+			"frameRate": 24,
+			"prefix": "Pico Down Note MISS",
+			"frameIndices": [],
+			"name": "singDOWNmiss"
+		}
+	],
+	"hasTrail": false,
+	"camPos": [
+		0,
+		100
+	],
+	"holdLength": 4,
+	"charPos": null,
+	"flipX": true,
+	"asset": "characters/Pico_FNF_assetss",
+	"startingAnim": "idle",
+	"antialiasing": true,
+	"name": "characters/Pico_FNF_assetss",
+	"barColorJson": [
+		183,
+		216,
+		85
+	],
+	"replacesGF": false,
+	"scale": 0
 }

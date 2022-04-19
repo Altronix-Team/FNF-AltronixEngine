@@ -1,56 +1,89 @@
 {
-  "name": "Spooky",
-  "asset": "characters/spooky_kids_assets",
-  "barColorJson": 
-  [
-	213, 126, 0
-  ],
-  "startingAnim": "danceRight",
-  "isDancing": true,
-  "holdLength": 4.1,
-  "antialiasing": true,
-  "animations": [
-    {
-      "name": "danceLeft",
-      "prefix": "spooky dance idle",
-      "offsets": [0, 0],
-      "frameIndices": [0, 2, 6],
-      "frameRate": 12
-    },
-    {
-      "name": "danceRight",
-      "prefix": "spooky dance idle",
-      "offsets": [0, 0],
-      "frameIndices": [8, 10, 12, 14],
-      "frameRate": 12
-    },
-    {
-      "name": "singUP",
-      "prefix": "spooky UP NOTE",
-      "offsets": [-20, 26],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singLEFT",
-      "prefix": "note sing left",
-      "offsets": [130, -10],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singRIGHT",
-      "prefix": "spooky sing right",
-      "offsets": [-130, -14],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singDOWN",
-      "prefix": "spooky DOWN note",
-      "offsets": [-50, -130],
-	  "frameIndices": [],
-	  "frameRate": 24
-    }
-  ]
+	"animations": [
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"frameRate": 12,
+			"prefix": "spooky dance idle",
+			"frameIndices": [
+				0,
+				2,
+				6
+			],
+			"name": "danceLeft"
+		},
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"frameRate": 12,
+			"prefix": "spooky dance idle",
+			"frameIndices": [
+				8,
+				10,
+				12,
+				14
+			],
+			"name": "danceRight"
+		},
+		{
+			"offsets": [
+				-20,
+				26
+			],
+			"frameRate": 24,
+			"prefix": "spooky UP NOTE",
+			"frameIndices": [],
+			"name": "singUP"
+		},
+		{
+			"offsets": [
+				130,
+				-10
+			],
+			"frameRate": 24,
+			"prefix": "note sing left",
+			"frameIndices": [],
+			"name": "singLEFT"
+		},
+		{
+			"offsets": [
+				-130,
+				-14
+			],
+			"frameRate": 24,
+			"prefix": "spooky sing right",
+			"frameIndices": [],
+			"name": "singRIGHT"
+		},
+		{
+			"offsets": [
+				-50,
+				-130
+			],
+			"frameRate": 24,
+			"prefix": "spooky DOWN note",
+			"frameIndices": [],
+			"name": "singDOWN"
+		}
+	],
+	"hasTrail": false,
+	"camPos": null,
+	"holdLength": 4.1,
+	"charPos": null,
+	"flipX": false,
+	"asset": "characters/spooky_kids_assets",
+	"startingAnim": "danceRight",
+	"antialiasing": true,
+	"name": "characters/spooky_kids_assets",
+	"barColorJson": [
+		213,
+		126,
+		0
+	],
+	"replacesGF": false,
+	"scale": 0
 }

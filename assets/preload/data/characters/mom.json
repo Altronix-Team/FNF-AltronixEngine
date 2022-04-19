@@ -1,57 +1,85 @@
 {
-  "name": "Mommy Mearest (Car)",
-  "asset": "characters/Mom_Assets",
-  "barColorJson": 
-  [
-	216, 85, 142
-  ],
-  "startingAnim": "idle",
-  "camFollow": [0, 100],
-  "antialiasing": true,
-  "animations": [
-    {
-      "name": "idle",
-      "prefix": "Mom Idle",
-      "nextAnim": "idleLoop",
-      "offsets": [0, 0],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "idleLoop",
-      "prefix": "Mom Idle",
-      "offsets": [0, 0],
-      "frameIndices": [11, 12],
-      "frameRate": 12,
-      "looped": true
-    },
-    {
-      "name": "singUP",
-      "prefix": "Mom Up Pose",
-      "offsets": [14, 71],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singLEFT",
-      "prefix": "Mom Left Pose",
-      "offsets": [250, -23],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singRIGHT",
-      "prefix": "Mom Pose Left",
-      "offsets": [10, -60],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singDOWN",
-      "prefix": "MOM DOWN POSE",
-      "offsets": [20, -160],
-	  "frameIndices": [],
-	  "frameRate": 24
-    }
-  ]
+	"animations": [
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"nextAnim": "idleLoop",
+			"frameRate": 24,
+			"frameIndices": [],
+			"prefix": "Mom Idle",
+			"name": "idle"
+		},
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"frameRate": 12,
+			"prefix": "Mom Idle",
+			"frameIndices": [
+				11,
+				12
+			],
+			"looped": true,
+			"name": "idleLoop"
+		},
+		{
+			"offsets": [
+				14,
+				71
+			],
+			"frameRate": 24,
+			"prefix": "Mom Up Pose",
+			"frameIndices": [],
+			"name": "singUP"
+		},
+		{
+			"offsets": [
+				250,
+				-23
+			],
+			"frameRate": 24,
+			"prefix": "Mom Left Pose",
+			"frameIndices": [],
+			"name": "singLEFT"
+		},
+		{
+			"offsets": [
+				10,
+				-60
+			],
+			"frameRate": 24,
+			"prefix": "Mom Pose Left",
+			"frameIndices": [],
+			"name": "singRIGHT"
+		},
+		{
+			"offsets": [
+				20,
+				-160
+			],
+			"frameRate": 24,
+			"prefix": "MOM DOWN POSE",
+			"frameIndices": [],
+			"name": "singDOWN"
+		}
+	],
+	"hasTrail": false,
+	"camPos": null,
+	"holdLength": 4,
+	"charPos": null,
+	"flipX": false,
+	"asset": "characters/Mom_Assets",
+	"startingAnim": "idle",
+	"antialiasing": true,
+	"name": "characters/Mom_Assets",
+	"barColorJson": [
+		216,
+		85,
+		142
+	],
+	"replacesGF": false,
+	"scale": 0
 }

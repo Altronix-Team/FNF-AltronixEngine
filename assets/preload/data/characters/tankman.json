@@ -7,8 +7,9 @@
 				-5,
 				0
 			],
+			"nextAnim": "idle",
 			"frameRate": 24,
-			"interrupt": false,
+			"interrupt": true,
 			"name": "idle",
 			"looped": false
 		},
@@ -19,6 +20,7 @@
 				-20,
 				-9
 			],
+			"nextAnim": "idle",
 			"frameRate": 24,
 			"interrupt": false,
 			"name": "ugh",
@@ -31,6 +33,7 @@
 				-5,
 				15
 			],
+			"nextAnim": "idle",
 			"frameRate": 24,
 			"interrupt": false,
 			"name": "prettygood",
@@ -43,6 +46,7 @@
 				44,
 				46
 			],
+			"nextAnim": "idle",
 			"frameRate": 24,
 			"interrupt": true,
 			"name": "singUP",
@@ -55,6 +59,7 @@
 				-18,
 				-19
 			],
+			"nextAnim": "idle",
 			"frameRate": 24,
 			"interrupt": true,
 			"name": "singLEFT",
@@ -67,6 +72,7 @@
 				47,
 				-20
 			],
+			"nextAnim": "idle",
 			"frameRate": 24,
 			"interrupt": true,
 			"name": "singRIGHT",
@@ -79,6 +85,7 @@
 				64,
 				-104
 			],
+			"nextAnim": "idle",
 			"frameRate": 24,
 			"interrupt": true,
 			"name": "singDOWN",
@@ -87,8 +94,8 @@
 	],
 	"hasTrail": false,
 	"camPos": [
-		100,
-		-150
+		-80,
+		-120
 	],
 	"holdLength": 4,
 	"charPos": [
@@ -105,5 +112,6 @@
 		255,
 		255
 	],
+	"replacesGF": false,
 	"scale": 1.05
 }

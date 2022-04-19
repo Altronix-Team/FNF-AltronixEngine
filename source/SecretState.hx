@@ -282,6 +282,10 @@ class SecretState extends MusicBeatState
 			changeSelection(1);
 		}
 
+		if (FlxG.keys.justPressed.SEVEN)
+		{
+			FreeplayState.loadSongInFreePlay(songs[curSelected].songName, curDifficulty, true);
+		}
 		if (FlxG.keys.justPressed.LEFT)
 		{
 			changeDiff(-1);
@@ -352,15 +356,8 @@ class SecretState extends MusicBeatState
 					FlxTween.tween(e, {x: -6000}, llll / 1000, {
 						onComplete: function(e:FlxTween)
 						{
-							if (FlxG.keys.pressed.ALT)
-							{
-								FlxG.switchState(new ChartingState());
-							}
-							else
-							{
-								openSubState(new LoadingsState());
-								LoadingState.loadAndSwitchState(new PlayState());
-							}
+							openSubState(new LoadingsState());
+							LoadingState.loadAndSwitchState(new PlayState());
 						}
 					});
 				}

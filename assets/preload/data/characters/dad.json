@@ -1,58 +1,88 @@
 {
-  "name": "Dad",
-  "asset": "characters/DADDY_DEAREST",
-  "barColorJson": 
-  [
-	175, 102, 206
-  ],
-  "startingAnim": "idle",
-  "holdLength": 6.1,
-  "camPos": [400, 0],
-  "antialiasing": true,
-  "animations": [
-    {
-      "name": "idle",
-      "prefix": "Dad idle dance",
-      "nextAnim": "idleLoop",
-      "offsets": [0, 0],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "idleLoop",
-      "prefix": "Dad idle dance",
-      "offsets": [0, 0],
-      "frameIndices": [11, 12],
-      "frameRate": 12,
-      "looped": true
-    },
-    {
-      "name": "singUP",
-      "prefix": "Dad Sing Note UP",
-      "offsets": [-6, 50],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singLEFT",
-      "prefix": "Dad Sing Note LEFT",
-      "offsets": [-10, 10],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singRIGHT",
-      "prefix": "Dad Sing Note RIGHT",
-      "offsets": [0, 27],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singDOWN",
-      "prefix": "Dad Sing Note DOWN",
-      "offsets": [0, -30],
-	  "frameIndices": [],
-	  "frameRate": 24
-    }
-  ]
+	"animations": [
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"nextAnim": "idleLoop",
+			"frameRate": 24,
+			"frameIndices": [],
+			"prefix": "Dad idle dance",
+			"name": "idle"
+		},
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"frameRate": 12,
+			"prefix": "Dad idle dance",
+			"frameIndices": [
+				11,
+				12
+			],
+			"looped": true,
+			"name": "idleLoop"
+		},
+		{
+			"offsets": [
+				-6,
+				50
+			],
+			"frameRate": 24,
+			"prefix": "Dad Sing Note UP",
+			"frameIndices": [],
+			"name": "singUP"
+		},
+		{
+			"offsets": [
+				-10,
+				10
+			],
+			"frameRate": 24,
+			"prefix": "Dad Sing Note LEFT",
+			"frameIndices": [],
+			"name": "singLEFT"
+		},
+		{
+			"offsets": [
+				0,
+				27
+			],
+			"frameRate": 24,
+			"prefix": "Dad Sing Note RIGHT",
+			"frameIndices": [],
+			"name": "singRIGHT"
+		},
+		{
+			"offsets": [
+				0,
+				-30
+			],
+			"frameRate": 24,
+			"prefix": "Dad Sing Note DOWN",
+			"frameIndices": [],
+			"name": "singDOWN"
+		}
+	],
+	"hasTrail": false,
+	"camPos": [
+		-120,
+		0
+	],
+	"holdLength": 6.1,
+	"charPos": null,
+	"flipX": false,
+	"asset": "characters/DADDY_DEAREST",
+	"startingAnim": "idle",
+	"antialiasing": true,
+	"name": "characters/DADDY_DEAREST",
+	"barColorJson": [
+		175,
+		102,
+		206
+	],
+	"replacesGF": false,
+	"scale": 0
 }

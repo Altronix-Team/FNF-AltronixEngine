@@ -6,6 +6,7 @@ import flixel.graphics.frames.FlxAtlasFrames;
 import lime.utils.Assets;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
+import polymod.Polymod.ModMetadata;
 import haxe.Json;
 #if sys
 import sys.io.File;
@@ -177,6 +178,14 @@ class Paths
 	{
 		return 'assets/$file';
 	}
+
+	public static function temporaryStagePath(file:String)
+		{
+			var loadedModIds = ModCore.getConfiguredMods();
+			var modConfigStr = loadedModIds.join('~');
+			Debug.logTrace(modConfigStr);
+			return 'mods/' + modConfigStr + 'stages/$file.lua';
+		}
 
 	inline static public function file(file:String, ?library:String, type:AssetType = TEXT)
 	{

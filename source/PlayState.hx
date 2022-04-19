@@ -321,6 +321,11 @@ class PlayState extends MusicBeatState
 
 	public static var startTime = 0.0;
 
+	var dadTrail:FlxTrail;
+	var gfTrail:FlxTrail;
+	var bfTrail:FlxTrail;
+
+
 	// API stuff
 
 	public function addObject(object:FlxBasic)
@@ -737,14 +742,14 @@ class PlayState extends MusicBeatState
 				}
 			}
 
-		gf.x += gf.charPos[0];
-		gf.y += gf.charPos[1];
-		dad.x += dad.charPos[0];
-		dad.y += dad.charPos[1];
-		boyfriend.x += boyfriend.charPos[0];
-		boyfriend.y += boyfriend.charPos[1];
+		gf.x += gf.positionArray[0];
+		gf.y += gf.positionArray[1];
+		dad.x += dad.positionArray[0];
+		dad.y += dad.positionArray[1];
+		boyfriend.x += boyfriend.positionArray[0];
+		boyfriend.y += boyfriend.positionArray[1];
 
-		camPos = new FlxPoint(dad.getGraphicMidpoint().x + dad.camPos[0], dad.getGraphicMidpoint().y + dad.camPos[1]);
+		camPos = new FlxPoint(gf.getGraphicMidpoint().x, gf.getGraphicMidpoint().y);
 
 		if (dad.hasTrail)
 		{
@@ -752,7 +757,7 @@ class PlayState extends MusicBeatState
 			{
 				if (!PlayStateChangeables.Optimize)
 				{
-					var dadTrail = new FlxTrail(dad, null, 4, 24, 0.3, 0.069);
+					dadTrail = new FlxTrail(dad, null, 4, 24, 0.3, 0.069);
 					add(dadTrail);
 				}
 			}
@@ -764,7 +769,7 @@ class PlayState extends MusicBeatState
 			{
 				if (!PlayStateChangeables.Optimize)
 				{
-					var bfTrail = new FlxTrail(boyfriend, null, 4, 24, 0.3, 0.069);
+					bfTrail = new FlxTrail(boyfriend, null, 4, 24, 0.3, 0.069);
 					add(bfTrail);
 				}
 			}
@@ -776,7 +781,7 @@ class PlayState extends MusicBeatState
 			{
 				if (!PlayStateChangeables.Optimize)
 				{
-					var gfTrail = new FlxTrail(gf, null, 4, 24, 0.3, 0.069);
+					gfTrail = new FlxTrail(gf, null, 4, 24, 0.3, 0.069);
 					add(gfTrail);
 				}
 			}
@@ -2690,6 +2695,53 @@ class PlayState extends MusicBeatState
 							newScroll = i.value;
 						}
 
+					
+					case "Change Stage":
+						if (i.position <= curDecimalBeat && !pastEvents.contains(i))
+						{
+							pastEvents.push(i);
+							try
+							{
+								instance.removeObject(gf);
+								instance.removeObject(boyfriend);
+								instance.removeObject(dad);
+								
+								for (i in Stage.toAdd)
+								{
+									instance.remove(i);
+								}
+	
+								Debug.logTrace(i.value);
+	
+								Stage = new Stage(i.value);
+	
+								for (i in Stage.toAdd)
+								{
+									instance.add(i);
+									if (i == Stage.toAdd.length)
+									{
+										new FlxTimer().start(0.3, function(tmr:FlxTimer)
+											{
+												instance.addObject(gf);	
+												new FlxTimer().start(0.3, function(tmr:FlxTimer)
+													{
+														instance.addObject(boyfriend);
+														new FlxTimer().start(0.3, function(tmr:FlxTimer)
+															{
+																instance.addObject(dad);
+																resyncVocals();
+															});
+													});																														
+											});
+									}
+								}							
+							}
+							catch (e)
+							{
+								Debug.logError("Stage not changed\n" + e + e.stack);
+							}
+						}
+
 					case "Start Countdown":
 						if (i.position <= curDecimalBeat && !pastEvents.contains(i))
 						{
@@ -2704,19 +2756,28 @@ class PlayState extends MusicBeatState
 							pastEvents.push(i);
 							try
 							{
-								var oldx = dad.x;
-								var oldy = dad.y;
+								if (dad.hasTrail)
+									{
+										instance.remove(dadTrail);
+									}
 								instance.remove(dad);
 
 								Debug.logTrace(i.value);
 
-								dad = new Character(oldx, oldy, i.value, false);
+								dad = new Character(100, 100, i.value, false);
 								iconP2.changeIcon(i.value);
 
 								instance.add(dad);
 								healthBar.createFilledBar(dad.barColor, boyfriend.barColor);
 								healthBar.updateFilledBar();
 								resyncVocals();
+								dad.x += dad.positionArray[0];
+								dad.y += dad.positionArray[1];
+								if (dad.hasTrail)
+									{
+										dadTrail = new FlxTrail(dad, null, 4, 24, 0.3, 0.069);
+										add(dadTrail);
+									}
 							}
 							catch (e)
 							{
@@ -2730,19 +2791,30 @@ class PlayState extends MusicBeatState
 							pastEvents.push(i);
 							try
 							{
+								if (boyfriend.hasTrail)
+									{
+										instance.remove(bfTrail);
+									}
 								var oldx = boyfriend.x;
 								var oldy = boyfriend.y;
 								instance.remove(boyfriend);
 
 								Debug.logTrace(i.value);
 
-								boyfriend = new Boyfriend(oldx, oldy, i.value);
+								boyfriend = new Boyfriend(770, 450, i.value);
 								iconP1.changeIcon(i.value);
 
 								instance.add(boyfriend);
 								healthBar.createFilledBar(dad.barColor, boyfriend.barColor);
 								healthBar.updateFilledBar();
+								boyfriend.x += boyfriend.positionArray[0];
+								boyfriend.y += boyfriend.positionArray[1];
 								resyncVocals();
+								if (boyfriend.hasTrail)
+									{
+										bfTrail = new FlxTrail(boyfriend, null, 4, 24, 0.3, 0.069);
+										add(bfTrail);
+									}
 							}
 							catch (e)
 							{
@@ -2756,47 +2828,32 @@ class PlayState extends MusicBeatState
 							pastEvents.push(i);
 							try
 							{
+								if (gf.hasTrail)
+									{
+										instance.remove(gfTrail);
+									}
 								var oldx = gf.x;
 								var oldy = gf.y;
 								instance.remove(gf);
 
 								Debug.logTrace(i.value);
 
-								gf = new Character(oldx, oldy, i.value, false);
+								gf = new Character(400, 130, i.value, false);
 
 								instance.add(gf);
 								resyncVocals();
+								gf.x += gf.positionArray[0];
+								gf.y += gf.positionArray[1];
+								if (gf.hasTrail)
+									{
+										gfTrail = new FlxTrail(gf, null, 4, 24, 0.3, 0.069);
+										add(gfTrail);
+									}
+								
 							}
 							catch (e)
 							{
 								Debug.logError("GF character not changed\n" + e + e.stack);
-							}
-						}
-
-					case "Change Stage":
-						if (i.position <= curDecimalBeat && !pastEvents.contains(i))
-						{
-							pastEvents.push(i);
-							try
-							{
-								for (i in Stage.toAdd)
-								{
-									instance.remove(i);
-								}
-
-								Debug.logTrace(i.value);
-
-								Stage = new Stage(i.value);
-
-								for (i in Stage.toAdd)
-								{
-									instance.add(i);
-									resyncVocals();
-								}
-							}
-							catch (e)
-							{
-								Debug.logError("Stage not changed\n" + e + e.stack);
 							}
 						}
 					case "Song Overlay":
@@ -3401,7 +3458,7 @@ class PlayState extends MusicBeatState
 				if (luaModchart != null)
 					luaModchart.executeState('playerOneTurn', []);
 				#end
-				if (!PlayStateChangeables.Optimize)
+				/*if (!PlayStateChangeables.Optimize)
 					switch (Stage.curStage)
 					{
 						case 'limo':
@@ -3414,7 +3471,7 @@ class PlayState extends MusicBeatState
 						case 'schoolEvil':
 							camFollow.x = boyfriend.getMidpoint().x - 200;
 							camFollow.y = boyfriend.getMidpoint().y - 200;
-					}
+					}*/
 				
 				camFollow.x += boyfriend.camPos[0];
 				camFollow.y += boyfriend.camPos[1];

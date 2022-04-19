@@ -1,5 +1,6 @@
 package;
 
+import openfl.display.Preloader.DefaultPreloader;
 import flixel.addons.effects.FlxSkewedSprite;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -72,6 +73,8 @@ class Note extends FlxSprite
 
 	public var children:Array<Note> = [];
 
+	public var noteTypeCheck:String = 'normal';
+
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inCharter:Bool = false, ?isAlt:Bool = false, ?bet:Float = 0, ?noteType:Int = 0)
 	{
 		super();
@@ -122,7 +125,21 @@ class Note extends FlxSprite
 		var daStage:String = ((PlayState.instance != null && !PlayStateChangeables.Optimize) ? PlayState.Stage.curStage : 'stage');
 
 		// defaults if no noteStyle was found in chart
-		var noteTypeCheck:String = 'normal';
+
+		if (PlayState.SONG.noteStyle == null)
+		{
+			switch (PlayState.storyWeek)
+			{
+				case 6:
+					noteTypeCheck = 'pixel';
+				default:
+					noteTypeCheck = 'normal';
+			}
+		}
+		else
+		{
+			noteTypeCheck = PlayState.SONG.noteStyle;
+		}
 
 		if (inCharter)
 		{	
@@ -196,20 +213,6 @@ class Note extends FlxSprite
 		}
 		else
 		{
-			if (PlayState.SONG.noteStyle == null)
-			{
-				switch (PlayState.storyWeek)
-				{
-					case 6:
-						noteTypeCheck = 'pixel';
-				}
-			}
-			else
-			{
-				noteTypeCheck = PlayState.SONG.noteStyle;
-			}
-
-
 			switch (noteTypeCheck)
 			{
 				case 'pixel':

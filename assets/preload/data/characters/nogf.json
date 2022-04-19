@@ -6,6 +6,8 @@
 	165, 0, 77
   ],
   "startingAnim": "danceRight",
+  "isDancing": true,
+  "replacesGF": true,
   "graphicsize": "",
   "antialiasing": true,
   "animations": [

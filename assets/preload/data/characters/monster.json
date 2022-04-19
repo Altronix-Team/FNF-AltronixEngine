@@ -1,48 +1,70 @@
 {
-  "name": "Monster",
-  "asset": "characters/Monster_Assets",
-  "barColorJson": 
-  [
-	243, 255, 110
-  ],
-  "startingAnim": "idle",
-  "graphicsize": "",
-  "antialiasing": true,
-  "animations": [
-    {
-      "name": "idle",
-      "prefix": "monster idle",
-      "offsets": [0, 0],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singUP",
-      "prefix": "monster up note",
-      "offsets": [-20, 94],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singLEFT",
-      "prefix": "Monster left note",
-      "offsets": [-30, 20],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singRIGHT",
-      "prefix": "Monster Right note",
-      "offsets": [-51, 30],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singDOWN",
-      "prefix": "monster down",
-      "offsets": [-50, -80],
-	  "frameIndices": [],
-	  "frameRate": 24
-    }
-  ]
+	"animations": [
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"frameRate": 24,
+			"prefix": "monster idle",
+			"frameIndices": [],
+			"name": "idle"
+		},
+		{
+			"offsets": [
+				-20,
+				94
+			],
+			"frameRate": 24,
+			"prefix": "monster up note",
+			"frameIndices": [],
+			"name": "singUP"
+		},
+		{
+			"offsets": [
+				-30,
+				20
+			],
+			"frameRate": 24,
+			"prefix": "Monster left note",
+			"frameIndices": [],
+			"name": "singLEFT"
+		},
+		{
+			"offsets": [
+				-51,
+				30
+			],
+			"frameRate": 24,
+			"prefix": "Monster Right note",
+			"frameIndices": [],
+			"name": "singRIGHT"
+		},
+		{
+			"offsets": [
+				-50,
+				-80
+			],
+			"frameRate": 24,
+			"prefix": "monster down",
+			"frameIndices": [],
+			"name": "singDOWN"
+		}
+	],
+	"hasTrail": false,
+	"camPos": null,
+	"holdLength": 4,
+	"charPos": null,
+	"flipX": false,
+	"asset": "characters/Monster_Assets",
+	"startingAnim": "idle",
+	"antialiasing": false,
+	"name": "characters/Monster_Assets",
+	"barColorJson": [
+		243,
+		255,
+		110
+	],
+	"replacesGF": false,
+	"scale": 0
 }

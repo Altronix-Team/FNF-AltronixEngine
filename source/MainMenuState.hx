@@ -89,10 +89,9 @@ class MainMenuState extends MusicBeatState
 		persistentUpdate = persistentDraw = true;
 
 		var yScroll:Float = Math.max(0.25 - (0.05 * (optionShit.length - 4)), 0.1);
-		var bg:FlxSprite = new FlxSprite(-100).loadGraphic(Paths.loadImage('menuBG'));
-		bg.scrollFactor.x = 0;
-		bg.scrollFactor.y = yScroll;
-		bg.setGraphicSize(Std.int(bg.width * 1.1));
+		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.loadImage('menuBG'));
+		bg.scrollFactor.set(0, yScroll);
+		bg.setGraphicSize(Std.int(bg.width * 1.18));
 		bg.updateHitbox();
 		bg.screenCenter();
 		bg.antialiasing = FlxG.save.data.antialiasing;
@@ -105,9 +104,8 @@ class MainMenuState extends MusicBeatState
 		add(camFollowPos);
 
 		magenta = new FlxSprite(-80).loadGraphic(Paths.loadImage('menuDesat'));
-		magenta.scrollFactor.x = 0;
-		magenta.scrollFactor.y = yScroll;
-		magenta.setGraphicSize(Std.int(magenta.width * 1.1));
+		magenta.scrollFactor.set(0, yScroll);
+		magenta.setGraphicSize(Std.int(magenta.width * 1.18));
 		magenta.updateHitbox();
 		magenta.screenCenter();
 		magenta.visible = false;

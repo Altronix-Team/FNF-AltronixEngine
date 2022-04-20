@@ -9,6 +9,9 @@ class KadeEngineData
 		if (FlxG.save.data.weekUnlocked == null)
 			FlxG.save.data.weekUnlocked = 7;
 
+		if (FlxG.save.data.caching == null)
+			FlxG.save.data.caching = true;
+
 		if (FlxG.save.data.newInput == null)
 			FlxG.save.data.newInput = true;
 

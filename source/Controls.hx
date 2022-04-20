@@ -611,7 +611,7 @@ class Controls extends FlxActionSet
 		inline bindKeys(Control.BACK, [ESCAPE]);
 		inline bindKeys(Control.PAUSE, [FlxKey.fromString(FlxG.save.data.pauseBind)]);
 		inline bindKeys(Control.RESET, [FlxKey.fromString(FlxG.save.data.resetBind)]);
-		inline bindKeys(Control.ATTACK, [FlxKey.fromString(FlxG.save.data.attackBind)]);
+		inline bindKeys(Control.ATTACK, [FlxKey.fromString(FlxG.save.data.attackBind), FlxKey.SHIFT]);
 
 		FlxG.sound.muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
 		FlxG.sound.volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];

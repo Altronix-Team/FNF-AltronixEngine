@@ -1846,7 +1846,7 @@ class PlayState extends MusicBeatState
 		// Song check real quick
 		switch (curSong)
 		{
-			case 'bopeebo' | 'philly nice' | 'blammed' | 'cocoa' | 'eggnog':
+			case 'bopeebo' | 'philly nice' | 'blammed' | 'cocoa' | 'eggnog' | 'stress':
 				allowedToCheer = true;
 			default:
 				allowedToCheer = false;
@@ -2734,7 +2734,15 @@ class PlayState extends MusicBeatState
 													});																														
 											});
 									}
-								}							
+								}	
+								var positions = Stage.positions[Stage.curStage];
+								if (positions != null && !stageTesting)
+								{
+									for (char => pos in positions)
+										for (person in [boyfriend, gf, dad])
+											if (person.curCharacter == char)
+												person.setPosition(pos[0], pos[1]);
+								}						
 							}
 							catch (e)
 							{
@@ -2778,6 +2786,14 @@ class PlayState extends MusicBeatState
 										dadTrail = new FlxTrail(dad, null, 4, 24, 0.3, 0.069);
 										add(dadTrail);
 									}
+								var positions = Stage.positions[Stage.curStage];
+								if (positions != null && !stageTesting)
+								{
+									for (char => pos in positions)
+										for (person in [boyfriend, gf, dad])
+											if (person.curCharacter == char)
+												person.setPosition(pos[0], pos[1]);
+								}
 							}
 							catch (e)
 							{
@@ -2815,6 +2831,14 @@ class PlayState extends MusicBeatState
 										bfTrail = new FlxTrail(boyfriend, null, 4, 24, 0.3, 0.069);
 										add(bfTrail);
 									}
+								var positions = Stage.positions[Stage.curStage];
+								if (positions != null && !stageTesting)
+								{
+									for (char => pos in positions)
+										for (person in [boyfriend, gf, dad])
+											if (person.curCharacter == char)
+												person.setPosition(pos[0], pos[1]);
+								}
 							}
 							catch (e)
 							{
@@ -2849,7 +2873,14 @@ class PlayState extends MusicBeatState
 										gfTrail = new FlxTrail(gf, null, 4, 24, 0.3, 0.069);
 										add(gfTrail);
 									}
-								
+								var positions = Stage.positions[Stage.curStage];
+								if (positions != null && !stageTesting)
+								{
+									for (char => pos in positions)
+										for (person in [boyfriend, gf, dad])
+											if (person.curCharacter == char)
+												person.setPosition(pos[0], pos[1]);
+								}
 							}
 							catch (e)
 							{

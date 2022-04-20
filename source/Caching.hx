@@ -40,6 +40,7 @@ class Caching extends MusicBeatState
 
 	var text:FlxText;
 	var kadeLogo:FlxSprite;
+	var bar:FlxBar;
 
 	public static var bitmapData:Map<String, FlxGraphic>;
 
@@ -55,16 +56,23 @@ class Caching extends MusicBeatState
 
 		KadeEngineData.initSave();
 
-		// It doesn't reupdate the list before u restart rn lmao
-		NoteskinHelpers.updateNoteskins();
-
-		FlxG.sound.muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
-		FlxG.sound.volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];
-		FlxG.sound.volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
+		FlxG.autoPause = false;
 
 		FlxG.mouse.visible = false;
 
 		FlxG.worldBounds.set(0, 0);
+
+		// It doesn't reupdate the list before u restart rn lmao
+		NoteskinHelpers.updateNoteskins();
+
+		if (FlxG.save.data.volDownBind == null)
+			FlxG.save.data.volDownBind = "MINUS";
+		if (FlxG.save.data.volUpBind == null)
+			FlxG.save.data.volUpBind = "PLUS";
+
+		FlxG.sound.muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
+		FlxG.sound.volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];
+		FlxG.sound.volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
 
 		bitmapData = new Map<String, FlxGraphic>();
 
@@ -85,6 +93,8 @@ class Caching extends MusicBeatState
 			kadeLogo.antialiasing = true;
 
 		kadeLogo.alpha = 0;
+
+		
 
 		FlxGraphic.defaultPersist = FlxG.save.data.cacheImages;
 
@@ -117,13 +127,15 @@ class Caching extends MusicBeatState
 
 		toBeDone = Lambda.count(images) + Lambda.count(music);
 
-		var bar = new FlxBar(10, FlxG.height - 50, FlxBarFillDirection.LEFT_TO_RIGHT, FlxG.width, 40, null, "done", 0, toBeDone);
-		bar.color = FlxColor.PURPLE;
-
-		add(bar);
+		bar = new FlxBar(10, FlxG.height - 50, FlxBarFillDirection.LEFT_TO_RIGHT, FlxG.width, 40, null, "done", 0, toBeDone);
+		bar.createGradientFilledBar([FlxColor.fromRGB(226, 0, 255, 255), FlxColor.fromRGB(0, 254, 255, 255), FlxColor.fromRGB(0, 255, 166, 255),  FlxColor.fromRGB(224, 255, 0, 255)]);
+		bar.visible = true;
+		bar.scrollFactor.set();
 
 		add(kadeLogo);
 		add(text);
+
+		add(bar);
 
 		trace('starting caching..');
 
@@ -158,6 +170,7 @@ class Caching extends MusicBeatState
 
 	override function update(elapsed)
 	{
+		bar.value = done;
 		super.update(elapsed);
 	}
 

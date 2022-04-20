@@ -135,7 +135,7 @@ class Character extends FlxSprite
 				if (anim.nextAnim != null)
 					animNext[anim.name] = anim.nextAnim;
 			}
-
+	
 		this.replacesGF = data.replacesGF == null ? false : data.replacesGF;
 		this.hasTrail = data.hasTrail == null ? false : data.hasTrail;
 		this.isDancing = data.isDancing == null ? false : data.isDancing;
@@ -282,6 +282,13 @@ class Character extends FlxSprite
 				danced = !danced;
 			}
 		}
+	}
+
+	public function changeCharacter(name:String)
+	{
+		curCharacter = name;
+		jsonScale = 1;
+		parseDataFile();
 	}
 
 	public function addOffset(name:String, x:Float = 0, y:Float = 0)

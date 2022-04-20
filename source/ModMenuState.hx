@@ -149,7 +149,10 @@ class ModMenuState extends XMLLayoutState // extends MusicBeatState
 		// Gotta load any configured mods.
 		ModCore.loadConfiguredMods();
 		#if FEATURE_FILESYSTEM
-		FlxG.switchState(new Caching());
+		if (FlxG.save.data.caching)
+			FlxG.switchState(new Caching());
+		else
+			FlxG.switchState(new TitleState());
 		#else
 		FlxG.switchState(new TitleState());
 		#end

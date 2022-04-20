@@ -1268,6 +1268,36 @@ class LanguageOption extends Option
 	}
 }
 
+class CachingOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		FlxG.save.data.caching = !FlxG.save.data.caching;
+		display = updateDisplay();
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		left();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		if (!FlxG.save.data.language)
+			return "Caching: < " + (!FlxG.save.data.caching ? "Enabled" : "Disabled") + " >";
+		else
+			return "Кэширование: < " + (!FlxG.save.data.caching ? "Включено" : "Выключено") + " >";
+	}
+}
+
 class ScoreScreen extends Option
 {
 	public function new(desc:String)

@@ -4,3 +4,4 @@ gf-christmas
 gf-pixel
 gftank
 nogf
+picospeaker

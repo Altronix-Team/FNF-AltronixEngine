@@ -165,6 +165,7 @@ class OptionsMenu extends FlxSubState
 					new ScoreScreen("Show the score screen after the end of a song"),
 					new ShowInput("Display every single input on the score screen."),
 					new LanguageOption("Change Dialog Language"),
+					//new CachingOption("Toggle caching"),
 				]),
 				new OptionCata(935, 40, "Saves", [
 					#if desktop // new ReplayOption("View saved song replays."),
@@ -232,6 +233,7 @@ class OptionsMenu extends FlxSubState
 					new ScoreScreen("Показывает экран со счётом после конца песни."),
 					new ShowInput("Отобразить каждое отдельное нажатие на экране счёта"),
 					new LanguageOption("Изменить язык"),
+					//new CachingOption("Переключить кэширование"),
 				]),
 				new OptionCata(935, 40, "Сохранения", [
 					#if desktop // new ReplayOption("View saved song replays."),

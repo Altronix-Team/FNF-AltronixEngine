@@ -218,6 +218,10 @@ class ResultsScreen extends FlxSubState
 			{
 				FlxG.switchState(new SecretState());
 			}
+			else if (PlayState.fromPasswordMenu)
+			{
+				FlxG.switchState(new MainMenuState());
+			}
 			else
 				FlxG.switchState(new FreeplayState());
 			PlayState.instance.clean();

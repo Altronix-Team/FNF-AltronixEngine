@@ -100,7 +100,20 @@ class ExtrasPasswordState extends MusicBeatState
 				FlxG.sound.play(Paths.sound('ANGRY_TEXT_BOX', 'shared'));
 				Main.isHidden = true;
 			}
-			else if (passwordText != 'tankman' || passwordText != 'debug')
+			else if (passwordText == 'iphone')
+			{
+				var poop:String = Highscore.formatSongDiff('iphone', 2);
+				PlayState.SONG = Song.loadFromJson('iphone', poop);
+				PlayState.isStoryMode = false;
+				PlayState.isFreeplay = false;
+				PlayState.isExtras = false;
+				PlayState.fromPasswordMenu = true;
+				PlayState.storyDifficulty = 2;
+
+				var llll = FlxG.sound.play(Paths.sound('confirmMenu')).length;
+				LoadingState.loadAndSwitchState(new PlayState());
+			}
+			else
 			{
 				FlxG.sound.play(Paths.soundRandom('missnote', 1, 3, 'shared'));
 				if (FlxG.save.data.flashing)

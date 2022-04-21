@@ -102,11 +102,11 @@ class Main extends Sprite
 		bitmapFPS.smoothing = true;
 		#end	
 		
-		#if FEATURE_FILESYSTEM
+		/*#if FEATURE_FILESYSTEM
 		initialState = Caching;
 		#else
 		initialState = TitleState;
-		#end
+		#end*/
 
 		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
 		addChild(game);

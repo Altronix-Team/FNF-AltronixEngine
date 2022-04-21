@@ -182,6 +182,7 @@ class PlayState extends MusicBeatState
 
 	public static var isFreeplay:Bool = false;
 	public static var isExtras:Bool = false;
+	public static var fromPasswordMenu:Bool = false;
 
 	private var gfSpeed:Int = 1;
 
@@ -4328,6 +4329,31 @@ class PlayState extends MusicBeatState
 					clean();
 				}
 			}
+			else if (fromPasswordMenu)
+				{
+					trace('WENT BACK TO EXTRAS MENU??');
+					paused = true;
+	
+					FlxG.sound.music.stop();
+					vocals.stop();
+	
+					if (FlxG.save.data.scoreScreen)
+					{
+						GameJoltAPI.addScore(Math.round(songScore), 716199, 'Song - ' + SONG.songName + '\n' + 'Difficulty - ' + storyDifficultyText);
+						openSubState(new ResultsScreen());
+						new FlxTimer().start(1, function(tmr:FlxTimer)
+						{
+							inResults = true;
+						});
+					}
+					else
+					{
+						GameJoltAPI.addScore(Math.round(songScore), 716199, 'Song - ' + SONG.songName + '\n' + 'Difficulty - ' + storyDifficultyText);
+						FlxG.switchState(new MainMenuState());
+						FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
+						clean();
+					}
+				}
 			else
 			{
 				trace('WENT BACK TO FREEPLAY??');

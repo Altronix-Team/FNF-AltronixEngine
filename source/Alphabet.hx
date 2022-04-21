@@ -9,6 +9,8 @@ import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxMath;
 import flixel.util.FlxTimer;
+import flixel.system.FlxSound;
+import flash.media.Sound;
 import openfl.Lib;
 
 using StringTools;
@@ -54,9 +56,12 @@ class Alphabet extends FlxSpriteGroup
 	var xScale:Float;
 	var yScale:Float;
 
+	public var finishedText:Bool = false;
+	var textSize:Float = 1.0;
+
 	// ThatGuy: Added 2 more variables, xScale and yScale for resizing text
 	public function new(x:Float, y:Float, text:String = "", ?bold:Bool = false, typed:Bool = false, shouldMove:Bool = false, xScale:Float = 1,
-			yScale:Float = 1)
+			yScale:Float = 1, ?typingSpeed:Float = 0.05)
 	{
 		pastX = x;
 		pastY = y;
@@ -75,13 +80,15 @@ class Alphabet extends FlxSpriteGroup
 		{
 			if (typed)
 			{
-				startTypedText();
+				startTypedText(typingSpeed);
 			}
 			else
 			{
 				addText();
 			}
 		}
+		else
+			finishedText = false;
 	}
 
 	public function reType(text, xScale:Float = 1, yScale:Float = 1)
@@ -169,46 +176,81 @@ class Alphabet extends FlxSpriteGroup
 
 	public var personTalking:String = 'gf';
 
-	// ThatGuy: THIS FUNCTION ISNT CHANGED! Because i dont use it lol
-	public function startTypedText():Void
+	var loopNum:Int = 0;
+	public var curRow:Int = 0;
+	var dialogueSound:FlxSound = null;
+	private static var soundDialog:Sound = null;
+	var consecutiveSpaces:Int = 0;
+
+	public static function setDialogueSound(name:String = '')
+		{
+			if (name == null || name.trim() == '') name = 'dialogue';
+			soundDialog = Paths.dialogueSound(name);
+			if(soundDialog == null) soundDialog = Paths.dialogueSound('dialogue');
+		}
+
+	var typeTimer:FlxTimer = null;
+	var xPos:Float = 0;
+
+	public function startTypedText(speed:Float):Void
 	{
 		_finalText = text;
 		doSplitWords();
 
 		// trace(arrayShit);
 
-		var loopNum:Int = 0;
-
-		var xPos:Float = 0;
-		var curRow:Int = 0;
-
-		new FlxTimer().start(0.05, function(tmr:FlxTimer)
+		if(soundDialog == null)
 		{
-			// trace(_finalText.fastCodeAt(loopNum) + " " + _finalText.charAt(loopNum));
-			if (_finalText.fastCodeAt(loopNum) == "\n".code)
+			Alphabet.setDialogueSound();
+		}
+
+		if(speed <= 0) {
+			while(!finishedText) { 
+				timerCheck();
+			}
+			if(dialogueSound != null) dialogueSound.stop();
+			dialogueSound = FlxG.sound.play(soundDialog);
+		} else {
+			typeTimer = new FlxTimer().start(0.1, function(tmr:FlxTimer) {
+				typeTimer = new FlxTimer().start(speed, function(tmr:FlxTimer) {
+					timerCheck(tmr);
+				}, 0);
+			});
+		}
+	}
+
+	var LONG_TEXT_ADD:Float = -24; //text is over 2 rows long, make it go up a bit
+	public function timerCheck(?tmr:FlxTimer = null) {
+		var autoBreak:Bool = false;
+		if ((loopNum <= splitWords.length - 2 && splitWords[loopNum] == "\\" && splitWords[loopNum+1] == "n") ||
+			((autoBreak = true) && xPos >= FlxG.width * 0.65 && splitWords[loopNum] == ' ' ))
+		{
+			if(autoBreak) {
+				if(tmr != null) tmr.loops -= 1;
+				loopNum += 1;
+			} else {
+				if(tmr != null) tmr.loops -= 2;
+				loopNum += 2;
+			}
+			yMulti += 1;
+			xPosResetted = true;
+			xPos = 0;
+			curRow += 1;
+			if(curRow == 2) y += LONG_TEXT_ADD;
+		}
+
+		if(loopNum <= splitWords.length && splitWords[loopNum] != null) {
+			var spaceChar:Bool = (splitWords[loopNum] == " " || (isBold && splitWords[loopNum] == "_"));
+			if (spaceChar)
 			{
-				yMulti += 1;
-				xPosResetted = true;
-				xPos = 0;
-				curRow += 1;
+				consecutiveSpaces++;
 			}
 
-			if (splitWords[loopNum] == " ")
-			{
-				lastWasSpace = true;
-			}
-
-			#if (haxe >= "4.0.0")
-			var isNumber:Bool = AlphaCharacter.numbers.contains(splitWords[loopNum]);
-			var isSymbol:Bool = AlphaCharacter.symbols.contains(splitWords[loopNum]);
-			#else
 			var isNumber:Bool = AlphaCharacter.numbers.indexOf(splitWords[loopNum]) != -1;
 			var isSymbol:Bool = AlphaCharacter.symbols.indexOf(splitWords[loopNum]) != -1;
-			#end
+			var isAlphabet:Bool = AlphaCharacter.alphabet.indexOf(splitWords[loopNum].toLowerCase()) != -1;
 
-			if (AlphaCharacter.alphabet.indexOf(splitWords[loopNum].toLowerCase()) != -1 || isNumber || isSymbol)
-				// if (AlphaCharacter.alphabet.contains(splitWords[loopNum].toLowerCase()) || isNumber || isSymbol)
-
+			if ((isAlphabet || isSymbol || isNumber) && (!isBold || !spaceChar))
 			{
 				if (lastSprite != null && !xPosResetted)
 				{
@@ -222,54 +264,51 @@ class Alphabet extends FlxSpriteGroup
 					xPosResetted = false;
 				}
 
-				if (lastWasSpace)
+				if (consecutiveSpaces > 0)
 				{
-					xPos += 20;
-					lastWasSpace = false;
+					xPos += 20 * consecutiveSpaces * textSize;
 				}
-				// trace(_finalText.fastCodeAt(loopNum) + " " + _finalText.charAt(loopNum));
+				consecutiveSpaces = 0;
 
-				// var letter:AlphaCharacter = new AlphaCharacter(30 * loopNum, 0);
+				// var letter:AlphaCharacter = new AlphaCharacter(30 * loopNum, 0, textSize);
 				var letter:AlphaCharacter = new AlphaCharacter(xPos, 55 * yMulti);
-				listOAlphabets.add(letter);
 				letter.row = curRow;
-				if (isBold)
+				
+				if (isNumber)
 				{
-					letter.createBold(splitWords[loopNum]);
+					letter.createNumber(splitWords[loopNum]);
+				}
+				else if (isSymbol)
+				{
+					letter.createSymbol(splitWords[loopNum]);
 				}
 				else
 				{
-					if (isNumber)
-					{
-						letter.createNumber(splitWords[loopNum]);
-					}
-					else if (isSymbol)
-					{
-						letter.createSymbol(splitWords[loopNum]);
-					}
-					else
-					{
-						letter.createLetter(splitWords[loopNum]);
-					}
-
-					letter.x += 90;
+					letter.createLetter(splitWords[loopNum]);
 				}
+				
+				letter.x += 90;
 
-				if (FlxG.random.bool(40))
-				{
-					var daSound:String = "GF_";
-					FlxG.sound.play(Paths.soundRandom(daSound, 1, 4));
+				if(tmr != null) {
+					if(dialogueSound != null) dialogueSound.stop();
+					dialogueSound = FlxG.sound.play(soundDialog);
 				}
 
 				add(letter);
 
 				lastSprite = letter;
 			}
+		}
 
-			loopNum += 1;
-
-			tmr.time = FlxG.random.float(0.04, 0.09);
-		}, splitWords.length);
+		loopNum++;
+		if(loopNum >= splitWords.length) {
+			if(tmr != null) {
+				typeTimer = null;
+				tmr.cancel();
+				tmr.destroy();
+			}
+			finishedText = true;
+		}
 	}
 
 	override function update(elapsed:Float)
@@ -283,6 +322,14 @@ class Alphabet extends FlxSpriteGroup
 		}
 
 		super.update(elapsed);
+	}
+
+	public function killTheTimer() {
+		if(typeTimer != null) {
+			typeTimer.cancel();
+			typeTimer.destroy();
+		}
+		typeTimer = null;
 	}
 
 	// ThatGuy: Ooga booga function for resizing text, with the option of wanting it to have the same midPoint

@@ -127,6 +127,7 @@ class TitleState extends MusicBeatState
 		startIntro();
 		#end
 		#end
+		Debug.logTrace('tut bil ya loh');
 	}
 
 	var logoBl:FlxSprite;

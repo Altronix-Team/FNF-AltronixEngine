@@ -84,6 +84,8 @@ import GameJolt.GameJoltAPI;
 import FunkinLua;
 import flixel.util.FlxSave;
 import LoadingState.LoadingsState;
+import DialogueBoxPsych;
+import openfl.utils.Assets as OpenFlAssets;
 #if desktop
 import DiscordClient;
 #end
@@ -236,6 +238,7 @@ class PlayState extends MusicBeatState
 
 	public var dialogueeng:Array<String> = ['dad:blah blah blah', 'bf:coolswag'];
 	public var dialogueru:Array<String> = ['dad:жопа', 'bf:пизда'];
+	var dialogueJson:DialogueFile = null;
 
 	var overlay:FlxSprite;
 	var overlayColor:FlxColor = 0xFFFF0000;
@@ -597,6 +600,10 @@ class PlayState extends MusicBeatState
 				{
 					dialogueeng = CoolUtil.coolTextFile(Paths.txt('data/songs/${PlayState.SONG.songId}/dialogue-eng'));
 				}
+				var file:String = Paths.json('songs/' + PlayState.SONG.songId + '/dialogue');
+				if (OpenFlAssets.exists(file)) {
+					dialogueJson = DialogueBoxPsych.parseDialogue(file);
+				}
 			}
 
 		if (FlxG.save.data.language)
@@ -604,6 +611,10 @@ class PlayState extends MusicBeatState
 				if (Paths.doesTextAssetExist(Paths.txt('data/songs/${PlayState.SONG.songId}/dialogue-ru')))
 				{
 					dialogueru = CoolUtil.coolTextFile(Paths.txt('data/songs/${PlayState.SONG.songId}/dialogue-ru'));
+				}
+				var file:String = Paths.json('songs/' + PlayState.SONG.songId + '/dialogue');
+				if (OpenFlAssets.exists(file)) {
+					dialogueJson = DialogueBoxPsych.parseDialogue(file);
 				}
 			}
 
@@ -1291,6 +1302,44 @@ class PlayState extends MusicBeatState
 					endSong();
 				}
 			});
+		}
+
+		public var psychDialogue:DialogueBoxPsych;
+		//You don't have to add a song, just saying. You can just do "startDialogue(dialogueJson);" and it should work
+		public function startDialogue(dialogueFile:DialogueFile, ?song:String = null):Void
+		{
+			inCutscene = true;
+			// TO DO: Make this more flexible, maybe?
+			if(psychDialogue != null) return;
+	
+			if(dialogueFile.dialogue.length > 0) {
+				inCutscene = true;
+				CoolUtil.precacheSound('dialogue');
+				CoolUtil.precacheSound('dialogueClose');
+				psychDialogue = new DialogueBoxPsych(dialogueFile, song);
+				psychDialogue.scrollFactor.set();
+				if(endingSong) {
+					psychDialogue.finishThing = function() {
+						psychDialogue = null;
+						endSong();
+					}
+				} else {
+					psychDialogue.finishThing = function() {
+						psychDialogue = null;
+						startCountdown();
+					}
+				}
+				psychDialogue.cameras = [camHUD];
+				add(psychDialogue);
+			} else {
+				FlxG.log.warn('Your dialogue file is badly formatted!');
+				if(endingSong) 
+				{
+					endSong();
+				} else {
+					startCountdown();
+				}
+			}
 		}
 
 	function schoolIntro(?dialogueBox:DialogueBox):Void
@@ -2743,7 +2792,9 @@ class PlayState extends MusicBeatState
 										for (person in [boyfriend, gf, dad])
 											if (person.curCharacter == char)
 												person.setPosition(pos[0], pos[1]);
-								}						
+								}
+								camPos.x = gf.getGraphicMidpoint().x;
+								camPos.y = gf.getGraphicMidpoint().y;						
 							}
 							catch (e)
 							{
@@ -2915,6 +2966,17 @@ class PlayState extends MusicBeatState
 							pastEvents.push(i);
 							gf.playAnim(i.value, true);
 						}
+
+					case "Camera zoom":
+						if (i.position <= curDecimalBeat && !pastEvents.contains(i))
+							{
+								pastEvents.push(i);
+								if (FlxG.save.data.camzoom)
+								{
+									FlxG.camera.zoom += 0.015 * i.value;
+									camHUD.zoom += 0.03 * i.value;
+								}
+							}
 				}
 			}
 
@@ -3385,7 +3447,7 @@ class PlayState extends MusicBeatState
 											triggeredAlready = false;
 									}
 								}
-								if ((curBeat == 128 || curBeat > 128) && curBeat < 192 && !blammedeventplayed)
+								if ((curBeat == 128 || curBeat > 128) && curBeat < 192 && !blammedeventplayed && FlxG.save.data.distractions)
 									{
 										switch (Stage.curLight)
 										{
@@ -3401,7 +3463,7 @@ class PlayState extends MusicBeatState
 												songOverlay("49, 162, 253, 250");
 										}
 									}
-								else if (curBeat > 192 && !blammedeventplayed)
+								else if (curBeat > 192 && !blammedeventplayed  && FlxG.save.data.distractions)
 								{
 									songOverlay('delete');
 									blammedeventplayed = true;

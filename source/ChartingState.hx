@@ -594,7 +594,8 @@ class ChartingState extends MusicBeatState
 		"Song Overlay",
 		"Dad play animation",
 		"BF play animation",
-		"GF play animation"
+		"GF play animation",
+		"Camera zoom"
 	], true));
 
 	function addEventsUI()
@@ -2984,6 +2985,11 @@ class ChartingState extends MusicBeatState
 					case "GF play animation":
 						eventDescriptionText = 'Type in Event Value name of animation that gf should play';
 						eventDescription.text = eventDescriptionText;
+
+					case "Camera zoom":
+						eventDescriptionText = 'Type in Event Value camera zoom multiplier';
+						eventDescription.text = eventDescriptionText;
+						
 
 					default:
 						eventDescriptionText = 'Bro, wtf, how did we get here?\n This event dont have description. Its strange.';

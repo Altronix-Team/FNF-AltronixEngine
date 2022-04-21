@@ -7,6 +7,7 @@ import lime.utils.Assets;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
 import polymod.Polymod.ModMetadata;
+import flash.media.Sound;
 import haxe.Json;
 #if sys
 import sys.io.File;
@@ -222,6 +223,16 @@ class Paths
 		return getPath('sounds/$key.$SOUND_EXT', SOUND, library);
 	}
 
+	inline static public function formatToSongPath(path:String) {
+		return path.toLowerCase().replace(' ', '-');
+	}
+
+	static public function dialogueSound(key:String, ?library:String):Sound
+		{
+			var sound:Sound = returnSound('sounds', key, library);
+			return sound;
+		}
+
 	inline static public function soundRandom(key:String, min:Int, max:Int, ?library:String)
 	{
 		return sound(key + FlxG.random.int(min, max), library);
@@ -342,6 +353,20 @@ class Paths
 			return FlxAtlasFrames.fromSparrow(loadImage('characters/$key', library), file('images/characters/$key.xml', library));
 		}
 		return FlxAtlasFrames.fromSparrow(loadImage(key, library), file('images/$key.xml', library));
+	}
+
+	public static var localTrackedAssets:Array<String> = [];
+	public static var currentTrackedSounds:Map<String, Sound> = [];
+
+	public static function returnSound(path:String, key:String, ?library:String) {
+		// I hate this so god damn much
+		var gottenPath:String = getPath('$path/$key.$SOUND_EXT', SOUND, library);	
+		gottenPath = gottenPath.substring(gottenPath.indexOf(':') + 1, gottenPath.length);
+		// trace(gottenPath);
+		if(!currentTrackedSounds.exists(gottenPath)) 
+			currentTrackedSounds.set(gottenPath, OpenFlAssets.getSound(getPath('$path/$key.$SOUND_EXT', SOUND, library)));
+		localTrackedAssets.push(gottenPath);
+		return currentTrackedSounds.get(gottenPath);
 	}
 
 	/**

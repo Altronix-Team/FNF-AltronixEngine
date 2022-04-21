@@ -333,7 +333,7 @@ class DialogueBox extends FlxSpriteGroup
 			return;
 		}
 
-		var data:DialogueCharacter = cast jsonData;
+		var data:DialogueCharacterJson = cast jsonData;
 
 		if (data.isDad)
 		{
@@ -408,18 +408,18 @@ class DialogueBox extends FlxSpriteGroup
 		dialogueList[0] = dialogueList[0].substr(splitName[1].length + 2).trim();
 	}
 }
-typedef DialogueCharacter =
+typedef DialogueCharacterJson =
 {
 	var image:String;
 	var isDad:Bool;
-	var animations:Array<DialogueAnimArray>;
+	var animations:Array<DialogueAnimArrayJson>;
 	var startingAnim:String;
 	var pixelZoom:Bool;
 	var ?portraitX:Int;
 	var ?portraitY:Int;
 }
 
-typedef DialogueAnimArray =
+typedef DialogueAnimArrayJson =
 {
 	var name:String;
 	var prefix:String;

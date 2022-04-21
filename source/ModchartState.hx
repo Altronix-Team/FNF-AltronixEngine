@@ -24,6 +24,9 @@ import llua.LuaL;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
 import flixel.FlxG;
+import DialogueBoxPsych;
+import sys.FileSystem;
+import sys.io.File;
 
 class ModchartState
 {
@@ -538,6 +541,38 @@ class ModchartState
 		Lua_helper.add_callback(lua, "playEndCutscene", function(video:String)
 		{
 			PlayState.instance.playEndCutscene(video);
+		});
+
+		Lua_helper.add_callback(lua, "startDialogue", function(dialogueFile:String, music:String = null) {
+			var path:String = Paths.json('songs/' + PlayState.SONG.song.toLowerCase() + '/' + dialogueFile);
+			Debug.logTrace('Trying to load dialogue: ' + path);
+
+			if(FileSystem.exists(path)) 
+			{
+				var dial = Paths.getPreloadPath('data/songs/' + PlayState.SONG.song.toLowerCase() + '/' + dialogueFile);
+				var shit:DialogueFile = DialogueBoxPsych.parseDialogue(dial);
+				if(shit.dialogue.length > 0) 
+				{
+					PlayState.instance.startDialogue(shit, music);
+					Debug.logTrace('Successfully loaded dialogue');
+				} 
+				else 
+				{
+					Debug.logTrace('Your dialogue file is badly formatted!');
+				}
+			} 
+			else 
+			{
+				Debug.logTrace('Dialogue file not found');
+				if(PlayState.instance.endingSong) 
+				{
+					PlayState.instance.endSong();
+				} 
+				else 
+				{
+					PlayState.instance.startCountdown();
+				}
+			}
 		});
 
 		for (i in 0...PlayState.strumLineNotes.length)

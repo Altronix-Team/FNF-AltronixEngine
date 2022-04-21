@@ -88,4 +88,17 @@ class CoolUtil
 		}
 		return dumbArray;
 	}
+
+	public static function precacheSound(sound:String, ?library:String = null):Void {
+		precacheSoundFile(Paths.sound(sound, library));
+	}
+
+	public static function precacheMusic(sound:String, ?library:String = null):Void {
+		precacheSoundFile(Paths.music(sound, library));
+	}
+
+	private static function precacheSoundFile(file:Dynamic):Void {
+		if (OpenFlAssets.exists(file, SOUND) || OpenFlAssets.exists(file, MUSIC))
+			OpenFlAssets.getSound(file, true);
+	}
 }

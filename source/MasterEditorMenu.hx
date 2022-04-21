@@ -22,6 +22,8 @@ class MasterEditorMenu extends MusicBeatState
 {
 	var options:Array<String> = [
 		'Character Editor',
+		'Dialogue Editor',
+		'Dialogue Character Editor',
 		'Chart Editor'
 	];
 	private var grpTexts:FlxTypedGroup<Alphabet>;
@@ -84,6 +86,10 @@ class MasterEditorMenu extends MusicBeatState
 					LoadingState.loadAndSwitchState(new CharacterEditorState(Character.DEFAULT_CHARACTER, false));
 				case 'Chart Editor'://felt it would be cool maybe
 					LoadingState.loadAndSwitchState(new ChartingState(), false);
+				case 'Dialogue Editor':
+					LoadingState.loadAndSwitchState(new DialogueEditorState());
+				case 'Dialogue Character Editor':
+					LoadingState.loadAndSwitchState(new DialogueCharacterEditorState());
 			}
 			FlxG.sound.music.volume = 0;
 			#if PRELOAD_ALL

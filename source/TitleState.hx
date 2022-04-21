@@ -127,7 +127,7 @@ class TitleState extends MusicBeatState
 		startIntro();
 		#end
 		#end
-		Debug.logTrace('tut bil ya loh');
+		Debug.logTrace('oh fuck, Altronix Engine is working!');
 	}
 
 	var logoBl:FlxSprite;

@@ -1,592 +1,646 @@
 {
  "song": {
-  "player1": "bf",
-  "songId": "iphone",
   "songName": "iphone",
+  "songId": "iphone",
+  "player1": "bf",
+  "hideGF": true,
   "notes": [
    {
-    "typeOfSection": 0,
-    "lengthInSteps": 16,
+    "endTime": 2181.81818181818,
     "sectionNotes": [],
-    "endTime": 2400,
+    "lengthInSteps": 16,
     "mustHitSection": true,
     "startTime": 0
    },
    {
-    "typeOfSection": 0,
-    "lengthInSteps": 16,
+    "endTime": 4363.63636363636,
     "sectionNotes": [],
-    "endTime": 4800,
+    "lengthInSteps": 16,
     "mustHitSection": true,
-    "startTime": 2400
+    "startTime": 2181.81818181818
    },
    {
-    "typeOfSection": 0,
-    "lengthInSteps": 16,
+    "endTime": 6545.45454545455,
     "sectionNotes": [
      [
-      6450,
-      3,
+      6272.72727272727,
+      6,
+      136.363636363636,
+      false,
+      11.5
+     ]
+    ],
+    "lengthInSteps": 16,
+    "mustHitSection": true,
+    "startTime": 4363.63636363636
+   },
+   {
+    "endTime": 8727.27272727273,
+    "sectionNotes": [
+     [
+      6818.18181818182,
+      0,
       0,
       false,
-      10.75,
-      1
+      12.5
      ],
      [
-      6600,
-      0,
-      0,
-      false,
-      11,
-      1
-     ],
-     [
-      6900,
+      6954.54545454545,
       2,
       0,
       false,
-      11.5,
-      1
+      12.75
      ],
      [
-      7050,
-      0,
+      6623.86363636364,
+      3,
       0,
       false,
-      11.75,
-      1
-     ]
-    ],
-    "endTime": 7200,
-    "mustHitSection": false,
-    "startTime": 4800
-   },
-   {
-    "typeOfSection": 0,
-    "lengthInSteps": 16,
-    "sectionNotes": [
+      12.14375
+     ],
+     [
+      7090.90909090909,
+      1,
+      136.363636363636,
+      false,
+      13
+     ],
+     [
+      7363.63636363636,
+      3,
+      0,
+      false,
+      13.5
+     ],
      [
       7500,
+      2,
+      0,
+      false,
+      13.75
+     ],
+     [
+      7636.36363636364,
       1,
       0,
       false,
-      12.5,
-      1
+      14
      ],
      [
-      7650,
-      3,
-      0,
-      false,
-      12.75,
-      1
-     ],
-     [
-      8100,
+      7772.72727272727,
       0,
       0,
       false,
-      13.5,
-      1
+      14.25
      ],
      [
-      8700,
-      2,
-      600,
+      8001.13636363636,
+      1,
+      340.909090909091,
       false,
-      14.5,
-      1
-     ],
-     [
-      9450,
-      0,
-      0,
-      false,
-      15.75,
-      1
+      14.66875
      ]
     ],
-    "endTime": 9600,
+    "lengthInSteps": 16,
     "mustHitSection": false,
-    "startTime": 7200
+    "startTime": 6545.45454545455
    },
    {
-    "typeOfSection": 0,
-    "lengthInSteps": 16,
+    "endTime": 10909.0909090909,
     "sectionNotes": [
      [
-      9750,
-      3,
-      0,
-      false,
-      16.25,
-      1
-     ],
-     [
-      9900,
-      0,
-      300,
-      false,
-      16.5,
-      1
-     ],
-     [
-      10350,
+      8727.27272727273,
       2,
-      0,
+      136.363636363636,
       false,
-      17.25,
-      1
+      16
      ],
      [
-      10800,
-      4,
+      9000,
+      1,
       0,
       false,
-      18,
-      1
+      16.5
      ],
      [
-      10950,
+      9136.36363636364,
+      0,
+      0,
+      false,
+      16.75
+     ],
+     [
+      9409.09090909091,
+      3,
+      136.363636363636,
+      false,
+      17.25
+     ],
+     [
+      9767.04545454546,
+      2,
+      409.090909090909,
+      false,
+      17.90625
+     ],
+     [
+      10315.9090909091,
+      1,
+      340.909090909091,
+      false,
+      18.9125
+     ],
+     [
+      10772.7272727273,
       6,
       0,
       false,
-      18.25,
-      1
+      19.75
      ],
      [
-      11250,
-      6,
+      10909,
+      1,
       0,
       false,
-      18.75,
-      1
-     ],
-     [
-      11550,
-      5,
-      0,
-      false,
-      19.25,
-      1
-     ],
-     [
-      11700,
-      7,
-      0,
-      false,
-      19.5,
-      1
-     ],
-     [
-      11850,
-      4,
-      0,
-      false,
-      19.75,
-      1
+      19.9998333333333
      ]
     ],
-    "endTime": 12000,
+    "lengthInSteps": 16,
     "mustHitSection": false,
-    "startTime": 9600
+    "startTime": 8727.27272727273
    },
    {
-    "typeOfSection": 0,
-    "lengthInSteps": 16,
+    "endTime": 13090.9090909091,
     "sectionNotes": [
+     [
+      11181,
+      1,
+      0,
+      false,
+      20.4985
+     ],
+     [
+      11454,
+      2,
+      0,
+      false,
+      20.999
+     ],
+     [
+      11727,
+      3,
+      0,
+      false,
+      21.4995
+     ],
+     [
+      11863,
+      3,
+      0,
+      false,
+      21.7488333333333
+     ],
      [
       12000,
-      3,
-      0,
-      false,
-      20,
-      1
-     ],
-     [
-      12300,
-      0,
-      0,
-      false,
-      20.5,
-      1
-     ],
-     [
-      12450,
       1,
       0,
       false,
-      20.75,
-      1
+      22
      ],
      [
-      12600,
-      2,
-      0,
-      false,
-      21,
-      1
-     ],
-     [
-      12750,
-      3,
-      0,
-      false,
-      21.25,
-      1
-     ],
-     [
-      13200,
+      12272,
       0,
       0,
       false,
-      22,
-      1
+      22.4986666666667
      ],
      [
-      13500,
+      12409,
       0,
       0,
       false,
-      22.5,
-      1
+      22.7498333333333
      ],
      [
-      13800,
-      2,
-      0,
-      false,
-      23,
-      1
-     ],
-     [
-      14100,
+      12545.4545454545,
       1,
-      0,
+      272.727272727273,
       false,
-      23.5,
-      1
-     ],
-     [
-      14310,
-      3,
-      450,
-      false,
-      23.85,
-      1
+      22.9999999999999
      ]
     ],
-    "endTime": 14400,
+    "lengthInSteps": 16,
     "mustHitSection": true,
-    "startTime": 12000
+    "startTime": 10909.0909090909
    },
    {
-    "typeOfSection": 0,
-    "lengthInSteps": 16,
+    "endTime": 15272.7272727273,
     "sectionNotes": [
      [
-      14850,
+      13363,
       0,
-      300,
-      false,
-      24.75,
-      1
-     ],
-     [
-      15300,
-      7,
       0,
       false,
-      25.5,
-      1
+      24.4988333333333
      ],
      [
-      15150,
-      4,
+      13636,
+      2,
       0,
       false,
-      25.25,
-      1
+      24.9993333333333
      ],
      [
-      15600,
-      5,
+      13909,
+      3,
       0,
       false,
-      26,
-      1
+      25.4998333333333
      ],
      [
-      15900,
+      14181,
+      1,
+      409,
+      false,
+      25.9985
+     ],
+     [
+      14727,
+      2,
+      340,
+      false,
+      26.9995
+     ],
+     [
+      15000,
+      6,
+      136.363636363636,
+      false,
+      27.5
+     ],
+     [
+      13227.2727272727,
+      0,
+      0,
+      false,
+      24.25
+     ]
+    ],
+    "lengthInSteps": 16,
+    "mustHitSection": true,
+    "startTime": 13090.9090909091
+   },
+   {
+    "endTime": 17454.5454545455,
+    "sectionNotes": [
+     [
+      15777.2727272727,
+      1,
+      0,
+      false,
+      28.925
+     ],
+     [
+      15906.8181818182,
+      0,
+      0,
+      false,
+      29.1625
+     ],
+     [
+      15640.9090909091,
+      3,
+      0,
+      false,
+      28.675
+     ],
+     [
+      15272.7272727273,
+      1,
+      204.545454545455,
+      false,
+      28
+     ],
+     [
+      16090.9090909091,
+      1,
+      0,
+      false,
+      29.5
+     ],
+     [
+      16186.3636363636,
+      2,
+      0,
+      false,
+      29.6749999999999
+     ],
+     [
+      16278.4090909091,
+      3,
+      136.363636363636,
+      false,
+      29.84375
+     ],
+     [
+      16547.7272727273,
+      2,
+      136.363636363636,
+      false,
+      30.3375
+     ],
+     [
+      16837.5,
+      1,
+      136.363636363636,
+      false,
+      30.86875
+     ]
+    ],
+    "lengthInSteps": 16,
+    "mustHitSection": false,
+    "startTime": 15272.7272727273
+   },
+   {
+    "endTime": 19636.3636363636,
+    "sectionNotes": [
+     [
+      17454.5454545455,
+      3,
+      136.363636363636,
+      false,
+      32.0000000000001
+     ],
+     [
+      17727.2727272727,
+      0,
+      0,
+      false,
+      32.4999999999999
+     ],
+     [
+      17863.6363636364,
+      1,
+      136.363636363636,
+      false,
+      32.7500000000001
+     ],
+     [
+      18136.3636363636,
+      2,
+      136.363636363636,
+      false,
+      33.2499999999999
+     ],
+     [
+      18545.4545454545,
+      2,
+      409.090909090909,
+      false,
+      33.9999999999999
+     ],
+     [
+      19090.9090909091,
+      1,
+      409.090909090909,
+      false,
+      35
+     ],
+     [
+      19500,
       6,
       0,
       false,
-      26.5,
-      1
-     ],
-     [
-      16200,
-      4,
-      0,
-      false,
-      27,
-      1
-     ],
-     [
-      16280,
-      7,
-      0,
-      false,
-      27.1333333333333,
-      1
-     ],
-     [
-      16500,
-      5,
-      600,
-      false,
-      27.5,
-      1
+      35.75
      ]
     ],
-    "endTime": 16800,
-    "mustHitSection": true,
-    "startTime": 14400
-   },
-   {
-    "typeOfSection": 0,
     "lengthInSteps": 16,
-    "sectionNotes": [
-     [
-      17550,
-      0,
-      300,
-      false,
-      29.25,
-      1
-     ],
-     [
-      18000,
-      3,
-      0,
-      false,
-      30,
-      1
-     ],
-     [
-      18300,
-      2,
-      0,
-      false,
-      30.5,
-      1
-     ],
-     [
-      18750,
-      1,
-      450,
-      false,
-      31.25,
-      1
-     ]
-    ],
-    "endTime": 19200,
     "mustHitSection": false,
-    "startTime": 16800
+    "startTime": 17454.5454545455
    },
    {
-    "typeOfSection": 0,
-    "lengthInSteps": 16,
+    "endTime": 21818.1818181818,
     "sectionNotes": [
      [
-      19650,
-      0,
-      0,
-      false,
-      32.75,
-      1
-     ],
-     [
-      19800,
+      19772.7272727273,
       3,
       0,
       false,
-      33,
-      1
+      36.25
      ],
      [
-      20100,
+      19909.0909090909,
       3,
       0,
       false,
-      33.5,
-      1
+      36.5
      ],
      [
-      20250,
+      20181.8181818182,
       1,
       0,
       false,
-      33.75,
-      1
+      37
      ],
      [
-      20400,
-      2,
+      20318.1818181818,
+      1,
       0,
       false,
-      34,
-      1
+      37.25
      ],
      [
-      20550,
-      3,
-      0,
-      false,
-      34.25,
-      1
-     ],
-     [
-      20700,
+      20454.5454545455,
       0,
       0,
       false,
-      34.5,
-      1
+      37.5000000000001
+     ],
+     [
+      20590.9090909091,
+      0,
+      0,
+      false,
+      37.75
+     ],
+     [
+      20727.2727272727,
+      1,
+      136.363636363636,
+      false,
+      37.9999999999999
      ],
      [
       21000,
-      1,
-      0,
-      false,
-      35,
-      1
-     ],
-     [
-      21150,
       2,
       0,
       false,
-      35.25,
-      1
+      38.5
      ],
      [
-      21300,
-      3,
-      300,
+      21136.3636363636,
+      2,
+      0,
       false,
-      35.5,
-      1
+      38.7499999999999
+     ],
+     [
+      21272.7272727273,
+      1,
+      136.363636363636,
+      false,
+      39
      ]
     ],
-    "endTime": 21600,
+    "lengthInSteps": 16,
     "mustHitSection": true,
-    "startTime": 19200
+    "startTime": 19636.3636363636
    },
    {
-    "typeOfSection": 0,
-    "lengthInSteps": 16,
+    "endTime": 24000,
     "sectionNotes": [
      [
-      21900,
+      21954.5454545455,
+      0,
+      0,
+      false,
+      40.2500000000001
+     ],
+     [
+      22090.9090909091,
+      0,
+      0,
+      false,
+      40.5
+     ],
+     [
+      22363.6363636364,
+      2,
+      136.363636363636,
+      false,
+      41.0000000000001
+     ],
+     [
+      22636.3636363636,
       1,
-      0,
+      136.363636363636,
       false,
-      36.5,
-      1
+      41.4999999999999
      ],
      [
-      22200,
-      1,
-      0,
-      false,
-      37,
-      1
-     ],
-     [
-      22500,
-      0,
-      0,
-      false,
-      37.5,
-      1
-     ],
-     [
-      22650,
+      22984.0909090909,
       3,
       0,
       false,
-      37.75,
-      1
+      42.1375
      ],
      [
-      23100,
-      1,
-      150,
-      false,
-      38.5,
-      1
-     ],
-     [
-      23400,
+      23181.8181818182,
       2,
       0,
       false,
-      39,
-      1
+      42.5
      ],
      [
-      23550,
-      3,
+      23318.1818181818,
+      1,
       0,
       false,
-      39.25,
-      1
+      42.75
      ],
      [
-      23700,
+      23454.5454545455,
       0,
-      0,
+      272.727272727273,
       false,
-      39.5,
-      1
+      43.0000000000001
      ]
     ],
-    "endTime": 24000,
+    "lengthInSteps": 16,
     "mustHitSection": true,
-    "startTime": 21600
+    "startTime": 21818.1818181818
    },
    {
-    "typeOfSection": 0,
-    "lengthInSteps": 16,
+    "endTime": 26181.8181818182,
     "sectionNotes": [],
-    "endTime": 26400,
+    "lengthInSteps": 16,
     "mustHitSection": true,
     "startTime": 24000
    }
   ],
   "player2": "monster",
-  "hideGF": true,
   "showbgdancers": false,
   "offset": 0,
-  "song": "Tutorial",
+  "song": "Monster",
   "validScore": true,
-  "speed": 1,
-  "sectionLengths": [],
+  "speed": 1.6,
   "gfVersion": "gf",
   "chartVersion": "AE1",
   "eventObjects": [
    {
     "name": "Init BPM",
     "position": 0,
-    "value": 73,
+    "value": 110,
+    "type": "BPM Change"
+   },
+   {
+    "name": "FNF BPM Change 14",
+    "position": 56,
+    "value": 127,
+    "type": "BPM Change"
+   },
+   {
+    "name": "FNF BPM Change 15",
+    "position": 60,
+    "value": 95,
+    "type": "BPM Change"
+   },
+   {
+    "name": "FNF BPM Change 16",
+    "position": 64,
+    "value": 127,
+    "type": "BPM Change"
+   },
+   {
+    "name": "FNF BPM Change 17",
+    "position": 68,
+    "value": 100,
+    "type": "BPM Change"
+   },
+   {
+    "name": "FNF BPM Change 18",
+    "position": 72,
+    "value": 105,
+    "type": "BPM Change"
+   },
+   {
+    "name": "FNF BPM Change 34",
+    "position": 136,
+    "value": 216,
+    "type": "BPM Change"
+   },
+   {
+    "name": "FNF BPM Change 35",
+    "position": 140,
+    "value": 95,
+    "type": "BPM Change"
+   },
+   {
+    "name": "FNF BPM Change 49",
+    "position": 196,
+    "value": 132,
+    "type": "BPM Change"
+   },
+   {
+    "name": "FNF BPM Change 57",
+    "position": 228,
+    "value": 120,
     "type": "BPM Change"
    }
   ],
-  "sections": 0,
-  "needsVoices": true,
   "stage": "halloween",
-  "noteStyle": "normal",
-  "bpm": 73
+  "needsVoices": true,
+  "bpm": 110,
+  "noteStyle": "normal"
  }
 }

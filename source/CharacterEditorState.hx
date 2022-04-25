@@ -1240,7 +1240,7 @@ class CharacterEditorState extends MusicBeatState
 			"startingAnim": char.startingAnim,
 		
 			"charPos":	char.positionArray,
-			"camPos": char.cameraPosition,
+			"camPos": char.camPos,
 		
 			"flipX": char.originalFlipX,
 			"antialiasing": char.charAntialiasing,

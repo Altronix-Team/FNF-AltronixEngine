@@ -552,36 +552,6 @@ class Stage extends MusicBeatState
 					{
 						Debug.logTrace('trying to execute funkin lua');
 						stageLua = new FunkinLua(Paths.getPreloadPath('stages/' + curStage + '.lua'));
-						if (FileSystem.exists(Paths.getPreloadPath('stages/' + curStage + '.json')))
-						{
-							var stageData:StageFile = StageData.getStageFile(curStage);
-							if(stageData == null) 
-							{
-								stageData = {
-									directory: "",
-									defaultZoom: 0.9,
-									isPixelStage: false,
-								
-									boyfriend: [770, 100],
-									girlfriend: [400, 130],
-									opponent: [100, 100],
-									hide_girlfriend: false,
-								
-									camera_boyfriend: [0, 0],
-									camera_opponent: [0, 0],
-									camera_girlfriend: [0, 0],
-									camera_speed: 1
-								};
-							}
-							else
-							{
-								var charpos:Map<String, Array<Int>> = [];
-								charpos.set(PlayState.SONG.player1, stageData.boyfriend);
-								charpos.set(PlayState.SONG.player2, stageData.opponent);
-								charpos.set(PlayState.SONG.gfVersion, stageData.girlfriend);
-								positions.set(curStage, charpos);
-							}
-						}
 					}
 					else
 					{

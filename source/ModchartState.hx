@@ -15,6 +15,7 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import openfl.geom.Matrix;
 import openfl.display.BitmapData;
+import openfl.utils.Assets;
 import lime.app.Application;
 import flixel.FlxSprite;
 import llua.Convert;
@@ -544,12 +545,12 @@ class ModchartState
 		});
 
 		Lua_helper.add_callback(lua, "startDialogue", function(dialogueFile:String, music:String = null) {
-			var path:String = Paths.json('songs/' + PlayState.SONG.song.toLowerCase() + '/' + dialogueFile);
+			var path:String = Paths.getPreloadPath('data/songs/' + PlayState.SONG.song.toLowerCase() + '/' + dialogueFile + '.json');
 			Debug.logTrace('Trying to load dialogue: ' + path);
 
-			if(FileSystem.exists(path)) 
-			{
-				var dial = Paths.getPreloadPath('data/songs/' + PlayState.SONG.song.toLowerCase() + '/' + dialogueFile);
+			//if(Paths.doesTextAssetExist(Paths.getPreloadPath('data/songs/' + PlayState.SONG.song.toLowerCase() + '/' + dialogueFile + '.json'))) 
+			//{
+				var dial = Paths.getPreloadPath('data/songs/' + PlayState.SONG.song.toLowerCase() + '/' + dialogueFile + '.json');
 				var shit:DialogueFile = DialogueBoxPsych.parseDialogue(dial);
 				if(shit.dialogue.length > 0) 
 				{
@@ -560,9 +561,9 @@ class ModchartState
 				{
 					Debug.logTrace('Your dialogue file is badly formatted!');
 				}
-			} 
-			else 
-			{
+		//	} 
+			//else 
+		/*	{
 				Debug.logTrace('Dialogue file not found');
 				if(PlayState.instance.endingSong) 
 				{
@@ -572,7 +573,7 @@ class ModchartState
 				{
 					PlayState.instance.startCountdown();
 				}
-			}
+			}*/
 		});
 
 		for (i in 0...PlayState.strumLineNotes.length)

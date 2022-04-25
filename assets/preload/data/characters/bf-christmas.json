@@ -1,83 +1,126 @@
 {
-  "name": "Boyfriend-Christmas",
-  "asset": "characters/bfChristmas",
-  "barColorJson": 
-  [
-	49, 176, 209
-  ],
-  "startingAnim": "idle",
-  "flipX": true,
-  "antialiasing": true,
-  "animations": [
-    {
-      "name": "idle",
-      "prefix": "BF idle dance",
-      "offsets": [-5, 0],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singUP",
-      "prefix": "BF NOTE UP0",
-      "offsets": [-29, 27],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singLEFT",
-      "prefix": "BF NOTE LEFT0",
-      "offsets": [12, -6],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singRIGHT",
-      "prefix": "BF NOTE RIGHT0",
-      "offsets": [-38, -7],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singDOWN",
-      "prefix": "BF NOTE DOWN0",
-      "offsets": [-10, -50],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singUPmiss",
-      "prefix": "BF NOTE UP MISS",
-      "offsets": [-29, 27],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singLEFTmiss",
-      "prefix": "BF NOTE LEFT MISS",
-      "offsets": [12, 24],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singRIGHTmiss",
-      "prefix": "BF NOTE RIGHT MISS",
-      "offsets": [-30, 21],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singDOWNmiss",
-      "prefix": "BF NOTE DOWN MISS",
-      "offsets": [-11, -19],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "hey",
-      "prefix": "BF HEY",
-      "offsets": [7, 4],
-	  "frameIndices": [],
-	  "frameRate": 24
-    }
-  ]
+	"animations": [
+		{
+			"offsets": [
+				-5,
+				0
+			],
+			"frameRate": 24,
+			"prefix": "BF idle dance",
+			"frameIndices": [],
+			"name": "idle"
+		},
+		{
+			"offsets": [
+				-29,
+				27
+			],
+			"frameRate": 24,
+			"prefix": "BF NOTE UP0",
+			"frameIndices": [],
+			"name": "singUP"
+		},
+		{
+			"offsets": [
+				12,
+				-6
+			],
+			"frameRate": 24,
+			"prefix": "BF NOTE LEFT0",
+			"frameIndices": [],
+			"name": "singLEFT"
+		},
+		{
+			"offsets": [
+				-38,
+				-7
+			],
+			"frameRate": 24,
+			"prefix": "BF NOTE RIGHT0",
+			"frameIndices": [],
+			"name": "singRIGHT"
+		},
+		{
+			"offsets": [
+				-10,
+				-50
+			],
+			"frameRate": 24,
+			"prefix": "BF NOTE DOWN0",
+			"frameIndices": [],
+			"name": "singDOWN"
+		},
+		{
+			"offsets": [
+				-29,
+				27
+			],
+			"frameRate": 24,
+			"prefix": "BF NOTE UP MISS",
+			"frameIndices": [],
+			"name": "singUPmiss"
+		},
+		{
+			"offsets": [
+				12,
+				24
+			],
+			"frameRate": 24,
+			"prefix": "BF NOTE LEFT MISS",
+			"frameIndices": [],
+			"name": "singLEFTmiss"
+		},
+		{
+			"offsets": [
+				-30,
+				21
+			],
+			"frameRate": 24,
+			"prefix": "BF NOTE RIGHT MISS",
+			"frameIndices": [],
+			"name": "singRIGHTmiss"
+		},
+		{
+			"offsets": [
+				-11,
+				-19
+			],
+			"frameRate": 24,
+			"prefix": "BF NOTE DOWN MISS",
+			"frameIndices": [],
+			"name": "singDOWNmiss"
+		},
+		{
+			"offsets": [
+				7,
+				4
+			],
+			"frameRate": 24,
+			"prefix": "BF HEY",
+			"frameIndices": [],
+			"name": "hey"
+		}
+	],
+	"hasTrail": false,
+	"camPos": [
+		50,
+		-80
+	],
+	"holdLength": 4,
+	"charPos": [
+		0,
+		0
+	],
+	"flipX": true,
+	"asset": "characters/bfChristmas",
+	"startingAnim": "idle",
+	"antialiasing": true,
+	"name": "characters/bfChristmas",
+	"barColorJson": [
+		49,
+		176,
+		209
+	],
+	"replacesGF": false,
+	"scale": 0
 }

@@ -13,9 +13,9 @@ typedef StageFile = {
 	var defaultZoom:Float;
 	var isPixelStage:Bool;
 
-	var boyfriend:Array<Int>;
-	var girlfriend:Array<Int>;
-	var opponent:Array<Int>;
+	var boyfriend:Array<Float>;
+	var gf:Array<Float>;
+	var dad:Array<Float>;
 	var hide_girlfriend:Bool;
 
 	var camera_boyfriend:Array<Float>;

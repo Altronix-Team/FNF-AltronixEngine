@@ -54,11 +54,14 @@
 	"hasTrail": false,
 	"camPos": null,
 	"holdLength": 4,
-	"charPos": null,
+	"charPos": [
+		0,
+		-100
+	],
 	"flipX": false,
 	"asset": "characters/Monster_Assets",
 	"startingAnim": "idle",
-	"antialiasing": false,
+	"antialiasing": true,
 	"name": "characters/Monster_Assets",
 	"barColorJson": [
 		243,

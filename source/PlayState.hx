@@ -85,6 +85,7 @@ import FunkinLua;
 import flixel.util.FlxSave;
 import LoadingState.LoadingsState;
 import DialogueBoxPsych;
+import StageData;
 import openfl.utils.Assets as OpenFlAssets;
 #if desktop
 import DiscordClient;
@@ -719,15 +720,14 @@ class PlayState extends MusicBeatState
 		if (!stageTesting)
 		{
 			Stage = new Stage(SONG.stage);
-		}
+		}		
 
-		var positions = Stage.positions[Stage.curStage];
-		if (positions != null && !stageTesting)
+		var positions:StageFile = StageData.getStageFile(SONG.stage);
+		if (positions != null)
 		{
-			for (char => pos in positions)
-				for (person in [boyfriend, gf, dad])
-					if (person.curCharacter == char)
-						person.setPosition(pos[0], pos[1]);
+			boyfriend.setPosition(positions.boyfriend[0], positions.boyfriend[1]);
+			gf.setPosition(positions.gf[0], positions.gf[1]);
+			dad.setPosition(positions.dad[0], positions.dad[1]);
 		}
 		for (i in Stage.toAdd)
 		{

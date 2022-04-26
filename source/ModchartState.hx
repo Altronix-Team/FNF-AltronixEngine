@@ -548,8 +548,8 @@ class ModchartState
 			var path:String = Paths.getPreloadPath('data/songs/' + PlayState.SONG.song.toLowerCase() + '/' + dialogueFile + '.json');
 			Debug.logTrace('Trying to load dialogue: ' + path);
 
-			//if(Paths.doesTextAssetExist(Paths.getPreloadPath('data/songs/' + PlayState.SONG.song.toLowerCase() + '/' + dialogueFile + '.json'))) 
-			//{
+			if(Paths.doesTextAssetExist(Paths.getPreloadPath('data/songs/' + PlayState.SONG.song.toLowerCase() + '/' + dialogueFile + '.json'))) 
+			{
 				var dial = Paths.getPreloadPath('data/songs/' + PlayState.SONG.song.toLowerCase() + '/' + dialogueFile + '.json');
 				var shit:DialogueFile = DialogueBoxPsych.parseDialogue(dial);
 				if(shit.dialogue.length > 0) 
@@ -561,9 +561,9 @@ class ModchartState
 				{
 					Debug.logTrace('Your dialogue file is badly formatted!');
 				}
-		//	} 
-			//else 
-		/*	{
+			} 
+			else 
+			{
 				Debug.logTrace('Dialogue file not found');
 				if(PlayState.instance.endingSong) 
 				{
@@ -573,7 +573,7 @@ class ModchartState
 				{
 					PlayState.instance.startCountdown();
 				}
-			}*/
+			}
 		});
 
 		for (i in 0...PlayState.strumLineNotes.length)

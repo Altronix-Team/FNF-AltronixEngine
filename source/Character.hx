@@ -7,6 +7,7 @@ import flixel.animation.FlxBaseAnimation;
 import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.utils.Assets as OpenFlAssets;
 import haxe.Json;
+import flixel.tweens.FlxTween;
 
 using StringTools;
 
@@ -41,6 +42,7 @@ class Character extends FlxSprite
 	public var charAntialiasing:Bool = false;
 	public var startingAnim:String = '';
 	public var interruptAnim:Bool = true;
+	public var colorTween:FlxTween;
 
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{

@@ -9,9 +9,10 @@ import flash.text.TextField;
 import flixel.addons.ui.FlxInputText;
 import flixel.util.FlxTimer;
 import flixel.effects.FlxFlicker;
+import IHook;
 
 
-class ExtrasPasswordState extends MusicBeatState
+class ExtrasPasswordState extends MusicBeatState implements IHook
 {
     public static var extra:Int = 1;
 	var passwordText:FlxInputText;
@@ -82,42 +83,74 @@ class ExtrasPasswordState extends MusicBeatState
             FlxG.switchState(new MainMenuState());
 	}
 
+	/**
+	 * Mod hook called while check password.
+	 * @returns password from script.
+	 
+	@:hscript
+	public function hscriptPasswords():Map<String, String>
+	{
+	}*/
+
     function checkpassword(?passwordText:String)
 		{
-			if (passwordText == 'tankman')
+			switch (passwordText)
 			{
-				extra = 2;
-				FlxG.sound.music.stop();
-				FlxG.switchState(new SecretState());
-				FlxG.sound.play(Paths.sound('ANGRY_TEXT_BOX', 'shared'));
-				Main.isHidden = true;
-			}
-			else if (passwordText == 'debug')
-			{
-				extra = 3;
-				FlxG.sound.music.stop();
-				FlxG.switchState(new SecretState());
-				FlxG.sound.play(Paths.sound('ANGRY_TEXT_BOX', 'shared'));
-				Main.isHidden = true;
-			}
-			else if (passwordText == 'iphone')
-			{
-				var poop:String = Highscore.formatSongDiff('iphone', 2);
-				PlayState.SONG = Song.loadFromJson('iphone', poop);
-				PlayState.isStoryMode = false;
-				PlayState.isFreeplay = false;
-				PlayState.isExtras = false;
-				PlayState.fromPasswordMenu = true;
-				PlayState.storyDifficulty = 2;
+				case 'tankman':
+					{
+						extra = 2;
+						FlxG.sound.music.stop();
+						FlxG.switchState(new SecretState());
+						FlxG.sound.play(Paths.sound('ANGRY_TEXT_BOX', 'shared'));
+						Main.isHidden = true;
+					}
+				case 'debug':
+					{
+						extra = 3;
+						FlxG.sound.music.stop();
+						FlxG.switchState(new SecretState());
+						FlxG.sound.play(Paths.sound('ANGRY_TEXT_BOX', 'shared'));
+						Main.isHidden = true;
+					}
+				case 'iphone':
+					{
+						var poop:String = Highscore.formatSongDiff('iphone', 2);
+						PlayState.SONG = Song.loadFromJson('iphone', poop);
+						PlayState.isStoryMode = false;
+						PlayState.isFreeplay = false;
+						PlayState.isExtras = false;
+						PlayState.fromPasswordMenu = true;
+						PlayState.storyDifficulty = 2;
 
-				var llll = FlxG.sound.play(Paths.sound('confirmMenu')).length;
-				LoadingState.loadAndSwitchState(new PlayState());
-			}
-			else
-			{
-				FlxG.sound.play(Paths.soundRandom('missnote', 1, 3, 'shared'));
-				if (FlxG.save.data.flashing)
-					FlxFlicker.flicker(mistakebg, 1.1, 0.15, false);
+						var llll = FlxG.sound.play(Paths.sound('confirmMenu')).length;
+						LoadingState.loadAndSwitchState(new PlayState());
+					}
+				default:
+					{
+						/*var hscriptpass = hscriptPasswords();
+						for (pass => song in hscriptpass)
+						{
+							if (passwordText == pass)
+								{
+									var poop:String = Highscore.formatSongDiff(song, 2);
+									PlayState.SONG = Song.loadFromJson(song, poop);
+									PlayState.isStoryMode = false;
+									PlayState.isFreeplay = false;
+									PlayState.isExtras = false;
+									PlayState.fromPasswordMenu = true;
+									PlayState.storyDifficulty = 2;
+
+									var llll = FlxG.sound.play(Paths.sound('confirmMenu')).length;
+									LoadingState.loadAndSwitchState(new PlayState());
+								}
+							else*/
+								//{
+									FlxG.sound.play(Paths.soundRandom('missnote', 1, 3, 'shared'));
+									if (FlxG.save.data.flashing)
+										FlxFlicker.flicker(mistakebg, 1.1, 0.15, false);
+								//}
+						//}
 			}
 		}
+	}
 }

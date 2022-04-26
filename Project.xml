@@ -89,6 +89,8 @@
 		<library name="sm"    preload="false" />
 	</section>
 	
+	<library name="scripts" preload="true" />
+	
 	<assets path="assets/songs"    library="songs"    exclude="*.ogg" if="web"/>
 	<assets path="assets/songs"    library="songs"    exclude="*.mp3" unless="web"/>
 	<assets path="assets/shared"   library="shared"   exclude="*.ogg" if="web"/>
@@ -129,12 +131,34 @@
 		<assets path="assets/core"
 						library="core"
 						embed="true" />
+						
+		<assets path="assets/scripts"
+						library="scripts"
+						embed="true"
+						exclude="*.md|*.ogg"
+						if="web" />
+						
+		<assets path="assets/scripts"
+						library="scripts"
+						embed="true"
+						exclude="*.md|*.mp3"
+						unless="web" />
 	</section>
 	
 	<section unless="embedAssets">
 		<assets path="assets/core"
 						library="core"
 						embed="false" />
+		<assets path="assets/scripts"
+						library="scripts"
+						embed="false"
+						exclude="*.md|*.ogg"
+						if="web" />
+		<assets path="assets/scripts"
+						library="scripts"
+						embed="false"
+						exclude="*.md|*.mp3"
+						unless="web" />
 	</section>
 	<!-- _______________________________ Libraries ______________________________ -->
 
@@ -239,5 +263,16 @@
   <haxedef name="FEATURE_MODCORE" if="desktop" />
   
   <haxedef name="LUA_ALLOWED" if="desktop" />
+  
+  <!-- Use defines to configure the behavior of Polymod. -->
+	<haxedef name="POLYMOD_SCRIPT_EXT"
+					 value=".hscript" />
+	<haxedef name="POLYMOD_SCRIPT_LIBRARY"
+					 value="scripts" />
+	<haxedef name="POLYMOD_USE_NAMESPACE"
+					 value="false" />
+	<haxedef name="POLYMOD_ROOT_PATH"
+					 value="assets/scripts/" />
+  <haxedef name="POLYMOD_DEBUG" if="debug" />
 
 </project>

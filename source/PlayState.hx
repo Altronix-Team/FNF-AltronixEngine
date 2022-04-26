@@ -85,6 +85,7 @@ import FunkinLua;
 import flixel.util.FlxSave;
 import LoadingState.LoadingsState;
 import DialogueBoxPsych;
+import IHook;
 import StageData;
 import openfl.utils.Assets as OpenFlAssets;
 #if desktop
@@ -93,7 +94,8 @@ import DiscordClient;
 
 using StringTools;
 
-class PlayState extends MusicBeatState
+@:hscript(SONG, setHealth)
+class PlayState extends MusicBeatState implements IHook
 {
 	public static var instance:PlayState = null;
 
@@ -190,6 +192,12 @@ class PlayState extends MusicBeatState
 	private var gfSpeed:Int = 1;
 
 	public var health:Float = 1; // making public because sethealth doesnt work without it
+
+	function setHealth(newValue:Float):Float
+		{
+			this.health = newValue;
+			return this.health;
+		}
 
 	private var combo:Int = 0;
 
@@ -333,6 +341,33 @@ class PlayState extends MusicBeatState
 
 	// API stuff
 
+	/*var cbOnCreate:Void->Void = function() return;
+	var cbStartCountdown:Void->Void = function() return;
+	var cbEndSong:Void->Void = function() return;
+
+	@:hscript({
+		pathName: "scripts/PlayState",
+	})
+	public function buildPlayStateHooks():Void
+	{
+		if (script_variables.get('onCreate') != null)
+		{
+			Debug.logTrace('Found hook: onCreate');
+			cbOnCreate = script_variables.get('onCreate');
+		}
+		if (script_variables.get('startCountdown') != null)
+		{
+			Debug.logTrace('Found hook: startCountdown');
+			cbStartCountdown = script_variables.get('startCountdown');
+		}
+		if (script_variables.get('endSong') != null)
+		{
+			Debug.logTrace('Found hook: endSong');
+			cbEndSong = script_variables.get('endSong');
+		}
+		Debug.logTrace('Play State hooks retrieved.');
+	}*/
+
 	public function addObject(object:FlxBasic)
 	{
 		add(object);
@@ -345,6 +380,7 @@ class PlayState extends MusicBeatState
 
 	override public function create()
 	{
+		//buildPlayStateHooks();
 		if (storyDifficulty == 3)
 		{
 			FlxG.save.data.middleScroll = true;
@@ -601,9 +637,8 @@ class PlayState extends MusicBeatState
 				{
 					dialogueeng = CoolUtil.coolTextFile(Paths.txt('data/songs/${PlayState.SONG.songId}/dialogue-eng'));
 				}
-				var file:String = Paths.json('songs/' + PlayState.SONG.songId + '/dialogue');
-				if (OpenFlAssets.exists(file)) {
-					dialogueJson = DialogueBoxPsych.parseDialogue(file);
+				if (Paths.doesTextAssetExist(Paths.json('songs/' + PlayState.SONG.songId + '/dialogue'))) {
+					dialogueJson = DialogueBoxPsych.parseDialogue(Paths.json('songs/' + PlayState.SONG.songId + '/dialogue'));
 				}
 			}
 
@@ -613,9 +648,9 @@ class PlayState extends MusicBeatState
 				{
 					dialogueru = CoolUtil.coolTextFile(Paths.txt('data/songs/${PlayState.SONG.songId}/dialogue-ru'));
 				}
-				var file:String = Paths.json('songs/' + PlayState.SONG.songId + '/dialogue');
-				if (OpenFlAssets.exists(file)) {
-					dialogueJson = DialogueBoxPsych.parseDialogue(file);
+				if (Paths.doesTextAssetExist(Paths.json('songs/' + PlayState.SONG.songId + '/dialogue'))) 
+				{
+					dialogueJson = DialogueBoxPsych.parseDialogue(Paths.json('songs/' + PlayState.SONG.songId + '/dialogue'));
 				}
 			}
 
@@ -733,6 +768,23 @@ class PlayState extends MusicBeatState
 		{
 			add(i);
 		}
+
+		overlayColor = FlxColor.fromRGB(0, 0, 0, 0);
+		overlay = new FlxSprite(0, 0);
+		overlay.loadGraphic(Paths.loadImage('songoverlay'));
+		overlay.scrollFactor.set();
+		overlay.setGraphicSize(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2));
+		add(overlay);
+
+		colorTween = FlxTween.color(overlay, 1, overlay.color, overlayColor, {
+				onComplete: function(twn:FlxTween)
+				{
+					Debug.logTrace('created overlay');
+					colorTween = null;
+				}
+			});
+
+
 		if (!PlayStateChangeables.Optimize)
 			for (index => array in Stage.layInFront)
 			{
@@ -1133,21 +1185,6 @@ class PlayState extends MusicBeatState
 		}
 		add(scoreTxt);
 
-		overlayColor = FlxColor.fromRGB(0, 0, 0, 0);
-		overlay = new FlxSprite(0, 0);
-		overlay.loadGraphic(Paths.loadImage('songoverlay'));
-		overlay.scrollFactor.set();
-		overlay.setGraphicSize(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2));
-		add(overlay);
-
-		colorTween = FlxTween.color(overlay, 1, overlay.color, overlayColor, {
-				onComplete: function(twn:FlxTween)
-				{
-					Debug.logTrace('created overlay');
-					colorTween = null;
-				}
-			});
-
 		strumLineNotes.cameras = [camHUD];
 		grpNoteSplashes.cameras = [camHUD];
 		notes.cameras = [camHUD];
@@ -1244,6 +1281,7 @@ class PlayState extends MusicBeatState
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, handleInput);
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, releaseInput);
 		super.create();
+		//cbOnCreate();
 	}
 
 	var video:MP4Handler;
@@ -1528,11 +1566,13 @@ class PlayState extends MusicBeatState
 	}
 
 	var oldvalue:Dynamic;
+	var curColor = FlxColor.WHITE;
 
 	function songOverlay(value:Dynamic):Void
 	{
 		if (oldvalue != value)
 		{
+			var chars:Array<Character> = [boyfriend, gf, dad];
 			if (value != 'delete')
 			{
 				var valueArray:Array<Dynamic> = [value];
@@ -1547,9 +1587,11 @@ class PlayState extends MusicBeatState
 				var alpha:Int = Std.parseInt(split[3].trim());
 				Debug.logTrace(red + '\n' + green + '\n' + blue + '\n' + alpha);
 				overlayColor = FlxColor.fromRGB(red, green, blue, alpha);
+				var charColor = FlxColor.fromRGB(red, green, blue, 255);
 				Debug.logTrace(split);
 				
 				Debug.logTrace(overlayColor);
+
 				
 				colorTween = FlxTween.color(overlay, 1, overlay.color, overlayColor, {
 					onComplete: function(twn:FlxTween)
@@ -1558,6 +1600,13 @@ class PlayState extends MusicBeatState
 						colorTween = null;
 					}
 				});
+
+				for (char in chars) {
+					char.colorTween = FlxTween.color(char, 1, curColor, charColor, {onComplete: function(twn:FlxTween) {
+						Debug.logTrace('changed character color');
+						curColor = charColor;
+					}, ease: FlxEase.quadInOut});
+				}
 			}
 			else
 			{
@@ -1569,6 +1618,11 @@ class PlayState extends MusicBeatState
 					colorTween = null;
 				}
 				});
+				for (char in chars) {
+					char.colorTween = FlxTween.color(char, 1, char.color, FlxColor.WHITE, {onComplete: function(twn:FlxTween) {
+						Debug.logTrace('changed character color to default');
+					}, ease: FlxEase.quadInOut});
+				}
 			}
 			oldvalue = value;
 		}
@@ -1579,6 +1633,7 @@ class PlayState extends MusicBeatState
 
 	public function startCountdown():Void
 	{
+		//cbStartCountdown();
 		inCutscene = false;
 
 		appearStaticArrows();
@@ -3452,15 +3507,15 @@ class PlayState extends MusicBeatState
 										switch (Stage.curLight)
 										{
 											case 4:
-												songOverlay("251, 166, 51, 250");
+												songOverlay("251, 166, 51, 175");
 											case 3:
-												songOverlay("253, 69, 49, 250");
+												songOverlay("253, 69, 49, 175");
 											case 2:
-												songOverlay("251, 51, 245, 250");
+												songOverlay("251, 51, 245, 175");
 											case 1:
-												songOverlay("49, 253, 140, 250");
+												songOverlay("49, 253, 140, 175");
 											case 0:
-												songOverlay("49, 162, 253, 250");
+												songOverlay("49, 162, 253, 175");
 										}
 									}
 								else if (curBeat > 192 && !blammedeventplayed  && FlxG.save.data.distractions)
@@ -4195,6 +4250,7 @@ class PlayState extends MusicBeatState
 	public var transitioning = false;
 	public function endSong():Void
 	{
+		//cbEndSong();
 		openSubState(new LoadingsState());
 		endingSong = true;
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, handleInput);

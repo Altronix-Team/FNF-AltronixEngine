@@ -80,7 +80,6 @@ class ModCore
 	#if FEATURE_MODCORE
 	public static function loadModsById(ids:Array<String>)
 		{
-			#if FEATURE_MODCORE
 			if (ids.length == 0)
 			{
 				Debug.logWarn('You attempted to load zero mods.');
@@ -103,7 +102,8 @@ class ModCore
 				// Enforce semantic version patterns for each mod.
 				// modVersions: null,
 				// A map telling Polymod what the asset type is for unfamiliar file extensions.
-				// extensionMap: [],
+
+				//extensionMap: ['lua' => TEXT],
 	
 				frameworkParams: buildFrameworkParams(),
 	
@@ -115,7 +115,7 @@ class ModCore
 				ignoredFiles: Polymod.getDefaultIgnoreList(),
 	
 				// Parsing rules for various data formats.
-				parseRules: buildParseRules(),
+				parseRules: buildParseRules()
 			});
 	
 			if (loadedModList == null)
@@ -161,10 +161,7 @@ class ModCore
 			Debug.logInfo('Installed mods have replaced ${fileList.length} file.');
 			for (item in fileList)
 				Debug.logTrace('  * $item');
-
-			#else
-			Debug.logWarn("Attempted to load mods when Polymod was not supported!");
-			#end
+	
 		}
 
 	public static function getAllMods():Array<ModMetadata>

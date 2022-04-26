@@ -2840,13 +2840,12 @@ class PlayState extends MusicBeatState implements IHook
 											});
 									}
 								}	
-								var positions = Stage.positions[Stage.curStage];
-								if (positions != null && !stageTesting)
+								var positions:StageFile = StageData.getStageFile(i.value);
+								if (positions != null)
 								{
-									for (char => pos in positions)
-										for (person in [boyfriend, gf, dad])
-											if (person.curCharacter == char)
-												person.setPosition(pos[0], pos[1]);
+									boyfriend.setPosition(positions.boyfriend[0], positions.boyfriend[1]);
+									gf.setPosition(positions.gf[0], positions.gf[1]);
+									dad.setPosition(positions.dad[0], positions.dad[1]);
 								}
 								camPos.x = gf.getGraphicMidpoint().x;
 								camPos.y = gf.getGraphicMidpoint().y;						
@@ -2886,20 +2885,15 @@ class PlayState extends MusicBeatState implements IHook
 								healthBar.createFilledBar(dad.barColor, boyfriend.barColor);
 								healthBar.updateFilledBar();
 								resyncVocals();
-								dad.x += dad.positionArray[0];
-								dad.y += dad.positionArray[1];
 								if (dad.hasTrail)
 									{
 										dadTrail = new FlxTrail(dad, null, 4, 24, 0.3, 0.069);
 										add(dadTrail);
-									}
-								var positions = Stage.positions[Stage.curStage];
-								if (positions != null && !stageTesting)
+									}	
+								var positions:StageFile = StageData.getStageFile(Stage.curStage);
+								if (positions != null)
 								{
-									for (char => pos in positions)
-										for (person in [boyfriend, gf, dad])
-											if (person.curCharacter == char)
-												person.setPosition(pos[0], pos[1]);
+									dad.setPosition(positions.dad[0], positions.dad[1]);
 								}
 							}
 							catch (e)
@@ -2930,21 +2924,16 @@ class PlayState extends MusicBeatState implements IHook
 								instance.add(boyfriend);
 								healthBar.createFilledBar(dad.barColor, boyfriend.barColor);
 								healthBar.updateFilledBar();
-								boyfriend.x += boyfriend.positionArray[0];
-								boyfriend.y += boyfriend.positionArray[1];
 								resyncVocals();
 								if (boyfriend.hasTrail)
 									{
 										bfTrail = new FlxTrail(boyfriend, null, 4, 24, 0.3, 0.069);
 										add(bfTrail);
 									}
-								var positions = Stage.positions[Stage.curStage];
-								if (positions != null && !stageTesting)
+								var positions:StageFile = StageData.getStageFile(Stage.curStage);
+								if (positions != null)
 								{
-									for (char => pos in positions)
-										for (person in [boyfriend, gf, dad])
-											if (person.curCharacter == char)
-												person.setPosition(pos[0], pos[1]);
+									boyfriend.setPosition(positions.boyfriend[0], positions.boyfriend[1]);
 								}
 							}
 							catch (e)
@@ -2973,20 +2962,15 @@ class PlayState extends MusicBeatState implements IHook
 
 								instance.add(gf);
 								resyncVocals();
-								gf.x += gf.positionArray[0];
-								gf.y += gf.positionArray[1];
 								if (gf.hasTrail)
 									{
 										gfTrail = new FlxTrail(gf, null, 4, 24, 0.3, 0.069);
 										add(gfTrail);
 									}
-								var positions = Stage.positions[Stage.curStage];
-								if (positions != null && !stageTesting)
+								var positions:StageFile = StageData.getStageFile(Stage.curStage);
+								if (positions != null)
 								{
-									for (char => pos in positions)
-										for (person in [boyfriend, gf, dad])
-											if (person.curCharacter == char)
-												person.setPosition(pos[0], pos[1]);
+									gf.setPosition(positions.gf[0], positions.gf[1]);
 								}
 							}
 							catch (e)

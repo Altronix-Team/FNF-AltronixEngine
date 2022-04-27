@@ -145,7 +145,7 @@ class Note extends FlxSprite
 		{	
 			switch (noteType)
 			{
-				case 4:
+				case 3:
 					{
 						frames = Paths.getSparrowAtlas('specialnotes/GF_Sing');
 
@@ -168,7 +168,7 @@ class Note extends FlxSprite
 						updateHitbox();
 						antialiasing = true;
 					}
-				case 3:
+				case 2:
 					{
 						frames = Paths.getSparrowAtlas('specialnotes/Bullet_Note');
 
@@ -181,7 +181,7 @@ class Note extends FlxSprite
 						updateHitbox();
 						antialiasing = true;
 					}
-				case 2:
+				case 1:
 					{
 						frames = Paths.getSparrowAtlas('specialnotes/HURTNOTE_assets');
 
@@ -218,7 +218,7 @@ class Note extends FlxSprite
 				case 'pixel':
 					switch (noteType)
 					{
-						case 3:
+						case 2:
 							{
 								frames = Paths.getSparrowAtlas('specialnotes/Bullet_Note');
 
@@ -231,7 +231,7 @@ class Note extends FlxSprite
 								updateHitbox();
 								antialiasing = true;
 							}
-						case 2:
+						case 1:
 						{
 							frames = Paths.getSparrowAtlas('specialnotes/HURTNOTE_assets');
 
@@ -275,7 +275,7 @@ class Note extends FlxSprite
 				default:
 					switch (noteType)
 					{
-						case 3:
+						case 2:
 							{
 								frames = Paths.getSparrowAtlas('specialnotes/Bullet_Note');
 
@@ -289,7 +289,7 @@ class Note extends FlxSprite
 								updateHitbox();
 								antialiasing = true;
 							}
-						case 2:
+						case 1:
 							{
 								frames = Paths.getSparrowAtlas('specialnotes/HURTNOTE_assets');
 

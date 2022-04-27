@@ -1007,12 +1007,24 @@ class PlayState extends MusicBeatState implements IHook
 		else
 			trace('song looks gucci');
 
+		var folderToCheckPsychLua:String = Paths.getPreloadPath('data/songs' + SONG.songId);
 		#if FEATURE_LUAMODCHART
 		if (executeModchart)
 		{
 			luaModchart = ModchartState.createModchartState(isStoryMode);
 			luaModchart.executeState('onCreate', [PlayState.SONG.songId]);
 			luaModchart.setVar('isStoryMode', isStoryMode);
+		}
+		else if(FileSystem.exists(folderToCheckPsychLua))
+		{
+			for (file in FileSystem.readDirectory(folderToCheckPsychLua))
+			{
+				if(file.endsWith('.lua'))
+				{
+					Debug.logTrace('fuck me');
+					psychLua = new FunkinLua(folderToCheckPsychLua + file);	
+				}
+			}	
 		}
 		#end
 
@@ -1470,6 +1482,10 @@ class PlayState extends MusicBeatState implements IHook
 
 	#if FEATURE_LUAMODCHART
 	public static var luaModchart:ModchartState = null;
+	#end
+
+	#if LUA_ALLOWED
+	public static var psychLua:FunkinLua = null;
 	#end
 
 
@@ -3829,7 +3845,7 @@ class PlayState extends MusicBeatState implements IHook
 								|| !daNote.mustPress
 								|| daNote.wasGoodHit
 								|| holdArray[Math.floor(Math.abs(daNote.noteData))]
-								&& daNote.noteType != 2)
+								&& daNote.noteType != 1)
 								&& daNote.y
 								- daNote.offset.y * daNote.scale.y
 								+ daNote.height >= (strumLine.y + Note.swagWidth / 2))
@@ -3872,7 +3888,7 @@ class PlayState extends MusicBeatState implements IHook
 								|| !daNote.mustPress
 								|| daNote.wasGoodHit
 								|| holdArray[Math.floor(Math.abs(daNote.noteData))]
-								&& daNote.noteType != 2)
+								&& daNote.noteType != 1)
 								&& daNote.y
 								+ daNote.offset.y * daNote.scale.y <= (strumLine.y + Note.swagWidth / 2))
 							{
@@ -3910,7 +3926,7 @@ class PlayState extends MusicBeatState implements IHook
 							var singData:Int = Std.int(Math.abs(daNote.noteData));
 							switch (daNote.noteType)
 							{
-								case 4:
+								case 3:
 									gf.playAnim('sing' + dataSuffix[daNote.noteData], true);
 								default:
 									dad.playAnim('sing' + dataSuffix[singData] + altAnim, true);
@@ -3950,7 +3966,7 @@ class PlayState extends MusicBeatState implements IHook
 						var singData:Int = Std.int(Math.abs(daNote.noteData));
 						switch (daNote.noteType)
 						{
-							case 4:
+							case 3:
 								gf.playAnim('sing' + dataSuffix[daNote.noteData], true);
 							default:
 								dad.playAnim('sing' + dataSuffix[singData] + altAnim, true);
@@ -4062,7 +4078,7 @@ class PlayState extends MusicBeatState implements IHook
 								totalNotesHit += 1;
 							else
 							{
-								if (daNote.noteType != 2)
+								if (daNote.noteType != 1)
 									vocals.volume = 0;
 								if (theFunne && !daNote.isSustainNote)
 								{
@@ -4108,11 +4124,11 @@ class PlayState extends MusicBeatState implements IHook
 						}
 						else
 						{
-							if (daNote.noteType != 2)
+							if (daNote.noteType != 1)
 								vocals.volume = 0;
 							if (theFunne && !daNote.isSustainNote)
 							{
-								if (PlayStateChangeables.botPlay && daNote.noteType != 2)
+								if (PlayStateChangeables.botPlay && daNote.noteType != 1)
 								{
 									daNote.rating = "bad";
 									goodNoteHit(daNote);
@@ -4152,7 +4168,7 @@ class PlayState extends MusicBeatState implements IHook
 									}
 									updateAccuracy();
 								}
-								else if (!daNote.wasGoodHit && !daNote.isSustainNote && daNote.noteType != 2)
+								else if (!daNote.wasGoodHit && !daNote.isSustainNote && daNote.noteType != 1)
 								{
 									health -= 0.15;
 								}
@@ -4546,9 +4562,9 @@ class PlayState extends MusicBeatState implements IHook
 			case 'shit':
 				daRating = 'shit';
 				score = -300;
-				if (daNote.noteType == 2)
+				if (daNote.noteType == 1)
 					health -= 1;
-				else if (daNote.noteType == 3)
+				else if (daNote.noteType == 2)
 				{
 					FlxG.sound.play(Paths.sound('hankshoot'), FlxG.random.float(0.1, 0.2));
 				}
@@ -4564,9 +4580,9 @@ class PlayState extends MusicBeatState implements IHook
 					totalNotesHit -= 1;
 			case 'bad':
 				daRating = 'bad';
-				if (daNote.noteType == 2)
+				if (daNote.noteType == 1)
 					health -= 1;
-				else if (daNote.noteType == 3)
+				else if (daNote.noteType == 2)
 				{
 					FlxG.sound.play(Paths.sound('hankshoot'), FlxG.random.float(0.1, 0.2));
 				}
@@ -4596,9 +4612,9 @@ class PlayState extends MusicBeatState implements IHook
 					health += 0.08;
 				if (FlxG.save.data.accuracyMod == 0)
 					totalNotesHit += 1;
-				if (daNote.noteType == 2)
+				if (daNote.noteType == 1)
 					health -= 1;
-				else if (daNote.noteType == 3)
+				else if (daNote.noteType == 2)
 				{
 					FlxG.sound.play(Paths.sound('hankshoot'), FlxG.random.float(0.1, 0.2));
 				}
@@ -5024,7 +5040,7 @@ class PlayState extends MusicBeatState implements IHook
 		if (PlayStateChangeables.botPlay)
 			notes.forEachAlive(function(daNote:Note)
 			{
-				if (daNote.mustPress && Conductor.songPosition >= daNote.strumTime && daNote.noteType != 2)
+				if (daNote.mustPress && Conductor.songPosition >= daNote.strumTime && daNote.noteType != 1)
 				{
 					// Force good note hit regardless if it's too late to hit it or not as a fail safe
 					if (loadRep)
@@ -5165,14 +5181,14 @@ class PlayState extends MusicBeatState implements IHook
 
 	function noteMiss(direction:Int = 1, daNote:Note):Void
 	{
-		if (!boyfriend.stunned && daNote.noteType != 2)
+		if (!boyfriend.stunned && daNote.noteType != 1)
 		{
-			if (daNote.noteType == 3)
+			if (daNote.noteType == 2)
 			{
 				health -= 1;
 			}
 			// health -= 0.2;
-			if (combo > 5 && gf.animOffsets.exists('sad') && daNote.noteType != 2)
+			if (combo > 5 && gf.animOffsets.exists('sad') && daNote.noteType != 1)
 			{
 				gf.playAnim('sad');
 			}
@@ -5232,7 +5248,7 @@ class PlayState extends MusicBeatState implements IHook
 				|| boyfriend.curCharacter == 'bf-christmas'
 				|| boyfriend.curCharacter == 'bf-car'
 				|| boyfriend.curCharacter == 'bf-pixel'
-				&& daNote.noteType != 4)
+				&& daNote.noteType != 3)
 			{
 				boyfriend.playAnim('sing' + dataSuffix[direction] + 'miss', true);
 			}
@@ -5378,11 +5394,11 @@ class PlayState extends MusicBeatState implements IHook
 
 		if (note.rating == 'good')
 		{
-			if (note.noteType == 3)
+			if (note.noteType == 2)
 			{
 				FlxG.sound.play(Paths.sound('hankshoot'), FlxG.random.float(0.1, 0.2));
 			}
-			else if (note.noteType == 2)
+			else if (note.noteType == 1)
 				health -= 1;
 		}
 
@@ -5414,9 +5430,9 @@ class PlayState extends MusicBeatState implements IHook
 			
 			switch (note.noteType)
 			{
-				case 4:
-					gf.playAnim('sing' + dataSuffix[note.noteData], true);
 				case 3:
+					gf.playAnim('sing' + dataSuffix[note.noteData], true);
+				case 2:
 					boyfriend.playAnim('dodge', true);
 				default:
 					boyfriend.playAnim('sing' + dataSuffix[note.noteData] + altAnim, true);	
@@ -5435,7 +5451,7 @@ class PlayState extends MusicBeatState implements IHook
 				saveJudge.push(note.rating);
 			}
 
-			if (!PlayStateChangeables.botPlay || FlxG.save.data.cpuStrums && note.noteType != 2)
+			if (!PlayStateChangeables.botPlay || FlxG.save.data.cpuStrums && note.noteType != 1)
 			{
 				playerStrums.forEach(function(spr:StaticArrow)
 				{

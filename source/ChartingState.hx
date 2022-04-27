@@ -6,6 +6,7 @@ import lime.app.Application;
 #if FEATURE_FILESYSTEM
 import sys.io.File;
 import sys.FileSystem;
+import flash.media.Sound;
 #end
 import flixel.addons.ui.FlxUIButton;
 import flixel.addons.ui.StrNameLabel;
@@ -53,6 +54,16 @@ using StringTools;
 
 class ChartingState extends MusicBeatState
 {
+	public static var noteTypeList:Array<String> = //Used for backwards compatibility with 0.1 - 0.3.2 charts, though, you should add your hardcoded custom note types here too.
+	[
+		'',
+		'Hurt Note',
+		'Bullet Note',
+		'GF Sing Note'
+	];
+	private var noteTypeIntMap:Map<Int, String> = new Map<Int, String>();
+	private var noteTypeMap:Map<String, Null<Int>> = new Map<String, Null<Int>>();
+
 	public static var inChartEditor:Bool = false;
 	public static var instance:ChartingState;
 
@@ -75,7 +86,7 @@ class ChartingState extends MusicBeatState
 	public var beatsShown:Float = 1; // for the zoom factor
 	public var zoomFactor:Float = 0.4;
 
-	public static var noteType = 1;
+	public static var noteType = 0;
 
 	/**
 	 * Array of notes showing when each section STARTS in STEPS
@@ -1379,9 +1390,7 @@ class ChartingState extends MusicBeatState
 	}
 
 	public var check_naltAnim:FlxUICheckBox;
-	public var bulletnote:FlxUICheckBox;
-	public var hurtnote:FlxUICheckBox;
-	public var gfnote:FlxUICheckBox;
+	var noteTypeDropDown:FlxUIDropDownMenuCustom;
 
 	function addNoteUI():Void
 	{
@@ -1395,62 +1404,49 @@ class ChartingState extends MusicBeatState
 		stepperSusLength.value = 0;
 		stepperSusLength.name = 'note_susLength';
 
-		bulletnote = new FlxUICheckBox(10, 200, null, null, "Bullet Note", 100);
-		bulletnote.callback = function()
-		{
-			if (curSelectedNote != null)
-			{
-				for (i in selectedBoxes)
-				{
-					i.connectedNoteData[5] = 3;
+		var key:Int = 0;
+		var displayNameList:Array<String> = [];
+		while (key < noteTypeList.length) {
+			displayNameList.push(noteTypeList[key]);
+			noteTypeIntMap.set(key, noteTypeList[key]);
+			noteTypeMap.set(noteTypeList[key], key);
+			key++;
+		}
 
-					for (ii in _song.notes)
-					{
-						for (n in ii.sectionNotes)
-							if (n[0] == i.connectedNoteData[0] && n[1] == i.connectedNoteData[1])
-								n[5] = i.connectedNoteData[5];
+		/*#if LUA_ALLOWED
+		var directories:Array<String> = [Paths.getPreloadPath('custom_notetypes/')];
+		for (i in 0...directories.length) {
+			var directory:String =  directories[i];
+			if(FileSystem.exists(directory)) {
+				for (file in FileSystem.readDirectory(directory)) {
+					var path = haxe.io.Path.join([directory, file]);
+					if (!FileSystem.isDirectory(path) && file.endsWith('.lua')) {
+						var fileToCheck:String = file.substr(0, file.length - 4);
+						if(!noteTypeMap.exists(fileToCheck)) {
+							displayNameList.push(fileToCheck);
+							noteTypeMap.set(noteTypeList[key], key);
+							noteTypeIntMap.set(key, fileToCheck);
+							key++;
+						}
 					}
 				}
 			}
 		}
+		#end*/
 
-		hurtnote = new FlxUICheckBox(10, 180, null, null, "Hurt Note", 100);
-		hurtnote.callback = function()
-		{
-			if (curSelectedNote != null)
-			{
-				for (i in selectedBoxes)
-				{
-					i.connectedNoteData[5] = 2;
-
-					for (ii in _song.notes)
-					{
-						for (n in ii.sectionNotes)
-							if (n[0] == i.connectedNoteData[0] && n[1] == i.connectedNoteData[1])
-								n[5] = i.connectedNoteData[5];
-					}
-				}
-			}
+		for (i in 1...displayNameList.length) {
+			displayNameList[i] = i + '. ' + displayNameList[i];
 		}
 
-		gfnote = new FlxUICheckBox(10, 220, null, null, "GF sing Note", 100);
-		gfnote.callback = function()
-		{
-			if (curSelectedNote != null)
+		noteTypeDropDown = new FlxUIDropDownMenuCustom(10, 75, FlxUIDropDownMenuCustom.makeStrIdLabelArray(displayNameList, true), function(character:String)
 			{
-				for (i in selectedBoxes)
-				{
-					i.connectedNoteData[5] = 4;
-
-					for (ii in _song.notes)
-					{
-						for (n in ii.sectionNotes)
-							if (n[0] == i.connectedNoteData[0] && n[1] == i.connectedNoteData[1])
-								n[5] = i.connectedNoteData[5];
-					}
+				noteType = Std.parseInt(character);
+				if(curSelectedNote != null && curSelectedNote[1] > -1) {
+					curSelectedNote[5] = noteType;
+					updateGrid();
 				}
-			}
-		}
+			});
+		blockPressWhileScrolling.push(noteTypeDropDown);
 
 		check_naltAnim = new FlxUICheckBox(10, 150, null, null, "Toggle Alternative Animation", 100);
 		check_naltAnim.callback = function()
@@ -1479,22 +1475,9 @@ class ChartingState extends MusicBeatState
 		tab_group_note.add(stepperSusLengthLabel);
 		tab_group_note.add(applyLength);
 		tab_group_note.add(check_naltAnim);
-		tab_group_note.add(hurtnote);
-		tab_group_note.add(gfnote);
-		tab_group_note.add(bulletnote);
+		tab_group_note.add(noteTypeDropDown);
 
 		UI_box.addGroup(tab_group_note);
-
-		/*player2 = new Character(0,0, _song.player2);
-			player1 = new Boyfriend(player2.width * 0.2,0 + player2.height, _song.player1);
-
-			player1.y = player1.y - player1.height;
-
-			player2.setGraphicSize(Std.int(player2.width * 0.2));
-			player1.setGraphicSize(Std.int(player1.width * 0.2));
-
-			UI_box.add(player1);
-			UI_box.add(player2); */
 	}
 
 	function pasteNotesFromArray(array:Array<Array<Dynamic>>, fromStrum:Bool = true)
@@ -3185,14 +3168,17 @@ class ChartingState extends MusicBeatState
 				curSelectedNote[3] = false;
 				check_naltAnim.checked = false;	
 			}
-			if (hurtnote.checked)
-				curSelectedNote[5] = 2;
-			else if (bulletnote.checked)
-				curSelectedNote[5] = 3;	
-			else if (gfnote.checked)
-				curSelectedNote[5] = 4;
-			else
-				curSelectedNote[5] = 1;	
+			if(curSelectedNote[5] != null) {
+				noteType = curSelectedNote[5];
+				if(noteType <= 0) 
+				{
+					noteTypeDropDown.selectedId = '';
+				} 
+				else 
+				{
+					noteTypeDropDown.selectedId = Std.string(noteType);
+				}
+			}
 		}
 	}
 
@@ -3558,26 +3544,26 @@ class ChartingState extends MusicBeatState
 		var noteData = Math.floor(FlxG.mouse.x / GRID_SIZE);
 		var noteSus = 0;
 
-		if (hurtnote.checked)
+		/*if (hurtnote.checked)
 		{
 			Debug.logTrace('kill note');
-			noteType = 2;
+			noteType = 1;
 		}
 		else if (bulletnote.checked)
 		{
 			Debug.logTrace('hank note');
-			noteType = 3;
+			noteType = 2;
 		}
 		else if (gfnote.checked)
 		{
 			Debug.logTrace('gf note');
-			noteType = 4;
+			noteType = 3;
 		}
 		else
 		{
 			Debug.logTrace('default note');
-			noteType = 1;
-		}
+			noteType = 0;
+		}*/
 
 		Debug.logTrace("adding note with " + strum + " from dummyArrow with data " + noteData + " with type " + noteType);
 
@@ -3600,7 +3586,7 @@ class ChartingState extends MusicBeatState
 
 		if (n == null)
 		{
-			var note:Note = new Note(noteStrum, noteData % 4, null, false, true, TimingStruct.getBeatFromTime(noteStrum), noteType);
+			var note:Note = new Note(noteStrum, noteData % 4, null, false, true, null, TimingStruct.getBeatFromTime(noteStrum), noteType);
 			note.rawNoteData = noteData;
 			note.sustainLength = noteSus;
 			note.noteType = noteType;

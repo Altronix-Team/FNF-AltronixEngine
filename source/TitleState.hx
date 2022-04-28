@@ -111,6 +111,8 @@ class TitleState extends MusicBeatState
 
 		super.create();
 
+		FreeplayState.populateSongData();
+
 		#if FREEPLAY
 		FlxG.switchState(new FreeplayState());
 		clean();
@@ -273,6 +275,11 @@ class TitleState extends MusicBeatState
 		if (FlxG.keys.anyJustPressed([fullscreenBind]))
 		{
 			FlxG.fullscreen = !FlxG.fullscreen;
+		}
+
+		if (FlxG.save.data.fullscreenOnStart)
+		{
+			FlxG.fullscreen = FlxG.save.data.fullscreenOnStart;
 		}
 
 		var pressedEnter:Bool = controls.ACCEPT;

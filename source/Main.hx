@@ -100,10 +100,6 @@ class Main extends Sprite
 		// Run this first so we can see logs.
 		Debug.onInitProgram();
 
-		#if FEATURE_MODCORE
-			ModCore.loadModsById([]);
-		#end
-
 		#if !mobile
 		fpsCounter = new KadeEngineFPS(10, 3, 0xFFFFFF);
 		bitmapFPS = ImageOutline.renderImage(fpsCounter, 1, 0x000000, true);

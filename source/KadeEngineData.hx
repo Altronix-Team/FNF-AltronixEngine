@@ -135,6 +135,9 @@ class KadeEngineData
 		if (FlxG.save.data.healthBar == null)
 			FlxG.save.data.healthBar = true;
 
+		if (FlxG.save.data.fullscreenOnStart == null)
+			FlxG.save.data.fullscreenOnStart = false;
+
 		if (FlxG.save.data.laneTransparency == null)
 			FlxG.save.data.laneTransparency = 0;
 

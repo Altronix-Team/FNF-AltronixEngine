@@ -87,7 +87,6 @@ class FreeplayState extends MusicBeatState
 
 	override function create()
 	{
-		populateSongData();
 		clean();
 		list = CoolUtil.coolTextFile(Paths.txt('data/freeplaySonglist'));
 
@@ -255,23 +254,29 @@ class FreeplayState extends MusicBeatState
 	{
 		Debug.logInfo('Getting character color (${songs[curSelected].songCharacter})');
 
-		// Load the data from JSON and cast it to a struct we can easily read.
-		var jsonData;
-		if (OpenFlAssets.exists(Paths.json('characters/${songs[curSelected].songCharacter}')))
-			jsonData = Paths.loadJSON('characters/${songs[curSelected].songCharacter}');
-		else
-			jsonData = Paths.loadJSON('modcharacters/${songs[curSelected].songCharacter}');
-		if (jsonData == null)
+		if (songs[curSelected].songCharacter != null)
 		{
-			Debug.logError('Failed to parse JSON data for character ${songs[curSelected].songCharacter}');
-			return;
+			var jsonData;
+			if (OpenFlAssets.exists(Paths.json('characters/${songs[curSelected].songCharacter}')))
+				jsonData = Paths.loadJSON('characters/${songs[curSelected].songCharacter}');
+			else
+				jsonData = Paths.loadJSON('modcharacters/${songs[curSelected].songCharacter}');
+			if (jsonData == null)
+			{
+				Debug.logError('Failed to parse JSON data for character ${songs[curSelected].songCharacter}');
+				return;
+			}
+
+			var data:CharColor = cast jsonData;
+
+			if (data.barColorJson != null && data.barColorJson.length > 2)
+				bgColorArray = data.barColorJson;
+			freeplayBgColor = FlxColor.fromRGB(bgColorArray[0], bgColorArray[1], bgColorArray[2]);
 		}
-
-		var data:CharColor = cast jsonData;
-
-		if (data.barColorJson != null && data.barColorJson.length > 2)
-			bgColorArray = data.barColorJson;
-		freeplayBgColor = FlxColor.fromRGB(bgColorArray[0], bgColorArray[1], bgColorArray[2]);
+		else
+		{
+			freeplayBgColor = FlxColor.fromRGB(0, 0, 0);
+		}
 	}
 
 	public static function populateSongData()

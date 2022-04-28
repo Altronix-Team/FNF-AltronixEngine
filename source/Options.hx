@@ -1730,6 +1730,44 @@ class BotPlay extends Option
 	}
 }
 
+class FullscreenOnStartOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		if (OptionsMenu.isInPause)
+			if (!FlxG.save.data.language)
+				description = "This option cannot be toggled in the pause menu.";
+			else
+				description = "Эта опция не может быть переключена во время паузы";
+		else
+			description = desc;
+	}
+
+	public override function left():Bool
+	{
+		if (OptionsMenu.isInPause)
+			return false;
+		FlxG.save.data.fullscreenOnStart = !FlxG.save.data.fullscreenOnStart;
+		display = updateDisplay();
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		left();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		if (!FlxG.save.data.language)
+			return "Full screen when starting the game: < " + (!FlxG.save.data.fullscreenOnStart ? "off" : "on") + " >";
+		else
+			return "Полный экран при запуске игры: < " + (!FlxG.save.data.fullscreenOnStart ? "выключено" : "включено") + " >";
+	}
+}
+
 class CamZoomOption extends Option
 {
 	public function new(desc:String)

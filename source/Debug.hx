@@ -8,6 +8,7 @@ import flixel.util.FlxStringUtil;
 import haxe.Log;
 import haxe.PosInfos;
 import Song.SongData;
+//import ScriptedStage;
 
 #if desktop
 import DiscordClient;

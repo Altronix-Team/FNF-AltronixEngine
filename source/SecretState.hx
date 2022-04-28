@@ -344,6 +344,7 @@ class SecretState extends MusicBeatState
 			PlayState.isStoryMode = false;
 			PlayState.isFreeplay = false;
 			PlayState.isExtras = true;
+			PlayState.fromPasswordMenu = false;
 			PlayState.storyDifficulty = curDifficulty;
 
 			PlayState.storyWeek = songs[curSelected].week;

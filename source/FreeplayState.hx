@@ -605,6 +605,7 @@ class FreeplayState extends MusicBeatState
 		PlayState.isStoryMode = false;
 		PlayState.isFreeplay = true;
 		PlayState.isExtras = false;
+		PlayState.fromPasswordMenu = false;
 		PlayState.storyDifficulty = difficulty;
 		PlayState.storyWeek = songs[curSelected].week;
 		Debug.logInfo('Loading song ${PlayState.SONG.songName} from week ${PlayState.storyWeek} into Free Play...');

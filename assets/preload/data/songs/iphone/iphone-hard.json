@@ -1,26 +1,26 @@
 {
  "song": {
-  "player1": "bf",
-  "songId": "iphone",
   "songName": "iphone",
-  "player2": "monster",
+  "songId": "iphone",
+  "player1": "bf",
+  "hideGF": true,
   "notes": [
    {
-    "lengthInSteps": 16,
-    "sectionNotes": [],
     "endTime": 2181.81818181818,
-    "startTime": 0,
-    "mustHitSection": true
-   },
-   {
-    "lengthInSteps": 16,
     "sectionNotes": [],
-    "endTime": 4363.63636363636,
-    "startTime": 2181.81818181818,
-    "mustHitSection": true
+    "lengthInSteps": 16,
+    "mustHitSection": true,
+    "startTime": 0
    },
    {
+    "endTime": 4363.63636363636,
+    "sectionNotes": [],
     "lengthInSteps": 16,
+    "mustHitSection": true,
+    "startTime": 2181.81818181818
+   },
+   {
+    "endTime": 6545.45454545455,
     "sectionNotes": [
      [
       6272.72727272727,
@@ -30,12 +30,12 @@
       11.5
      ]
     ],
-    "endTime": 6545.45454545455,
-    "startTime": 4363.63636363636,
-    "mustHitSection": true
+    "lengthInSteps": 16,
+    "mustHitSection": true,
+    "startTime": 4363.63636363636
    },
    {
-    "lengthInSteps": 16,
+    "endTime": 8727.27272727273,
     "sectionNotes": [
      [
       6818.18181818182,
@@ -101,12 +101,12 @@
       14.66875
      ]
     ],
-    "endTime": 8727.27272727273,
-    "startTime": 6545.45454545455,
-    "mustHitSection": false
+    "lengthInSteps": 16,
+    "mustHitSection": false,
+    "startTime": 6545.45454545455
    },
    {
-    "lengthInSteps": 16,
+    "endTime": 10909.0909090909,
     "sectionNotes": [
      [
       8727.27272727273,
@@ -158,12 +158,12 @@
       19.75
      ]
     ],
-    "endTime": 10909.0909090909,
-    "startTime": 8727.27272727273,
-    "mustHitSection": false
+    "lengthInSteps": 16,
+    "mustHitSection": false,
+    "startTime": 8727.27272727273
    },
    {
-    "lengthInSteps": 16,
+    "endTime": 13090.9090909091,
     "sectionNotes": [
      [
       11181,
@@ -222,20 +222,20 @@
       22.9999999999999
      ],
      [
-      10925,
+      10927.5,
       1,
       0,
       false,
-      20.0291666666667,
-      1
+      20.03375,
+      0
      ]
     ],
-    "endTime": 13090.9090909091,
-    "startTime": 10909.0909090909,
-    "mustHitSection": true
+    "lengthInSteps": 16,
+    "mustHitSection": true,
+    "startTime": 10909.0909090909
    },
    {
-    "lengthInSteps": 16,
+    "endTime": 15272.7272727273,
     "sectionNotes": [
      [
       13363,
@@ -287,12 +287,12 @@
       24.25
      ]
     ],
-    "endTime": 15272.7272727273,
-    "startTime": 13090.9090909091,
-    "mustHitSection": true
+    "lengthInSteps": 16,
+    "mustHitSection": true,
+    "startTime": 13090.9090909091
    },
    {
-    "lengthInSteps": 16,
+    "endTime": 17454.5454545455,
     "sectionNotes": [
      [
       15777.2727272727,
@@ -358,12 +358,12 @@
       30.86875
      ]
     ],
-    "endTime": 17454.5454545455,
-    "startTime": 15272.7272727273,
-    "mustHitSection": false
+    "lengthInSteps": 16,
+    "mustHitSection": false,
+    "startTime": 15272.7272727273
    },
    {
-    "lengthInSteps": 16,
+    "endTime": 19636.3636363636,
     "sectionNotes": [
      [
       17454.5454545455,
@@ -415,12 +415,12 @@
       35.75
      ]
     ],
-    "endTime": 19636.3636363636,
-    "startTime": 17454.5454545455,
-    "mustHitSection": false
+    "lengthInSteps": 16,
+    "mustHitSection": false,
+    "startTime": 17454.5454545455
    },
    {
-    "lengthInSteps": 16,
+    "endTime": 21818.1818181818,
     "sectionNotes": [
      [
       19772.7272727273,
@@ -493,12 +493,12 @@
       39
      ]
     ],
-    "endTime": 21818.1818181818,
-    "startTime": 19636.3636363636,
-    "mustHitSection": true
+    "lengthInSteps": 16,
+    "mustHitSection": true,
+    "startTime": 19636.3636363636
    },
    {
-    "lengthInSteps": 16,
+    "endTime": 24000,
     "sectionNotes": [
      [
       21954.5454545455,
@@ -557,19 +557,19 @@
       43.0000000000001
      ]
     ],
-    "endTime": 24000,
-    "startTime": 21818.1818181818,
-    "mustHitSection": true
+    "lengthInSteps": 16,
+    "mustHitSection": true,
+    "startTime": 21818.1818181818
    },
    {
-    "lengthInSteps": 16,
-    "sectionNotes": [],
     "endTime": 26181.8181818182,
-    "startTime": 24000,
-    "mustHitSection": true
+    "sectionNotes": [],
+    "lengthInSteps": 16,
+    "mustHitSection": true,
+    "startTime": 24000
    }
   ],
-  "hideGF": true,
+  "player2": "monster",
   "showbgdancers": false,
   "offset": 0,
   "song": "Monster",
@@ -641,7 +641,7 @@
   ],
   "stage": "halloween",
   "needsVoices": true,
-  "noteStyle": "normal",
-  "bpm": 110
+  "bpm": 110,
+  "noteStyle": "normal"
  }
 }

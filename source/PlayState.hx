@@ -85,7 +85,6 @@ import FunkinLua;
 import flixel.util.FlxSave;
 import LoadingState.LoadingsState;
 import DialogueBoxPsych;
-import IHook;
 import StageData;
 import openfl.utils.Assets as OpenFlAssets;
 #if desktop
@@ -95,7 +94,7 @@ import DiscordClient;
 using StringTools;
 
 @:hscript(SONG, setHealth)
-class PlayState extends MusicBeatState implements IHook
+class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 {
 	public static var instance:PlayState = null;
 

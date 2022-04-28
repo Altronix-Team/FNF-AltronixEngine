@@ -115,7 +115,9 @@ class ModCore
 				ignoredFiles: Polymod.getDefaultIgnoreList(),
 	
 				// Parsing rules for various data formats.
-				parseRules: buildParseRules()
+				parseRules: buildParseRules(),
+				
+				useScriptedClasses: true,
 			});
 	
 			if (loadedModList == null)

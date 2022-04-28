@@ -1,0 +1,104 @@
+{
+	"animations": [
+		{
+			"nextAnim": "idle",
+			"offsets": [
+				0,
+				0
+			],
+			"frameRate": 12,
+			"frameIndices": [],
+			"prefix": "idle",
+			"looped": false,
+			"name": "idle",
+			"interrupt": true
+		},
+		{
+			"nextAnim": "idle",
+			"offsets": [
+				0,
+				0
+			],
+			"frameRate": 12,
+			"frameIndices": [],
+			"prefix": "like",
+			"looped": false,
+			"name": "like",
+			"interrupt": false
+		},
+		{
+			"frameIndices": [],
+			"prefix": "up",
+			"offsets": [
+				-20,
+				0
+			],
+			"nextAnim": "like",
+			"frameRate": 12,
+			"interrupt": false,
+			"name": "singUP",
+			"looped": false
+		},
+		{
+			"frameIndices": [],
+			"prefix": "left",
+			"offsets": [
+				-50,
+				0
+			],
+			"nextAnim": "like",
+			"frameRate": 12,
+			"interrupt": false,
+			"name": "singLEFT",
+			"looped": false
+		},
+		{
+			"frameIndices": [],
+			"prefix": "right",
+			"offsets": [
+				-70,
+				0
+			],
+			"nextAnim": "like",
+			"frameRate": 12,
+			"interrupt": false,
+			"name": "singRIGHT",
+			"looped": false
+		},
+		{
+			"frameIndices": [],
+			"prefix": "down",
+			"offsets": [
+				-60,
+				0
+			],
+			"nextAnim": "like",
+			"frameRate": 12,
+			"interrupt": false,
+			"name": "singDOWN",
+			"looped": false
+		}
+	],
+	"hasTrail": false,
+	"camPos": [
+		-120,
+		0
+	],
+	"holdLength": 6.1,
+	"charPos": [
+		0,
+		-200
+	],
+	"flipX": false,
+	"asset": "characters/rift",
+	"startingAnim": "idle",
+	"antialiasing": true,
+	"name": "characters/rift",
+	"barColorJson": [
+		0,
+		255,
+		0
+	],
+	"replacesGF": false,
+	"scale": 1.2
+}

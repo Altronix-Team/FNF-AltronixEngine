@@ -25,8 +25,10 @@ class PauseSubState extends MusicBeatSubstate
 	public static var goToOptions:Bool = false;
 	public static var goBack:Bool = false;
 
-	var menuItems:Array<String> = ['Resume', 'Restart Song', 'Options', 'Exit to menu'];
+	var menuItems:Array<String> = ['Resume', 'Restart Song', 'Options', 'Change Difficulty', 'Exit to menu'];
+	var menuItemsOG:Array<String> = ['Resume', 'Restart Song', 'Options', 'Change Difficulty', 'Exit to menu'];
 	var curSelected:Int = 0;
+	var difficultyChoices = [];
 
 	var pauseMusic:FlxSound;
 
@@ -111,6 +113,23 @@ class PauseSubState extends MusicBeatSubstate
 			grpMenuShit.add(songText);
 		}
 
+		if (PlayState.isExtras || PlayState.fromPasswordMenu)
+		{
+			for (i in 0...CoolUtil.extrasDifficultyArray.length) {
+				var diff:String = '' + CoolUtil.extrasDifficultyArray[i];
+				difficultyChoices.push(diff);
+			}
+			difficultyChoices.push('BACK');
+		}
+		else
+		{
+			for (i in 0...CoolUtil.difficultyArray.length) {
+				var diff:String = '' + CoolUtil.difficultyArray[i];
+				difficultyChoices.push(diff);
+			}
+			difficultyChoices.push('BACK');
+		}
+
 		changeSelection();
 
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
@@ -171,6 +190,27 @@ class PauseSubState extends MusicBeatSubstate
 		{
 			var daSelected:String = menuItems[curSelected];
 
+			if (menuItems == difficultyChoices)
+				{
+					if(menuItems.length - 1 != curSelected && difficultyChoices.contains(daSelected)) 
+					{
+						if (PlayState.storyDifficulty == 3)
+							{
+								FlxG.save.data.middleScroll = false;
+							}
+						var name:String = PlayState.SONG.song;
+						var poop = Highscore.formatSongDiff(name, curSelected);
+						PlayState.SONG = Song.loadFromJson(name, poop);
+						PlayState.storyDifficulty = curSelected;
+						MusicBeatState.resetState();
+						FlxG.sound.music.volume = 0;
+						return;
+					}
+	
+					menuItems = menuItemsOG;
+					regenMenu();
+				}
+
 			switch (daSelected)
 			{
 				case "Resume":
@@ -186,9 +226,15 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.instance.clean();
 					FlxG.resetState();
 					PlayState.stageTesting = false;
+
+				case 'Change Difficulty':
+					menuItems = difficultyChoices;
+					regenMenu();
+
 				case "Options":
 					goToOptions = true;
 					close();
+
 				case "Exit to menu":
 					PlayState.startTime = 0;
 					if (PlayState.instance.useVideo)
@@ -237,6 +283,8 @@ class PauseSubState extends MusicBeatSubstate
 						FlxG.switchState(new FreeplayState());
 					else if (PlayState.isExtras)
 						FlxG.switchState(new SecretState());
+					else if (PlayState.fromPasswordMenu)
+						FlxG.switchState(new MainMenuState());
 			}
 		}
 
@@ -245,6 +293,24 @@ class PauseSubState extends MusicBeatSubstate
 			// for reference later!
 			// PlayerSettings.player1.controls.replaceBinding(Control.LEFT, Keys, FlxKey.J, null);
 		}
+	}
+
+	function regenMenu():Void {
+		for (i in 0...grpMenuShit.members.length) {
+			var obj = grpMenuShit.members[0];
+			obj.kill();
+			grpMenuShit.remove(obj, true);
+			obj.destroy();
+		}
+
+		for (i in 0...menuItems.length) {
+			var item = new Alphabet(0, 70 * i + 30, menuItems[i], true, false);
+			item.isMenuItem = true;
+			item.targetY = i;
+			grpMenuShit.add(item);
+		}
+		curSelected = 0;
+		changeSelection();
 	}
 
 	override function destroy()

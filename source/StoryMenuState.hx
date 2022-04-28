@@ -433,6 +433,7 @@ class StoryMenuState extends MusicBeatState
 			PlayState.isStoryMode = true;
 			PlayState.isFreeplay = false;
 			PlayState.isExtras = false;
+			PlayState.fromPasswordMenu = false;
 			selectedWeek = true;
 			PlayState.songMultiplier = 1;
 

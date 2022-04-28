@@ -795,17 +795,17 @@ class CharacterEditorState extends MusicBeatState
 			lastAnim = char.animation.curAnim.name;
 		}
 		var anims:Array<AnimationData> = char.animationsArray.copy();
-		if(Paths.fileExists('images/' + char.asset + '/Animation.json', TEXT)) 
+		if(Paths.fileExists('shared/images/' + char.asset + '/Animation.json', TEXT)) 
 		{
 			char.frames = AtlasFrameMaker.construct(char.asset);
 		} 
-		else if(Paths.fileExists('images/' + char.asset + '.txt', TEXT)) 
+		else if(Paths.fileExists('shared/images/' + char.asset + '.txt', TEXT)) 
 		{
-			char.frames = Paths.getPackerAtlas(char.asset);
+			char.frames = Paths.getPackerAtlas(char.asset, 'shared');
 		}
 		else 
 		{
-			char.frames = Paths.getSparrowAtlas(char.asset);
+			char.frames = Paths.getSparrowAtlas(char.asset, 'shared');
 		}
 
 		

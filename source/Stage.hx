@@ -15,6 +15,7 @@ import flixel.math.FlxAngle;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import StageData;
+//import ScriptedStage;
 #if sys
 import sys.FileSystem;
 #end
@@ -41,6 +42,7 @@ class Stage extends MusicBeatState
 	// All of the above must be set or used in your stage case code block!!
 	public var positions:Map<String, Map<String, Array<Int>>> = [
 		// Assign your characters positions on stage here!
+		// Unused Kade Shit
 		'halloween' => ['spooky' => [100, 300], 'monster' => [100, 200]],
 		'philly' => ['pico' => [100, 400]],
 		'limo' => ['bf-car' => [1030, 230]],
@@ -553,6 +555,12 @@ class Stage extends MusicBeatState
 						Debug.logTrace('trying to execute funkin lua');
 						stageLua = new FunkinLua(Paths.getPreloadPath('stages/' + curStage + '.lua'));
 					}
+					#if FEATURE_MODCORE
+					else if (FileSystem.exists(Paths.getPreloadPath('stages/' + curStage + '.hscript')))
+					{
+						//var stage:ScriptedStage = ScriptedStage.init(curStage);
+					}
+					#end
 					else
 					{
 						curStage = 'stage';

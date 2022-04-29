@@ -111,7 +111,7 @@ class TitleState extends MusicBeatState
 
 		super.create();
 
-		FreeplayState.populateSongData();
+		//FreeplayState.populateSongData();
 
 		#if FREEPLAY
 		FlxG.switchState(new FreeplayState());

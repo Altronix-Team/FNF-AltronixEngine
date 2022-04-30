@@ -1,14 +1,14 @@
 {
 	"animations": [
 		{
+			"nextAnim": "idleLoop",
 			"offsets": [
 				0,
 				0
 			],
-			"nextAnim": "idleLoop",
 			"frameRate": 24,
-			"frameIndices": [],
 			"prefix": "Dad idle dance",
+			"frameIndices": [],
 			"name": "idle"
 		},
 		{
@@ -22,8 +22,8 @@
 				11,
 				12
 			],
-			"looped": true,
-			"name": "idleLoop"
+			"name": "idleLoop",
+			"looped": true
 		},
 		{
 			"offsets": [
@@ -72,10 +72,14 @@
 		0
 	],
 	"holdLength": 6.1,
-	"charPos": null,
+	"charPos": [
+		0,
+		0
+	],
 	"flipX": false,
 	"asset": "characters/DADDY_DEAREST",
 	"startingAnim": "idle",
+	"characterIcon": "dad",
 	"antialiasing": true,
 	"name": "characters/DADDY_DEAREST",
 	"barColorJson": [

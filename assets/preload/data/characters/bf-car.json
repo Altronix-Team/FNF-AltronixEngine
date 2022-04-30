@@ -8,6 +8,7 @@
   "startingAnim": "idle",
   "flipX": true,
   "antialiasing": true,
+  "characterIcon": "bf",
   "animations": [
 	{
       "name": "idle",

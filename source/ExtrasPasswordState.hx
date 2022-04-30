@@ -138,6 +138,20 @@ class ExtrasPasswordState extends MusicBeatState implements IHook
 						var llll = FlxG.sound.play(Paths.sound('confirmMenu')).length;
 						LoadingState.loadAndSwitchState(new PlayState());
 					}
+				case 'big guns':
+					{
+						var poop:String = Highscore.formatSongDiff('guns(erect)', 2);
+						PlayState.SONG = Song.loadFromJson('guns(erect)', poop);
+						PlayState.isStoryMode = false;
+						PlayState.isFreeplay = false;
+						PlayState.isExtras = false;
+						PlayState.fromPasswordMenu = true;
+						PlayState.storyDifficulty = 2;
+	
+						var llll = FlxG.sound.play(Paths.sound('confirmMenu')).length;
+						LoadingState.loadAndSwitchState(new PlayState());
+					
+					}
 				default:
 					{
 						/*var hscriptpass = hscriptPasswords();

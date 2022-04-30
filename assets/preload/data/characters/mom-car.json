@@ -1,12 +1,13 @@
 {
   "name": "Mommy Mearest (Car)",
   "asset": "characters/momCar",
+  "characterIcon": "mom",
   "barColorJson": 
   [
 	216, 85, 142
   ],
   "startingAnim": "idle",
-  "camFollow": [0, 100],
+  "camPos": [0, 100],
   "antialiasing": true,
   "animations": [
     {

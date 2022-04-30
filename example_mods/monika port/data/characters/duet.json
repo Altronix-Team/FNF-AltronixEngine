@@ -112,17 +112,18 @@
 	"hasTrail": false,
 	"camPos": [
 		-130,
-		-360
+		-320
 	],
 	"holdLength": 4,
 	"charPos": [
-		150,
-		350
+		0,
+		0
 	],
 	"flipX": false,
 	"asset": "characters/Duet_Assets",
 	"startingAnim": "idle",
 	"antialiasing": false,
+	"characterIcon": "duet",
 	"name": "characters/Duet_Assets",
 	"barColorJson": [
 		255,

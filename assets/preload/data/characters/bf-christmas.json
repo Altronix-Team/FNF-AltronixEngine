@@ -114,6 +114,7 @@
 	"flipX": true,
 	"asset": "characters/bfChristmas",
 	"startingAnim": "idle",
+	"characterIcon": "bf",
 	"antialiasing": true,
 	"name": "characters/bfChristmas",
 	"barColorJson": [

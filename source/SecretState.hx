@@ -115,7 +115,8 @@ class SecretState extends MusicBeatState
 			songText.targetY = i;
 			grpSongs.add(songText);
 
-			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
+			getCharacterIcon(songs[i].songCharacter);
+			var icon:HealthIcon = new HealthIcon(characterIcon);
 			icon.sprTracker = songText;
 
 			// using a FlxGroup is too much fuss!
@@ -149,10 +150,10 @@ class SecretState extends MusicBeatState
 		add(textBG);
 
 		#if PRELOAD_ALL
-		var leText:String = "Press SPACE to listen to the Song / Press 7 to go to the Charting Menu";
+		var leText:String = "Press SPACE to listen to the Song";
 		var size:Int = 16;
 		#else
-		var leText:String = "Press 7 to go to the Charting Menu.";
+		var leText:String = "";
 		var size:Int = 18;
 		#end
 		var text:FlxText = new FlxText(textBG.x, textBG.y + 4, FlxG.width, leText, size);
@@ -194,6 +195,33 @@ class SecretState extends MusicBeatState
 		super.create();
 	}
 
+	var characterIcon:String = '';
+
+	function getCharacterIcon(char:String)
+		{
+			Debug.logInfo('Getting character icon (${char})');
+	
+			if (char != null)
+			{
+				var jsonData;
+				if (OpenFlAssets.exists(Paths.json('characters/${char}')))
+					jsonData = Paths.loadJSON('characters/${char}');
+				else
+				{
+					Debug.logError('Failed to parse JSON data for character ${char}');
+					return;
+				}
+	
+				var data:ExtrasCharColor = cast jsonData;
+	
+				characterIcon = data.characterIcon;
+			}
+			else
+			{
+				characterIcon = 'face';
+			}
+		}
+
 	function getCharacterColor()
 	{
 		Debug.logInfo('Getting character color (${songs[curSelected].songCharacter})');
@@ -203,8 +231,6 @@ class SecretState extends MusicBeatState
 		if (OpenFlAssets.exists(Paths.json('characters/${songs[curSelected].songCharacter}')))
 			jsonData = Paths.loadJSON('characters/${songs[curSelected].songCharacter}');
 		else
-			jsonData = Paths.loadJSON('modcharacters/${songs[curSelected].songCharacter}');
-		if (jsonData == null)
 		{
 			Debug.logError('Failed to parse JSON data for character ${songs[curSelected].songCharacter}');
 			extrasBgColor = FlxColor.fromRGB(255, 255, 255);
@@ -543,4 +569,6 @@ class SongMetadata4
 typedef ExtrasCharColor =
 {
 	var barColorJson:Array<Int>;
+
+	var characterIcon:String;
 }

@@ -52,12 +52,19 @@
 		}
 	],
 	"hasTrail": false,
-	"camPos": null,
+	"camPos": [
+		0,
+		0
+	],
 	"holdLength": 4,
-	"charPos": null,
+	"charPos": [
+		0,
+		0
+	],
 	"flipX": false,
 	"asset": "characters/monsterChristmas",
 	"startingAnim": "idle",
+	"characterIcon": "monster",
 	"antialiasing": true,
 	"name": "characters/monsterChristmas",
 	"barColorJson": [

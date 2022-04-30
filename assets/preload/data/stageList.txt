@@ -6,4 +6,4 @@ mall
 mallEvil
 school
 schoolEvil
-tank2
+warzone

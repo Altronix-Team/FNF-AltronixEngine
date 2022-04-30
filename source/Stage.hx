@@ -387,7 +387,7 @@ class Stage extends MusicBeatState
 					swagBacks['bg'] = bg;
 					toAdd.push(bg);	
 				}
-			case 'tank2':
+			case 'warzone':
 				{
 					camZoom = 0.9;
 
@@ -615,7 +615,7 @@ class Stage extends MusicBeatState
 						}
 					}
 					// phillyCityLights.members[curLight].alpha -= (Conductor.crochet / 1000) * FlxG.elapsed;
-				case 'tank2':
+				case 'warzone':
 					moveTank();
 			}
 		}
@@ -728,7 +728,7 @@ class Stage extends MusicBeatState
 							trace('train');
 						}
 					}
-				case 'tank2':
+				case 'warzone':
 					if (curBeat % 2 == 0)
 					{
 						swagBacks['tankWatchtower'].animation.play('idle', true);

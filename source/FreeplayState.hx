@@ -92,7 +92,7 @@ class FreeplayState extends MusicBeatState
 
 		cached = false;
 
-		//populateSongData();
+		populateSongData();
 		PlayState.inDaPlay = false;
 		PlayState.currentSong = "bruh";
 
@@ -173,7 +173,8 @@ class FreeplayState extends MusicBeatState
 			songText.targetY = i;
 			grpSongs.add(songText);
 
-			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
+			getCharacterIcon(songs[i].songCharacter);
+			var icon:HealthIcon = new HealthIcon(characterIcon);
 			icon.sprTracker = songText;
 
 			// using a FlxGroup is too much fuss!
@@ -247,9 +248,33 @@ class FreeplayState extends MusicBeatState
 
 	public static var cached:Bool = false;
 
-	/**
-	 * Load song data from the data files.
-	 */
+	var characterIcon:String = '';
+
+	function getCharacterIcon(char:String)
+		{
+			Debug.logInfo('Getting character icon (${char})');
+	
+			if (char != null)
+			{
+				var jsonData;
+				if (OpenFlAssets.exists(Paths.json('characters/${char}')))
+					jsonData = Paths.loadJSON('characters/${char}');
+				else 
+				{
+					Debug.logError('Failed to parse JSON data for character ${char}');
+					return;
+				}
+	
+				var data:CharColor = cast jsonData;
+	
+				characterIcon = data.characterIcon;
+			}
+			else
+			{
+				characterIcon = 'face';
+			}
+		}
+	
 	function getCharacterColor()
 	{
 		Debug.logInfo('Getting character color (${songs[curSelected].songCharacter})');
@@ -260,8 +285,6 @@ class FreeplayState extends MusicBeatState
 			if (OpenFlAssets.exists(Paths.json('characters/${songs[curSelected].songCharacter}')))
 				jsonData = Paths.loadJSON('characters/${songs[curSelected].songCharacter}');
 			else
-				jsonData = Paths.loadJSON('modcharacters/${songs[curSelected].songCharacter}');
-			if (jsonData == null)
 			{
 				Debug.logError('Failed to parse JSON data for character ${songs[curSelected].songCharacter}');
 				return;
@@ -854,4 +877,6 @@ class FreeplayState extends MusicBeatState
 typedef CharColor =
 {
 	var barColorJson:Array<Int>;
+
+	var characterIcon:String;
 }

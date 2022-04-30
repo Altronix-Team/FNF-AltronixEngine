@@ -1,90 +1,137 @@
 {
-  "name": "BF with GF",
-  "asset": "characters/bfAndGF",
-  "barColorJson": 
-  [
-	49, 176, 209
-  ],
-  "startingAnim": "idle",
-  "flipX": true,
-  "antialiasing": true,
-  "animations": [
-    {
-      "name": "singLEFT",
-      "prefix": "BF NOTE LEFT0",
-      "offsets": [-8, -6],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singRIGHT",
-      "prefix": "BF NOTE RIGHT0",
-      "offsets": [-48,  13],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singUP",
-      "prefix": "BF NOTE UP0",
-      "offsets": [-69, -3],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "singDOWN",
-      "prefix": "BF NOTE DOWN0",
-      "offsets": [-40, -20],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },  
-    {
-      "name": "idle",
-      "prefix": "BF idle dance w gf",
-      "offsets": [-5, 0],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-	{
-      "name": "hey",
-      "prefix": "BF hey w gf",
-      "offsets": [-3, 94],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-	{
-      "name": "singUPmiss",
-      "prefix": "BF NOTE UP MISS",
-      "offsets": [-59, -3],
-	  "frameIndices": [],
-	  "frameRate": 24
-    }, 
-	{
-      "name": "singLEFTmiss",
-      "prefix": "BF NOTE LEFT MISS",
-      "offsets": [-18, -6],
-	  "frameIndices": [],
-	  "frameRate": 24
-    }, 
-	{
-      "name": "singRIGHTmiss",
-      "prefix": "BF NOTE RIGHT MISS",
-      "offsets": [-70, 31],
-	  "frameIndices": [],
-	  "frameRate": 24
-    }, 
-	{
-      "name": "singDOWNmiss",
-      "prefix": "BF NOTE DOWN MISS",
-      "offsets": [-31, -10],
-	  "frameIndices": [],
-	  "frameRate": 24
-    },
-	{
-      "name": "catch",
-      "prefix": "BF catches GF",
-      "offsets": [-14, 80],
-	  "frameIndices": [],
-	  "frameRate": 24
-    }
-  ]
+	"animations": [
+		{
+			"offsets": [
+				-8,
+				-6
+			],
+			"frameRate": 24,
+			"prefix": "BF NOTE LEFT0",
+			"frameIndices": [],
+			"name": "singLEFT"
+		},
+		{
+			"offsets": [
+				-48,
+				13
+			],
+			"frameRate": 24,
+			"prefix": "BF NOTE RIGHT0",
+			"frameIndices": [],
+			"name": "singRIGHT"
+		},
+		{
+			"offsets": [
+				-69,
+				-3
+			],
+			"frameRate": 24,
+			"prefix": "BF NOTE UP0",
+			"frameIndices": [],
+			"name": "singUP"
+		},
+		{
+			"offsets": [
+				-40,
+				-20
+			],
+			"frameRate": 24,
+			"prefix": "BF NOTE DOWN0",
+			"frameIndices": [],
+			"name": "singDOWN"
+		},
+		{
+			"offsets": [
+				-5,
+				0
+			],
+			"frameRate": 24,
+			"prefix": "BF idle dance w gf",
+			"frameIndices": [],
+			"name": "idle"
+		},
+		{
+			"offsets": [
+				-3,
+				94
+			],
+			"frameRate": 24,
+			"prefix": "BF hey w gf",
+			"frameIndices": [],
+			"name": "hey"
+		},
+		{
+			"offsets": [
+				-59,
+				-3
+			],
+			"frameRate": 24,
+			"prefix": "BF NOTE UP MISS",
+			"frameIndices": [],
+			"name": "singUPmiss"
+		},
+		{
+			"offsets": [
+				-18,
+				-6
+			],
+			"frameRate": 24,
+			"prefix": "BF NOTE LEFT MISS",
+			"frameIndices": [],
+			"name": "singLEFTmiss"
+		},
+		{
+			"offsets": [
+				-70,
+				31
+			],
+			"frameRate": 24,
+			"prefix": "BF NOTE RIGHT MISS",
+			"frameIndices": [],
+			"name": "singRIGHTmiss"
+		},
+		{
+			"offsets": [
+				-31,
+				-10
+			],
+			"frameRate": 24,
+			"prefix": "BF NOTE DOWN MISS",
+			"frameIndices": [],
+			"name": "singDOWNmiss"
+		},
+		{
+			"offsets": [
+				-14,
+				80
+			],
+			"frameRate": 24,
+			"prefix": "BF catches GF",
+			"frameIndices": [],
+			"name": "catch"
+		}
+	],
+	"hasTrail": false,
+	"camPos": [
+		0,
+		0
+	],
+	"holdLength": 4,
+	"charPos": [
+		0,
+		0
+	],
+	"flipX": true,
+	"asset": "characters/bfAndGF",
+	"startingAnim": "idle",
+	"characterIcon": "bfAndGF",
+	"antialiasing": true,
+	"name": "characters/bfAndGF",
+	"barColorJson": [
+		49,
+		176,
+		209
+	],
+	"replacesGF": false,
+	"scale": 0
 }

@@ -94,6 +94,7 @@
 	"startingAnim": "idle",
 	"antialiasing": true,
 	"name": "characters/rift",
+	"characterIcon": "bassmachine",
 	"barColorJson": [
 		0,
 		255,

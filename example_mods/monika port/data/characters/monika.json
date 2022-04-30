@@ -64,17 +64,18 @@
 	"hasTrail": false,
 	"camPos": [
 		-230,
-		-420
+		-360
 	],
 	"holdLength": 4,
 	"charPos": [
-		200,
-		300
+		0,
+		0
 	],
 	"flipX": false,
 	"asset": "characters/monika",
 	"startingAnim": "idle",
 	"antialiasing": false,
+	"characterIcon": "monika",
 	"name": "characters/monika",
 	"barColorJson": [
 		255,

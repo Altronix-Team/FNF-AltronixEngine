@@ -57,10 +57,14 @@
 		-370
 	],
 	"holdLength": 4,
-	"charPos": null,
+	"charPos": [
+		0,
+		0
+	],
 	"flipX": false,
 	"asset": "characters/senpai",
 	"startingAnim": "idle",
+	"characterIcon": "senpai",
 	"antialiasing": false,
 	"name": "characters/senpai",
 	"barColorJson": [

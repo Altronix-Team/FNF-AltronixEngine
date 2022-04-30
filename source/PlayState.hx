@@ -51,6 +51,7 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.FlxSubState;
+import flixel.effects.FlxFlicker;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.addons.effects.FlxTrail;
 import flixel.addons.effects.FlxTrailArea;
@@ -337,35 +338,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 	var gfTrail:FlxTrail;
 	var bfTrail:FlxTrail;
 
-
-	// API stuff
-
-	/*var cbOnCreate:Void->Void = function() return;
-	var cbStartCountdown:Void->Void = function() return;
-	var cbEndSong:Void->Void = function() return;
-
-	@:hscript({
-		pathName: "scripts/PlayState",
-	})
-	public function buildPlayStateHooks():Void
-	{
-		if (script_variables.get('onCreate') != null)
-		{
-			Debug.logTrace('Found hook: onCreate');
-			cbOnCreate = script_variables.get('onCreate');
-		}
-		if (script_variables.get('startCountdown') != null)
-		{
-			Debug.logTrace('Found hook: startCountdown');
-			cbStartCountdown = script_variables.get('startCountdown');
-		}
-		if (script_variables.get('endSong') != null)
-		{
-			Debug.logTrace('Found hook: endSong');
-			cbEndSong = script_variables.get('endSong');
-		}
-		Debug.logTrace('Play State hooks retrieved.');
-	}*/
+	public var allowToAttack:Bool = false;
 
 	public function addObject(object:FlxBasic)
 	{
@@ -689,6 +662,15 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 					}
 					// i should check if its stage (but this is when none is found in chart anyway)					
 			}
+			switch (SONG.songId)
+			{
+				case 'ugh':
+					stageCheck = 'warzone';
+				case 'guns':
+					stageCheck = 'warzone';
+				case 'stress':
+					stageCheck = 'warzone';
+			}
 		}
 		else
 		{
@@ -711,6 +693,15 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 					gfCheck = 'gf-christmas';
 				case 6:
 					gfCheck = 'gf-pixel';
+			}
+			switch (SONG.songId)
+			{
+				case 'ugh':
+					gfCheck = 'gftank';
+				case 'guns':
+					gfCheck = 'gftank';
+				case 'stress':
+					gfCheck = 'nogf';
 			}
 		}
 		else
@@ -1176,10 +1167,10 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 
 		addedBotplay = PlayStateChangeables.botPlay;
 
-		iconP1 = new HealthIcon(boyfriend.curCharacter, true);
+		iconP1 = new HealthIcon(boyfriend.characterIcon, true);
 		iconP1.y = healthBar.y - (iconP1.height / 2);
 
-		iconP2 = new HealthIcon(dad.curCharacter, false);
+		iconP2 = new HealthIcon(dad.characterIcon, false);
 		iconP2.y = healthBar.y - (iconP2.height / 2);
 
 		if (FlxG.save.data.healthBar)
@@ -2894,7 +2885,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 								Debug.logTrace(i.value);
 
 								dad = new Character(100, 100, i.value, false);
-								iconP2.changeIcon(i.value);
+								iconP2.changeIcon(dad.characterIcon);
 
 								instance.add(dad);
 								healthBar.createFilledBar(dad.barColor, boyfriend.barColor);
@@ -2934,7 +2925,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 								Debug.logTrace(i.value);
 
 								boyfriend = new Boyfriend(770, 450, i.value);
-								iconP1.changeIcon(i.value);
+								iconP1.changeIcon(boyfriend.characterIcon);
 
 								instance.add(boyfriend);
 								healthBar.createFilledBar(dad.barColor, boyfriend.barColor);
@@ -3909,43 +3900,17 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 					if (SONG.songId != 'tutorial')
 						camZooming = true;
 
-					var altAnim:String = "";
-
-					if (daNote.isAlt)
-					{
-						altAnim = '-alt';
-						trace("YOO WTF THIS IS AN ALT NOTE????");
-					}
-
 					// Accessing the animation name directly to play it
 					if (!daNote.isParent && daNote.parent != null)
 					{
 						if (daNote.spotInLine != daNote.parent.children.length - 1)
 						{
-							var singData:Int = Std.int(Math.abs(daNote.noteData));
-							switch (daNote.noteType)
-							{
-								case 3:
-									gf.playAnim('sing' + dataSuffix[daNote.noteData], true);
-								default:
-									dad.playAnim('sing' + dataSuffix[singData] + altAnim, true);
-							}
-
+							checkNoteType('dad', daNote);
 							if (FlxG.save.data.cpuStrums)
 							{
 								cpuStrums.forEach(function(spr:StaticArrow)
 								{
 									pressArrow(spr, spr.ID, daNote);
-									/*
-										if (spr.animation.curAnim.name == 'confirm' && SONG.noteStyle != 'pixel')
-										{
-											spr.centerOffsets();
-											spr.offset.x -= 13;
-											spr.offset.y -= 13;
-										}
-										else
-											spr.centerOffsets();
-									 */
 								});
 							}
 
@@ -3962,33 +3927,14 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 					}
 					else
 					{
-						var singData:Int = Std.int(Math.abs(daNote.noteData));
-						switch (daNote.noteType)
-						{
-							case 3:
-								gf.playAnim('sing' + dataSuffix[daNote.noteData], true);
-							default:
-								dad.playAnim('sing' + dataSuffix[singData] + altAnim, true);
-						}
-
+						checkNoteType('dad', daNote);
 						if (FlxG.save.data.cpuStrums)
 						{
 							cpuStrums.forEach(function(spr:StaticArrow)
 							{
 								pressArrow(spr, spr.ID, daNote);
-								/*
-									if (spr.animation.curAnim.name == 'confirm' && SONG.noteStyle != 'pixel')
-									{
-										spr.centerOffsets();
-										spr.offset.x -= 13;
-										spr.offset.y -= 13;
-									}
-									else
-										spr.centerOffsets();
-								 */
 							});
 						}
-
 						#if FEATURE_LUAMODCHART
 						if (luaModchart != null)
 							luaModchart.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
@@ -4393,7 +4339,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 				}
 				else
 				{
-					GameJoltAPI.addScore(Math.round(songScore), 716199, 'Song - ' + SONG.songName + '\n' + 'Difficulty - ' + storyDifficultyText);
+					GameJoltAPI.addScore(Math.round(songScore), 716199, 'Song - ' + SONG.songName);
 					openSubState(new LoadingsState());
 					var diff:String = ["-easy", "", "-hard", "-hard"][storyDifficulty];
 
@@ -4431,7 +4377,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 
 				if (FlxG.save.data.scoreScreen)
 				{
-					GameJoltAPI.addScore(Math.round(songScore), 716199, 'Song - ' + SONG.songName + '\n' + 'Difficulty - ' + storyDifficultyText);
+					GameJoltAPI.addScore(Math.round(songScore), 716199, 'Song - ' + SONG.songName);
 					openSubState(new ResultsScreen());
 					new FlxTimer().start(1, function(tmr:FlxTimer)
 					{
@@ -4440,7 +4386,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 				}
 				else
 				{
-					GameJoltAPI.addScore(Math.round(songScore), 716199, 'Song - ' + SONG.songName + '\n' + 'Difficulty - ' + storyDifficultyText);
+					GameJoltAPI.addScore(Math.round(songScore), 716199, 'Song - ' + SONG.songName);
 					FlxG.switchState(new SecretState());
 					FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 					clean();
@@ -4456,7 +4402,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 	
 					if (FlxG.save.data.scoreScreen)
 					{
-						GameJoltAPI.addScore(Math.round(songScore), 716199, 'Song - ' + SONG.songName + '\n' + 'Difficulty - ' + storyDifficultyText);
+						GameJoltAPI.addScore(Math.round(songScore), 716199, 'Song - ' + SONG.songName);
 						openSubState(new ResultsScreen());
 						new FlxTimer().start(1, function(tmr:FlxTimer)
 						{
@@ -4465,7 +4411,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 					}
 					else
 					{
-						GameJoltAPI.addScore(Math.round(songScore), 716199, 'Song - ' + SONG.songName + '\n' + 'Difficulty - ' + storyDifficultyText);
+						GameJoltAPI.addScore(Math.round(songScore), 716199, 'Song - ' + SONG.songName);
 						FlxG.switchState(new MainMenuState());
 						FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 						clean();
@@ -4482,7 +4428,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 
 				if (FlxG.save.data.scoreScreen)
 				{
-					GameJoltAPI.addScore(Math.round(songScore), 716199, 'Song - ' + SONG.songName + '\n' + 'Difficulty - ' + storyDifficultyText);
+					GameJoltAPI.addScore(Math.round(songScore), 716199, 'Song - ' + SONG.songName);
 					openSubState(new ResultsScreen());
 					new FlxTimer().start(1, function(tmr:FlxTimer)
 					{
@@ -4491,7 +4437,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 				}
 				else
 				{
-					GameJoltAPI.addScore(Math.round(songScore), 716199, 'Song - ' + SONG.songName + '\n' + 'Difficulty - ' + storyDifficultyText);
+					GameJoltAPI.addScore(Math.round(songScore), 716199, 'Song - ' + SONG.songName);
 					FlxG.switchState(new FreeplayState());
 					FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 					clean();
@@ -4529,6 +4475,71 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 	var timeShown = 0;
 	//var currentTimingShown:FlxText = null;
 
+	function checkNoteType(char:String, note:Note)
+	{
+		if (char == 'bf')
+		{
+			switch (note.rating)
+			{
+				default:
+				{
+					if (note.noteType == 2)
+					{
+						FlxG.sound.play(Paths.sound('hankshoot'), FlxG.random.float(0.1, 0.2));
+					}
+					else if (note.noteType == 1)
+						health = 0;
+				}
+			}			
+			switch (note.noteType)
+			{
+				case 3:
+					gf.playAnim('sing' + dataSuffix[note.noteData], true);
+				case 2:
+					boyfriend.playAnim('dodge', true);
+				default:
+				{
+					switch (note.isAlt)
+					{
+						case true:
+							try{boyfriend.playAnim('sing' + dataSuffix[note.noteData] + '-alt', true);}
+							catch (e){Debug.logError('' + e + e.stack);}
+						case false:
+							try{boyfriend.playAnim('sing' + dataSuffix[note.noteData], true);}
+							catch (e){Debug.logError('' + e + e.stack);}
+						default:
+							try{boyfriend.playAnim('sing' + dataSuffix[note.noteData], true);}
+							catch (e){Debug.logError('' + e + e.stack);}
+					}
+				}
+			}
+		}
+		else if (char == 'dad')	
+		{
+			var singData:Int = Std.int(Math.abs(note.noteData));
+			switch (note.noteType)
+			{
+				case 3:
+					gf.playAnim('sing' + dataSuffix[note.noteData], true);
+				default:
+				{
+					switch (note.isAlt)
+					{
+						case true:
+							try{dad.playAnim('sing' + dataSuffix[singData] + '-alt', true);}
+							catch (e){Debug.logError('' + e + e.stack);}
+						case false:
+							try{dad.playAnim('sing' + dataSuffix[singData], true);}
+							catch (e){Debug.logError('' + e + e.stack);}
+						default:
+							try {dad.playAnim('sing' + dataSuffix[singData], true);}
+							catch (e){Debug.logError('' + e + e.stack);}
+					}
+				}
+			}
+		}
+	}
+
 	private function popUpScore(daNote:Note):Void
 	{
 		var noteDiff:Float;
@@ -4561,35 +4572,17 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 			case 'shit':
 				daRating = 'shit';
 				score = -300;
-				if (daNote.noteType == 1)
-					health -= 1;
-				else if (daNote.noteType == 2)
-				{
-					FlxG.sound.play(Paths.sound('hankshoot'), FlxG.random.float(0.1, 0.2));
-				}
 				combo = 0;
 				misses++;
-				if (PlayState.SONG.songId == 'Madness' || PlayState.SONG.songId == 'Ballistic')
-					health -= 0.05;
-				else
-					health -= 0.1;
+				health -= 0.1;
 				ss = false;
 				shits++;
 				if (FlxG.save.data.accuracyMod == 0)
 					totalNotesHit -= 1;
 			case 'bad':
 				daRating = 'bad';
-				if (daNote.noteType == 1)
-					health -= 1;
-				else if (daNote.noteType == 2)
-				{
-					FlxG.sound.play(Paths.sound('hankshoot'), FlxG.random.float(0.1, 0.2));
-				}
 				score = 0;
-				if (PlayState.SONG.songId == 'Madness' || PlayState.SONG.songId == 'Ballistic')
-					health -= 0.03;
-				else
-					health -= 0.06;
+				health -= 0.06;
 				ss = false;
 				bads++;
 				if (FlxG.save.data.accuracyMod == 0)
@@ -4597,8 +4590,6 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 			case 'good':
 				daRating = 'good';
 				score = 200;
-				if (PlayState.SONG.songId == 'Madness' || PlayState.SONG.songId == 'Ballistic')
-					health += 0.05;
 				ss = false;
 				goods++;
 				if (FlxG.save.data.accuracyMod == 0)
@@ -4607,16 +4598,8 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 				daRating = 'sick';
 				if (health < 2)
 					health += 0.04;
-				if (PlayState.SONG.songId == 'Madness' || PlayState.SONG.songId == 'Ballistic')
-					health += 0.08;
 				if (FlxG.save.data.accuracyMod == 0)
 					totalNotesHit += 1;
-				if (daNote.noteType == 1)
-					health -= 1;
-				else if (daNote.noteType == 2)
-				{
-					FlxG.sound.play(Paths.sound('hankshoot'), FlxG.random.float(0.1, 0.2));
-				}
 				sicks++;
 		}
 
@@ -5069,8 +5052,16 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 				boyfriend.dance();
 		}
 
-		if (controls.ATTACK)
-			boyfriend.playAnim('attack', true);
+		if (controls.ATTACK && allowToAttack && !FlxFlicker.isFlickering(dad))
+		{
+			if (boyfriend.curCharacter == 'bf')
+			{
+				boyfriend.playAnim('attack', true);
+				if (FlxG.save.data.flashing)
+					FlxFlicker.flicker(dad, 0.2, 0.05, true);
+				health += 0.02;
+			}
+		}
 
 		playerStrums.forEach(function(spr:StaticArrow)
 		{
@@ -5184,7 +5175,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 		{
 			if (daNote.noteType == 2)
 			{
-				health -= 1;
+				health = 0;
 			}
 			// health -= 0.2;
 			if (combo > 5 && gf.animOffsets.exists('sad') && daNote.noteType != 1)
@@ -5247,7 +5238,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 				|| boyfriend.curCharacter == 'bf-christmas'
 				|| boyfriend.curCharacter == 'bf-car'
 				|| boyfriend.curCharacter == 'bf-pixel'
-				&& daNote.noteType != 3)
+				&& daNote.noteType != 1)
 			{
 				boyfriend.playAnim('sing' + dataSuffix[direction] + 'miss', true);
 			}
@@ -5391,16 +5382,6 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 			health += 0.005;
 		}
 
-		if (note.rating == 'good')
-		{
-			if (note.noteType == 2)
-			{
-				FlxG.sound.play(Paths.sound('hankshoot'), FlxG.random.float(0.1, 0.2));
-			}
-			else if (note.noteType == 1)
-				health -= 1;
-		}
-
 		// add newest note to front of notesHitArray
 		// the oldest notes are at the end and are removed first
 		if (!note.isSustainNote)
@@ -5420,22 +5401,8 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 				popUpScore(note);
 			}
 
-			var altAnim:String = "";
-			if (note.isAlt)
-			{
-				altAnim = '-alt';
-				trace("Alt note on BF");
-			}
-			
-			switch (note.noteType)
-			{
-				case 3:
-					gf.playAnim('sing' + dataSuffix[note.noteData], true);
-				case 2:
-					boyfriend.playAnim('dodge', true);
-				default:
-					boyfriend.playAnim('sing' + dataSuffix[note.noteData] + altAnim, true);	
-			}			
+			checkNoteType('bf', note);
+					
 			#if FEATURE_LUAMODCHART
 			if (luaModchart != null)
 				luaModchart.executeState('playerOneSing', [note.noteData, Conductor.songPosition]);
@@ -5450,7 +5417,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 				saveJudge.push(note.rating);
 			}
 
-			if (!PlayStateChangeables.botPlay || FlxG.save.data.cpuStrums && note.noteType != 1)
+			if (!PlayStateChangeables.botPlay || FlxG.save.data.cpuStrums)
 			{
 				playerStrums.forEach(function(spr:StaticArrow)
 				{

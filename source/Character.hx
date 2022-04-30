@@ -43,6 +43,7 @@ class Character extends FlxSprite
 	public var startingAnim:String = '';
 	public var interruptAnim:Bool = true;
 	public var colorTween:FlxTween;
+	public var characterIcon:String = 'face';
 
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
@@ -145,6 +146,7 @@ class Character extends FlxSprite
 		this.camPos = data.camPos == null ? [0, 0] : data.camPos;
 		this.camFollow = data.camFollow == null ? [0, 0] : data.camFollow;
 		this.holdLength = data.holdLength == null ? 4 : data.holdLength;
+		this.characterIcon = data.characterIcon == null ? 'face' : data.characterIcon;
 
 		flipX = data.flipX == null ? false : data.flipX;
 
@@ -309,6 +311,12 @@ typedef CharacterData =
 	var name:String;
 	var asset:String;
 	var startingAnim:String;
+
+	/**
+	 * Character health icon
+	 * @default 'face'
+	 */
+	var ?characterIcon:String;
 
 	var ?charPos:Array<Float>;
 	var ?camPos:Array<Float>;

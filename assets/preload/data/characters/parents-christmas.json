@@ -1,14 +1,14 @@
 {
 	"animations": [
 		{
+			"nextAnim": "idleLoop",
 			"offsets": [
 				0,
 				0
 			],
-			"nextAnim": "idleLoop",
 			"frameRate": 24,
-			"frameIndices": [],
 			"prefix": "Parent Christmas Idle",
+			"frameIndices": [],
 			"name": "idle"
 		},
 		{
@@ -22,8 +22,8 @@
 				11,
 				12
 			],
-			"looped": true,
-			"name": "idleLoop"
+			"name": "idleLoop",
+			"looped": true
 		},
 		{
 			"offsets": [
@@ -107,12 +107,19 @@
 		}
 	],
 	"hasTrail": false,
-	"camPos": null,
+	"camPos": [
+		0,
+		0
+	],
 	"holdLength": 4,
-	"charPos": null,
+	"charPos": [
+		0,
+		0
+	],
 	"flipX": false,
 	"asset": "characters/mom_dad_christmas_assets",
 	"startingAnim": "idle",
+	"characterIcon": "parents-christmas",
 	"antialiasing": true,
 	"name": "characters/mom_dad_christmas_assets",
 	"barColorJson": [

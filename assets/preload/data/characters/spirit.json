@@ -11,52 +11,52 @@
 			"name": "idle"
 		},
 		{
+			"nextAnim": "idle",
 			"offsets": [
 				-220,
 				-240
 			],
-			"nextAnim": "idle",
 			"frameRate": 24,
-			"frameIndices": [],
 			"prefix": "up_",
-			"name": "singUP",
-			"interrupt": false
+			"frameIndices": [],
+			"interrupt": false,
+			"name": "singUP"
 		},
 		{
+			"nextAnim": "idle",
 			"offsets": [
 				-200,
 				-280
 			],
-			"nextAnim": "idle",
 			"frameRate": 24,
-			"frameIndices": [],
 			"prefix": "left_",
-			"name": "singLEFT",
-			"interrupt": false
+			"frameIndices": [],
+			"interrupt": false,
+			"name": "singLEFT"
 		},
 		{
+			"nextAnim": "idle",
 			"offsets": [
 				-220,
 				-280
 			],
-			"nextAnim": "idle",
 			"frameRate": 24,
-			"frameIndices": [],
 			"prefix": "right_",
-			"name": "singRIGHT",
-			"interrupt": false
+			"frameIndices": [],
+			"interrupt": false,
+			"name": "singRIGHT"
 		},
 		{
+			"nextAnim": "idle",
 			"offsets": [
 				170,
 				110
 			],
-			"nextAnim": "idle",
 			"frameRate": 24,
-			"frameIndices": [],
 			"prefix": "spirit down_",
-			"name": "singDOWN",
-			"interrupt": false
+			"frameIndices": [],
+			"interrupt": false,
+			"name": "singDOWN"
 		}
 	],
 	"hasTrail": true,
@@ -65,13 +65,16 @@
 		0
 	],
 	"holdLength": 4,
-	"charPos": [0,0],
+	"charPos": [
+		0,
+		0
+	],
 	"flipX": false,
 	"asset": "characters/spirit",
 	"startingAnim": "idle",
+	"characterIcon": "spirit",
 	"antialiasing": false,
 	"name": "characters/spirit",
-	"usePackerAtlas": true,
 	"barColorJson": [
 		255,
 		60,

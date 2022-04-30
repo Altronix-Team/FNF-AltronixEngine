@@ -1,92 +1,92 @@
 {
 	"animations": [
 		{
-			"frameIndices": [],
-			"prefix": "Tankman Idle Dance ",
 			"offsets": [
 				-5,
 				0
 			],
 			"nextAnim": "idle",
 			"frameRate": 24,
+			"prefix": "Tankman Idle Dance ",
+			"frameIndices": [],
 			"interrupt": true,
 			"name": "idle",
 			"looped": false
 		},
 		{
-			"frameIndices": [],
-			"prefix": "TANKMAN UGH ",
 			"offsets": [
 				-20,
 				-9
 			],
 			"nextAnim": "idle",
 			"frameRate": 24,
+			"prefix": "TANKMAN UGH ",
+			"frameIndices": [],
 			"interrupt": false,
 			"name": "ugh",
 			"looped": false
 		},
 		{
-			"frameIndices": [],
-			"prefix": "PRETTY GOOD tankman ",
 			"offsets": [
 				-5,
 				15
 			],
 			"nextAnim": "idle",
 			"frameRate": 24,
+			"prefix": "PRETTY GOOD tankman ",
+			"frameIndices": [],
 			"interrupt": false,
 			"name": "prettygood",
 			"looped": false
 		},
 		{
-			"frameIndices": [],
-			"prefix": "Tankman UP note ",
 			"offsets": [
 				44,
 				46
 			],
 			"nextAnim": "idle",
 			"frameRate": 24,
+			"prefix": "Tankman UP note ",
+			"frameIndices": [],
 			"interrupt": true,
 			"name": "singUP",
 			"looped": false
 		},
 		{
-			"frameIndices": [],
-			"prefix": "Tankman Note Left ",
 			"offsets": [
 				-18,
 				-19
 			],
 			"nextAnim": "idle",
 			"frameRate": 24,
+			"prefix": "Tankman Note Left ",
+			"frameIndices": [],
 			"interrupt": true,
 			"name": "singLEFT",
 			"looped": false
 		},
 		{
-			"frameIndices": [],
-			"prefix": "Tankman Right Note ",
 			"offsets": [
 				47,
 				-20
 			],
 			"nextAnim": "idle",
 			"frameRate": 24,
+			"prefix": "Tankman Right Note ",
+			"frameIndices": [],
 			"interrupt": true,
 			"name": "singRIGHT",
 			"looped": false
 		},
 		{
-			"frameIndices": [],
-			"prefix": "Tankman DOWN note ",
 			"offsets": [
 				64,
 				-104
 			],
 			"nextAnim": "idle",
 			"frameRate": 24,
+			"prefix": "Tankman DOWN note ",
+			"frameIndices": [],
 			"interrupt": true,
 			"name": "singDOWN",
 			"looped": false
@@ -95,7 +95,7 @@
 	"hasTrail": false,
 	"camPos": [
 		-80,
-		-120
+		-40
 	],
 	"holdLength": 4,
 	"charPos": [
@@ -105,12 +105,13 @@
 	"flipX": true,
 	"asset": "characters/tankmanCaptain",
 	"startingAnim": "idle",
+	"characterIcon": "tankman",
 	"antialiasing": true,
 	"name": "characters/tankmanCaptain",
 	"barColorJson": [
-		255,
-		255,
-		255
+		225,
+		225,
+		225
 	],
 	"replacesGF": false,
 	"scale": 1.05

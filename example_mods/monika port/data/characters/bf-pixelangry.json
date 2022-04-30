@@ -115,11 +115,12 @@
 		-160
 	],
 	"holdLength": 4,
-	"charPos": null,
+	"charPos": [0, 0],
 	"flipX": true,
 	"asset": "characters/bfPixelangry",
 	"startingAnim": "idle",
 	"antialiasing": false,
+	"characterIcon": "bf-pixel-angry",
 	"name": "characters/bfPixelangry",
 	"barColorJson": [
 		49,

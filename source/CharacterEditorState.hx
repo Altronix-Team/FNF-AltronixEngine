@@ -418,6 +418,7 @@ class CharacterEditorState extends MusicBeatState
 	
 	var imageInputText:FlxUIInputText;
 	var startingAnimInputText:FlxUIInputText;
+	var healthIconInputText:FlxUIInputText;
 
 	var singDurationStepper:FlxUINumericStepper;
 	var scaleStepper:FlxUINumericStepper;
@@ -460,7 +461,9 @@ class CharacterEditorState extends MusicBeatState
 				getEvent(FlxUINumericStepper.CHANGE_EVENT, healthColorStepperB, null); 
 			});
 
-			startingAnimInputText = new FlxUIInputText(15, imageInputText.y + 35, 75, daAnim, 8);
+		healthIconInputText = new FlxUIInputText(15, imageInputText.y + 35, 75, char.characterIcon, 8);
+			
+		startingAnimInputText = new FlxUIInputText(120, imageInputText.y + 35, 75, daAnim, 8);
 
 		singDurationStepper = new FlxUINumericStepper(15, startingAnimInputText.y + 45, 0.1, 4, 0, 999, 1);
 
@@ -523,7 +526,8 @@ class CharacterEditorState extends MusicBeatState
 		healthColorStepperB = new FlxUINumericStepper(singDurationStepper.x + 130, saveCharacterButton.y, 20, char.healthColorArray[2], 0, 255, 0);
 
 		tab_group.add(new FlxText(15, imageInputText.y - 18, 0, 'Image file name:'));
-		tab_group.add(new FlxText(15, startingAnimInputText.y - 18, 0, 'Starting anim name:'));
+		tab_group.add(new FlxText(120, startingAnimInputText.y - 18, 0, 'Starting anim name:'));
+		tab_group.add(new FlxText(15, healthIconInputText.y - 18, 0, 'Health icon name:'));
 		tab_group.add(new FlxText(15, singDurationStepper.y - 25, 0, 'Sing Animation\nlength:'));
 		tab_group.add(new FlxText(15, scaleStepper.y - 18, 0, 'Scale:'));
 		tab_group.add(new FlxText(positionXStepper.x, positionXStepper.y - 18, 0, 'Character X/Y:'));
@@ -533,6 +537,7 @@ class CharacterEditorState extends MusicBeatState
 		tab_group.add(reloadImage);
 		tab_group.add(decideIconColor);
 		tab_group.add(startingAnimInputText);
+		tab_group.add(healthIconInputText);
 		tab_group.add(singDurationStepper);
 		tab_group.add(scaleStepper);
 		tab_group.add(replacesGFCheckBox);
@@ -728,6 +733,10 @@ class CharacterEditorState extends MusicBeatState
 
 	override function getEvent(id:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>) {
 		if(id == FlxUIInputText.CHANGE_EVENT && (sender is FlxUIInputText)) {
+			if(sender == healthIconInputText) {
+				leHealthIcon.changeIcon(healthIconInputText.text);
+				char.characterIcon = healthIconInputText.text;
+			}
 			if(sender == imageInputText) {
 				char.asset = imageInputText.text;
 			}
@@ -941,6 +950,7 @@ class CharacterEditorState extends MusicBeatState
 		if(UI_characterbox != null) {
 			imageInputText.text = char.asset;
 			startingAnimInputText.text = char.startingAnim;
+			healthIconInputText.text = char.characterIcon;
 			singDurationStepper.value = char.holdLength;
 			replacesGFCheckBox.checked = char.replacesGF;
 			if (char.jsonScale > 0)
@@ -952,7 +962,7 @@ class CharacterEditorState extends MusicBeatState
 			noAntialiasingCheckBox.checked = char.charAntialiasing;
 			hasTrailCheckBox.checked = char.hasTrail;
 			resetHealthBarColor();
-			leHealthIcon.changeIcon(charDropDown.selectedLabel);
+			leHealthIcon.changeIcon(healthIconInputText.text);
 			if (char.positionArray != null)
 			{
 				positionXStepper.value = char.positionArray[0];
@@ -1065,7 +1075,7 @@ class CharacterEditorState extends MusicBeatState
 			textAnim.text = '';
 		}
 
-		var inputTexts:Array<FlxUIInputText> = [animationInputText, imageInputText, startingAnimInputText, animationNameInputText, animationIndicesInputText];
+		var inputTexts:Array<FlxUIInputText> = [animationInputText, imageInputText, healthIconInputText, startingAnimInputText, animationNameInputText, animationIndicesInputText];
 		for (i in 0...inputTexts.length) {
 			if(inputTexts[i].hasFocus) {
 				if(FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.V && Clipboard.text != null) { //Copy paste
@@ -1233,6 +1243,7 @@ class CharacterEditorState extends MusicBeatState
 		var json = {
 			"name": char.asset,
 			"asset": char.asset,
+			"characterIcon": char.characterIcon,
 			"scale": char.jsonScale,
 			"holdLength": char.holdLength,
 			"hasTrail": char.hasTrail,

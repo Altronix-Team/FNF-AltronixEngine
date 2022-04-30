@@ -46,6 +46,8 @@ import openfl.events.IOErrorEvent;
 import openfl.media.Sound;
 import openfl.net.FileReference;
 import openfl.utils.ByteArray;
+import openfl.utils.Assets as OpenFlAssets;
+import Character;
 #if desktop
 import DiscordClient;
 #end
@@ -271,8 +273,8 @@ class ChartingState extends MusicBeatState
 		Conductor.changeBPM(_song.bpm);
 		Conductor.mapBPMChanges(_song);
 
-		leftIcon = new HealthIcon(_song.player1);
-		rightIcon = new HealthIcon(_song.player2);
+		leftIcon = new HealthIcon(getCharacterIcon(_song.player1));
+		rightIcon = new HealthIcon(getCharacterIcon(_song.player2));
 
 		var index = 0;
 
@@ -372,7 +374,7 @@ class ChartingState extends MusicBeatState
 
 			var down = getYfromStrum(renderer.section.startTime) * zoomFactor;
 
-			var sectionicon = _song.notes[awfgaw].mustHitSection ? new HealthIcon(_song.player1).clone() : new HealthIcon(_song.player2).clone();
+			var sectionicon = _song.notes[awfgaw].mustHitSection ? new HealthIcon(getCharacterIcon(_song.player1)).clone() : new HealthIcon(getCharacterIcon(_song.player2)).clone();
 			sectionicon.x = -95;
 			sectionicon.y = down - 75;
 			sectionicon.setGraphicSize(0, 45);
@@ -1040,7 +1042,7 @@ class ChartingState extends MusicBeatState
 			resetSection(true);
 		});
 
-		var loadAutosaveBtn:FlxButton = new FlxButton(reloadSongJson.x, reloadSongJson.y + 30, 'load autosave', loadAutosave);
+		var loadAutosaveBtn:FlxButton = new FlxButton(reloadSongJson.x, reloadSongJson.y + 30, 'Load Autosave', loadAutosave);
 		var stepperBPM:FlxUINumericStepper = new FlxUINumericStepper(10, 65, 0.1, 1, 1.0, 5000.0, 1);
 		stepperBPM.value = Conductor.bpm;
 		stepperBPM.name = 'song_bpm';
@@ -1183,7 +1185,7 @@ class ChartingState extends MusicBeatState
 		tab_group_song.add(saveEventButton);
 		tab_group_song.add(reloadSong);
 		tab_group_song.add(reloadSongJson);
-		tab_group_song.add(loadAutosaveBtn);
+		//tab_group_song.add(loadAutosaveBtn);
 		tab_group_song.add(stepperBPM);
 		tab_group_song.add(stepperBPMLabel);
 		tab_group_song.add(stepperSpeed);
@@ -1279,7 +1281,7 @@ class ChartingState extends MusicBeatState
 				{
 					var cachedY = i.icon.y;
 					remove(i.icon);
-					var sectionicon = check_mustHitSection.checked ? new HealthIcon(_song.player1).clone() : new HealthIcon(_song.player2).clone();
+					var sectionicon = check_mustHitSection.checked ? new HealthIcon(getCharacterIcon(_song.player1)).clone() : new HealthIcon(getCharacterIcon(_song.player2)).clone();
 					sectionicon.x = -95;
 					sectionicon.y = cachedY;
 					sectionicon.setGraphicSize(0, 45);
@@ -1441,9 +1443,22 @@ class ChartingState extends MusicBeatState
 		noteTypeDropDown = new FlxUIDropDownMenuCustom(10, 75, FlxUIDropDownMenuCustom.makeStrIdLabelArray(displayNameList, true), function(character:String)
 			{
 				noteType = Std.parseInt(character);
-				if(curSelectedNote != null && curSelectedNote[1] > -1) {
-					curSelectedNote[5] = noteType;
+				if(curSelectedNote != null) 
+				{
+					for (i in selectedBoxes)
+						{
+							i.connectedNoteData[5] = noteType;
+		
+							for (ii in _song.notes)
+							{
+								for (n in ii.sectionNotes)
+									if (n[0] == i.connectedNoteData[0] && n[1] == i.connectedNoteData[1])
+										n[5] = i.connectedNoteData[5];
+							}
+						}
+					//curSelectedNote[5] = noteType;
 					updateGrid();
+					updateNoteUI();
 				}
 			});
 		blockPressWhileScrolling.push(noteTypeDropDown);
@@ -1469,11 +1484,9 @@ class ChartingState extends MusicBeatState
 
 		var stepperSusLengthLabel = new FlxText(74, 10, 'Note Sustain Length');
 
-		var applyLength:FlxButton = new FlxButton(10, 100, 'Apply Data');
 
 		tab_group_note.add(stepperSusLength);
 		tab_group_note.add(stepperSusLengthLabel);
-		tab_group_note.add(applyLength);
 		tab_group_note.add(check_naltAnim);
 		tab_group_note.add(noteTypeDropDown);
 
@@ -2238,6 +2251,14 @@ class ChartingState extends MusicBeatState
 						goToSection(curSection - 1);
 				}
 
+				if (FlxG.keys.pressed.CONTROL && FlxG.keys.pressed.A)
+				{
+					for (i in curRenderedNotes)
+						{
+							selectNote(i, false);							
+						}			
+				}
+
 				if (FlxG.mouse.pressed && FlxG.keys.pressed.CONTROL)
 				{
 					if (!waitingForRelease)
@@ -2569,7 +2590,7 @@ class ChartingState extends MusicBeatState
 				+ "\n"
 				+ (doSnapShit ? "Snap enabled" : "Snap disabled")
 				+
-				(FlxG.save.data.showHelp ? "\n\nHelp:\nCtrl-MWheel : Zoom in/out\nShift-Left/Right :\nChange playback speed\nCtrl-Drag Click : Select notes\nCtrl-C : Copy notes\nCtrl-V : Paste notes\nCtrl-Z : Undo\nDelete : Delete selection\nCTRL-Left/Right :\n  Change Snap\nHold Shift : Disable Snap\nClick or 1/2/3/4/5/6/7/8 :\n  Place notes\nUp/Down :\n  Move selected notes 1 step\nShift-Up/Down :\n  Move selected notes 1 beat\nSpace: Play Music\nEnter : Preview\nPress F1 to hide/show this!" : "");
+				(FlxG.save.data.showHelp ? "\n\nHelp:\nCtrl-MWheel : Zoom in/out\nShift-Left/Right :\nChange playback speed\nCtrl-Drag Click : Select notes\nCtrl-A : Select all notes\nCtrl-C : Copy notes\nCtrl-V : Paste notes\nCtrl-Z : Undo\nDelete : Delete selection\nCTRL-Left/Right :\n  Change Snap\nHold Shift : Disable Snap\nClick or 1/2/3/4/5/6/7/8 :\n  Place notes\nUp/Down :\n  Move selected notes 1 step\nShift-Up/Down :\n  Move selected notes 1 beat\nSpace: Play Music\nEnter : Preview\nPress F1 to hide/show this!" : "");
 
 			var left = FlxG.keys.justPressed.ONE;
 			var down = FlxG.keys.justPressed.TWO;
@@ -2807,7 +2828,7 @@ class ChartingState extends MusicBeatState
 					var i = sectionRenderes.members[curSection];
 					var cachedY = i.icon.y;
 					remove(i.icon);
-					var sectionicon = sect.mustHitSection ? new HealthIcon(_song.player1).clone() : new HealthIcon(_song.player2).clone();
+					var sectionicon = sect.mustHitSection ? new HealthIcon(getCharacterIcon(_song.player1)).clone() : new HealthIcon(getCharacterIcon(_song.player2)).clone();
 					sectionicon.x = -95;
 					sectionicon.y = cachedY;
 					sectionicon.setGraphicSize(0, 45);
@@ -3132,7 +3153,7 @@ class ChartingState extends MusicBeatState
 
 		// fail-safe
 		// TODO: Refactor this to use OpenFlAssets.
-		if (!FileSystem.exists(Paths.image('icons/icon-' + head.split("-")[0])) && !FileSystem.exists(Paths.image('icons/icon-' + head)))
+		if (!FileSystem.exists(Paths.image('icons/' + head.split("-")[0])) && !FileSystem.exists(Paths.image('icons/' + head)))
 		{
 			if (i.icon.animation.curAnim == null)
 				iconUpdate(true);
@@ -3709,7 +3730,7 @@ class ChartingState extends MusicBeatState
 
 	function loadJson(songId:String):Void
 	{
-		var difficultyArray:Array<String> = ["-easy", "", "-hard"];
+		var difficultyArray:Array<String> = ["-easy", "", "-hard", "-hard"];
 
 		PlayState.SONG = Song.loadFromJson(songId, difficultyArray[PlayState.storyDifficulty]);
 
@@ -3749,16 +3770,6 @@ class ChartingState extends MusicBeatState
 
 	function loadAutosave():Void
 	{
-		while (curRenderedNotes.members.length > 0)
-		{
-			curRenderedNotes.remove(curRenderedNotes.members[0], true);
-		}
-
-		while (curRenderedSustains.members.length > 0)
-		{
-			curRenderedSustains.remove(curRenderedSustains.members[0], true);
-		}
-
 		var autoSaveData = Json.parse(FlxG.save.data.autosave);
 
 		var data:SongData = cast autoSaveData.song;
@@ -3800,15 +3811,41 @@ class ChartingState extends MusicBeatState
 		LoadingState.loadAndSwitchState(new ChartingState());
 	}
 
+	function getCharacterIcon(char:String):String
+	{	
+		if (char != null)
+		{
+			var jsonData;
+			if (OpenFlAssets.exists(Paths.json('characters/${char}')))
+				jsonData = Paths.loadJSON('characters/${char}');
+			else
+			{
+				Debug.logError('Failed to parse JSON data for character ${char}');
+				return 'face';
+			}
+	
+			var data:CharacterData = cast jsonData;
+	
+			var characterIcon:String = data.characterIcon;
+
+			return characterIcon;
+		}
+		else
+		{
+			return 'face';
+		}
+	}
+
 	function autosaveSong():Void
 	{
-		FlxG.save.data.autosave = Json.stringify({
+		var json = {
 			"song": _song,
 			"songMeta": {
 				"name": _song.songId,
 				"offset": 0,
 			}
-		});
+		}
+		FlxG.save.data.autosave = Json.stringify(json, null, " ");
 		FlxG.save.flush();
 	}
 

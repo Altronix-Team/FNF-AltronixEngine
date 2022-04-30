@@ -22,8 +22,8 @@ class MasterEditorMenu extends MusicBeatState
 {
 	var options:Array<String> = [
 		'Character Editor',
-		'Dialogue Editor',
-		'Dialogue Character Editor',
+		//'Dialogue Editor',
+		//'Dialogue Character Editor',
 		'Chart Editor'
 	];
 	private var grpTexts:FlxTypedGroup<Alphabet>;

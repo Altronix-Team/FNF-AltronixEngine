@@ -116,13 +116,14 @@
 	],
 	"holdLength": 4,
 	"charPos": [
-		150,
-		23
+		0,
+		0
 	],
 	"flipX": false,
 	"asset": "characters/Monika_Finale",
 	"startingAnim": "idle",
 	"antialiasing": false,
+	"characterIcon": "monika-angry",
 	"name": "characters/Monika_Finale",
 	"barColorJson": [
 		201,

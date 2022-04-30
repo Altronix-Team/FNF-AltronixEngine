@@ -150,7 +150,8 @@
 			"prefix": "boyfriend dodge",
 			"frameIndices": [],
 			"name": "dodge",
-			"interrupt": false
+			"interrupt": false,
+			"nextAnim": "idle"
 		},
 		{
 			"offsets": [

@@ -192,7 +192,7 @@
 		0,
 		0
 	],
-	"flipX": true,
+	"flipX": false,
 	"asset": "characters/gfChristmas",
 	"startingAnim": "danceRight",
 	"characterIcon": "gf",

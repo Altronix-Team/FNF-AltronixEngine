@@ -220,7 +220,7 @@ class ChartingState extends MusicBeatState
 			}
 			else
 			{
-				var diff:String = ["-easy", "", "-hard", "-hard"][PlayState.storyDifficulty];
+				var diff:String = ["-easy", "", "-hard", "-hardplus"][PlayState.storyDifficulty];
 				_song = Song.conversionChecks(Song.loadFromJson(PlayState.SONG.songId, diff));
 			}
 		}
@@ -1656,7 +1656,7 @@ class ChartingState extends MusicBeatState
 			}
 			else
 			{
-				var diff:String = ["-easy", "", "-hard","-hard"][PlayState.storyDifficulty];
+				var diff:String = ["-easy", "", "-hard","-hardplus"][PlayState.storyDifficulty];
 				_song = Song.conversionChecks(Song.loadFromJson(PlayState.SONG.songId, diff));
 			}
 		}
@@ -3730,7 +3730,7 @@ class ChartingState extends MusicBeatState
 
 	function loadJson(songId:String):Void
 	{
-		var difficultyArray:Array<String> = ["-easy", "", "-hard", "-hard"];
+		var difficultyArray:Array<String> = ["-easy", "", "-hard", "-hardplus"];
 
 		PlayState.SONG = Song.loadFromJson(songId, difficultyArray[PlayState.storyDifficulty]);
 
@@ -3851,7 +3851,7 @@ class ChartingState extends MusicBeatState
 
 	private function saveEvents()
 	{
-		var difficultyArray:Array<String> = ["-easy", "", "-hard", "-hard"];
+		var difficultyArray:Array<String> = ["-easy", "", "-hard", "-hardplus"];
 
 		var json = {
 			"eventObjects": _song.eventObjects
@@ -3871,7 +3871,7 @@ class ChartingState extends MusicBeatState
 
 	private function saveLevel()
 	{
-		var difficultyArray:Array<String> = ["-easy", "", "-hard", "-hard"];
+		var difficultyArray:Array<String> = ["-easy", "", "-hard", "-hardplus"];
 
 		var toRemove = [];
 

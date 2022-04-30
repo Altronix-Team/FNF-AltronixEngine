@@ -441,7 +441,7 @@ class StoryMenuState extends MusicBeatState
 
 			PlayState.storyDifficulty = curDifficulty;
 
-			var diff:String = ["-easy", "", "-hard", "-hard"][PlayState.storyDifficulty];
+			var diff:String = ["-easy", "", "-hard", "-hardplus"][PlayState.storyDifficulty];
 
 			PlayState.sicks = 0;
 			PlayState.bads = 0;

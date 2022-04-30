@@ -95,7 +95,7 @@ class Highscore
 		else if (diff == 2)
 			daSong += '-hard';
 		else if (diff == 3)
-			daSong += '-hard';
+			daSong += '-hardplus';
 
 		return daSong;
 	}
@@ -109,7 +109,7 @@ class Highscore
 		else if (diff == 2)
 			songDiffEnd = '-hard';
 		else if (diff == 3)
-			songDiffEnd = '-hard';
+			songDiffEnd = '-hardplus';
 
 		return songDiffEnd;
 	}

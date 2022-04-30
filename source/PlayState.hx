@@ -4341,7 +4341,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 				{
 					GameJoltAPI.addScore(Math.round(songScore), 716199, 'Song - ' + SONG.songName);
 					openSubState(new LoadingsState());
-					var diff:String = ["-easy", "", "-hard", "-hard"][storyDifficulty];
+					var diff:String = ["-easy", "", "-hard", "-hardplus"][storyDifficulty];
 
 					Debug.logInfo('PlayState: Loading next story song ${PlayState.storyPlaylist[0]}-${diff}');
 
@@ -4499,18 +4499,8 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 					boyfriend.playAnim('dodge', true);
 				default:
 				{
-					switch (note.isAlt)
-					{
-						case true:
-							try{boyfriend.playAnim('sing' + dataSuffix[note.noteData] + '-alt', true);}
-							catch (e){Debug.logError('' + e + e.stack);}
-						case false:
-							try{boyfriend.playAnim('sing' + dataSuffix[note.noteData], true);}
-							catch (e){Debug.logError('' + e + e.stack);}
-						default:
-							try{boyfriend.playAnim('sing' + dataSuffix[note.noteData], true);}
-							catch (e){Debug.logError('' + e + e.stack);}
-					}
+					if (note.isAlt) boyfriend.playAnim('sing' + dataSuffix[note.noteData] + '-alt', true);
+					else boyfriend.playAnim('sing' + dataSuffix[note.noteData], true);
 				}
 			}
 		}
@@ -4523,18 +4513,8 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 					gf.playAnim('sing' + dataSuffix[note.noteData], true);
 				default:
 				{
-					switch (note.isAlt)
-					{
-						case true:
-							try{dad.playAnim('sing' + dataSuffix[singData] + '-alt', true);}
-							catch (e){Debug.logError('' + e + e.stack);}
-						case false:
-							try{dad.playAnim('sing' + dataSuffix[singData], true);}
-							catch (e){Debug.logError('' + e + e.stack);}
-						default:
-							try {dad.playAnim('sing' + dataSuffix[singData], true);}
-							catch (e){Debug.logError('' + e + e.stack);}
-					}
+					if (note.isAlt) dad.playAnim('sing' + dataSuffix[singData] + '-alt', true);
+					else dad.playAnim('sing' + dataSuffix[singData], true);
 				}
 			}
 		}

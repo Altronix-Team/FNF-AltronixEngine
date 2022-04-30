@@ -77,7 +77,7 @@ class FreeplayState extends MusicBeatState
 			case 2:
 				diffName = "-hard";
 			case 3:
-				diffName = "-hard";
+				diffName = "-hardplus";
 		}
 
 		array.push(Song.conversionChecks(Song.loadFromJson(songId, diffName)));
@@ -325,7 +325,7 @@ class FreeplayState extends MusicBeatState
 				diffsThatExist.push("Easy");
 			if (Paths.doesTextAssetExist(Paths.json('songs/$songId/$songId')))
 				diffsThatExist.push("Normal");
-			if (Paths.doesTextAssetExist(Paths.json('songs/$songId/$songId-hard')))
+			if (Paths.doesTextAssetExist(Paths.json('songs/$songId/$songId-hardplus')))
 				diffsThatExist.push("Hard P");
 
 			if (diffsThatExist.length == 0)

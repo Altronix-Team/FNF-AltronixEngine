@@ -114,21 +114,21 @@ class PauseSubState extends MusicBeatSubstate
 		}
 
 		if (PlayState.isExtras || PlayState.fromPasswordMenu)
-		{
-			for (i in 0...CoolUtil.extrasDifficultyArray.length) {
-				var diff:String = '' + CoolUtil.extrasDifficultyArray[i];
-				difficultyChoices.push(diff);
+			{
+				for (i in 0...CoolUtil.extrasDifficultyArray.length) {
+					var diff:String = '' + CoolUtil.extrasDifficultyArray[i];
+					difficultyChoices.push(diff);
+				}
+				difficultyChoices.push('BACK');
 			}
-			difficultyChoices.push('BACK');
-		}
 		else
-		{
-			for (i in 0...CoolUtil.difficultyArray.length) {
-				var diff:String = '' + CoolUtil.difficultyArray[i];
-				difficultyChoices.push(diff);
+			{
+				for (i in 0...CoolUtil.difficultyArray.length) {
+					var diff:String = '' + CoolUtil.difficultyArray[i];
+					difficultyChoices.push(diff);
+				}
+				difficultyChoices.push('BACK');
 			}
-			difficultyChoices.push('BACK');
-		}
 
 		changeSelection();
 
@@ -199,12 +199,32 @@ class PauseSubState extends MusicBeatSubstate
 								FlxG.save.data.middleScroll = false;
 							}
 						var name:String = PlayState.SONG.song;
-						var poop = Highscore.formatSongDiff(name, curSelected);
-						PlayState.SONG = Song.loadFromJson(name, poop);
-						PlayState.storyDifficulty = curSelected;
-						MusicBeatState.resetState();
-						FlxG.sound.music.volume = 0;
-						return;
+						if (PlayState.isExtras || PlayState.fromPasswordMenu)
+						{
+							if (curSelected == 0)
+							{
+								curSelected = 2;
+							}
+							if (curSelected == 1)
+							{
+								curSelected = 3;
+							}
+							var poop = Highscore.formatSongDiff(name, curSelected);
+							PlayState.SONG = Song.loadFromJson(name, poop);
+							PlayState.storyDifficulty = curSelected;
+							MusicBeatState.resetState();
+							FlxG.sound.music.volume = 0;
+							return;
+						}
+						else
+						{
+							var poop = Highscore.formatSongDiff(name, curSelected);
+							PlayState.SONG = Song.loadFromJson(name, poop);
+							PlayState.storyDifficulty = curSelected;
+							MusicBeatState.resetState();
+							FlxG.sound.music.volume = 0;
+							return;
+						}
 					}
 	
 					menuItems = menuItemsOG;

@@ -633,6 +633,8 @@ class ChartingState extends MusicBeatState
 		var valueLabel = new FlxText(150, 45, 'Event Value');
 		var eventValue = new FlxUIInputText(150, 60, 80, "");
 		eventDescription = new FlxText(10, 150, 'Event Description Text');
+		var lastEventType:String;
+		var lastEventValue:Dynamic;
 		var eventSave = new FlxButton(10, 350, "Save Event", function()
 		{
 			var pog:Song.Event = new Song.Event(currentSelectedEventName, currentEventPosition, savedValue,
@@ -706,14 +708,21 @@ class ChartingState extends MusicBeatState
 
 			listOfEvents.selectedLabel = pog.name;
 
+			lastEventType = savedType;
+			lastEventValue = savedValue;
+
 			Debug.logTrace('end');
 		});		
 		var posLabel = new FlxText(150, 85, 'Event Position');
 		var eventPos = new FlxUIInputText(150, 100, 80, "");
 		var eventAdd = new FlxButton(95, 350, "Add Event", function()
 		{
-			var pog:Song.Event = new Song.Event("New Event " + HelperFunctions.truncateFloat(curDecimalBeat, 3),
-				HelperFunctions.truncateFloat(curDecimalBeat, 3), _song.bpm, "BPM Change");
+			var pog:Song.Event;
+			if (lastEventType != null && lastEventValue != null)
+				pog = new Song.Event("New Event " + HelperFunctions.truncateFloat(curDecimalBeat, 3), HelperFunctions.truncateFloat(curDecimalBeat, 3), lastEventValue, lastEventType);
+			else
+				pog = new Song.Event("New Event " + HelperFunctions.truncateFloat(curDecimalBeat, 3), HelperFunctions.truncateFloat(curDecimalBeat, 3), _song.bpm, "BPM Change");
+
 
 			Debug.logTrace("adding " + pog.name);
 

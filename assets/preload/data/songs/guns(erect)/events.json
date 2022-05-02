@@ -1,0 +1,256 @@
+{
+ "eventObjects": [
+  {
+   "name": "Init BPM",
+   "position": 0,
+   "value": 190,
+   "type": "BPM Change"
+  },
+  {
+   "name": "New Event 32",
+   "position": 32,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 35",
+   "position": 35,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 36.75",
+   "position": 36.75,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 38.5",
+   "position": 38.5,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 40",
+   "position": 40,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 43",
+   "position": 43,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 45",
+   "position": 45,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 46.5",
+   "position": 46.5,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 48",
+   "position": 48,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 51",
+   "position": 51,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 53",
+   "position": 53,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 54.5",
+   "position": 54.5,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 56",
+   "position": 56,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 59",
+   "position": 59,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 61",
+   "position": 61,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 62.5",
+   "position": 62.5,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 64",
+   "position": 64,
+   "value": 190,
+   "type": "BPM Change"
+  },
+  {
+   "name": "New Event 67",
+   "position": 67,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 69",
+   "position": 69,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 72",
+   "position": 72,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 73.5",
+   "position": 73.5,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 75",
+   "position": 75,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 77",
+   "position": 77,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 80",
+   "position": 80,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 83",
+   "position": 83,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 85",
+   "position": 85,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 88",
+   "position": 88,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 91",
+   "position": 91,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 93",
+   "position": 93,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 70.75",
+   "position": 70.75,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 99",
+   "position": 99,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 101",
+   "position": 101,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 104",
+   "position": 104,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 107",
+   "position": 107,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 109",
+   "position": 109,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 115",
+   "position": 115,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 117.25",
+   "position": 117.25,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 120",
+   "position": 120,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 123",
+   "position": 123,
+   "value": "3",
+   "type": "Camera zoom"
+  },
+  {
+   "name": "New Event 198",
+   "position": 198,
+   "value": "ugh",
+   "type": "Dad play animation"
+  },
+  {
+   "name": "New Event 199",
+   "position": 199,
+   "value": "ugh",
+   "type": "Dad play animation"
+  }
+ ]
+}

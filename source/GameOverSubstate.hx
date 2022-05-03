@@ -16,7 +16,6 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	public function new(x:Float, y:Float)
 	{
-		FlxG.sound.music.stop();
 		var daStage = PlayState.Stage.curStage;
 		var daBf:String = '';
 		switch (PlayState.boyfriend.curCharacter)

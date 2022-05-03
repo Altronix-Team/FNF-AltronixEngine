@@ -49,5 +49,7 @@ class WaveformTestState extends FlxState
 			FlxG.camera.x += 1;
 		if (FlxG.keys.pressed.D)
 			FlxG.camera.x -= 1;
+		if (PlayerSettings.player1.controls.BACK)
+			FlxG.switchState(new PlayState());
 	}
 }

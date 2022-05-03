@@ -155,8 +155,6 @@ class ChartingState extends MusicBeatState
 
 	var camFollow:FlxObject;
 
-	public var waveform:Waveform;
-
 	public static var latestChartVersion = "3";
 
 	var eventDescription:FlxText;
@@ -278,8 +276,6 @@ class ChartingState extends MusicBeatState
 		Conductor.changeBPM(_song.bpm);
 		Conductor.mapBPMChanges(_song);
 
-		waveformSprite = new FlxSprite(GRID_SIZE, 0).makeGraphic(FlxG.width, FlxG.height, 0x00FFFFFF);
-
 		leftIcon = new HealthIcon(getCharacterIcon(_song.player1));
 		rightIcon = new HealthIcon(getCharacterIcon(_song.player2));
 
@@ -397,6 +393,9 @@ class ChartingState extends MusicBeatState
 
 		gridBlackLine = new FlxSprite(gridBG.width / 2).makeGraphic(2, height, FlxColor.BLACK);
 
+		waveformSprite = new FlxSprite(GRID_SIZE, 0).makeGraphic(FlxG.width, FlxG.height, 0x00FFFFFF);
+		add(waveformSprite);
+
 		// leftIcon.scrollFactor.set();
 		// rightIcon.scrollFactor.set();
 
@@ -417,6 +416,7 @@ class ChartingState extends MusicBeatState
 		add(bpmTxt);
 
 		strumLine = new FlxSprite(0, 0).makeGraphic(Std.int(GRID_SIZE * 8), 4);
+		strumLine.color = 0xFF00FFFF;
 
 		dummyArrow = new FlxSprite().makeGraphic(GRID_SIZE, GRID_SIZE);
 		var tabs = [
@@ -459,7 +459,6 @@ class ChartingState extends MusicBeatState
 		add(gridBlackLine);
 		add(curRenderedNotes);
 		add(curRenderedSustains);
-		add(waveformSprite);
 		selectedBoxes = new FlxTypedGroup();
 
 		add(selectedBoxes);
@@ -2192,6 +2191,14 @@ class ChartingState extends MusicBeatState
 						vocals.pause();
 					claps.splice(0, claps.length);
 
+					FlxG.sound.music.time -= (FlxG.mouse.wheel * Conductor.stepCrochet * 0.8);
+					if(vocals != null) {
+						vocals.pause();
+						vocals.time = FlxG.sound.music.time;
+					}
+
+					Conductor.songPosition = FlxG.sound.music.time;
+
 					if (FlxG.keys.pressed.CONTROL && !waitingForRelease)
 					{
 						var amount = FlxG.mouse.wheel;
@@ -2668,75 +2675,6 @@ class ChartingState extends MusicBeatState
 					}
 				}
 			}
-			/*curRenderedNotes.forEach(function(note:Note) {
-				if (strumLine.overlaps(note) && strumLine.y == note.y) // yandere dev type shit
-				{
-					if (getSectionByTime(Conductor.songPosition).mustHitSection)
-						{
-							Debug.logTrace('must hit ' + Math.abs(note.noteData));
-							if (note.noteData < 4)
-							{
-								switch (Math.abs(note.noteData))
-								{
-									case 2:
-										player1.playAnim('singUP', true);
-									case 3:
-										player1.playAnim('singRIGHT', true);
-									case 1:
-										player1.playAnim('singDOWN', true);
-									case 0:
-										player1.playAnim('singLEFT', true);
-								}
-							}
-							if (note.noteData >= 4)
-							{
-								switch (note.noteData)
-								{
-									case 6:
-										player2.playAnim('singUP', true);
-									case 7:
-										player2.playAnim('singRIGHT', true);
-									case 5:
-										player2.playAnim('singDOWN', true);
-									case 4:
-										player2.playAnim('singLEFT', true);
-								}
-							}
-						}
-						else
-						{
-							Debug.logTrace('hit ' + Math.abs(note.noteData));
-							if (note.noteData < 4)
-							{
-								switch (Math.abs(note.noteData))
-								{
-									case 2:
-										player2.playAnim('singUP', true);
-									case 3:
-										player2.playAnim('singRIGHT', true);
-									case 1:
-										player2.playAnim('singDOWN', true);
-									case 0:
-										player2.playAnim('singLEFT', true);
-								}
-							}
-							if (note.noteData >= 4)
-							{
-								switch (note.noteData)
-								{
-									case 6:
-										player1.playAnim('singUP', true);
-									case 7:
-										player1.playAnim('singRIGHT', true);
-									case 5:
-										player1.playAnim('singDOWN', true);
-									case 4:
-										player1.playAnim('singLEFT', true);
-								}
-							}
-						}
-				}
-			});*/
 
 			FlxG.watch.addQuick('daBeat', curDecimalBeat);
 
@@ -2904,18 +2842,20 @@ class ChartingState extends MusicBeatState
 					if (FlxG.keys.justPressed.SPACE)
 					{
 						if (FlxG.sound.music.playing)
-						{
-							FlxG.sound.music.pause();
-							if (!PlayState.isSM)
-								vocals.pause();
-							claps.splice(0, claps.length);
-						}
-						else
-						{
-							if (!PlayState.isSM)
-								vocals.play();
-							FlxG.sound.music.play();
-						}
+							{
+								FlxG.sound.music.pause();
+								if(vocals != null) vocals.pause();
+							}
+							else
+							{
+								if(vocals != null) {
+									vocals.play();
+									vocals.pause();
+									vocals.time = FlxG.sound.music.time;
+									vocals.play();
+								}
+								FlxG.sound.music.play(false, FlxG.sound.music.time);
+							}
 					}
 
 					if (FlxG.sound.music.time < 0 || curDecimalBeat < 0)
@@ -3315,12 +3255,11 @@ class ChartingState extends MusicBeatState
 		var checkForVoices:Int = 1;
 
 		if(!waveformEnabled.checked || audioBuffers[checkForVoices] == null) {
-			//trace('Epic fail on the waveform lol');
 			return;
 		}
 
 		var sampleMult:Float = audioBuffers[checkForVoices].sampleRate / 44100;
-		var index:Int = Std.int(sectionStartTime() * 44.0875 * sampleMult);
+		var index:Int = 0;
 		var drawIndex:Int = 0;
 
 		var steps:Int = _song.notes[curSection].lengthInSteps;
@@ -3353,13 +3292,6 @@ class ChartingState extends MusicBeatState
 
 			if ((index % samplesPerRow) == 0)
 			{
-				// trace("min: " + min + ", max: " + max);
-
-				/*if (drawIndex > gridBG.height)
-				{
-					drawIndex = 0;
-				}*/
-
 				var pixelsMin:Float = Math.abs(min * (GRID_SIZE * 8));
 				var pixelsMax:Float = max * (GRID_SIZE * 8);
 				waveformSprite.pixels.fillRect(new Rectangle(Std.int((GRID_SIZE * 4) - pixelsMin), drawIndex, pixelsMin + pixelsMax, 1), FlxColor.BLUE);
@@ -4063,8 +3995,26 @@ class ChartingState extends MusicBeatState
 		FlxG.log.error("Problem saving Level data");
 	}
 
+	var pausedCrashFix = false; //fixes crashes if you paused song and opened another window
+
 	override function onWindowFocusIn():Void
 	{
-		return;
+		if (!pausedCrashFix)
+		{
+			FlxG.sound.music.resume();
+			vocals.resume();
+		}
+	}
+	override function onWindowFocusOut():Void
+	{
+		if (FlxG.sound.music.playing)
+		{
+			FlxG.sound.music.pause();
+			vocals.pause();
+		}
+		else
+		{
+			pausedCrashFix = true;
+		}
 	}
 }

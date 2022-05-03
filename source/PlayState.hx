@@ -3676,8 +3676,8 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 				persistentDraw = false;
 				paused = true;
 
-				vocals.stop();
-				FlxG.sound.music.stop;
+				vocals.pause();
+				FlxG.sound.music.pause();
 
 				if (storyDifficulty == 3)
 				{
@@ -3745,8 +3745,8 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 				persistentDraw = false;
 				paused = true;
 
-				vocals.stop();
-				FlxG.sound.music.stop();
+				vocals.pause();
+				FlxG.sound.music.pause();
 
 				if (storyDifficulty == 3)
 				{
@@ -4477,47 +4477,26 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 
 	function checkNoteType(char:String, note:Note)
 	{
-		if (char == 'bf')
-		{
-			switch (note.rating)
-			{
-				default:
-				{
-					if (note.noteType == 2)
-					{
-						FlxG.sound.play(Paths.sound('hankshoot'), FlxG.random.float(0.1, 0.2));
-					}
-					else if (note.noteType == 1)
-						health = 0;
-				}
-			}			
-			switch (note.noteType)
-			{
+		if (char == 'bf'){		
+			switch (note.noteType){
 				case 3:
 					gf.playAnim('sing' + dataSuffix[note.noteData], true);
-				case 2:
+				case 2:{
 					boyfriend.playAnim('dodge', true);
-				default:
-				{
+					FlxG.sound.play(Paths.sound('hankshoot'), FlxG.random.float(0.1, 0.2));}
+				case 1:
+					health = 0;
+				default:{
 					if (note.isAlt) boyfriend.playAnim('sing' + dataSuffix[note.noteData] + '-alt', true);
-					else boyfriend.playAnim('sing' + dataSuffix[note.noteData], true);
-				}
-			}
-		}
-		else if (char == 'dad')	
-		{
+					else boyfriend.playAnim('sing' + dataSuffix[note.noteData], true);}}}
+		else if (char == 'dad')	{
 			var singData:Int = Std.int(Math.abs(note.noteData));
-			switch (note.noteType)
-			{
+			switch (note.noteType){
 				case 3:
 					gf.playAnim('sing' + dataSuffix[note.noteData], true);
-				default:
-				{
+				default:{
 					if (note.isAlt) dad.playAnim('sing' + dataSuffix[singData] + '-alt', true);
-					else dad.playAnim('sing' + dataSuffix[singData], true);
-				}
-			}
-		}
+					else dad.playAnim('sing' + dataSuffix[singData], true);}}}
 	}
 
 	private function popUpScore(daNote:Note):Void

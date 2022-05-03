@@ -279,7 +279,6 @@ class ChartingState extends MusicBeatState
 		Conductor.mapBPMChanges(_song);
 
 		waveformSprite = new FlxSprite(GRID_SIZE, 0).makeGraphic(FlxG.width, FlxG.height, 0x00FFFFFF);
-		add(waveformSprite);
 
 		leftIcon = new HealthIcon(getCharacterIcon(_song.player1));
 		rightIcon = new HealthIcon(getCharacterIcon(_song.player2));
@@ -443,8 +442,8 @@ class ChartingState extends MusicBeatState
 
 		//addOptionsUI();
 		addEventsUI();
-		updateWaveform();
 		loadAudioBuffer();
+		updateWaveform();
 
 		regenerateLines();
 
@@ -460,6 +459,7 @@ class ChartingState extends MusicBeatState
 		add(gridBlackLine);
 		add(curRenderedNotes);
 		add(curRenderedSustains);
+		add(waveformSprite);
 		selectedBoxes = new FlxTypedGroup();
 
 		add(selectedBoxes);
@@ -564,8 +564,6 @@ class ChartingState extends MusicBeatState
 		var totalHeight = 0;
 
 		//add(gridBG);
-
-		//updateWaveform();
 
 		remove(gridBlackLine);
 		gridBlackLine = new FlxSprite(0 + gridBG.width / 2).makeGraphic(2, Std.int(Math.floor(lengthInSteps)), FlxColor.BLACK);
@@ -3386,7 +3384,7 @@ class ChartingState extends MusicBeatState
 		}
 		audioBuffers[0] = null;
 		
-		var leVocals:String = Paths.inst(_song.songId);
+		var leVocals:String = Paths.getPreloadPath('data/songs/' + _song.songId + 'Inst.ogg');
 		if (OpenFlAssets.exists(leVocals)) 
 		{
 			audioBuffers[0] = AudioBuffer.fromFile('./' + leVocals.substr(6));
@@ -3396,7 +3394,7 @@ class ChartingState extends MusicBeatState
 			audioBuffers[1].dispose();
 		}
 		audioBuffers[1] = null;
-		var leVocals:String = Paths.voices(_song.songId);
+		var leVocals:String = Paths.getPreloadPath('data/songs/' + _song.songId + 'Voices.ogg');
 		if (OpenFlAssets.exists(leVocals)) 
 		{
 			audioBuffers[1] = AudioBuffer.fromFile('./' + leVocals.substr(6));

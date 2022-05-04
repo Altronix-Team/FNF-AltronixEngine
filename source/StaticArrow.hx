@@ -12,6 +12,7 @@ class StaticArrow extends FlxSprite
 	public var modifiedByLua:Bool = false;
 	public var modAngle:Float = 0; // The angle set by modcharts
 	public var localAngle:Float = 0; // The angle to be edited inside here
+	public var resetAnim:Float = 0;
 
 	public function new(xx:Float, yy:Float)
 	{
@@ -23,6 +24,13 @@ class StaticArrow extends FlxSprite
 
 	override function update(elapsed:Float)
 	{
+		if(resetAnim > 0) {
+			resetAnim -= elapsed;
+			if(resetAnim <= 0) {
+				playAnim('static');
+				resetAnim = 0;
+			}
+		}
 		if (!modifiedByLua)
 			angle = localAngle + modAngle;
 		else

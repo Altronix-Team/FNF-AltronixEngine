@@ -3022,6 +3022,34 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 									camHUD.zoom += 0.03 * i.value;
 								}
 							}
+
+					case 'Toggle interface':
+						if (i.position <= curDecimalBeat && !pastEvents.contains(i))
+							{
+								pastEvents.push(i);
+								strumLineNotes.visible = false;
+								songName.visible = false;
+								bar.visible = false;
+								songPosBar.visible = false;
+								songPosBG.visible = false;
+								healthBarBG.visible = false;
+								healthBar.visible = false;
+								iconP2.visible = false;
+								iconP1.visible = false;
+
+								new FlxTimer().start(i.value, function(tmr:FlxTimer)
+									{
+										strumLineNotes.visible = true;
+										songName.visible = true;
+										bar.visible = true;
+										songPosBar.visible = true;
+										songPosBG.visible = true;
+										healthBarBG.visible = true;
+										healthBar.visible = true;
+										iconP2.visible = true;
+										iconP1.visible = true;
+									});
+							}
 				}
 			}
 
@@ -3156,7 +3184,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 				openSubState(new PauseSubState());
 		}
 
-		if (FlxG.keys.justPressed.FIVE && songStarted)
+		/*if (FlxG.keys.justPressed.FIVE && songStarted)
 		{
 			songMultiplier = 1;
 			if (useVideo)
@@ -3179,7 +3207,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 				luaModchart = null;
 			}
 			#end
-		}
+		}*/
 
 		if (FlxG.keys.justPressed.SEVEN && songStarted)
 		{
@@ -3597,20 +3625,6 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 				if (luaModchart != null)
 					luaModchart.executeState('playerOneTurn', []);
 				#end
-				/*if (!PlayStateChangeables.Optimize)
-					switch (Stage.curStage)
-					{
-						case 'limo':
-							camFollow.x = boyfriend.getMidpoint().x - 300;
-						case 'mall':
-							camFollow.y = boyfriend.getMidpoint().y - 200;
-						case 'school':
-							camFollow.x = boyfriend.getMidpoint().x - 200;
-							camFollow.y = boyfriend.getMidpoint().y - 200;
-						case 'schoolEvil':
-							camFollow.x = boyfriend.getMidpoint().x - 200;
-							camFollow.y = boyfriend.getMidpoint().y - 200;
-					}*/
 				
 				camFollow.x += boyfriend.camPos[0];
 				camFollow.y += boyfriend.camPos[1];
@@ -3900,51 +3914,19 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 					if (SONG.songId != 'tutorial')
 						camZooming = true;
 
-					// Accessing the animation name directly to play it
-					if (!daNote.isParent && daNote.parent != null)
-					{
-						if (daNote.spotInLine != daNote.parent.children.length - 1)
-						{
-							checkNoteType('dad', daNote);
-							if (FlxG.save.data.cpuStrums)
-							{
-								cpuStrums.forEach(function(spr:StaticArrow)
-								{
-									pressArrow(spr, spr.ID, daNote);
-								});
-							}
-
-							#if FEATURE_LUAMODCHART
-							if (luaModchart != null)
-								luaModchart.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
-							#end
-
-							dad.holdTimer = 0;
-
-							if (SONG.needsVoices)
-								vocals.volume = 1;
-						}
+					checkNoteType('dad', daNote);
+					var time:Float = 0.15;
+					if(daNote.isSustainNote && !daNote.animation.curAnim.name.endsWith('end')) {
+						time += 0.15;
 					}
-					else
+					cpuStrums.forEach(function(spr:StaticArrow)
 					{
-						checkNoteType('dad', daNote);
-						if (FlxG.save.data.cpuStrums)
-						{
-							cpuStrums.forEach(function(spr:StaticArrow)
-							{
-								pressArrow(spr, spr.ID, daNote);
-							});
-						}
-						#if FEATURE_LUAMODCHART
-						if (luaModchart != null)
-							luaModchart.executeState('playerTwoSing', [Math.abs(daNote.noteData), Conductor.songPosition]);
-						#end
+						pressArrow(spr, spr.ID, daNote, time);
+					});
+					dad.holdTimer = 0;
 
-						dad.holdTimer = 0;
-
-						if (SONG.needsVoices)
-							vocals.volume = 1;
-					}
+					if (SONG.needsVoices)
+						vocals.volume = 1;
 					daNote.active = false;
 
 					if (storyDifficulty == 3 && !daNote.isSustainNote)
@@ -4479,24 +4461,47 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 	{
 		if (char == 'bf'){		
 			switch (note.noteType){
-				case 3:
+				case 3:{
 					gf.playAnim('sing' + dataSuffix[note.noteData], true);
+					#if FEATURE_LUAMODCHART
+					if (luaModchart != null)
+						luaModchart.executeState('gfSing', [note.noteData, Conductor.songPosition]);
+					#end}
 				case 2:{
+					#if FEATURE_LUAMODCHART
+					if (luaModchart != null)
+						luaModchart.executeState('playerOneSing', [note.noteData, Conductor.songPosition]);
+					#end
 					boyfriend.playAnim('dodge', true);
 					FlxG.sound.play(Paths.sound('hankshoot'), FlxG.random.float(0.1, 0.2));}
 				case 1:
+					#if FEATURE_LUAMODCHART
+					if (luaModchart != null)
+						luaModchart.executeState('playerOneSing', [note.noteData, Conductor.songPosition]);
+					#end
 					health = 0;
 				default:{
+					#if FEATURE_LUAMODCHART
+					if (luaModchart != null)
+						luaModchart.executeState('playerOneSing', [note.noteData, Conductor.songPosition]);
+					#end
 					if (note.isAlt) boyfriend.playAnim('sing' + dataSuffix[note.noteData] + '-alt', true);
 					else boyfriend.playAnim('sing' + dataSuffix[note.noteData], true);}}}
 		else if (char == 'dad')	{
 			var singData:Int = Std.int(Math.abs(note.noteData));
 			switch (note.noteType){
-				case 3:
+				case 3:{
 					gf.playAnim('sing' + dataSuffix[note.noteData], true);
+					#if FEATURE_LUAMODCHART
+					if (luaModchart != null)
+						luaModchart.executeState('gfSing', [note.noteData, Conductor.songPosition]);
+					#end}
 				default:{
 					if (note.isAlt) dad.playAnim('sing' + dataSuffix[singData] + '-alt', true);
-					else dad.playAnim('sing' + dataSuffix[singData], true);}}}
+					else dad.playAnim('sing' + dataSuffix[singData], true);
+					#if FEATURE_LUAMODCHART
+					if (luaModchart != null)luaModchart.executeState('playerTwoSing', [Math.abs(note.noteData), Conductor.songPosition]);
+					#end}}}
 	}
 
 	private function popUpScore(daNote:Note):Void
@@ -5361,11 +5366,6 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 			}
 
 			checkNoteType('bf', note);
-					
-			#if FEATURE_LUAMODCHART
-			if (luaModchart != null)
-				luaModchart.executeState('playerOneSing', [note.noteData, Conductor.songPosition]);
-			#end
 
 			if (!loadRep && note.mustPress)
 			{
@@ -5376,11 +5376,22 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 				saveJudge.push(note.rating);
 			}
 
-			if (!PlayStateChangeables.botPlay || FlxG.save.data.cpuStrums)
+			if (!PlayStateChangeables.botPlay/* || FlxG.save.data.cpuStrums*/)
 			{
 				playerStrums.forEach(function(spr:StaticArrow)
 				{
 					pressArrow(spr, spr.ID, note);
+				});
+			}
+			else
+			{
+				var time:Float = 0.15;
+				if(note.isSustainNote && !note.animation.curAnim.name.endsWith('end')) {
+					time += 0.15;
+				}
+				playerStrums.forEach(function(spr:StaticArrow)
+				{
+					pressArrow(spr, spr.ID, note, time);
 				});
 			}
 
@@ -5399,13 +5410,14 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 		}
 	}
 
-	function pressArrow(spr:StaticArrow, idCheck:Int, daNote:Note)
+	function pressArrow(spr:StaticArrow, idCheck:Int, daNote:Note, ?time:Float)
 	{
 		if (Math.abs(daNote.noteData) == idCheck)
 		{
 			if (!FlxG.save.data.stepMania)
 			{
-				spr.playAnim('confirm', true);
+				if (spr != null) spr.playAnim('confirm', true);
+				if (time != null) spr.resetAnim = time;
 			}
 			else
 			{

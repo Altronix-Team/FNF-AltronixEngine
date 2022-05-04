@@ -607,7 +607,8 @@ class ChartingState extends MusicBeatState
 		"Dad play animation",
 		"BF play animation",
 		"GF play animation",
-		"Camera zoom"
+		"Camera zoom",
+		"Toggle interface"
 	], true));
 
 	function addEventsUI()
@@ -2964,6 +2965,9 @@ class ChartingState extends MusicBeatState
 						eventDescriptionText = 'Type in Event Value camera zoom multiplier';
 						eventDescription.text = eventDescriptionText;
 						
+					case "Toggle interface":
+						eventDescriptionText = 'Type in Event Value seconds when interface will be invisible';
+						eventDescription.text = eventDescriptionText;
 
 					default:
 						eventDescriptionText = 'Bro, wtf, how did we get here?\n This event dont have description. Its strange.';

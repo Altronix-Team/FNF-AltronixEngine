@@ -89,7 +89,7 @@ class ResultsScreen extends FlxSubState
 		var shits = PlayState.isStoryMode ? PlayState.campaignShits : PlayState.shits;
 
 		comboText = new FlxText(20, -75, 0,
-			'Judgements:\nSicks - ${sicks}\nGoods - ${goods}\nBads - ${bads}\n\nCombo Breaks: ${(PlayState.isStoryMode ? PlayState.campaignMisses : PlayState.misses)}\nHighest Combo: ${PlayState.highestCombo + 1}\nScore: ${PlayState.instance.songScore}\nAccuracy: ${HelperFunctions.truncateFloat(PlayState.instance.accuracy, 2)}%\n\n${Ratings.GenerateLetterRank(PlayState.instance.accuracy)}\nRate: ${PlayState.songMultiplier}x}
+			'Judgements:\nSicks - ${sicks}\nGoods - ${goods}\nBads - ${bads}\n\nCombo Breaks: ${(PlayState.isStoryMode ? PlayState.campaignMisses : PlayState.misses)}\nHighest Combo: ${PlayState.highestCombo + 1}\nScore: ${PlayState.instance.songScore}\nAccuracy: ${HelperFunctions.truncateFloat(PlayState.instance.accuracy, 2)}%\n\n${Ratings.GenerateLetterRank(PlayState.instance.accuracy)}\nRate: ${PlayState.songMultiplier}x\n\n${!PlayState.loadRep ? "\nF1 - Replay song" : ""}
         ');
 		comboText.size = 28;
 		comboText.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 4, 1);
@@ -227,7 +227,7 @@ class ResultsScreen extends FlxSubState
 			PlayState.instance.clean();
 		}
 
-		/*if (FlxG.keys.justPressed.F1 && !PlayState.loadRep)
+		if (FlxG.keys.justPressed.F1 && !PlayState.loadRep)
 		{
 			PlayState.rep = null;
 
@@ -246,7 +246,7 @@ class ResultsScreen extends FlxSubState
 			PlayState.storyDifficulty = PlayState.storyDifficulty;
 			LoadingState.loadAndSwitchState(new PlayState());
 			PlayState.instance.clean();
-		}*/
+		}
 
 		super.update(elapsed);
 	}

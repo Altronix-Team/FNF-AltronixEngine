@@ -660,16 +660,9 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 					{
 						stageCheck = 'school';
 					}
+				case 7:
+					stageCheck = 'warzone';
 					// i should check if its stage (but this is when none is found in chart anyway)					
-			}
-			switch (SONG.songId)
-			{
-				case 'ugh':
-					stageCheck = 'warzone';
-				case 'guns':
-					stageCheck = 'warzone';
-				case 'stress':
-					stageCheck = 'warzone';
 			}
 		}
 		else
@@ -693,15 +686,9 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 					gfCheck = 'gf-christmas';
 				case 6:
 					gfCheck = 'gf-pixel';
-			}
-			switch (SONG.songId)
-			{
-				case 'ugh':
-					gfCheck = 'gftank';
-				case 'guns':
-					gfCheck = 'gftank';
-				case 'stress':
-					gfCheck = 'nogf';
+				case 7:
+					if (SONG.songId != 'stress') gfCheck = 'gftank';
+					else gfCheck = 'picospeaker';
 			}
 		}
 		else
@@ -1249,6 +1236,13 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 					schoolIntro(doof);
 				case 'thorns':
 					schoolIntro(doof);
+				case 'ugh':
+					playCutscene('ugh');
+				case 'guns':
+					playCutscene('guns');
+				case 'stress':
+					playCutscene('stress');
+
 				default:
 					if (Paths.doesTextAssetExist(Paths.txt('data/songs/${PlayState.SONG.songId}/dialogue-eng'))
 						 && Paths.doesTextAssetExist(Paths.txt('data/songs/${PlayState.SONG.songId}/dialogue-ru')))
@@ -1957,7 +1951,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 		// Song check real quick
 		switch (curSong)
 		{
-			case 'bopeebo' | 'philly nice' | 'blammed' | 'cocoa' | 'eggnog' | 'stress':
+			case 'bopeebo' | 'philly nice' | 'blammed' | 'cocoa' | 'eggnog':
 				allowedToCheer = true;
 			default:
 				allowedToCheer = false;

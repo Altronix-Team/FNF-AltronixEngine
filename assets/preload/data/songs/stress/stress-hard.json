@@ -7053,7 +7053,7 @@
     "changeBPM": false
    }
   ],
-  "gfVersion": "nogf",
+  "gfVersion": "picospeaker",
   "eventObjects": [
    {
     "name": "Init BPM",

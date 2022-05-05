@@ -96,14 +96,6 @@ class ExtrasPasswordState extends MusicBeatState implements IHook
 		{
 			switch (passwordText)
 			{
-				case 'tankman':
-					{
-						extra = 2;
-						FlxG.sound.music.stop();
-						FlxG.switchState(new SecretState());
-						FlxG.sound.play(Paths.sound('ANGRY_TEXT_BOX', 'shared'));
-						Main.isHidden = true;
-					}
 				case 'debug':
 					{
 						extra = 3;

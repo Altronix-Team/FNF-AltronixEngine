@@ -1,0 +1,35 @@
+{
+  "name": "Boyfriend-And-Girlfriend-Dead",
+  "asset": "characters/bfAndGF-DEAD",
+  "barColorJson": 
+  [
+	49, 176, 209
+  ],
+  "flipX": true,
+  "scale": 1,
+  "antialiasing": true,
+  "startingAnim": "firstDeath",
+  "animations": [
+    {
+      "name": "firstDeath",
+      "prefix": "BF Dies with GF",
+      "offsets": [0, 0],
+	  "frameIndices": [],
+	  "frameRate": 24
+    },
+    {
+      "name": "deathLoop",
+      "prefix": "BF Dead with GF Loop",
+      "offsets": [0, -37],
+	  "frameIndices": [],
+	  "frameRate": 24
+    },
+    {
+      "name": "deathConfirm",
+      "prefix": "RETRY confirm holding gf",
+      "offsets": [0, -37],
+	  "frameIndices": [],
+	  "frameRate": 24
+    }
+  ]
+}

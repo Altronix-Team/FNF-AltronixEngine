@@ -1,47 +1,93 @@
 {
-  "name": "Pico Speacker",
-  "asset": "characters/picoSpeaker",
-  "barColorJson": 
-  [
-	165, 0, 77
-  ],
-  "startingAnim": "idle",
-  "antialiasing": true,
-  "animations": [
-    {
-      "name": "idle",
-      "prefix": "Pico shoot 1",
-      "offsets": [0, 0],
-      "frameIndices": [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
-	  "frameRate": 24
-    },
-    {
-      "name": "shoot1",
-      "prefix": "Pico shoot 1",
-      "offsets": [0, 0],
-      "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "shoot2",
-      "prefix": "Pico shoot 2",
-      "offsets": [0, 0],
-      "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "shoot3",
-      "prefix": "Pico shoot 3",
-      "offsets": [0, 0],
-      "frameIndices": [],
-	  "frameRate": 24
-    },
-    {
-      "name": "shoot4",
-      "prefix": "Pico shoot 4",
-      "offsets": [0, 0],
-      "frameIndices": [],
-	  "frameRate": 24
-    }
-  ]
+	"animations": [
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"frameRate": 24,
+			"prefix": "Pico shoot 1",
+			"frameIndices": [
+				10,
+				11,
+				12,
+				13,
+				14,
+				15,
+				16,
+				17,
+				18,
+				19,
+				20,
+				21,
+				22,
+				23,
+				24
+			],
+			"name": "idle"
+		},
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"frameRate": 24,
+			"prefix": "Pico shoot 1",
+			"frameIndices": [],
+			"name": "shoot1"
+		},
+		{
+			"offsets": [
+				0,
+				-130
+			],
+			"frameRate": 24,
+			"prefix": "Pico shoot 2",
+			"frameIndices": [],
+			"name": "shoot2"
+		},
+		{
+			"offsets": [
+				414,
+				-63
+			],
+			"frameRate": 24,
+			"prefix": "Pico shoot 3",
+			"frameIndices": [],
+			"name": "shoot3"
+		},
+		{
+			"offsets": [
+				440,
+				-18
+			],
+			"frameRate": 24,
+			"prefix": "Pico shoot 4",
+			"frameIndices": [],
+			"name": "shoot4"
+		}
+	],
+	"hasTrail": false,
+	"camPos": [
+		0,
+		0
+	],
+	"holdLength": 4,
+	"charPos": [
+		0,
+		-150
+	],
+	"flipX": false,
+	"asset": "characters/picoSpeaker",
+	"startingAnim": "idle",
+	"characterIcon": "face",
+	"antialiasing": true,
+	"name": "characters/picoSpeaker",
+	"barColorJson": [
+		165,
+		0,
+		77
+	],
+	"replacesGF": false,
+	"scale": 0
 }

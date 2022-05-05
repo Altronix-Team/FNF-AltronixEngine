@@ -211,6 +211,7 @@ class ModCore
 				"week4" => "./week4",
 				"week5" => "./week5",
 				"week6" => "./week6",
+				"week7" => "./week7",
 				'core' => './_core' // Don't override these files.
 			]
 		}

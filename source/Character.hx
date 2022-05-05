@@ -44,6 +44,7 @@ class Character extends FlxSprite
 	public var interruptAnim:Bool = true;
 	public var colorTween:FlxTween;
 	public var characterIcon:String = 'face';
+	public var animationNotes:Array<Dynamic> = [];
 
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
@@ -58,6 +59,11 @@ class Character extends FlxSprite
 		this.isPlayer = isPlayer;
 
 		parseDataFile();
+
+		if (curCharacter == 'picospeaker') 
+		{
+			loadMappedAnims();
+		}
 
 		if (isPlayer && frames != null)
 		{
@@ -191,6 +197,20 @@ class Character extends FlxSprite
 			}
 		}
 
+		if (curCharacter == 'picospeaker') 
+		{
+			if (0 < animationNotes.length && Conductor.songPosition > animationNotes[0][0]) {
+				var idkWhatThisISLol = 1;
+				if (2 <= animationNotes[0][1]) {
+					idkWhatThisISLol = 3;				
+				}
+
+				idkWhatThisISLol += FlxG.random.int(0, 1);
+				playAnim("shoot" + idkWhatThisISLol, true);
+				animationNotes.shift();
+			}
+		}
+
 		if (!debugMode)
 		{
 			var nextAnim = animNext.get(animation.curAnim.name);
@@ -205,6 +225,23 @@ class Character extends FlxSprite
 		}
 
 		super.update(elapsed);
+	}
+
+	public function loadMappedAnims() {
+		var picoAnims = Song.picospeakerLoad(curCharacter, "stress").notes;
+		trace('blammedlol');
+		for (anim in picoAnims) {
+			for (note in anim.sectionNotes) {
+				animationNotes.push(note);
+			}
+		}
+		animationNotes.sort(sortAnims);
+	}
+
+	function sortAnims(a, b) {
+		var aThing = a[0];
+		var bThing = b[0];
+		return aThing < bThing ? -1 : 1;
 	}
 
 	private var danced:Bool = false;

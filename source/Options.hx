@@ -2191,7 +2191,7 @@ class ResetSettings extends Option
 		FlxG.save.data.editor = null;
 		FlxG.save.data.laneTransparency = 0;
 
-		KadeEngineData.initSave();
+		EngineData.initSave();
 		confirm = false;
 		trace('All settings have been reset');
 		display = updateDisplay();

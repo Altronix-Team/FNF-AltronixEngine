@@ -101,7 +101,7 @@ class Main extends Sprite
 		Debug.onInitProgram();
 
 		#if !mobile
-		fpsCounter = new KadeEngineFPS(10, 3, 0xFFFFFF);
+		fpsCounter = new EngineFPS(10, 3, 0xFFFFFF);
 		bitmapFPS = ImageOutline.renderImage(fpsCounter, 1, 0x000000, true);
 		bitmapFPS.smoothing = true;
 		#end	
@@ -140,7 +140,7 @@ class Main extends Sprite
 
 	var game:FlxGame;
 
-	var fpsCounter:KadeEngineFPS;
+	var fpsCounter:EngineFPS;
 
 	// taken from forever engine, cuz optimization very pog.
 	// thank you shubs :)

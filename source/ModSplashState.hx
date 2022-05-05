@@ -23,7 +23,7 @@ class ModSplashState extends MusicBeatState
 		
         PlayerSettings.init();
 
-		KadeEngineData.initSave();
+		EngineData.initSave();
 
         FlxG.autoPause = false;
 

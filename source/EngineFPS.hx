@@ -24,7 +24,7 @@ import openfl.Lib;
 @:fileXml('tags="haxe,release"')
 @:noDebug
 #end
-class KadeEngineFPS extends TextField
+class EngineFPS extends TextField
 {
 	/**
 		The current frame rate, expressed using frames-per-second

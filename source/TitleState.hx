@@ -75,7 +75,7 @@ class TitleState extends MusicBeatState
 
 		PlayerSettings.init();
 
-		KadeEngineData.initSave();
+		EngineData.initSave();
 
 		KeyBinds.keyCheck();
 		// It doesn't reupdate the list before u restart rn lmao

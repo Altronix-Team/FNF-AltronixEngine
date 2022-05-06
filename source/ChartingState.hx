@@ -22,6 +22,7 @@ import flixel.FlxSprite;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.addons.ui.FlxInputText;
 import flixel.addons.ui.FlxUI9SliceSprite;
+import flixel.util.FlxStringUtil;
 import flixel.addons.ui.FlxUI;
 import flixel.addons.ui.FlxUICheckBox;
 import flixel.addons.ui.FlxUIDropDownMenu;
@@ -885,7 +886,7 @@ class ChartingState extends MusicBeatState
 			var obj = containsName(currentSelectedEventName, _song.eventObjects);
 			if (obj == null)
 				return;
-			currentEventPosition = curDecimalBeat;
+			currentEventPosition = HelperFunctions.truncateFloat(curDecimalBeat, 1);
 			obj.position = currentEventPosition;
 			eventPos.text = currentEventPosition + "";
 		});
@@ -2623,6 +2624,8 @@ class ChartingState extends MusicBeatState
 				+ HelperFunctions.truncateFloat(zoomFactor, 2)
 				+ "\nSpeed: "
 				+ HelperFunctions.truncateFloat(speed, 1)
+				+ "\nCur Time: "
+				+ FlxStringUtil.formatTime(FlxG.sound.music.time / 1000, false)
 				+ "\n\nSnap: "
 				+ snap
 				+ "\n"
@@ -3630,27 +3633,6 @@ class ChartingState extends MusicBeatState
 		var noteData = Math.floor(FlxG.mouse.x / GRID_SIZE);
 		var noteSus = 0;
 
-		/*if (hurtnote.checked)
-		{
-			Debug.logTrace('kill note');
-			noteType = 1;
-		}
-		else if (bulletnote.checked)
-		{
-			Debug.logTrace('hank note');
-			noteType = 2;
-		}
-		else if (gfnote.checked)
-		{
-			Debug.logTrace('gf note');
-			noteType = 3;
-		}
-		else
-		{
-			Debug.logTrace('default note');
-			noteType = 0;
-		}*/
-
 		Debug.logTrace("adding note with " + strum + " from dummyArrow with data " + noteData + " with type " + noteType);
 
 		if (n != null)
@@ -3743,12 +3725,12 @@ class ChartingState extends MusicBeatState
 
 	function getStrumTime(yPos:Float):Float
 	{
-		return FlxMath.remapToRange(yPos, 0, lengthInSteps, 0, lengthInSteps);
+		return FlxMath.roundDecimal(FlxMath.remapToRange(yPos, 0, lengthInSteps, 0, lengthInSteps), 1);
 	}
 
 	function getYfromStrum(strumTime:Float):Float
 	{
-		return FlxMath.remapToRange(strumTime, 0, lengthInSteps, 0, lengthInSteps);
+		return FlxMath.roundDecimal(FlxMath.remapToRange(strumTime, 0, lengthInSteps, 0, lengthInSteps), 1);
 	}
 
 	/*

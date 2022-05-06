@@ -17,26 +17,28 @@ import LoadingState.LoadingsState;
 #if desktop
 import DiscordClient;
 #end
+#if sys
+import sys.io.File;
+import sys.FileSystem;
+#end
 import flixel.addons.ui.FlxUIState;
 
 using StringTools;
 
 typedef WeekJson =
 {
-	var weekDataFromJson:Array<Dynamic>;
-	var weekCharactersFromJson:Array<Dynamic>;
-	var weekNamesFromJson:Array<String>;
-	var weekBackgroundsFromJson:Array<String>;
-	var weekImagesFromJson:Array<String>;
+	var weekDataFromJson:Dynamic;
+	var weekCharacterFromJson:Dynamic;
+	var weekNameFromJson:String;
+	var weekBackgroundFromJson:String;
+	var weekImageFromJson:String;
+	var weekIdFromJson:Int;
 }
 class StoryMenuState extends MusicBeatState
 {
 	var scoreText:FlxText;
 
-	static var weekDataJson:Array<Dynamic> = [['tutorial']];
-	static var weekCharactersJson:Array<Dynamic> = [['', 'bf', 'gf']];
-	static var weekNamesJson:Array<String> = ['Tutorial'];
-	static var weekBackgroundsJson:Array<String> = ['Tutorial'];
+	static var weekDataJson:Array<Dynamic> = [];
 	
 	static function weekData():Array<Dynamic>
 	{
@@ -47,10 +49,10 @@ class StoryMenuState extends MusicBeatState
 
 	public static var weekUnlocked:Array<Bool> = [];
 
-	static var weekCharacters:Array<Dynamic> = [['', 'bf', 'gf']];
-	static var weekNames:Array<String> = ['Tutorial'];
-	static var weekBackgrounds:Array<String> = ['Tutorial'];
-	static var weekImages:Array<String> = ['tutorial'];
+	static var weekCharacters:Array<Dynamic> = [];
+	static var weekNames:Array<String> = [];
+	static var weekBackgrounds:Array<String> = [];
+	static var weekImages:Array<String> = [];
 
 	var txtWeekTitle:FlxText;
 
@@ -75,34 +77,26 @@ class StoryMenuState extends MusicBeatState
 		Debug.logTrace("I'm starting");
 		//fuck me in chinese,
 		//suck my dick in turkish
-		var jsonData = Paths.loadJSON('weeks');
-		if (jsonData == null)
+		var files = FileSystem.readDirectory(Paths.getPreloadPath('weeks'));
+		for (i in files)
 		{
-			Debug.logError('Failed to parse JSON data (weeks)');
-			return;
+			var jsonData = Paths.loadWeeksJSON(i);
+			if (jsonData == null)
+			{
+				Debug.logError('Failed to parse JSON data' + i);
+				return;
+			}
+
+			var data:WeekJson = cast jsonData;
+
+			Debug.logTrace(data.weekIdFromJson);
+
+			weekDataJson.insert(data.weekIdFromJson, data.weekDataFromJson);
+			weekCharacters.insert(data.weekIdFromJson, data.weekCharacterFromJson);
+			weekNames.insert(data.weekIdFromJson, data.weekNameFromJson);
+			weekBackgrounds.insert(data.weekIdFromJson, data.weekBackgroundFromJson);
+			weekImages.insert(data.weekIdFromJson, data.weekImageFromJson);
 		}
-
-		var data:WeekJson = cast jsonData;
-
-		Debug.logTrace(data.weekDataFromJson);
-		Debug.logTrace(data.weekCharactersFromJson);
-		Debug.logTrace(data.weekNamesFromJson);
-		//Debug.logTrace(data.weekImagesFromJson);
-
-		if (data.weekDataFromJson != null)
-			weekDataJson = data.weekDataFromJson;
-
-		if (data.weekCharactersFromJson != null)
-			weekCharacters = data.weekCharactersFromJson;
-
-		if (data.weekNamesFromJson != null)
-			weekNames = data.weekNamesFromJson;
-
-		if (data.weekBackgroundsFromJson != null)
-			weekBackgrounds = data.weekBackgroundsFromJson;
-
-		if (data.weekImagesFromJson != null)
-			weekImages = data.weekImagesFromJson;
 	}
 
 	function unlockWeeks():Array<Bool>
@@ -117,7 +111,7 @@ class StoryMenuState extends MusicBeatState
 
 		weeks.push(true);
 
-		for (i in 0...FlxG.save.data.weekUnlocked)
+		for (i in 0...weekData().length)
 		{
 			weeks.push(true);
 		}

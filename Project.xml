@@ -49,6 +49,8 @@
 	<assets path="assets/videos" exclude="*.ogg" unless="web"/>
 	
 	<assets path="assets/preload/stages" rename="assets/stages" include="*lua" embed='false' />
+	
+	<assets path="assets/preload/weeks" rename="assets/weeks" include="*json" embed='false' />
 
 	<assets path="plugins/" rename='' if="windows"/>
 	<assets path="dlls/" rename='' if="windows"/>
@@ -116,6 +118,8 @@
 	<assets path="assets/week7"    library="week7"    exclude="*.mp3" unless="web"/>
 	<assets path="assets/sm"    library="sm"    exclude="*.ogg" if="web"/>
 	<assets path="assets/sm"    library="sm"    exclude="*.mp3" unless="web"/>
+	<assets path="assets/stages"   library="stages"   exclude="*.ogg" if="web"/>
+	<assets path="assets/stages"   library="stages"   exclude="*.mp3" unless="web"/>
 
 	<assets path='example_mods' rename='mods' embed='false'/>
 	<assets path='art/readme.txt' rename='do NOT readme.txt' />

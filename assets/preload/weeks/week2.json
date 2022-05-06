@@ -1,0 +1,8 @@
+{
+	"weekDataFromJson": ["spookeez", "south", "monster"],
+	"weekCharacterFromJson": ["spooky", "bf", "gf"],
+	"weekNameFromJson": "Spooky Month",
+	"weekBackgroundFromJson": "Spooky",
+	"weekImageFromJson": "week2",
+	"weekIdFromJson": 2
+}

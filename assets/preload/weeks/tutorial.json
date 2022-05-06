@@ -1,0 +1,8 @@
+{
+	"weekDataFromJson": ["tutorial"],
+	"weekCharacterFromJson": ["", "bf", "gf"],
+	"weekNameFromJson": "Tutorial",
+	"weekBackgroundFromJson": "Tutorial",
+	"weekImageFromJson": "tutorial",
+	"weekIdFromJson": 0
+}

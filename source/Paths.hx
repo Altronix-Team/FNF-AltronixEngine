@@ -156,6 +156,32 @@ class Paths
 			}
 		}
 
+	static public function loadWeeksJSON(key:String, ?library:String):Dynamic
+		{
+			var rawJson = OpenFlAssets.getText(Paths.weeksJson(key, library)).trim();
+		
+			// Perform cleanup on files that have bad data at the end.
+			while (!rawJson.endsWith("}"))
+			{
+				rawJson = rawJson.substr(0, rawJson.length - 1);
+			}
+		
+			try
+			{
+				// Attempt to parse and return the JSON data.
+				return Json.parse(rawJson);
+			}
+			catch (e)
+			{
+				Debug.logError("AN ERROR OCCURRED parsing a JSON file.");
+				Debug.logError(e.message);
+				Debug.logError(e.stack);
+		
+				// Return null.
+				return null;
+			}
+		}
+
 	static public function loadJSON(key:String, ?library:String):Dynamic
 	{
 		var rawJson = OpenFlAssets.getText(Paths.json(key, library)).trim();
@@ -241,6 +267,11 @@ class Paths
 	inline static public function json(key:String, ?library:String)
 	{
 		return getPath('data/$key.json', TEXT, library);
+	}
+
+	inline static public function weeksJson(key:String, ?library:String)
+	{
+		return getPath('weeks/$key', TEXT, library);
 	}
 
 	inline static public function stageJson(key:String, ?library:String)

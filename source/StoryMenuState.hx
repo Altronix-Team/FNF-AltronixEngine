@@ -75,8 +75,12 @@ class StoryMenuState extends MusicBeatState
 	static function parseDataFile()
 	{
 		Debug.logTrace("I'm starting");
-		//fuck me in chinese,
-		//suck my dick in turkish
+
+		weekDataJson = [];
+		weekCharacters = [];
+		weekNames = [];
+		weekBackgrounds = [];
+		weekImages = [];
 		var files = FileSystem.readDirectory(Paths.getPreloadPath('weeks'));
 		for (i in files)
 		{

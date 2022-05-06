@@ -1,17 +1,19 @@
-<?xml version='1.0' encoding='utf-8'?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <TextureAtlas imagePath="Menu_Tankman.png">
-<SubTexture name="M Tankman Idle0000" x="0" y="0" width="248" height="311" frameX="0" frameY="0" frameWidth="248" frameHeight="311" />
-<SubTexture name="M Tankman Idle0001" x="0" y="0" width="248" height="311" frameX="0" frameY="0" frameWidth="248" frameHeight="311" />
-<SubTexture name="M Tankman Idle0002" x="248" y="0" width="248" height="311" frameX="0" frameY="0" frameWidth="248" frameHeight="311" />
-<SubTexture name="M Tankman Idle0003" x="248" y="0" width="248" height="311" frameX="0" frameY="0" frameWidth="248" frameHeight="311" />
-<SubTexture name="M Tankman Idle0004" x="496" y="0" width="248" height="311" frameX="0" frameY="0" frameWidth="248" frameHeight="311" />
-<SubTexture name="M Tankman Idle0005" x="496" y="0" width="248" height="311" frameX="0" frameY="0" frameWidth="248" frameHeight="311" />
-<SubTexture name="M Tankman Idle0006" x="744" y="0" width="248" height="311" frameX="0" frameY="0" frameWidth="248" frameHeight="311" />
-<SubTexture name="M Tankman Idle0007" x="0" y="311" width="248" height="311" frameX="0" frameY="0" frameWidth="248" frameHeight="311" />
-<SubTexture name="M Tankman Idle0008" x="248" y="311" width="248" height="311" frameX="0" frameY="0" frameWidth="248" frameHeight="311" />
-<SubTexture name="M Tankman Idle0009" x="248" y="311" width="248" height="311" frameX="0" frameY="0" frameWidth="248" frameHeight="311" />
-<SubTexture name="M Tankman Idle0010" x="248" y="311" width="248" height="311" frameX="0" frameY="0" frameWidth="248" frameHeight="311" />
-<SubTexture name="M Tankman Idle0011" x="248" y="311" width="248" height="311" frameX="0" frameY="0" frameWidth="248" frameHeight="311" />
-<SubTexture name="M Tankman Idle0012" x="248" y="311" width="248" height="311" frameX="0" frameY="0" frameWidth="248" frameHeight="311" />
-<SubTexture name="M Tankman Idle0013" x="248" y="311" width="248" height="311" frameX="0" frameY="0" frameWidth="248" frameHeight="311" />
+	<!-- Created with Adobe Animate version 21.0.9.42677 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="Tankman Idle Dance0000" x="0" y="0" width="425" height="553" frameX="-1" frameY="-19" frameWidth="431" frameHeight="573"/>
+	<SubTexture name="Tankman Idle Dance0001" x="0" y="0" width="425" height="553" frameX="-1" frameY="-19" frameWidth="431" frameHeight="573"/>
+	<SubTexture name="Tankman Idle Dance0002" x="425" y="0" width="427" height="556" frameX="0" frameY="-17" frameWidth="431" frameHeight="573"/>
+	<SubTexture name="Tankman Idle Dance0003" x="425" y="0" width="427" height="556" frameX="0" frameY="-17" frameWidth="431" frameHeight="573"/>
+	<SubTexture name="Tankman Idle Dance0004" x="852" y="0" width="425" height="561" frameX="-4" frameY="-12" frameWidth="431" frameHeight="573"/>
+	<SubTexture name="Tankman Idle Dance0005" x="852" y="0" width="425" height="561" frameX="-4" frameY="-12" frameWidth="431" frameHeight="573"/>
+	<SubTexture name="Tankman Idle Dance0006" x="1277" y="0" width="428" height="572" frameX="-3" frameY="-1" frameWidth="431" frameHeight="573"/>
+	<SubTexture name="Tankman Idle Dance0007" x="0" y="572" width="429" height="572" frameX="-2" frameY="-1" frameWidth="431" frameHeight="573"/>
+	<SubTexture name="Tankman Idle Dance0008" x="429" y="572" width="429" height="573" frameX="-2" frameY="0" frameWidth="431" frameHeight="573"/>
+	<SubTexture name="Tankman Idle Dance0009" x="429" y="572" width="429" height="573" frameX="-2" frameY="0" frameWidth="431" frameHeight="573"/>
+	<SubTexture name="Tankman Idle Dance0010" x="429" y="572" width="429" height="573" frameX="-2" frameY="0" frameWidth="431" frameHeight="573"/>
+	<SubTexture name="Tankman Idle Dance0011" x="429" y="572" width="429" height="573" frameX="-2" frameY="0" frameWidth="431" frameHeight="573"/>
+	<SubTexture name="Tankman Idle Dance0012" x="429" y="572" width="429" height="573" frameX="-2" frameY="0" frameWidth="431" frameHeight="573"/>
+	<SubTexture name="Tankman Idle Dance0013" x="429" y="572" width="429" height="573" frameX="-2" frameY="0" frameWidth="431" frameHeight="573"/>
 </TextureAtlas>

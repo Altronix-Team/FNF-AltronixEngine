@@ -1,10 +1,11 @@
 {
 	"confirm_anim": "M Dad Idle",
-	"idle_anim": "M Tankman Idle",
+	"idle_anim": "Tankman Idle Dance",
 	"position": [
-		40,
-		-50
+		100,
+		110
 	],
-	"scale": 1,
+	"scale": 0.6,
+	"flipX": true,
 	"image": "Menu_Tankman"
 }

@@ -13,6 +13,7 @@ typedef MenuCharacterFile = {
 	var position:Array<Int>;
 	var idle_anim:String;
 	var confirm_anim:String;
+	var ?flipX:Bool;
 }
 
 class MenuCharacter extends FlxSprite
@@ -57,6 +58,8 @@ class MenuCharacter extends FlxSprite
 				frames = Paths.getSparrowAtlas('menucharacters/' + charFile.image);
 				animation.addByPrefix('idle', charFile.idle_anim, 24);
 				animation.addByPrefix('confirm', charFile.confirm_anim, 24, false);
+
+				flipX = charFile.flipX == null ? false : charFile.flipX;
 
 				if(charFile.scale != 1) {
 					scale.set(charFile.scale, charFile.scale);

@@ -1,0 +1,50 @@
+{
+	"freeplaySonglist":
+	[
+	{
+		"weekSongs": ["tutorial"],
+		"weekChar": "gf",
+		"weekID": 0
+	},
+	{
+		"weekSongs": ["bopeebo", "fresh", "dadbattle"],
+		"weekChar": "dad",
+		"weekID": 1
+	},
+	{
+		"weekSongs": ["spookeez", "south", "monster"],
+		"weekChar": "spooky",
+		"weekID": 2
+	},
+	{
+		"weekSongs": ["pico", "philly", "blammed"],
+		"weekChar": "pico",
+		"weekID": 3
+	},
+	{
+		"weekSongs": ["satin-panties", "high", "milf"],
+		"weekChar": "mom",
+		"weekID": 4
+	},
+	{
+		"weekSongs": ["cocoa", "eggnog"],
+		"weekChar": "parents-christmas",
+		"weekID": 5
+	},
+	{
+		"weekSongs": ["winter-horrorland"],
+		"weekChar": "monster-christmas",
+		"weekID": 5
+	},
+	{
+		"weekSongs": ["senpai", "roses", "thorns"],
+		"weekChar": "senpai",
+		"weekID": 6
+	},
+	{
+		"weekSongs": ["ugh", "guns", "stress"],
+		"weekChar": "tankman",
+		"weekID": 7
+	}
+	]
+}

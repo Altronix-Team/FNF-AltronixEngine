@@ -309,64 +309,70 @@ class FreeplayState extends MusicBeatState
 	public static function populateSongData()
 	{
 		cached = false;
-		list = CoolUtil.coolTextFile(Paths.txt('data/freeplaySonglist'));
+		var freeplaySonglist = Paths.loadJSON('freeplaySonglist');
 
 		songData = [];
 		songs = [];
 
-		for (i in 0...list.length)
+		var data:FreeplaySonglist = cast freeplaySonglist;
+
+		var songId:String = '';
+		for (week in data.freeplaySonglist)
 		{
-			var data:Array<String> = list[i].split(':');
-			var songId = data[0];
-			var meta = new FreeplaySongMetadata(songId, Std.parseInt(data[2]), data[1]);
-
-			var diffs = [];
-			var diffsThatExist = [];
-			#if FEATURE_FILESYSTEM
-			if (Paths.doesTextAssetExist(Paths.json('songs/$songId/$songId-hard')))
-				diffsThatExist.push("Hard");
-			if (Paths.doesTextAssetExist(Paths.json('songs/$songId/$songId-easy')))
-				diffsThatExist.push("Easy");
-			if (Paths.doesTextAssetExist(Paths.json('songs/$songId/$songId')))
-				diffsThatExist.push("Normal");
-			if (Paths.doesTextAssetExist(Paths.json('songs/$songId/$songId-hardplus')))
-				diffsThatExist.push("Hard P");
-
-			if (diffsThatExist.length == 0)
+			for (i in week.weekSongs)
 			{
-				Debug.displayAlert(meta.songName + " Chart", "No difficulties found for chart, skipping.");
-			}
-			#else
-			diffsThatExist = ["Easy", "Normal", "Hard", "Hard P"];
-			#end
+				songId = i;
+				var meta = new FreeplaySongMetadata(songId, week.weekID, week.weekChar);
 
-			if (diffsThatExist.contains("Easy"))
-				FreeplayState.loadDiff(0, songId, diffs);
-			if (diffsThatExist.contains("Normal"))
-				FreeplayState.loadDiff(1, songId, diffs);
-			if (diffsThatExist.contains("Hard"))
-				FreeplayState.loadDiff(2, songId, diffs);
-			if (diffsThatExist.contains("Hard P"))
-				FreeplayState.loadDiff(3, songId, diffs);
+				var diffs = [];
+				var diffsThatExist = [];
+				#if FEATURE_FILESYSTEM
+				if (Paths.doesTextAssetExist(Paths.json('songs/$songId/$songId-hard')))
+					diffsThatExist.push("Hard");
+				if (Paths.doesTextAssetExist(Paths.json('songs/$songId/$songId-easy')))
+					diffsThatExist.push("Easy");
+				if (Paths.doesTextAssetExist(Paths.json('songs/$songId/$songId')))
+					diffsThatExist.push("Normal");
+				if (Paths.doesTextAssetExist(Paths.json('songs/$songId/$songId-hardplus')))
+					diffsThatExist.push("Hard P");
 
-			meta.diffs = diffsThatExist;
+				if (diffsThatExist.length == 0)
+				{
+					Debug.displayAlert(meta.songName + " Chart", "No difficulties found for chart, skipping.");
+				}
+				#else
+				diffsThatExist = ["Easy", "Normal", "Hard", "Hard P"];
+				#end
 
-			if (diffsThatExist.length != 3)
-				trace("I ONLY FOUND " + diffsThatExist);
+				if (diffsThatExist.contains("Easy"))
+					FreeplayState.loadDiff(0, songId, diffs);
+				if (diffsThatExist.contains("Normal"))
+					FreeplayState.loadDiff(1, songId, diffs);
+				if (diffsThatExist.contains("Hard"))
+					FreeplayState.loadDiff(2, songId, diffs);
+				if (diffsThatExist.contains("Hard P"))
+					FreeplayState.loadDiff(3, songId, diffs);
 
-			FreeplayState.songData.set(songId, diffs);
-			trace('loaded diffs for ' + songId);
-			FreeplayState.songs.push(meta);
+				meta.diffs = diffsThatExist;
 
-			#if FEATURE_FILESYSTEM
-			sys.thread.Thread.create(() ->
-			{
+				if (diffsThatExist.length != 3)
+					trace("I ONLY FOUND " + diffsThatExist);
+
+				songData.set(songId, diffs);
+				trace('loaded diffs for ' + songId);
+				songs.push(meta);
+
+				#if FEATURE_FILESYSTEM
+				sys.thread.Thread.create(() ->
+				{
+					FlxG.sound.cache(Paths.inst(songId));
+				});
+				#else
 				FlxG.sound.cache(Paths.inst(songId));
-			});
-			#else
-			FlxG.sound.cache(Paths.inst(songId));
-			#end
+				#end
+			}
 		}
+		
 	}
 
 	public function addSong(songName:String, weekNum:Int, songCharacter:String)
@@ -832,6 +838,19 @@ class FreeplayState extends MusicBeatState
 		}
 	}
 
+	public static function createEmptyFile():FreeplaySonglist {
+		var testWeek:SongsWithWeekId = 
+		{
+			weekSongs: ['tutorial'],
+			weekChar: 'gf',
+			weekID: 0
+		};
+		var freeplayFile:FreeplaySonglist = {
+			freeplaySonglist: [testWeek]
+		};
+		return freeplayFile;
+	}
+
 	override function onWindowFocusOut():Void
 	{
 		FlxG.sound.music.pause();
@@ -876,6 +895,18 @@ class FreeplayState extends MusicBeatState
 		this.songCharacter = songCharacter;
 	}
 	#end
+}
+
+typedef FreeplaySonglist =
+{
+	var freeplaySonglist:Array<SongsWithWeekId>;
+}
+
+typedef SongsWithWeekId =
+{
+	var weekSongs:Array<String>;
+	var weekChar:String;
+	var weekID:Int;
 }
 
 typedef CharColor =

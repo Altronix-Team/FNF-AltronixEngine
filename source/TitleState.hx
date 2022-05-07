@@ -46,6 +46,10 @@ class TitleState extends MusicBeatState
 	var textGroup:FlxGroup;
 	var ngSpr:FlxSprite;
 
+	public var muteKeys:Array<FlxKey>;
+	public var volumeDownKeys:Array<FlxKey>;
+	public var volumeUpKeys:Array<FlxKey>;
+
 	var curWacky:Array<String> = [];
 
 	var wackyImage:FlxSprite;
@@ -90,6 +94,10 @@ class TitleState extends MusicBeatState
 		FlxG.sound.muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
 		FlxG.sound.volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];
 		FlxG.sound.volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
+
+		muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
+		volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];
+		volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
 
 		FlxG.mouse.visible = false;
 

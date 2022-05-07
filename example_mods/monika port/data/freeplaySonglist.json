@@ -1,0 +1,25 @@
+{
+	"freeplaySonglist": [
+		{
+			"weekSongs": [
+				"high-school-conflict"
+			],
+			"weekID": 0,
+			"weekChar": "monika"
+		},
+		{
+			"weekSongs": [
+				"dreams-of-roses"
+			],
+			"weekID": 0,
+			"weekChar": "duet"
+		},
+		{
+			"weekSongs": [
+				"your-demise"
+			],
+			"weekID": 0,
+			"weekChar": "monika-angry"
+		}
+	]
+}

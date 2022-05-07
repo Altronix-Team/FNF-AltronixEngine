@@ -77,6 +77,9 @@ class ModMenuState extends XMLLayoutState // extends MusicBeatState
 		}
 	}
 
+	var loadedMods:Array<ModMetadata> = [];
+	var unloadedMods:Array<ModMetadata> = [];
+
 	function initModLists()
 	{
 		// Unify mod lists.
@@ -89,9 +92,6 @@ class ModMenuState extends XMLLayoutState // extends MusicBeatState
 		});
 
 		var loadedModIds = ModCore.getConfiguredMods();
-
-		var loadedMods:Array<ModMetadata> = [];
-		var unloadedMods:Array<ModMetadata> = [];
 
 		if (loadedModIds != null)
 		{
@@ -128,6 +128,14 @@ class ModMenuState extends XMLLayoutState // extends MusicBeatState
 		if (FlxG.keys.justPressed.ESCAPE)
 		{
 			loadMainGame();
+		}
+
+		if (FlxG.mouse.wheel != 0)
+		{
+			if (FlxG.mouse.overlaps(unloadedModsUI))
+				unloadedModsUI.y += FlxG.mouse.wheel * 10;
+			else if (FlxG.mouse.overlaps(loadedModsUI))
+				loadedModsUI.y += FlxG.mouse.wheel * 10;
 		}
 
 		super.update(elapsed);

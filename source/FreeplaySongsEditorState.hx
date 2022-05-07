@@ -181,7 +181,18 @@ class FreeplaySongsEditorState extends MusicBeatState
 		
 		var removeWeekBtt:FlxButton = new FlxButton (210, 10, "Remove Week", function()
 		{
-			removeWeek();
+			if (curSelectedWeek == weekFile.freeplaySonglist.length)
+			{
+				var newCurWeek = 
+				{
+					weekChar: 'dad',
+					weekID: 0,
+					weekSongs: ['test']
+				}
+				weekFile.freeplaySonglist[curWeekInt] = newCurWeek;
+			}		
+			else
+				removeWeek();
 		});
 
 		weekSongsInputText = new FlxUIInputText(10, 70, 200, '', 8);

@@ -190,6 +190,7 @@ class FreeplaySongsEditorState extends MusicBeatState
 					weekSongs: ['test']
 				}
 				weekFile.freeplaySonglist[curWeekInt] = newCurWeek;
+				reloadAllShit();
 			}		
 			else
 				removeWeek();

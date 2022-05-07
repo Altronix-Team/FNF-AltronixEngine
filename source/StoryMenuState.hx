@@ -72,6 +72,18 @@ class StoryMenuState extends MusicBeatState
 	var hardplus:FlxSprite;
 	var weekbackground:FlxSprite;
 
+	public static function createWeekFile():WeekJson {
+		var weekFile:WeekJson = {
+			weekDataFromJson: ["bopeebo", "fresh", "dadbattle"],
+			weekCharacterFromJson: ['dad', 'bf', 'gf'],
+			weekBackgroundFromJson: 'Dad',
+			weekIdFromJson: 1,
+			weekNameFromJson: 'Daddy Dearest',
+			weekImageFromJson: 'week1'
+		};
+		return weekFile;
+	}
+
 	static function parseDataFile()
 	{
 		Debug.logTrace("I'm starting");

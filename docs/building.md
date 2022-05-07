@@ -5,7 +5,7 @@
 **Also also note**: To build for *Windows*, you need to be on *Windows*. To build for *Linux*, you need to be on *Linux*. Same goes for macOS. You can build for html5/browsers on any platform.
 
 ## Dependencies
-  1. [Install Haxe 4.2.3](https://haxe.org/download/). This is the latest version at the time of writing.
+  1. [Install Haxe 4.2.5](https://haxe.org/download/). This is the latest version at the time of writing.
  	- 4.1.5 was originally recommended because "4.2.0 is broken and is not working with gits properly..." This was actually referring to compatibility issues with OpenFL, Lime, and HaxeFlixel, which are important libraries the game relies on.
  	- [ninjamuffin99 himself](https://github.com/HaxeFoundation/haxe/issues/10443#issuecomment-948958011) confirmed that these issues are long since resolved, and the latest version of Haxe is stable for development of FNF and its mods.
  2. After installing Haxe, [Install HaxeFlixel](https://haxeflixel.com/documentation/install-haxeflixel/).
@@ -35,6 +35,7 @@
 	 - `haxelib git systools https://github.com/haya3218/systools`
 	 - `haxelib run lime rebuild systools [windows, mac, linux]`
 	 - `haxelib install haxe-strings 7.0.2`
+	 - `haxelib install hscript-ex 0.0.0`
 	      - Note: for Linux, you need to install the `g++-multilib` and `gcc-multilib` packages respectively. (use apt to install them.)
 
 ### Windows-only dependencies (only for building *to* Windows. Building html5 on Windows does not require this)

@@ -14,6 +14,7 @@ import flixel.math.FlxMath;
 import flixel.math.FlxAngle;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
+import flixel.effects.FlxFlicker;
 import StageData;
 //import ScriptedStage;
 #if sys
@@ -544,10 +545,10 @@ class Stage extends MusicBeatState
 							resetJohn(FlxG.width * 1.5, 600, true, john, 0);
 							johns.add(john);	
 
-							var one = 0;
+							var i = 0;
 							for (c in 1...PlayState.gf.animationNotes.length)
 							{
-								if (FlxG.random.float(0, 100) < 16)
+								if (FlxG.random.float(0, 50) < 16)
 								{
 								var jahn = john.clone();
 																	
@@ -557,8 +558,8 @@ class Stage extends MusicBeatState
 								strumTimeJohn.push(PlayState.gf.animationNotes[c][0]);
 								endingOffsetJohn.push(FlxG.random.float(0.6, 1));
 								johns.add(jahn);
-								resetJohn(FlxG.width * 1.5, 200 + FlxG.random.int(50, 100),  2 > PlayState.gf.animationNotes[c][1], jahn,one);
-								one++;		   
+								resetJohn(FlxG.width * 1.5, 200 + FlxG.random.int(50, 100),  2 > PlayState.gf.animationNotes[c][1], jahn,i);
+								i++;		   
 								}
 							}
 						}
@@ -843,6 +844,8 @@ class Stage extends MusicBeatState
 			if (goingRightJohn[i]) {
 			spr.offset.y = 200;
 			spr.offset.x = 300;
+			if (FlxG.save.data.flashing)
+				FlxFlicker.flicker(spr, 1, 0.15, false);
 			}
 			}
 			if (spr.animation.curAnim.name == "shot" && spr.animation.curAnim.curFrame >= spr.animation.curAnim.frames.length - 1) {

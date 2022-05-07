@@ -62,13 +62,10 @@ class SecretState extends MusicBeatState
 
 		#if desktop
 		// Updating Discord Rich Presence
-		if (ExtrasPasswordState.extra == 3)
-		{
 			if (!FlxG.save.data.language)
 				DiscordClient.changePresence("In Debug Secret Menu", null);
 			else
-				DiscordClient.changePresence("В секретном меню отладки", null);
-		}	
+				DiscordClient.changePresence("В секретном меню отладки", null);	
 		#end
 
 		var isDebug:Bool = false;
@@ -76,16 +73,14 @@ class SecretState extends MusicBeatState
 		#if debug
 		isDebug = true;
 		#end
-		if (ExtrasPasswordState.extra == 3)
-		{
-			addWeek(['test'], 1, ['senpai']);
-			bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-			add(bg);
-			var debugText = new FlxText(0, 600, 0, "This is something shit, which you don't want to see", 24);
-			debugText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
-			add(debugText);
+		addWeek(['test'], 1, ['senpai']);
+		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+		add(bg);
+		var debugText = new FlxText(0, 600, 0, "This is something shit, which you don't want to see", 24);
+		debugText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
+		add(debugText);
 
-		}	
+		
 		// LOAD MUSIC
 
 		// LOAD CHARACTERS
@@ -152,32 +147,12 @@ class SecretState extends MusicBeatState
 
 		changeSelection();
 
-		// FlxG.sound.playMusic(Paths.music('title'), 0);
-		// FlxG.sound.music.fadeIn(2, 0, 0.8);
 		selector = new FlxText();
 
 		selector.size = 40;
 		selector.text = ">";
-		// add(selector);
 
 		var swag:Alphabet = new Alphabet(1, 0, "swag");
-
-		// JUST DOIN THIS SHIT FOR TESTING!!!
-		/* 
-			var md:String = Markdown.markdownToHtml(Assets.getText('CHANGELOG.md'));
-
-			var texFel:TextField = new TextField();
-			texFel.width = FlxG.width;
-			texFel.height = FlxG.height;
-			// texFel.
-			texFel.htmlText = md;
-
-			FlxG.stage.addChild(texFel);
-
-			// scoreText.textField.htmlText = md;
-
-			trace(md);
-		 */
 
 		super.create();
 	}

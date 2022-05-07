@@ -11,8 +11,7 @@ import flixel.util.FlxTimer;
 import flixel.effects.FlxFlicker;
 import IHook;
 
-
-class ExtrasPasswordState extends MusicBeatState implements IHook
+class ExtrasPasswordState extends MusicBeatState implements polymod.hscript.HScriptable
 {
     public static var extra:Int = 1;
 	var passwordText:FlxInputText;
@@ -83,14 +82,34 @@ class ExtrasPasswordState extends MusicBeatState implements IHook
             FlxG.switchState(new MainMenuState());
 	}
 
-	/**
-	 * Mod hook called while check password.
-	 * @returns password from script.
-	 
-	@:hscript
-	public function hscriptPasswords():Map<String, String>
+	function loadSong(song:String)
 	{
-	}*/
+		var poop:String = Highscore.formatSongDiff(song, 2);
+		PlayState.SONG = Song.loadFromJson(song, poop);
+		PlayState.isStoryMode = false;
+		PlayState.isFreeplay = false;
+		PlayState.isExtras = false;
+		PlayState.fromPasswordMenu = true;
+		PlayState.storyDifficulty = 2;
+	
+		var llll = FlxG.sound.play(Paths.sound('confirmMenu')).length;
+		LoadingState.loadAndSwitchState(new PlayState());
+	}
+
+	function mistake() {
+		FlxG.sound.play(Paths.soundRandom('missnote', 1, 3, 'shared'));
+		if (FlxG.save.data.flashing)
+			FlxFlicker.flicker(mistakebg, 1.1, 0.15, false);
+	}
+
+	/**
+	 * Mod hook called before the title screen starts.
+	 * @returns password and song.
+	 */
+	/* @:hscript({optional: true})
+	 public function createNewPassword():Array<String>
+	 {
+	 }*/
 
     function checkpassword(?passwordText:String)
 		{
@@ -98,77 +117,32 @@ class ExtrasPasswordState extends MusicBeatState implements IHook
 			{
 				case 'debug':
 					{
-						extra = 3;
-						FlxG.sound.music.stop();
-						FlxG.switchState(new SecretState());
-						FlxG.sound.play(Paths.sound('ANGRY_TEXT_BOX', 'shared'));
-						Main.isHidden = true;
+						loadSong('test');
 					}
 				case 'iphone':
 					{
-						var poop:String = Highscore.formatSongDiff('iphone', 2);
-						PlayState.SONG = Song.loadFromJson('iphone', poop);
-						PlayState.isStoryMode = false;
-						PlayState.isFreeplay = false;
-						PlayState.isExtras = false;
-						PlayState.fromPasswordMenu = true;
-						PlayState.storyDifficulty = 2;
-
-						var llll = FlxG.sound.play(Paths.sound('confirmMenu')).length;
-						LoadingState.loadAndSwitchState(new PlayState());
+						loadSong('iphone');
 					}
 				case 'polkka':
 					{
-						var poop:String = Highscore.formatSongDiff('levan-polkka', 2);
-						PlayState.SONG = Song.loadFromJson('levan-polkka', poop);
-						PlayState.isStoryMode = false;
-						PlayState.isFreeplay = false;
-						PlayState.isExtras = false;
-						PlayState.fromPasswordMenu = true;
-						PlayState.storyDifficulty = 2;
-	
-						var llll = FlxG.sound.play(Paths.sound('confirmMenu')).length;
-						LoadingState.loadAndSwitchState(new PlayState());
+						loadSong('levan-polkka');
 					}
 				case 'big guns':
 					{
-						var poop:String = Highscore.formatSongDiff('guns(erect)', 2);
-						PlayState.SONG = Song.loadFromJson('guns(erect)', poop);
-						PlayState.isStoryMode = false;
-						PlayState.isFreeplay = false;
-						PlayState.isExtras = false;
-						PlayState.fromPasswordMenu = true;
-						PlayState.storyDifficulty = 2;
-	
-						var llll = FlxG.sound.play(Paths.sound('confirmMenu')).length;
-						LoadingState.loadAndSwitchState(new PlayState());
-					
+						loadSong('guns(erect)');	
 					}
 				default:
 					{
-						/*var hscriptpass = hscriptPasswords();
-						for (pass => song in hscriptpass)
+						/*var custompassword = createNewPassword();
+						if (custompassword.length > 0)
 						{
-							if (passwordText == pass)
-								{
-									var poop:String = Highscore.formatSongDiff(song, 2);
-									PlayState.SONG = Song.loadFromJson(song, poop);
-									PlayState.isStoryMode = false;
-									PlayState.isFreeplay = false;
-									PlayState.isExtras = false;
-									PlayState.fromPasswordMenu = true;
-									PlayState.storyDifficulty = 2;
-
-									var llll = FlxG.sound.play(Paths.sound('confirmMenu')).length;
-									LoadingState.loadAndSwitchState(new PlayState());
-								}
-							else*/
-								//{
-									FlxG.sound.play(Paths.soundRandom('missnote', 1, 3, 'shared'));
-									if (FlxG.save.data.flashing)
-										FlxFlicker.flicker(mistakebg, 1.1, 0.15, false);
-								//}
-						//}
+							if (passwordText == custompassword[1])
+								loadSong(custompassword[2]);
+							else
+								mistake();
+						}
+						else*/
+							mistake();
 			}
 		}
 	}

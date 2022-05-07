@@ -1338,43 +1338,43 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 			});
 		}
 
-		public var psychDialogue:DialogueBoxPsych;
-		//You don't have to add a song, just saying. You can just do "startDialogue(dialogueJson);" and it should work
-		public function startDialogue(dialogueFile:DialogueFile, ?song:String = null):Void
-		{
-			inCutscene = true;
-			// TO DO: Make this more flexible, maybe?
-			if(psychDialogue != null) return;
+	public var psychDialogue:DialogueBoxPsych;
+	//You don't have to add a song, just saying. You can just do "startDialogue(dialogueJson);" and it should work
+	public function startDialogue(dialogueFile:DialogueFile, ?song:String = null):Void
+	{
+		inCutscene = true;
+		// TO DO: Make this more flexible, maybe?
+		if(psychDialogue != null) return;
 	
-			if(dialogueFile.dialogue.length > 0) {
-				inCutscene = true;
-				CoolUtil.precacheSound('dialogue');
-				CoolUtil.precacheSound('dialogueClose');
-				psychDialogue = new DialogueBoxPsych(dialogueFile, song);
-				psychDialogue.scrollFactor.set();
-				if(endingSong) {
-					psychDialogue.finishThing = function() {
-						psychDialogue = null;
-						endSong();
-					}
-				} else {
-					psychDialogue.finishThing = function() {
-						psychDialogue = null;
-						startCountdown();
-					}
-				}
-				psychDialogue.cameras = [camHUD];
-				add(psychDialogue);
-			} else {
-				FlxG.log.warn('Your dialogue file is badly formatted!');
-				if(endingSong) 
-				{
+		if(dialogueFile.dialogue.length > 0) {
+			inCutscene = true;
+			CoolUtil.precacheSound('dialogue');
+			CoolUtil.precacheSound('dialogueClose');
+			psychDialogue = new DialogueBoxPsych(dialogueFile, song);
+			psychDialogue.scrollFactor.set();
+			if(endingSong) {
+				psychDialogue.finishThing = function() {
+					psychDialogue = null;
 					endSong();
-				} else {
+				}
+			} else {
+				psychDialogue.finishThing = function() {
+					psychDialogue = null;
 					startCountdown();
 				}
 			}
+			psychDialogue.cameras = [camHUD];
+			add(psychDialogue);
+		} else {
+			FlxG.log.warn('Your dialogue file is badly formatted!');
+			if(endingSong) 
+			{
+				endSong();
+			} else {
+				startCountdown();
+			}
 		}
+	}
 
 	function schoolIntro(?dialogueBox:DialogueBox):Void
 	{

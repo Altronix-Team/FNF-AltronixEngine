@@ -150,11 +150,26 @@ class FreeplaySongsEditorState extends MusicBeatState
 				curWeek.weekChar = iconInputText.text;
 				iconArray[curSelected].changeIcon(iconInputText.text);
 			}
-			if (sender == weekSongsInputText)
+			else if (sender == weekSongsInputText)
 			{
-				curWeek.weekSongs = [weekSongsInputText.text];
+				var splittedText:Array<String> = weekSongsInputText.text.trim().split(',');
+				for (i in 0...splittedText.length) {
+					splittedText[i] = splittedText[i].trim();
+				}
+
+				while(splittedText.length < curWeek.weekSongs.length) {
+					curWeek.weekSongs.pop();
+				}
+
+				for (i in 0...splittedText.length) {
+					if(i >= curWeek.weekSongs.length) { //Add new song
+						curWeek.weekSongs.push(splittedText[i]);
+					} else { //Edit song
+						curWeek.weekSongs[i] = splittedText[i];
+					}
+				}
 			}
-			if (sender == weekIdInputText)
+			else if (sender == weekIdInputText)
 			{
 				curWeek.weekID = Std.parseInt(weekIdInputText.text);
 			}
@@ -181,7 +196,7 @@ class FreeplaySongsEditorState extends MusicBeatState
 		
 		var removeWeekBtt:FlxButton = new FlxButton (210, 10, "Remove Week", function()
 		{
-			if (curSelectedWeek == weekFile.freeplaySonglist.length)
+			if (curSelectedWeek == weekFile.freeplaySonglist.length - 1 && curSelectedWeek == 0)
 			{
 				var newCurWeek = 
 				{
@@ -190,6 +205,7 @@ class FreeplaySongsEditorState extends MusicBeatState
 					weekSongs: ['test']
 				}
 				weekFile.freeplaySonglist[curWeekInt] = newCurWeek;
+				reloadAllShit();
 			}		
 			else
 				removeWeek();
@@ -370,13 +386,13 @@ class FreeplaySongsEditorState extends MusicBeatState
 
 	function saveCurWeek()
 	{
-		var newCurWeek = 
+		/*var newCurWeek = 
 		{
 			weekChar: iconInputText.text,
 			weekID: Std.parseInt(weekIdInputText.text),
 			weekSongs: [weekSongsInputText.text]
-		}
-		weekFile.freeplaySonglist[curWeekInt] = newCurWeek;
+		}*/
+		weekFile.freeplaySonglist[curWeekInt] = curWeek;
 		reloadAllShit();
 	}
 
@@ -390,6 +406,7 @@ class FreeplaySongsEditorState extends MusicBeatState
 		}
 		weekFile.freeplaySonglist[curWeekInt + 1] = newCurWeek;
 		reloadAllShit();
+		changeWeek(1);
 	}
 
 	function removeWeek()

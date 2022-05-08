@@ -37,8 +37,13 @@
 		"weekID": 5
 	},
 	{
-		"weekSongs": ["senpai", "roses", "thorns"],
+		"weekSongs": ["senpai", "roses"],
 		"weekChar": "senpai",
+		"weekID": 6
+	},
+	{
+		"weekSongs": ["thorns"],
+		"weekChar": "spirit",
 		"weekID": 6
 	},
 	{

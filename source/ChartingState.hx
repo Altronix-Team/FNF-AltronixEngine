@@ -62,10 +62,11 @@ class ChartingState extends MusicBeatState
 {
 	public static var noteTypeList:Array<String> = //Used for backwards compatibility with 0.1 - 0.3.2 charts, though, you should add your hardcoded custom note types here too.
 	[
-		'',
+		'Default Note',
 		'Hurt Note',
 		'Bullet Note',
-		'GF Sing Note'
+		'GF Sing Note',
+		'No Anim Note'
 	];
 	private var noteTypeIntMap:Map<Int, String> = new Map<Int, String>();
 	private var noteTypeMap:Map<String, Null<Int>> = new Map<String, Null<Int>>();
@@ -609,7 +610,8 @@ class ChartingState extends MusicBeatState
 		"BF play animation",
 		"GF play animation",
 		"Camera zoom",
-		"Toggle interface"
+		"Toggle interface",
+		"Toggle Alt Idle"
 	], true));
 
 	function addEventsUI()
@@ -1263,6 +1265,8 @@ class ChartingState extends MusicBeatState
 	var check_changeBPM:FlxUICheckBox;
 	var stepperSectionBPM:FlxUINumericStepper;
 	var check_CPUAltAnim:FlxUICheckBox;
+	var check_GFAltAnim:FlxUICheckBox;
+	var check_GFSection:FlxUICheckBox;
 	var check_playerAltAnim:FlxUICheckBox;
 
 	function addSectionUI():Void
@@ -1330,6 +1334,12 @@ class ChartingState extends MusicBeatState
 		check_CPUAltAnim = new FlxUICheckBox(10, 340, null, null, "CPU Alternate Animation", 100);
 		check_CPUAltAnim.name = 'check_CPUAltAnim';
 
+		check_GFAltAnim = new FlxUICheckBox(10, 300, null, null, "GF Alternate Animation", 100);
+		check_GFAltAnim.name = 'check_GFAltAnim';
+
+		check_GFSection = new FlxUICheckBox(180, 300, null, null, "GF Section", 100);
+		check_GFSection.name = 'check_GFSection';
+
 		check_playerAltAnim = new FlxUICheckBox(180, 340, null, null, "Player Alternate Animation", 100);
 		check_playerAltAnim.name = 'check_playerAltAnim';
 
@@ -1342,6 +1352,8 @@ class ChartingState extends MusicBeatState
 
 			check_mustHitSection.checked = section.mustHitSection;
 			check_CPUAltAnim.checked = section.CPUAltAnim;
+			check_GFSection.checked = section.gfSection;
+			check_GFAltAnim.checked = section.gfAltAnim;
 			check_playerAltAnim.checked = section.playerAltAnim;
 		});
 
@@ -1387,6 +1399,8 @@ class ChartingState extends MusicBeatState
 		// tab_group_section.add(stepperCopyLabel);
 		tab_group_section.add(check_mustHitSection);
 		tab_group_section.add(check_CPUAltAnim);
+		tab_group_section.add(check_GFAltAnim);
+		tab_group_section.add(check_GFSection);
 		tab_group_section.add(check_playerAltAnim);
 		// tab_group_section.add(copyButton);
 		tab_group_section.add(clearSectionButton);
@@ -1753,6 +1767,10 @@ class ChartingState extends MusicBeatState
 					getSectionByTime(Conductor.songPosition).CPUAltAnim = check.checked;
 				case "Player Alternate Animation":
 					getSectionByTime(Conductor.songPosition).playerAltAnim = check.checked;
+				case "GF Alternate Animation":
+					getSectionByTime(Conductor.songPosition).gfAltAnim = check.checked;
+				case "GF Section":
+					getSectionByTime(Conductor.songPosition).gfSection = check.checked;
 			}
 		}
 		else if (id == FlxUINumericStepper.CHANGE_EVENT && (sender is FlxUINumericStepper))
@@ -2605,6 +2623,8 @@ class ChartingState extends MusicBeatState
 					check_mustHitSection.checked = weird.mustHitSection;
 					check_CPUAltAnim.checked = weird.CPUAltAnim;
 					check_playerAltAnim.checked = weird.playerAltAnim;
+					check_GFSection.checked = weird.gfSection;
+					check_GFAltAnim.checked = weird.gfAltAnim;
 				}
 			}
 
@@ -2972,6 +2992,10 @@ class ChartingState extends MusicBeatState
 						eventDescriptionText = 'Type in Event Value seconds when interface will be invisible';
 						eventDescription.text = eventDescriptionText;
 
+					case "Toggle Alt Idle":
+						eventDescriptionText = 'Type in Event Value character, that should play alternative idle animation';
+						eventDescription.text = eventDescriptionText;
+
 					default:
 						eventDescriptionText = 'Bro, wtf, how did we get here?\n This event dont have description. Its strange.';
 						eventDescription.text = eventDescriptionText;
@@ -3096,12 +3120,16 @@ class ChartingState extends MusicBeatState
 			check_mustHitSection.checked = true;
 			check_CPUAltAnim.checked = false;
 			check_playerAltAnim.checked = false;
+			check_GFSection.checked = false;
+			check_GFAltAnim.checked = false;
 		}
 		else
 		{
 			check_mustHitSection.checked = sec.mustHitSection;
 			check_CPUAltAnim.checked = sec.CPUAltAnim;
 			check_playerAltAnim.checked = sec.playerAltAnim;
+			check_GFSection.checked = sec.gfSection;
+			check_GFAltAnim.checked = sec.gfAltAnim;
 		}
 	}
 
@@ -3368,7 +3396,9 @@ class ChartingState extends MusicBeatState
 			typeOfSection: 0,
 			altAnim: false,
 			CPUAltAnim: false,
-			playerAltAnim: false
+			playerAltAnim: false,
+			gfSection: false,
+			gfAltAnim: false
 		};
 
 		_song.notes.push(sec);
@@ -3475,7 +3505,7 @@ class ChartingState extends MusicBeatState
 		updateGrid();
 	}
 
-	private function newSection(lengthInSteps:Int = 16, mustHitSection:Bool = false, CPUAltAnim:Bool = true, playerAltAnim:Bool = true):SwagSection
+	private function newSection(lengthInSteps:Int = 16, mustHitSection:Bool = false, CPUAltAnim:Bool = true, playerAltAnim:Bool = true, gfSection:Bool = false, gfAltAnim:Bool = false):SwagSection
 	{
 		var daPos:Float = 0;
 
@@ -3504,7 +3534,9 @@ class ChartingState extends MusicBeatState
 			typeOfSection: 0,
 			altAnim: false,
 			CPUAltAnim: CPUAltAnim,
-			playerAltAnim: playerAltAnim
+			playerAltAnim: playerAltAnim,
+			gfSection: gfSection,
+			gfAltAnim: gfAltAnim
 		};
 
 		return sec;
@@ -3552,7 +3584,7 @@ class ChartingState extends MusicBeatState
 		}
 		for (daSection1 in 0..._song.notes.length)
 		{
-			newSong.push(newSection(16, _song.notes[daSection1].mustHitSection, _song.notes[daSection1].CPUAltAnim, _song.notes[daSection1].playerAltAnim));
+			newSong.push(newSection(16, _song.notes[daSection1].mustHitSection, _song.notes[daSection1].CPUAltAnim, _song.notes[daSection1].playerAltAnim, _song.notes[daSection1].gfSection, _song.notes[daSection1].gfAltAnim));
 		}
 
 		for (daSection in 0...(_song.notes.length))
@@ -3564,6 +3596,8 @@ class ChartingState extends MusicBeatState
 			updateHeads();
 			newSong[aimtosetsection].CPUAltAnim = _song.notes[daSection].CPUAltAnim;
 			newSong[aimtosetsection].playerAltAnim = _song.notes[daSection].playerAltAnim;
+			newSong[aimtosetsection].gfAltAnim = _song.notes[daSection].gfAltAnim;
+			newSong[aimtosetsection].gfSection = _song.notes[daSection].gfSection;
 			// Debug.logTrace("section "+daSection);
 			for (daNote in 0...(_song.notes[daSection].sectionNotes.length))
 			{

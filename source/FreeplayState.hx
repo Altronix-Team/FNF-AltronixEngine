@@ -83,16 +83,12 @@ class FreeplayState extends MusicBeatState
 		array.push(Song.conversionChecks(Song.loadFromJson(songId, diffName)));
 	}
 
-	public static var list:Array<String> = [];
-
 	override function create()
 	{
 		clean();
 
 		if (!FlxG.sound.music.playing)
 			FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
-
-		list = CoolUtil.coolTextFile(Paths.txt('data/freeplaySonglist'));
 
 		cached = false;
 

@@ -340,6 +340,10 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 
 	public var allowToAttack:Bool = false;
 
+	var gfAltAnim:Bool = false;
+	var bfAltAnim:Bool = false;
+	var dadAltAnim:Bool = false;
+
 	public function addObject(object:FlxBasic)
 	{
 		add(object);
@@ -1941,11 +1945,11 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 		vocals.play();
 
 		// have them all dance when the song starts
-		if (allowedToHeadbang)
+		if (allowedToHeadbang && (!gf.animation.curAnim.name.startsWith("sing") || gf.animation.curAnim.finished))
 			gf.dance();
-		if (idleToBeat && !boyfriend.animation.curAnim.name.startsWith("sing"))
+		if (idleToBeat && (!boyfriend.animation.curAnim.name.startsWith("sing") || boyfriend.animation.curAnim.finished))
 			boyfriend.dance(forcedToIdle);
-		if (idleToBeat && !dad.animation.curAnim.name.startsWith("sing"))
+		if (idleToBeat && (!dad.animation.curAnim.name.startsWith("sing") || dad.animation.curAnim.finished))
 			dad.dance(forcedToIdle);
 
 		// Song check real quick
@@ -2185,7 +2189,6 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 		for (section in noteData)
 		{
 			var coolSection:Int = Std.int(section.lengthInSteps / 4);
-
 			for (songNotes in section.sectionNotes)
 			{
 				var daStrumTime:Float = songNotes[0] / songMultiplier;
@@ -2214,6 +2217,8 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 
 				swagNote.sustainLength = TimingStruct.getTimeFromBeat((TimingStruct.getBeatFromTime(songNotes[2] / songMultiplier)));
 				swagNote.scrollFactor.set(0, 0);
+				swagNote.gfNote = section.gfSection;
+				swagNote.noteType = daType;
 
 				var susLength:Float = swagNote.sustainLength;
 
@@ -2242,6 +2247,8 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 						|| (section.playerAltAnim && gottaHitNote);
 
 					sustainNote.mustPress = gottaHitNote;
+					sustainNote.gfNote = section.gfSection;
+					sustainNote.noteType = daType;
 
 					if (sustainNote.mustPress)
 					{
@@ -3043,6 +3050,21 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 										iconP2.visible = true;
 										iconP1.visible = true;
 									});
+							}
+
+					case 'Toggle Alt Idle':
+						if (i.position <= curDecimalBeat && !pastEvents.contains(i))
+							{
+								pastEvents.push(i);
+								switch (i.value)
+								{
+									case 'dad':
+										dadAltAnim = !dadAltAnim;
+									case 'bf':
+										bfAltAnim = !bfAltAnim;
+									case 'gf':
+										gfAltAnim = !gfAltAnim;
+								}
 							}
 				}
 			}
@@ -3908,7 +3930,13 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 					if (SONG.songId != 'tutorial')
 						camZooming = true;
 
-					checkNoteType('dad', daNote);
+					if (daNote.gfNote)
+						checkNoteType('gf', daNote);
+					else if (daNote.noteType == 3)
+						checkNoteType('gf', daNote);
+					else
+						checkNoteType('dad', daNote);
+
 					var time:Float = 0.15;
 					if(daNote.isSustainNote && !daNote.animation.curAnim.name.endsWith('end')) {
 						time += 0.15;
@@ -4453,49 +4481,54 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 
 	function checkNoteType(char:String, note:Note)
 	{
-		if (char == 'bf'){		
-			switch (note.noteType){
-				case 3:{
-					gf.playAnim('sing' + dataSuffix[note.noteData], true);
-					#if FEATURE_LUAMODCHART
-					if (luaModchart != null)
-						luaModchart.executeState('gfSing', [note.noteData, Conductor.songPosition]);
-					#end}
-				case 2:{
-					#if FEATURE_LUAMODCHART
-					if (luaModchart != null)
-						luaModchart.executeState('playerOneSing', [note.noteData, Conductor.songPosition]);
-					#end
-					boyfriend.playAnim('dodge', true);
-					FlxG.sound.play(Paths.sound('hankshoot'), FlxG.random.float(0.1, 0.2));}
-				case 1:
-					#if FEATURE_LUAMODCHART
-					if (luaModchart != null)
-						luaModchart.executeState('playerOneSing', [note.noteData, Conductor.songPosition]);
-					#end
-					health = 0;
-				default:{
-					#if FEATURE_LUAMODCHART
-					if (luaModchart != null)
-						luaModchart.executeState('playerOneSing', [note.noteData, Conductor.songPosition]);
-					#end
-					if (note.isAlt) boyfriend.playAnim('sing' + dataSuffix[note.noteData] + '-alt', true);
-					else boyfriend.playAnim('sing' + dataSuffix[note.noteData], true);}}}
-		else if (char == 'dad')	{
-			var singData:Int = Std.int(Math.abs(note.noteData));
-			switch (note.noteType){
-				case 3:{
-					gf.playAnim('sing' + dataSuffix[note.noteData], true);
-					#if FEATURE_LUAMODCHART
-					if (luaModchart != null)
-						luaModchart.executeState('gfSing', [note.noteData, Conductor.songPosition]);
-					#end}
-				default:{
-					if (note.isAlt) dad.playAnim('sing' + dataSuffix[singData] + '-alt', true);
-					else dad.playAnim('sing' + dataSuffix[singData], true);
-					#if FEATURE_LUAMODCHART
-					if (luaModchart != null)luaModchart.executeState('playerTwoSing', [Math.abs(note.noteData), Conductor.songPosition]);
-					#end}}}
+		switch (char)
+		{
+			case 'bf':
+				if (!note.noAnimation)
+				{
+				switch (note.noteType)
+				{
+					case 2:{
+						#if FEATURE_LUAMODCHART
+						if (luaModchart != null)
+							luaModchart.executeState('playerOneSing', [note.noteData, Conductor.songPosition]);
+						#end
+						boyfriend.playAnim('dodge', true);
+						FlxG.sound.play(Paths.sound('hankshoot'), FlxG.random.float(0.1, 0.2));}
+					case 1:
+						#if FEATURE_LUAMODCHART
+						if (luaModchart != null)
+							luaModchart.executeState('playerOneSing', [note.noteData, Conductor.songPosition]);
+						#end
+						health = 0;
+					default:{
+						#if FEATURE_LUAMODCHART
+						if (luaModchart != null)
+							luaModchart.executeState('playerOneSing', [note.noteData, Conductor.songPosition]);
+						#end
+						if (note.isAlt) boyfriend.playAnim('sing' + dataSuffix[note.noteData] + '-alt', true);
+						else boyfriend.playAnim('sing' + dataSuffix[note.noteData], true);}}}
+			case 'dad':
+			{
+				if (!note.noAnimation)
+				{var singData:Int = Std.int(Math.abs(note.noteData));
+				if (note.isAlt) dad.playAnim('sing' + dataSuffix[singData] + '-alt', true);
+				else dad.playAnim('sing' + dataSuffix[singData], true);
+				#if FEATURE_LUAMODCHART
+				if (luaModchart != null)luaModchart.executeState('playerTwoSing', [Math.abs(note.noteData), Conductor.songPosition]);
+				#end}
+			}
+			case 'gf':
+			{
+				if (!note.noAnimation)
+				{gf.playAnim('sing' + dataSuffix[note.noteData], true);
+				#if FEATURE_LUAMODCHART
+				if (luaModchart != null)
+					luaModchart.executeState('gfSing', [note.noteData, Conductor.songPosition]);
+				#end}
+			}
+				
+		}	
 	}
 
 	private function popUpScore(daNote:Note):Void
@@ -5359,7 +5392,12 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 				popUpScore(note);
 			}
 
-			checkNoteType('bf', note);
+			if (note.gfNote)
+				checkNoteType('gf', note);
+			else if (note.noteType == 3)
+				checkNoteType('gf', note);
+			else 
+				checkNoteType('bf', note);
 
 			if (!loadRep && note.mustPress)
 			{
@@ -5458,15 +5496,21 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 
 		if (currentSection != null)
 		{
+			dadAltAnim = currentSection.CPUAltAnim;
+			bfAltAnim = currentSection.playerAltAnim;
+			gfAltAnim = currentSection.gfAltAnim;
+
 			if (curBeat % idleBeat == 0)
 			{
-				if (idleToBeat && !dad.animation.curAnim.name.startsWith('sing'))
-					dad.dance(forcedToIdle, currentSection.CPUAltAnim);
-				if (idleToBeat && !boyfriend.animation.curAnim.name.startsWith('sing'))
-					boyfriend.dance(forcedToIdle, currentSection.playerAltAnim);
+				if (idleToBeat && (!dad.animation.curAnim.name.startsWith('sing') || dad.animation.curAnim.finished))
+					dad.dance(forcedToIdle, dadAltAnim);
+				if (idleToBeat && (!boyfriend.animation.curAnim.name.startsWith('sing') || boyfriend.animation.curAnim.finished))
+					boyfriend.dance(forcedToIdle, bfAltAnim);
+				if (allowedToHeadbang && (!gf.animation.curAnim.name.startsWith("sing") || gf.animation.curAnim.finished))
+					gf.dance(false, gfAltAnim);
 			}
-			else if ((dad.curCharacter == 'spooky' || dad.curCharacter == 'gf') && !dad.animation.curAnim.name.startsWith('sing'))
-				dad.dance(forcedToIdle, currentSection.CPUAltAnim);
+			else if ((dad.curCharacter == 'spooky' || dad.curCharacter == 'gf') && (!dad.animation.curAnim.name.startsWith('sing') || dad.animation.curAnim.finished))
+				dad.dance(forcedToIdle, dadAltAnim);
 		}
 		// FlxG.log.add('change bpm' + SONG.notes[Std.int(curStep / 16)].changeBPM);
 		wiggleShit.update(Conductor.crochet);
@@ -5505,7 +5549,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 
 		if (!endingSong && currentSection != null)
 		{
-			if (allowedToHeadbang)
+			if (allowedToHeadbang && !gf.animation.curAnim.name.startsWith("sing"))
 			{
 				gf.dance();
 			}

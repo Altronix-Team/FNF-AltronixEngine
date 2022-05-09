@@ -227,6 +227,105 @@ class Character extends FlxSprite
 		super.update(elapsed);
 	}
 
+	public static function createEmptyCharacter():CharacterData {
+		var testChar:CharacterData = 
+		{
+			{
+				animations: [
+					{
+						looped: false,
+						offsets: [
+							0,
+							0
+						],
+						frameRate: 24,
+						name: "idle",
+						nextAnim: "idleLoop",
+						frameIndices: [],
+						prefix: "Dad idle dance"
+					},
+					{
+						name: "idleLoop",
+						prefix: "Dad idle dance",
+						offsets: [0, 0],
+						frameIndices: [11, 12],
+						frameRate: 12,
+						looped: true
+					},
+					{
+						offsets: [
+							0,
+							0
+						],
+						frameIndices: [],
+						frameRate: 24,
+						name: "singLEFT",
+						looped: false,
+						prefix: "Dad Sing Note LEFT"
+					},
+					{
+						offsets: [
+							0,
+							0
+						],
+						frameIndices: [],
+						frameRate: 24,
+						name: "singDOWN",
+						looped: false,
+						prefix: "Dad Sing Note DOWN"
+					},
+					{
+						offsets: [
+							0,
+							0
+						],
+						frameIndices: [],
+						frameRate: 24,
+						name: "singUP",
+						looped: false,
+						prefix: "Dad Sing Note UP"
+					},
+					{
+						offsets: [
+							0,
+							0
+						],
+						frameIndices: [],
+						frameRate: 24,
+						name: "singRIGHT",
+						looped: false,
+						prefix: "Dad Sing Note RIGHT"
+					}
+				],
+				name: 'Dad',
+				startingAnim: 'idle',
+				antialiasing: true,
+				asset: 'characters/DADDY_DEAREST',
+				camFollow: [
+					0,
+					0
+				],
+				charPos: [
+					0,
+					0
+				],
+				flipX: false,
+				barColorJson: [
+					161,
+					161,
+					161
+				],
+				camPos: [
+					0,
+					0
+				],
+				holdLength: 6.1,
+				scale: 1
+			}
+		};
+		return testChar;
+	}
+
 	public function loadMappedAnims() {
 		var picoAnims = Song.picospeakerLoad(curCharacter, "stress").notes;
 		trace('blammedlol');

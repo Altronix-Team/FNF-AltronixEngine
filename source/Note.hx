@@ -75,6 +75,9 @@ class Note extends FlxSprite
 
 	public var noteTypeCheck:String = 'normal';
 
+	public var noAnimation:Bool = false;
+	public var gfNote:Bool = false;
+
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inCharter:Bool = false, ?isAlt:Bool = false, ?bet:Float = 0, ?noteType:Int = 0)
 	{
 		super();
@@ -89,6 +92,12 @@ class Note extends FlxSprite
 		this.noteType = noteType;
 		this.prevNote = prevNote;
 		isSustainNote = sustainNote;
+
+		
+		if (noteType == 4)
+			noAnimation = true;
+		else if (noteType == 3)
+			gfNote = true;
 
 		x += 50;
 		// MAKE SURE ITS DEFINITELY OFF SCREEN?

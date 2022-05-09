@@ -13,6 +13,8 @@ typedef SwagSection =
 	var altAnim:Bool;
 	var CPUAltAnim:Bool;
 	var playerAltAnim:Bool;
+	var gfSection:Bool;
+	var gfAltAnim:Bool;
 }
 
 class Section
@@ -24,6 +26,7 @@ class Section
 	public var bpm:Float = 0;
 
 	public var lengthInSteps:Int = 16;
+	public var gfSection:Bool = false;
 	public var typeOfSection:Int = 0;
 	public var mustHitSection:Bool = true;
 

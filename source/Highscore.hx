@@ -110,6 +110,8 @@ class Highscore
 			songDiffEnd = '-hard';
 		else if (diff == 3)
 			songDiffEnd = '-hardplus';
+		else
+			songDiffEnd = '';
 
 		return songDiffEnd;
 	}

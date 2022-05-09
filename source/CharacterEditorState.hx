@@ -398,11 +398,39 @@ class CharacterEditorState extends MusicBeatState
 
 		var templateCharacter:FlxButton = new FlxButton(140, 50, "Load Template", function()
 		{
-			daAnim = 'dad';
-			check_player.checked = false;
-			loadChar(true);
-			updatePresence();
+			var parsedJson:CharacterData = Character.createEmptyCharacter();
+			var characters:Array<Character> = [char, ghostChar];
+			for (character in characters)
+			{
+				character.animOffsets.clear();
+				character.animationsArray = parsedJson.animations;
+				for (anim in character.animationsArray)
+				{
+					character.addOffset(anim.name, anim.offsets[0], anim.offsets[1]);
+				}
+				if(character.animationsArray[0] != null) {
+					character.playAnim(character.animationsArray[0].name, true);
+				}
+
+				character.holdLength = parsedJson.holdLength;
+				character.positionArray = parsedJson.charPos;
+				character.camPos = parsedJson.camPos;
+				
+				character.asset = parsedJson.asset;
+				character.jsonScale = parsedJson.scale;
+				character.charAntialiasing = parsedJson.antialiasing;
+				character.originalFlipX = parsedJson.flipX;
+				character.characterIcon = parsedJson.characterIcon;
+				character.healthColorArray = parsedJson.barColorJson;
+				character.setPosition(character.positionArray[0] + OFFSET_X + 100, character.positionArray[1]);
+			}
+
+			reloadCharacterImage();
 			reloadCharacterDropDown();
+			reloadCharacterOptions();
+			resetHealthBarColor();
+			updatePointerPos();
+			genBoyOffsets();
 		});
 		templateCharacter.color = FlxColor.RED;
 		templateCharacter.label.color = FlxColor.WHITE;

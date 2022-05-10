@@ -14,6 +14,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import lime.net.curl.CURLCode;
 import LoadingState.LoadingsState;
+import flixel.graphics.FlxGraphic;
 #if desktop
 import DiscordClient;
 #end
@@ -69,7 +70,6 @@ class StoryMenuState extends MusicBeatState
 	var sprDifficulty:FlxSprite;
 	var leftArrow:FlxSprite;
 	var rightArrow:FlxSprite;
-	var hardplus:FlxSprite;
 	var weekbackground:FlxSprite;
 
 	public static function createWeekFile():WeekJson {
@@ -84,29 +84,65 @@ class StoryMenuState extends MusicBeatState
 		return weekFile;
 	}
 
-	static function parseDataFile()
+	static var defaultWeekFiles:Array<String> = ['tutorial.json', 'week1.json', 'week2.json', 'week3.json', 'week4.json', 'week5.json', 'week6.json', 'week7.json'];
+	static var ignoreWeeks:Array<String> = [];
+	static function parseStandartWeeks()
 	{
 		Debug.logTrace("I'm starting");
-
 		weekDataJson = [];
 		weekCharacters = [];
 		weekNames = [];
 		weekBackgrounds = [];
 		weekImages = [];
-		var files = FileSystem.readDirectory(Paths.getPreloadPath('weeks'));
-		for (i in files)
+		for (i in defaultWeekFiles)
 		{
 			var jsonData = Paths.loadWeeksJSON(i);
 			if (jsonData == null)
 			{
 				Debug.logError('Failed to parse JSON data' + i);
-				return;
+				continue;
 			}
 
 			var data:WeekJson = cast jsonData;
 
-			Debug.logTrace(data.weekIdFromJson);
+			Debug.logTrace(data.weekIdFromJson + ' standart weeks pushing');
 
+			weekDataJson.insert(data.weekIdFromJson, data.weekDataFromJson);
+			weekCharacters.insert(data.weekIdFromJson, data.weekCharacterFromJson);
+			weekNames.insert(data.weekIdFromJson, data.weekNameFromJson);
+			weekBackgrounds.insert(data.weekIdFromJson, data.weekBackgroundFromJson);
+			weekImages.insert(data.weekIdFromJson, data.weekImageFromJson);
+		}
+		parseModdedWeeks();
+	}
+
+	static var weeksToPush:Array<String> = [];
+	static function parseModdedWeeks()
+	{
+		Debug.logTrace("I'm starting");
+		var files = FileSystem.readDirectory(Paths.getPreloadPath('weeks'));
+		for (i in files)
+		{
+			if (defaultWeekFiles.contains(i))
+				continue;
+			else
+				weeksToPush.push(i);
+
+			Debug.logTrace(weeksToPush);
+		}
+		for (i in weeksToPush)
+		{
+			var jsonData = Paths.loadWeeksJSON(i);
+			if (jsonData == null)
+			{
+				Debug.logError('Failed to parse JSON data' + i);
+				continue;
+			}
+	
+			var data:WeekJson = cast jsonData;
+	
+			Debug.logTrace(data.weekIdFromJson + ' modded weeks scan');
+	
 			weekDataJson.insert(data.weekIdFromJson, data.weekDataFromJson);
 			weekCharacters.insert(data.weekIdFromJson, data.weekCharacterFromJson);
 			weekNames.insert(data.weekIdFromJson, data.weekNameFromJson);
@@ -117,7 +153,7 @@ class StoryMenuState extends MusicBeatState
 
 	function unlockWeeks():Array<Bool>
 	{
-		parseDataFile();
+		parseStandartWeeks();
 		var weeks:Array<Bool> = [];
 		#if debug
 		for (i in 0...weekNames.length)
@@ -244,25 +280,13 @@ class StoryMenuState extends MusicBeatState
 		leftArrow.antialiasing = FlxG.save.data.antialiasing;
 		difficultySelectors.add(leftArrow);
 
-		sprDifficulty = new FlxSprite(leftArrow.x + 130, leftArrow.y);
-		sprDifficulty.frames = ui_tex;
-		sprDifficulty.animation.addByPrefix('easy', 'EASY');
-		sprDifficulty.animation.addByPrefix('normal', 'NORMAL');
-		sprDifficulty.animation.addByPrefix('hard', 'HARD');
-		sprDifficulty.animation.play('easy');
+		sprDifficulty = new FlxSprite(0, leftArrow.y);
 		sprDifficulty.antialiasing = FlxG.save.data.antialiasing;
 		changeDifficulty();
 
-		sprDifficulty.visible = true;
-
-		hardplus = new FlxSprite(leftArrow.x + 100, leftArrow.y).loadGraphic(Paths.image('hardplus'));
-		hardplus.antialiasing = FlxG.save.data.antialiasing;
-		add(hardplus);
-		hardplus.visible = false;
-
 		difficultySelectors.add(sprDifficulty);
 
-		rightArrow = new FlxSprite(sprDifficulty.x + sprDifficulty.width + 50, leftArrow.y);
+		rightArrow = new FlxSprite(leftArrow.x + 376, leftArrow.y);
 		rightArrow.frames = ui_tex;
 		rightArrow.animation.addByPrefix('idle', 'arrow right');
 		rightArrow.animation.addByPrefix('press', "arrow push right", 24, false);
@@ -387,18 +411,10 @@ class StoryMenuState extends MusicBeatState
 				if (controls.RIGHT_P)
 				{
 					changeDifficulty(1);
-					if (curDifficulty != 3)
-					{
-						hardplus.visible = false;
-					}
 				}
 				if (controls.LEFT_P)
 				{
 					changeDifficulty(-1);
-					if (curDifficulty != 3)
-					{
-						hardplus.visible = false;
-					}
 				}
 			}
 
@@ -469,46 +485,34 @@ class StoryMenuState extends MusicBeatState
 		}
 	}
 
+	var tweenDifficulty:FlxTween;
 	function changeDifficulty(change:Int = 0):Void
 	{
-		var difhardplus = false;
 		curDifficulty += change;
 
-		if (curWeek != 1)
-		{
-			if (curDifficulty < 0)
-				curDifficulty = 3;
-			if (curDifficulty > 3)
-				curDifficulty = 0;
-		}
-		else
-		{
-			if (curDifficulty < 2)
-				curDifficulty = 3;
-			if (curDifficulty > 3)
-				curDifficulty = 2;
-		}
+		if (curDifficulty < 0)
+			curDifficulty = 3;
+		if (curDifficulty > 3)
+			curDifficulty = 0;
 
 		sprDifficulty.offset.x = 0;
 
-		switch (curDifficulty)
+		var defaultDifficulties = ['easy', 'normal', 'hard', 'hardplus'];
+		var newImage:FlxGraphic = Paths.loadImage('diffsImages/' + defaultDifficulties[curDifficulty]);
+
+		if(sprDifficulty.graphic != newImage)
 		{
-			case 0:
-				sprDifficulty.visible = true;
-				sprDifficulty.animation.play('easy');
-				sprDifficulty.offset.x = 20;
-			case 1:
-				sprDifficulty.visible = true;
-				sprDifficulty.animation.play('normal');
-				sprDifficulty.offset.x = 70;
-			case 2:
-				sprDifficulty.visible = true;
-				sprDifficulty.animation.play('hard');
-				sprDifficulty.offset.x = 20;
-			case 3:
-				sprDifficulty.visible = false;
-				hardplus.visible = true;
-				difhardplus = true;
+			sprDifficulty.loadGraphic(newImage);
+			sprDifficulty.x = leftArrow.x + 60;
+			sprDifficulty.x += (308 - sprDifficulty.width) / 3;
+			sprDifficulty.alpha = 0;
+			sprDifficulty.y = leftArrow.y - 15;
+	
+			if(tweenDifficulty != null) tweenDifficulty.cancel();
+			tweenDifficulty = FlxTween.tween(sprDifficulty, {y: leftArrow.y + 15, alpha: 1}, 0.07, {onComplete: function(twn:FlxTween)
+			{
+				tweenDifficulty = null;
+			}});
 		}
 
 		sprDifficulty.alpha = 0;

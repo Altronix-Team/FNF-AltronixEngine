@@ -158,28 +158,33 @@ class Paths
 
 	static public function loadWeeksJSON(key:String, ?library:String):Dynamic
 		{
-			var rawJson = OpenFlAssets.getText(Paths.weeksJson(key, library)).trim();
-		
-			// Perform cleanup on files that have bad data at the end.
-			while (!rawJson.endsWith("}"))
+			if (OpenFlAssets.exists(Paths.weeksJson(key, library)))
 			{
-				rawJson = rawJson.substr(0, rawJson.length - 1);
+				var rawJson = OpenFlAssets.getText(Paths.weeksJson(key, library)).trim();
+			
+				// Perform cleanup on files that have bad data at the end.
+				while (!rawJson.endsWith("}"))
+				{
+					rawJson = rawJson.substr(0, rawJson.length - 1);
+				}
+			
+				try
+				{
+					// Attempt to parse and return the JSON data.
+					return Json.parse(rawJson);
+				}
+				catch (e)
+				{
+					Debug.logError("AN ERROR OCCURRED parsing a JSON file.");
+					Debug.logError(e.message);
+					Debug.logError(e.stack);
+			
+					// Return null.
+					return null;
+				}
 			}
-		
-			try
-			{
-				// Attempt to parse and return the JSON data.
-				return Json.parse(rawJson);
-			}
-			catch (e)
-			{
-				Debug.logError("AN ERROR OCCURRED parsing a JSON file.");
-				Debug.logError(e.message);
-				Debug.logError(e.stack);
-		
-				// Return null.
+			else
 				return null;
-			}
 		}
 
 	static public function loadJSON(key:String, ?library:String):Dynamic

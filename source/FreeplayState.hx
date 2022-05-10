@@ -677,20 +677,11 @@ class FreeplayState extends MusicBeatState
 
 		curDifficulty += change;
 
-		if (songs[curSelected].songName != 'rainglint' && songs[curSelected].songName != 'second')
-		{
-			if (curDifficulty < 0)
-				curDifficulty = 3;
-			if (curDifficulty > 3)
-				curDifficulty = 0;
-		}
-		else
-		{
-			if (curDifficulty < 2)
-				curDifficulty = 3;
-			if (curDifficulty > 3)
-				curDifficulty = 2;
-		}
+		if (curDifficulty < 0)
+			curDifficulty = 3;
+		if (curDifficulty > 3)
+			curDifficulty = 0;
+		
 		// adjusting the highscore song name to be compatible (changeDiff)
 		var songHighscore = StringTools.replace(songs[curSelected].songName, " ", "-");
 		switch (songHighscore)
@@ -701,10 +692,6 @@ class FreeplayState extends MusicBeatState
 				songHighscore = 'Philly';
 			case 'M.I.L.F':
 				songHighscore = 'Milf';
-			case 'rain-glint':
-				songHighscore = 'RainGlint';
-			case 'rain-glint-(old)':
-				songHighscore = 'RainGlint(old)';
 		}
 
 		#if !switch
@@ -770,8 +757,6 @@ class FreeplayState extends MusicBeatState
 				songHighscore = 'Philly';
 			case 'M.I.L.F':
 				songHighscore = 'Milf';
-			case 'RainGlint':
-				songHighscore = 'Rain Glint';
 		}
 
 		#if !switch

@@ -3093,6 +3093,17 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 										gfAltAnim = !gfAltAnim;
 								}
 							}
+					case "Change note skin":
+						if (i.position <= curDecimalBeat && !pastEvents.contains(i))
+							{
+								pastEvents.push(i);
+								SONG.noteStyle = i.value;
+								strumLineNotes.clear();
+								generateStaticArrows(0);
+								generateStaticArrows(1);
+								for (n in notes)
+									n.noteTypeCheck = i.value;
+							}
 				}
 			}
 
@@ -5543,7 +5554,6 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 		{
 			dadAltAnim = currentSection.CPUAltAnim;
 			bfAltAnim = currentSection.playerAltAnim;
-			gfAltAnim = currentSection.gfAltAnim;
 
 			if (curBeat % idleBeat == 0)
 			{
@@ -5551,8 +5561,6 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 					dad.dance(forcedToIdle, dadAltAnim);
 				if (idleToBeat && (!boyfriend.animation.curAnim.name.startsWith('sing') || boyfriend.animation.curAnim.finished))
 					boyfriend.dance(forcedToIdle, bfAltAnim);
-				if (allowedToHeadbang && (!gf.animation.curAnim.name.startsWith("sing") || gf.animation.curAnim.finished))
-					gf.dance(false, gfAltAnim);
 			}
 			else if ((dad.curCharacter == 'spooky' || dad.curCharacter == 'gf') && (!dad.animation.curAnim.name.startsWith('sing') || dad.animation.curAnim.finished))
 				dad.dance(forcedToIdle, dadAltAnim);
@@ -5594,10 +5602,9 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 
 		if (!endingSong && currentSection != null)
 		{
-			if (allowedToHeadbang && !gf.animation.curAnim.name.startsWith("sing"))
-			{
-				gf.dance();
-			}
+			gfAltAnim = currentSection.gfAltAnim;
+			if (allowedToHeadbang && (!gf.animation.curAnim.name.startsWith("sing") || gf.animation.curAnim.finished))
+				gf.dance(forcedToIdle, gfAltAnim);
 
 			if (curBeat % 8 == 7 && curSong == 'Bopeebo')
 			{

@@ -611,7 +611,8 @@ class ChartingState extends MusicBeatState
 		"GF play animation",
 		"Camera zoom",
 		"Toggle interface",
-		"Toggle Alt Idle"
+		"Toggle Alt Idle"/*,
+		"Change note skin"*/
 	], true));
 
 	function addEventsUI()
@@ -2993,7 +2994,11 @@ class ChartingState extends MusicBeatState
 						eventDescription.text = eventDescriptionText;
 
 					case "Toggle Alt Idle":
-						eventDescriptionText = 'Type in Event Value character, that should play alternative idle animation';
+						eventDescriptionText = 'Type in Event Value character, that should toggle alternative idle animation \n You can type "bf", "dad", "gf"';
+						eventDescription.text = eventDescriptionText;
+
+					case "Change note skin":
+						eventDescriptionText = 'Type in Event Value new note skin\n In default engine aviable only "pixel" or "normal"';
 						eventDescription.text = eventDescriptionText;
 
 					default:

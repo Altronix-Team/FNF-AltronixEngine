@@ -73,7 +73,7 @@ class Note extends FlxSprite
 
 	public var children:Array<Note> = [];
 
-	public var noteTypeCheck:String = 'normal';
+	public var noteTypeCheck:String = PlayState.SONG.noteStyle;
 
 	public var noAnimation:Bool = false;
 	public var gfNote:Bool = false;
@@ -144,10 +144,6 @@ class Note extends FlxSprite
 				default:
 					noteTypeCheck = 'normal';
 			}
-		}
-		else
-		{
-			noteTypeCheck = PlayState.SONG.noteStyle;
 		}
 
 		if (inCharter)

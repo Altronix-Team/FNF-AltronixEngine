@@ -12,8 +12,13 @@
 		"weekID": 1
 	},
 	{
-		"weekSongs": ["spookeez", "south", "monster"],
+		"weekSongs": ["spookeez", "south"],
 		"weekChar": "spooky",
+		"weekID": 2
+	},
+	{
+		"weekSongs": ["monster"],
+		"weekChar": "monster",
 		"weekID": 2
 	},
 	{

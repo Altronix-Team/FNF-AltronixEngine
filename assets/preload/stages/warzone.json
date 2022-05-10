@@ -1,5 +1,7 @@
 {
+	"defaultZoom": 0.90,
 	"boyfriend": [770, 450],
 	"gf": [300, 130],
-	"dad": [100, 50]
+	"dad": [100, 50],
+	"camera_girlfriend": [-180, 100]
 }

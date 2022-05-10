@@ -15,6 +15,7 @@ import flixel.math.FlxAngle;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import flixel.effects.FlxFlicker;
+import openfl.utils.Assets;
 import StageData;
 //import ScriptedStage;
 #if sys
@@ -23,6 +24,7 @@ import sys.FileSystem;
 
 class Stage extends MusicBeatState
 {
+	public var stageData:StageFile = null;
 	public var curStage:String = '';
 	public var camZoom:Float; // The zoom of the camera to have at the start of the game
 	public var hideLastBG:Bool = false; // True = hide last BGs and show ones from slowBacks on certain step, False = Toggle visibility of BGs from SlowBacks on certain step
@@ -74,6 +76,26 @@ class Stage extends MusicBeatState
 		camZoom = 1.05; // Don't change zoom here, unless you want to change zoom of every stage that doesn't have custom one
 		if (PlayStateChangeables.Optimize)
 			return;
+
+		stageData = StageData.getStageFile(curStage);
+		Debug.logTrace(curStage);
+		if (stageData == null)
+		{
+			Debug.logTrace('shit');
+			stageData = {
+				defaultZoom: 0.9,
+				isPixelStage: false,
+			
+				boyfriend: [770, 450],
+				gf: [400, 130],
+				dad: [100, 100],
+			
+				camera_boyfriend: [0, 0],
+				camera_opponent: [0, 0],
+				camera_girlfriend: [0, 0],
+				camera_speed: 1
+			};
+		}
 
 		switch (daStage)
 		{
@@ -600,6 +622,10 @@ class Stage extends MusicBeatState
 					{
 						Debug.logTrace('trying to execute funkin lua');
 						stageLua = new FunkinLua(Paths.getPreloadPath('stages/' + curStage + '.lua'));
+					}
+					else if (Assets.exists(Paths.getPreloadPath('stages/' + curStage + '.lua'))){
+						Debug.logTrace('trying to execute funkin lua');
+						stageLua = new FunkinLua(Assets.getPath('assets/stages/' + curStage + '.lua'));
 					}
 					#if FEATURE_MODCORE
 					else if (FileSystem.exists(Paths.getPreloadPath('stages/' + curStage + '.hscript')))

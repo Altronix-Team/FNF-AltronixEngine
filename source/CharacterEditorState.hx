@@ -1103,7 +1103,7 @@ class CharacterEditorState extends MusicBeatState
 			textAnim.text = '';
 		}
 
-		var inputTexts:Array<FlxUIInputText> = [animationInputText, imageInputText, healthIconInputText, startingAnimInputText, animationNameInputText, animationIndicesInputText];
+		var inputTexts:Array<FlxUIInputText> = [animationInputText, imageInputText, healthIconInputText, startingAnimInputText, animationNameInputText, animationIndicesInputText, nextAnimationInputText];
 		for (i in 0...inputTexts.length) {
 			if(inputTexts[i].hasFocus) {
 				if(FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.V && Clipboard.text != null) { //Copy paste

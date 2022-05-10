@@ -5,18 +5,20 @@ import openfl.utils.Assets;
 import haxe.Json;
 import haxe.format.JsonParser;
 import Song;
+#if sys
+import sys.io.File;
+import sys.FileSystem;
+#end
 
 using StringTools;
 
 typedef StageFile = {
-	var directory:String;
 	var defaultZoom:Float;
 	var isPixelStage:Bool;
 
 	var boyfriend:Array<Float>;
 	var gf:Array<Float>;
 	var dad:Array<Float>;
-	var hide_girlfriend:Bool;
 
 	var camera_boyfriend:Array<Float>;
 	var camera_opponent:Array<Float>;
@@ -31,7 +33,10 @@ class StageData {
 		var rawJson:String = null;
 		var path:String = Paths.getPreloadPath('stages/' + stage + '.json');
 		
-		if(Assets.exists(path)) {
+		if(FileSystem.exists(path)) {
+			rawJson = File.getContent(path);
+		}
+		else if (Assets.exists(path)){
 			rawJson = Assets.getText(path);
 		}
 		else

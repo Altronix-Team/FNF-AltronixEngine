@@ -309,6 +309,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 	// Per song additive offset
 	public static var songOffset:Float = 0;
 
+	//Psych Engine Stuff
 	public var modchartTweens:Map<String, FlxTween> = new Map<String, FlxTween>();
 	public var modchartSprites:Map<String, ModchartSprite> = new Map<String, ModchartSprite>();
 	public var modchartTimers:Map<String, FlxTimer> = new Map<String, FlxTimer>();
@@ -316,6 +317,10 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 	public var modchartTexts:Map<String, ModchartText> = new Map<String, ModchartText>();
 	public var modchartSaves:Map<String, FlxSave> = new Map<String, FlxSave>();
 	public var luaArray:Array<FunkinLua> = [];
+	public var defaultCamZoom:Float = 1.05;
+	public var boyfriendCameraOffset:Array<Float> = null;
+	public var opponentCameraOffset:Array<Float> = null;
+	public var girlfriendCameraOffset:Array<Float> = null;
 
 	// BotPlay text
 	private var botPlayState:FlxText;
@@ -736,15 +741,26 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 		if (!stageTesting)
 		{
 			Stage = new Stage(SONG.stage);
-		}		
+		}	
+		
+		var stageData:StageFile = Stage.stageData;
 
-		var positions:StageFile = StageData.getStageFile(SONG.stage);
-		if (positions != null)
-		{
-			boyfriend.setPosition(positions.boyfriend[0], positions.boyfriend[1]);
-			gf.setPosition(positions.gf[0], positions.gf[1]);
-			dad.setPosition(positions.dad[0], positions.dad[1]);
-		}
+		defaultCamZoom = stageData.defaultZoom;
+
+		boyfriendCameraOffset = stageData.camera_boyfriend;
+		if(boyfriendCameraOffset == null)
+			boyfriendCameraOffset = [0, 0];
+
+		opponentCameraOffset = stageData.camera_opponent;
+		if(opponentCameraOffset == null)
+			opponentCameraOffset = [0, 0];
+		
+		girlfriendCameraOffset = stageData.camera_girlfriend;
+		if(girlfriendCameraOffset == null)
+			girlfriendCameraOffset = [0, 0];
+
+		Debug.logTrace(defaultCamZoom);
+
 		for (i in Stage.toAdd)
 		{
 			add(i);
@@ -787,6 +803,13 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 				}
 			}
 
+		gf.x = stageData.gf[0];
+		gf.y = stageData.gf[1];
+		dad.x = stageData.dad[0];
+		dad.y = stageData.dad[1];
+		boyfriend.x = stageData.boyfriend[0];
+		boyfriend.y = stageData.boyfriend[1];
+
 		gf.x += gf.positionArray[0];
 		gf.y += gf.positionArray[1];
 		dad.x += dad.positionArray[0];
@@ -794,7 +817,12 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 		boyfriend.x += boyfriend.positionArray[0];
 		boyfriend.y += boyfriend.positionArray[1];
 
-		camPos = new FlxPoint(gf.getGraphicMidpoint().x, gf.getGraphicMidpoint().y);
+		camPos = new FlxPoint(girlfriendCameraOffset[0], girlfriendCameraOffset[1]);
+		if(gf != null)
+		{
+			camPos.x += gf.getGraphicMidpoint().x + gf.camPos[0];
+			camPos.y += gf.getGraphicMidpoint().y + gf.camPos[1];
+		}
 
 		if (dad.hasTrail)
 		{
@@ -1060,8 +1088,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 		add(camFollow);
 
 		FlxG.camera.follow(camFollow, LOCKON, 0.04 * (30 / (cast(Lib.current.getChildAt(0), Main)).getFPS()));
-		// FlxG.camera.setScrollBounds(0, FlxG.width, 0, FlxG.height);
-		FlxG.camera.zoom = Stage.camZoom;
+		FlxG.camera.zoom = defaultCamZoom;
 		FlxG.camera.focusOn(camFollow.getPosition());
 
 		FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);
@@ -1224,7 +1251,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 						{
 							camHUD.visible = true;
 							remove(blackScreen);
-							FlxTween.tween(FlxG.camera, {zoom: Stage.camZoom}, 2.5, {
+							FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, 2.5, {
 								ease: FlxEase.quadInOut,
 								onComplete: function(twn:FlxTween)
 								{
@@ -1945,7 +1972,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 		vocals.play();
 
 		// have them all dance when the song starts
-		if (allowedToHeadbang && (!gf.animation.curAnim.name.startsWith("sing") || gf.animation.curAnim.finished))
+		if (allowedToHeadbang && !gf.animation.curAnim.name.startsWith("sing"))
 			gf.dance();
 		if (idleToBeat && (!boyfriend.animation.curAnim.name.startsWith("sing") || boyfriend.animation.curAnim.finished))
 			boyfriend.dance(forcedToIdle);
@@ -3385,8 +3412,10 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 
 		if (FlxG.keys.justPressed.SPACE && !skipActive)
 		{
-			boyfriend.playAnim('hey', true);
-			gf.playAnim('cheer', true);
+			if (boyfriend.animation.exists('hey'))
+				boyfriend.playAnim('hey', true);
+			if (gf.animation.exists('cheer'))
+				gf.playAnim('cheer', true);
 		}
 
 		if (startingSong)
@@ -3602,48 +3631,64 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 				luaModchart.setVar("mustHit", currentSection.mustHitSection);
 			#end
 
-			if (camFollow.x != dad.getMidpoint().x + 150 && !currentSection.mustHitSection)
+			if (!currentSection.gfSection)
 			{
-				var offsetX = 0;
-				var offsetY = 0;
-				#if FEATURE_LUAMODCHART
-				if (luaModchart != null)
+				if (camFollow.x != dad.getMidpoint().x + 150 && !currentSection.mustHitSection)
 				{
-					offsetX = luaModchart.getVar("followXOffset", "float");
-					offsetY = luaModchart.getVar("followYOffset", "float");
-				}
-				#end
-				camFollow.setPosition(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
-				#if FEATURE_LUAMODCHART
-				if (luaModchart != null)
-					luaModchart.executeState('playerTwoTurn', []);
-				#end
-				// camFollow.setPosition(lucky.getMidpoint().x - 120, lucky.getMidpoint().y + 210);
+					var offsetX = 0;
+					var offsetY = 0;
+					#if FEATURE_LUAMODCHART
+					if (luaModchart != null)
+					{
+						offsetX = luaModchart.getVar("followXOffset", "float");
+						offsetY = luaModchart.getVar("followYOffset", "float");
+					}
+					#end
+					camFollow.setPosition(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
+					#if FEATURE_LUAMODCHART
+					if (luaModchart != null)
+						luaModchart.executeState('playerTwoTurn', []);
+					#end
+					// camFollow.setPosition(lucky.getMidpoint().x - 120, lucky.getMidpoint().y + 210);
 
-				camFollow.x += dad.camPos[0];
-				camFollow.y += dad.camPos[1];
+					camFollow.x += dad.camPos[0] + opponentCameraOffset[0];
+					camFollow.y += dad.camPos[1] + opponentCameraOffset[1];
+				}
+
+				if (currentSection.mustHitSection && camFollow.x != boyfriend.getMidpoint().x - 100)
+				{
+					var offsetX = 0;
+					var offsetY = 0;
+					#if FEATURE_LUAMODCHART
+					if (luaModchart != null)
+					{
+						offsetX = luaModchart.getVar("followXOffset", "float");
+						offsetY = luaModchart.getVar("followYOffset", "float");
+					}
+					#end
+					camFollow.setPosition(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
+
+					#if FEATURE_LUAMODCHART
+					if (luaModchart != null)
+						luaModchart.executeState('playerOneTurn', []);
+					#end
+					
+					camFollow.x += boyfriend.camPos[0] - boyfriendCameraOffset[0];
+					camFollow.y += boyfriend.camPos[1] + boyfriendCameraOffset[1];
+				}
 			}
-
-			if (currentSection.mustHitSection && camFollow.x != boyfriend.getMidpoint().x - 100)
+			else
 			{
-				var offsetX = 0;
-				var offsetY = 0;
-				#if FEATURE_LUAMODCHART
-				if (luaModchart != null)
-				{
-					offsetX = luaModchart.getVar("followXOffset", "float");
-					offsetY = luaModchart.getVar("followYOffset", "float");
-				}
-				#end
-				camFollow.setPosition(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
-
-				#if FEATURE_LUAMODCHART
-				if (luaModchart != null)
-					luaModchart.executeState('playerOneTurn', []);
-				#end
-				
-				camFollow.x += boyfriend.camPos[0];
-				camFollow.y += boyfriend.camPos[1];
+				if (gf != null)
+					{
+						camFollow.setPosition(gf.getMidpoint().x, gf.getMidpoint().y);
+						camFollow.x += gf.camPos[0] + girlfriendCameraOffset[0];
+						camFollow.y += gf.camPos[1] + girlfriendCameraOffset[1];
+						#if FEATURE_LUAMODCHART
+						if (luaModchart != null)
+							luaModchart.executeState('GFTurn', []);
+						#end
+					}
 			}
 		}
 
@@ -3657,7 +3702,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 
 			if (!executeModchart)
 			{
-				FlxG.camera.zoom = FlxMath.lerp(Stage.camZoom, FlxG.camera.zoom, 0.95);
+				FlxG.camera.zoom = FlxMath.lerp(defaultCamZoom, FlxG.camera.zoom, 0.95);
 				camHUD.zoom = FlxMath.lerp(FlxG.save.data.zoom, camHUD.zoom, 0.95);
 
 				camNotes.zoom = camHUD.zoom;
@@ -3665,7 +3710,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 			}
 			else
 			{
-				FlxG.camera.zoom = FlxMath.lerp(Stage.camZoom, FlxG.camera.zoom, 0.95);
+				FlxG.camera.zoom = FlxMath.lerp(defaultCamZoom, FlxG.camera.zoom, 0.95);
 				camHUD.zoom = FlxMath.lerp(1, camHUD.zoom, 0.95);
 
 				camNotes.zoom = camHUD.zoom;
@@ -5045,7 +5090,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 
 		if (controls.ATTACK && allowToAttack && !FlxFlicker.isFlickering(dad))
 		{
-			if (boyfriend.curCharacter == 'bf')
+			if (boyfriend.curCharacter == 'bf' || boyfriend.animation.exists('attack'))
 			{
 				boyfriend.playAnim('attack', true);
 				if (FlxG.save.data.flashing)

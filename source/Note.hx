@@ -238,26 +238,19 @@ class Note extends FlxSprite
 							}
 						case 1:
 						{
-							frames = Paths.getSparrowAtlas('specialnotes/HURTNOTE_assets');
+							loadGraphic(NoteskinHelpers.generateSpecialPixelSprite('HURTNOTE_assets'), true, 17, 17);
+							if (isSustainNote)
+								loadGraphic(NoteskinHelpers.generateSpecialPixelSprite('HURTNOTE_assets', true), true, 7, 6);
 
-							animation.addByPrefix('greenScroll', 'green0');
-							animation.addByPrefix('redScroll', 'red0');
-							animation.addByPrefix('blueScroll', 'blue0');
-							animation.addByPrefix('purpleScroll', 'purple0');
+							for (i in 0...4)
+							{
+								animation.add(dataColor[i] + 'Scroll', [i + 4]); // Normal notes
+								animation.add(dataColor[i] + 'hold', [i]); // Holds
+								animation.add(dataColor[i] + 'holdend', [i + 4]); // Tails
+							}
 
-							animation.addByPrefix('purpleholdend', 'pruple end hold');
-							animation.addByPrefix('greenholdend', 'green hold end');
-							animation.addByPrefix('redholdend', 'red hold end');
-							animation.addByPrefix('blueholdend', 'blue hold end');
-
-							animation.addByPrefix('purplehold', 'purple hold piece');
-							animation.addByPrefix('greenhold', 'green hold piece');
-							animation.addByPrefix('redhold', 'red hold piece');
-							animation.addByPrefix('bluehold', 'blue hold piece');
-
-							setGraphicSize(Std.int(width * 0.7));
+							setGraphicSize(Std.int(width * CoolUtil.daPixelZoom));
 							updateHitbox();
-							antialiasing = true;
 						}
 						default:
 						{

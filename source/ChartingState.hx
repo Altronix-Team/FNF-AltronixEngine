@@ -1338,7 +1338,42 @@ class ChartingState extends MusicBeatState
 		check_GFAltAnim = new FlxUICheckBox(10, 300, null, null, "GF Alternate Animation", 100);
 		check_GFAltAnim.name = 'check_GFAltAnim';
 
-		check_GFSection = new FlxUICheckBox(180, 300, null, null, "GF Section", 100);
+		check_GFSection = new FlxUICheckBox(180, 300, null, null, "GF Section", 100, null, function()
+			{
+				var sect = lastUpdatedSection;
+	
+				Debug.logTrace(sect);
+	
+				if (sect == null)
+					return;
+	
+				sect.gfSection = check_GFSection.checked;
+				updateHeads();
+	
+				for (i in sectionRenderes)
+				{
+					if (i.section.startTime == sect.startTime)
+					{
+						var cachedY = i.icon.y;
+						remove(i.icon);
+						var sectionicon;
+						if (check_GFSection.checked)
+							sectionicon = new HealthIcon(getCharacterIcon(_song.gfVersion)).clone();
+						else if (check_mustHitSection.checked)
+							sectionicon = new HealthIcon(getCharacterIcon(_song.player1)).clone();
+						else
+							sectionicon = new HealthIcon(getCharacterIcon(_song.player2)).clone();
+						sectionicon.x = -95;
+						sectionicon.y = cachedY;
+						sectionicon.setGraphicSize(0, 45);
+	
+						i.icon = sectionicon;
+						i.lastUpdated = sect.mustHitSection;
+	
+						add(sectionicon);
+					}
+				}
+			});
 		check_GFSection.name = 'check_GFSection';
 
 		check_playerAltAnim = new FlxUICheckBox(180, 340, null, null, "Player Alternate Animation", 100);

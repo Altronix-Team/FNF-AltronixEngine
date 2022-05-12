@@ -361,7 +361,15 @@ class Stage extends MusicBeatState
 					var bgGirls = new BackgroundGirls(-100, 190);
 					bgGirls.scrollFactor.set(0.9, 0.9);
 
-					if (GameplayCustomizeState.freeplaySong == 'roses' || PlayState.SONG.scaredbgdancers)
+					if (PlayState.SONG != null)
+					{
+						if (PlayState.SONG.scaredbgdancers)
+						{
+							if (FlxG.save.data.distractions)
+								bgGirls.getScared();
+						}
+					}
+					else if (GameplayCustomizeState.freeplaySong == 'roses')
 					{
 						if (FlxG.save.data.distractions)
 							bgGirls.getScared();
@@ -374,12 +382,15 @@ class Stage extends MusicBeatState
 						swagBacks['bgGirls'] = bgGirls;
 						toAdd.push(bgGirls);
 					}
-					if (PlayState.SONG.showbgdancers)
+					if (PlayState.SONG != null)
 					{
-						bgGirls.visible = true;	
+						if (PlayState.SONG.showbgdancers)
+						{
+							bgGirls.visible = true;	
+						}
+						else
+							bgGirls.visible = false;
 					}
-					else
-						bgGirls.visible = false;
 
 					var widShit = Std.int(bgSky.width * 6);
 
@@ -549,42 +560,45 @@ class Stage extends MusicBeatState
 					swagGroup['johns'] = johns;
 					toAdd.push(johns);
 
-					if (PlayState.SONG.songId.toLowerCase() == 'stress' && PlayState.SONG.gfVersion == 'picospeaker')
-						{
-							var john = new FlxSprite(FlxG.width + 1000, 500);
-							john.frames = Paths.getSparrowAtlas('warzone/tankmanKilled1', 'week7');
-							john.antialiasing = true;
-							john.animation.addByPrefix("run", "tankman running", 24, true);
-							john.animation.addByPrefix("shot", "John Shot " + FlxG.random.int(1,2), 24, false);
-							john.setGraphicSize(Std.int(0.8 * john.width));
-							john.updateHitbox();
-							john.animation.play("run");
-							tankSpeedJohn.push(0.7);
-							goingRightJohn.push(false);
-				
-							strumTimeJohn.push(PlayState.gf.animationNotes[0][0]);
-							endingOffsetJohn.push(FlxG.random.float(0.6, 1));
-							resetJohn(FlxG.width * 1.5, 600, true, john, 0);
-							johns.add(john);	
-
-							var i = 0;
-							for (c in 1...PlayState.gf.animationNotes.length)
+					if (PlayState.SONG != null)
+					{
+						if (PlayState.SONG.songId == 'stress' && PlayState.SONG.gfVersion == 'picospeaker')
 							{
-								if (FlxG.random.float(0, 50) < 16)
-								{
-								var jahn = john.clone();
-																	
+								var john = new FlxSprite(FlxG.width + 1000, 500);
+								john.frames = Paths.getSparrowAtlas('warzone/tankmanKilled1', 'week7');
+								john.antialiasing = true;
+								john.animation.addByPrefix("run", "tankman running", 24, true);
+								john.animation.addByPrefix("shot", "John Shot " + FlxG.random.int(1,2), 24, false);
+								john.setGraphicSize(Std.int(0.8 * john.width));
+								john.updateHitbox();
+								john.animation.play("run");
 								tankSpeedJohn.push(0.7);
 								goingRightJohn.push(false);
-													
-								strumTimeJohn.push(PlayState.gf.animationNotes[c][0]);
+					
+								strumTimeJohn.push(PlayState.gf.animationNotes[0][0]);
 								endingOffsetJohn.push(FlxG.random.float(0.6, 1));
-								johns.add(jahn);
-								resetJohn(FlxG.width * 1.5, 200 + FlxG.random.int(50, 100),  2 > PlayState.gf.animationNotes[c][1], jahn,i);
-								i++;		   
+								resetJohn(FlxG.width * 1.5, 600, true, john, 0);
+								johns.add(john);	
+
+								var i = 0;
+								for (c in 1...PlayState.gf.animationNotes.length)
+								{
+									if (FlxG.random.float(0, 50) < 16)
+									{
+									var jahn = john.clone();
+																		
+									tankSpeedJohn.push(0.7);
+									goingRightJohn.push(false);
+														
+									strumTimeJohn.push(PlayState.gf.animationNotes[c][0]);
+									endingOffsetJohn.push(FlxG.random.float(0.6, 1));
+									johns.add(jahn);
+									resetJohn(FlxG.width * 1.5, 200 + FlxG.random.int(50, 100),  2 > PlayState.gf.animationNotes[c][1], jahn,i);
+									i++;		   
+									}
 								}
 							}
-						}
+					}
 				}
 			case 'stage':
 				{

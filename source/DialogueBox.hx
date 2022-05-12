@@ -159,7 +159,7 @@ class DialogueBox extends FlxSpriteGroup
 		}
 		else
 		{
-			skipText.font = 'Ubuntu Bold';
+			skipText.font = Paths.font("UbuntuBold.ttf");
 			skipText.size = 24;
 			skipText.text = 'нажми ESC или BACKSPACE для пропуска';
 		}
@@ -181,7 +181,7 @@ class DialogueBox extends FlxSpriteGroup
 			dropText.font = 'Pixel Arial 11 Bold';
 		else
 		{
-			dropText.font = 'Ubuntu Bold';
+			dropText.font = Paths.font("UbuntuBold.ttf");
 			dropText.size = 48;
 		}
 		dropText.color = 0xFFD89494;
@@ -193,7 +193,7 @@ class DialogueBox extends FlxSpriteGroup
 			swagDialogue.font = 'Pixel Arial 11 Bold';
 		else
 		{
-			swagDialogue.font = 'Ubuntu Bold';
+			swagDialogue.font = Paths.font("UbuntuBold.ttf");
 			swagDialogue.size = 48;
 		}
 		swagDialogue.color = 0xFF3F2021;

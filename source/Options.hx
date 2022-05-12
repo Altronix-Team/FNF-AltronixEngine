@@ -1238,6 +1238,44 @@ class FPSOption extends Option
 	}
 }
 
+class NoteSplashOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		if (OptionsMenu.isInPause)
+			if (!FlxG.save.data.language)
+				description = "This option cannot be toggled in the pause menu.";
+			else
+				description = "Эта опция не может быть переключена во время паузы";
+		else
+			description = desc;
+	}
+
+	public override function left():Bool
+	{
+		if (OptionsMenu.isInPause)
+			return false;
+		FlxG.save.data.notesplashes = !FlxG.save.data.notesplashes;
+		display = updateDisplay();
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		left();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		if (!FlxG.save.data.language)
+			return "Note Splashes: < " + (!FlxG.save.data.notesplashes ? "Disabled" : "Enabled") + " >";
+		else
+			return "Брызги нот: < " + (!FlxG.save.data.notesplashes ? "Выключены" : "Включены") + " >";
+	}
+}
+
 class LanguageOption extends Option
 {
 	public function new(desc:String)

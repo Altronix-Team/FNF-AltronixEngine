@@ -153,6 +153,9 @@ class EngineData
 		if (FlxG.save.data.sickMs == null)
 			FlxG.save.data.sickMs = 45.0;
 
+		if (FlxG.save.data.notesplashes == null)
+			FlxG.save.data.notesplashes = true;
+
 		Ratings.timingWindows = [
 			FlxG.save.data.shitMs,
 			FlxG.save.data.badMs,

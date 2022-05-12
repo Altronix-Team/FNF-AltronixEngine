@@ -104,29 +104,13 @@
 			"name": "cheer"
 		},
 		{
-			"offsets": [
-				45,
-				-8
-			],
-			"frameRate": 24,
-			"frameIndices": [
-				0,
-				1,
-				2,
-				3
-			],
-			"prefix": "GF Dancing Beat Hair blowing",
-			"looped": true,
-			"name": "hairBlow",
-			"interrupt": false
-		},
-		{
+			"nextAnim": "danceRight",
 			"offsets": [
 				0,
 				-9
 			],
-			"nextAnim": "danceRight",
 			"frameRate": 24,
+			"prefix": "GF Dancing Beat Hair Landing",
 			"frameIndices": [
 				0,
 				1,
@@ -141,10 +125,9 @@
 				10,
 				11
 			],
-			"prefix": "GF Dancing Beat Hair Landing",
-			"isDanced": true,
+			"interrupt": false,
 			"name": "hairFall",
-			"interrupt": false
+			"isDanced": true
 		},
 		{
 			"offsets": [
@@ -178,11 +161,30 @@
 			"frameRate": 24,
 			"frameIndices": [],
 			"prefix": "GF FEAR",
-			"name": "scared",
+			"looped": true,
+			"name": "scared"
+		},
+		{
+			"frameIndices": [
+				0,
+				1,
+				2,
+				3
+			],
+			"prefix": "GF Dancing Beat Hair Landing",
+			"offsets": [
+				1,
+				-8
+			],
+			"nextAnim": "idle",
+			"frameRate": 24,
+			"interrupt": false,
+			"name": "hairBlow",
 			"looped": true
 		}
 	],
 	"hasTrail": false,
+	"isDancing": true,
 	"camPos": [
 		0,
 		0
@@ -198,7 +200,6 @@
 	"characterIcon": "gf",
 	"antialiasing": true,
 	"name": "characters/gfChristmas",
-	"isDancing": true,
 	"barColorJson": [
 		165,
 		0,

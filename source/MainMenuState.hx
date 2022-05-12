@@ -182,7 +182,7 @@ class MainMenuState extends MusicBeatState
 		if (!FlxG.save.data.language)
 			versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		else
-			versionShit.setFormat("Comic Sans MS", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			versionShit.setFormat(Paths.font("UbuntuBold.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
 		altronix = new FlxText(5, FlxG.height - 54, 0, 'Altronix Engine', 12);
@@ -190,7 +190,7 @@ class MainMenuState extends MusicBeatState
 		if (!FlxG.save.data.language)
 			altronix.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		else
-			altronix.setFormat("Comic Sans MS", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			altronix.setFormat(Paths.font("UbuntuBold.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(altronix);
 
 		if (!FlxG.save.data.language)
@@ -201,7 +201,7 @@ class MainMenuState extends MusicBeatState
 		if (!FlxG.save.data.language)
 			gamever.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		else
-			gamever.setFormat("Comic Sans MS", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			gamever.setFormat(Paths.font("UbuntuBold.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(gamever);
 
 		// NG.core.calls.event.logEvent('swag').send();

@@ -46,7 +46,7 @@ class OptionCata extends FlxSprite
 		if (!FlxG.save.data.language)
 			titleObject.setFormat(Paths.font("vcr.ttf"), 35, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		else
-			titleObject.setFormat("Comic Sans MS", 35, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			titleObject.setFormat(Paths.font("UbuntuBold.ttf"), 35, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		titleObject.borderSize = 3;
 
 		if (middleType)
@@ -71,7 +71,7 @@ class OptionCata extends FlxSprite
 			if (!FlxG.save.data.language)
 				text.setFormat(Paths.font("vcr.ttf"), 35, FlxColor.WHITE, FlxTextAlign.CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			else
-				text.setFormat("Comic Sans MS", 35, FlxColor.WHITE, FlxTextAlign.CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+				text.setFormat(Paths.font("UbuntuBold.ttf"), 35, FlxColor.WHITE, FlxTextAlign.CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			text.borderSize = 3;
 			text.borderQuality = 1;
 			text.scrollFactor.set();
@@ -140,7 +140,8 @@ class OptionsMenu extends FlxSubState
 					// new OffsetMenu("Get a note offset based off of your inputs!"),
 					new DFJKOption(),
 					new Judgement("Create a custom judgement preset"),
-					new CustomizeGameplay("Drag and drop gameplay modules to your prefered positions!")
+					new CustomizeGameplay("Drag and drop gameplay modules to your prefered positions!"),
+					new NoteSplashOption("Toggle note splashes after perfect hit")
 				]),
 				new OptionCata(345, 40, "Appearance", [
 					new NoteskinOption("Change your current noteskin"), new EditorRes("Not showing the editor grid will greatly increase editor performance"),
@@ -209,7 +210,8 @@ class OptionsMenu extends FlxSubState
 					// new OffsetMenu("Get a note offset based off of your inputs!"),
 					new DFJKOption(),
 					new Judgement("Изменить время засчитывания стрелок (Sick/Good/Bad/Shit)."),
-					new CustomizeGameplay("Перемещайте геймплейные составляющие как хотите!")
+					new CustomizeGameplay("Перемещайте геймплейные составляющие как хотите!"),
+					new NoteSplashOption("Переключить брызги после идеального попадания по ноте")
 				]),
 				new OptionCata(345, 40, "Внешний вид", [
 					new NoteskinOption("Изменение внешнего вида нот."), new EditorRes("Отображение сетки в меню чартинга"),
@@ -310,7 +312,7 @@ class OptionsMenu extends FlxSubState
 		if (!FlxG.save.data.language)
 			descText.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		else
-			descText.setFormat("Comic Sans MS", 20, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			descText.setFormat(Paths.font("UbuntuBold.ttf"), 20, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		
 		descText.borderSize = 2;
 

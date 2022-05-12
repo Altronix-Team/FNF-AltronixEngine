@@ -2,6 +2,7 @@ package;
 
 import flixel.graphics.FlxGraphic;
 import flixel.FlxG;
+import flixel.system.FlxAssets;
 import flixel.graphics.frames.FlxAtlasFrames;
 import lime.utils.Assets;
 import openfl.utils.AssetType;
@@ -37,9 +38,13 @@ class Paths
 			var levelPath = getLibraryPathForce(file, currentLevel);
 			if (OpenFlAssets.exists(levelPath, type))
 				return levelPath;
+			else if (FileSystem.exists(levelPath))
+				return levelPath;
 
 			levelPath = getLibraryPathForce(file, "shared");
 			if (OpenFlAssets.exists(levelPath, type))
+				return levelPath;
+			else if (FileSystem.exists(levelPath))
 				return levelPath;
 		}
 
@@ -122,6 +127,11 @@ class Paths
 		if (OpenFlAssets.exists(path, IMAGE))
 		{
 			var bitmap = OpenFlAssets.getBitmapData(path);
+			return FlxGraphic.fromBitmapData(bitmap);
+		}
+		else if (FileSystem.exists(path))
+		{
+			var bitmap = FlxAssets.getBitmapData(path);
 			return FlxGraphic.fromBitmapData(bitmap);
 		}
 		else
@@ -388,7 +398,12 @@ class Paths
 
 	inline static public function doesTextAssetExist(path:String)
 	{
-		return OpenFlAssets.exists(path, AssetType.TEXT);
+		if (OpenFlAssets.exists(path, AssetType.TEXT))
+			return OpenFlAssets.exists(path, AssetType.TEXT);
+		else if (FileSystem.exists(path))
+			return FileSystem.exists(path);
+		else
+			return false;
 	}
 
 	inline static public function image(key:String, ?library:String)

@@ -194,11 +194,7 @@ class PauseSubState extends MusicBeatSubstate
 				{
 					if(menuItems.length - 1 != curSelected && difficultyChoices.contains(daSelected)) 
 					{
-						if (PlayState.storyDifficulty == 3)
-							{
-								FlxG.save.data.middleScroll = false;
-							}
-						var name:String = PlayState.SONG.song;
+						var name:String = PlayState.SONG.songId;
 						if (PlayState.isExtras || PlayState.fromPasswordMenu)
 						{
 							if (curSelected == 0)
@@ -282,11 +278,6 @@ class PauseSubState extends MusicBeatSubstate
 						(cast(Lib.current.getChildAt(0), Main)).setFPSCap(120);
 
 					PlayState.instance.clean();
-
-					if (PlayState.storyDifficulty == 3)
-					{
-						FlxG.save.data.middleScroll = false;
-					}
 
 					if (PlayState.isStoryMode)
 					{

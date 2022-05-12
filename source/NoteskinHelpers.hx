@@ -68,6 +68,20 @@ class NoteskinHelpers
 		#end	
 	}
 
+	static public function generateSpecialPixelSprite(id:String, ends:Bool = false)
+		{
+			#if FEATURE_FILESYSTEM
+			// TODO: Make this use OpenFlAssets.
+	
+			Debug.logTrace("bruh momento");
+	
+			var path = FileSystem.absolutePath("assets/shared/images/specialnotes") + "/" + id + "-pixel" + (ends ? "-ends" : "");
+			return BitmapData.fromFile(path + ".png");
+			#else
+			return BitmapData.fromFile(Paths.image('noteskins/Arrows-pixel', "shared"));
+			#end
+		}
+
 	static public function generatePixelSprite(id:Int, ends:Bool = false)
 	{
 		#if FEATURE_FILESYSTEM

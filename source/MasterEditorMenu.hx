@@ -22,6 +22,7 @@ class MasterEditorMenu extends MusicBeatState
 {
 	var options:Array<String> = [
 		'Character Editor',
+		'GF Editor',
 		'Week Editor',
 		'Freeplay Songlist Editor',
 		//'Dialogue Editor',
@@ -96,6 +97,8 @@ class MasterEditorMenu extends MusicBeatState
 					LoadingState.loadAndSwitchState(new DialogueCharacterEditorState());
 				case 'Freeplay Songlist Editor':
 					LoadingState.loadAndSwitchState(new FreeplaySongsEditorState());
+				case 'GF Editor':
+					LoadingState.loadAndSwitchState(new GirlfriendEditorState());
 			}
 			FlxG.sound.music.volume = 0;
 			#if PRELOAD_ALL

@@ -3,9 +3,28 @@ package;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import openfl.utils.Assets as OpenFlAssets;
+import flixel.animation.FlxBaseAnimation;
+import flixel.graphics.frames.FlxAtlasFrames;
+import haxe.Json;
+#if sys
+import sys.io.File;
+import sys.FileSystem;
+#end
 
 using StringTools;
 
+typedef IconData =
+{
+	var defaultAnim:String;
+	var nearToDieAnim:String;
+	var animations:Array<IconAnims>;
+}
+
+typedef IconAnims =
+{
+	var name:String;
+	var prefix:String;
+}
 class HealthIcon extends FlxSprite
 {
 	public var char:String = 'bf';
@@ -16,6 +35,9 @@ class HealthIcon extends FlxSprite
 	 * Used for FreeplayState! If you use it elsewhere, prob gonna annoying
 	 */
 	public var sprTracker:FlxSprite;
+
+	public var defaultAnim:String;
+	public var nearToDieAnim:String;
 
 	public function new(?char:String = "bf", ?isPlayer:Bool = false)
 	{

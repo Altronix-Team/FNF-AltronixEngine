@@ -232,7 +232,8 @@ class PauseSubState extends MusicBeatSubstate
 				case "Resume":
 					close();
 				case "Restart Song":
-					PlayState.startTime = 0;
+					restartSong();
+					/*PlayState.startTime = 0;
 					if (PlayState.instance.useVideo)
 					{
 						GlobalVideo.get().stop();
@@ -240,7 +241,7 @@ class PauseSubState extends MusicBeatSubstate
 						PlayState.instance.removedVideo = true;
 					}
 					PlayState.instance.clean();
-					FlxG.resetState();
+					FlxG.resetState();*/
 					PlayState.stageTesting = false;
 
 				case 'Change Difficulty':
@@ -267,13 +268,13 @@ class PauseSubState extends MusicBeatSubstate
 					}
 					PlayState.loadRep = false;
 					PlayState.stageTesting = false;
-					#if FEATURE_LUAMODCHART
+					/*#if FEATURE_LUAMODCHART
 					if (PlayState.luaModchart != null)
 					{
 						PlayState.luaModchart.die();
 						PlayState.luaModchart = null;
 					}
-					#end
+					#end*/
 					if (FlxG.save.data.fpsCap > 340)
 						(cast(Lib.current.getChildAt(0), Main)).setFPSCap(120);
 
@@ -305,6 +306,23 @@ class PauseSubState extends MusicBeatSubstate
 			// PlayerSettings.player1.controls.replaceBinding(Control.LEFT, Keys, FlxKey.J, null);
 		}
 	}
+
+	public static function restartSong(noTrans:Bool = false)
+		{
+			PlayState.instance.paused = true; // For lua
+			FlxG.sound.music.volume = 0;
+			PlayState.instance.vocals.volume = 0;
+	
+			if(noTrans)
+			{
+				FlxTransitionableState.skipNextTransOut = true;
+				FlxG.resetState();
+			}
+			else
+			{
+				FlxG.resetState();
+			}
+		}
 
 	function regenMenu():Void {
 		for (i in 0...grpMenuShit.members.length) {

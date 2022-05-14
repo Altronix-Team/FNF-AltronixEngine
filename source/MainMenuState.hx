@@ -51,6 +51,7 @@ class MainMenuState extends MusicBeatState
 
 	public static var nightly:String = "";
 
+	public static var altronixEngineVer:String = "0.1";
 	public static var kadeEngineVer:String = "1.8" + nightly;
 	public static var gameVer:String = "0.2.7.1";
 
@@ -170,22 +171,10 @@ class MainMenuState extends MusicBeatState
 
 		firstStart = false;
 
-		//FlxG.camera.follow(camFollow, null, 0.60 * (60 / FlxG.save.data.fpsCap));
-		var versionShit:FlxText;
 		var altronix:FlxText;
 		var gamever:FlxText;
-		if (!FlxG.save.data.language)
-			versionShit = new FlxText(5, FlxG.height - 36, 0, 'Using modified version of Kade Engine ' + kadeEngineVer, 12);
-		else
-			versionShit = new FlxText(5, FlxG.height - 36, 0, 'Использует модифицированную версию Kade Engine ' + kadeEngineVer, 12);
-		versionShit.scrollFactor.set();
-		if (!FlxG.save.data.language)
-			versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		else
-			versionShit.setFormat(Paths.font("UbuntuBold.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		add(versionShit);
 
-		altronix = new FlxText(5, FlxG.height - 54, 0, 'Altronix Engine', 12);
+		altronix = new FlxText(5, FlxG.height - 36, 0, 'Altronix Engine ' + altronixEngineVer, 12);
 		altronix.scrollFactor.set();
 		if (!FlxG.save.data.language)
 			altronix.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -203,8 +192,6 @@ class MainMenuState extends MusicBeatState
 		else
 			gamever.setFormat(Paths.font("UbuntuBold.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(gamever);
-
-		// NG.core.calls.event.logEvent('swag').send();
 
 		if (FlxG.save.data.dfjk)
 			controls.setKeyboardScheme(KeyboardScheme.Solo, true);
@@ -351,7 +338,6 @@ class MainMenuState extends MusicBeatState
 				trace('gamejolt login selected');
 
 			case 'options':
-				openSubState(new LoadingsState());
 				FlxG.switchState(new OptionsDirect());
 				FlxG.mouse.visible = false;
 

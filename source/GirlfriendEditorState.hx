@@ -958,6 +958,9 @@ class GirlfriendEditorState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
+		Stage.update(elapsed);
+
+		
 		if(char.animationsArray[curAnim] != null) {
 			textAnim.text = char.animationsArray[curAnim].name;
 

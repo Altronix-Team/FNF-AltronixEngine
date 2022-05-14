@@ -59,9 +59,9 @@ class StageDebugState extends FlxState
 
 		Stage = PlayState.Stage;
 
-		gf = PlayState.gf;
-		boyfriend = PlayState.boyfriend;
-		dad = PlayState.dad;
+		gf = PlayState.instance.gf;
+		boyfriend = PlayState.instance.boyfriend;
+		dad = PlayState.instance.dad;
 		curChars = [dad, boyfriend, gf];
 		if (!gf.visible) // for when gf is an opponent
 			curChars.pop();

@@ -575,13 +575,13 @@ class Stage extends MusicBeatState
 								tankSpeedJohn.push(0.7);
 								goingRightJohn.push(false);
 					
-								strumTimeJohn.push(PlayState.gf.animationNotes[0][0]);
+								strumTimeJohn.push(PlayState.instance.gf.animationNotes[0][0]);
 								endingOffsetJohn.push(FlxG.random.float(0.6, 1));
 								resetJohn(FlxG.width * 1.5, 600, true, john, 0);
 								johns.add(john);	
 
 								var i = 0;
-								for (c in 1...PlayState.gf.animationNotes.length)
+								for (c in 1...PlayState.instance.gf.animationNotes.length)
 								{
 									if (FlxG.random.float(0, 50) < 16)
 									{
@@ -590,10 +590,10 @@ class Stage extends MusicBeatState
 									tankSpeedJohn.push(0.7);
 									goingRightJohn.push(false);
 														
-									strumTimeJohn.push(PlayState.gf.animationNotes[c][0]);
+									strumTimeJohn.push(PlayState.instance.gf.animationNotes[c][0]);
 									endingOffsetJohn.push(FlxG.random.float(0.6, 1));
 									johns.add(jahn);
-									resetJohn(FlxG.width * 1.5, 200 + FlxG.random.int(50, 100),  2 > PlayState.gf.animationNotes[c][1], jahn,i);
+									resetJohn(FlxG.width * 1.5, 200 + FlxG.random.int(50, 100),  2 > PlayState.instance.gf.animationNotes[c][1], jahn,i);
 									i++;		   
 									}
 								}
@@ -903,10 +903,10 @@ class Stage extends MusicBeatState
 		lightningStrikeBeat = curBeat;
 		lightningOffset = FlxG.random.int(8, 24);
 
-		if (PlayState.boyfriend != null)
+		if (PlayState.instance.boyfriend != null)
 		{
-			PlayState.boyfriend.playAnim('scared', true);
-			PlayState.gf.playAnim('scared', true);
+			PlayState.instance.boyfriend.playAnim('scared', true);
+			PlayState.instance.gf.playAnim('scared', true);
 		}
 		else
 		{
@@ -942,8 +942,8 @@ class Stage extends MusicBeatState
 			{
 				startedMoving = true;
 
-				if (PlayState.gf != null)
-					PlayState.gf.playAnim('hairBlow');
+				if (PlayState.instance.gf != null)
+					PlayState.instance.gf.playAnim('hairBlow');
 				else
 					GameplayCustomizeState.gf.playAnim('hairBlow');
 			}
@@ -972,8 +972,8 @@ class Stage extends MusicBeatState
 	{
 		if (FlxG.save.data.distractions)
 		{
-			if (PlayState.gf != null)
-				PlayState.gf.playAnim('hairFall');
+			if (PlayState.instance.gf != null)
+				PlayState.instance.gf.playAnim('hairFall');
 			else
 				GameplayCustomizeState.gf.playAnim('hairFall');
 

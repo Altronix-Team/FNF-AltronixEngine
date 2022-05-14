@@ -35,6 +35,8 @@ import sys.io.File;
 #end
 import Type.ValueType;
 import Controls;
+import DialogueBoxPsych;
+import Song;
 
 #if desktop
 import DiscordClient;
@@ -77,7 +79,7 @@ class FunkinLua {
 			return;
 		}
 		scriptName = script;
-		Debug.logTrace('lua file loaded succesfully:' + script);
+		trace('lua file loaded succesfully:' + script);
 
 		#if (haxe >= "4.0.0")
 		accessedProps = new Map();
@@ -106,6 +108,7 @@ class FunkinLua {
 		set('difficulty', PlayState.storyDifficulty);
 		set('difficultyName', CoolUtil.difficultyArray[PlayState.storyDifficulty]);
 		set('weekRaw', PlayState.storyWeek);
+		set('seenCutscene', PlayState.seenCutscene);
 		
 		// Block require and os, Should probably have a proper function but this should be good enough for now until someone smarter comes along and recreates a safe version of the OS library
 		set('require', false);
@@ -121,6 +124,14 @@ class FunkinLua {
 		// PlayState cringe ass nae nae bullcrap
 		set('curBeat', 0);
 		set('curStep', 0);
+
+		set('score', 0);
+		set('misses', 0);
+		set('hits', 0);
+
+		set('accuracy', 0);
+		set('ratingName', '');
+		set('version', MainMenuState.altronixEngineVer.trim());
 		
 		set('inGameOver', false);
 		set('mustHitSection', false);
@@ -137,21 +148,31 @@ class FunkinLua {
 			set('defaultOpponentStrumY' + i, 0);
 		}
 
+		// Default character positions woooo
+		set('defaultBoyfriendX', PlayState.instance.BF_X);
+		set('defaultBoyfriendY', PlayState.instance.BF_Y);
+		set('defaultOpponentX', PlayState.instance.DAD_X);
+		set('defaultOpponentY',	PlayState.instance.DAD_Y);
+		set('defaultGirlfriendX', PlayState.instance.GF_X);
+		set('defaultGirlfriendY', PlayState.instance.GF_Y);
+
 		// Character shit
 		set('boyfriendName', PlayState.SONG.player1);
 		set('dadName', PlayState.SONG.player2);
 		set('gfName', PlayState.SONG.gfVersion);
 
 		// Some settings, no jokes
-		set('downscroll', FlxG.save.data.downscroll);
+		set('downscroll', PlayStateChangeables.useDownscroll);
 		set('middlescroll', FlxG.save.data.middleScroll);
 		set('framerate', FlxG.save.data.fpsCap);
 		set('ghostTapping', FlxG.save.data.ghost);
+		set('toggledTimeBar', FlxG.save.data.songPosition);
 		set('cameraZoomOnBeat', FlxG.save.data.camzoom);
 		set('flashingLights', FlxG.save.data.flashing);
 		set('noteOffset', FlxG.save.data.offset);
 		set('healthBarAlpha', FlxG.save.data.laneTransparency);
 		set('noResetButton', FlxG.save.data.resetButton);
+		set('antialiasing', FlxG.save.data.antialiasing);
 
 		#if windows
 		set('buildTarget', 'windows');
@@ -174,7 +195,6 @@ class FunkinLua {
 			if(FileSystem.exists(cervix)) {
 				doPush = true;
 			}
-			
 
 			if(doPush)
 			{
@@ -197,12 +217,12 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "removeLuaScript", function(luaFile:String, ?ignoreAlreadyRunning:Bool = false) { //would be dope asf. 
 			var cervix = luaFile + ".lua";
 			var doPush = false;
+			
 			cervix = Paths.getPreloadPath(cervix);
 			if(FileSystem.exists(cervix)) {
 				doPush = true;
 			}
 			
-
 			if(doPush)
 			{
 				if(!ignoreAlreadyRunning)
@@ -470,6 +490,63 @@ class FunkinLua {
 			}
 		});
 
+		//Tween shit, but for strums
+		Lua_helper.add_callback(lua, "noteTweenX", function(tag:String, note:Int, value:Dynamic, duration:Float, ease:String) {
+			cancelTween(tag);
+			if(note < 0) note = 0;
+			var testicle:StaticArrow = PlayState.instance.strumLineNotes.members[note % PlayState.instance.strumLineNotes.length];
+
+			if(testicle != null) {
+				PlayState.instance.modchartTweens.set(tag, FlxTween.tween(testicle, {x: value}, duration, {ease: getFlxEaseByString(ease),
+					onComplete: function(twn:FlxTween) {
+						PlayState.instance.callOnLuas('onTweenCompleted', [tag]);
+						PlayState.instance.modchartTweens.remove(tag);
+					}
+				}));
+			}
+		});
+		Lua_helper.add_callback(lua, "noteTweenY", function(tag:String, note:Int, value:Dynamic, duration:Float, ease:String) {
+			cancelTween(tag);
+			if(note < 0) note = 0;
+			var testicle:StaticArrow = PlayState.instance.strumLineNotes.members[note % PlayState.instance.strumLineNotes.length];
+
+			if(testicle != null) {
+				PlayState.instance.modchartTweens.set(tag, FlxTween.tween(testicle, {y: value}, duration, {ease: getFlxEaseByString(ease),
+					onComplete: function(twn:FlxTween) {
+						PlayState.instance.callOnLuas('onTweenCompleted', [tag]);
+						PlayState.instance.modchartTweens.remove(tag);
+					}
+				}));
+			}
+		});
+		Lua_helper.add_callback(lua, "noteTweenAngle", function(tag:String, note:Int, value:Dynamic, duration:Float, ease:String) {
+			cancelTween(tag);
+			if(note < 0) note = 0;
+			var testicle:StaticArrow = PlayState.instance.strumLineNotes.members[note % PlayState.instance.strumLineNotes.length];
+
+			if(testicle != null) {
+				PlayState.instance.modchartTweens.set(tag, FlxTween.tween(testicle, {angle: value}, duration, {ease: getFlxEaseByString(ease),
+					onComplete: function(twn:FlxTween) {
+						PlayState.instance.callOnLuas('onTweenCompleted', [tag]);
+						PlayState.instance.modchartTweens.remove(tag);
+					}
+				}));
+			}
+		});
+		Lua_helper.add_callback(lua, "noteTweenDirection", function(tag:String, note:Int, value:Dynamic, duration:Float, ease:String) {
+			cancelTween(tag);
+			if(note < 0) note = 0;
+			var testicle:StaticArrow = PlayState.instance.strumLineNotes.members[note % PlayState.instance.strumLineNotes.length];
+
+			if(testicle != null) {
+				PlayState.instance.modchartTweens.set(tag, FlxTween.tween(testicle, {direction: value}, duration, {ease: getFlxEaseByString(ease),
+					onComplete: function(twn:FlxTween) {
+						PlayState.instance.callOnLuas('onTweenCompleted', [tag]);
+						PlayState.instance.modchartTweens.remove(tag);
+					}
+				}));
+			}
+		});
 		Lua_helper.add_callback(lua, "mouseClicked", function(button:String) {
 			var boobs = FlxG.mouse.justPressed;
 			switch(button){
@@ -502,6 +579,34 @@ class FunkinLua {
 			}
 			return boobs;
 		});
+		Lua_helper.add_callback(lua, "noteTweenAngle", function(tag:String, note:Int, value:Dynamic, duration:Float, ease:String) {
+			cancelTween(tag);
+			if(note < 0) note = 0;
+			var testicle:StaticArrow = PlayState.instance.strumLineNotes.members[note % PlayState.instance.strumLineNotes.length];
+
+			if(testicle != null) {
+				PlayState.instance.modchartTweens.set(tag, FlxTween.tween(testicle, {angle: value}, duration, {ease: getFlxEaseByString(ease),
+					onComplete: function(twn:FlxTween) {
+						PlayState.instance.callOnLuas('onTweenCompleted', [tag]);
+						PlayState.instance.modchartTweens.remove(tag);
+					}
+				}));
+			}
+		});
+		Lua_helper.add_callback(lua, "noteTweenAlpha", function(tag:String, note:Int, value:Dynamic, duration:Float, ease:String) {
+			cancelTween(tag);
+			if(note < 0) note = 0;
+			var testicle:StaticArrow = PlayState.instance.strumLineNotes.members[note % PlayState.instance.strumLineNotes.length];
+
+			if(testicle != null) {
+				PlayState.instance.modchartTweens.set(tag, FlxTween.tween(testicle, {alpha: value}, duration, {ease: getFlxEaseByString(ease),
+					onComplete: function(twn:FlxTween) {
+						PlayState.instance.callOnLuas('onTweenCompleted', [tag]);
+						PlayState.instance.modchartTweens.remove(tag);
+					}
+				}));
+			}
+		});
 
 		Lua_helper.add_callback(lua, "cancelTween", function(tag:String) {
 			cancelTween(tag);
@@ -521,7 +626,7 @@ class FunkinLua {
 			cancelTimer(tag);
 		});
 
-		/*Lua_helper.add_callback(lua, "getPropertyAdvanced", function(varsStr:String) {
+		Lua_helper.add_callback(lua, "getPropertyAdvanced", function(varsStr:String) {
 			var variables:Array<String> = varsStr.replace(' ', '').split(',');
 			var leClass:Class<Dynamic> = Type.resolveClass(variables[0]);
 			if(variables.length > 2) {
@@ -551,7 +656,7 @@ class FunkinLua {
 			} else if(variables.length == 2) {
 				return Reflect.setProperty(leClass, variables[variables.length-1], value);
 			}
-		});*/
+		});
 
 		Lua_helper.add_callback(lua, "setHealth", function(value:Float = 0) {
 			PlayState.instance.health = value;
@@ -567,23 +672,134 @@ class FunkinLua {
 			if(!color.startsWith('0x')) color = '0xff' + color;
 			return Std.parseInt(color);
 		});
+		Lua_helper.add_callback(lua, "keyJustPressed", function(name:String) {
+			var key:Bool = false;
+			switch(name) {
+				case 'left': key = PlayerSettings.player1.controls.LEFT_P;
+				case 'down': key = PlayerSettings.player1.controls.DOWN_P;
+				case 'up': key = PlayerSettings.player1.controls.UP_P;
+				case 'right': key = PlayerSettings.player1.controls.RIGHT_P;
+				case 'accept': key = PlayerSettings.player1.controls.ACCEPT;
+				case 'back': key = PlayerSettings.player1.controls.BACK;
+				case 'pause': key = PlayerSettings.player1.controls.PAUSE;
+				case 'reset': key = PlayerSettings.player1.controls.RESET;
+				case 'space': key = FlxG.keys.justPressed.SPACE;//an extra key for convinience
+			}
+			return key;
+		});
+		Lua_helper.add_callback(lua, "keyPressed", function(name:String) {
+			var key:Bool = false;
+			switch(name) {
+				case 'left': key = PlayerSettings.player1.controls.LEFT;
+				case 'down': key = PlayerSettings.player1.controls.DOWN;
+				case 'up': key = PlayerSettings.player1.controls.UP;
+				case 'right': key = PlayerSettings.player1.controls.RIGHT;
+				case 'space': key = FlxG.keys.pressed.SPACE;//an extra key for convinience
+			}
+			return key;
+		});
+		Lua_helper.add_callback(lua, "keyReleased", function(name:String) {
+			var key:Bool = false;
+			switch(name) {
+				case 'left': key = PlayerSettings.player1.controls.LEFT_R;
+				case 'down': key = PlayerSettings.player1.controls.DOWN_R;
+				case 'up': key = PlayerSettings.player1.controls.UP_R;
+				case 'right': key = PlayerSettings.player1.controls.RIGHT_R;
+				case 'space': key = FlxG.keys.justReleased.SPACE;//an extra key for convinience
+			}
+			return key;
+		});
+		Lua_helper.add_callback(lua, "precacheImage", function(name:String) {
+			Paths.returnGraphic(name);
+		});
+		Lua_helper.add_callback(lua, "precacheSound", function(name:String) {
+			CoolUtil.precacheSound(name);
+		});
+		Lua_helper.add_callback(lua, "precacheMusic", function(name:String) {
+			CoolUtil.precacheMusic(name);
+		});
+		Lua_helper.add_callback(lua, "triggerEvent", function(name:String, position:Int, value:Dynamic, type:String) {
+			var event = new Event(name, position, value, type);
+			PlayState.instance.doEvent(event);
+		});
+
 		Lua_helper.add_callback(lua, "startCountdown", function(variable:String) {
 			PlayState.instance.startCountdown();
 		});
 		Lua_helper.add_callback(lua, "endSong", function() {
 			PlayState.instance.endSong();
 		});
+		Lua_helper.add_callback(lua, "restartSong", function(skipTransition:Bool) {
+			PlayState.instance.persistentUpdate = false;
+			PauseSubState.restartSong(skipTransition);
+		});
 		Lua_helper.add_callback(lua, "exitSong", function(skipTransition:Bool) {
+			if(skipTransition)
+			{
+				FlxTransitionableState.skipNextTransIn = true;
+				FlxTransitionableState.skipNextTransOut = true;
+			}
+
+			PlayState.cancelMusicFadeTween();
 
 			if(PlayState.isStoryMode)
-				FlxG.switchState(new StoryMenuState());
+				MusicBeatState.switchState(new StoryMenuState());
 			else
-				FlxG.switchState(new FreeplayState());
+				MusicBeatState.switchState(new FreeplayState());
 
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
+			PlayState.instance.transitioning = true;
 		});
 		Lua_helper.add_callback(lua, "getSongPosition", function() {
 			return Conductor.songPosition;
+		});
+
+		Lua_helper.add_callback(lua, "getCharacterX", function(type:String) {
+			switch(type.toLowerCase()) {
+				case 'dad' | 'opponent':
+					return PlayState.instance.dad.x;
+				case 'gf' | 'girlfriend':
+					return PlayState.instance.gf.x;
+				default:
+					return PlayState.instance.boyfriend.x;
+			}
+		});
+		Lua_helper.add_callback(lua, "setCharacterX", function(type:String, value:Float) {
+			switch(type.toLowerCase()) {
+				case 'dad' | 'opponent':
+					PlayState.instance.dad.x = value;
+				case 'gf' | 'girlfriend':
+					PlayState.instance.gf.x = value;
+				default:
+					PlayState.instance.boyfriend.x = value;
+			}
+		});
+		Lua_helper.add_callback(lua, "getCharacterY", function(type:String) {
+			switch(type.toLowerCase()) {
+				case 'dad' | 'opponent':
+					return PlayState.instance.dad.y;
+				case 'gf' | 'girlfriend':
+					return PlayState.instance.gf.y;
+				default:
+					return PlayState.instance.boyfriend.y;
+			}
+		});
+		Lua_helper.add_callback(lua, "setCharacterY", function(type:String, value:Float) {
+			switch(type.toLowerCase()) {
+				case 'dad' | 'opponent':
+					PlayState.instance.dad.y = value;
+				case 'gf' | 'girlfriend':
+					PlayState.instance.gf.y = value;
+				default:
+					PlayState.instance.boyfriend.y = value;
+			}
+		});
+		Lua_helper.add_callback(lua, "cameraSetTarget", function(target:String) {
+			var isDad:Bool = false;
+			if(target == 'dad') {
+				isDad = true;
+			}
+			PlayState.instance.moveCamera(isDad);
 		});
 		Lua_helper.add_callback(lua, "cameraShake", function(camera:String, intensity:Float, duration:Float) {
 			cameraFromString(camera).shake(intensity, duration);
@@ -598,6 +814,9 @@ class FunkinLua {
 			var colorNum:Int = Std.parseInt(color);
 			if(!color.startsWith('0x')) colorNum = Std.parseInt('0xff' + color);
 			cameraFromString(camera).fade(colorNum, duration,false,null,forced);
+		});
+		Lua_helper.add_callback(lua, "setAccuracy", function(value:Float) {
+			PlayState.instance.accuracy = value;
 		});
 		Lua_helper.add_callback(lua, "getMouseX", function(camera:String) {
 			var cam:FlxCamera = cameraFromString(camera);
@@ -643,6 +862,26 @@ class FunkinLua {
 			if(obj != null) return obj.getScreenPosition().y;
 
 			return 0;
+		});
+		Lua_helper.add_callback(lua, "characterPlayAnim", function(character:String, anim:String, ?forced:Bool = false) {
+			switch(character.toLowerCase()) {
+				case 'dad':
+					if(PlayState.instance.dad.animOffsets.exists(anim))
+						PlayState.instance.dad.playAnim(anim, forced);
+				case 'gf' | 'girlfriend':
+					if(PlayState.instance.gf != null && PlayState.instance.gf.animOffsets.exists(anim))
+						PlayState.instance.gf.playAnim(anim, forced);
+				default: 
+					if(PlayState.instance.boyfriend.animOffsets.exists(anim))
+						PlayState.instance.boyfriend.playAnim(anim, forced);
+			}
+		});
+		Lua_helper.add_callback(lua, "characterDance", function(character:String) {
+			switch(character.toLowerCase()) {
+				case 'dad': PlayState.instance.dad.dance();
+				case 'gf' | 'girlfriend': if(PlayState.instance.gf != null) PlayState.instance.gf.dance();
+				default: PlayState.instance.boyfriend.dance();
+			}
 		});
 
 		Lua_helper.add_callback(lua, "makeLuaSprite", function(tag:String, image:String, x:Float, y:Float) {
@@ -752,17 +991,24 @@ class FunkinLua {
 				if(!shit.wasAdded) {
 					if(front)
 					{
-						PlayState.instance.addObject(shit);
+						getInstance().add(shit);
 					}
 					else
 					{
-						PlayState.instance.removeObject(PlayState.gf);
-                        PlayState.instance.removeObject(PlayState.boyfriend);
-                        PlayState.instance.removeObject(PlayState.dad);
-						PlayState.instance.addObject(shit);
-						PlayState.instance.addObject(PlayState.gf);
-				        PlayState.instance.addObject(PlayState.boyfriend);
-				        PlayState.instance.addObject(PlayState.dad);
+						if(PlayState.instance.isDead)
+						{
+							GameOverSubstate.instance.insert(GameOverSubstate.instance.members.indexOf(GameOverSubstate.instance.boyfriend), shit);
+						}
+						else
+						{
+							var position:Int = PlayState.instance.members.indexOf(PlayState.instance.gf);
+							if(PlayState.instance.members.indexOf(PlayState.instance.boyfriend) < position) {
+								position = PlayState.instance.members.indexOf(PlayState.instance.boyfriend);
+							} else if(PlayState.instance.members.indexOf(PlayState.instance.dad) < position) {
+								position = PlayState.instance.members.indexOf(PlayState.instance.dad);
+							}
+							PlayState.instance.insert(position, shit);
+						}
 					}
 					shit.wasAdded = true;
 					//trace('added a thing: ' + tag);
@@ -961,6 +1207,30 @@ class FunkinLua {
 		});
 		Lua_helper.add_callback(lua, "getRandomBool", function(chance:Float = 50) {
 			return FlxG.random.bool(chance);
+		});
+		Lua_helper.add_callback(lua, "startDialogue", function(dialogueFile:String, music:String = null) {
+			var path:String = Paths.json(Paths.formatToSongPath(PlayState.SONG.song) + '/' + dialogueFile);
+			/*if(!FileSystem.exists(path)) {
+				path = Paths.json(Paths.formatToSongPath(PlayState.SONG.song) + '/' + dialogueFile);
+			}*/
+			luaTrace('Trying to load dialogue: ' + path);
+
+			if(FileSystem.exists(path)) {
+				var shit:DialogueFile = DialogueBoxPsych.parseDialogue(path);
+				if(shit.dialogue.length > 0) {
+					PlayState.instance.startDialogue(shit, music);
+					luaTrace('Successfully loaded dialogue');
+				} else {
+					luaTrace('Your dialogue file is badly formatted!');
+				}
+			} else {
+				luaTrace('Dialogue file not found');
+				if(PlayState.instance.endingSong) {
+					PlayState.instance.endSong();
+				} else {
+					PlayState.instance.startCountdown();
+				}
+			}
 		});
 		Lua_helper.add_callback(lua, "startVideo", function(videoFile:String) {
 			#if VIDEOS_ALLOWED
@@ -1242,6 +1512,17 @@ class FunkinLua {
 				pee.destroy();
 				PlayState.instance.modchartTexts.remove(tag);
 			}
+		});
+
+		Lua_helper.add_callback(lua, "initSaveData", function(name:String, ?folder:String = 'psychenginemods') {
+			if(!PlayState.instance.modchartSaves.exists(name))
+			{
+				var save:FlxSave = new FlxSave();
+				save.bind(name, folder);
+				PlayState.instance.modchartSaves.set(name, save);
+				return;
+			}
+			luaTrace('Save file already initialized: ' + name);
 		});
 		Lua_helper.add_callback(lua, "flushSaveData", function(name:String) {
 			if(PlayState.instance.modchartSaves.exists(name))
@@ -1557,6 +1838,8 @@ class FunkinLua {
 	function cameraFromString(cam:String):FlxCamera {
 		switch(cam.toLowerCase()) {
 			case 'camhud' | 'hud': return PlayState.instance.camHUD;
+			case 'camsustains' | 'sustains': return PlayState.instance.camSustains;
+			case 'camnotes' | 'notes': return PlayState.instance.camNotes;
 		}
 		return PlayState.instance.camGame;
 	}
@@ -1567,7 +1850,8 @@ class FunkinLua {
 			if(deprecated && !getBool('luaDeprecatedWarnings')) {
 				return;
 			}
-			Debug.logTrace(text);
+			PlayState.instance.addTextToDebug(text);
+			trace(text);
 		}
 		#end
 	}
@@ -1598,6 +1882,7 @@ class FunkinLua {
 			}
 
 			var conv:Dynamic = Convert.fromLua(lua, result);
+			Lua.pop(lua, 1);
 			return conv;
 		}
 		#end
@@ -1681,7 +1966,7 @@ class FunkinLua {
 
 	inline function getInstance()
 	{
-		return PlayState.instance;
+		return PlayState.instance.isDead ? GameOverSubstate.instance : PlayState.instance;
 	}
 	static inline var CLENSE:String = "
 	os.execute = nil;

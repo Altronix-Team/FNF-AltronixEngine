@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxSubState;
 import lime.app.Promise;
 import lime.app.Future;
 import flixel.FlxG;
@@ -14,7 +15,7 @@ import lime.utils.AssetManifest;
 import haxe.io.Path;
 import flixel.text.FlxText;
 
-class LoadingsState extends MusicBeatSubstate
+class LoadingsState extends FlxSubState
 {
 	public var instantAlpha:Bool = false;
 

@@ -49,6 +49,7 @@ class TitleState extends MusicBeatState
 	public var muteKeys:Array<FlxKey>;
 	public var volumeDownKeys:Array<FlxKey>;
 	public var volumeUpKeys:Array<FlxKey>;
+	public static var fullscreenBind:FlxKey;
 
 	var curWacky:Array<String> = [];
 
@@ -273,17 +274,11 @@ class TitleState extends MusicBeatState
 	}
 
 	var transitioning:Bool = false;
-	var fullscreenBind:FlxKey;
 
 	override function update(elapsed:Float)
 	{
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
-
-		if (FlxG.keys.anyJustPressed([fullscreenBind]))
-		{
-			FlxG.fullscreen = !FlxG.fullscreen;
-		}
 
 		if (FlxG.save.data.fullscreenOnStart)
 		{

@@ -60,7 +60,7 @@ using StringTools;
 
 class ChartingState extends MusicBeatState
 {
-	public static var noteTypeList:Array<String> = //Used for backwards compatibility with 0.1 - 0.3.2 charts, though, you should add your hardcoded custom note types here too.
+	public static var noteTypeList:Array<String> = //Using for custom noteType.
 	[
 		'Default Note',
 		'Hurt Note',
@@ -68,6 +68,26 @@ class ChartingState extends MusicBeatState
 		'GF Sing Note',
 		'No Anim Note'
 	];
+
+	public static var eventTypeList:Array<String> = //Using for custom events.
+	[
+		"BPM Change",
+		"Scroll Speed Change",
+		"Start Countdown",
+		"Change Dad Character",
+		"Change BF Character",
+		"Change GF Character",
+		"Change Stage",
+		"Song Overlay",
+		"Dad play animation",
+		"BF play animation",
+		"GF play animation",
+		"Camera zoom",
+		"Toggle interface",
+		"Toggle Alt Idle"/*,
+		"Change note skin"*/
+	];
+
 	private var noteTypeIntMap:Map<Int, String> = new Map<Int, String>();
 	private var noteTypeMap:Map<String, Null<Int>> = new Map<String, Null<Int>>();
 
@@ -597,23 +617,7 @@ class ChartingState extends MusicBeatState
 	
 	var tab_group_events:FlxUI;
 
-	var eventType = new FlxUIDropDownMenuCustom(10, 60, FlxUIDropDownMenuCustom.makeStrIdLabelArray([
-		"BPM Change",
-		"Scroll Speed Change",
-		"Start Countdown",
-		"Change Dad Character",
-		"Change BF Character",
-		"Change GF Character",
-		"Change Stage",
-		"Song Overlay",
-		"Dad play animation",
-		"BF play animation",
-		"GF play animation",
-		"Camera zoom",
-		"Toggle interface",
-		"Toggle Alt Idle"/*,
-		"Change note skin"*/
-	], true));
+	var eventType = new FlxUIDropDownMenuCustom(10, 60, FlxUIDropDownMenuCustom.makeStrIdLabelArray(eventTypeList, true));
 
 	function addEventsUI()
 	{

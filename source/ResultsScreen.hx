@@ -30,6 +30,7 @@ import lime.app.Application;
 import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.input.FlxKeyManager;
+import LoadingState.LoadingsState;
 
 using StringTools;
 
@@ -210,20 +211,26 @@ class ResultsScreen extends FlxSubState
 
 			if (PlayState.isStoryMode)
 			{
+				openSubState(new LoadingsState());
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 				Conductor.changeBPM(102);
 				FlxG.switchState(new StoryMenuState());
 			}
 			else if (PlayState.isExtras)
 			{
+				openSubState(new LoadingsState());
 				FlxG.switchState(new SecretState());
 			}
 			else if (PlayState.fromPasswordMenu)
 			{
+				openSubState(new LoadingsState());
 				FlxG.switchState(new MainMenuState());
 			}
 			else
+			{
+				openSubState(new LoadingsState());
 				FlxG.switchState(new FreeplayState());
+			}
 			PlayState.instance.clean();
 		}
 

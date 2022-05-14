@@ -21,14 +21,14 @@ class ModListItem extends InteractableUIGroup
 	// 480px wide
 	static final BG_W:Float = 480;
 	// 120px tall
-	static final BG_H:Float = 110;
+	static final BG_H:Float = 90;
 
 	// 10px from left side
 	static final ICON_X:Float = BG_X + 5;
 	// 10px from tip side
 	static final ICON_Y:Float = BG_Y + 5;
 	// 100px by 100px
-	static final ICON_SCALE:Int = 100;
+	static final ICON_SCALE:Int = 80;
 
 	static final ICON_LOADED_OFFSET:Float = 20;
 
@@ -41,7 +41,7 @@ class ModListItem extends InteractableUIGroup
 
 	// Only allow between the start and 10px from the end.
 	// Force to wrap otherwise.
-	static final TEXT_WIDTH:Float = BG_W - TITLE_X - 16 - 5;
+	static final TEXT_WIDTH:Float = BG_W - TITLE_X - 16 - 10;
 
 	static final DESC_X:Float = TITLE_X;
 	static final DESC_Y:Float = TITLE_Y + 25;

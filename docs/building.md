@@ -24,7 +24,7 @@
 	 - `haxelib run lime setup`
 	 - `haxelib run lime setup flixel`
 	 - `haxelib run flixel-tools setup`
-	 - `haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git`
+	 - `haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit`
 	 - `haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit`
 	 - `haxelib git faxe https://github.com/uhrobots/faxe`
 	 - `haxelib git polymod https://github.com/MasterEric/polymod.git`

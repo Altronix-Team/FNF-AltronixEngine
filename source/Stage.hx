@@ -25,6 +25,7 @@ import sys.FileSystem;
 class Stage extends MusicBeatState
 {
 	public var stageData:StageFile = null;
+	public var luaStage:Bool = false;
 	public var curStage:String = '';
 	public var camZoom:Float; // The zoom of the camera to have at the start of the game
 	public var hideLastBG:Bool = false; // True = hide last BGs and show ones from slowBacks on certain step, False = Toggle visibility of BGs from SlowBacks on certain step
@@ -76,26 +77,6 @@ class Stage extends MusicBeatState
 		camZoom = 1.05; // Don't change zoom here, unless you want to change zoom of every stage that doesn't have custom one
 		if (PlayStateChangeables.Optimize)
 			return;
-
-		stageData = StageData.getStageFile(curStage);
-		Debug.logTrace(curStage);
-		if (stageData == null)
-		{
-			Debug.logTrace('shit');
-			stageData = {
-				defaultZoom: 0.9,
-				isPixelStage: false,
-			
-				boyfriend: [770, 450],
-				gf: [400, 130],
-				dad: [100, 100],
-			
-				camera_boyfriend: [0, 0],
-				camera_opponent: [0, 0],
-				camera_girlfriend: [0, 0],
-				camera_speed: 1
-			};
-		}
 
 		switch (daStage)
 		{
@@ -564,6 +545,7 @@ class Stage extends MusicBeatState
 					{
 						if (PlayState.SONG.songId == 'stress' && PlayState.SONG.gfVersion == 'picospeaker')
 							{
+								loadMappedAnims();
 								var john = new FlxSprite(FlxG.width + 1000, 500);
 								john.frames = Paths.getSparrowAtlas('warzone/tankmanKilled1', 'week7');
 								john.antialiasing = true;
@@ -575,13 +557,13 @@ class Stage extends MusicBeatState
 								tankSpeedJohn.push(0.7);
 								goingRightJohn.push(false);
 					
-								strumTimeJohn.push(PlayState.instance.gf.animationNotes[0][0]);
+								strumTimeJohn.push(animationNotes[0][0]);
 								endingOffsetJohn.push(FlxG.random.float(0.6, 1));
 								resetJohn(FlxG.width * 1.5, 600, true, john, 0);
 								johns.add(john);	
 
 								var i = 0;
-								for (c in 1...PlayState.instance.gf.animationNotes.length)
+								for (c in 1...animationNotes.length)
 								{
 									if (FlxG.random.float(0, 50) < 16)
 									{
@@ -590,10 +572,10 @@ class Stage extends MusicBeatState
 									tankSpeedJohn.push(0.7);
 									goingRightJohn.push(false);
 														
-									strumTimeJohn.push(PlayState.instance.gf.animationNotes[c][0]);
+									strumTimeJohn.push(animationNotes[c][0]);
 									endingOffsetJohn.push(FlxG.random.float(0.6, 1));
 									johns.add(jahn);
-									resetJohn(FlxG.width * 1.5, 200 + FlxG.random.int(50, 100),  2 > PlayState.instance.gf.animationNotes[c][1], jahn,i);
+									resetJohn(FlxG.width * 1.5, 200 + FlxG.random.int(50, 100),  2 > animationNotes[c][1], jahn,i);
 									i++;		   
 									}
 								}
@@ -636,10 +618,12 @@ class Stage extends MusicBeatState
 					{
 						Debug.logTrace('trying to execute funkin lua');
 						stageLua = new FunkinLua(Paths.getPreloadPath('stages/' + curStage + '.lua'));
+						luaStage = true;
 					}
 					else if (Assets.exists(Paths.getPreloadPath('stages/' + curStage + '.lua'))){
 						Debug.logTrace('trying to execute funkin lua');
 						stageLua = new FunkinLua(Assets.getPath('assets/stages/' + curStage + '.lua'));
+						luaStage = true;
 					}
 					#if FEATURE_MODCORE
 					else if (FileSystem.exists(Paths.getPreloadPath('stages/' + curStage + '.hscript')))
@@ -679,6 +663,25 @@ class Stage extends MusicBeatState
 					}
 				}
 		}
+	}
+
+	var animationNotes:Array<Dynamic> = [];
+	
+	function loadMappedAnims() {
+		var picoAnims = Song.picospeakerLoad('picospeaker', "stress").notes;
+		trace('blammedlol');
+		for (anim in picoAnims) {
+			for (note in anim.sectionNotes) {
+				animationNotes.push(note);
+			}
+		}
+		animationNotes.sort(sortAnims);
+	}
+
+	function sortAnims(a, b) {
+		var aThing = a[0];
+		var bThing = b[0];
+		return aThing < bThing ? -1 : 1;
 	}
 
 	override public function update(elapsed:Float)

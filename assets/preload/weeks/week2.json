@@ -1,8 +1,17 @@
 {
-	"weekDataFromJson": ["spookeez", "south", "monster"],
-	"weekCharacterFromJson": ["spooky", "bf", "gf"],
-	"weekNameFromJson": "Spooky Month",
-	"weekBackgroundFromJson": "Spooky",
-	"weekImageFromJson": "week2",
-	"weekIdFromJson": 2
+	"songs": [
+		"spookeez",
+		"south",
+		"monster"
+	],
+
+	"weekCharacters": [
+		"spooky",
+		"bf",
+		"gf"
+	],
+	"weekBackground": "Spooky",
+
+	"storyName": "Spooky Month",
+	"weekBefore": "week1"
 }

@@ -19,7 +19,7 @@ class Note extends FlxSprite
 {
 	public var strumTime:Float = 0;
 	public var baseStrum:Float = 0;
-	public var noteType:Int = 0;
+	public var noteType:Dynamic = 0;
 
 	public var charterSelected:Bool = false;
 
@@ -78,7 +78,7 @@ class Note extends FlxSprite
 	public var noAnimation:Bool = false;
 	public var gfNote:Bool = false;
 
-	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inCharter:Bool = false, ?isAlt:Bool = false, ?bet:Float = 0, ?noteType:Int = 0)
+	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inCharter:Bool = false, ?isAlt:Bool = false, ?bet:Float = 0, ?noteType:Dynamic = 0)
 	{
 		super();
 
@@ -92,11 +92,10 @@ class Note extends FlxSprite
 		this.noteType = noteType;
 		this.prevNote = prevNote;
 		isSustainNote = sustainNote;
-
 		
-		if (noteType == 4)
+		if (noteType == 4 || noteType == 'No Anim Note')
 			noAnimation = true;
-		else if (noteType == 3)
+		else if (noteType == 3 || noteType == 'GF Sing Note')
 			gfNote = true;
 
 		x += 50;
@@ -131,8 +130,6 @@ class Note extends FlxSprite
 
 		this.noteData = noteData;
 
-		var daStage:String = ((PlayState.instance != null && !PlayStateChangeables.Optimize) ? PlayState.Stage.curStage : 'stage');
-
 		// defaults if no noteStyle was found in chart
 
 		if (PlayState.SONG.noteStyle == null)
@@ -150,7 +147,7 @@ class Note extends FlxSprite
 		{	
 			switch (noteType)
 			{
-				case 4:
+				case 4 | 'No Anim Note':
 					{
 						frames = Paths.getSparrowAtlas('specialnotes/NoAnim');
 
@@ -173,7 +170,7 @@ class Note extends FlxSprite
 						updateHitbox();
 						antialiasing = true;
 					}
-				case 3:
+				case 3 | 'GF Sing Note':
 					{
 						frames = Paths.getSparrowAtlas('specialnotes/GF_Sing');
 
@@ -196,7 +193,7 @@ class Note extends FlxSprite
 						updateHitbox();
 						antialiasing = true;
 					}
-				case 2:
+				case 2 | 'Bullet Note':
 					{
 						frames = Paths.getSparrowAtlas('specialnotes/Bullet_Note');
 
@@ -209,7 +206,7 @@ class Note extends FlxSprite
 						updateHitbox();
 						antialiasing = true;
 					}
-				case 1:
+				case 1 | 'Hurt Note':
 					{
 						frames = Paths.getSparrowAtlas('specialnotes/HURTNOTE_assets');
 
@@ -246,7 +243,7 @@ class Note extends FlxSprite
 				case 'pixel':
 					switch (noteType)
 					{
-						case 2:
+						case 2 | 'Bullet Note':
 							{
 								frames = Paths.getSparrowAtlas('specialnotes/Bullet_Note');
 
@@ -259,7 +256,7 @@ class Note extends FlxSprite
 								updateHitbox();
 								antialiasing = true;
 							}
-						case 1:
+						case 1 | 'Hurt Note':
 						{
 							loadGraphic(NoteskinHelpers.generateSpecialPixelSprite('HURTNOTE_assets'), true, 17, 17);
 							if (isSustainNote)
@@ -296,7 +293,7 @@ class Note extends FlxSprite
 				default:
 					switch (noteType)
 					{
-						case 2:
+						case 2 | 'Bullet Note':
 							{
 								frames = Paths.getSparrowAtlas('specialnotes/Bullet_Note');
 
@@ -310,7 +307,7 @@ class Note extends FlxSprite
 								updateHitbox();
 								antialiasing = true;
 							}
-						case 1:
+						case 1 | 'Hurt Note':
 							{
 								frames = Paths.getSparrowAtlas('specialnotes/HURTNOTE_assets');
 

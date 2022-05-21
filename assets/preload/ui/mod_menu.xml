@@ -13,8 +13,8 @@
   <text text="Enabled" use_def="vcr32" x="800" y="16" width="480"/>
   <text text="Mod Configuration" use_def="vcr32" x="400" y="16" width="480"/>
 
-  <modlist name="modlist_unloaded" x="16"  y="56" w="500" h="680" loaded="false" />
-  <modlist name="modlist_loaded"   x="764" y="56" w="500" h="680" loaded="true"  />
+  <modlist name="modlist_unloaded" x="16"  y="56" w="500" h="600" loaded="false" />
+  <modlist name="modlist_loaded"   x="764" y="56" w="500" h="600" loaded="true"  />
 
   <button name="btn_loadall"           use_def="vcr16" x="576" y="180" w="260" h="80" label="Load All Mods"            />
   <button name="btn_unloadall"         use_def="vcr16" x="576" y="230" w="260" h="80" label="Unload All Mods"          />

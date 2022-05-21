@@ -7,9 +7,11 @@ using StringTools;
 class Highscore
 {
 	#if (haxe >= "4.0.0")
+	public static var weekScores:Map<String, Int> = new Map();
 	public static var songScores:Map<String, Int> = new Map();
 	public static var songCombos:Map<String, String> = new Map();
 	#else
+	public static var weekScores:Map<String, Int> = new Map();
 	public static var songScores:Map<String, Int> = new Map<String, Int>();
 	public static var songCombos:Map<String, String> = new Map<String, String>();
 	#end
@@ -67,6 +69,14 @@ class Highscore
 			trace('BotPlay detected. Score saving is disabled.');
 	}
 
+	static function setWeekScore(week:String, score:Int):Void
+		{
+			// Reminder that I don't need to format this song, it should come formatted!
+			weekScores.set(week, score);
+			FlxG.save.data.weekScores = weekScores;
+			FlxG.save.flush();
+		}
+
 	/**
 	 * YOU SHOULD FORMAT SONG WITH formatSong() BEFORE TOSSING IN SONG VARIABLE
 	 */
@@ -100,6 +110,22 @@ class Highscore
 		return daSong;
 	}
 
+	public static function floorDecimal(value:Float, decimals:Int):Float
+		{
+			if(decimals < 1)
+			{
+				return Math.floor(value);
+			}
+	
+			var tempMult:Float = 1;
+			for (i in 0...decimals)
+			{
+				tempMult *= 10;
+			}
+			var newValue:Float = Math.floor(value * tempMult);
+			return newValue / tempMult;
+		}
+		
 	public static function formatSongDiff(song:String, diff:Int):String
 	{
 		var songDiffEnd:String = song;
@@ -149,12 +175,13 @@ class Highscore
 		return songCombos.get(formatSong(song, diff));
 	}
 
-	public static function getWeekScore(week:Int, diff:Int):Int
+	public static function getWeekScore(week:String, diff:Int):Int
 	{
-		if (!songScores.exists(formatSong('week' + week, diff)))
-			setScore(formatSong('week' + week, diff), 0);
-
-		return songScores.get(formatSong('week' + week, diff));
+		var daWeek:String = formatSong(week, diff);
+		if (!weekScores.exists(daWeek))
+			setWeekScore(daWeek, 0);
+		
+		return weekScores.get(daWeek);
 	}
 
 	public static function load():Void

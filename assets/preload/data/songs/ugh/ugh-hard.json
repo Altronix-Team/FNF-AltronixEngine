@@ -4651,38 +4651,7 @@
   "validScore": true,
   "speed": 2.3,
   "gfVersion": "gftank",
-  "eventObjects": [
-   {
-    "name": "Init BPM",
-    "position": 0,
-    "value": 160,
-    "type": "BPM Change"
-   },
-   {
-    "name": "New Event 15",
-    "position": 15,
-    "value": "ugh",
-    "type": "Dad play animation"
-   },
-   {
-    "name": "New Event 111",
-    "position": 111,
-    "value": "ugh",
-    "type": "Dad play animation"
-   },
-   {
-    "name": "New Event 131",
-    "position": 131,
-    "value": "ugh",
-    "type": "Dad play animation"
-   },
-   {
-    "name": "New Event 207",
-    "position": 207,
-    "value": "ugh",
-    "type": "Dad play animation"
-   }
-  ],
+  "eventObjects": [],
   "chartVersion": "AE1",
   "stage": "warzone",
   "needsVoices": true,

@@ -1,8 +1,17 @@
 {
-	"weekDataFromJson": ["cocoa", "eggnog", "winter-horrorland"],
-	"weekCharacterFromJson": ["parents-christmas", "bf", "gf"],
-	"weekNameFromJson": "RED SNOW",
-	"weekBackgroundFromJson": "Parents",
-	"weekImageFromJson": "week5",
-	"weekIdFromJson": 5
+	"songs": [
+		"cocoa",
+		"eggnog",
+		"winter-horrorland"
+	],
+
+	"weekCharacters": [
+		"parents-christmas",
+		"bf",
+		"gf"
+	],
+	"weekBackground": "Parents",
+
+	"storyName": "RED SNOW",
+	"weekBefore": "week4"
 }

@@ -121,7 +121,7 @@ class EngineData
 			FlxG.save.data.middleScroll = false;
 
 		if (FlxG.save.data.editorBG == null)
-			FlxG.save.data.editor = false;
+			FlxG.save.data.editorBG = false;
 
 		if (FlxG.save.data.zoom == null)
 			FlxG.save.data.zoom = 1;
@@ -155,6 +155,18 @@ class EngineData
 
 		if (FlxG.save.data.notesplashes == null)
 			FlxG.save.data.notesplashes = true;
+
+		if (FlxG.save.data.enablePsychInterface == null)
+			FlxG.save.data.enablePsychInterface = false;
+
+		if (FlxG.save.data.enableLoadingScreens == null)
+			FlxG.save.data.enableLoadingScreens = true;
+
+		if (FlxG.save.data.weekCompleted == null)
+		{
+			StoryMenuState.weekCompleted.set('', true);
+			FlxG.save.data.weekCompleted = StoryMenuState.weekCompleted;
+		}
 
 		Ratings.timingWindows = [
 			FlxG.save.data.shitMs,

@@ -57,9 +57,6 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
-		#if !debug
-		DiscordClient.initialize();
-		#end
 		// TODO: Refactor this to use OpenFlAssets.
 		#if FEATURE_FILESYSTEM
 		if (!sys.FileSystem.exists(Sys.getCwd() + "/assets/replays"))
@@ -121,6 +118,16 @@ class TitleState extends MusicBeatState
 		super.create();
 
 		//FreeplayState.populateSongData();
+
+		if (FlxG.save.data.fullscreenOnStart)
+			{
+				FlxG.fullscreen = FlxG.save.data.fullscreenOnStart;
+			}
+
+		if (FlxG.save.data.weekCompleted != null)
+			{
+				StoryMenuState.weekCompleted = FlxG.save.data.weekCompleted;
+			}
 
 		#if FREEPLAY
 		FlxG.switchState(new FreeplayState());
@@ -279,11 +286,6 @@ class TitleState extends MusicBeatState
 	{
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
-
-		if (FlxG.save.data.fullscreenOnStart)
-		{
-			FlxG.fullscreen = FlxG.save.data.fullscreenOnStart;
-		}
 
 		var pressedEnter:Bool = controls.ACCEPT;
 

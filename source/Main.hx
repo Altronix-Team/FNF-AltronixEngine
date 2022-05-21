@@ -2,7 +2,7 @@ package;
 
 import openfl.display.Bitmap;
 import lime.app.Application;
-#if desktop
+#if !html5
 import DiscordClient;
 #end
 import openfl.display.BlendMode;
@@ -40,7 +40,7 @@ class Main extends Sprite
 
 	public static var instance:Main;
 
-	public static var watermarks = true; // Whether to put Kade Engine literally anywhere
+	public static var watermarks = true; // Whether to put Altronix Engine literally anywhere
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
 
@@ -125,6 +125,11 @@ class Main extends Sprite
 
 		// Finish up loading debug tools.
 		Debug.onGameStart();
+
+		#if !html5
+		DiscordClient.initialize();
+		DiscordClient.changePresence('', null);
+		#end
 		
 		#if FEATURE_MODCORE
 		modsToLoad = ModCore.getConfiguredMods();

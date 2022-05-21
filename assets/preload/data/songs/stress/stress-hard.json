@@ -7054,20 +7054,7 @@
    }
   ],
   "gfVersion": "picospeaker",
-  "eventObjects": [
-   {
-    "name": "Init BPM",
-    "position": 0,
-    "value": 178,
-    "type": "BPM Change"
-   },
-   {
-    "name": "New Event 184",
-    "position": 184,
-    "value": "prettygood",
-    "type": "Dad play animation"
-   }
-  ],
+  "eventObjects": [],
   "chartVersion": "AE1",
   "offset": 0,
   "song": "Stress",

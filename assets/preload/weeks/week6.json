@@ -1,8 +1,17 @@
 {
-	"weekDataFromJson": ["senpai", "roses", "thorns"],
-	"weekCharacterFromJson": ["senpai", "bf", "gf"],
-	"weekNameFromJson": "Hating Simulator ft. Moawling",
-	"weekBackgroundFromJson": "Senpai",
-	"weekImageFromJson": "week6",
-	"weekIdFromJson": 6
+	"songs": [
+		"senpai",
+		"roses",
+		"thorns"
+	],
+
+	"weekCharacters": [
+		"senpai",
+		"bf",
+		"gf"
+	],
+	"weekBackground": "Senpai",
+
+	"storyName": "hating simulator ft. moawling",
+	"weekBefore": "week5"
 }

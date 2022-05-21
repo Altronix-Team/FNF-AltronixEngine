@@ -50,9 +50,6 @@ class MainMenuState extends MusicBeatState
 	public static var firstStart:Bool = true;
 
 	public static var nightly:String = "";
-
-	public static var altronixEngineVer:String = "0.1";
-	public static var kadeEngineVer:String = "1.8" + nightly;
 	public static var gameVer:String = "0.2.7.1";
 
 	var magenta:FlxSprite;
@@ -174,7 +171,7 @@ class MainMenuState extends MusicBeatState
 		var altronix:FlxText;
 		var gamever:FlxText;
 
-		altronix = new FlxText(5, FlxG.height - 36, 0, 'Altronix Engine ' + altronixEngineVer, 12);
+		altronix = new FlxText(5, FlxG.height - 36, 0, 'Altronix Engine ' + EngineConstants.engineVer, 12);
 		altronix.scrollFactor.set();
 		if (!FlxG.save.data.language)
 			altronix.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -321,33 +318,31 @@ class MainMenuState extends MusicBeatState
 		switch (daChoice)
 		{
 			case 'story mode':
-				openSubState(new LoadingsState());
-				FlxG.switchState(new StoryMenuState());
+				MusicBeatState.switchState(new StoryMenuState());
 				trace("Story Menu Selected");
 				FlxG.mouse.visible = false;
 				
 			case 'freeplay':
-				openSubState(new LoadingsState());
-				FlxG.switchState(new FreeplayState());
+				MusicBeatState.switchState(new FreeplayState());
 
 				trace("Freeplay Menu Selected");
 				FlxG.mouse.visible = false;
 
 			case 'gamejolt':
-				FlxG.switchState(new GameJoltLogin());
+				MusicBeatState.switchState(new GameJoltLogin());
 				trace('gamejolt login selected');
 
 			case 'options':
-				FlxG.switchState(new OptionsDirect());
+				MusicBeatState.switchState(new OptionsDirect());
 				FlxG.mouse.visible = false;
 
 			case 'extras':
-				FlxG.switchState(new ExtrasPasswordState());
+				MusicBeatState.switchState(new ExtrasPasswordState());
 				trace('extras menu selected');
 				FlxG.mouse.visible = false;
 
 			case 'mods':
-				FlxG.switchState(new ModMenuState());
+				MusicBeatState.switchState(new ModMenuState());
 				trace('mods menu selected');
 
 			case 'credits':

@@ -211,26 +211,26 @@ class ResultsScreen extends FlxSubState
 
 			if (PlayState.isStoryMode)
 			{
-				openSubState(new LoadingsState());
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 				Conductor.changeBPM(102);
-				FlxG.switchState(new StoryMenuState());
+				MusicBeatState.switchState(new StoryMenuState());
 			}
 			else if (PlayState.isExtras)
 			{
-				openSubState(new LoadingsState());
-				FlxG.switchState(new SecretState());
+				MusicBeatState.switchState(new SecretState());
 			}
 			else if (PlayState.fromPasswordMenu)
 			{
-				openSubState(new LoadingsState());
-				FlxG.switchState(new MainMenuState());
+				MusicBeatState.switchState(new MainMenuState());
 			}
 			else
 			{
-				openSubState(new LoadingsState());
-				FlxG.switchState(new FreeplayState());
+				MusicBeatState.switchState(new FreeplayState());
 			}
+			PlayState.isStoryMode = false;
+			PlayState.isExtras = false;
+			PlayState.fromPasswordMenu = false;
+			PlayState.isFreeplay = false;
 			PlayState.instance.clean();
 		}
 

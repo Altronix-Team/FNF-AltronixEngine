@@ -1,8 +1,17 @@
 {
-	"weekDataFromJson": ["ugh", "guns", "stress"],
-	"weekCharacterFromJson": ["tankman", "bf", "gf"],
-	"weekNameFromJson": "TANKMAN",
-	"weekBackgroundFromJson": "Warzone",
-	"weekImageFromJson": "week7",
-	"weekIdFromJson": 7
+	"songs": [
+		"ugh",
+		"guns",
+		"stress"
+	],
+
+	"weekCharacters": [
+		"tankman",
+		"bf",
+		"gf"
+	],
+	"weekBackground": "Warzone",
+
+	"storyName": "TANKMAN",
+	"weekBefore": "week6"
 }

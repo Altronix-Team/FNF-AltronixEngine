@@ -98,10 +98,19 @@ class CreditsState extends MusicBeatState
 			grpOptions.add(optionText);
 
 			if (isSelectable) {
-				var icon:AttachedSprite = new AttachedSprite('crediticons/' + creditsStuff[i][1]);
-				icon.xAdd = optionText.width + 10;
-				icon.sprTracker = optionText;
-	
+				var icon:AttachedSprite;
+				if (Assets.exists(Paths.image('crediticons/' + creditsStuff[i][1])))
+				{
+					icon = new AttachedSprite('crediticons/' + creditsStuff[i][1]);
+					icon.xAdd = optionText.width + 10;
+					icon.sprTracker = optionText;
+				}
+				else
+				{
+					icon = new AttachedSprite('crediticons/noname');
+					icon.xAdd = optionText.width + 10;
+					icon.sprTracker = optionText;
+				}
 				// using a FlxGroup is too much fuss!
 				iconArray.push(icon);
 				add(icon);
@@ -149,7 +158,7 @@ class CreditsState extends MusicBeatState
 				colorTween.cancel();
 			}
 			FlxG.sound.play(Paths.sound('cancelMenu'));
-			FlxG.switchState(new MainMenuState());
+			MusicBeatState.switchState(new MainMenuState());
 		}
 		super.update(elapsed);
 	}

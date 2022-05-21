@@ -1,0 +1,16 @@
+{
+"eventObjects": [
+   {
+    "name": "Init BPM",
+    "position": 0,
+    "value": 178,
+    "type": "BPM Change"
+   },
+   {
+    "name": "New Event 184",
+    "position": 184,
+    "value": "dad, prettygood",
+    "type": "Character play animation"
+   }
+  ]
+}

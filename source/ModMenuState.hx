@@ -130,14 +130,6 @@ class ModMenuState extends XMLLayoutState // extends MusicBeatState
 			loadMainGame();
 		}
 
-		if (FlxG.mouse.wheel != 0)
-		{
-			if (FlxG.mouse.overlaps(unloadedModsUI))
-				unloadedModsUI.y += FlxG.mouse.wheel * 10;
-			else if (FlxG.mouse.overlaps(loadedModsUI))
-				loadedModsUI.y += FlxG.mouse.wheel * 10;
-		}
-
 		super.update(elapsed);
 	}
 
@@ -154,15 +146,16 @@ class ModMenuState extends XMLLayoutState // extends MusicBeatState
 	function loadMainGame()
 	{
 		FlxG.mouse.visible = false;
+		FreeplaySongMetadata.preloaded = false;
 		// Gotta load any configured mods.
 		ModCore.loadConfiguredMods();
 		#if FEATURE_FILESYSTEM
 		//if (FlxG.save.data.caching)
 			//FlxG.switchState(new Caching());
 		//else
-			FlxG.switchState(new TitleState());
+			MusicBeatState.switchState(new TitleState());
 		#else
-		FlxG.switchState(new TitleState());
+			MusicBeatState.switchState(new TitleState());
 		#end
 	}
 

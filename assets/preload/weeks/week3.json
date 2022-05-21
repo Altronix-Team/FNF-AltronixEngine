@@ -1,8 +1,17 @@
 {
-	"weekDataFromJson": ["pico", "philly", "blammed"],
-	"weekCharacterFromJson": ["pico", "bf", "gf"],
-	"weekNameFromJson": "PICO",
-	"weekBackgroundFromJson": "PICO",
-	"weekImageFromJson": "week3",
-	"weekIdFromJson": 3
+	"songs": [
+		"pico",
+		"philly",
+		"blammed"
+	],
+
+	"weekCharacters": [
+		"pico",
+		"bf",
+		"gf"
+	],
+	"weekBackground": "PICO",
+
+	"storyName": "PICO",
+	"weekBefore": "week2"
 }

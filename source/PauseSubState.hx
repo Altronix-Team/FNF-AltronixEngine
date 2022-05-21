@@ -233,15 +233,6 @@ class PauseSubState extends MusicBeatSubstate
 					close();
 				case "Restart Song":
 					restartSong();
-					/*PlayState.startTime = 0;
-					if (PlayState.instance.useVideo)
-					{
-						GlobalVideo.get().stop();
-						PlayState.instance.remove(PlayState.instance.videoSprite);
-						PlayState.instance.removedVideo = true;
-					}
-					PlayState.instance.clean();
-					FlxG.resetState();*/
 					PlayState.stageTesting = false;
 
 				case 'Change Difficulty':
@@ -268,13 +259,6 @@ class PauseSubState extends MusicBeatSubstate
 					}
 					PlayState.loadRep = false;
 					PlayState.stageTesting = false;
-					/*#if FEATURE_LUAMODCHART
-					if (PlayState.luaModchart != null)
-					{
-						PlayState.luaModchart.die();
-						PlayState.luaModchart = null;
-					}
-					#end*/
 					if (FlxG.save.data.fpsCap > 340)
 						(cast(Lib.current.getChildAt(0), Main)).setFPSCap(120);
 
@@ -289,14 +273,18 @@ class PauseSubState extends MusicBeatSubstate
 						GameplayCustomizeState.freeplayStage = 'stage';
 						GameplayCustomizeState.freeplaySong = 'bopeebo';
 						GameplayCustomizeState.freeplayWeek = 1;
-						FlxG.switchState(new StoryMenuState());
+						MusicBeatState.switchState(new StoryMenuState());
 					}
 					else if (PlayState.isFreeplay)
-						FlxG.switchState(new FreeplayState());
+						MusicBeatState.switchState(new FreeplayState());
 					else if (PlayState.isExtras)
-						FlxG.switchState(new SecretState());
+						MusicBeatState.switchState(new SecretState());
 					else if (PlayState.fromPasswordMenu)
-						FlxG.switchState(new MainMenuState());
+						MusicBeatState.switchState(new MainMenuState());
+					PlayState.isStoryMode = false;
+					PlayState.isExtras = false;
+					PlayState.fromPasswordMenu = false;
+					PlayState.isFreeplay = false;
 			}
 		}
 

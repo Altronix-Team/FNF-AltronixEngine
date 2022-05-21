@@ -1,8 +1,17 @@
 {
-	"weekDataFromJson": ["satin-panties", "high", "milf"],
-	"weekCharacterFromJson": ["mom", "bf", "gf"],
-	"weekNameFromJson": "MOMMY MUST MURDER",
-	"weekBackgroundFromJson": "Mom",
-	"weekImageFromJson": "week4",
-	"weekIdFromJson": 4
+	"songs": [
+		"satin-panties",
+		"high",
+		"milf"
+	],
+	
+	"weekCharacters": [
+		"mom",
+		"bf",
+		"gf"
+	],
+	"weekBackground": "Mom",
+
+	"storyName": "MOMMY MUST MURDER",
+	"weekBefore": "week3"
 }

@@ -1,8 +1,15 @@
 {
-	"weekDataFromJson": ["tutorial"],
-	"weekCharacterFromJson": ["", "bf", "gf"],
-	"weekNameFromJson": "Tutorial",
-	"weekBackgroundFromJson": "Tutorial",
-	"weekImageFromJson": "tutorial",
-	"weekIdFromJson": 0
+	"songs": [
+		"tutorial"
+	],
+
+	"weekCharacters": [
+		"",
+		"bf",
+		"gf"
+	],
+	"weekBackground": "Tutorial",
+
+	"storyName": "",
+	"weekBefore": ""
 }

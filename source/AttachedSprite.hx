@@ -26,10 +26,7 @@ class AttachedSprite extends FlxSprite
 			animation.addByPrefix('idle', anim, 24, loop);
 			animation.play('idle');
 		} else if(file != null) {
-			if (OpenFlAssets.exists(Paths.image(file)))
-				loadGraphic(Paths.image(file));
-			else
-				loadGraphic(Paths.image('crediticons/noname'));
+			loadGraphic(Paths.image(file));
 		}
 		antialiasing = FlxG.save.data.antialiasing;
 		scrollFactor.set();

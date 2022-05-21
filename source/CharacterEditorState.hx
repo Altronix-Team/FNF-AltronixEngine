@@ -231,7 +231,7 @@ class CharacterEditorState extends MusicBeatState
 	}
 
 	function reloadStagesDropDown() {
-		var stageList = CoolUtil.coolTextFile(Paths.txt('data/stageList'));
+		var stageList = EngineConstants.defaultStages;
 
 		stageDropDown.setData(FlxUIDropDownMenuCustom.makeStrIdLabelArray(stageList, true));
 		stageDropDown.selectedLabel = daStage;
@@ -1087,9 +1087,9 @@ class CharacterEditorState extends MusicBeatState
 		if(!charDropDown.dropPanel.visible) {
 			if (FlxG.keys.justPressed.ESCAPE) {
 				if(goToPlayState) {
-					FlxG.switchState(new PlayState());
+					MusicBeatState.switchState(new PlayState());
 				} else {
-					FlxG.switchState(new MasterEditorMenu());
+					MusicBeatState.switchState(new MasterEditorMenu());
 					FlxG.sound.playMusic(Paths.music('freakyMenu'));
 				}
 				FlxG.mouse.visible = false;

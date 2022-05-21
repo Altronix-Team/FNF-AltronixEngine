@@ -1,0 +1,34 @@
+{
+"eventObjects": [
+   {
+    "name": "Init BPM",
+    "position": 0,
+    "value": 160,
+    "type": "BPM Change"
+   },
+   {
+    "name": "New Event 15",
+    "position": 15,
+    "value": "dad, ugh",
+    "type": "Character play animation"
+   },
+   {
+    "name": "New Event 111",
+    "position": 111,
+    "value": "dad, ugh",
+    "type": "Character play animation"
+   },
+   {
+    "name": "New Event 131",
+    "position": 131,
+    "value": "dad, ugh",
+    "type": "Character play animation"
+   },
+   {
+    "name": "New Event 207",
+    "position": 207,
+    "value": "dad, ugh",
+    "type": "Character play animation"
+   }
+  ]
+}

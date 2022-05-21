@@ -213,6 +213,8 @@ class ModCore
 				"week6" => "./week6",
 				"week7" => "./week7",
 				"weeks" => "./weeks",
+				"custom_events" => "./custom_events",
+				"custom_notetypes" => "./custom_notetypes",
 				'core' => './_core' // Don't override these files.
 			]
 		}

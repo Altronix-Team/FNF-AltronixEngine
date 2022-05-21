@@ -7,6 +7,8 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.addons.transition.FlxTransitionableState;
+import flixel.addons.text.FlxTypeText;
+import flixel.input.keyboard.FlxKey;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
 import flixel.text.FlxText;
@@ -37,7 +39,7 @@ class DialogueEditorState extends MusicBeatState
 {
 	var character:DialogueCharacter;
 	var box:FlxSprite;
-	var daText:Alphabet;
+	var daText:FlxTypeText;
 
 	var selectedText:FlxText;
 	var animText:FlxText;
@@ -98,6 +100,19 @@ class DialogueEditorState extends MusicBeatState
 		animText.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		animText.scrollFactor.set();
 		add(animText);
+
+		daText = new FlxTypeText(240, 500, Std.int(FlxG.width * 0.6), '', 32);
+		if (!FlxG.save.data.language)
+			daText.font = 'Pixel Arial 11 Bold';
+		else
+		{
+			daText.font = Paths.font("UbuntuBold.ttf");
+			daText.size = 48;
+		}
+		daText.color = FlxColor.BLACK;
+		daText.scrollFactor.set();
+		add(daText);
+
 		changeText();
 		super.create();
 	}
@@ -225,25 +240,26 @@ class DialogueEditorState extends MusicBeatState
 		}
 	}
 
+	var finishedText:Bool = false;
 	private static var DEFAULT_TEXT:String = "coolswag";
 	private static var DEFAULT_SPEED:Float = 0.05;
 	private static var DEFAULT_BUBBLETYPE:String = "normal";
 	function reloadText(speed:Float = 0.05) {
+		finishedText = false;
+		var textToType:String = lineInputText.text;
+		if(textToType == null || textToType.length < 1) textToType = ' ';
+
 		if(daText != null) {
-			daText.killTheTimer();
-			daText.kill();
-			remove(daText);
-			daText.destroy();
+			daText.resetText(textToType);
+			daText.start(0.04, true, false, [FlxKey.ENTER], function()
+			{
+				finishedText = true;
+			});
 		}
 
 		if(Math.isNaN(speed) || speed < 0.001) speed = 0.0;
-
-		var textToType:String = lineInputText.text;
-		if(textToType == null || textToType.length < 1) textToType = ' ';
 	
 		Alphabet.setDialogueSound(soundInputText.text);
-		daText = new Alphabet(DialogueBoxPsych.DEFAULT_TEXT_X, DialogueBoxPsych.DEFAULT_TEXT_Y, textToType, false, true, speed, 0.7);
-		add(daText);
 
 		if(speed > 0) {
 			if(character.jsonFile.animations.length > curAnim && character.jsonFile.animations[curAnim] != null) {
@@ -272,7 +288,7 @@ class DialogueEditorState extends MusicBeatState
 				if(character.jsonFile.animations.length > 0) {
 					curAnim = 0;
 					if(character.jsonFile.animations.length > curAnim && character.jsonFile.animations[curAnim] != null) {
-						character.playAnim(character.jsonFile.animations[curAnim].anim, daText.finishedText);
+						character.playAnim(character.jsonFile.animations[curAnim].anim, finishedText);
 						animText.text = 'Animation: ' + character.jsonFile.animations[curAnim].anim + ' (' + (curAnim + 1) +' / ' + character.jsonFile.animations.length + ') - Press W or S to scroll';
 					} else {
 						animText.text = 'ERROR! NO ANIMATIONS FOUND';
@@ -311,7 +327,7 @@ class DialogueEditorState extends MusicBeatState
 		}
 
 		if(character.animation.curAnim != null) {
-			if(daText.finishedText) {
+			if(finishedText) {
 				if(character.animationIsLoop() && character.animation.curAnim.finished) {
 					character.playAnim(character.animation.curAnim.name, true);
 				}
@@ -353,7 +369,7 @@ class DialogueEditorState extends MusicBeatState
 				reloadText(speedStepper.value);
 			}
 			if(FlxG.keys.justPressed.ESCAPE) {
-				FlxG.switchState(new MasterEditorMenu());
+				MusicBeatState.switchState(new MasterEditorMenu());
 				FlxG.sound.playMusic(Paths.music('freakyMenu'), 1);
 				transitioning = true;
 			}
@@ -368,7 +384,7 @@ class DialogueEditorState extends MusicBeatState
 
 					var animToPlay:String = character.jsonFile.animations[curAnim].anim;
 					if(character.dialogueAnimations.exists(animToPlay)) {
-						character.playAnim(animToPlay, daText.finishedText);
+						character.playAnim(animToPlay, finishedText);
 						dialogueFile.dialogue[curSelected].expression = animToPlay;
 					}
 					animText.text = 'Animation: ' + animToPlay + ' (' + (curAnim + 1) +' / ' + character.jsonFile.animations.length + ') - Press W or S to scroll';
@@ -421,7 +437,7 @@ class DialogueEditorState extends MusicBeatState
 					break;
 				}
 			}
-			character.playAnim(character.jsonFile.animations[curAnim].anim, daText.finishedText);
+			character.playAnim(character.jsonFile.animations[curAnim].anim, finishedText);
 			animText.text = 'Animation: ' + character.jsonFile.animations[curAnim].anim + ' (' + (curAnim + 1) +' / ' + leLength + ') - Press W or S to scroll';
 		} else {
 			animText.text = 'ERROR! NO ANIMATIONS FOUND';

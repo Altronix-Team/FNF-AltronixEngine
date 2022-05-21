@@ -583,7 +583,7 @@ class Character extends FlxSprite
 
 			if (canInterrupt)
 			{
-				if (isDancing)
+				if (animation.exists('danceRight') && animation.exists('danceLeft'))
 				{
 					danced = !danced;
 

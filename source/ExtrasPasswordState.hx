@@ -20,6 +20,7 @@ class ExtrasPasswordState extends MusicBeatState implements polymod.hscript.HScr
 
 	override function create()
 	{
+		PlayState.fromPasswordMenu = true;
         bg = new FlxSprite(-100).loadGraphic(Paths.loadImage('menuDesat'));
 		bg.scrollFactor.x = 0;
 		bg.scrollFactor.y = 0.10;
@@ -79,17 +80,16 @@ class ExtrasPasswordState extends MusicBeatState implements polymod.hscript.HScr
 		if (controls.ACCEPT)
             checkpassword(passwordText.text);
         if (controls.BACK)
+		{
+			PlayState.fromPasswordMenu = false;
             FlxG.switchState(new MainMenuState());
+		}
 	}
 
 	function loadSong(song:String)
 	{
 		var poop:String = Highscore.formatSongDiff(song, 2);
 		PlayState.SONG = Song.loadFromJson(song, poop);
-		PlayState.isStoryMode = false;
-		PlayState.isFreeplay = false;
-		PlayState.isExtras = false;
-		PlayState.fromPasswordMenu = true;
 		PlayState.storyDifficulty = 2;
 	
 		var llll = FlxG.sound.play(Paths.sound('confirmMenu')).length;

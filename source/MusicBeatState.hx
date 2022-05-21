@@ -187,9 +187,9 @@ class MusicBeatState extends FlxUIState
 		// Custom made Trans in
 		var curState:Dynamic = FlxG.state;
 		var leState:MusicBeatState = curState;
-		if(!FlxTransitionableState.skipNextTransIn) 
+		/*if(FlxG.save.data.enableLoadingScreens) 
 		{
-			leState.openSubState(new CustomFadeTransition(0.6, false));
+			leState.openSubState(new CustomFadeTransition());
 			if(nextState == FlxG.state) 
 			{
 				CustomFadeTransition.finishCallback = function() {
@@ -203,8 +203,7 @@ class MusicBeatState extends FlxUIState
 				};
 			}
 			return;
-		}
-		FlxTransitionableState.skipNextTransIn = false;
+		}*/
 		FlxG.switchState(nextState);
 	}
 

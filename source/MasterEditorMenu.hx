@@ -25,8 +25,8 @@ class MasterEditorMenu extends MusicBeatState
 		'GF Editor',
 		'Week Editor',
 		'Freeplay Songlist Editor',
-		//'Dialogue Editor',
-		//'Dialogue Character Editor',
+		'Dialogue Editor',
+		'Dialogue Character Editor',
 		'Chart Editor'
 	];
 	private var grpTexts:FlxTypedGroup<Alphabet>;

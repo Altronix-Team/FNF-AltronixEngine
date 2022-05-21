@@ -792,6 +792,76 @@ class GhostTapOption extends Option
 	}
 }
 
+class LoadingScreensOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		if (OptionsMenu.isInPause)
+			return false;
+		FlxG.save.data.enableLoadingScreens = !FlxG.save.data.enableLoadingScreens;
+		display = updateDisplay();
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		left();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		if (!FlxG.save.data.language)
+			return "Loading Screen < " + (!FlxG.save.data.enableLoadingScreens ? "Disabled" : "Enabled") + " >";
+		else
+			return "Загрузочный экран < " + (!FlxG.save.data.enableLoadingScreens ? "Выключен" : "Включен") + " >";
+	}
+}
+
+class PsychInterfaceOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		if (OptionsMenu.isInPause)
+			if (!FlxG.save.data.language)
+				description = "This option cannot be toggled in the pause menu.";
+			else
+				description = "Эта опция не может быть переключена во время паузы";
+		else
+			description = desc;
+	}
+
+	public override function left():Bool
+	{
+		if (OptionsMenu.isInPause)
+			return false;
+		FlxG.save.data.enablePsychInterface = !FlxG.save.data.enablePsychInterface;
+		display = updateDisplay();
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		left();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		if (!FlxG.save.data.language)
+			return "Interface type < " + (!FlxG.save.data.enablePsychInterface ? "Kade" : "Psych") + " >";
+		else
+			return "Тип интерфейса < " + (!FlxG.save.data.enablePsychInterface ? "Kade" : "Psych") + " >";
+	}
+}
+
 class AccuracyOption extends Option
 {
 	public function new(desc:String)

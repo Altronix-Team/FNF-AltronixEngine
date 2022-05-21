@@ -137,11 +137,12 @@ class OptionsMenu extends FlxSubState
 					new ResetButtonOption("Toggle pressing R to gameover."),
 					new InstantRespawn("Toggle if you instantly respawn after dying."),
 					new CamZoomOption("Toggle the camera zoom in-game."),
+					new NoteSplashOption("Toggle note splashes after perfect hit"),
+					new PsychInterfaceOption('Toggles Psych Engine song interface'),
 					// new OffsetMenu("Get a note offset based off of your inputs!"),
 					new DFJKOption(),
 					new Judgement("Create a custom judgement preset"),
-					new CustomizeGameplay("Drag and drop gameplay modules to your prefered positions!"),
-					new NoteSplashOption("Toggle note splashes after perfect hit")
+					new CustomizeGameplay("Drag and drop gameplay modules to your prefered positions!")
 				]),
 				new OptionCata(345, 40, "Appearance", [
 					new NoteskinOption("Change your current noteskin"), new EditorRes("Not showing the editor grid will greatly increase editor performance"),
@@ -168,6 +169,7 @@ class OptionsMenu extends FlxSubState
 					new LanguageOption("Change Dialog Language"),
 					//new CachingOption("Toggle caching"),
 					new FullscreenOnStartOption('Toggles fullscreen on game start'),
+					//new LoadingScreensOption("Toggles the display of loading screens when switching between different menus")
 				]),
 				new OptionCata(935, 40, "Saves", [
 					#if desktop // new ReplayOption("View saved song replays."),
@@ -207,11 +209,12 @@ class OptionsMenu extends FlxSubState
 					new ResetButtonOption("При нажатии на R, вы проигрываете."),
 					new InstantRespawn("Если включено, песня перезапускается сразу после смерти."),
 					new CamZoomOption("Переключить масштаб камеры в игре."),
+					new NoteSplashOption("Переключить брызги после идеального попадания по ноте"),
+					new PsychInterfaceOption('Переключить на интерфейс песен из Psych Engine'),
 					// new OffsetMenu("Get a note offset based off of your inputs!"),
 					new DFJKOption(),
 					new Judgement("Изменить время засчитывания стрелок (Sick/Good/Bad/Shit)."),
-					new CustomizeGameplay("Перемещайте геймплейные составляющие как хотите!"),
-					new NoteSplashOption("Переключить брызги после идеального попадания по ноте")
+					new CustomizeGameplay("Перемещайте геймплейные составляющие как хотите!")
 				]),
 				new OptionCata(345, 40, "Внешний вид", [
 					new NoteskinOption("Изменение внешнего вида нот."), new EditorRes("Отображение сетки в меню чартинга"),
@@ -238,6 +241,7 @@ class OptionsMenu extends FlxSubState
 					new LanguageOption("Изменить язык"),
 					//new CachingOption("Переключить кэширование"),
 					new FullscreenOnStartOption('Переключает полный экран при запуске игры'),
+					//new LoadingScreensOption("Переключает отображение загрузочных экранов при переходе между разными меню")
 				]),
 				new OptionCata(935, 40, "Сохранения", [
 					#if desktop // new ReplayOption("View saved song replays."),

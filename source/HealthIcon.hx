@@ -57,11 +57,20 @@ class HealthIcon extends FlxSprite
 		(isOldIcon = !isOldIcon) ? changeIcon("bf-old") : changeIcon(char);
 	}
 
+	private var iconOffsets:Array<Float> = [0, 0];
 	public function changeIcon(char:String)
 	{
 		if (OpenFlAssets.exists(Paths.image('icons/' + char)))
 			{
-				loadGraphic(Paths.loadImage('icons/' + char), true, 150, 150);
+				loadGraphic(Paths.loadImage('icons/' + char));
+				if (width <= 150)
+					loadGraphic(Paths.loadImage('icons/' + char), true, Math.floor(width), Math.floor(height));
+				else
+					loadGraphic(Paths.loadImage('icons/' + char), true, Math.floor(width / 2), Math.floor(height));
+
+				iconOffsets[0] = (width - 150) / 2;
+				iconOffsets[1] = (width - 150) / 2;
+				updateHitbox();
 
 				if (char.contains('pixel') || char.startsWith('senpai') || char.startsWith('spirit'))
 					antialiasing = false
@@ -80,6 +89,13 @@ class HealthIcon extends FlxSprite
 				animation.play('face');
 			}
 	}
+
+	override function updateHitbox()
+		{
+			super.updateHitbox();
+			offset.x = iconOffsets[0];
+			offset.y = iconOffsets[1];
+		}
 
 	override function update(elapsed:Float)
 	{

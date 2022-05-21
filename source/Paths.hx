@@ -241,7 +241,7 @@ class Paths
 		return '$library:assets/$library/$file';
 	}
 
-	public static function getPreloadPath(file:String)
+	public static function getPreloadPath(file:String = '')
 	{
 		return 'assets/$file';
 	}
@@ -322,10 +322,6 @@ class Paths
 				songLowercase = 'philly';
 			case 'm.i.l.f':
 				songLowercase = 'milf';
-			case 'rain-glint':
-				songLowercase = 'rainglint';
-			case 'rain-glint-(old)':
-				songLowercase = 'rainglint(old)';
 		}
 		var result = 'songs:assets/songs/${songLowercase}/Voices.$SOUND_EXT';
 		// Return null if the file does not exist.

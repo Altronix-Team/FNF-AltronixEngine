@@ -188,7 +188,7 @@ class DialogueBox extends FlxSpriteGroup
 		dropText.scrollFactor.set();
 		add(dropText);
 
-		swagDialogue = new FlxTypeText(240, 500, Std.int(FlxG.width * 0.6), "", 32);
+		swagDialogue = new FlxTypeText(240, 480, Std.int(FlxG.width * 0.6), "", 32);
 		if (!FlxG.save.data.language)
 			swagDialogue.font = 'Pixel Arial 11 Bold';
 		else

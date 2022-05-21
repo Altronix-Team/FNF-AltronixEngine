@@ -81,14 +81,20 @@ class GameOverSubstate extends MusicBeatSubstate
 				GameplayCustomizeState.freeplayStage = 'stage';
 				GameplayCustomizeState.freeplaySong = 'bopeebo';
 				GameplayCustomizeState.freeplayWeek = 1;
-				FlxG.switchState(new StoryMenuState());
+				MusicBeatState.switchState(new StoryMenuState());
 			}
 			else if (PlayState.isExtras)
-				FlxG.switchState(new SecretState());
+				MusicBeatState.switchState(new SecretState());
+			else if (PlayState.fromPasswordMenu)
+				MusicBeatState.switchState(new MainMenuState());
 			else
-				FlxG.switchState(new FreeplayState());
+				MusicBeatState.switchState(new FreeplayState());
 			PlayState.loadRep = false;
 			PlayState.stageTesting = false;
+			PlayState.isStoryMode = false;
+			PlayState.isExtras = false;
+			PlayState.fromPasswordMenu = false;
+			PlayState.isFreeplay = false;
 		}
 
 		if (boyfriend.animation.curAnim.name == 'firstDeath' && boyfriend.animation.curAnim.curFrame == 12)

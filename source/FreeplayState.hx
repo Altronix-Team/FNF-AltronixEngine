@@ -23,7 +23,6 @@ import openfl.Lib;
 import flixel.util.FlxColor;
 import flixel.tweens.FlxTween;
 import openfl.utils.Assets as OpenFlAssets;
-import LoadingState.LoadingsState;
 #if desktop
 import DiscordClient;
 #end
@@ -94,7 +93,7 @@ class FreeplayState extends MusicBeatState
 
 		cached = false;
 
-		populateSongData();
+		PlayState.isFreeplay = true;
 		PlayState.inDaPlay = false;
 		PlayState.currentSong = "bruh";
 
@@ -164,6 +163,9 @@ class FreeplayState extends MusicBeatState
 		bg = new FlxSprite().loadGraphic(Paths.loadImage('menuDesat'));
 		bg.antialiasing = FlxG.save.data.antialiasing;
 		add(bg);
+
+		if (!FreeplaySongMetadata.preloaded)
+			populateSongData();
 
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);
@@ -382,7 +384,7 @@ class FreeplayState extends MusicBeatState
 				#end
 			}
 		}
-		
+		FreeplaySongMetadata.preloaded = true;
 	}
 
 	static function getShitSongID(curDiff:Int):Int
@@ -609,6 +611,7 @@ class FreeplayState extends MusicBeatState
 
 		if (controls.BACK)
 		{
+			PlayState.isFreeplay = false;
 			FlxG.switchState(new MainMenuState());
 		}
 
@@ -624,7 +627,7 @@ class FreeplayState extends MusicBeatState
 		}
 
 		// AnimationDebug and StageDebug are only enabled in debug builds.
-		#if debug
+		/*#if debug
 		if (dadDebug)
 		{
 			loadAnimDebug(true);
@@ -633,7 +636,7 @@ class FreeplayState extends MusicBeatState
 		{
 			loadAnimDebug(false);
 		}
-		#end
+		#end*/
 	}
 
 	function loadAnimDebug(dad:Bool = true)
@@ -694,10 +697,6 @@ class FreeplayState extends MusicBeatState
 		}	
 
 		PlayState.SONG = currentSongData;
-		PlayState.isStoryMode = false;
-		PlayState.isFreeplay = true;
-		PlayState.isExtras = false;
-		PlayState.fromPasswordMenu = false;
 		PlayState.storyDifficulty = difficulty;
 		PlayState.storyWeek = songs[curSelected].week;
 		Debug.logInfo('Loading song ${PlayState.SONG.songName} from week ${PlayState.storyWeek} into Free Play...');
@@ -913,37 +912,7 @@ class FreeplayState extends MusicBeatState
 		if (songListen)
 			vocals.resume();
 	}
-} class FreeplaySongMetadata
-{
-	public var songName:String = "";
-	public var week:Int = 0;
-	#if FEATURE_STEPMANIA
-	public var sm:SMFile;
-	public var path:String;
-	#end
-	public var songCharacter:String = "";
-
-	public var diffs = [];
-
-	#if FEATURE_STEPMANIA
-	public function new(song:String, week:Int, songCharacter:String, ?sm:SMFile = null, ?path:String = "")
-	{
-		this.songName = song;
-		this.week = week;
-		this.songCharacter = songCharacter;
-		this.sm = sm;
-		this.path = path;
-	}
-	#else
-	public function new(song:String, week:Int, songCharacter:String)
-	{
-		this.songName = song;
-		this.week = week;
-		this.songCharacter = songCharacter;
-	}
-	#end
-}
-
+} 
 typedef FreeplaySonglist =
 {
 	var freeplaySonglist:Array<SongsWithWeekId>;

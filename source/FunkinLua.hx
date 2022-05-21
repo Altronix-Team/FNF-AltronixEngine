@@ -79,7 +79,7 @@ class FunkinLua {
 			return;
 		}
 		scriptName = script;
-		trace('lua file loaded succesfully:' + script);
+		Debug.logTrace('lua file loaded succesfully:' + script);
 
 		#if (haxe >= "4.0.0")
 		accessedProps = new Map();
@@ -131,7 +131,7 @@ class FunkinLua {
 
 		set('accuracy', 0);
 		set('ratingName', '');
-		set('version', MainMenuState.altronixEngineVer.trim());
+		set('version', EngineConstants.engineVer.trim());
 		
 		set('inGameOver', false);
 		set('mustHitSection', false);
@@ -757,41 +757,41 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "getCharacterX", function(type:String) {
 			switch(type.toLowerCase()) {
 				case 'dad' | 'opponent':
-					return PlayState.instance.dad.x;
+					return PlayState.instance.dadGroup.x;
 				case 'gf' | 'girlfriend':
-					return PlayState.instance.gf.x;
+					return PlayState.instance.gfGroup.x;
 				default:
-					return PlayState.instance.boyfriend.x;
+					return PlayState.instance.boyfriendGroup.x;
 			}
 		});
 		Lua_helper.add_callback(lua, "setCharacterX", function(type:String, value:Float) {
 			switch(type.toLowerCase()) {
 				case 'dad' | 'opponent':
-					PlayState.instance.dad.x = value;
+					PlayState.instance.dadGroup.x = value;
 				case 'gf' | 'girlfriend':
-					PlayState.instance.gf.x = value;
+					PlayState.instance.gfGroup.x = value;
 				default:
-					PlayState.instance.boyfriend.x = value;
+					PlayState.instance.boyfriendGroup.x = value;
 			}
 		});
 		Lua_helper.add_callback(lua, "getCharacterY", function(type:String) {
 			switch(type.toLowerCase()) {
 				case 'dad' | 'opponent':
-					return PlayState.instance.dad.y;
+					return PlayState.instance.dadGroup.y;
 				case 'gf' | 'girlfriend':
-					return PlayState.instance.gf.y;
+					return PlayState.instance.gfGroup.y;
 				default:
-					return PlayState.instance.boyfriend.y;
+					return PlayState.instance.boyfriendGroup.y;
 			}
 		});
 		Lua_helper.add_callback(lua, "setCharacterY", function(type:String, value:Float) {
 			switch(type.toLowerCase()) {
 				case 'dad' | 'opponent':
-					PlayState.instance.dad.y = value;
+					PlayState.instance.dadGroup.y = value;
 				case 'gf' | 'girlfriend':
-					PlayState.instance.gf.y = value;
+					PlayState.instance.gfGroup.y = value;
 				default:
-					PlayState.instance.boyfriend.y = value;
+					PlayState.instance.boyfriendGroup.y = value;
 			}
 		});
 		Lua_helper.add_callback(lua, "cameraSetTarget", function(target:String) {
@@ -1001,11 +1001,11 @@ class FunkinLua {
 						}
 						else
 						{
-							var position:Int = PlayState.instance.members.indexOf(PlayState.instance.gf);
-							if(PlayState.instance.members.indexOf(PlayState.instance.boyfriend) < position) {
-								position = PlayState.instance.members.indexOf(PlayState.instance.boyfriend);
-							} else if(PlayState.instance.members.indexOf(PlayState.instance.dad) < position) {
-								position = PlayState.instance.members.indexOf(PlayState.instance.dad);
+							var position:Int = PlayState.instance.members.indexOf(PlayState.instance.gfGroup);
+							if(PlayState.instance.members.indexOf(PlayState.instance.boyfriendGroup) < position) {
+								position = PlayState.instance.members.indexOf(PlayState.instance.boyfriendGroup);
+							} else if(PlayState.instance.members.indexOf(PlayState.instance.dadGroup) < position) {
+								position = PlayState.instance.members.indexOf(PlayState.instance.dadGroup);
 							}
 							PlayState.instance.insert(position, shit);
 						}
@@ -1209,10 +1209,7 @@ class FunkinLua {
 			return FlxG.random.bool(chance);
 		});
 		Lua_helper.add_callback(lua, "startDialogue", function(dialogueFile:String, music:String = null) {
-			var path:String = Paths.json(Paths.formatToSongPath(PlayState.SONG.song) + '/' + dialogueFile);
-			/*if(!FileSystem.exists(path)) {
-				path = Paths.json(Paths.formatToSongPath(PlayState.SONG.song) + '/' + dialogueFile);
-			}*/
+			var path:String = Paths.json('songs/' + PlayState.SONG.songId + '/' + dialogueFile);
 			luaTrace('Trying to load dialogue: ' + path);
 
 			if(FileSystem.exists(path)) {
@@ -1223,29 +1220,41 @@ class FunkinLua {
 				} else {
 					luaTrace('Your dialogue file is badly formatted!');
 				}
-			} else {
-				luaTrace('Dialogue file not found');
-				if(PlayState.instance.endingSong) {
-					PlayState.instance.endSong();
+			} 
+			else if (Assets.exists(path))
+				{
+					var shit:DialogueFile = DialogueBoxPsych.parseDialogue(path);
+				if(shit.dialogue.length > 0) {
+					PlayState.instance.startDialogue(shit, music);
+					luaTrace('Successfully loaded dialogue');
 				} else {
-					PlayState.instance.startCountdown();
+					luaTrace('Your dialogue file is badly formatted!');
 				}
 			}
-		});
-		Lua_helper.add_callback(lua, "startVideo", function(videoFile:String) {
-			#if VIDEOS_ALLOWED
-			if(FileSystem.exists(Paths.video(videoFile))) {
-				PlayState.instance.startVideo(videoFile);
-			} else {
-				luaTrace('Video file not found: ' + videoFile);
-			}
-			#else
+			else {
+			luaTrace('Dialogue file not found');
 			if(PlayState.instance.endingSong) {
 				PlayState.instance.endSong();
 			} else {
 				PlayState.instance.startCountdown();
 			}
-			#end
+			}
+		});
+
+		Lua_helper.add_callback(lua, "startVideo", function(videoFile:String) {
+			if(FileSystem.exists(Paths.video(videoFile))) {
+				PlayState.instance.playCutscene(videoFile);
+			} else {
+				luaTrace('Video file not found: ' + videoFile);
+			}
+		});
+
+		Lua_helper.add_callback(lua, "startEndVideo", function(videoFile:String) {
+			if(FileSystem.exists(Paths.video(videoFile))) {
+				PlayState.instance.playEndCutscene(videoFile);
+			} else {
+				luaTrace('Video file not found: ' + videoFile);
+			}
 		});
 		
 		Lua_helper.add_callback(lua, "playMusic", function(sound:String, volume:Float = 1, loop:Bool = false) {

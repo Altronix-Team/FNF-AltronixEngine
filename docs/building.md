@@ -1,4 +1,4 @@
-﻿# Building Friday Night Funkin': Altronix Engine
+# Building Friday Night Funkin': Altronix Engine
 
 **Also note**: you should be familiar with the commandline. If not, read this [quick guide by ninjamuffin](https://ninjamuffin99.newgrounds.com/news/post/1090480).
 
@@ -20,6 +20,7 @@
 	 - `haxelib install flixel-ui`
 	 - `haxelib install hscript`
 	 - `haxelib install flixel-addons`
+	 - `haxelib install actuate`
 	 - `haxelib run lime setup`
 	 - `haxelib run lime setup flixel`
 	 - `haxelib run flixel-tools setup`
@@ -27,7 +28,7 @@
 	 - `haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit`
 	 - `haxelib git faxe https://github.com/uhrobots/faxe`
 	 - `haxelib install polymod`
-	 - `haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rp`
+	 - `haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc`
 	 - `haxelib git tentools https://github.com/TentaRJ/tentools.git`
 	 - `haxelib git systools https://github.com/haya3218/systools`
 	 - `haxelib run lime rebuild systools [windows, mac, linux]`

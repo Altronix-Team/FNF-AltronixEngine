@@ -200,7 +200,6 @@
 	<ndll name="systools" haxelib="systools" />
 	<haxelib name="tentools" />
 	<haxelib name="haxe-strings" />
-	<haxelib name="hxcodec"/>
 	
 	<!--haxelib name="hscript-ex"/-->
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->

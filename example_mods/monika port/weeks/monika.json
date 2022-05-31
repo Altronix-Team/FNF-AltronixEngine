@@ -1,16 +1,17 @@
 {
-	"weekIdFromJson": 0,
-	"weekNameFromJson": "Monika",
-	"weekBackgroundFromJson": "Senpai",
-	"weekCharacterFromJson": [
-		"",
-		"bf",
-		"gf"
-	],
-	"weekDataFromJson": [
+	"songs": [
 		"high-school-conflict",
 		"dreams-of-roses",
 		"your-demise"
 	],
-	"weekImageFromJson": "week1"
+	"weekBackground": "Senpai",
+	"difficulties": "",
+	"weekCharacters": [
+		"",
+		"bf",
+		"gf"
+	],
+	"weekImage": "week1",
+	"storyName": "Monika",
+	"weekBefore": "tutorial"
 }

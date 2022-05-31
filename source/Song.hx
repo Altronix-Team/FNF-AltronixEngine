@@ -234,22 +234,20 @@ class Song
 	}
 
 	public static function picospeakerLoad(jsonInput:String, ?folder:String):SongData
+	{
+		var folderLowercase = StringTools.replace(folder, " ", "-").toLowerCase();
+	
+		var rawJson = OpenFlAssets.getText(Paths.json('songs/' + folderLowercase + '/' + jsonInput.toLowerCase())).trim();
+	
+		while (!rawJson.endsWith("}"))
 		{
-			var folderLowercase = StringTools.replace(folder, " ", "-").toLowerCase();
-			
-			trace('loading ' + folderLowercase + '/' + jsonInput.toLowerCase());
-	
-			var rawJson = OpenFlAssets.getText(Paths.json('songs/' + folderLowercase + '/' + jsonInput.toLowerCase())).trim();
-	
-			while (!rawJson.endsWith("}"))
-			{
-				rawJson = rawJson.substr(0, rawJson.length - 1);
-			}
-	
-			var swagShit:SongData = cast Json.parse(rawJson).song;
-			swagShit.validScore = true;
-			return swagShit;
+			rawJson = rawJson.substr(0, rawJson.length - 1);
 		}
+	
+		var swagShit:SongData = cast Json.parse(rawJson).song;
+		swagShit.validScore = true;
+		return swagShit;
+	}
 
 	public static function parseJSONshit(songId:String, jsonData:Dynamic, jsonMetaData:Dynamic, ?jsonEvents:Dynamic):SongData
 	{

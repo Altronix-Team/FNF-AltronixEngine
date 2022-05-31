@@ -2114,12 +2114,16 @@ class MenuMusicOption extends Option
 	{
 		if (!FlxG.sound.music.playing)
 		{
-			FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)));
+			if (!OptionsMenu.isInPause)
+				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)));
 		}
 		else
 		{
-			FlxG.sound.music.stop();
-			FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)));
+			if (!OptionsMenu.isInPause)
+			{
+				FlxG.sound.music.stop();
+				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)));
+			}
 		}
 		
 		if (!FlxG.save.data.language)

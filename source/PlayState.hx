@@ -364,6 +364,8 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 
 	var luaStage = false;
 
+	public static var doof = null;
+
 	public function addObject(object:FlxBasic)
 	{
 		add(object);
@@ -859,8 +861,6 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 				add(i);
 				stageGroup.add(i);
 			}
-
-			//add(stageGroup);
 		}
 
 		if (!PlayStateChangeables.Optimize && !luaStage)
@@ -945,11 +945,11 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 		modchartSprites.set('overlay', overlay);
 	
 		colorTween = FlxTween.color(overlay, 1, overlay.color, overlayColor, {
-				onComplete: function(twn:FlxTween)
-				{
-					colorTween = null;
-				}
-			});
+			onComplete: function(twn:FlxTween)
+			{
+				colorTween = null;
+			}
+		});
 
 		gf.x = stageData.gf[0];
 		gf.y = stageData.gf[1];
@@ -1033,8 +1033,6 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 		trace('uh ' + PlayStateChangeables.safeFrames);
 
 		trace("SF CALC: " + Math.floor((PlayStateChangeables.safeFrames / 60) * 1000));
-
-		var doof = null;
 
 		if (isStoryMode)
 		{
@@ -1486,29 +1484,6 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 		video.playVideo(Paths.video(name));
 	}
 
-	var enddial:Bool = false;
-	function endDialogue(?dialogueBox:DialogueBox):Void
-		{
-			enddial = true;
-	
-			new FlxTimer().start(0.3, function(tmr:FlxTimer)
-			{
-				if (dialogueBox != null)
-				{
-					camHUD.visible = false;
-					
-					inCutscene = true;
-	
-					add(dialogueBox);
-				}
-				else
-				{
-					enddial = false;
-					endSong();
-				}
-			});
-		}
-
 	var dialogueCount:Int = 0;
 	public var psychDialogue:DialogueBoxPsych;
 	//You don't have to add a song, just saying. You can just do "startDialogue(dialogueJson);" and it should work
@@ -1845,7 +1820,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 			}
 		}
 
-	function schoolIntro(?dialogueBox:DialogueBox):Void
+	public function schoolIntro(?dialogueBox:DialogueBox):Void
 	{
 		var black:FlxSprite = new FlxSprite(-100, -100).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
 		black.scrollFactor.set();
@@ -2436,7 +2411,6 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 				FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), 1, false);
 			#end
 		}
-		FlxG.sound.music.onComplete = endSong;
 
 		songLength = ((FlxG.sound.music.length / songMultiplier) / 1000);
 		
@@ -3297,36 +3271,10 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 				{
 					Debug.logTrace("we're fuckin ending the song ");
 					endingSong = true;
-					if (Paths.doesTextAssetExist(Paths.txt('data/songs/${PlayState.SONG.songId}/dialogue-end-eng'))
-						&& Paths.doesTextAssetExist(Paths.txt('data/songs/${PlayState.SONG.songId}/dialogue-end-ru')))
-				  	{
-
-						if (isStoryMode)
-						{
-							var dialoguebox = null;
-							if (FlxG.save.data.language)
-								dialoguebox = new DialogueBox(false, CoolUtil.coolTextFile(Paths.txt('data/songs/${PlayState.SONG.songId}/dialogue-end-ru')));
-							else if (!FlxG.save.data.language)
-								dialoguebox = new DialogueBox(false, CoolUtil.coolTextFile(Paths.txt('data/songs/${PlayState.SONG.songId}/dialogue-end-eng')));
-							dialoguebox.scrollFactor.set();
-							dialoguebox.finishThing = endSong;
-							endDialogue(dialoguebox);
-						}
-						else
-							{
-								new FlxTimer().start(2, function(timer)
-									{
-										endSong();
-									});
-							}
-				  	}
-					else
-					{
 						new FlxTimer().start(2, function(timer)
 							{
 								endSong();
 							});
-					}
 				}
 			}
 		}

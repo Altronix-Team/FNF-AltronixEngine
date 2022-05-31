@@ -36,7 +36,7 @@ class AtlasFrameMaker extends FlxFramesCollection
 	*
 	*/
 
-	public static function construct(key:String, ?_excludeArray:Array<String> = null, ?noAntialiasing:Bool = false):FlxFramesCollection
+	public static function construct(key:String,?_excludeArray:Array<String> = null, ?noAntialiasing:Bool = false):FlxFramesCollection
 	{
 		// widthoffset = _widthoffset;
 		// heightoffset = _heightoffset;
@@ -46,7 +46,8 @@ class AtlasFrameMaker extends FlxFramesCollection
 
 		if (Paths.fileExists('images/$key/spritemap1.json', TEXT))
 		{
-			Debug.logTrace("Only Spritemaps made with Adobe Animate 2018 are supported");
+			PlayState.instance.addTextToDebug("Only Spritemaps made with Adobe Animate 2018 are supported");
+			trace("Only Spritemaps made with Adobe Animate 2018 are supported");
 			return null;
 		}
 

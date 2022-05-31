@@ -28,6 +28,11 @@ import lime.app.Application;
 import openfl.Assets;
 import flixel.input.keyboard.FlxKey;
 import GameJolt.GameJoltAPI;
+import openfl.utils.Assets as OpenFlAssets;
+
+#if FEATURE_MODCORE
+import ModCore;
+#end
 
 #if desktop
 import DiscordClient;
@@ -49,20 +54,15 @@ class TitleState extends MusicBeatState
 	public var muteKeys:Array<FlxKey>;
 	public var volumeDownKeys:Array<FlxKey>;
 	public var volumeUpKeys:Array<FlxKey>;
-	public static var fullscreenBind:FlxKey;
 
 	var curWacky:Array<String> = [];
 
 	var wackyImage:FlxSprite;
 
+	var checkVer:Bool = true;
+
 	override public function create():Void
 	{
-		// TODO: Refactor this to use OpenFlAssets.
-		#if FEATURE_FILESYSTEM
-		if (!sys.FileSystem.exists(Sys.getCwd() + "/assets/replays"))
-			sys.FileSystem.createDirectory(Sys.getCwd() + "/assets/replays");
-		#end
-
 		@:privateAccess
 		{
 			Debug.logTrace("We loaded " + openfl.Assets.getLibrary("default").assetsLoaded + " assets into the default library");
@@ -81,8 +81,10 @@ class TitleState extends MusicBeatState
 
 		KeyBinds.keyCheck();
 		// It doesn't reupdate the list before u restart rn lmao
-
+		
 		NoteskinHelpers.updateNoteskins();
+
+		MenuMusicStuff.updateMusic();
 
 		if (FlxG.save.data.volDownBind == null)
 			FlxG.save.data.volDownBind = "MINUS";
@@ -105,7 +107,6 @@ class TitleState extends MusicBeatState
 
 		MusicBeatState.initSave = true;
 
-		fullscreenBind = FlxKey.fromString(FlxG.save.data.fullscreenBind);
 
 		Highscore.load();
 
@@ -117,7 +118,6 @@ class TitleState extends MusicBeatState
 
 		super.create();
 
-		//FreeplayState.populateSongData();
 
 		if (FlxG.save.data.fullscreenOnStart)
 			{
@@ -142,6 +142,15 @@ class TitleState extends MusicBeatState
 			startIntro();
 		});
 		#else
+		#if (!debug && desktop)
+		if (!DiscordClient.isInitialized)
+		{
+			DiscordClient.initialize();
+			Application.current.onExit.add (function (exitCode) {
+				DiscordClient.shutdown();
+			});
+		}
+		#end
 		startIntro();
 		#end
 		#end
@@ -251,11 +260,7 @@ class TitleState extends MusicBeatState
 			// IF THIS PR IS HERE IF ITS ACCEPTED UR GOOD TO GO
 			// https://github.com/HaxeFlixel/flixel-addons/pull/348
 
-			// var music:FlxSound = new FlxSound();
-			// music.loadStream(Paths.music('freakyMenu'));
-			// FlxG.sound.list.add(music);
-			// music.play();
-			FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
+			FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)), 0);
 
 			FlxG.sound.music.fadeIn(4, 0, 0.7);
 			Conductor.changeBPM(102);
@@ -315,9 +320,45 @@ class TitleState extends MusicBeatState
 
 			new FlxTimer().start(2, function(tmr:FlxTimer)
 			{
-				
+				if (checkVer)
+				{
+					Debug.logTrace('make me works, daddy');
 					FlxG.switchState(new MainMenuState());
-					clean();
+						clean();
+					
+					/*http.onData = function(data:String)
+					{
+						returnedData[0] = data.substring(0, data.indexOf(';'));
+						returnedData[1] = data.substring(data.indexOf('-'), data.length);
+						if (EngineConstants.engineVer != returnedData[0].trim() && !OutdatedSubState.leftState)
+						{
+							trace('outdated lmao! ' + returnedData[0] + ' != ' + EngineConstants.engineVer);
+							OutdatedSubState.needVer = returnedData[0];
+							OutdatedSubState.currChanges = returnedData[1];
+							FlxG.switchState(new OutdatedSubState());
+							clean();
+						}
+						else
+						{
+							FlxG.switchState(new MainMenuState());
+							clean();
+						}
+					}
+
+					http.onError = function(error)
+					{
+						trace('error: $error');
+						FlxG.switchState(new MainMenuState()); // fail but we go anyway
+						clean();
+					}
+
+					http.request();*/
+				}
+				else
+				{
+					FlxG.switchState(new MainMenuState());
+						clean();
+				}
 			});
 			// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
 		}
@@ -378,49 +419,38 @@ class TitleState extends MusicBeatState
 				deleteCoolText();
 			case 1:
 				createCoolText(['ninjamuffin99', 'phantomArcade', 'kawaisprite', 'evilsk8er']);
-			// credTextShit.visible = true;
 			case 3:
 				addMoreText('present');
-			// credTextShit.text += '\npresent...';
-			// credTextShit.addText();
 			case 4:
 				deleteCoolText();
-			// credTextShit.visible = false;
-			// credTextShit.text = 'In association \nwith';
-			// credTextShit.screenCenter();
 			case 5:
-				createCoolText(['In Partnership', 'with']);
+				if (Main.watermarks)
+					createCoolText(['Altronix Engine', 'by']);
+				else
+					createCoolText(['In Partnership', 'with']);
 			case 7:
-				addMoreText('Newgrounds');
-				ngSpr.visible = true;
-			// credTextShit.text += '\nNewgrounds';
+				if (Main.watermarks)
+					addMoreText('AltronMaxX');
+				else
+				{
+					addMoreText('Newgrounds');
+					ngSpr.visible = true;
+				}
 			case 8:
 				deleteCoolText();
 				ngSpr.visible = false;
-			// credTextShit.visible = false;
-
-			// credTextShit.text = 'Shoutouts Tom Fulp';
-			// credTextShit.screenCenter();
 			case 9:
 				createCoolText([curWacky[0]]);
-			// credTextShit.visible = true;
 			case 11:
 				addMoreText(curWacky[1]);
-			// credTextShit.text += '\nlmao';
 			case 12:
 				deleteCoolText();
-			// credTextShit.visible = false;
-			// credTextShit.text = "Friday";
-			// credTextShit.screenCenter();
 			case 13:
 				addMoreText('Friday');
-			// credTextShit.visible = true;
 			case 14:
 				addMoreText('Night');
-			// credTextShit.text += '\nNight';
 			case 15:
-				addMoreText('Funkin'); // credTextShit.text += '\nFunkin';
-
+				addMoreText('Funkin');
 			case 16:
 				skipIntro();
 		}
@@ -430,6 +460,11 @@ class TitleState extends MusicBeatState
 
 	function skipIntro():Void
 	{
+
+		NoteskinHelpers.updateNoteskins();
+
+		MenuMusicStuff.updateMusic();
+
 		if (!skippedIntro)
 		{
 			Debug.logInfo("Skipping intro...");

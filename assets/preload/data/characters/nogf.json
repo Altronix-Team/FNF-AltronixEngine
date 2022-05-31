@@ -76,6 +76,7 @@
 	"startingAnim": "danceRight",
 	"characterIcon": "face",
 	"antialiasing": true,
+	"isGF": true,
 	"name": "characters/nogf_assets",
 	"barColorJson": [
 		165,

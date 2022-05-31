@@ -101,7 +101,7 @@ class FunkinLua {
 		set('crochet', Conductor.crochet);
 		set('stepCrochet', Conductor.stepCrochet);
 		set('songLength', FlxG.sound.music.length);
-		set('songName', PlayState.SONG.song);
+		set('songName', PlayState.SONG.songId);
 		set('startedCountdown', false);
 
 		set('isStoryMode', PlayState.isStoryMode);
@@ -192,7 +192,7 @@ class FunkinLua {
 			var cervix = luaFile + ".lua";
 			var doPush = false;
 			cervix = Paths.getPreloadPath(cervix);
-			if(FileSystem.exists(cervix)) {
+			if(Assets.exists(cervix)) {
 				doPush = true;
 			}
 
@@ -219,7 +219,7 @@ class FunkinLua {
 			var doPush = false;
 			
 			cervix = Paths.getPreloadPath(cervix);
-			if(FileSystem.exists(cervix)) {
+			if(Assets.exists(cervix)) {
 				doPush = true;
 			}
 			
@@ -245,7 +245,7 @@ class FunkinLua {
 		
 		Lua_helper.add_callback(lua, "loadSong", function(?name:String = null, ?difficultyNum:Int = -1) {
 			if(name == null || name.length < 1)
-				name = PlayState.SONG.song;
+				name = PlayState.SONG.songId;
 			if (difficultyNum == -1)
 				difficultyNum = PlayState.storyDifficulty;
 
@@ -747,7 +747,7 @@ class FunkinLua {
 			else
 				MusicBeatState.switchState(new FreeplayState());
 
-			FlxG.sound.playMusic(Paths.music('freakyMenu'));
+			FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)));
 			PlayState.instance.transitioning = true;
 		});
 		Lua_helper.add_callback(lua, "getSongPosition", function() {
@@ -1212,16 +1212,7 @@ class FunkinLua {
 			var path:String = Paths.json('songs/' + PlayState.SONG.songId + '/' + dialogueFile);
 			luaTrace('Trying to load dialogue: ' + path);
 
-			if(FileSystem.exists(path)) {
-				var shit:DialogueFile = DialogueBoxPsych.parseDialogue(path);
-				if(shit.dialogue.length > 0) {
-					PlayState.instance.startDialogue(shit, music);
-					luaTrace('Successfully loaded dialogue');
-				} else {
-					luaTrace('Your dialogue file is badly formatted!');
-				}
-			} 
-			else if (Assets.exists(path))
+			if (Assets.exists(path))
 				{
 					var shit:DialogueFile = DialogueBoxPsych.parseDialogue(path);
 				if(shit.dialogue.length > 0) {
@@ -1242,7 +1233,7 @@ class FunkinLua {
 		});
 
 		Lua_helper.add_callback(lua, "startVideo", function(videoFile:String) {
-			if(FileSystem.exists(Paths.video(videoFile))) {
+			if(Assets.exists(Paths.video(videoFile))) {
 				PlayState.instance.playCutscene(videoFile);
 			} else {
 				luaTrace('Video file not found: ' + videoFile);
@@ -1250,8 +1241,8 @@ class FunkinLua {
 		});
 
 		Lua_helper.add_callback(lua, "startEndVideo", function(videoFile:String) {
-			if(FileSystem.exists(Paths.video(videoFile))) {
-				PlayState.instance.playEndCutscene(videoFile);
+			if(Assets.exists(Paths.video(videoFile))) {
+				PlayState.instance.playCutscene(videoFile, true);
 			} else {
 				luaTrace('Video file not found: ' + videoFile);
 			}
@@ -1559,8 +1550,8 @@ class FunkinLua {
 			luaTrace('Save file not initialized: ' + name);
 		});
 		
-		Lua_helper.add_callback(lua, "getTextFromFile", function(path:String, ?ignoreModFolders:Bool = false) {
-			return Paths.getTextFromFile(path, ignoreModFolders);
+		Lua_helper.add_callback(lua, "getTextFromFile", function(path:String) {
+			return Paths.getTextFromFile(path);
 		});
 
 		// DEPRECATED, DONT MESS WITH THESE SHITS, ITS JUST THERE FOR BACKWARD COMPATIBILITY
@@ -1879,9 +1870,6 @@ class FunkinLua {
 
 		var result:Null<Int> = Lua.pcall(lua, args.length, 1, 0);
 		if(result != null && resultIsAllowed(lua, result)) {
-			/*var resultStr:String = Lua.tostring(lua, result);
-			var error:String = Lua.tostring(lua, -1);
-			Lua.pop(lua, 1);*/
 			if(Lua.type(lua, -1) == Lua.LUA_TSTRING) {
 				var error:String = Lua.tostring(lua, -1);
 				Lua.pop(lua, 1);
@@ -1889,7 +1877,6 @@ class FunkinLua {
 					return Function_Continue;
 				}
 			}
-
 			var conv:Dynamic = Convert.fromLua(lua, result);
 			Lua.pop(lua, 1);
 			return conv;
@@ -1925,8 +1912,9 @@ class FunkinLua {
 		switch(Lua.type(leLua, leResult)) {
 			case Lua.LUA_TNIL | Lua.LUA_TBOOLEAN | Lua.LUA_TNUMBER | Lua.LUA_TSTRING | Lua.LUA_TTABLE:
 				return true;
+			default:
+				return false;
 		}
-		return false;
 	}
 	#end
 

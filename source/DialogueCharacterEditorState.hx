@@ -84,7 +84,8 @@ class DialogueCharacterEditorState extends MusicBeatState
 
 		FlxG.cameras.reset(camGame);
 		FlxG.cameras.add(camOther);
-		FlxCamera.defaultCameras = [camOther];
+		//FlxCamera.defaultCameras = [camOther];
+		FlxG.cameras.setDefaultDrawTarget(camOther, true);
 		
 		mainGroup = new FlxSpriteGroup();
 		mainGroup.cameras = [camGame];
@@ -685,7 +686,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 
 			if(FlxG.keys.justPressed.ESCAPE) {
 				MusicBeatState.switchState(new MasterEditorMenu());
-				FlxG.sound.playMusic(Paths.music('freakyMenu'), 1);
+				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)), 1);
 				transitioning = true;
 			}
 

@@ -39,7 +39,7 @@ class StoryMenuState extends MusicBeatState
 		return weekDataJson;
 	}
 
-	var curDifficulty:Int = 2;
+	var curDifficulty:Int = 1;
 
 	public static var weekUnlocked:Array<Bool> = [];
 
@@ -110,7 +110,7 @@ class StoryMenuState extends MusicBeatState
 		{
 			if (!FlxG.sound.music.playing)
 			{
-				FlxG.sound.playMusic(Paths.music('freakyMenu'));
+				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)));
 				Conductor.changeBPM(102);
 			}
 		}
@@ -156,36 +156,34 @@ class StoryMenuState extends MusicBeatState
 		{
 			var weekFile:WeekData = WeekData.weeksLoaded.get(WeekData.weeksList[i]);
 			var isLocked:Bool = weekIsLocked(WeekData.weeksList[i]);
-			if(!isLocked)
+
+			loadedWeeks.push(weekFile);
+			var weekThing:MenuItem;
+			if (weekFile.weekImage != null)
+				weekThing= new MenuItem(0, weekbackground.y + 396, weekFile.weekImage);
+			else
+				weekThing= new MenuItem(0, weekbackground.y + 396, WeekData.weeksList[i]);
+
+			weekThing.y += ((weekThing.height + 20) * num);
+			weekThing.targetY = num;
+			grpWeekText.add(weekThing);
+
+			weekThing.screenCenter(X);
+			weekThing.antialiasing = FlxG.save.data.antialiasing;
+			// weekThing.updateHitbox();
+
+			// Needs an offset thingie
+			if (isLocked)
 			{
-				loadedWeeks.push(weekFile);
-				var weekThing:MenuItem;
-				if (weekFile.weekImage != null)
-					weekThing= new MenuItem(0, weekbackground.y + 396, weekFile.weekImage);
-				else
-					weekThing= new MenuItem(0, weekbackground.y + 396, WeekData.weeksList[i]);
-
-				weekThing.y += ((weekThing.height + 20) * num);
-				weekThing.targetY = num;
-				grpWeekText.add(weekThing);
-
-				weekThing.screenCenter(X);
-				weekThing.antialiasing = FlxG.save.data.antialiasing;
-				// weekThing.updateHitbox();
-
-				// Needs an offset thingie
-				if (isLocked)
-				{
-					var lock:FlxSprite = new FlxSprite(weekThing.width + 10 + weekThing.x);
-					lock.frames = ui_tex;
-					lock.animation.addByPrefix('lock', 'lock');
-					lock.animation.play('lock');
-					lock.ID = i;
-					lock.antialiasing = FlxG.save.data.antialiasing;
-					grpLocks.add(lock);
-				}
-				num++;
+				var lock:FlxSprite = new FlxSprite(weekThing.width + 10 + weekThing.x);
+				lock.frames = ui_tex;
+				lock.animation.addByPrefix('lock', 'lock');
+				lock.animation.play('lock');
+				lock.ID = i;
+				lock.antialiasing = FlxG.save.data.antialiasing;
+				grpLocks.add(lock);
 			}
+			num++;		
 		}
 
 		var firstWeek:WeekData = loadedWeeks[0];
@@ -393,7 +391,6 @@ class StoryMenuState extends MusicBeatState
 			for (i in 0...leWeek.length) {
 				songArray.push(leWeek[i]);
 			}
-			Debug.logTrace(songArray);
 
 			PlayState.storyPlaylist = songArray;
 			PlayState.isStoryMode = true;

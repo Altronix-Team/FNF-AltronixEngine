@@ -2,7 +2,7 @@
  "song": {
   "songName": "Levan Polkka",
   "songId": "levan-polkka",
-  "player1": "bassmachine",
+  "player1": "pico-player",
   "hideGF": false,
   "notes": [
    {

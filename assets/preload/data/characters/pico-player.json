@@ -2,8 +2,8 @@
 	"animations": [
 		{
 			"offsets": [
-				-65,
-				-1
+				-42,
+				3
 			],
 			"frameRate": 24,
 			"prefix": "Pico NOTE LEFT0",
@@ -12,8 +12,8 @@
 		},
 		{
 			"offsets": [
-				52,
-				-7
+				85,
+				-11
 			],
 			"frameRate": 24,
 			"prefix": "Pico Note Right0",
@@ -22,7 +22,7 @@
 		},
 		{
 			"offsets": [
-				-29,
+				21,
 				27
 			],
 			"frameRate": 24,
@@ -32,8 +32,8 @@
 		},
 		{
 			"offsets": [
-				200,
-				-70
+				84,
+				-80
 			],
 			"frameRate": 24,
 			"prefix": "Pico Down Note0",
@@ -42,7 +42,7 @@
 		},
 		{
 			"offsets": [
-				0,
+				3,
 				0
 			],
 			"frameRate": 24,
@@ -52,8 +52,8 @@
 		},
 		{
 			"offsets": [
-				-48,
-				34
+				-41,
+				48
 			],
 			"frameRate": 24,
 			"prefix": "Pico NOTE LEFT miss",
@@ -62,18 +62,7 @@
 		},
 		{
 			"offsets": [
-				50,
-				41
-			],
-			"frameRate": 24,
-			"frameIndices": [],
-			"prefix": "Pico Note Right Miss",
-			"name": "singRIGHTmiss",
-			"flipX": true
-		},
-		{
-			"offsets": [
-				-19,
+				28,
 				67
 			],
 			"frameRate": 24,
@@ -83,18 +72,33 @@
 		},
 		{
 			"offsets": [
-				210,
-				-28
+				80,
+				-38
 			],
 			"frameRate": 24,
 			"prefix": "Pico Down Note MISS",
 			"frameIndices": [],
 			"name": "singDOWNmiss"
+		},
+		{
+			"offsets": [
+				80,
+				26
+			],
+			"frameIndices": [],
+			"prefix": "Pico Note Right Miss",
+			"flipX": false,
+			"interrupt": true,
+			"name": "singRIGHTmiss",
+			"looped": false,
+			"flipY": false,
+			"nextAnim": "idle",
+			"frameRate": 24
 		}
 	],
 	"hasTrail": false,
 	"camPos": [
-		0,
+		220,
 		0
 	],
 	"holdLength": 4,

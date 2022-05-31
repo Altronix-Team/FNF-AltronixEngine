@@ -102,6 +102,7 @@ class StageDebugState extends FlxState
 		FlxG.cameras.add(camGame);
 		FlxG.cameras.add(camHUD);
 		FlxCamera.defaultCameras = [camGame];
+		//FlxG.cameras.setDefaultDrawTarget(camGame, true);
 		FlxG.camera = camGame;
 		camGame.follow(camFollow);
 

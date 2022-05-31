@@ -301,10 +301,10 @@ class SecretState extends MusicBeatState
 				var poop:String = Highscore.formatSongDiff(songs[curSelected].songName.toLowerCase(), curDifficulty);
 
 				PlayState.SONG = Song.loadFromJson(songs[curSelected].songName.toLowerCase(), poop);
-				vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song));
+				vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.songId));
 
 				FlxG.sound.list.add(vocals);
-				FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), 0.7);
+				FlxG.sound.playMusic(Paths.inst(PlayState.SONG.songId), 0.7);
 				vocals.play();
 				vocals.persist = true;
 				vocals.looped = true;

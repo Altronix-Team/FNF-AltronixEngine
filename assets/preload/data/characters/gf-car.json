@@ -8,6 +8,7 @@
   "startingAnim": "danceRight",
   "isDancing": true,
   "replacesGF": true,
+  "isGF": true,
   "antialiasing": true,
   "animations": [
     {

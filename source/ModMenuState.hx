@@ -148,11 +148,10 @@ class ModMenuState extends XMLLayoutState // extends MusicBeatState
 		FlxG.mouse.visible = false;
 		FreeplaySongMetadata.preloaded = false;
 		// Gotta load any configured mods.
+
 		ModCore.loadConfiguredMods();
+
 		#if FEATURE_FILESYSTEM
-		//if (FlxG.save.data.caching)
-			//FlxG.switchState(new Caching());
-		//else
 			MusicBeatState.switchState(new TitleState());
 		#else
 			MusicBeatState.switchState(new TitleState());
@@ -199,8 +198,11 @@ class ModMenuState extends XMLLayoutState // extends MusicBeatState
 
 	function onClickSaveAndExit()
 	{
-		// Save mod preferences.
+		Character.characterList = [];
+		Character.girlfriendList = [];
+
 		writeModPreferences();
+
 
 		// Just move to the main game.
 		loadMainGame();

@@ -111,7 +111,9 @@ class EngineFPS extends TextField
 
 		if (currentCount != cacheCount /*&& visible*/)
 		{
-			text = (FlxG.save.data.fps ? "FPS: " + currentFPS : "");
+			text = (FlxG.save.data.fps ? "FPS: "
+			 + currentFPS
+			 + (Main.watermarks ? "\nAE " + "v" + EngineConstants.engineVer : "") : (Main.watermarks ? "AE " + "v" + EngineConstants.engineVer : ""));
 
 			#if (gl_stats && !disable_cffi && (!html5 || !canvas))
 			text += "\ntotalDC: " + Context3DStats.totalDrawCalls();

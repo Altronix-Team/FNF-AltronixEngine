@@ -559,7 +559,7 @@ class FreeplaySongsEditorState extends MusicBeatState
 			if(FlxG.keys.justPressed.ESCAPE) {
 				FlxG.mouse.visible = false;
 				MusicBeatState.switchState(new MasterEditorMenu());
-				FlxG.sound.playMusic(Paths.music('freakyMenu'));
+				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)));
 			}
 
 			if (!blockInput)

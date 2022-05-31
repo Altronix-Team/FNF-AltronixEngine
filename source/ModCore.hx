@@ -136,8 +136,11 @@ class ModCore
 				}
 			}
 	
-			/*for (mod in loadedModList)
-				Debug.logTrace('  * ${mod.title} v${mod.modVersion} [${mod.id}]');*/
+			if (loadedModList != null && loadedModList.length > 0)
+			{
+				for (mod in loadedModList)
+					Debug.logTrace('  * ${mod.title} v${mod.modVersion} [${mod.id}]');
+			}
 	
 			var fileList = Polymod.listModFiles("IMAGE");
 			Debug.logInfo('Installed mods have replaced ${fileList.length} images.');

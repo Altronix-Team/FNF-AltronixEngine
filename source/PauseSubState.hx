@@ -18,6 +18,7 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 
+using hx.strings.Strings;
 class PauseSubState extends MusicBeatSubstate
 {
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
@@ -42,13 +43,6 @@ class PauseSubState extends MusicBeatSubstate
 	public function new()
 	{
 		super();
-
-		if (PlayState.instance.useVideo)
-		{
-			menuItems.remove("Resume");
-			if (GlobalVideo.get().playing)
-				GlobalVideo.get().pause();
-		}
 
 		if (FlxG.sound.music.playing)
 			FlxG.sound.music.pause();
@@ -113,22 +107,37 @@ class PauseSubState extends MusicBeatSubstate
 			grpMenuShit.add(songText);
 		}
 
-		if (PlayState.isExtras || PlayState.fromPasswordMenu)
+		var diffsList = Paths.listJsonInPath('assets/data/songs/' + PlayState.SONG.songId + '/');
+		for (i in diffsList) 
+		{
+			if (i == 'events')
+				continue;
+
+			if (i == '_meta')
+				continue;
+
+			if (i.endsWith('hard'))
 			{
-				for (i in 0...CoolUtil.extrasDifficultyArray.length) {
-					var diff:String = '' + CoolUtil.extrasDifficultyArray[i];
-					difficultyChoices.push(diff);
-				}
-				difficultyChoices.push('BACK');
+				var diff:String = '' + 'Hard';
+				difficultyChoices.push(diff);
 			}
-		else
+			else if (i.endsWith('easy'))
 			{
-				for (i in 0...CoolUtil.difficultyArray.length) {
-					var diff:String = '' + CoolUtil.difficultyArray[i];
-					difficultyChoices.push(diff);
-				}
-				difficultyChoices.push('BACK');
+				var diff:String = '' + 'Easy';
+				difficultyChoices.push(diff);
 			}
+			else if (i.endsWith('hardplus'))
+			{
+				var diff:String = '' + 'Hard P';
+				difficultyChoices.push(diff);
+			}
+			else
+			{
+				var diff:String = '' + 'Normal';
+				difficultyChoices.push(diff);
+			}
+		}
+		difficultyChoices.push('BACK');
 
 		changeSelection();
 
@@ -142,8 +151,6 @@ class PauseSubState extends MusicBeatSubstate
 
 		super.update(elapsed);
 
-		if (PlayState.instance.useVideo)
-			menuItems.remove('Resume');
 
 		for (i in FlxG.sound.list)
 		{
@@ -195,32 +202,12 @@ class PauseSubState extends MusicBeatSubstate
 					if(menuItems.length - 1 != curSelected && difficultyChoices.contains(daSelected)) 
 					{
 						var name:String = PlayState.SONG.songId;
-						if (PlayState.isExtras || PlayState.fromPasswordMenu)
-						{
-							if (curSelected == 0)
-							{
-								curSelected = 2;
-							}
-							if (curSelected == 1)
-							{
-								curSelected = 3;
-							}
-							var poop = Highscore.formatSongDiff(name, curSelected);
-							PlayState.SONG = Song.loadFromJson(name, poop);
-							PlayState.storyDifficulty = curSelected;
-							MusicBeatState.resetState();
-							FlxG.sound.music.volume = 0;
-							return;
-						}
-						else
-						{
-							var poop = Highscore.formatSongDiff(name, curSelected);
-							PlayState.SONG = Song.loadFromJson(name, poop);
-							PlayState.storyDifficulty = curSelected;
-							MusicBeatState.resetState();
-							FlxG.sound.music.volume = 0;
-							return;
-						}
+						var poop = Highscore.formatSongDiff(name, CoolUtil.difficultyArray.indexOf(daSelected));
+						PlayState.SONG = Song.loadFromJson(name, poop);
+						PlayState.storyDifficulty = CoolUtil.difficultyArray.indexOf(daSelected);
+						restartSong();
+						FlxG.sound.music.volume = 0;
+						return;	
 					}
 	
 					menuItems = menuItemsOG;
@@ -245,19 +232,6 @@ class PauseSubState extends MusicBeatSubstate
 
 				case "Exit to menu":
 					PlayState.startTime = 0;
-					if (PlayState.instance.useVideo)
-					{
-						GlobalVideo.get().stop();
-						PlayState.instance.remove(PlayState.instance.videoSprite);
-						PlayState.instance.removedVideo = true;
-					}
-					if (PlayState.loadRep)
-					{
-						FlxG.save.data.botplay = false;
-						FlxG.save.data.scrollSpeed = 1;
-						FlxG.save.data.downscroll = false;
-					}
-					PlayState.loadRep = false;
 					PlayState.stageTesting = false;
 					if (FlxG.save.data.fpsCap > 340)
 						(cast(Lib.current.getChildAt(0), Main)).setFPSCap(120);

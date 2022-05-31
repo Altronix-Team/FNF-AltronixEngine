@@ -640,6 +640,37 @@ class ShitMsOption extends Option
 	}
 }
 
+class CacheImages extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		FlxG.save.data.cacheImages = !FlxG.save.data.cacheImages;
+
+		display = updateDisplay();
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		left();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		if (!FlxG.save.data.language)
+			return "Cache images: < " + (FlxG.save.data.cacheImages ? "Off" : "On") + " >";
+		else
+			return "Кеширование изображений: < " + (FlxG.save.data.cacheImages ? "Включено" : "Выключено") + " >";
+	}
+}
+
 class CpuStrums extends Option
 {
 	public function new(desc:String)
@@ -1605,7 +1636,7 @@ class NPSDisplayOption extends Option
 	}
 }
 
-class ReplayOption extends Option
+/*class ReplayOption extends Option
 {
 	public function new(desc:String)
 	{
@@ -1627,7 +1658,7 @@ class ReplayOption extends Option
 		else
 			return "Загрузить реплей";
 	}
-}
+}*/
 
 class AccuracyDOption extends Option
 {
@@ -2040,6 +2071,61 @@ class NoteskinOption extends Option
 			return "Current Noteskin: < " + NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin) + " >";
 		else
 			return "Выбранный вид стрелок: < " + NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin) + " >";
+	}
+}
+
+class MenuMusicOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		if (OptionsMenu.isInPause)
+			if (!FlxG.save.data.language)
+				description = "This option cannot be toggled in the pause menu.";
+			else
+				description = "Эта опция не может быть переключена во время паузы";
+		else
+			description = desc;
+	}
+
+	public override function left():Bool
+	{
+		if (OptionsMenu.isInPause)
+			return false;
+		FlxG.save.data.menuMusic--;
+		if (FlxG.save.data.menuMusic < 0)
+			FlxG.save.data.menuMusic = MenuMusicStuff.getMusic().length - 1;
+		display = updateDisplay();
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		if (OptionsMenu.isInPause)
+			return false;
+		FlxG.save.data.menuMusic++;
+		if (FlxG.save.data.menuMusic > MenuMusicStuff.getMusic().length - 1)
+			FlxG.save.data.menuMusic = 0;
+		display = updateDisplay();
+		return true;
+	}
+
+	public override function getValue():String
+	{
+		if (!FlxG.sound.music.playing)
+		{
+			FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)));
+		}
+		else
+		{
+			FlxG.sound.music.stop();
+			FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)));
+		}
+		
+		if (!FlxG.save.data.language)
+			return "Current Menu Music: < " + MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic) + " >";
+		else
+			return "Выбранная музыка меню: < " + MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic) + " >";
 	}
 }
 

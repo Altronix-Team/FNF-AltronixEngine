@@ -30,18 +30,18 @@ class OutdatedSubState extends MusicBeatState
 		bg.antialiasing = FlxG.save.data.antialiasing;
 		add(bg);
 
-		var kadeLogo:FlxSprite = new FlxSprite(FlxG.width, 0).loadGraphic(Paths.loadImage('KadeEngineLogo'));
-		kadeLogo.scale.y = 0.3;
-		kadeLogo.scale.x = 0.3;
-		kadeLogo.x -= kadeLogo.frameHeight;
-		kadeLogo.y -= 180;
-		kadeLogo.alpha = 0.8;
-		kadeLogo.antialiasing = FlxG.save.data.antialiasing;
-		add(kadeLogo);
+		var engineLogo:FlxSprite = new FlxSprite(FlxG.width, 0).loadGraphic(Paths.loadImage('enginelogo'));
+		engineLogo.scale.y = 0.3;
+		engineLogo.scale.x = 0.3;
+		engineLogo.x -= engineLogo.frameHeight;
+		engineLogo.y -= 180;
+		engineLogo.alpha = 0.8;
+		engineLogo.antialiasing = FlxG.save.data.antialiasing;
+		add(engineLogo);
 
 		var txt:FlxText = new FlxText(0, 0, FlxG.width,
-			"Your Kade Engine is outdated!\nYou are on "
-			+ MainMenuState.kadeEngineVer
+			"Your Altronix Engine is outdated!\nYou are on "
+			+ EngineConstants.engineVer
 			+ "\nwhile the most recent version is "
 			+ needVer
 			+ "."
@@ -53,7 +53,7 @@ class OutdatedSubState extends MusicBeatState
 
 		if (MainMenuState.nightly != "")
 			txt.text = "You are on\n"
-				+ MainMenuState.kadeEngineVer
+				+ EngineConstants.engineVer
 				+ "\nWhich is a PRE-RELEASE BUILD!"
 				+ "\n\nReport all bugs to the author of the pre-release.\nSpace/Escape ignores this.";
 
@@ -65,7 +65,7 @@ class OutdatedSubState extends MusicBeatState
 		add(txt);
 
 		FlxTween.color(bg, 2, bg.color, FlxColor.fromString(bgColors[colorRotation]));
-		FlxTween.angle(kadeLogo, kadeLogo.angle, -10, 2, {ease: FlxEase.quartInOut});
+		FlxTween.angle(engineLogo, engineLogo.angle, -10, 2, {ease: FlxEase.quartInOut});
 
 		new FlxTimer().start(2, function(tmr:FlxTimer)
 		{
@@ -78,18 +78,18 @@ class OutdatedSubState extends MusicBeatState
 
 		new FlxTimer().start(2, function(tmr:FlxTimer)
 		{
-			if (kadeLogo.angle == -10)
-				FlxTween.angle(kadeLogo, kadeLogo.angle, 10, 2, {ease: FlxEase.quartInOut});
+			if (engineLogo.angle == -10)
+				FlxTween.angle(engineLogo, engineLogo.angle, 10, 2, {ease: FlxEase.quartInOut});
 			else
-				FlxTween.angle(kadeLogo, kadeLogo.angle, -10, 2, {ease: FlxEase.quartInOut});
+				FlxTween.angle(engineLogo, engineLogo.angle, -10, 2, {ease: FlxEase.quartInOut});
 		}, 0);
 
 		new FlxTimer().start(0.8, function(tmr:FlxTimer)
 		{
-			if (kadeLogo.alpha == 0.8)
-				FlxTween.tween(kadeLogo, {alpha: 1}, 0.8, {ease: FlxEase.quartInOut});
+			if (engineLogo.alpha == 0.8)
+				FlxTween.tween(engineLogo, {alpha: 1}, 0.8, {ease: FlxEase.quartInOut});
 			else
-				FlxTween.tween(kadeLogo, {alpha: 0.8}, 0.8, {ease: FlxEase.quartInOut});
+				FlxTween.tween(engineLogo, {alpha: 0.8}, 0.8, {ease: FlxEase.quartInOut});
 		}, 0);
 	}
 
@@ -97,7 +97,7 @@ class OutdatedSubState extends MusicBeatState
 	{
 		if (controls.ACCEPT && MainMenuState.nightly == "")
 		{
-			fancyOpenURL("https://kadedev.github.io/Kade-Engine/changelogs/changelog-" + needVer);
+			fancyOpenURL("https://raw.githubusercontent.com/AltronMaxX/FNF-AltronixEngine/main/version.downloadMe?token=GHSAT0AAAAAABHIQ6SZHCZMPE7ZJ2IOMUQUYUNAMMQ");
 		}
 		else if (controls.ACCEPT)
 		{

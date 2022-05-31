@@ -2,9 +2,6 @@ package;
 
 import openfl.display.Bitmap;
 import lime.app.Application;
-#if !html5
-import DiscordClient;
-#end
 import openfl.display.BlendMode;
 import openfl.text.TextFormat;
 import flixel.util.FlxColor;
@@ -25,7 +22,7 @@ import ModCore;
 class Main extends Sprite
 {
 	var modsToLoad = [];
-	var configFound = false;
+	public static var configFound = false;
 	public static var gjToastManager:GJToastManager;
 	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	var gameHeight:Int = 720; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
@@ -67,8 +64,6 @@ class Main extends Sprite
 		}
 	}
 
-	public static var webmHandler:WebmHandler;
-
 	private function init(?E:Event):Void
 	{
 		if (hasEventListener(Event.ADDED_TO_STAGE))
@@ -104,16 +99,18 @@ class Main extends Sprite
 		fpsCounter = new EngineFPS(10, 3, 0xFFFFFF);
 		bitmapFPS = ImageOutline.renderImage(fpsCounter, 1, 0x000000, true);
 		bitmapFPS.smoothing = true;
-		#end	
-		
-		/*#if FEATURE_FILESYSTEM
-		initialState = Caching;
-		#else
-		initialState = TitleState;
-		#end*/
+		#end			
 
 		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
 		addChild(game);
+
+		#if FEATURE_MODCORE
+		modsToLoad = ModCore.getConfiguredMods();
+		configFound = (modsToLoad != null && modsToLoad.length > 0);
+		ModCore.loadConfiguredMods();
+		#else
+		configFound = false;	
+		#end	
 
 		#if !mobile
 		addChild(fpsCounter);
@@ -125,22 +122,6 @@ class Main extends Sprite
 
 		// Finish up loading debug tools.
 		Debug.onGameStart();
-
-		#if !html5
-		DiscordClient.initialize();
-		DiscordClient.changePresence('', null);
-		#end
-		
-		#if FEATURE_MODCORE
-		modsToLoad = ModCore.getConfiguredMods();
-		configFound = (modsToLoad != null && modsToLoad.length > 0);
-		#else
-		configFound = false;
-		#end
-
-		if (configFound)
-			ModCore.loadConfiguredMods();
-
 	}
 
 	var game:FlxGame;

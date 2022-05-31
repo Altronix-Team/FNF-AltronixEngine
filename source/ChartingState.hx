@@ -76,17 +76,12 @@ class ChartingState extends MusicBeatState
 		"Scroll Speed Change",
 		"Start Countdown",
 		"Change Character",
-		//"Change Dad Character",
-		//"Change BF Character",
-		//"Change GF Character",
 		"Change Stage",
 		"Song Overlay",
-		'Character play animation',
-		//"Dad play animation",
-		//"BF play animation",
-		//"GF play animation",
+		'Character play anim',
 		"Camera zoom",
 		"Toggle interface",
+		'Screen Shake',
 		"Toggle Alt Idle"/*,
 		"Change note skin"*/
 	];
@@ -406,7 +401,13 @@ class ChartingState extends MusicBeatState
 
 			var down = getYfromStrum(renderer.section.startTime) * zoomFactor;
 
-			var sectionicon = _song.notes[awfgaw].mustHitSection ? new HealthIcon(getCharacterIcon(_song.player1)).clone() : new HealthIcon(getCharacterIcon(_song.player2)).clone();
+			var sectionicon = null;
+
+			if (_song.notes[awfgaw].gfSection)
+				sectionicon = new HealthIcon(getCharacterIcon(_song.gfVersion)).clone();
+			else
+				sectionicon = _song.notes[awfgaw].mustHitSection ? new HealthIcon(getCharacterIcon(_song.player1)).clone() : new HealthIcon(getCharacterIcon(_song.player2)).clone();
+
 			sectionicon.x = -95;
 			sectionicon.y = down - 75;
 			sectionicon.setGraphicSize(0, 45);
@@ -423,7 +424,6 @@ class ChartingState extends MusicBeatState
 		gridBlackLine = new FlxSprite(gridBG.width / 2).makeGraphic(2, height, FlxColor.BLACK);
 
 		waveformSprite = new FlxSprite(GRID_SIZE, 0).makeGraphic(FlxG.width, FlxG.height, 0x00FFFFFF);
-		add(waveformSprite);
 
 		// leftIcon.scrollFactor.set();
 		// rightIcon.scrollFactor.set();
@@ -465,6 +465,29 @@ class ChartingState extends MusicBeatState
 
 		add(UI_box);
 
+		#if LUA_ALLOWED
+		var luaList:Array<String> = Paths.listLuaInPath('assets/custom_events/');
+		Debug.logTrace(luaList);
+		for (i in 0...luaList.length)
+		{
+			if(!eventTypeList.contains(luaList[i])) {
+				eventTypeList.push(luaList[i]);
+			}
+		}
+		#end
+
+		#if LUA_ALLOWED
+		var luaList:Array<String> = Paths.listLuaInPath('assets/custom_notetypes/');
+		Debug.logTrace(luaList);
+		for (i in 0...luaList.length)
+		{
+			if(!noteTypeList.contains(luaList[i])) {
+				noteTypeList.push(luaList[i]);
+			}
+		}
+		#end
+		
+
 		addSongUI();
 		addSectionUI();
 		addNoteUI();
@@ -481,6 +504,7 @@ class ChartingState extends MusicBeatState
 		Debug.logTrace("bruh");
 
 		add(sectionRenderes);
+		add(waveformSprite);
 		add(dummyArrow);
 		add(strumLine);
 		add(lines);
@@ -605,38 +629,13 @@ class ChartingState extends MusicBeatState
 		return null;
 	}
 
-	/**
-	 * List all the data JSON files under a given subdirectory.
-	 * @param path The path to look under.
-	 * @return The list of JSON files under that path.
-	 */
-	 static function listLuaInPath(path:String)
-		{
-			var dataAssets = OpenFlAssets.list(TEXT);
-	
-			var queryPath = '${path}';
-	
-			var results:Array<String> = [];
-	
-			for (data in dataAssets)
-			{
-				if (data.indexOf(queryPath) != -1 && data.endsWith('.lua'))
-				{
-					var suffixPos = data.indexOf(queryPath) + queryPath.length;
-					results.push(data.substr(suffixPos).replaceAll('.lua', ''));
-				}
-			}
-	
-			return results;
-		}
-
 	public var chartEvents:Array<Song.Event> = [];
 
 	public var Typeables:Array<FlxUIInputText> = [];
 	
 	var tab_group_events:FlxUI;
 
-	var eventType = new FlxUIDropDownMenuCustom(10, 60, FlxUIDropDownMenuCustom.makeStrIdLabelArray(eventTypeList, true));
+	var eventType:FlxUIDropDownMenuCustom;
 
 	function addEventsUI()
 	{
@@ -647,23 +646,13 @@ class ChartingState extends MusicBeatState
 			_song.eventObjects = [new Song.Event("Init BPM", 0, _song.bpm, "BPM Change")];
 		}
 
-		#if LUA_ALLOWED
-		var luaList:Array<String> = listLuaInPath(OpenFlAssets.getPath('assets/custom_events/'));
-		Debug.logTrace(luaList);
-		for (i in 0...luaList.length)
-		{
-			if(!eventTypeList.contains(luaList[i])) {
-				eventTypeList.push(luaList[i]);
-			}
-		}
-		#end
-
 		var firstEvent = "";
 
 		if (Lambda.count(_song.eventObjects) != 0)
 		{
 			firstEvent = _song.eventObjects[0].name;
 		}
+		eventType = new FlxUIDropDownMenuCustom(10, 60, FlxUIDropDownMenuCustom.makeStrIdLabelArray(eventTypeList, true));
 		var listLabel = new FlxText(10, 5, 'List of Events');
 		var nameLabel = new FlxText(150, 5, 'Event Name');
 		var eventName = new FlxUIInputText(150, 20, 80, "");
@@ -757,9 +746,9 @@ class ChartingState extends MusicBeatState
 		{
 			var pog:Song.Event;
 			if (lastEventType != null && lastEventValue != null)
-				pog = new Song.Event("New Event " + HelperFunctions.truncateFloat(curDecimalBeat, 1), HelperFunctions.truncateFloat(curDecimalBeat, 1), lastEventValue, lastEventType);
+				pog = new Song.Event("New Event " + HelperFunctions.truncateFloat(curDecimalBeat, 1), curDecimalBeat, lastEventValue, lastEventType);
 			else
-				pog = new Song.Event("New Event " + HelperFunctions.truncateFloat(curDecimalBeat, 1), HelperFunctions.truncateFloat(curDecimalBeat, 1), _song.bpm, "BPM Change");
+				pog = new Song.Event("New Event " + HelperFunctions.truncateFloat(curDecimalBeat, 1), curDecimalBeat, _song.bpm, "BPM Change");
 
 
 			Debug.logTrace("adding " + pog.name);
@@ -923,7 +912,7 @@ class ChartingState extends MusicBeatState
 			var obj = containsName(currentSelectedEventName, _song.eventObjects);
 			if (obj == null)
 				return;
-			currentEventPosition = HelperFunctions.truncateFloat(curDecimalBeat, 1);
+			currentEventPosition = curDecimalBeat;
 			obj.position = currentEventPosition;
 			eventPos.text = currentEventPosition + "";
 		});
@@ -1047,7 +1036,7 @@ class ChartingState extends MusicBeatState
 	var waveformEnabled:FlxUICheckBox;
 	#end
 	function addSongUI():Void
-	{
+	{		
 		var UI_songTitle = new FlxUIInputText(10, 10, 70, _song.songId, 8);
 		typingShit = UI_songTitle;
 
@@ -1108,17 +1097,17 @@ class ChartingState extends MusicBeatState
 		});
 
 		var loadAutosaveBtn:FlxButton = new FlxButton(reloadSongJson.x, reloadSongJson.y + 30, 'Load Autosave', loadAutosave);
-		var stepperBPM:FlxUINumericStepper = new FlxUINumericStepper(10, 65, 0.1, 1, 1.0, 5000.0, 1);
+		var stepperBPM:FlxUINumericStepper = new FlxUINumericStepper(10, 55, 0.1, 1, 1.0, 5000.0, 1);
 		stepperBPM.value = Conductor.bpm;
 		stepperBPM.name = 'song_bpm';
 
-		var stepperBPMLabel = new FlxText(74, 65, 'BPM');
+		var stepperBPMLabel = new FlxText(74, 55, 'BPM');
 
-		var stepperSpeed:FlxUINumericStepper = new FlxUINumericStepper(10, 80, 0.1, 1, 0.1, 10, 1);
+		var stepperSpeed:FlxUINumericStepper = new FlxUINumericStepper(10, 70, 0.1, 1, 0.1, 10, 1);
 		stepperSpeed.value = _song.speed;
 		stepperSpeed.name = 'song_speed';
 
-		var stepperSpeedLabel = new FlxText(74, 80, 'Scroll Speed');
+		var stepperSpeedLabel = new FlxText(74, 70, 'Scroll Speed');
 
 		var stepperVocalVol:FlxUINumericStepper = new FlxUINumericStepper(10, 25, 0.1, 1, 0.1, 10, 1);
 		#if FEATURE_STEPMANIA
@@ -1139,64 +1128,66 @@ class ChartingState extends MusicBeatState
 
 		var stepperSongVolLabel = new FlxText(74, 40, 'Instrumental Volume');
 
-		var shiftNoteDialLabel = new FlxText(10, 165, 'Shift All Notes by # Sections');
-		var stepperShiftNoteDial:FlxUINumericStepper = new FlxUINumericStepper(10, 180, 1, 0, -1000, 1000, 0);
+		var shiftNoteDialLabel = new FlxText(10, 135, 'Shift All Notes by # Sections');
+		var stepperShiftNoteDial:FlxUINumericStepper = new FlxUINumericStepper(10, 150, 1, 0, -1000, 1000, 0);
 		stepperShiftNoteDial.name = 'song_shiftnote';
-		var shiftNoteDialLabel2 = new FlxText(10, 195, 'Shift All Notes by # Steps');
-		var stepperShiftNoteDialstep:FlxUINumericStepper = new FlxUINumericStepper(10, 210, 1, 0, -1000, 1000, 0);
+		var shiftNoteDialLabel2 = new FlxText(10, 165, 'Shift All Notes by # Steps');
+		var stepperShiftNoteDialstep:FlxUINumericStepper = new FlxUINumericStepper(10, 180, 1, 0, -1000, 1000, 0);
 		stepperShiftNoteDialstep.name = 'song_shiftnotems';
-		var shiftNoteDialLabel3 = new FlxText(10, 135, 'Shift All Notes by # ms');
-		var stepperShiftNoteDialms:FlxUINumericStepper = new FlxUINumericStepper(10, 150, 1, 0, -1000, 1000, 2);
+		var shiftNoteDialLabel3 = new FlxText(10, 105, 'Shift All Notes by # ms');
+		var stepperShiftNoteDialms:FlxUINumericStepper = new FlxUINumericStepper(10, 120, 1, 0, -1000, 1000, 2);
 		stepperShiftNoteDialms.name = 'song_shiftnotems';
 
-		var shiftNoteButton:FlxButton = new FlxButton(10, 235, "Shift", function()
+		var shiftNoteButton:FlxButton = new FlxButton(10, 205, "Shift", function()
 		{
 			shiftNotes(Std.int(stepperShiftNoteDial.value), Std.int(stepperShiftNoteDialstep.value), Std.int(stepperShiftNoteDialms.value));
 		});
 
-		var characters:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/characterList'));
+		var characters:Array<String> = Character.characterList;
 		var tempMap:Map<String, Bool> = new Map<String, Bool>();
 		for (i in 0...characters.length)
 		{
 			tempMap.set(characters[i], true);
 		}
-		var gfVersions:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/gfVersionList'));
+		var gfVersions:Array<String> = Character.characterList;
 		var stages:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/stageList'));
 		var noteStyles:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/noteStyleList'));
 
-		var player1DropDown = new FlxUIDropDownMenuCustom(10, 290, FlxUIDropDownMenuCustom.makeStrIdLabelArray(characters, true), function(character:String)
+		var player1DropDown = new FlxUIDropDownMenuCustom(150, 108, FlxUIDropDownMenuCustom.makeStrIdLabelArray(characters, true), function(character:String)
 		{
 			_song.player1 = characters[Std.parseInt(character)];
 		});
 		player1DropDown.selectedLabel = _song.player1;
 		blockPressWhileScrolling.push(player1DropDown);
 
-		var player1Label = new FlxText(10, 270, 64, 'Player 1');
+		var player1Label = new FlxText(150, 93, 64, 'Player 1');
 
-		var player2DropDown = new FlxUIDropDownMenuCustom(140, 290, FlxUIDropDownMenuCustom.makeStrIdLabelArray(characters, true), function(character:String)
+		var player2DropDown = new FlxUIDropDownMenuCustom(150, 148, FlxUIDropDownMenuCustom.makeStrIdLabelArray(characters, true), function(character:String)
 		{
 			_song.player2 = characters[Std.parseInt(character)];
 		});
 		player2DropDown.selectedLabel = _song.player2;
 		blockPressWhileScrolling.push(player2DropDown);
 
-		var player2Label = new FlxText(140, 270, 64, 'Player 2');
+		var player2Label = new FlxText(150, 133, 64, 'Player 2');
 
-		var gfVersionDropDown = new FlxUIDropDownMenu(10, 340, FlxUIDropDownMenu.makeStrIdLabelArray(gfVersions, true), function(gfVersion:String)
+		var gfVersionDropDown = new FlxUIDropDownMenuCustom(150, 188, FlxUIDropDownMenuCustom.makeStrIdLabelArray(gfVersions, true), function(gfVersion:String)
 		{
 			_song.gfVersion = gfVersions[Std.parseInt(gfVersion)];
 		});
 		gfVersionDropDown.selectedLabel = _song.gfVersion;
+		blockPressWhileScrolling.push(gfVersionDropDown);
 
-		var gfVersionLabel = new FlxText(10, 320, 64, 'Girlfriend');
+		var gfVersionLabel = new FlxText(150, 173, 64, 'Girlfriend');
 
-		var stageDropDown = new FlxUIDropDownMenu(140, 340, FlxUIDropDownMenu.makeStrIdLabelArray(stages, true), function(stage:String)
+		var stageDropDown = new FlxUIDropDownMenuCustom(150, 228, FlxUIDropDownMenuCustom.makeStrIdLabelArray(stages, true), function(stage:String)
 		{
 			_song.stage = stages[Std.parseInt(stage)];
 		});
 		stageDropDown.selectedLabel = _song.stage;
+		blockPressWhileScrolling.push(stageDropDown);
 
-		var stageLabel = new FlxText(140, 320, 64, 'Stage');
+		var stageLabel = new FlxText(150, 213, 64, 'Stage');
 
 		var noteStyleDropDown = new FlxUIDropDownMenu(10, 300, FlxUIDropDownMenu.makeStrIdLabelArray(noteStyles, true), function(noteStyle:String)
 		{
@@ -1206,7 +1197,7 @@ class ChartingState extends MusicBeatState
 
 		var noteStyleLabel = new FlxText(10, 280, 64, 'Note Skin');
 
-		var hideGF = new FlxUICheckBox(200, 180, null, null, "Hide GF", 100);
+		var hideGF = new FlxUICheckBox(10, 235, null, null, "Hide GF", 100);
 		hideGF.checked = _song.hideGF;
 		hideGF.callback = function()
 		{
@@ -1248,14 +1239,14 @@ class ChartingState extends MusicBeatState
 		// tab_group_song.add(check_mute_inst);
 		tab_group_song.add(saveButton);
 		tab_group_song.add(saveEventButton);
-		tab_group_song.add(gfVersionDropDown);
-		tab_group_song.add(gfVersionLabel);
 		tab_group_song.add(stageDropDown);
 		tab_group_song.add(stageLabel);
-		tab_group_song.add(player1DropDown);
+		tab_group_song.add(gfVersionDropDown);
+		tab_group_song.add(gfVersionLabel);
 		tab_group_song.add(player2DropDown);
-		tab_group_song.add(player1Label);
 		tab_group_song.add(player2Label);
+		tab_group_song.add(player1DropDown);
+		tab_group_song.add(player1Label);
 		tab_group_song.add(hideGF);
 		tab_group_song.add(reloadSong);
 		tab_group_song.add(reloadSongJson);
@@ -1537,27 +1528,6 @@ class ChartingState extends MusicBeatState
 			noteTypeMap.set(noteTypeList[key], key);
 			key++;
 		}
-
-		/*#if LUA_ALLOWED
-		var directories:Array<String> = [Paths.getPreloadPath('custom_notetypes/')];
-		for (i in 0...directories.length) {
-			var directory:String = directories[i];
-			if(FileSystem.exists(directory)) {
-				for (file in FileSystem.readDirectory(directory)) {
-					var path = haxe.io.Path.join([directory, file]);
-					if (!FileSystem.isDirectory(path) && file.endsWith('.lua')) {
-						var fileToCheck:String = file.substr(0, file.length - 4);
-						if(!noteTypeMap.exists(fileToCheck)) {
-							displayNameList.push(fileToCheck);
-							noteTypeMap.set(noteTypeList[key], key);
-							noteTypeIntMap.set(key, fileToCheck);
-							key++;
-						}
-					}
-				}
-			}
-		}
-		#end*/
 
 		for (i in 1...displayNameList.length) {
 			displayNameList[i] = i + '. ' + displayNameList[i];
@@ -2720,8 +2690,11 @@ class ChartingState extends MusicBeatState
 				+ HelperFunctions.truncateFloat(zoomFactor, 2)
 				+ "\nSpeed: "
 				+ HelperFunctions.truncateFloat(speed, 1)
-				+ "\nCur Time: "
+				+ "\nCurTime: "
 				+ FlxStringUtil.formatTime(FlxG.sound.music.time / 1000, false)
+				+ '\nCurZoom: '
+				+ zoomFactor
+				+ ' (Default: 0.4)'
 				+ "\n\nSnap: "
 				+ snap
 				+ "\n"
@@ -3084,9 +3057,21 @@ class ChartingState extends MusicBeatState
 						eventDescriptionText = 'Type in Event Value new note skin\n In default engine aviable only "pixel" or "normal"';
 						eventDescription.text = eventDescriptionText;
 
-					default:
-						eventDescriptionText = 'Bro, wtf, how did we get here?\n This event dont have description. Its strange.';
+					case 'Screen Shake':
+						eventDescriptionText = 'Type in Event Value intensity and duration, like 0.15, 0.15';
 						eventDescription.text = eventDescriptionText;
+
+					default:
+						if (Paths.doesTextAssetExist('assets/custom_events/' + eventType.selectedLabel))
+						{
+							eventDescriptionText = OpenFlAssets.getText('assets/custom_events/' + eventType.selectedLabel + '.txt');
+							eventDescription.text = eventDescriptionText;
+						}
+						else
+						{
+							eventDescriptionText = 'Bro, wtf, how did we get here?\n This event dont have description. Its strange.';
+							eventDescription.text = eventDescriptionText;
+						}	
 				}
 			}
 		}
@@ -3247,8 +3232,7 @@ class ChartingState extends MusicBeatState
 		}
 
 		// fail-safe
-		// TODO: Refactor this to use OpenFlAssets.
-		if (!FileSystem.exists(Paths.image('icons/' + head.split("-")[0])) && !FileSystem.exists(Paths.image('icons/' + head)))
+		if (!OpenFlAssets.exists(Paths.image('icons/' + head.split("-")[0])) && !OpenFlAssets.exists(Paths.image('icons/' + head)))
 		{
 			if (i.icon.animation.curAnim == null)
 				iconUpdate(true);
@@ -3320,7 +3304,12 @@ class ChartingState extends MusicBeatState
 				var daNoteInfo = i[1];
 				var daStrumTime = i[0];
 				var daSus = i[2];
-				var daType = i[5];
+
+				var daType = null;
+				if (i[5] != null)
+					daType = i[5];
+				else
+					daType = 'Default Note';
 
 				var note:Note = new Note(daStrumTime, daNoteInfo % 4, null, false, true, i[3], i[4], daType);
 				note.rawNoteData = daNoteInfo;
@@ -3753,7 +3742,7 @@ class ChartingState extends MusicBeatState
 				n.sustainLength,
 				false,
 				TimingStruct.getBeatFromTime(n.strumTime),
-				n.noteType]);
+				noteTypeIntMap.get(n.noteType)]);
 		else
 			section.sectionNotes.push([noteStrum, noteData, noteSus, false, TimingStruct.getBeatFromTime(noteStrum), noteTypeIntMap.get(daType)]);
 
@@ -3797,11 +3786,11 @@ class ChartingState extends MusicBeatState
 		}
 		else
 		{
-			var note:Note = new Note(n.strumTime, n.noteData % 4, null, false, true, n.isAlt, TimingStruct.getBeatFromTime(n.strumTime), n.noteType);
+			var note:Note = new Note(n.strumTime, n.noteData % 4, null, false, true, n.isAlt, TimingStruct.getBeatFromTime(n.strumTime), noteTypeIntMap.get(n.noteType));
 			note.beat = TimingStruct.getBeatFromTime(n.strumTime);
 			note.rawNoteData = n.noteData;
 			note.sustainLength = noteSus;
-			note.noteType = n.noteType;
+			note.noteType = noteTypeIntMap.get(n.noteType);
 			note.setGraphicSize(Math.floor(GRID_SIZE), Math.floor(GRID_SIZE));
 			note.updateHitbox();
 			note.x = Math.floor(n.noteData * GRID_SIZE);

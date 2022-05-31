@@ -159,6 +159,7 @@ class OptionsMenu extends FlxSubState
 					new CpuStrums("Toggle the CPU's strumline lighting up when it hits a note."),
 				]),
 				new OptionCata(640, 40, "Misc", [
+					new MenuMusicOption('Change your current menu music'),
 					new FPSOption("Toggle the FPS Counter"),
 					new FlashingLightsOption("Toggle flashing lights that can cause epileptic seizures and strain."),
 					new WatermarkOption("Enable and disable all watermarks from the engine."),
@@ -166,8 +167,8 @@ class OptionsMenu extends FlxSubState
 					new MissSoundsOption("Toggle miss sounds playing when you don't hit a note."),
 					new ScoreScreen("Show the score screen after the end of a song"),
 					new ShowInput("Display every single input on the score screen."),
-					new LanguageOption("Change Dialog Language"),
-					//new CachingOption("Toggle caching"),
+					new LanguageOption("Change Engine Language (Only English or Russian)"),
+					//new CacheImages("Toggle image caching"),
 					new FullscreenOnStartOption('Toggles fullscreen on game start'),
 					//new LoadingScreensOption("Toggles the display of loading screens when switching between different menus")
 				]),
@@ -183,8 +184,7 @@ class OptionsMenu extends FlxSubState
 					new RightKeybind("The right note's keybind"), new PauseKeybind("The keybind used to pause the game"),
 					new ResetBind("The keybind used to die instantly"), new MuteBind("The keybind used to mute game audio"),
 					new VolUpBind("The keybind used to turn the volume up"), new VolDownBind("The keybind used to turn the volume down"),
-					new AttackKeybind("The keybind used to attack enemies"),
-					new FullscreenBind("The keybind used to fullscreen the game")], true),
+					new AttackKeybind("The keybind used to attack enemies")], true),
 				new OptionCata(-1, 125, "Editing Judgements", [
 					new SickMSOption("How many milliseconds are in the SICK hit window"),
 					new GoodMsOption("How many milliseconds are in the GOOD hit window"),
@@ -231,6 +231,7 @@ class OptionsMenu extends FlxSubState
 					new CpuStrums("Переключить цвет подсветки при нажатии бота на кнопку."),
 				]),
 				new OptionCata(640, 40, "Разное", [
+					new MenuMusicOption('Изменение музыки в меню'),
 					new FPSOption("Переключить отображение ФПС."),
 					new FlashingLightsOption("Переключить мигающие огни."),
 					new WatermarkOption("Переключить отображение водяных знаков в движке."),
@@ -238,8 +239,8 @@ class OptionsMenu extends FlxSubState
 					new MissSoundsOption("Переключить воспроизведение звуков пропуска стрелки."),
 					new ScoreScreen("Показывает экран со счётом после конца песни."),
 					new ShowInput("Отобразить каждое отдельное нажатие на экране счёта"),
-					new LanguageOption("Изменить язык"),
-					//new CachingOption("Переключить кэширование"),
+					new LanguageOption("Изменить язык (Только русский или английский)"),
+					//new CacheImages("Переключить кэширование изображений"),
 					new FullscreenOnStartOption('Переключает полный экран при запуске игры'),
 					//new LoadingScreensOption("Переключает отображение загрузочных экранов при переходе между разными меню")
 				]),
@@ -255,8 +256,7 @@ class OptionsMenu extends FlxSubState
 					new RightKeybind("Бинд стрелки вправо"), new PauseKeybind("Бинд кнопки паузы"),
 					new ResetBind("Бинд кнопки мгновенной смерти"), new MuteBind("Бинд кнопки заглушения звуков"),
 					new VolUpBind("Бинд кнопки повышения громкости"), new VolDownBind("Бинд кнопки понижения гроскости"),
-					new AttackKeybind("Бинд атаки"),
-					new FullscreenBind("Бинд кнопки для разворачивания игры в полный экран")], true),
+					new AttackKeybind("Бинд атаки")], true),
 				new OptionCata(-1, 125, "Редактирование оценок", [
 					new SickMSOption("Как много миллисекунд вы можете получить оценку SICK"),
 					new GoodMsOption("Как много миллисекунд вы можете получить оценку GOOD"),

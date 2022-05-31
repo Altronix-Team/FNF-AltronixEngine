@@ -77,11 +77,14 @@ class MainMenuState extends MusicBeatState
 			DiscordClient.changePresence("В главном меню", null);
 		#end
 		FlxG.cameras.reset(camGame);
-		FlxCamera.defaultCameras = [camGame];
+		//FlxCamera.defaultCameras = [camGame];
+		FlxG.cameras.setDefaultDrawTarget(camGame, true);
+
+		Character.initCharacterList();
 
 		if (!FlxG.sound.music.playing)
 		{
-			FlxG.sound.playMusic(Paths.music('freakyMenu'));
+			FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)));
 		}
 
 		persistentUpdate = persistentDraw = true;
@@ -112,24 +115,15 @@ class MainMenuState extends MusicBeatState
 		add(magenta);
 		// magenta.scrollFactor.set();
 
-		var random = new FlxRandom();
+		/*var random = new FlxRandom();
 		var charlist:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/characterList'));
 		var rand = random.int(0, charlist.length);
 
-		/*if (charlist[rand] == 'spirit')
-			return;
-		else
-		{
-			dance = new Character(0, 0, charlist[rand]);
-			dance.screenCenter(XY);
-			dance.x = FlxG.width - (dance.width + 100);
-			//dance.y = FlxG.height - dance.height;
-			dance.scrollFactor.set();
-			dance.updateHitbox();
-			add(dance);
-		}	*/
-
-		//dance.dance();
+		dance = new Character(0, 0, charlist[rand]);
+		dance.screenCenter(XY);
+		dance.x += 150;
+		dance.scrollFactor.set();
+		add(dance);*/
 
 		menuItems = new FlxTypedGroup<FlxSprite>();
 		add(menuItems);
@@ -204,6 +198,7 @@ class MainMenuState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
+		//dance.dance();
 		if (FlxG.sound.music.volume < 0.8)
 		{
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;

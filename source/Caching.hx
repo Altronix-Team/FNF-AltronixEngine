@@ -29,7 +29,7 @@ import flixel.util.FlxTimer;
 import flixel.text.FlxText;
 import flixel.input.keyboard.FlxKey;
 
-using StringTools;
+using hx.strings.Strings;
 
 class Caching extends MusicBeatState
 {
@@ -39,10 +39,11 @@ class Caching extends MusicBeatState
 	var loaded = false;
 
 	var text:FlxText;
-	var kadeLogo:FlxSprite;
+	var gameLogo:FlxSprite;
 	var bar:FlxBar;
 
 	public static var bitmapData:Map<String, FlxGraphic>;
+	static var flxImageCache:Map<String, FlxGraphic> = new Map<String, FlxGraphic>();
 
 	var images = [];
 	var music = [];
@@ -52,17 +53,20 @@ class Caching extends MusicBeatState
 	{
 		FlxG.save.bind('funkin', 'ninjamuffin99');
 
+		@:privateAccess
+		{
+			Debug.logTrace("We loaded " + openfl.Assets.getLibrary("default").assetsLoaded + " assets into the default library");
+		}
+
+		FlxG.autoPause = false;
+
 		PlayerSettings.init();
 
 		EngineData.initSave();
 
-		FlxG.autoPause = false;
-
-		FlxG.mouse.visible = false;
-
-		FlxG.worldBounds.set(0, 0);
-
+		KeyBinds.keyCheck();
 		// It doesn't reupdate the list before u restart rn lmao
+
 		NoteskinHelpers.updateNoteskins();
 
 		if (FlxG.save.data.volDownBind == null)
@@ -70,31 +74,34 @@ class Caching extends MusicBeatState
 		if (FlxG.save.data.volUpBind == null)
 			FlxG.save.data.volUpBind = "PLUS";
 
-		FlxG.sound.muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
-		FlxG.sound.volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];
-		FlxG.sound.volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
+		FlxG.mouse.visible = false;
+
+		FlxG.worldBounds.set(0, 0);
+
+		FlxGraphic.defaultPersist = FlxG.save.data.cacheImages;
+
+		MusicBeatState.initSave = true;
+
+		Highscore.load();
 
 		bitmapData = new Map<String, FlxGraphic>();
 
 		text = new FlxText(FlxG.width / 2, FlxG.height / 2 + 300, 0, "Loading...");
 		text.size = 34;
 		text.alignment = FlxTextAlign.CENTER;
-		text.alpha = 0;
 
-		kadeLogo = new FlxSprite(FlxG.width / 2, FlxG.height / 2).loadGraphic(Paths.loadImage('enginelogo'));
-		kadeLogo.x -= kadeLogo.width / 2;
-		kadeLogo.y -= kadeLogo.height / 2 + 100;
-		text.y -= kadeLogo.height / 2 - 125;
+		gameLogo = new FlxSprite(FlxG.width / 2, FlxG.height / 2).loadGraphic(Paths.loadImage('enginelogo'));
+		gameLogo.x -= gameLogo.width / 2;
+		gameLogo.y -= gameLogo.height / 2 + 100;
+		text.y -= gameLogo.height / 2 - 125;
 		text.x -= 170;
-		kadeLogo.setGraphicSize(Std.int(kadeLogo.width * 0.6));
+		gameLogo.setGraphicSize(Std.int(gameLogo.width * 0.6));
 		if (FlxG.save.data.antialiasing != null)
-			kadeLogo.antialiasing = FlxG.save.data.antialiasing;
+			gameLogo.antialiasing = FlxG.save.data.antialiasing;
 		else
-			kadeLogo.antialiasing = true;
+			gameLogo.antialiasing = true;
 
-		kadeLogo.alpha = 0;
-
-		
+		gameLogo.alpha = 0;
 
 		FlxGraphic.defaultPersist = FlxG.save.data.cacheImages;
 
@@ -103,25 +110,12 @@ class Caching extends MusicBeatState
 		{
 			Debug.logTrace("caching images...");
 
-			// TODO: Refactor this to use OpenFlAssets.
-			for (i in FileSystem.readDirectory(FileSystem.absolutePath("assets/shared/images/characters")))
-			{
-				if (!i.endsWith(".png"))
-					continue;
-				images.push(i);
-			}
-
-			for (i in FileSystem.readDirectory(FileSystem.absolutePath("assets/shared/images/noteskins")))
-			{
-				if (!i.endsWith(".png"))
-					continue;
-				images.push(i);
-			}
+			images.concat(listImageFilesToCache(['characters']));
+			images.concat(listImageFilesToCache(['noteskins']));
 		}
 
 		Debug.logTrace("caching music...");
 
-		// TODO: Get the song list from OpenFlAssets.
 		music = Paths.listSongsToCache();
 		#end
 
@@ -132,7 +126,7 @@ class Caching extends MusicBeatState
 		bar.visible = true;
 		bar.scrollFactor.set();
 
-		add(kadeLogo);
+		add(gameLogo);
 		add(text);
 
 		add(bar);
@@ -140,27 +134,7 @@ class Caching extends MusicBeatState
 		trace('starting caching..');
 
 		#if FEATURE_MULTITHREADING
-		// update thread
-
-		sys.thread.Thread.create(() ->
-		{
-			while (!loaded)
-			{
-				if (toBeDone != 0 && done != toBeDone)
-				{
-					var alpha = HelperFunctions.truncateFloat(done / toBeDone * 100, 2) / 100;
-					kadeLogo.alpha = alpha;
-					text.alpha = alpha;
-					text.text = "Loading... (" + done + "/" + toBeDone + ")";
-				}
-			}
-		});
-
-		// cache thread
-		sys.thread.Thread.create(() ->
-		{
-			cache();
-		});
+			doInBackground(cache);
 		#end
 
 		super.create();
@@ -170,42 +144,66 @@ class Caching extends MusicBeatState
 
 	override function update(elapsed)
 	{
-		bar.value = done;
 		super.update(elapsed);
+		// Update the loading text. This should be done in the main UI thread.
+		var alpha = Util.truncateFloat(done / toBeDone * 100, 2) / 100;
+		gameLogo.alpha = alpha;
+		text.text = "Loading... (" + done + "/" + toBeDone + ")";
+		bar.value = done;
 	}
+
+	function listImageFilesToCache(prefixes:Array<String>)
+		{
+			// We need to query OpenFlAssets, not the file system, because of Polymod.
+			var graphicsAssets = OpenFlAssets.list(IMAGE);
+	
+			var graphicsNames = [];
+	
+			for (graphic in graphicsAssets)
+			{
+				// Parse end-to-beginning to support mods.
+				var path = graphic.split('/');
+				path.reverse();
+			}
+	
+			return graphicsNames;
+		}
 
 	function cache()
 	{
 		#if FEATURE_FILESYSTEM
-		trace("LOADING: " + toBeDone + " OBJECTS.");
+		Debug.logTrace("Cache thread initialized. Caching " + toBeDone + " items...");
 
 		for (i in images)
 		{
-			var replaced = i.replace(".png", "");
+			Debug.logTrace('Caching graphic $i');
+			var replaced = i.replaceAll(".png", "");
 
-			// var data:BitmapData = BitmapData.fromFile("assets/shared/images/characters/" + i);
-			var imagePath = Paths.image('characters/$i', 'shared');
-			Debug.logTrace('Caching character graphic $i ($imagePath)...');
+			var imagePath = Paths.image(replaced, 'shared');
 			var data = OpenFlAssets.getBitmapData(imagePath);
 			var graph = FlxGraphic.fromBitmapData(data);
-			graph.persist = true;
-			graph.destroyOnNoUse = false;
-			bitmapData.set(replaced, graph);
+
+			cacheImage(replaced, graph);
+			Debug.logTrace('Cached graphic $i');
+			Debug.logTrace('In path $imagePath');
 			done++;
 		}
 
 		for (i in music)
 		{
+			Debug.logTrace('Caching song "$i"...');
 			var inst = Paths.inst(i);
 			if (Paths.doesSoundAssetExist(inst))
 			{
 				FlxG.sound.cache(inst);
+				Debug.logTrace('  Cached inst for song "$i"');
 			}
 
 			var voices = Paths.voices(i);
 			if (Paths.doesSoundAssetExist(voices))
 			{
 				FlxG.sound.cache(voices);
+				Debug.logTrace('  Cached voices for song "$i"');
 			}
 
 			done++;
@@ -214,16 +212,37 @@ class Caching extends MusicBeatState
 		Debug.logTrace("Finished caching...");
 
 		loaded = true;
-
-		trace(OpenFlAssets.cache.hasBitmapData('GF_assets'));
 		#end
+
+		// If the file system is supported, move to the title state after caching is done.
+		// If the file system isn't supported, move to the title state immediately.
 		FlxG.switchState(new TitleState());
 	}
 	override function onWindowFocusOut() {
 		return;
 	}
+
 	override function onWindowFocusIn() {
 		return;
 	}
+
+	public static function cacheImage(key:String, graphic:FlxGraphic)
+		{
+			graphic.persist = true;
+			graphic.destroyOnNoUse = false;
+	
+			flxImageCache.set(key, graphic);
+		}
+
+	public static function doInBackground(cb:Void->Void)
+		{
+			#if FEATURE_MULTITHREADING
+			sys.thread.Thread.create(() ->
+			{
+				// Run in the background.
+				cb();
+			});
+			#end
+		}
 }
 #end

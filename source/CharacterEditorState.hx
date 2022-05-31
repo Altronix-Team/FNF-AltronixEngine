@@ -97,6 +97,7 @@ class CharacterEditorState extends MusicBeatState
 		FlxG.cameras.add(camHUD);
 		FlxG.cameras.add(camMenu);
 		FlxCamera.defaultCameras = [camEditor];
+		//FlxG.cameras.setDefaultDrawTarget(camEditor, true);
 
 		bgLayer = new FlxTypedGroup<FlxSprite>();
 		add(bgLayer);
@@ -326,19 +327,41 @@ class CharacterEditorState extends MusicBeatState
 		tab_group.name = "Settings";
 
 		check_player = new FlxUICheckBox(10, 60, null, null, "Playable Character", 100);
-		check_player.checked = daAnim.startsWith('bf');
+		check_player.checked = (daAnim.startsWith('bf') || daAnim.endsWith('-player'));
 		check_player.callback = function()
 		{
 			char.isPlayer = !char.isPlayer;
 			char.flipX = !char.flipX;
 			updatePointerPos();
 			ghostChar.flipX = char.flipX;
+			if (check_player.checked)
+			{
+				var stageData:StageFile = Stage.stageData;
+				for (char in charLayer)
+				{
+					char.setPosition(stageData.boyfriend[0], stageData.boyfriend[1]);
+
+					char.x += char.positionArray[0];
+					char.y += char.positionArray[1];
+				}
+			}
+			else
+			{
+				var stageData:StageFile = Stage.stageData;
+				for (char in charLayer)
+				{
+					char.setPosition(stageData.dad[0], stageData.dad[1]);
+					
+					char.x += char.positionArray[0];
+					char.y += char.positionArray[1];
+				}
+			}
 		};
 
 		charDropDown = new FlxUIDropDownMenuCustom(10, 30, FlxUIDropDownMenuCustom.makeStrIdLabelArray([''], true), function(character:String)
 		{
 			daAnim = characterList[Std.parseInt(character)];
-			check_player.checked = daAnim.startsWith('bf');
+			check_player.checked = (daAnim.startsWith('bf') || daAnim.endsWith('-player'));
 			loadChar(!check_player.checked);
 			updatePresence();
 			reloadCharacterDropDown();
@@ -355,7 +378,7 @@ class CharacterEditorState extends MusicBeatState
 
 		var templateCharacter:FlxButton = new FlxButton(140, 50, "Load Template", function()
 		{
-			var parsedJson:CharacterData = Character.createEmptyCharacter();
+			var parsedJson:CharacterData = EmptyCharacters.createEmptyCharacter();
 			var characters:Array<Character> = [char, ghostChar];
 			for (character in characters)
 			{
@@ -549,6 +572,8 @@ class CharacterEditorState extends MusicBeatState
 	var animationNameFramerate:FlxUINumericStepper;
 	var animationLoopCheckBox:FlxUICheckBox;
 	var animationInterruptCheckBox:FlxUICheckBox;
+	var animationFlipXCheckBox:FlxUICheckBox;
+	var animationFlipYCheckBox:FlxUICheckBox;
 	function addAnimationsUI() {
 		var tab_group = new FlxUI(null, UI_box);
 		tab_group.name = "Animations";
@@ -560,6 +585,8 @@ class CharacterEditorState extends MusicBeatState
 		nextAnimationInputText = new FlxUIInputText(animationNameInputText.x + 170, animationNameFramerate.y, 150, '', 8);
 		animationLoopCheckBox = new FlxUICheckBox(animationNameInputText.x + 170, nextAnimationInputText.y + 20, null, null, "Should it Loop?", 100);
 		animationInterruptCheckBox = new FlxUICheckBox(animationNameInputText.x + 170, animationLoopCheckBox.y + 20, null, null, "Can idle interrupt anim?", 100);
+		animationFlipXCheckBox = new FlxUICheckBox(animationLoopCheckBox.x + 110, nextAnimationInputText.y + 20, null, null, "Flip X", 100);
+		animationFlipYCheckBox = new FlxUICheckBox(animationInterruptCheckBox.x + 110, animationLoopCheckBox.y + 20, null, null, "Flix Y", 100);
 
 		animationDropDown = new FlxUIDropDownMenuCustom(15, animationInputText.y - 55, FlxUIDropDownMenuCustom.makeStrIdLabelArray([''], true), function(pressed:String) {
 			var selectedAnimation:Int = Std.parseInt(pressed);
@@ -567,6 +594,8 @@ class CharacterEditorState extends MusicBeatState
 			animationInputText.text = anim.name;
 			animationNameInputText.text = anim.prefix;
 			animationLoopCheckBox.checked = anim.looped;
+			animationFlipXCheckBox.checked = anim.flipX;
+			animationFlipYCheckBox.checked = anim.flipY;
 			if (anim.nextAnim != null)
 				nextAnimationInputText.text = anim.nextAnim;
 			else
@@ -633,12 +662,14 @@ class CharacterEditorState extends MusicBeatState
 				nextAnim: nextAnimationInputText.text,
 				interrupt: animationInterruptCheckBox.checked,
 				frameIndices: indices,
+				flipX: animationFlipXCheckBox.checked,
+				flipY: animationFlipYCheckBox.checked,
 				offsets: lastOffsets
 			};
 			if(indices != null && indices.length > 0) {
-				char.animation.addByIndices(newAnim.name, newAnim.prefix, newAnim.frameIndices, "", newAnim.frameRate, newAnim.looped);
+				char.animation.addByIndices(newAnim.name, newAnim.prefix, newAnim.frameIndices, "", newAnim.frameRate, newAnim.looped, newAnim.flipX, newAnim.flipY);
 			} else {
-				char.animation.addByPrefix(newAnim.name, newAnim.prefix, newAnim.frameRate, newAnim.looped);
+				char.animation.addByPrefix(newAnim.name, newAnim.prefix, newAnim.frameRate, newAnim.looped, newAnim.flipX, newAnim.flipY);
 			}
 			
 			if(!char.animOffsets.exists(newAnim.name)) {
@@ -708,6 +739,8 @@ class CharacterEditorState extends MusicBeatState
 		tab_group.add(animationNameFramerate);
 		tab_group.add(nextAnimationInputText);
 		tab_group.add(animationLoopCheckBox);
+		tab_group.add(animationFlipXCheckBox);
+		tab_group.add(animationFlipYCheckBox);
 		tab_group.add(animationInterruptCheckBox);
 		tab_group.add(addUpdateButton);
 		tab_group.add(removeButton);
@@ -809,6 +842,8 @@ class CharacterEditorState extends MusicBeatState
 				var animAnim:String = '' + anim.name;
 				var animName:String = '' + anim.prefix;
 				var animFps:Int;
+				var flipX:Bool = anim.flipX;
+				var flipY:Bool = anim.flipY;
 				if (anim.frameRate > 0)
 					animFps = anim.frameRate;
 				else
@@ -816,9 +851,9 @@ class CharacterEditorState extends MusicBeatState
 				var animLoop:Bool = !!anim.looped; //Bruh
 				var animIndices:Array<Int> = anim.frameIndices;
 				if(animIndices != null && animIndices.length > 0) {
-					char.animation.addByIndices(animAnim, animName, animIndices, "", animFps, animLoop);
+					char.animation.addByIndices(animAnim, animName, animIndices, "", animFps, animLoop, flipX, flipY);
 				} else {
-					char.animation.addByPrefix(animAnim, animName, animFps, animLoop);
+					char.animation.addByPrefix(animAnim, animName, animFps, animLoop, flipX, flipY);
 				}
 			}
 		} else {
@@ -994,6 +1029,8 @@ class CharacterEditorState extends MusicBeatState
 			var animAnim:String = '' + anim.name;
 			var animName:String = '' + anim.prefix;
 			var animFps:Int;
+			var flipX:Bool = anim.flipX;
+			var flipY:Bool = anim.flipY;
 			if (anim.frameRate > 0)
 				animFps = anim.frameRate;
 			else
@@ -1001,9 +1038,9 @@ class CharacterEditorState extends MusicBeatState
 			var animLoop:Bool = !!anim.looped; //Bruh
 			var animIndices:Array<Int> = anim.frameIndices;
 			if(animIndices != null && animIndices.length > 0) {
-				ghostChar.animation.addByIndices(animAnim, animName, animIndices, "", animFps, animLoop);
+				ghostChar.animation.addByIndices(animAnim, animName, animIndices, "", animFps, animLoop, flipX, flipY);
 			} else {
-				ghostChar.animation.addByPrefix(animAnim, animName, animFps, animLoop);
+				ghostChar.animation.addByPrefix(animAnim, animName, animFps, animLoop, flipX, flipY);
 			}
 
 			if(anim.offsets != null && anim.offsets.length > 1) {
@@ -1026,7 +1063,7 @@ class CharacterEditorState extends MusicBeatState
 	function reloadCharacterDropDown() {
 		var charsLoaded:Map<String, Bool> = new Map();
 
-		characterList = CoolUtil.coolTextFile(Paths.txt('data/characterList'));
+		characterList = Character.characterList;
 
 		charDropDown.setData(FlxUIDropDownMenuCustom.makeStrIdLabelArray(characterList, true));
 		charDropDown.selectedLabel = daAnim;
@@ -1090,7 +1127,7 @@ class CharacterEditorState extends MusicBeatState
 					MusicBeatState.switchState(new PlayState());
 				} else {
 					MusicBeatState.switchState(new MasterEditorMenu());
-					FlxG.sound.playMusic(Paths.music('freakyMenu'));
+					FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)));
 				}
 				FlxG.mouse.visible = false;
 				return;

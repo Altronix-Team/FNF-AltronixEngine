@@ -1,94 +1,154 @@
 {
 	"animations": [
 		{
+			"nextAnim": "idle",
 			"offsets": [
 				-5,
 				0
 			],
-			"nextAnim": "idle",
 			"frameRate": 24,
-			"prefix": "Tankman Idle Dance ",
 			"frameIndices": [],
-			"interrupt": true,
+			"prefix": "Tankman Idle Dance ",
+			"looped": false,
 			"name": "idle",
-			"looped": false
+			"interrupt": true
 		},
 		{
+			"nextAnim": "idle",
 			"offsets": [
 				-20,
 				-9
 			],
-			"nextAnim": "idle",
 			"frameRate": 24,
-			"prefix": "TANKMAN UGH ",
 			"frameIndices": [],
-			"interrupt": false,
+			"prefix": "TANKMAN UGH ",
+			"looped": false,
 			"name": "ugh",
-			"looped": false
+			"interrupt": false
 		},
 		{
+			"nextAnim": "idle",
 			"offsets": [
 				-5,
 				15
 			],
-			"nextAnim": "idle",
 			"frameRate": 24,
-			"prefix": "PRETTY GOOD tankman ",
 			"frameIndices": [],
-			"interrupt": false,
+			"prefix": "PRETTY GOOD tankman ",
+			"looped": false,
 			"name": "prettygood",
-			"looped": false
+			"interrupt": false
 		},
 		{
+			"nextAnim": "idle",
 			"offsets": [
 				44,
 				46
 			],
-			"nextAnim": "idle",
 			"frameRate": 24,
-			"prefix": "Tankman UP note ",
 			"frameIndices": [],
-			"interrupt": true,
+			"prefix": "Tankman UP note 1",
+			"looped": false,
 			"name": "singUP",
-			"looped": false
+			"interrupt": true
 		},
 		{
+			"nextAnim": "idle",
 			"offsets": [
 				-18,
 				-19
 			],
-			"nextAnim": "idle",
 			"frameRate": 24,
-			"prefix": "Tankman Note Left ",
 			"frameIndices": [],
-			"interrupt": true,
+			"prefix": "Tankman Note Left 1",
+			"looped": false,
 			"name": "singLEFT",
-			"looped": false
+			"interrupt": true
 		},
 		{
+			"nextAnim": "idle",
 			"offsets": [
 				47,
 				-20
 			],
-			"nextAnim": "idle",
 			"frameRate": 24,
-			"prefix": "Tankman Right Note ",
 			"frameIndices": [],
-			"interrupt": true,
+			"prefix": "Tankman Right Note 1",
+			"looped": false,
 			"name": "singRIGHT",
-			"looped": false
+			"interrupt": true
 		},
 		{
+			"nextAnim": "idle",
 			"offsets": [
 				64,
 				-104
 			],
-			"nextAnim": "idle",
 			"frameRate": 24,
-			"prefix": "Tankman DOWN note ",
 			"frameIndices": [],
-			"interrupt": true,
+			"prefix": "Tankman DOWN note 1",
+			"looped": false,
 			"name": "singDOWN",
+			"interrupt": true
+		},
+		{
+			"frameIndices": [],
+			"prefix": "Tankman UP note MISS",
+			"offsets": [
+				40,
+				50
+			],
+			"nextAnim": "idle",
+			"flipX": false,
+			"flipY": false,
+			"frameRate": 24,
+			"interrupt": true,
+			"name": "singUPmiss",
+			"looped": false
+		},
+		{
+			"frameIndices": [],
+			"prefix": "Tankman Note Left MISS",
+			"offsets": [
+				-20,
+				-20
+			],
+			"nextAnim": "idle",
+			"flipX": false,
+			"flipY": false,
+			"frameRate": 24,
+			"interrupt": true,
+			"name": "singLEFTmiss",
+			"looped": false
+		},
+		{
+			"frameIndices": [],
+			"prefix": "Tankman Right Note MISS",
+			"offsets": [
+				80,
+				-10
+			],
+			"nextAnim": "idle",
+			"flipX": false,
+			"flipY": false,
+			"frameRate": 24,
+			"interrupt": true,
+			"name": "singRIGHTmiss",
+			"looped": false
+		},
+		{
+			"frameIndices": [],
+			"prefix": "Tankman DOWN note MISS",
+			"offsets": [
+				80,
+				-100
+			],
+			"nextAnim": "idle",
+			"flipX": false,
+			"flipY": false,
+			"frameRate": 24,
+			"interrupt": true,
+			"name": "singDOWNmiss",
 			"looped": false
 		}
 	],

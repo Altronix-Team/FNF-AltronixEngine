@@ -63,12 +63,18 @@ class Stage extends MusicBeatState
 
 	public var started:Bool = false;
 	public var startedidle:Bool = false;
+	public var foregroundSprites:FlxTypedGroup<FlxSprite>;
 	var steve:FlxSprite;
-	var johns:FlxTypedGroup<FlxSprite>;
-	var tankSpeedJohn:Array<Float> = [];
-	var goingRightJohn:Array<Bool> = [];
-	var endingOffsetJohn:Array<Float> = [];
-	var strumTimeJohn:Array<Dynamic> = [];
+	var tankmanRun:FlxTypedGroup<TankmenBG>;
+	public static var animationNotes:Array<Dynamic> = [];
+	var bgGhouls:BGSprite;
+	var limoMetalPole:BGSprite;
+	var limoLight:BGSprite;
+	var limoCorpse:BGSprite;
+	var limoCorpseTwo:BGSprite;
+	var grpLimoParticles:FlxTypedGroup<BGSprite>;
+	var limoKillingState:Int = 0;
+	var grpLimoDancers:FlxTypedGroup<BackgroundDancer>;
 
 	public function new(daStage:String)
 	{
@@ -77,6 +83,25 @@ class Stage extends MusicBeatState
 		camZoom = 1.05; // Don't change zoom here, unless you want to change zoom of every stage that doesn't have custom one
 		if (PlayStateChangeables.Optimize)
 			return;
+
+		stageData = StageData.getStageFile(curStage);
+		if (stageData == null)
+		{
+			stageData = {
+				defaultZoom: 0.9,
+				isPixelStage: false,
+				hideGF: false,
+			
+				boyfriend: [770, 450],
+				gf: [400, 130],
+				dad: [100, 100],
+			
+				camera_boyfriend: [0, 0],
+				camera_opponent: [0, 0],
+				camera_girlfriend: [0, 0],
+				camera_speed: 1
+			};
+		}
 
 		switch (daStage)
 		{
@@ -97,6 +122,7 @@ class Stage extends MusicBeatState
 				{
 					var bg:FlxSprite = new FlxSprite(-100).loadGraphic(Paths.loadImage('philly/sky', 'week3'));
 					bg.scrollFactor.set(0.1, 0.1);
+					bg.antialiasing = FlxG.save.data.antialiasing;
 					swagBacks['bg'] = bg;
 					toAdd.push(bg);
 
@@ -104,6 +130,7 @@ class Stage extends MusicBeatState
 					city.scrollFactor.set(0.3, 0.3);
 					city.setGraphicSize(Std.int(city.width * 0.85));
 					city.updateHitbox();
+					city.antialiasing = FlxG.save.data.antialiasing;
 					swagBacks['city'] = city;
 					toAdd.push(city);
 
@@ -126,10 +153,12 @@ class Stage extends MusicBeatState
 					}
 
 					var streetBehind:FlxSprite = new FlxSprite(-40, 50).loadGraphic(Paths.loadImage('philly/behindTrain', 'week3'));
+					streetBehind.antialiasing = FlxG.save.data.antialiasing;
 					swagBacks['streetBehind'] = streetBehind;
 					toAdd.push(streetBehind);
 
 					var phillyTrain = new FlxSprite(2000, 360).loadGraphic(Paths.loadImage('philly/train', 'week3'));
+					phillyTrain.antialiasing = FlxG.save.data.antialiasing;
 					if (FlxG.save.data.distractions)
 					{
 						swagBacks['phillyTrain'] = phillyTrain;
@@ -142,6 +171,7 @@ class Stage extends MusicBeatState
 					// var cityLights:FlxSprite = new FlxSprite().loadGraphic(AssetPaths.win0.png);
 
 					var street:FlxSprite = new FlxSprite(-40, streetBehind.y).loadGraphic(Paths.loadImage('philly/street', 'week3'));
+					street.antialiasing = FlxG.save.data.antialiasing;
 					swagBacks['street'] = street;
 					toAdd.push(street);
 				}
@@ -171,7 +201,19 @@ class Stage extends MusicBeatState
 
 					if (FlxG.save.data.distractions)
 					{
-						var grpLimoDancers = new FlxTypedGroup<BackgroundDancer>();
+						limoMetalPole = new BGSprite('gore/metalPole', -500, 220, 0.4, 0.4);
+						swagBacks['limoMetalPole'] = limoMetalPole;
+						toAdd.push(limoMetalPole);
+
+						limoCorpse = new BGSprite('gore/noooooo', -500, limoMetalPole.y - 130, 0.4, 0.4, ['Henchmen on rail'], true);
+						swagBacks['limoCorpse'] = limoCorpse;
+						toAdd.push(limoCorpse);
+
+						limoCorpseTwo = new BGSprite('gore/noooooo', -500, limoMetalPole.y, 0.4, 0.4, ['henchmen death'], true);
+						swagBacks['limoCorpseTwo'] = limoCorpseTwo;
+						toAdd.push(limoCorpseTwo);
+
+						grpLimoDancers = new FlxTypedGroup<BackgroundDancer>();
 						swagGroup['grpLimoDancers'] = grpLimoDancers;
 						toAdd.push(grpLimoDancers);
 
@@ -183,9 +225,23 @@ class Stage extends MusicBeatState
 							swagBacks['dancer' + i] = dancer;
 						}
 
+						limoLight = new BGSprite('gore/coldHeartKiller', limoMetalPole.x - 180, limoMetalPole.y - 80, 0.4, 0.4);
+						swagBacks['limoLight'] = limoLight;
+						toAdd.push(limoLight);
+
+						grpLimoParticles = new FlxTypedGroup<BGSprite>();
+						swagGroup['grpLimoParticles'] = grpLimoParticles;
+						toAdd.push(grpLimoParticles);
+
+						var particle:BGSprite = new BGSprite('gore/stupidBlood', -400, -400, 0.4, 0.4, ['blood'], false);
+						particle.alpha = 0.01;
+						grpLimoParticles.add(particle);
+						resetLimoKill();
+
 						swagBacks['fastCar'] = fastCar;
 						layInFront[2].push(fastCar);
 						resetFastCar();
+						limoKillingState = 0;
 					}
 
 					var overlayShit:FlxSprite = new FlxSprite(-500, -600).loadGraphic(Paths.loadImage('limo/limoOverlay', 'week4'));
@@ -405,24 +461,32 @@ class Stage extends MusicBeatState
 					bg.scale.set(6, 6);
 					swagBacks['bg'] = bg;
 					toAdd.push(bg);	
+
+					bgGhouls = new BGSprite('weeb/bgGhouls', -100, 190, 0.9, 0.9, ['BG freaks glitch instance'], false);
+					bgGhouls.setGraphicSize(Std.int(bgGhouls.width * CoolUtil.daPixelZoom));
+					bgGhouls.updateHitbox();
+					bgGhouls.visible = false;
+					bgGhouls.antialiasing = false;
+					swagBacks['bgGhouls'] = bgGhouls;
+					toAdd.push(bgGhouls);	
 				}
 			case 'warzone':
 				{
 					camZoom = 0.9;
 
-					var tankSky:FlxSprite = new FlxSprite(-400, -400).loadGraphic(Paths.loadImage('warzone/tankSky', 'week7'));
+					var tankSky:FlxSprite = new FlxSprite(-400, -400).loadGraphic(Paths.loadImage('tankSky', 'week7'));
 					tankSky.antialiasing = true;
 					tankSky.scrollFactor.set(0, 0);
 					swagBacks['tankSky'] = tankSky;
 					toAdd.push(tankSky);
 
-					var tankClouds:FlxSprite = new FlxSprite(-700, -100).loadGraphic(Paths.loadImage('warzone/tankClouds', 'week7'));
+					var tankClouds:FlxSprite = new FlxSprite(-700, -100).loadGraphic(Paths.loadImage('tankClouds', 'week7'));
 					tankClouds.antialiasing = true;
 					tankClouds.scrollFactor.set(0.1, 0.1);
 					swagBacks['tankClouds'] = tankClouds;
 					toAdd.push(tankClouds);
 
-					var tankMountains:FlxSprite = new FlxSprite(-300, -20).loadGraphic(Paths.loadImage('warzone/tankMountains', 'week7'));
+					var tankMountains:FlxSprite = new FlxSprite(-300, -20).loadGraphic(Paths.loadImage('tankMountains', 'week7'));
 					tankMountains.antialiasing = true;
 					tankMountains.setGraphicSize(Std.int(tankMountains.width * 1.1));
 					tankMountains.scrollFactor.set(0.2, 0.2);
@@ -430,7 +494,7 @@ class Stage extends MusicBeatState
 					swagBacks['tankMountains'] = tankMountains;
 					toAdd.push(tankMountains);
 
-					var tankBuildings:FlxSprite = new FlxSprite(-200, 0).loadGraphic(Paths.loadImage('warzone/tankBuildings', 'week7'));
+					var tankBuildings:FlxSprite = new FlxSprite(-200, 0).loadGraphic(Paths.loadImage('tankBuildings', 'week7'));
 					tankBuildings.antialiasing = true;
 					tankBuildings.setGraphicSize(Std.int(tankBuildings.width * 1.1));
 					tankBuildings.scrollFactor.set(0.3, 0.3);
@@ -438,7 +502,7 @@ class Stage extends MusicBeatState
 					swagBacks['tankBuildings'] = tankBuildings;
 					toAdd.push(tankBuildings);
 
-					var tankRuins:FlxSprite = new FlxSprite(-200, 0).loadGraphic(Paths.loadImage('warzone/tankRuins', 'week7'));
+					var tankRuins:FlxSprite = new FlxSprite(-200, 0).loadGraphic(Paths.loadImage('tankRuins', 'week7'));
 					tankRuins.antialiasing = true;
 					tankRuins.setGraphicSize(Std.int(tankRuins.width * 1.1));
 					tankRuins.scrollFactor.set(0.35, 0.35);
@@ -446,8 +510,8 @@ class Stage extends MusicBeatState
 					swagBacks['tankRuins'] = tankRuins;
 					toAdd.push(tankRuins);
 
-					var smokeLeft:FlxSprite = new FlxSprite(-200, -100).loadGraphic(Paths.loadImage('warzone/smokeLeft', 'week7'));
-					smokeLeft.frames = Paths.getSparrowAtlas('warzone/smokeLeft', 'week7');
+					var smokeLeft:FlxSprite = new FlxSprite(-200, -100).loadGraphic(Paths.loadImage('smokeLeft', 'week7'));
+					smokeLeft.frames = Paths.getSparrowAtlas('smokeLeft', 'week7');
 					smokeLeft.animation.addByPrefix('idle', 'SmokeBlurLeft', 24, true);
 					smokeLeft.animation.play('idle');
 					smokeLeft.scrollFactor.set(0.4, 0.4);
@@ -455,8 +519,8 @@ class Stage extends MusicBeatState
 					swagBacks['smokeLeft'] = smokeLeft;
 					toAdd.push(smokeLeft);
 
-					var smokeRight:FlxSprite = new FlxSprite(1100, -100).loadGraphic(Paths.loadImage('warzone/smokeRight', 'week7'));
-					smokeRight.frames = Paths.getSparrowAtlas('warzone/smokeRight', 'week7');
+					var smokeRight:FlxSprite = new FlxSprite(1100, -100).loadGraphic(Paths.loadImage('smokeRight', 'week7'));
+					smokeRight.frames = Paths.getSparrowAtlas('smokeRight', 'week7');
 					smokeRight.animation.addByPrefix('idle', 'SmokeRight', 24, true);
 					smokeRight.animation.play('idle');
 					smokeRight.scrollFactor.set(0.4, 0.4);
@@ -465,7 +529,7 @@ class Stage extends MusicBeatState
 					toAdd.push(smokeRight);
 
 					var tankWatchtower = new FlxSprite(100, 50);
-					tankWatchtower.frames = Paths.getSparrowAtlas('warzone/tankWatchtower', 'week7');
+					tankWatchtower.frames = Paths.getSparrowAtlas('tankWatchtower', 'week7');
 					tankWatchtower.animation.addByPrefix('idle', 'watchtower gradient color', 24, false);
 					tankWatchtower.animation.play('idle');
 					tankWatchtower.scrollFactor.set(0.5, 0.5);
@@ -473,8 +537,8 @@ class Stage extends MusicBeatState
 					swagBacks['tankWatchtower'] = tankWatchtower;
 					toAdd.push(tankWatchtower);
 
-					steve = new FlxSprite(300, 150);
-					steve.frames = Paths.getSparrowAtlas('warzone/tankRolling', 'week7');
+					steve = new FlxSprite(300, 300);
+					steve.frames = Paths.getSparrowAtlas('tankRolling', 'week7');
 					steve.animation.addByPrefix('idle', "BG tank w lighting", 24, true);
 					steve.animation.play('idle', true);
 					steve.antialiasing = true;
@@ -482,101 +546,98 @@ class Stage extends MusicBeatState
 					swagBacks['steve'] = steve;
 					toAdd.push(steve);
 
-					var tankGround:FlxSprite = new FlxSprite(-420, -150).loadGraphic(Paths.loadImage('warzone/tankGround', 'week7'));
+					tankmanRun = new FlxTypedGroup<TankmenBG>();
+					if (FlxG.save.data.distractions)
+					{
+						swagGroup['tankmanRun'] = tankmanRun;
+						toAdd.push(tankmanRun);
+					}
+
+					var tankGround:FlxSprite = new FlxSprite(-420, -150).loadGraphic(Paths.loadImage('tankGround', 'week7'));
 					tankGround.setGraphicSize(Std.int(tankGround.width * 1.15));
 					tankGround.updateHitbox();
 					tankGround.antialiasing = true;
 					swagBacks['tankGround'] = tankGround;
 					toAdd.push(tankGround);
 
+					foregroundSprites = new FlxTypedGroup<FlxSprite>();
+
 					var tank0 = new FlxSprite(-500, 650);
-					tank0.frames = Paths.getSparrowAtlas('warzone/tank0', 'week7');
+					tank0.frames = Paths.getSparrowAtlas('tank0', 'week7');
 					tank0.animation.addByPrefix('idle', 'fg tankhead far right', 24, false);
 					tank0.scrollFactor.set(1.7, 1.5);
 					tank0.antialiasing = true;
 					swagBacks['tank0'] = tank0;
+					foregroundSprites.add(tank0);
 					layInFront[2].push(tank0);
 
 					var tank1 = new FlxSprite(-300, 750);
-					tank1.frames = Paths.getSparrowAtlas('warzone/tank1', 'week7');
+					tank1.frames = Paths.getSparrowAtlas('tank1', 'week7');
 					tank1.animation.addByPrefix('idle', 'fg', 24, false);
 					tank1.scrollFactor.set(2, 0.2);
 					tank1.antialiasing = true;
 					swagBacks['tank1'] = tank1;
+					foregroundSprites.add(tank1);
 					layInFront[2].push(tank1);
 
 					var tank2 = new FlxSprite(450, 940);
-					tank2.frames = Paths.getSparrowAtlas('warzone/tank2', 'week7');
+					tank2.frames = Paths.getSparrowAtlas('tank2', 'week7');
 					tank2.animation.addByPrefix('idle', 'foreground', 24, false);
 					tank2.scrollFactor.set(1.5, 1.5);
 					tank2.antialiasing = true;
 					swagBacks['tank2'] = tank2;
+					foregroundSprites.add(tank2);
 					layInFront[2].push(tank2);
 
 					var tank4 = new FlxSprite(1300, 900);
-					tank4.frames = Paths.getSparrowAtlas('warzone/tank4', 'week7');
+					tank4.frames = Paths.getSparrowAtlas('tank4', 'week7');
 					tank4.animation.addByPrefix('idle', 'fg', 24, false);
 					tank4.scrollFactor.set(1.5, 1.5);
 					tank4.antialiasing = true;
 					swagBacks['tank4'] = tank4;
+					foregroundSprites.add(tank4);
 					layInFront[2].push(tank4);
 
 					var tank5 = new FlxSprite(1620, 700);
-					tank5.frames = Paths.getSparrowAtlas('warzone/tank5', 'week7');
+					tank5.frames = Paths.getSparrowAtlas('tank5', 'week7');
 					tank5.animation.addByPrefix('idle', 'fg', 24, false);
 					tank5.scrollFactor.set(1.5, 1.5);
 					tank5.antialiasing = true;
 					swagBacks['tank5'] = tank5;
+					foregroundSprites.add(tank5);
 					layInFront[2].push(tank5);
 
 					var tank3 = new FlxSprite(1300, 1200);
-					tank3.frames = Paths.getSparrowAtlas('warzone/tank3', 'week7');
+					tank3.frames = Paths.getSparrowAtlas('tank3', 'week7');
 					tank3.animation.addByPrefix('idle', 'fg', 24, false);
 					tank3.scrollFactor.set(1.5, 1.5);
 					tank3.antialiasing = true;
 					swagBacks['tank3'] = tank3;
+					foregroundSprites.add(tank3);
 					layInFront[2].push(tank3);
 
-					johns = new FlxTypedGroup<FlxSprite>();
-					swagGroup['johns'] = johns;
-					toAdd.push(johns);
+					if (FlxG.save.data.distractions)
+					{
+						swagGroup['foregroundSprites'] = foregroundSprites;
+						toAdd.push(foregroundSprites);
+					}
 
 					if (PlayState.SONG != null)
 					{
-						if (PlayState.SONG.songId == 'stress' && PlayState.SONG.gfVersion == 'picospeaker')
+						if (PlayState.SONG.gfVersion == 'picospeaker')
 							{
-								loadMappedAnims();
-								var john = new FlxSprite(FlxG.width + 1000, 500);
-								john.frames = Paths.getSparrowAtlas('warzone/tankmanKilled1', 'week7');
-								john.antialiasing = true;
-								john.animation.addByPrefix("run", "tankman running", 24, true);
-								john.animation.addByPrefix("shot", "John Shot " + FlxG.random.int(1,2), 24, false);
-								john.setGraphicSize(Std.int(0.8 * john.width));
-								john.updateHitbox();
-								john.animation.play("run");
-								tankSpeedJohn.push(0.7);
-								goingRightJohn.push(false);
-					
-								strumTimeJohn.push(animationNotes[0][0]);
-								endingOffsetJohn.push(FlxG.random.float(0.6, 1));
-								resetJohn(FlxG.width * 1.5, 600, true, john, 0);
-								johns.add(john);	
-
-								var i = 0;
-								for (c in 1...animationNotes.length)
+								var firstTank:TankmenBG = new TankmenBG(20, 500, true);
+								firstTank.resetShit(20, 600, true);
+								firstTank.strumTime = 10;
+								tankmanRun.add(firstTank);
+				
+								for (i in 0...TankmenBG.animationNotes.length)
 								{
-									if (FlxG.random.float(0, 50) < 16)
-									{
-									var jahn = john.clone();
-																		
-									tankSpeedJohn.push(0.7);
-									goingRightJohn.push(false);
-														
-									strumTimeJohn.push(animationNotes[c][0]);
-									endingOffsetJohn.push(FlxG.random.float(0.6, 1));
-									johns.add(jahn);
-									resetJohn(FlxG.width * 1.5, 200 + FlxG.random.int(50, 100),  2 > animationNotes[c][1], jahn,i);
-									i++;		   
+									if(FlxG.random.bool(16)) {
+										var tankBih = tankmanRun.recycle(TankmenBG);
+										tankBih.strumTime = TankmenBG.animationNotes[i][0];
+										tankBih.resetShit(500, 200 + FlxG.random.int(50, 100), TankmenBG.animationNotes[i][1] < 2);
+										tankmanRun.add(tankBih);
 									}
 								}
 							}
@@ -613,24 +674,11 @@ class Stage extends MusicBeatState
 				}
 			default:
 				{
-					var stageLua:FunkinLua = null;
-					if (FileSystem.exists(Paths.getPreloadPath('stages/' + curStage + '.lua')))
-					{
-						Debug.logTrace('trying to execute funkin lua');
-						stageLua = new FunkinLua(Paths.getPreloadPath('stages/' + curStage + '.lua'));
-						luaStage = true;
-					}
-					else if (Assets.exists(Paths.getPreloadPath('stages/' + curStage + '.lua'))){
-						Debug.logTrace('trying to execute funkin lua');
-						stageLua = new FunkinLua(Assets.getPath('assets/stages/' + curStage + '.lua'));
-						luaStage = true;
-					}
 					#if FEATURE_MODCORE
-					else if (FileSystem.exists(Paths.getPreloadPath('stages/' + curStage + '.hscript')))
+					if (Assets.exists(Paths.getPreloadPath('stages/' + curStage + '.hscript')))
 					{
 						//var stage:ScriptedStage = ScriptedStage.init(curStage);
 					}
-					#end
 					else
 					{
 						curStage = 'stage';
@@ -661,27 +709,37 @@ class Stage extends MusicBeatState
 						swagBacks['stageCurtains'] = stageCurtains;
 						toAdd.push(stageCurtains);
 					}
+					#else
+						curStage = 'stage';
+						camZoom = 0.9;
+						var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.loadImage('stageback', 'shared'));
+						bg.antialiasing = FlxG.save.data.antialiasing;
+						bg.scrollFactor.set(0.9, 0.9);
+						bg.active = false;
+						swagBacks['bg'] = bg;
+						toAdd.push(bg);
+
+						var stageFront:FlxSprite = new FlxSprite(-650, 600).loadGraphic(Paths.loadImage('stagefront', 'shared'));
+						stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
+						stageFront.updateHitbox();
+						stageFront.antialiasing = FlxG.save.data.antialiasing;
+						stageFront.scrollFactor.set(0.9, 0.9);
+						stageFront.active = false;
+						swagBacks['stageFront'] = stageFront;
+						toAdd.push(stageFront);
+
+						var stageCurtains:FlxSprite = new FlxSprite(-500, -300).loadGraphic(Paths.loadImage('stagecurtains', 'shared'));
+						stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
+						stageCurtains.updateHitbox();
+						stageCurtains.antialiasing = FlxG.save.data.antialiasing;
+						stageCurtains.scrollFactor.set(1.3, 1.3);
+						stageCurtains.active = false;
+
+						swagBacks['stageCurtains'] = stageCurtains;
+						toAdd.push(stageCurtains);
+					#end
 				}
 		}
-	}
-
-	var animationNotes:Array<Dynamic> = [];
-	
-	function loadMappedAnims() {
-		var picoAnims = Song.picospeakerLoad('picospeaker', "stress").notes;
-		trace('blammedlol');
-		for (anim in picoAnims) {
-			for (note in anim.sectionNotes) {
-				animationNotes.push(note);
-			}
-		}
-		animationNotes.sort(sortAnims);
-	}
-
-	function sortAnims(a, b) {
-		var aThing = a[0];
-		var bThing = b[0];
-		return aThing < bThing ? -1 : 1;
 	}
 
 	override public function update(elapsed:Float)
@@ -703,13 +761,17 @@ class Stage extends MusicBeatState
 							trainFrameTiming = 0;
 						}
 					}
-					// phillyCityLights.members[curLight].alpha -= (Conductor.crochet / 1000) * FlxG.elapsed;
+					
 				case 'warzone':
-					moveTank();
-					if (PlayState.SONG.songId.toLowerCase() == 'stress' && PlayState.SONG.gfVersion == 'picospeaker')
-						{
-							johnRun();
-						}
+					moveTank(elapsed);
+
+				case 'schoolEvil':
+					if(PlayState.SONG.songId == 'thorns' && bgGhouls.animation.curAnim.finished) {
+						swagBacks['bgGhouls'].visible = false;
+					}
+
+				case 'limo':
+					killShit(elapsed);
 			}
 		}
 	}
@@ -780,6 +842,13 @@ class Stage extends MusicBeatState
 					{
 						swagBacks['bgGirls'].dance();
 					}
+				case 'schoolEvil':
+					if ((curBeat == 64 || curBeat == 66 || curBeat == 69 || curBeat == 71 || curBeat == 73 || curBeat == 75 || curBeat == 77 || curBeat == 79 || curBeat == 81 || curBeat == 83 || curBeat == 85 || curBeat == 87 || curBeat == 89 || curBeat == 91 || curBeat == 93 || curBeat == 95 || curBeat == 161 || curBeat == 163 || curBeat == 164 || curBeat == 166 || curBeat == 168 || curBeat == 170 || curBeat == 172 || curBeat == 174 || curBeat == 176 || curBeat == 178 || curBeat == 180 || curBeat == 182 || curBeat == 184 || curBeat == 186 || curBeat == 188 || curBeat == 190 || curBeat == 256 || curBeat == 258 || curBeat == 260 || curBeat == 262 || curBeat == 264 || curBeat == 266 || curBeat == 268 || curBeat == 270 || curBeat == 272 || curBeat == 274 || curBeat == 276 || curBeat == 278 || curBeat == 280 || curBeat == 282 || curBeat == 284 || curBeat == 286) 
+						&& FlxG.save.data.distractions && PlayState.SONG.songId == 'thorns')
+					{
+						swagBacks['bgGhouls'].visible = true;
+						swagBacks['bgGhouls'].dance();
+					}
 				case 'limo':
 					if (FlxG.save.data.distractions)
 					{
@@ -787,6 +856,13 @@ class Stage extends MusicBeatState
 						{
 							dancer.dance();
 						});
+
+						if (PlayState.SONG.songId == 'satin-panties' && (curBeat == 40 || curBeat == 103))
+							killHenchmen();
+						else if (PlayState.SONG.songId == 'high' && (curBeat == 8 || curBeat == 40 || curBeat == 135 || curBeat == 168 || curBeat == 200))
+							killHenchmen();
+						else if (PlayState.SONG.songId == 'milf' && (curBeat == 232 || curBeat == 296))
+							killHenchmen();
 
 						if (FlxG.random.bool(10) && fastCarCanDrive)
 							fastCarDrive();
@@ -836,65 +912,138 @@ class Stage extends MusicBeatState
 		}
 	}
 
+	function killHenchmen():Void
+		{
+			if(FlxG.save.data.distractions && curStage == 'limo') {
+				if(limoKillingState < 1) {
+					limoMetalPole.x = -400;
+					limoMetalPole.visible = true;
+					limoLight.visible = true;
+					limoCorpse.visible = false;
+					limoCorpseTwo.visible = false;
+					limoKillingState = 1;
+				}
+			}
+		}
+		
+	var limoSpeed:Float = 0;
+	function killShit(elapsed:Float)
+	{
+		if (FlxG.save.data.distractions) {
+			grpLimoParticles.forEach(function(spr:BGSprite) {
+				if(spr.animation.curAnim.finished) {
+					spr.kill();
+					grpLimoParticles.remove(spr, true);
+					spr.destroy();
+				}
+			});
+
+			switch(limoKillingState) {
+				case 1:
+					limoMetalPole.x += 5000 * elapsed;
+					limoLight.x = limoMetalPole.x - 180;
+					limoCorpse.x = limoLight.x - 50;
+					limoCorpseTwo.x = limoLight.x + 35;
+
+					var dancers:Array<BackgroundDancer> = grpLimoDancers.members;
+					for (i in 0...dancers.length) {
+						if(dancers[i].x < FlxG.width * 1.5 && limoLight.x > (370 * i) + 130) {
+							switch(i) {
+								case 0 | 3:
+									if(i == 0) FlxG.sound.play(Paths.sound('dancerdeath'), 0.5);
+
+									var diffStr:String = i == 3 ? ' 2 ' : ' ';
+									var particle:BGSprite = new BGSprite('gore/noooooo', dancers[i].x + 200, dancers[i].y, 0.4, 0.4, ['hench leg spin' + diffStr + 'PINK'], false);
+									grpLimoParticles.add(particle);
+									var particle:BGSprite = new BGSprite('gore/noooooo', dancers[i].x + 160, dancers[i].y + 200, 0.4, 0.4, ['hench arm spin' + diffStr + 'PINK'], false);
+									grpLimoParticles.add(particle);
+									var particle:BGSprite = new BGSprite('gore/noooooo', dancers[i].x, dancers[i].y + 50, 0.4, 0.4, ['hench head spin' + diffStr + 'PINK'], false);
+									grpLimoParticles.add(particle);
+
+									var particle:BGSprite = new BGSprite('gore/stupidBlood', dancers[i].x - 110, dancers[i].y + 20, 0.4, 0.4, ['blood'], false);
+									particle.flipX = true;
+									particle.angle = -57.5;
+									grpLimoParticles.add(particle);
+								case 1:
+									limoCorpse.visible = true;
+								case 2:
+									limoCorpseTwo.visible = true;
+							} //Note: Nobody cares about the fifth dancer because he is mostly hidden offscreen :(
+							dancers[i].x += FlxG.width * 2;
+						}
+					}
+
+					if(limoMetalPole.x > FlxG.width * 2) {
+						resetLimoKill();
+						limoSpeed = 800;
+						limoKillingState = 2;
+					}
+
+				case 2:
+					limoSpeed -= 4000 * elapsed;
+					swagBacks['bgLimo'].x -= limoSpeed * elapsed;
+					if(swagBacks['bgLimo'].x > FlxG.width * 1.5) {
+						limoSpeed = 3000;
+						limoKillingState = 3;
+					}
+
+				case 3:
+					limoSpeed -= 2000 * elapsed;
+					if(limoSpeed < 1000) limoSpeed = 1000;
+
+					swagBacks['bgLimo'].x -= limoSpeed * elapsed;
+					if(swagBacks['bgLimo'].x < -275) {
+						limoKillingState = 4;
+						limoSpeed = 800;
+					}
+
+				case 4:
+					swagBacks['bgLimo'].x = FlxMath.lerp(swagBacks['bgLimo'].x, -150, CoolUtil.boundTo(elapsed * 9, 0, 1));
+					if(Math.round(swagBacks['bgLimo'].x) == -150) {
+						swagBacks['bgLimo'].x = -150;
+						limoKillingState = 0;
+					}
+			}
+
+			if(limoKillingState > 2) {
+				var dancers:Array<BackgroundDancer> = grpLimoDancers.members;
+				for (i in 0...dancers.length) {
+					dancers[i].x = (370 * i) + swagBacks['bgLimo'].x + 280;
+				}
+			}
+		}
+	}
+
+	function resetLimoKill():Void
+		{
+			if(curStage == 'limo') {
+				limoMetalPole.x = -500;
+				limoMetalPole.visible = false;
+				limoLight.x = -500;
+				limoLight.visible = false;
+				limoCorpse.x = -500;
+				limoCorpse.visible = false;
+				limoCorpseTwo.x = -500;
+				limoCorpseTwo.visible = false;
+			}
+		}
+
 	// Variables and Functions for Stages
 	var lightningStrikeBeat:Int = 0;
 	var lightningOffset:Int = 8;
 	public var curLight:Int = 0;
 
-
 	var tankAngle:Float = FlxG.random.int(-90, 45);
 	var tankSpeed:Float = FlxG.random.float(5, 7);
 	var tankX = 400;
-	function moveTank()
+	function moveTank(?elapsed:Float = 0)
 	{
-		tankAngle += FlxG.elapsed * tankSpeed;
-		steve.angle = tankAngle - 90 + 15;
-		steve.x = tankX + 1500 * FlxMath.fastCos(FlxAngle.asRadians(tankAngle + 180));
-		steve.y = 1300 + 1100 * FlxMath.fastSin(FlxAngle.asRadians(tankAngle + 180));
-	}
-
-	function resetJohn(x:Float, y:Int, goingRight:Bool, spr:FlxSprite, johnNum:Int) {
-		
-		spr.x = x;
-		spr.y = y;
-		goingRightJohn[johnNum] = goingRight;
-		endingOffsetJohn[johnNum] = FlxG.random.float(50, 200);
-		tankSpeedJohn[johnNum] = FlxG.random.float(0.6, 1);
-		spr.flipX = if (goingRight) true else false;
-	}
-
-	function johnRun()
-	{
-		var i = 0;
-		for (spr in johns.members) {
-			if (spr.x >= 1.2 * FlxG.width || spr.x <= -0.5 * FlxG.width)
-				spr.visible = false;
-			else
-				spr.visible = true;
-			if (spr.animation.curAnim.name == "run") {
-				var fuck = 0.74 * FlxG.width + endingOffsetJohn[i];
-				if (goingRightJohn[i]) {
-					fuck = 0.02 * FlxG.width - endingOffsetJohn[i];
-					spr.x = fuck + (Conductor.songPosition - strumTimeJohn[i]) * tankSpeedJohn[i];
-					spr.flipX = true;
-				} else {
-				spr.x = fuck - (Conductor.songPosition - strumTimeJohn[i]) * tankSpeedJohn[i];
-				spr.flipX = false;
-				}
-				}
-			if (Conductor.songPosition > strumTimeJohn[i]) {
-			spr.animation.play("shot");
-			if (goingRightJohn[i]) {
-			spr.offset.y = 200;
-			spr.offset.x = 300;
-			if (FlxG.save.data.flashing)
-				FlxFlicker.flicker(spr, 1, 0.15, false);
-			}
-			}
-			if (spr.animation.curAnim.name == "shot" && spr.animation.curAnim.curFrame >= spr.animation.curAnim.frames.length - 1) {
-			spr.kill();
-			}
-			i++;
+		if(!PlayState.inCutscene)
+		{
+			tankAngle += elapsed * tankSpeed;
+			steve.angle = tankAngle - 90 + 15;
+			steve.x = tankX + 1500 * Math.cos(Math.PI / 180 * (1 * tankAngle + 180));
+			steve.y = 1300 + 1100 * Math.sin(Math.PI / 180 * (1 * tankAngle + 180));
 		}
 	}
 

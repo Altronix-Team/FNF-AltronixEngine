@@ -16,10 +16,12 @@ import sys.FileSystem;
 #end
 
 using StringTools;
+using hx.strings.Strings;
 
 class Paths
 {
 	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
+	inline public static var VIDEO_EXT = "mp4";
 
 	static var currentLevel:String;
 
@@ -38,39 +40,17 @@ class Paths
 			var levelPath = getLibraryPathForce(file, currentLevel);
 			if (OpenFlAssets.exists(levelPath, type))
 				return levelPath;
-			else if (FileSystem.exists(levelPath))
-				return levelPath;
 
 			levelPath = getLibraryPathForce(file, "shared");
 			if (OpenFlAssets.exists(levelPath, type))
-				return levelPath;
-			else if (FileSystem.exists(levelPath))
 				return levelPath;
 		}
 
 		return getPreloadPath(file);
 	}
 
-	static public function getTextFromFile(key:String, ?ignoreMods:Bool = false):String
+	static public function getTextFromFile(key:String):String
 		{
-			#if sys
-			if (FileSystem.exists(getPreloadPath(key)))
-				return File.getContent(getPreloadPath(key));
-	
-			if (currentLevel != null)
-			{
-				var levelPath:String = '';
-				if(currentLevel != 'shared') {
-					levelPath = getLibraryPathForce(key, currentLevel);
-					if (FileSystem.exists(levelPath))
-						return File.getContent(levelPath);
-				}
-	
-				levelPath = getLibraryPathForce(key, 'shared');
-				if (FileSystem.exists(levelPath))
-					return File.getContent(levelPath);
-			}
-			#end
 			return Assets.getText(getPath(key, TEXT));
 		}
 	
@@ -112,26 +92,9 @@ class Paths
 	{
 		var path = image(key, library);
 
-		#if FEATURE_FILESYSTEM
-		if (Caching.bitmapData != null)
-		{
-			if (Caching.bitmapData.exists(key))
-			{
-				Debug.logTrace('Loading image from bitmap cache: $key');
-				// Get data from cache.
-				return Caching.bitmapData.get(key);
-			}
-		}
-		#end
-
 		if (OpenFlAssets.exists(path, IMAGE))
 		{
 			var bitmap = OpenFlAssets.getBitmapData(path);
-			return FlxGraphic.fromBitmapData(bitmap);
-		}
-		else if (FileSystem.exists(path))
-		{
-			var bitmap = FlxAssets.getBitmapData(path);
 			return FlxGraphic.fromBitmapData(bitmap);
 		}
 		else
@@ -140,6 +103,7 @@ class Paths
 			return null;
 		}
 	}
+
 	static public function loadStageJSON(key:String, ?library:String):Dynamic
 		{
 			var rawJson = OpenFlAssets.getText(Paths.stageJson(key, library)).trim();
@@ -196,6 +160,32 @@ class Paths
 			else
 				return null;
 		}
+
+	static public function loadImagesJSON(key:String, ?library:String):Dynamic
+	{
+		var rawJson = OpenFlAssets.getText(Paths.imagesJson(key, library)).trim();
+
+		// Perform cleanup on files that have bad data at the end.
+		while (!rawJson.endsWith("}"))
+		{
+			rawJson = rawJson.substr(0, rawJson.length - 1);
+		}
+
+		try
+		{
+			// Attempt to parse and return the JSON data.
+			return Json.parse(rawJson);
+		}
+		catch (e)
+		{
+			Debug.logError("AN ERROR OCCURRED parsing a JSON file.");
+			Debug.logError(e.message);
+			Debug.logError(e.stack);
+
+			// Return null.
+			return null;
+		}
+	}
 
 	static public function loadJSON(key:String, ?library:String):Dynamic
 	{
@@ -274,6 +264,11 @@ class Paths
 	inline static public function json(key:String, ?library:String)
 	{
 		return getPath('data/$key.json', TEXT, library);
+	}
+
+	inline static public function imagesJson(key:String, ?library:String)
+	{
+		return getPath('images/$key.json', TEXT, library);
 	}
 
 	inline static public function weeksJson(key:String, ?library:String)
@@ -386,10 +381,8 @@ class Paths
 
 	inline static public function doesTextAssetExist(path:String)
 	{
-		if (OpenFlAssets.exists(path, AssetType.TEXT))
-			return OpenFlAssets.exists(path, AssetType.TEXT);
-		else if (FileSystem.exists(path))
-			return FileSystem.exists(path);
+		if (OpenFlAssets.exists(path, TEXT))
+			return OpenFlAssets.exists(path, TEXT);
 		else
 			return false;
 	}
@@ -410,9 +403,119 @@ class Paths
 		return getPath('videos/$key.mp4', BINARY, library);
 	}
 
+	/**
+	 * List all the data lua files under a given subdirectory.
+	 * @param path The path to look under.
+	 * @return The list of lua files under that path.
+	 */
+	 public static function listLuaInPath(path:String)
+		{
+			var dataAssets = OpenFlAssets.list(TEXT);
+	
+			var queryPath = '${path}';
+	
+			var results:Array<String> = [];
+	
+			for (data in dataAssets)
+			{
+				if (data.indexOf(queryPath) != -1 && data.endsWith('.lua') && 
+					(!results.contains(data.substr(data.indexOf(queryPath) + queryPath.length).replaceAll('.lua', ''))))
+				{
+					var suffixPos = data.indexOf(queryPath) + queryPath.length;
+					results.push(data.substr(suffixPos).replaceAll('.lua', ''));
+				}
+			}
+	
+			return results;
+		}
+
+	/**
+	 * List all the data JSON files under a given subdirectory.
+	 * @param path The path to look under.
+	 * @return The list of JSON files under that path.
+	 */
+	public static function listJsonInPath(path:String)
+		{
+			var dataAssets = OpenFlAssets.list(TEXT);
+	
+			var queryPath = '${path}';
+	
+			var results:Array<String> = [];
+	
+			for (data in dataAssets)
+			{
+				if (data.indexOf(queryPath) != -1 && data.endsWith('.json')
+					 && !results.contains(data.substr(data.indexOf(queryPath) + queryPath.length).replaceAll('.json', '')))
+				{
+					var suffixPos = data.indexOf(queryPath) + queryPath.length;
+					results.push(data.substr(suffixPos).replaceAll('.json', ''));
+				}
+			}
+	
+			return results;
+		}
+
+	/**
+	 * List all the image files under a given subdirectory.
+	 * @param path The path to look under.
+	 * @return The list of image files under that path.
+	 */
+	 public static function listImagesInPath(path:String)
+		{
+			// We need to query OpenFlAssets, not the file system, because of Polymod.
+			var imageAssets = OpenFlAssets.list(IMAGE);
+	
+			var queryPath = 'images/${path}';
+	
+			var results:Array<String> = [];
+	
+			for (image in imageAssets)
+			{
+				// Parse end-to-beginning to support mods.
+				var path = image.split('/');
+				if (image.indexOf(queryPath) != -1)
+				{
+					var suffixPos = image.indexOf(queryPath) + queryPath.length;
+					results.push(image.substr(suffixPos).replaceAll('.json', ''));
+				}
+			}
+	
+			return results;
+		}
+
+	/**
+	 * List all the data Music files under a given subdirectory.
+	 * @param path The path to look under.
+	 * @return The list of Music files under that path.
+	 */
+	public static function listMusicInPath(path:String)
+		{
+			var dataAssets = OpenFlAssets.list(MUSIC).concat(OpenFlAssets.list(SOUND));
+	
+			var queryPath = '${path}';
+	
+			var results:Array<String> = [];
+	
+			for (data in dataAssets)
+			{
+				if (data.indexOf(queryPath) != -1)
+				{
+					var suffixPos = data.indexOf(queryPath) + queryPath.length;
+					results.push(data.substr(suffixPos));
+				}
+			}
+	
+			return results;
+		}
+
+	public static function isAnimated(key:String, ?library:String)
+	{
+		return doesTextAssetExist(Paths.file('images/$key.xml', library));
+	}
+
 	static public function getHaxeScript(string:String)
 	{
-		return OpenFlAssets.getText('assets/data/$string/haxeModchart.hx');
+		return OpenFlAssets.getText('assets/data/songs/$string/haxeModchart.hx');
 	}
 
 	static public function getSparrowAtlas(key:String, ?library:String, ?isCharacter:Bool = false)

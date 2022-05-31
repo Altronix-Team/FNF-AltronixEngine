@@ -199,6 +199,7 @@
 	"startingAnim": "danceRight",
 	"characterIcon": "gf",
 	"antialiasing": true,
+	"isGF": true,
 	"name": "characters/gfChristmas",
 	"barColorJson": [
 		165,

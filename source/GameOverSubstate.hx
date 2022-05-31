@@ -28,7 +28,12 @@ class GameOverSubstate extends MusicBeatSubstate
 			case 'bfAndGF':
 				daBf = 'bfAndGF-DEAD';
 			default:
-				daBf = 'bf';
+				if (PlayState.instance.boyfriend.animation.exists('firstDeath')
+					 && PlayState.instance.boyfriend.animation.exists('deathLoop')
+					 && PlayState.instance.boyfriend.animation.exists('deathConfirm'))
+					 daBf = PlayState.instance.boyfriend.curCharacter;
+				else
+					daBf = 'bf';
 		}
 
 		super();
@@ -55,6 +60,7 @@ class GameOverSubstate extends MusicBeatSubstate
 	var startVibin:Bool = false;
 
 	override function update(elapsed:Float)
+		
 	{
 		super.update(elapsed);
 
@@ -89,7 +95,7 @@ class GameOverSubstate extends MusicBeatSubstate
 				MusicBeatState.switchState(new MainMenuState());
 			else
 				MusicBeatState.switchState(new FreeplayState());
-			PlayState.loadRep = false;
+			//PlayState.loadRep = false;
 			PlayState.stageTesting = false;
 			PlayState.isStoryMode = false;
 			PlayState.isExtras = false;
@@ -104,6 +110,17 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		if (boyfriend.animation.curAnim.name == 'firstDeath' && boyfriend.animation.curAnim.finished)
 		{
+			if (PlayState.SONG.stage == 'warzone')
+				{				
+					var exclude:Array<Int> = [];
+	
+					FlxG.sound.play(Paths.sound('jeffGameover/jeffGameover-' + FlxG.random.int(1, 25, exclude)), 1, false, null, true, function() {
+						if(!isEnding)
+						{
+							FlxG.sound.music.fadeIn(0.2, 1, 4);
+						}
+					});
+				}
 			FlxG.sound.playMusic(Paths.music('gameOver' + stageSuffix));
 			startVibin = true;
 		}

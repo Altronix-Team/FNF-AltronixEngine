@@ -100,7 +100,7 @@ class Replay
 		#end
 
 		var json = {
-			"songName": PlayState.SONG.song,
+			"songName": PlayState.SONG.songId,
 			"songId": PlayState.SONG.songId,
 			"songDiff": PlayState.storyDifficulty,
 			"chartPath": chartPath,

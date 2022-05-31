@@ -165,8 +165,19 @@ class EngineData
 		if (FlxG.save.data.weekCompleted == null)
 		{
 			StoryMenuState.weekCompleted.set('', true);
+			StoryMenuState.weekCompleted.set('tutorial', true);
+			StoryMenuState.weekCompleted.set('week1', true);
+			StoryMenuState.weekCompleted.set('week2', true);
+			StoryMenuState.weekCompleted.set('week3', true);
+			StoryMenuState.weekCompleted.set('week4', true);
+			StoryMenuState.weekCompleted.set('week5', true);
+			StoryMenuState.weekCompleted.set('week6', true);
+			StoryMenuState.weekCompleted.set('week7', true);
 			FlxG.save.data.weekCompleted = StoryMenuState.weekCompleted;
 		}
+
+		if (FlxG.save.data.modConfig == null)
+			FlxG.save.data.modConfig = '';
 
 		Ratings.timingWindows = [
 			FlxG.save.data.shitMs,
@@ -177,6 +188,9 @@ class EngineData
 
 		if (FlxG.save.data.noteskin == null)
 			FlxG.save.data.noteskin = 0;
+
+		if (FlxG.save.data.menuMusic == null)
+			FlxG.save.data.menuMusic = 0;
 
 		// Gonna make this an option on another PR
 		if (FlxG.save.data.overrideNoteskins == null)

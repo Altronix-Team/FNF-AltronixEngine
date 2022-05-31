@@ -83,10 +83,6 @@ class MusicBeatState extends FlxUIState
 
 	override function update(elapsed:Float)
 	{
-		if (FlxG.keys.anyJustPressed([TitleState.fullscreenBind]))
-			{
-				FlxG.fullscreen = !FlxG.fullscreen;
-			}
 
 		if (Conductor.songPosition < 0)
 			curDecimalBeat = 0;

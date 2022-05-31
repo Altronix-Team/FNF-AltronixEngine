@@ -8,6 +8,8 @@ import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.utils.Assets as OpenFlAssets;
 import haxe.Json;
 import flixel.tweens.FlxTween;
+import flixel.util.FlxSort;
+import animateatlas.AtlasFrameMaker;
 
 using StringTools;
 
@@ -45,6 +47,7 @@ class Character extends FlxSprite
 	public var colorTween:FlxTween;
 	public var characterIcon:String = 'face';
 	public var animationNotes:Array<Dynamic> = [];
+	public var specialAnim:Bool = false;
 
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
@@ -113,11 +116,20 @@ class Character extends FlxSprite
 		var tex:FlxAtlasFrames;
 
 		if (data.usePackerAtlas)
+		{
 			tex = Paths.getPackerAtlas(data.asset, 'shared');
+			frames = tex;
+		}
+		/*else if (data.useSpriteMap)
+		{
+			frames = AtlasFrameMaker.construct(data.asset);
+		}*/
 		else
+		{
 			tex = Paths.getSparrowAtlas(data.asset, 'shared');
+			frames = tex;
+		}
 
-		frames = tex;
 		if (frames != null)
 			for (anim in data.animations)
 			{
@@ -199,16 +211,16 @@ class Character extends FlxSprite
 
 		if (curCharacter == 'picospeaker') 
 		{
-			if (0 < animationNotes.length && Conductor.songPosition > animationNotes[0][0]) {
-				var idkWhatThisISLol = 1;
-				if (2 <= animationNotes[0][1]) {
-					idkWhatThisISLol = 3;				
-				}
+			if(animationNotes.length > 0 && Conductor.songPosition > animationNotes[0][0])
+				{
+					var noteData:Int = 1;
+					if(animationNotes[0][1] > 2) noteData = 3;
 
-				idkWhatThisISLol += FlxG.random.int(0, 1);
-				playAnim("shoot" + idkWhatThisISLol, true);
-				animationNotes.shift();
-			}
+					noteData += FlxG.random.int(0, 1);
+					playAnim('shoot' + noteData, true);
+					animationNotes.shift();
+				}
+			if(animation.curAnim.finished) playAnim(animation.curAnim.name, false, false, animation.curAnim.frames.length - 3);
 		}
 
 		if (!debugMode)
@@ -216,358 +228,39 @@ class Character extends FlxSprite
 			var nextAnim = animNext.get(animation.curAnim.name);
 			var forceDanced = animDanced.get(animation.curAnim.name);
 
-			if (nextAnim != null && animation.curAnim.finished)
+			if ((nextAnim != null && animation.curAnim.finished))
 			{
 				if (isDancing && forceDanced != null)
+				{
 					danced = forceDanced;
-				playAnim(nextAnim);
+					playAnim(nextAnim);
+				}
 			}
+		}
+
+		if (animation.curAnim.finished && specialAnim)
+		{
+			specialAnim = false;
+			dance();
 		}
 
 		super.update(elapsed);
 	}
 
-	public static function createEmptyCharacter():CharacterData {
-		var testChar:CharacterData = 
-		{
-			{
-				animations: [
-					{
-						looped: false,
-						offsets: [
-							0,
-							0
-						],
-						frameRate: 24,
-						name: "idle",
-						nextAnim: "idleLoop",
-						frameIndices: [],
-						prefix: "Dad idle dance"
-					},
-					{
-						name: "idleLoop",
-						prefix: "Dad idle dance",
-						offsets: [0, 0],
-						frameIndices: [11, 12],
-						frameRate: 12,
-						looped: true
-					},
-					{
-						offsets: [
-							0,
-							0
-						],
-						frameIndices: [],
-						frameRate: 24,
-						name: "singLEFT",
-						looped: false,
-						prefix: "Dad Sing Note LEFT"
-					},
-					{
-						offsets: [
-							0,
-							0
-						],
-						frameIndices: [],
-						frameRate: 24,
-						name: "singDOWN",
-						looped: false,
-						prefix: "Dad Sing Note DOWN"
-					},
-					{
-						offsets: [
-							0,
-							0
-						],
-						frameIndices: [],
-						frameRate: 24,
-						name: "singUP",
-						looped: false,
-						prefix: "Dad Sing Note UP"
-					},
-					{
-						offsets: [
-							0,
-							0
-						],
-						frameIndices: [],
-						frameRate: 24,
-						name: "singRIGHT",
-						looped: false,
-						prefix: "Dad Sing Note RIGHT"
-					}
-				],
-				name: 'Dad',
-				startingAnim: 'idle',
-				antialiasing: true,
-				asset: 'characters/DADDY_DEAREST',
-				camFollow: [
-					0,
-					0
-				],
-				charPos: [
-					0,
-					0
-				],
-				flipX: false,
-				barColorJson: [
-					161,
-					161,
-					161
-				],
-				camPos: [
-					0,
-					0
-				],
-				holdLength: 6.1,
-				scale: 1
-			}
-		};
-		return testChar;
-	}
-
-	public static function createEmptyGF():CharacterData {
-		var testChar:CharacterData = 
-		{
-			{
-				animations: [
-					{
-						offsets: [
-							0,
-							-19
-						],
-						nextAnim: "danceRight",
-						frameRate: 24,
-						frameIndices: [],
-						prefix: "GF left note",
-						name: "singLEFT",
-						interrupt: false
-					},
-					{
-						offsets: [
-							0,
-							-20
-						],
-						nextAnim: "danceRight",
-						frameRate: 24,
-						frameIndices: [],
-						prefix: "GF Right Note",
-						name: "singRIGHT",
-						interrupt: false
-					},
-					{
-						offsets: [
-							0,
-							4
-						],
-						nextAnim: "danceRight",
-						frameRate: 24,
-						frameIndices: [],
-						prefix: "GF Up Note",
-						name: "singUP",
-						interrupt: false
-					},
-					{
-						offsets: [
-							0,
-							-20
-						],
-						nextAnim: "danceRight",
-						frameRate: 24,
-						frameIndices: [],
-						prefix: "GF Down Note",
-						name: "singDOWN",
-						interrupt: false
-					},
-					{
-						offsets: [
-							0,
-							-9
-						],
-						frameRate: 24,
-						prefix: "GF Dancing Beat",
-						frameIndices: [
-							30,
-							0,
-							1,
-							2,
-							3,
-							4,
-							5,
-							6,
-							7,
-							8,
-							9,
-							10,
-							11,
-							12,
-							13,
-							14
-						],
-						name: "danceLeft"
-					},
-					{
-						offsets: [
-							0,
-							-9
-						],
-						frameRate: 24,
-						prefix: "GF Dancing Beat",
-						frameIndices: [
-							15,
-							16,
-							17,
-							18,
-							19,
-							20,
-							21,
-							22,
-							23,
-							24,
-							25,
-							26,
-							27,
-							28,
-							29
-						],
-						name: "danceRight"
-					},
-					{
-						offsets: [
-							0,
-							0
-						],
-						frameRate: 24,
-						prefix: "GF Cheer",
-						frameIndices: [],
-						name: "cheer"
-					},
-					{
-						offsets: [
-							45,
-							-8
-						],
-						frameRate: 24,
-						frameIndices: [
-							0,
-							1,
-							2,
-							3
-						],
-						prefix: "GF Dancing Beat Hair blowing",
-						looped: true,
-						name: "hairBlow",
-						interrupt: false
-					},
-					{
-						offsets: [
-							0,
-							-9
-						],
-						nextAnim: "danceRight",
-						frameRate: 24,
-						frameIndices: [
-							0,
-							1,
-							2,
-							3,
-							4,
-							5,
-							6,
-							7,
-							8,
-							9,
-							10,
-							11
-						],
-						prefix: "GF Dancing Beat Hair Landing",
-						isDanced: true,
-						name: "hairFall",
-						interrupt: false
-					},
-					{
-						offsets: [
-							-2,
-							-21
-						],
-						frameRate: 24,
-						prefix: "gf sad",
-						frameIndices: [
-							0,
-							1,
-							2,
-							3,
-							4,
-							5,
-							6,
-							7,
-							8,
-							9,
-							10,
-							11,
-							12
-						],
-						name: "sad"
-					},
-					{
-						offsets: [
-							-2,
-							-17
-						],
-						frameRate: 24,
-						frameIndices: [],
-						prefix: "GF FEAR",
-						name: "scared",
-						looped: true
-					}
-				],
-				name: 'GF',
-				startingAnim: 'danceRight',
-				characterIcon: "gf",
-				antialiasing: true,
-				asset: 'characters/GF_assets',
-				isDancing: true,
-				replacesGF: true,
-				camFollow: [
-					0,
-					0
-				],
-				charPos: [
-					0,
-					0
-				],
-				flipX: false,
-				barColorJson: [
-					161,
-					161,
-					161
-				],
-				camPos: [
-					0,
-					0
-				],
-				holdLength: 6.1,
-				scale: 1
-			}
-		};
-		return testChar;
-	}
-
 	public function loadMappedAnims() {
 		var picoAnims = Song.picospeakerLoad(curCharacter, "stress").notes;
-		trace('blammedlol');
 		for (anim in picoAnims) {
 			for (note in anim.sectionNotes) {
 				animationNotes.push(note);
 			}
 		}
+		TankmenBG.animationNotes = animationNotes;
 		animationNotes.sort(sortAnims);
 	}
 
-	function sortAnims(a, b) {
-		var aThing = a[0];
-		var bThing = b[0];
-		return aThing < bThing ? -1 : 1;
+	function sortAnims(Obj1:Array<Dynamic>, Obj2:Array<Dynamic>):Int
+	{
+		return FlxSort.byValues(FlxSort.ASCENDING, Obj1[0], Obj2[0]);
 	}
 
 	private var danced:Bool = false;
@@ -664,9 +357,39 @@ class Character extends FlxSprite
 	}
 
 	public function quickAnimAdd(name:String, anim:String)
+	{
+		animation.addByPrefix(name, anim, 24, false);
+	}
+
+	public static var characterList:Array<String> = [];
+
+	public static var girlfriendList:Array<String> = [];
+
+	public static function initCharacterList()
+	{
+		characterList = [];
+
+		girlfriendList = [];
+
+		var pathcheck = Paths.listJsonInPath('assets/data/characters/');
+
+		for (charId in pathcheck)
 		{
-			animation.addByPrefix(name, anim, 24, false);
+			Debug.logTrace('Loading character: ' + charId);
+
+			characterList.push(charId);
+
+			var charData:CharacterData = Paths.loadJSON('characters/${charId}');
+			if (charData == null)
+			{
+				Debug.logError('Character $charId failed to load.');
+				characterList.remove(charId);
+				continue;
+			}
+			if (charData.isGF)
+				girlfriendList.push(charId);								
 		}
+	}
 }
 
 typedef CharacterData =
@@ -674,6 +397,14 @@ typedef CharacterData =
 	var name:String;
 	var asset:String;
 	var startingAnim:String;
+
+	/**
+	 * Value is true if the character is a Girlfriend character.
+	 * Meant only to dance in the BG and play animations.
+	 * Will not have singing animations.
+	 * @default false
+	 */
+	 var ?isGF:Bool;
 
 	/**
 	 * Character health icon
@@ -701,6 +432,13 @@ typedef CharacterData =
 	 * @default false
 	 */
 	var ?usePackerAtlas:Bool;
+
+
+	/**
+	 * Whether this character uses SpriteMap.
+	 * @default false
+	 */
+	 var ?useSpriteMap:Bool;
 
 	/**
 	 * Whether this character uses a dancing idle instead of a regular idle.

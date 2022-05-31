@@ -34,10 +34,7 @@ class StageData {
 		var rawJson:String = null;
 		var path:String = Paths.getPreloadPath('stages/' + stage + '.json');
 		
-		if(FileSystem.exists(path)) {
-			rawJson = File.getContent(path);
-		}
-		else if (Assets.exists(path)){
+		if (Assets.exists(path)){
 			rawJson = Assets.getText(path);
 		}
 		else

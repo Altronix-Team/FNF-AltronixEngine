@@ -65,8 +65,6 @@ class FreeplayState extends MusicBeatState
 
 	public static var songData:Map<String, Array<SongData>> = [];
 
-	static var shitSongDiffs:Array<String> = [];
-
 	public static function loadDiff(diff:Int, songId:String, array:Array<SongData>)
 	{
 		var diffName:String = "";
@@ -89,7 +87,7 @@ class FreeplayState extends MusicBeatState
 		clean();
 
 		if (!FlxG.sound.music.playing)
-			FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
+			FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)), 0);
 
 		cached = false;
 
@@ -104,7 +102,6 @@ class FreeplayState extends MusicBeatState
 		trace("tryin to load sm files");
 		for (i in FileSystem.readDirectory("assets/sm/"))
 		{
-			trace(i);
 			if (FileSystem.isDirectory("assets/sm/" + i))
 			{
 				trace("Reading SM file dir " + i);
@@ -330,22 +327,18 @@ class FreeplayState extends MusicBeatState
 				if (Paths.doesTextAssetExist(Paths.json('songs/$songId/$songId-hard')))
 				{
 					diffsThatExist.push("Hard");
-					shitSongDiffs.push('Hard');
 				}
 				if (Paths.doesTextAssetExist(Paths.json('songs/$songId/$songId-easy')))
 				{
 					diffsThatExist.push("Easy");
-					shitSongDiffs.push('Easy');
 				}
 				if (Paths.doesTextAssetExist(Paths.json('songs/$songId/$songId')))
 				{
 					diffsThatExist.push("Normal");
-					shitSongDiffs.push('Normal');
 				}
 				if (Paths.doesTextAssetExist(Paths.json('songs/$songId/$songId-hardplus')))
 				{
 					diffsThatExist.push("Hard P");
-					shitSongDiffs.push('Hard P');
 				}
 
 				if (diffsThatExist.length == 0)
@@ -392,34 +385,30 @@ class FreeplayState extends MusicBeatState
 		switch (curDiff)
 		{
 			case 0:
-				if (shitSongDiffs.contains('Easy'))
+				if (songs[curSelected].diffs.contains('Easy'))
 					{
-						curDifficulty = 0;
-						return shitSongDiffs.indexOf('Easy');
+						return songs[curSelected].diffs.indexOf('Easy');
 					}
 				else
 					return 0;
 			case 1:
-				if (shitSongDiffs.contains('Normal'))
+				if (songs[curSelected].diffs.contains('Normal'))
 					{
-						curDifficulty = 1;
-						return shitSongDiffs.indexOf('Normal');
+						return songs[curSelected].diffs.indexOf('Normal');
 					}
 				else
 					return 0;
 			case 2:
-				if (shitSongDiffs.contains('Hard'))
+				if (songs[curSelected].diffs.contains('Hard'))
 					{
-						curDifficulty = 2;
-						return shitSongDiffs.indexOf('Hard');
+						return songs[curSelected].diffs.indexOf('Hard');
 					}
 				else
 					return 0;
 			case 3:
-				if (shitSongDiffs.contains('Hard P'))
+				if (songs[curSelected].diffs.contains('Hard P'))
 					{
-						curDifficulty = 3;
-						return shitSongDiffs.indexOf('Hard P');
+						return songs[curSelected].diffs.indexOf('Hard P');
 					}
 				else
 					return 0;
@@ -551,7 +540,7 @@ class FreeplayState extends MusicBeatState
 			else
 			{
 				destroyFreeplayVocals();
-				FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
+				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)), 0);
 				FlxG.sound.music.fadeIn(4, 0, 0.7);
 				songListen = false;
 			}

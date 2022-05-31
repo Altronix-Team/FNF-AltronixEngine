@@ -79,6 +79,7 @@ class GameplayCustomizeState extends MusicBeatState
 		FlxG.cameras.add(camHUD);
 
 		FlxCamera.defaultCameras = [camGame];
+		//FlxG.cameras.setDefaultDrawTarget(camGame, true);
 
 		camHUD.zoom = FlxG.save.data.zoom;
 

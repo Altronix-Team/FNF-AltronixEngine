@@ -207,6 +207,7 @@
 	"antialiasing": true,
 	"name": "characters/GF_assets",
 	"isDancing": true,
+	"isGF": true,
 	"barColorJson": [
 		165,
 		0,

@@ -176,7 +176,7 @@ class DialogueBox extends FlxSpriteGroup
 			// box.flipX = true;
 		}
 
-		dropText = new FlxText(242, 502, Std.int(FlxG.width * 0.6), "", 32);
+		dropText = new FlxText(242, 482, Std.int(FlxG.width * 0.6), "", 32);
 		if (!FlxG.save.data.language)
 			dropText.font = 'Pixel Arial 11 Bold';
 		else

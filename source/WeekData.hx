@@ -71,7 +71,6 @@ class WeekData {
 		weeksLoaded.clear();
 
 		var sexList:Array<String> = defaultWeeks.concat(listWeeksInPath('weeks/'));
-		Debug.logTrace(sexList);
 		for (i in 0...sexList.length) {
 			var fileToCheck:String = 'assets/weeks/' + sexList[i] + '.json';
 			if(!weeksLoaded.exists(sexList[i])) {
@@ -145,10 +144,6 @@ class WeekData {
 		var rawJson:String = null;
 		if(OpenFlAssets.exists(path)) {
 			rawJson = Assets.getText(path);
-		}
-		else if (FileSystem.exists(path))
-		{
-			rawJson = File.getContent(path);
 		}
 
 		if(rawJson != null && rawJson.length > 0) {

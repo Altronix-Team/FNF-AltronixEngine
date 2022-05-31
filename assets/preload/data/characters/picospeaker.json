@@ -82,6 +82,7 @@
 	"startingAnim": "idle",
 	"characterIcon": "face",
 	"antialiasing": true,
+	"isGF": true,
 	"name": "characters/picoSpeaker",
 	"barColorJson": [
 		165,

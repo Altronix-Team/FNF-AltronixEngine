@@ -14,7 +14,7 @@ import Song.SongData;
 import DiscordClient;
 #end
 
-using StringTools;
+using hx.strings.Strings;
 
 /**
  * Hey you, developer!
@@ -330,7 +330,7 @@ class Debug
 		{
 			inArray = ['<NULL>'];
 		}
-		else if (!Std.is(input, Array))
+		else if (!Std.isOfType(input, Array))
 		{
 			inArray = [input];
 		}
@@ -442,7 +442,7 @@ class DebugLogWriter
 	public function write(input:Array<Dynamic>, logLevel = 'TRACE'):Void
 	{
 		var ts = FlxStringUtil.formatTime(getTime(), true);
-		var msg = '$ts [${logLevel.rpad(' ', 5)}] ${input.join('')}';
+		var msg = '$ts [${logLevel.rpad(5)}] ${input.join('')}';
 
 		#if FEATURE_FILESYSTEM
 		if (active && file != null)

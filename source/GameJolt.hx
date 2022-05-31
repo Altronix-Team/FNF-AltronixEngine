@@ -450,7 +450,7 @@ class GameJoltLogin extends MusicBeatSubstate
 
 		if (!login)
 		{
-			FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
+			FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)), 0);
 			FlxG.sound.music.fadeIn(2, 0, 0.85);
 		}
 
@@ -650,7 +650,7 @@ class GameJoltLogin extends MusicBeatSubstate
 
 		if (!FlxG.sound.music.playing)
 		{
-			FlxG.sound.playMusic(Paths.music('freakyMenu'));
+			FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)));
 		}
 
 		if (FlxG.keys.justPressed.ESCAPE)

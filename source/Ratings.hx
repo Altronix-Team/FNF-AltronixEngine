@@ -5,7 +5,7 @@ class Ratings
 	public static function GenerateLetterRank(accuracy:Float) // generate a letter ranking
 	{
 		var ranking:String = "N/A";
-		if (FlxG.save.data.botplay && !PlayState.loadRep)
+		if (FlxG.save.data.botplay/* && !PlayState.loadRep*/)
 			{
 			if (!FlxG.save.data.language)
 				ranking = "BotPlay";
@@ -121,7 +121,7 @@ class Ratings
 			else
 				ranking = "Недоступно";
 		}
-		else if (FlxG.save.data.botplay && !PlayState.loadRep)
+		else if (FlxG.save.data.botplay/* && !PlayState.loadRep*/)
 		{
 			if (!FlxG.save.data.language)
 				ranking = "BotPlay";
@@ -169,15 +169,15 @@ class Ratings
 			+ " (Max "
 			+ maxNPS
 			+ ")"
-			+ (!PlayStateChangeables.botPlay || PlayState.loadRep ? " | " : "") : "") + // 	NPS
-			(!PlayStateChangeables.botPlay
-				|| PlayState.loadRep ? "Score:" + (Conductor.safeFrames != 10 ? score + " (" + scoreDef + ")" : "" + score) + // Score
+			+ (!PlayStateChangeables.botPlay/* || PlayState.loadRep*/ ? " | " : "") : "") + // 	NPS
+			(!PlayStateChangeables.botPlay/*
+				|| PlayState.loadRep*/ ? "Score:" + (Conductor.safeFrames != 10 ? score + " (" + scoreDef + ")" : "" + score) + // Score
 					(FlxG.save.data.accuracyDisplay ? // Accuracy Toggle
 						" | Combo Breaks:"
 						+ PlayState.misses
 						+ // 	Misses/Combo Breaks
 						" | Accuracy:"
-						+ (PlayStateChangeables.botPlay && !PlayState.loadRep ? "N/A" : HelperFunctions.truncateFloat(accuracy, 2) + " %")
+						+ (PlayStateChangeables.botPlay/* && !PlayState.loadRep*/ ? "N/A" : HelperFunctions.truncateFloat(accuracy, 2) + " %")
 						+ // 	Accuracy
 						" | "
 						+ GenerateLetterRank(accuracy) : "") : ""); // 	Letter Rank
@@ -190,16 +190,16 @@ class Ratings
 				+ " (Максимально "
 				+ maxNPS
 				+ ")"
-				+ (!PlayStateChangeables.botPlay || PlayState.loadRep ? " | " : "") : "") + // 	NPS
-				(!PlayStateChangeables.botPlay
-					|| PlayState.loadRep ? "Счёт: " + (Conductor.safeFrames != 10 ? score + " (" + scoreDef + ")" : "" + score) + // Score
+				+ (!PlayStateChangeables.botPlay/* || PlayState.loadRep*/ ? " | " : "") : "") + // 	NPS
+				(!PlayStateChangeables.botPlay/*
+					|| PlayState.loadRep*/ ? "Счёт: " + (Conductor.safeFrames != 10 ? score + " (" + scoreDef + ")" : "" + score) + // Score
 						(FlxG.save.data.accuracyDisplay ? // Accuracy Toggle
 							" | Пропуски: "
 							+ PlayState.misses
 							+ // 	Misses/Combo Breaks
 							" | Точность: "
-							+ (PlayStateChangeables.botPlay
-								&& !PlayState.loadRep ? "Недоступно" : HelperFunctions.truncateFloat(accuracy, 2) + " %")
+							+ (PlayStateChangeables.botPlay/*
+								&& !PlayState.loadRep*/ ? "Недоступно" : HelperFunctions.truncateFloat(accuracy, 2) + " %")
 							+ // 	Accuracy
 							" | "
 							+ GenerateLetterRank(accuracy) : "") : ""); // 	Letter Rank

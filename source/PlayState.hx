@@ -3375,7 +3375,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 		if ((FlxG.keys.anyJustPressed([pauseBind]) || KeyBinds.gamepad && FlxG.keys.anyJustPressed([gppauseBind]))
 			&& startedCountdown
 			&& canPause
-			&& !cannotDie && !enddial)
+			&& !cannotDie)
 		{
 			var ret:Dynamic = callOnLuas('onPause', []);
 			if(ret != FunkinLua.Function_Stop) {

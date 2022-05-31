@@ -80,8 +80,6 @@ class MainMenuState extends MusicBeatState
 		//FlxCamera.defaultCameras = [camGame];
 		FlxG.cameras.setDefaultDrawTarget(camGame, true);
 
-		Character.initCharacterList();
-
 		if (!FlxG.sound.music.playing)
 		{
 			FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)));

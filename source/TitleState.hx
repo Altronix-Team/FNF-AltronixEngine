@@ -86,6 +86,8 @@ class TitleState extends MusicBeatState
 
 		MenuMusicStuff.updateMusic();
 
+		Character.initCharacterList();
+
 		if (FlxG.save.data.volDownBind == null)
 			FlxG.save.data.volDownBind = "MINUS";
 		if (FlxG.save.data.volUpBind == null)
@@ -460,11 +462,6 @@ class TitleState extends MusicBeatState
 
 	function skipIntro():Void
 	{
-
-		NoteskinHelpers.updateNoteskins();
-
-		MenuMusicStuff.updateMusic();
-
 		if (!skippedIntro)
 		{
 			Debug.logInfo("Skipping intro...");

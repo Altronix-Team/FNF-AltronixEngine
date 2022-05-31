@@ -467,8 +467,11 @@ class Stage extends MusicBeatState
 					bgGhouls.updateHitbox();
 					bgGhouls.visible = false;
 					bgGhouls.antialiasing = false;
-					swagBacks['bgGhouls'] = bgGhouls;
-					toAdd.push(bgGhouls);	
+					if (FlxG.save.data.distractions)
+					{
+						swagBacks['bgGhouls'] = bgGhouls;
+						toAdd.push(bgGhouls);	
+					}
 				}
 			case 'warzone':
 				{
@@ -767,7 +770,7 @@ class Stage extends MusicBeatState
 
 				case 'schoolEvil':
 					if(PlayState.SONG.songId == 'thorns' && bgGhouls.animation.curAnim.finished) {
-						swagBacks['bgGhouls'].visible = false;
+						bgGhouls.visible = false;
 					}
 
 				case 'limo':
@@ -846,8 +849,8 @@ class Stage extends MusicBeatState
 					if ((curBeat == 64 || curBeat == 66 || curBeat == 69 || curBeat == 71 || curBeat == 73 || curBeat == 75 || curBeat == 77 || curBeat == 79 || curBeat == 81 || curBeat == 83 || curBeat == 85 || curBeat == 87 || curBeat == 89 || curBeat == 91 || curBeat == 93 || curBeat == 95 || curBeat == 161 || curBeat == 163 || curBeat == 164 || curBeat == 166 || curBeat == 168 || curBeat == 170 || curBeat == 172 || curBeat == 174 || curBeat == 176 || curBeat == 178 || curBeat == 180 || curBeat == 182 || curBeat == 184 || curBeat == 186 || curBeat == 188 || curBeat == 190 || curBeat == 256 || curBeat == 258 || curBeat == 260 || curBeat == 262 || curBeat == 264 || curBeat == 266 || curBeat == 268 || curBeat == 270 || curBeat == 272 || curBeat == 274 || curBeat == 276 || curBeat == 278 || curBeat == 280 || curBeat == 282 || curBeat == 284 || curBeat == 286) 
 						&& FlxG.save.data.distractions && PlayState.SONG.songId == 'thorns')
 					{
-						swagBacks['bgGhouls'].visible = true;
-						swagBacks['bgGhouls'].dance();
+						bgGhouls.visible = true;
+						bgGhouls.dance();
 					}
 				case 'limo':
 					if (FlxG.save.data.distractions)

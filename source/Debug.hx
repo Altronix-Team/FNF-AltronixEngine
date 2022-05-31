@@ -5,10 +5,12 @@ import flixel.FlxSprite;
 import flixel.system.debug.log.LogStyle;
 import flixel.system.debug.watch.Tracker.TrackerProfile;
 import flixel.util.FlxStringUtil;
+import haxe.CallStack;
 import haxe.Log;
 import haxe.PosInfos;
 import Song.SongData;
-//import ScriptedStage;
+import openfl.events.UncaughtErrorEvent;
+import openfl.system.Capabilities;
 
 #if desktop
 import DiscordClient;
@@ -213,9 +215,44 @@ class Debug
 		logInfo("This is a RELEASE build.");
 		#end
 		logInfo('HaxeFlixel version: ${Std.string(FlxG.VERSION)}');
-		logInfo('Friday Night Funkin\' version: ${MainMenuState.gameVer}');
 		logInfo('AltronixEngine version: ${EngineConstants.engineVer}');
+		logInfo('Friday Night Funkin\' version: ${MainMenuState.gameVer}');
+		logInfo('System telemetry:');
+		logInfo('  OS: ${Capabilities.os}');
+
+		// Add a crash handler.
+		openfl.Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtError);
 	}
+
+	static function onUncaughtError(error:UncaughtErrorEvent)
+		{
+			logError('FATAL ERROR: An uncaught error was thrown by OpenFL.');
+	
+			var errorCallStack:Array<StackItem> = CallStack.exceptionStack(true);
+	
+			for (line in errorCallStack)
+			{
+				switch (line)
+				{
+					case CFunction:
+						logError('  function:');
+					case Module(m):
+						logError('  module:${m}');
+					case FilePos(s, file, line, column):
+						logError('  (${file}#${line},${column})');
+					case Method(className, method):
+						logError('  method:(${className}/${method}');
+					case LocalFunction(v):
+						logError('  localFunction:${v}');
+				}
+			}
+	
+			logError('ADDITIONAL INFO:');
+			logError('Type of instigator: ${Util.getTypeName(error.error)}');
+			displayAlert('Fatal Crash Error',
+				'A fatal error has occurred. ' +
+				'Please retrieve your log file from the "logs" folder and report it to the GitHub page: https://github.com/AltronMaxX/FNF-AltronixEngine');
+		}
 
 	/**
 	 * The game runs this function when it starts, but after Flixel is initialized.

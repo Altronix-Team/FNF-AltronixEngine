@@ -209,18 +209,21 @@ class Character extends FlxSprite
 			}
 		}
 
-		if (curCharacter == 'picospeaker') 
+		if (PlayState.SONG != null)
 		{
-			if(animationNotes.length > 0 && Conductor.songPosition > animationNotes[0][0])
+			if (curCharacter == 'picospeaker') 
 				{
-					var noteData:Int = 1;
-					if(animationNotes[0][1] > 2) noteData = 3;
-
-					noteData += FlxG.random.int(0, 1);
-					playAnim('shoot' + noteData, true);
-					animationNotes.shift();
+					if(animationNotes.length > 0 && Conductor.songPosition > animationNotes[0][0])
+						{
+							var noteData:Int = 1;
+							if(animationNotes[0][1] > 2) noteData = 3;
+		
+							noteData += FlxG.random.int(0, 1);
+							playAnim('shoot' + noteData, true);
+							animationNotes.shift();
+						}
+					if(animation.curAnim.finished) playAnim(animation.curAnim.name, false, false, animation.curAnim.frames.length - 3);
 				}
-			if(animation.curAnim.finished) playAnim(animation.curAnim.name, false, false, animation.curAnim.frames.length - 3);
 		}
 
 		if (!debugMode)
@@ -228,20 +231,21 @@ class Character extends FlxSprite
 			var nextAnim = animNext.get(animation.curAnim.name);
 			var forceDanced = animDanced.get(animation.curAnim.name);
 
-			if ((nextAnim != null && animation.curAnim.finished))
+			if (nextAnim != null && animation.curAnim.finished)
 			{
 				if (isDancing && forceDanced != null)
-				{
 					danced = forceDanced;
-					playAnim(nextAnim);
-				}
+				playAnim(nextAnim);
 			}
 		}
 
-		if (animation.curAnim.finished && specialAnim)
+		if (animation.curAnim != null)
 		{
-			specialAnim = false;
-			dance();
+			if (animation.curAnim.finished && specialAnim)
+			{
+				specialAnim = false;
+				dance();
+			}
 		}
 
 		super.update(elapsed);

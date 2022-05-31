@@ -673,36 +673,26 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 		// If the stage isn't specified in the chart, we use the story week value.
 		if (SONG.stage == null)
 		{
-			switch (storyWeek)
+			switch (SONG.songId)
 			{
-				case 1:
-					stageCheck = 'stage';
-				case 2:
-					stageCheck = 'halloween';
-				case 3:
+				case 'spookeez' | 'south' | 'monster':
+					stageCheck = 'spooky';
+				case 'pico' | 'blammed' | 'philly':
 					stageCheck = 'philly';
-				case 4:
+				case 'milf' | 'satin-panties' | 'high':
 					stageCheck = 'limo';
-				case 5:
-					if (SONG.songId == 'winter-horrorland')
-					{
-						stageCheck = 'mallEvil';
-					}
-					else
-					{
-						stageCheck = 'mall';
-					}
-				case 6:
-					if (SONG.songId == 'thorns')
-					{
-						stageCheck = 'schoolEvil';
-					}
-					else
-					{
-						stageCheck = 'school';
-					}
-				case 7:
-					stageCheck = 'warzone';			
+				case 'cocoa' | 'eggnog':
+					stageCheck = 'mall';
+				case 'winter-horrorland':
+					stageCheck = 'mallEvil';
+				case 'senpai' | 'roses':
+					stageCheck = 'school';
+				case 'thorns':
+					stageCheck = 'schoolEvil';
+				case 'ugh' | 'guns' | 'stress':
+					stageCheck = 'warzone';
+				default:
+					stageCheck = 'stage';
 			}
 		}
 		else
@@ -717,15 +707,15 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 
 		if (SONG.gfVersion == null)
 		{
-			switch (storyWeek)
+			switch (stageCheck)
 			{
-				case 4:
+				case 'limo':
 					gfCheck = 'gf-car';
-				case 5:
+				case 'mall' | 'mallEvil':
 					gfCheck = 'gf-christmas';
-				case 6:
+				case 'school' | 'schoolEvil':
 					gfCheck = 'gf-pixel';
-				case 7:
+				case 'warzone':
 					if (SONG.songId != 'stress') gfCheck = 'gftank';
 					else gfCheck = 'picospeaker';
 				default:

@@ -74,8 +74,8 @@
 	],
 	"holdLength": 4,
 	"charPos": [
-		0,
-		-150
+		120,
+		-125
 	],
 	"flipX": false,
 	"asset": "characters/picoSpeaker",

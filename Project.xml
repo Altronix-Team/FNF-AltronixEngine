@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin': Altronix Engine" file="Altronix Engine" packageName="com.altronmaxx.altronixengine" package="com.altronmaxx.altronixengine" main="Main" version="0.2.7.1" company="altronmaxx" />
+	<app title="Friday Night Funkin': Altronix Engine" file="Altronix Engine" packageName="com.altronmaxx.altronixengine" package="com.altronmaxx.altronixengine" main="Main" version="0.2.7.1" company="AltronMaxX" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
@@ -185,9 +185,6 @@
 	<!--In case you want to use the addons package-->
 	<haxelib name="flixel-addons" />
 	<haxelib name="hscript" />
-	
-	<!-- <haxelib name="actuate" /> -->
-	<haxelib name="extension-webm"/> <!-- Make sure to use https://github.com/KadeDev/extension-webm/ -->
 
 	<!--In case you want to use the ui package-->
 	<haxelib name="flixel-ui" />
@@ -195,7 +192,6 @@
 	<haxelib name="polymod"/>
 	<haxelib name="discord_rpc" if="desktop"/>
 	<haxelib name="linc_luajit" if="desktop"/>
-	<haxelib name="hxvm-luajit" if="desktop"/>
 	<haxelib name="systools" />
 	<ndll name="systools" haxelib="systools" />
 	<haxelib name="tentools" />
@@ -272,8 +268,6 @@
   <!-- Defines whether Lua Modcharts should be enabled. Only works on Windows. -->
   <haxedef name="FEATURE_LUAMODCHART" if="windows" />
 
-  <!-- Defines whether WebM videos should be enabled. Currently only enabled on Windows. -->
-  <haxedef name="FEATURE_WEBM" if="windows" />
   <!-- Defines whether StepMania files can be loaded. -->
   <haxedef name="FEATURE_STEPMANIA" if="desktop" />
   <!-- Defines whether the Thread class can be used. -->

@@ -1877,6 +1877,36 @@ class BotPlay extends Option
 	}
 }
 
+class LogWriter extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		FlxG.save.data.logWriter = !FlxG.save.data.logWriter;
+		display = updateDisplay();
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		left();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		if (!FlxG.save.data.language)
+			return "Log Writer: < " + (FlxG.save.data.logWriter ? "off" : "on") + " >";
+		else
+			return "Логирование: < " + (FlxG.save.data.logWriter ? "выключено" : "включено") + " >";
+	}
+}
+
 class FullscreenOnStartOption extends Option
 {
 	public function new(desc:String)
@@ -2396,6 +2426,16 @@ class ResetSettings extends Option
 		FlxG.save.data.cacheImages = null;
 		FlxG.save.data.editor = null;
 		FlxG.save.data.laneTransparency = 0;
+		FlxG.save.data.menuMusic = null;
+		FlxG.save.data.noteskin = null;
+		FlxG.save.data.modConfig = null;
+		FlxG.save.data.weekCompleted = null;
+		FlxG.save.data.logWriter = null;
+		FlxG.save.data.enableLoadingScreens = null;
+		FlxG.save.data.enablePsychInterface = null;
+		FlxG.save.data.notesplashes = null;
+		FlxG.save.data.fullscreenOnStart = null;
+		FlxG.save.data.caching = null;
 
 		EngineData.initSave();
 		confirm = false;

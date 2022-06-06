@@ -162,6 +162,9 @@ class EngineData
 		if (FlxG.save.data.enableLoadingScreens == null)
 			FlxG.save.data.enableLoadingScreens = true;
 
+		if (FlxG.save.data.logWriter == null)
+			FlxG.save.data.logWriter = true;
+
 		if (FlxG.save.data.weekCompleted == null)
 		{
 			StoryMenuState.weekCompleted.set('', true);

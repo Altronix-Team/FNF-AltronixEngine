@@ -228,12 +228,18 @@ class ModCore
 		// Perform an action based on the error code.
 		switch (error.code)
 		{
+			case MOD_LOAD_PREPARE:
+				Debug.logInfo('[POLYMOD] ${error.message}', null);
+			case MOD_LOAD_DONE:
+				Debug.logInfo('[POLYMOD] ${error.message}', null);
+			// case MOD_LOAD_FAILED:
+			case MISSING_ICON:
+				Debug.logWarn('[POLYMOD] A mod is missing an icon, will just skip it but please add one: ${error.message}', null);
 			// case "parse_mod_version":
 			// case "parse_api_version":
 			// case "parse_mod_api_version":
 			// case "missing_mod":
 			// case "missing_meta":
-			// case "missing_icon":
 			// case "version_conflict_mod":
 			// case "version_conflict_api":
 			// case "version_prerelease_api":

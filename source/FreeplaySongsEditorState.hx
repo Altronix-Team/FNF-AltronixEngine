@@ -1,5 +1,6 @@
 package;
 
+import hx.strings.String8;
 #if desktop
 import DiscordClient;
 #end
@@ -76,7 +77,7 @@ class FreeplaySongsEditorState extends MusicBeatState
 
 		addEditorBox();
 		changeSelection();
-		getCharacterColor();
+		getCharacterColor(curWeek.weekChar[0]);
 		super.create();
 	}
 
@@ -100,11 +101,22 @@ class FreeplaySongsEditorState extends MusicBeatState
 			songText.visible = true;
 			grpSongs.add(songText);
 
-			icon = new HealthIcon(getCharacterIcon());
-			icon.sprTracker = songText;
-			iconArray.push(icon);
-			icon.visible = true;
-			add(icon);
+			if (curWeek.weekChar.length > 1)
+			{
+				icon = new HealthIcon(getCharacterIcon(curWeek.weekChar[i]));
+				icon.sprTracker = songText;
+				iconArray.push(icon);
+				icon.visible = true;
+				add(icon);
+			}
+			else
+			{
+				icon = new HealthIcon(getCharacterIcon(curWeek.weekChar[0]));
+				icon.sprTracker = songText;
+				iconArray.push(icon);
+				icon.visible = true;
+				add(icon);
+			}
 		}
 	}
 	
@@ -147,8 +159,23 @@ class FreeplaySongsEditorState extends MusicBeatState
 		if(id == FlxUIInputText.CHANGE_EVENT && (sender is FlxUIInputText)) {
 			if (sender == iconInputText)
 			{
-				curWeek.weekChar = iconInputText.text;
-				iconArray[curSelected].changeIcon(iconInputText.text);
+				var splittedText:Array<String> = iconInputText.text.trim().split(',');
+				for (i in 0...splittedText.length) {
+					splittedText[i] = splittedText[i].trim();
+				}
+
+				while(splittedText.length < curWeek.weekChar.length) {
+					curWeek.weekChar.pop();
+				}
+
+				for (i in 0...splittedText.length) {
+					if(i >= curWeek.weekChar.length) {
+						curWeek.weekChar.push(splittedText[i]);
+					} else {
+						curWeek.weekChar[i] = splittedText[i];
+					}
+				}
+				iconArray[curSelected].changeIcon(splittedText[curSelected]);
 			}
 			else if (sender == weekSongsInputText)
 			{
@@ -200,7 +227,7 @@ class FreeplaySongsEditorState extends MusicBeatState
 			{
 				var newCurWeek = 
 				{
-					weekChar: 'dad',
+					weekChar: ['dad'],
 					weekID: 0,
 					weekSongs: ['test']
 				}
@@ -214,7 +241,7 @@ class FreeplaySongsEditorState extends MusicBeatState
 		weekSongsInputText = new FlxUIInputText(10, 70, 200, '', 8);
 		blockPressWhileTypingOn.push(weekSongsInputText);
 
-		iconInputText = new FlxUIInputText(10, weekSongsInputText.y + 50, 50, '', 8);
+		iconInputText = new FlxUIInputText(10, weekSongsInputText.y + 20, 200, '', 8);
 		blockPressWhileTypingOn.push(iconInputText);
 
 		weekIdInputText = new FlxUIInputText(150, weekSongsInputText.y + 50, 50, '', 8);
@@ -242,7 +269,12 @@ class FreeplaySongsEditorState extends MusicBeatState
 				weekSongsInputText.text += curWeek.weekSongs[i];
 		}
 
-		iconInputText.text = curWeek.weekChar;
+		var charString:String = curWeek.weekChar[0];
+		for (i in 1...curWeek.weekChar.length) {
+			charString += ', ' + curWeek.weekChar[i];
+		} 
+
+		iconInputText.text = charString;
 		weekIdInputText.text = Std.string(curWeek.weekID);
 
 		UI_box.addGroup(tab_group);
@@ -259,7 +291,12 @@ class FreeplaySongsEditorState extends MusicBeatState
 				weekSongsInputText.text += curWeek.weekSongs[i];
 		}
 
-		iconInputText.text = curWeek.weekChar;
+		var charString:String = curWeek.weekChar[0];
+		for (i in 1...curWeek.weekChar.length) {
+			charString += ', ' + curWeek.weekChar[i];
+		} 
+
+		iconInputText.text = charString;
 		weekIdInputText.text = Std.string(curWeek.weekID);
 
 		loadSongs();
@@ -294,6 +331,11 @@ class FreeplaySongsEditorState extends MusicBeatState
 				item.alpha = 1;
 			}
 		}
+
+		if (curWeek.weekChar.length > 1)
+			getCharacterColor(curWeek.weekChar[curSelected]);
+		else
+			getCharacterColor(curWeek.weekChar[0]);
 	}
 
 	function changeWeek(change:Int = 0) 
@@ -314,21 +356,21 @@ class FreeplaySongsEditorState extends MusicBeatState
 
 		reloadAllShit();
 		changeSelection();
-		getCharacterColor();
+		getCharacterColor(curWeek.weekChar[0]);
 	}
 
-	function getCharacterColor()
+	function getCharacterColor(char:String)
 	{
-			Debug.logInfo('Getting character color (${curWeek.weekChar})');
+			Debug.logInfo('Getting character color (${char})');
 	
-			if (curWeek.weekChar != null)
+			if (char != null)
 			{
 				var jsonData;
-				if (OpenFlAssets.exists(Paths.json('characters/${curWeek.weekChar}')))
-					jsonData = Paths.loadJSON('characters/${curWeek.weekChar}');
+				if (OpenFlAssets.exists(Paths.json('characters/${char}')))
+					jsonData = Paths.loadJSON('characters/${char}');
 				else
 				{
-					Debug.logError('Failed to parse JSON data for character ${curWeek.weekChar}');
+					Debug.logError('Failed to parse JSON data for character ${char}');
 					return;
 				}
 	
@@ -346,20 +388,20 @@ class FreeplaySongsEditorState extends MusicBeatState
 			}
 	}
 
-	function getCharacterIcon():String
+	function getCharacterIcon(char:String):String
 	{
-		Debug.logInfo('Getting character color (${curWeek.weekChar})');
+		Debug.logInfo('Getting character color (${char})');
 	
 			var iconName:String = 'face';
 
-			if (curWeek.weekChar != null)
+			if (char != null)
 			{
 				var jsonData;
-				if (OpenFlAssets.exists(Paths.json('characters/${curWeek.weekChar}')))
-					jsonData = Paths.loadJSON('characters/${curWeek.weekChar}');
+				if (OpenFlAssets.exists(Paths.json('characters/${char}')))
+					jsonData = Paths.loadJSON('characters/${char}');
 				else
 				{
-					Debug.logError('Failed to parse JSON data for character ${curWeek.weekChar}');
+					Debug.logError('Failed to parse JSON data for character ${char}');
 					return iconName;
 				}
 	
@@ -386,12 +428,6 @@ class FreeplaySongsEditorState extends MusicBeatState
 
 	function saveCurWeek()
 	{
-		/*var newCurWeek = 
-		{
-			weekChar: iconInputText.text,
-			weekID: Std.parseInt(weekIdInputText.text),
-			weekSongs: [weekSongsInputText.text]
-		}*/
 		weekFile.freeplaySonglist[curWeekInt] = curWeek;
 		reloadAllShit();
 	}
@@ -400,7 +436,7 @@ class FreeplaySongsEditorState extends MusicBeatState
 	{
 		var newCurWeek = 
 		{
-			weekChar: 'dad',
+			weekChar: ['dad'],
 			weekID: 0,
 			weekSongs: ['test']
 		}

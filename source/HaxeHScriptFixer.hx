@@ -17,7 +17,8 @@ class HaxeHScriptFixer
 
 		// We first make sure the class has a constructor. We can create one if it doesn't have one.
 		// The constructor is needed because script loading is done there.
-		if (cls.constructor == null)
+		var constructor = fields.find(function(field) return field.name == "new");
+		if (constructor == null)
 		{
 			var constBody:Array<Expr> = [];
 

@@ -14,6 +14,7 @@ import openfl.display.FPS;
 import openfl.display.Sprite;
 import openfl.events.Event;
 import GameJolt.GJToastManager;
+import openfl.events.UncaughtErrorEvent;
 
 #if FEATURE_MODCORE
 import ModCore;
@@ -53,6 +54,8 @@ class Main extends Sprite
 		instance = this;
 
 		super();
+
+		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, Debug.onUncaughtError);
 
 		if (stage != null)
 		{

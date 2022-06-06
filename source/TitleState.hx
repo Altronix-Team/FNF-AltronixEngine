@@ -6,7 +6,9 @@ import smTools.SMFile;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
+#if !html5
 import sys.thread.Mutex;
+#end
 import flixel.addons.display.FlxGridOverlay;
 import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
 import flixel.addons.transition.FlxTransitionableState;
@@ -29,6 +31,7 @@ import openfl.Assets;
 import flixel.input.keyboard.FlxKey;
 import GameJolt.GameJoltAPI;
 import openfl.utils.Assets as OpenFlAssets;
+import flash.net.URLRequest;
 
 #if FEATURE_MODCORE
 import ModCore;
@@ -109,8 +112,10 @@ class TitleState extends MusicBeatState
 
 		MusicBeatState.initSave = true;
 
-
 		Highscore.load();
+
+		if (FlxG.save.data.volume != null)
+			FlxG.sound.volume = FlxG.save.data.volume;
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 
@@ -324,7 +329,8 @@ class TitleState extends MusicBeatState
 			{
 				if (checkVer)
 				{
-					Debug.logTrace('make me works, daddy');
+					//var shit = new URLRequest('https://raw.githubusercontent.com/AltronMaxX/FNF-AltronixEngine/main/version.downloadMe?token=GHSAT0AAAAAABHIQ6SYP4VDYY65FVGRVZ3EYU5R3BA');
+					//Debug.logTrace(shit.data);
 					FlxG.switchState(new MainMenuState());
 						clean();
 					

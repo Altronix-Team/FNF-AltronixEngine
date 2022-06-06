@@ -40,6 +40,10 @@ class PauseSubState extends MusicBeatSubstate
 
 	var bg:FlxSprite;
 
+	var detailsText:String = "";
+	var storyDifficultyText:String = "";
+	var iconRPC:String = "";
+
 	public function new()
 	{
 		super();
@@ -94,6 +98,46 @@ class PauseSubState extends MusicBeatSubstate
 		perSongOffset = new FlxText(5, FlxG.height - 18, 0, "Hello chat", 12);
 		perSongOffset.scrollFactor.set();
 		perSongOffset.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+
+		if (PlayState.isStoryMode){
+			if (!FlxG.save.data.language) detailsText = "Story Mode: Week " + PlayState.storyWeek + ":";
+			else detailsText = "Режим истории: Неделя " + PlayState.storyWeek + ":";}
+		if (PlayState.isFreeplay){
+			if (!FlxG.save.data.language)
+				detailsText = "Freeplay";
+			else
+				detailsText = "Свободная игра";}
+		if (PlayState.isExtras){
+			if (!FlxG.save.data.language)
+				detailsText = 'Extras';
+			else
+				detailsText = 'Дополнительно';}
+		if (PlayState.fromPasswordMenu){
+			if (!FlxG.save.data.language)
+				detailsText = 'Extras';
+			else
+				detailsText = 'Дополнительно';}
+
+		iconRPC = PlayState.SONG.player2;
+
+		switch (iconRPC){
+			case 'senpai-angry':
+				iconRPC = 'senpai';
+			case 'monster-christmas':
+				iconRPC = 'monster';
+			case 'mom-car':
+				iconRPC = 'mom';}
+
+		storyDifficultyText = CoolUtil.difficultyFromInt(PlayState.storyDifficulty);
+
+		#if desktop
+			if (PlayStateChangeables.botPlay){
+				if (!FlxG.save.data.language) DiscordClient.changePresence("Paused on " + PlayState.SONG.songName + " (" + storyDifficultyText + ") " + 'Botplay', iconRPC);
+				else DiscordClient.changePresence("Стоит на паузе " + PlayState.SONG.songName + " (" + storyDifficultyText + ") " + 'Бот-плей', iconRPC);}
+			else if (!PlayStateChangeables.botPlay){
+				if (!FlxG.save.data.language){DiscordClient.changePresence("PAUSED on "+ PlayState.SONG.songId+ " ("+ storyDifficultyText+ ") ", iconRPC);}
+				else{DiscordClient.changePresence("Стоит на паузе "+ PlayState.SONG.songId+ " ("+ storyDifficultyText+ ") ", iconRPC);}}
+			#end
 
 		#if FEATURE_FILESYSTEM
 		add(perSongOffset);

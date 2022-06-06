@@ -29,7 +29,7 @@ import DiscordClient;
 
 using StringTools;
 
-class FreeplaySongMetadata
+class SongMetadata
 {
     public static var preloaded:Bool = false;
 	public var songName:String = "";

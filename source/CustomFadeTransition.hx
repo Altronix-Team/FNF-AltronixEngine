@@ -13,72 +13,78 @@ import flixel.util.FlxGradient;
 import flixel.FlxSubState;
 import flixel.FlxSprite;
 import flixel.FlxCamera;
-import flixel.ui.FlxBar;
-import flixel.text.FlxText;
 
 class CustomFadeTransition extends MusicBeatSubstate {
 	public static var finishCallback:Void->Void;
-	var loadingart:FlxSprite;
-	var logoBl:FlxSprite;
-	public var instantAlpha:Bool = false;
-	var bar:FlxBar;
-	var toBeDone = 0;
-	var text:FlxText;
+	private var leTween:FlxTween = null;
+	public static var nextCamera:FlxCamera;
+	var isTransIn:Bool = false;
+	var transBlack:FlxSprite;
+	var transGradient:FlxSprite;
 
-	public function new(toBeDone:Int = 1) {
+	public function new(duration:Float, isTransIn:Bool) {
 		super();
-		this.toBeDone = toBeDone;
-		FlxG.camera.zoom = 0;
-		loadingart = new FlxSprite(0, 0).loadGraphic(Paths.loadImage('limo/limoSunset', 'week4'));
-		loadingart.screenCenter();
-		loadingart.scrollFactor.set();
-		loadingart.antialiasing = FlxG.save.data.antialiasing;
 
-		add(loadingart);
+		this.isTransIn = isTransIn;
+		var zoom:Float = CoolUtil.boundTo(FlxG.camera.zoom, 0.05, 1);
+		var width:Int = Std.int(FlxG.width / zoom);
+		var height:Int = Std.int(FlxG.height / zoom);
+		transGradient = FlxGradient.createGradientFlxSprite(width, height, (isTransIn ? [0x0, FlxColor.BLACK] : [FlxColor.BLACK, 0x0]));
+		transGradient.scrollFactor.set();
+		add(transGradient);
 
-		if (Main.watermarks)
-			{
-				logoBl = new FlxSprite(-10, 0);
-				logoBl.frames = Paths.getSparrowAtlas('altronixenginelogobumpin');
-			}
-			else
-			{
-				logoBl = new FlxSprite(-150, 0);
-				logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
-			}
-			logoBl.antialiasing = FlxG.save.data.antialiasing;
-			logoBl.scrollFactor.set();
-			logoBl.animation.addByPrefix('bump', 'logo bumpin', 24, false);
-			logoBl.updateHitbox();
+		transBlack = new FlxSprite().makeGraphic(width, height + 400, FlxColor.BLACK);
+		transBlack.scrollFactor.set();
+		add(transBlack);
 
-		add(logoBl);
+		transGradient.x -= (width - FlxG.width) / 2;
+		transBlack.x = transGradient.x;
 
-		bar = new FlxBar(10, FlxG.height - 50, FlxBarFillDirection.LEFT_TO_RIGHT, FlxG.width, 40, null, "done", 0, toBeDone);
-		bar.createGradientFilledBar([FlxColor.fromRGB(226, 0, 255, 255), FlxColor.fromRGB(0, 254, 255, 255), FlxColor.fromRGB(0, 255, 166, 255),  FlxColor.fromRGB(224, 255, 0, 255)]);
-		bar.visible = true;
-		bar.scrollFactor.set();
+		if(isTransIn) {
+			transGradient.y = transBlack.y - transBlack.height;
+			FlxTween.tween(transGradient, {y: transGradient.height + 50}, duration, {
+				onComplete: function(twn:FlxTween) {
+					close();
+				},
+			ease: FlxEase.linear});
+		} else {
+			transGradient.y = -transGradient.height;
+			transBlack.y = transGradient.y - transBlack.height + 50;
+			leTween = FlxTween.tween(transGradient, {y: transGradient.height + 50}, duration, {
+				onComplete: function(twn:FlxTween) {
+					if(finishCallback != null) {
+						finishCallback();
+					}
+				},
+			ease: FlxEase.linear});
+		}
 
-		add(bar);
-
-		text = new FlxText(FlxG.width / 2, FlxG.height - 50, 0, "Loading");
-		text.size = 34;
-		text.alignment = FlxTextAlign.CENTER;
-		if (!FlxG.save.data.language)
-			text.font = 'Pixel Arial 11 Bold';
-		else
-			text.font = Paths.font("UbuntuBold.ttf");
-		text.scrollFactor.set();
-
-		add(text);
-
-		super.create();
+		if(nextCamera != null) {
+			transBlack.cameras = [nextCamera];
+			transGradient.cameras = [nextCamera];
+		}
+		nextCamera = null;
 	}
 
 	override function update(elapsed:Float) {
+		if(isTransIn) {
+			transBlack.y = transGradient.y + transGradient.height;
+		} else {
+			transBlack.y = transGradient.y - transBlack.height;
+		}
 		super.update(elapsed);
-		bar.value += 0.01;
+		if(isTransIn) {
+			transBlack.y = transGradient.y + transGradient.height;
+		} else {
+			transBlack.y = transGradient.y - transBlack.height;
+		}
+	}
 
-		if (bar.value == 1)
+	override function destroy() {
+		if(leTween != null) {
 			finishCallback();
+			leTween.cancel();
+		}
+		super.destroy();
 	}
 }

@@ -45,6 +45,8 @@ class ModListItem extends InteractableUIGroup
 
 	static final DESC_X:Float = TITLE_X;
 	static final DESC_Y:Float = TITLE_Y + 25;
+	static final CONTRIBUTORS_X:Float = DESC_X;
+	static final CONTRIBUTORS_Y:Float = DESC_Y + 25;
 	static final DESC_SCALE:Int = 12;
 
 	static final BUTTON_X_RIGHT:Float = BG_W - 20;
@@ -69,6 +71,7 @@ class ModListItem extends InteractableUIGroup
 	var uiBackground:FlxUI9SliceSprite;
 	var uiTitle:RelativeText;
 	var uiDescription:RelativeText;
+	var uiContributorsButton:FlxUIButton;
 	var uiIcon:RelativeSprite;
 
 	// Button to activate mod.
@@ -82,6 +85,8 @@ class ModListItem extends InteractableUIGroup
 	var uiButtonDown:FlxUIButton;
 
 	var modList:ModList;
+
+	var modMenu:ModMenuState;
 
 	public function new(modMetadata:ModMetadata, X:Float = 0, Y:Float = 0, modList:ModList, loaded:Bool = false)
 	{
@@ -139,10 +144,13 @@ class ModListItem extends InteractableUIGroup
 		this.uiButtonDown = new FlxUIButton(BUTTON_X_LEFT, BUTTON_BOTTOM_OFFSET, null, onUserReorderMod.bind(1));
 		this.uiButtonDown.loadGraphicsUpOverDown(FlxUIAssets.IMG_BUTTON_ARROW_DOWN);
 
+		this.uiContributorsButton = new FlxUIButton(CONTRIBUTORS_X, CONTRIBUTORS_Y, 'Show contributors', onUserShowContributors.bind(this.modMetadata));
+
 		add(this.uiButtonUp);
 		add(this.uiButtonLeft);
 		add(this.uiButtonRight);
 		add(this.uiButtonDown);
+		//add(this.uiContributorsButton);
 
 		// Automatically triggered by constructor.
 		// onChangeLoaded();
@@ -169,6 +177,12 @@ class ModListItem extends InteractableUIGroup
 	{
 		trace('ModListItem.onLoadUnload');
 		modList.onUserLoadUnloadMod(this.modMetadata);
+	}
+
+	function onUserShowContributors(modData:ModMetadata)
+	{
+		trace('ModListItem.ShowContributors');
+		modMenu.showContributors(modData);
 	}
 
 	function onUserReorderMod(offset:Int)

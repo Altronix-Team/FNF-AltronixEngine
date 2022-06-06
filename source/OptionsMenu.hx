@@ -170,6 +170,7 @@ class OptionsMenu extends FlxSubState
 					new LanguageOption("Change Engine Language (Only English or Russian)"),
 					//new CacheImages("Toggle image caching"),
 					new FullscreenOnStartOption('Toggles fullscreen on game start'),
+					//new LogWriter('Toggles game log writer (need to restart the game!)'),
 					//new LoadingScreensOption("Toggles the display of loading screens when switching between different menus")
 				]),
 				new OptionCata(935, 40, "Saves", [
@@ -242,6 +243,7 @@ class OptionsMenu extends FlxSubState
 					new LanguageOption("Изменить язык (Только русский или английский)"),
 					//new CacheImages("Переключить кэширование изображений"),
 					new FullscreenOnStartOption('Переключает полный экран при запуске игры'),
+					//new LogWriter('Переключает запись логов игры (необходимо перезапустить игру!)'),
 					//new LoadingScreensOption("Переключает отображение загрузочных экранов при переходе между разными меню")
 				]),
 				new OptionCata(935, 40, "Сохранения", [

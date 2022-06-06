@@ -9,10 +9,14 @@ class MenuMusicStuff
 	{
 		musicArray = [];
 		var count:Int = 0;
+		musicArray.push('freakyMenu');
 		for (i in Paths.listMusicInPath('assets/music/'))
 		{
 			if (i.endsWith('.ogg'))
 				musicArray.push(i.replaceAll('.ogg', ''));	
+
+			if (i == 'freakyMenu')
+				continue;
 
 			if (i.endsWith('.mp3'))
 				musicArray.push(i.replaceAll('.mp3', ''));

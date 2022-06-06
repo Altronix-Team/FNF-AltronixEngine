@@ -89,7 +89,6 @@ class ChartingState extends MusicBeatState
 	private var noteTypeIntMap:Map<Int, String> = new Map<Int, String>();
 	private var noteTypeMap:Map<String, Null<Int>> = new Map<String, Null<Int>>();
 
-	public static var inChartEditor:Bool = false;
 	public static var instance:ChartingState;
 
 	var _file:FileReference;
@@ -196,14 +195,6 @@ class ChartingState extends MusicBeatState
 
 	override function create()
 	{
-		inChartEditor = true;
-		#if desktop
-		if (!FlxG.save.data.language)
-			DiscordClient.changePresence("Chart Editor: " + PlayState.SONG.songName, null, null, true);
-		else
-			DiscordClient.changePresence("Редактирует чартинг: " + PlayState.SONG.songName, null, null, true);
-		#end
-
 		curSection = lastSection;
 
 		Debug.logTrace(1 > Math.POSITIVE_INFINITY);
@@ -211,6 +202,7 @@ class ChartingState extends MusicBeatState
 		Debug.logTrace(PlayState.noteskinSprite);
 
 		PlayState.noteskinSprite = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin);
+		PlayState.chartingMode = true;
 
 		FlxG.mouse.visible = true;
 
@@ -2236,6 +2228,7 @@ class ChartingState extends MusicBeatState
 
 			if (PlayerSettings.player1.controls.BACK)
 				{
+					PlayState.chartingMode = false;
 					if (PlayState.isExtras)
 						MusicBeatState.switchState(new SecretState());
 					else if (PlayState.isFreeplay)
@@ -2809,7 +2802,6 @@ class ChartingState extends MusicBeatState
 			{
 				if (FlxG.keys.justPressed.ENTER)
 				{
-					inChartEditor = false;
 					lastSection = curSection;
 
 					PlayState.SONG = _song;
@@ -3609,8 +3601,6 @@ class ChartingState extends MusicBeatState
 
 	function recalculateAllSectionTimes()
 	{
-		Debug.logTrace("RECALCULATING SECTION TIMES");
-
 		var savedNotes:Array<Dynamic> = [];
 
 		for (i in 0..._song.notes.length) // loops through sections

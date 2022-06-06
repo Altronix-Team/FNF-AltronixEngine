@@ -98,4 +98,16 @@ class Util
 		blue = (blue.length < 2) ? "0" + blue : blue;
 		return (red + green + blue).toUpperCase();
 	}
+
+	public static function createDirectoryIfNotExists(localFolder:String):String
+	{
+		#if FEATURE_FILESYSTEM
+		var fullPath = '${Sys.getCwd()}/$localFolder';
+		if (!sys.FileSystem.exists(fullPath))
+			sys.FileSystem.createDirectory(fullPath);
+		return fullPath;
+		#else
+		return localFolder;
+		#end
+	}
 }

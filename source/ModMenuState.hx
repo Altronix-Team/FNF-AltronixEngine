@@ -123,11 +123,65 @@ class ModMenuState extends XMLLayoutState // extends MusicBeatState
 		}
 	}
 
+	var inContributors:Bool = false;
+	var blackScreen:FlxSprite;
+	var contributorsText:FlxTypedGroup<FlxText>;
+	public function showContributors(modData:ModMetadata)
+	{
+		inContributors = true;
+		blackScreen = new FlxSprite(-200, -100).makeGraphic(Std.int(FlxG.width * 0.5), Std.int(FlxG.height * 0.5), FlxColor.BLACK);
+		blackScreen.screenCenter();
+		blackScreen.scrollFactor.set(0, 0);
+		add(blackScreen);
+
+		if (modData.contributors != null)
+		{
+			for (i in modData.contributors)
+			{
+				var nameText:FlxText = new FlxText(0, 10 * modData.contributors.indexOf(i), 0, i.name, 24);
+				nameText.setFormat('Pixel Arial 11 Bold', 48, FlxColor.WHITE, CENTER);
+				nameText.screenCenter();
+				nameText.scrollFactor.set(0, 0);
+				contributorsText.add(nameText);
+
+				var roleText:FlxText = new FlxText(0, 15 * modData.contributors.indexOf(i), 0, i.role, 12);
+				roleText.setFormat('Pixel Arial 11 Bold', 48, FlxColor.WHITE, CENTER);
+				roleText.screenCenter();
+				roleText.scrollFactor.set(0, 0);
+				contributorsText.add(roleText);
+			}
+		}
+		else
+		{
+			var warnText:FlxText = new FlxText(0, 10, 0, 'There`s no contributors in mod data', 24);
+			warnText.setFormat('Pixel Arial 11 Bold', 48, FlxColor.WHITE, CENTER);
+			warnText.screenCenter();
+			warnText.scrollFactor.set(0, 0);
+			contributorsText.add(warnText);
+		}
+
+		add(contributorsText);
+	}
+
+	public function closeContributors()
+	{
+		remove(blackScreen);
+		contributorsText.clear();
+		remove(contributorsText);
+	}
+
+	var curSelected:Int = -1;
+
 	override function update(elapsed:Float)
 	{
-		if (FlxG.keys.justPressed.ESCAPE)
+		if (FlxG.keys.justPressed.ESCAPE && !inContributors)
 		{
 			loadMainGame();
+		}
+		else if (FlxG.keys.justPressed.ESCAPE && inContributors)
+		{
+			inContributors = false;
+			closeContributors();
 		}
 
 		super.update(elapsed);
@@ -138,7 +192,6 @@ class ModMenuState extends XMLLayoutState // extends MusicBeatState
 		Debug.logInfo('Saving mod configuration and continuing to game...');
 		var loadedModIds:Array<String> = loadedModsUI.listCurrentMods().map(function(mod:ModMetadata) return mod.id);
 		var modConfigStr = loadedModIds.join('~');
-		Debug.logTrace(modConfigStr);
 		FlxG.save.data.modConfig = modConfigStr;
 		FlxG.save.flush();
 	}
@@ -146,71 +199,82 @@ class ModMenuState extends XMLLayoutState // extends MusicBeatState
 	function loadMainGame()
 	{
 		FlxG.mouse.visible = false;
-		FreeplaySongMetadata.preloaded = false;
+		SongMetadata.preloaded = false;
 		// Gotta load any configured mods.
 
 		ModCore.loadConfiguredMods();
 
-		#if FEATURE_FILESYSTEM
-			MusicBeatState.switchState(new TitleState());
-		#else
-			MusicBeatState.switchState(new TitleState());
-		#end
+		FlxG.switchState(new TitleState());
 	}
 
 	function onClickLoadAll()
 	{
-		var unloadedMods:Array<ModMetadata> = unloadedModsUI.listCurrentMods();
-
-		// Add all unloaded mods to the loaded list.
-		for (i in unloadedMods)
+		if (!inContributors)
 		{
-			loadedModsUI.addMod(i);
-		}
+			var unloadedMods:Array<ModMetadata> = unloadedModsUI.listCurrentMods();
 
-		// Remove all mods from the unloaded list.
-		unloadedModsUI.clearModList();
+			// Add all unloaded mods to the loaded list.
+			for (i in unloadedMods)
+			{
+				loadedModsUI.addMod(i);
+			}
+
+			// Remove all mods from the unloaded list.
+			unloadedModsUI.clearModList();
+		}
 	}
 
 	function onClickUnloadAll()
 	{
-		var loadedMods:Array<ModMetadata> = loadedModsUI.listCurrentMods();
-
-		// Add all loaded mods to the unloaded list.
-		for (i in loadedMods)
+		if (!inContributors)
 		{
-			unloadedModsUI.addMod(i);
-		}
+			var loadedMods:Array<ModMetadata> = loadedModsUI.listCurrentMods();
 
-		// Remove all mods from the loaded list.
-		loadedModsUI.clearModList();
+			// Add all loaded mods to the unloaded list.
+			for (i in loadedMods)
+			{
+				unloadedModsUI.addMod(i);
+			}
+
+			// Remove all mods from the loaded list.
+			loadedModsUI.clearModList();
+		}
 	}
 
 	function onClickRevert()
 	{
-		// Clear both mod lists so we're starting from scratch.
-		unloadedModsUI.clearModList();
-		loadedModsUI.clearModList();
+		if (!inContributors)
+		{
+			// Clear both mod lists so we're starting from scratch.
+			unloadedModsUI.clearModList();
+			loadedModsUI.clearModList();
 
-		// Add the content to the mod lists again.
-		initModLists();
+			// Add the content to the mod lists again.
+			initModLists();
+		}
 	}
 
 	function onClickSaveAndExit()
 	{
-		Character.characterList = [];
-		Character.girlfriendList = [];
+		if (!inContributors)
+		{
+			Character.characterList = [];
+			Character.girlfriendList = [];
 
-		writeModPreferences();
+			writeModPreferences();
 
 
-		// Just move to the main game.
-		loadMainGame();
+			// Just move to the main game.
+			loadMainGame();
+		}
 	}
 
 	function onClickExitWithoutSaving()
 	{
-		// Just move to the main game.
-		loadMainGame();
+		if (!inContributors)
+		{
+			// Just move to the main game.
+			loadMainGame();
+		}
 	}
 }

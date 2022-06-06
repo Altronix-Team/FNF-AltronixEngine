@@ -75,6 +75,8 @@ class MusicBeatState extends FlxUIState
 		Application.current.window.onFocusOut.add(onWindowFocusOut);
 		TimingStruct.clearTimings();
 
+		FlxG.sound.volumeHandler = volumeHandler;
+
 		if (transIn != null)
 			trace('reg ' + transIn.region);
 
@@ -183,23 +185,20 @@ class MusicBeatState extends FlxUIState
 		// Custom made Trans in
 		var curState:Dynamic = FlxG.state;
 		var leState:MusicBeatState = curState;
-		/*if(FlxG.save.data.enableLoadingScreens) 
-		{
-			leState.openSubState(new CustomFadeTransition());
-			if(nextState == FlxG.state) 
-			{
+		if(!FlxTransitionableState.skipNextTransIn) {
+			leState.openSubState(new CustomFadeTransition(0.6, false));
+			if(nextState == FlxG.state) {
 				CustomFadeTransition.finishCallback = function() {
 					FlxG.resetState();
 				};
-			} 
-			else 
-			{
+			} else {
 				CustomFadeTransition.finishCallback = function() {
 					FlxG.switchState(nextState);
 				};
 			}
 			return;
-		}*/
+		}
+		FlxTransitionableState.skipNextTransIn = false;
 		FlxG.switchState(nextState);
 	}
 
@@ -227,41 +226,21 @@ class MusicBeatState extends FlxUIState
 		#end
 	}
 
+	function volumeHandler(volume:Float)
+	{
+		FlxG.save.data.volume = volume;
+	}
+
 	function onWindowFocusOut():Void
 	{
-		if (PlayState.inDaPlay)
-		{
-			if (!PlayState.instance.paused && !PlayState.instance.endingSong && PlayState.instance.songStarted)
-			{
-				Debug.logTrace("Lost Focus");
-				PlayState.instance.openSubState(new PauseSubState());
-				PlayState.instance.boyfriend.stunned = true;
-
-				PlayState.instance.persistentUpdate = false;
-				PlayState.instance.persistentDraw = true;
-				PlayState.instance.paused = true;
-
-				PlayState.instance.vocals.stop();
-				FlxG.sound.music.stop();
-			}
-		}
-		else
-			Debug.logTrace("Why you do that?");
-			FlxG.sound.music.pause();
+		Debug.logTrace("Why you do that?");
+		FlxG.sound.music.pause();
 	}
 
 	function onWindowFocusIn():Void
 	{
 		Debug.logTrace("IM BACK!!!");
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
-		if (PlayState.inDaPlay)
-		{
-			if (PlayState.instance.paused)
-				{
-					return;
-				}
-		}
-		else
-			FlxG.sound.music.resume();
+		FlxG.sound.music.resume();
 	}
 }

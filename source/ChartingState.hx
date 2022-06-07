@@ -490,7 +490,7 @@ class ChartingState extends MusicBeatState
 		//addOptionsUI();
 		addEventsUI();
 
-		updateWaveform();
+		//updateWaveform();
 
 		regenerateLines();
 
@@ -1057,7 +1057,7 @@ class ChartingState extends MusicBeatState
 		var reloadSong:FlxButton = new FlxButton(saveButton.x + saveButton.width + 10, saveButton.y, "Reload Audio", function()
 		{
 			loadSong(_song.songId, true);
-			updateWaveform();
+			//updateWaveform();
 		});
 
 		var reloadSongJson:FlxButton = new FlxButton(reloadSong.x, saveButton.y + 30, "Reload JSON", function()
@@ -3118,7 +3118,7 @@ class ChartingState extends MusicBeatState
 		if (!songBeginning)
 			updateSectionUI();
 
-		updateWaveform();
+		//updateWaveform();
 	}
 
 	function changeSection(sec:Int = 0, ?updateMusic:Bool = true):Void

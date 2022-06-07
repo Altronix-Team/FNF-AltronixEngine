@@ -14,6 +14,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import openfl.ui.Keyboard;
 import flixel.FlxSprite;
 import flixel.FlxG;
+import StageData;
 
 using StringTools;
 
@@ -59,6 +60,12 @@ class GameplayCustomizeState extends MusicBeatState
 	public static var freeplayStage:String = 'stage';
 	public static var freeplaySong:String = 'bopeebo';
 	public static var freeplayWeek:Int = 1;
+	public var BF_X:Float = 770;
+	public var BF_Y:Float = 100;
+	public var DAD_X:Float = 100;
+	public var DAD_Y:Float = 100;
+	public var GF_X:Float = 400;
+	public var GF_Y:Float = 130;
 
 	public override function create()
 	{
@@ -164,14 +171,38 @@ class GameplayCustomizeState extends MusicBeatState
 
 		Stage = new Stage(stageCheck);
 
-		var positions = Stage.positions[Stage.curStage];
-		if (positions != null)
+		var stageData:StageFile = StageData.getStageFile(stageCheck);
+		if (stageData == null)
 		{
-			for (char => pos in positions)
-				for (person in [boyfriend, gf, dad])
-					if (person.curCharacter == char)
-						person.setPosition(pos[0], pos[1]);
+			Debug.logTrace('shit');
+			stageData = {
+				defaultZoom: 0.9,
+				isPixelStage: false,
+				hideGF: false,
+			
+				boyfriend: [770, 450],
+				gf: [400, 130],
+				dad: [100, 100],
+			
+				camera_boyfriend: [0, 0],
+				camera_opponent: [0, 0],
+				camera_girlfriend: [0, 0],
+				camera_speed: 1
+			};
 		}
+	
+		BF_X = stageData.boyfriend[0];
+		BF_Y = stageData.boyfriend[1];
+		boyfriend.setPosition(BF_X, BF_Y);
+
+		GF_X = stageData.gf[0];
+		GF_Y = stageData.gf[1];
+		gf.setPosition(GF_X, GF_Y);
+	
+		DAD_X = stageData.dad[0];
+		DAD_Y = stageData.dad[1];
+		dad.setPosition(DAD_X, DAD_Y);
+
 		for (i in Stage.toAdd)
 		{
 			add(i);

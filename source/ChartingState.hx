@@ -59,6 +59,9 @@ import DiscordClient;
 using StringTools;
 using hx.strings.Strings;
 
+@:access(flixel.system.FlxSound._sound)
+@:access(openfl.media.Sound.__buffer)
+
 class ChartingState extends MusicBeatState
 {
 	public static var noteTypeList:Array<String> = //Using for custom noteType.
@@ -415,7 +418,7 @@ class ChartingState extends MusicBeatState
 
 		gridBlackLine = new FlxSprite(gridBG.width / 2).makeGraphic(2, height, FlxColor.BLACK);
 
-		waveformSprite = new FlxSprite(GRID_SIZE, 0).makeGraphic(FlxG.width, FlxG.height, 0x00FFFFFF);
+		waveformSprite = new FlxSprite(40, 0).makeGraphic(FlxG.width, FlxG.height, 0x00FFFFFF);
 
 		// leftIcon.scrollFactor.set();
 		// rightIcon.scrollFactor.set();
@@ -486,8 +489,8 @@ class ChartingState extends MusicBeatState
 
 		//addOptionsUI();
 		addEventsUI();
-		loadAudioBuffer();
-		updateWaveform();
+
+		//updateWaveform();
 
 		regenerateLines();
 
@@ -496,12 +499,12 @@ class ChartingState extends MusicBeatState
 		Debug.logTrace("bruh");
 
 		add(sectionRenderes);
-		add(waveformSprite);
 		add(dummyArrow);
 		add(strumLine);
 		add(lines);
 		add(texts);
 		add(gridBlackLine);
+		add(waveformSprite);
 		add(curRenderedNotes);
 		add(curRenderedSustains);
 		selectedBoxes = new FlxTypedGroup();
@@ -1054,15 +1057,12 @@ class ChartingState extends MusicBeatState
 		var reloadSong:FlxButton = new FlxButton(saveButton.x + saveButton.width + 10, saveButton.y, "Reload Audio", function()
 		{
 			loadSong(_song.songId, true);
-			loadAudioBuffer();
-			updateWaveform();
+			//updateWaveform();
 		});
 
 		var reloadSongJson:FlxButton = new FlxButton(reloadSong.x, saveButton.y + 30, "Reload JSON", function()
 		{
 			loadJson(_song.songId.toLowerCase());
-			loadAudioBuffer();
-			updateWaveform();
 		});
 
 		#if desktop
@@ -3117,6 +3117,8 @@ class ChartingState extends MusicBeatState
 		updateGrid();
 		if (!songBeginning)
 			updateSectionUI();
+
+		//updateWaveform();
 	}
 
 	function changeSection(sec:Int = 0, ?updateMusic:Bool = true):Void
@@ -3335,94 +3337,203 @@ class ChartingState extends MusicBeatState
 	}
 
 	var waveformPrinted:Bool = true;
-	var audioBuffers:Array<AudioBuffer> = [null, null];
+	var wavData:Array<Array<Array<Float>>> = [[[0], [0]], [[0], [0]]];
 	function updateWaveform() {
 		#if desktop
 		if(waveformPrinted) {
-			waveformSprite.makeGraphic(Std.int(GRID_SIZE * 8), Std.int(gridBG.height), 0x00FFFFFF);
-			waveformSprite.pixels.fillRect(new Rectangle(0, 0, gridBG.width, gridBG.height), 0x00FFFFFF);
+			waveformSprite.makeGraphic(Std.int(GRID_SIZE * 8), Std.int(height), 0x00FFFFFF);
+			waveformSprite.pixels.fillRect(new Rectangle(0, 0, gridBG.width, height), 0x00FFFFFF);
 		}
 		waveformPrinted = false;
 
-		var checkForVoices:Int = 1;
-
-		if(!waveformEnabled.checked || audioBuffers[checkForVoices] == null) {
+		if(!FlxG.save.data.chart_waveform) {
+			//trace('Epic fail on the waveform lol');
 			return;
 		}
 
-		var sampleMult:Float = audioBuffers[checkForVoices].sampleRate / 44100;
-		var index:Int = 0;
-		var drawIndex:Int = 0;
+		wavData[0][0] = [];
+		wavData[0][1] = [];
+		wavData[1][0] = [];
+		wavData[1][1] = [];
 
-		var steps:Int = _song.notes[curSection].lengthInSteps;
-		if(Math.isNaN(steps) || steps < 1) steps = 16;
-		var samplesPerRow:Int = Std.int(((Conductor.stepCrochet * steps * 1.1 * sampleMult) / 16) / zoomFactor);
-		if(samplesPerRow < 1) samplesPerRow = 1;
-		var waveBytes:Bytes = audioBuffers[checkForVoices].data.toBytes();
-		
-		var min:Float = 0;
-		var max:Float = 0;
-		while (index < (waveBytes.length - 1))
-		{
-			var byte:Int = waveBytes.getUInt16(index * 4);
+		var steps:Int = Std.int(lengthInSteps);
 
-			if (byte > 65535 / 2)
-				byte -= 65535;
+		var st:Float = 0;
+		var et:Float = st + (Conductor.stepCrochet * steps * 2);
 
-			var sample:Float = (byte / 65535);
+		if (FlxG.save.data.chart_waveform) {
+			var sound:FlxSound = vocals;
+			if (sound._sound != null && sound._sound.__buffer != null) {
+				var bytes:Bytes = sound._sound.__buffer.data.toBytes();
 
-			if (sample > 0)
-			{
-				if (sample > max)
-					max = sample;
+				wavData = waveformData(
+					sound._sound.__buffer,
+					bytes,
+					st,
+					et,
+					1,
+					wavData,
+					Std.int(height)
+				);
 			}
-			else if (sample < 0)
-			{
-				if (sample < min)
-					min = sample;
-			}
-
-			if ((index % samplesPerRow) == 0)
-			{
-				var pixelsMin:Float = Math.abs(min * (GRID_SIZE * 8));
-				var pixelsMax:Float = max * (GRID_SIZE * 8);
-				waveformSprite.pixels.fillRect(new Rectangle(Std.int((GRID_SIZE * 4) - pixelsMin), drawIndex, pixelsMin + pixelsMax, 1), FlxColor.BLUE);
-				drawIndex++;
-
-				min = 0;
-				max = 0;
-
-				if(drawIndex > gridBG.height) break;
-			}
-
-			index++;
 		}
+
+		// Draws
+		var gSize:Int = Std.int(GRID_SIZE * 8);
+		var hSize:Int = Std.int(gSize / 2);
+
+		var lmin:Float = 0;
+		var lmax:Float = 0;
+
+		var rmin:Float = 0;
+		var rmax:Float = 0;
+
+		var size:Float = 1;
+
+		var leftLength:Int = (
+			wavData[0][0].length > wavData[0][1].length ? wavData[0][0].length : wavData[0][1].length
+		);
+
+		var rightLength:Int = (
+			wavData[1][0].length > wavData[1][1].length ? wavData[1][0].length : wavData[1][1].length
+		);
+
+		var length:Int = leftLength > rightLength ? leftLength : rightLength;
+
+		var index:Int;
+		for (i in 0...length) {
+			index = i;
+
+			lmin = FlxMath.bound(((index < wavData[0][0].length && index >= 0) ? wavData[0][0][index] : 0) * (gSize / 1.12), -hSize, hSize) / 2;
+			lmax = FlxMath.bound(((index < wavData[0][1].length && index >= 0) ? wavData[0][1][index] : 0) * (gSize / 1.12), -hSize, hSize) / 2;
+
+			rmin = FlxMath.bound(((index < wavData[1][0].length && index >= 0) ? wavData[1][0][index] : 0) * (gSize / 1.12), -hSize, hSize) / 2;
+			rmax = FlxMath.bound(((index < wavData[1][1].length && index >= 0) ? wavData[1][1][index] : 0) * (gSize / 1.12), -hSize, hSize) / 2;
+
+			waveformSprite.pixels.fillRect(new Rectangle(hSize - (lmin + rmin), i * size, (lmin + rmin) + (lmax + rmax), size), FlxColor.BLUE);
+		}
+
 		waveformPrinted = true;
 		#end
 	}
 
-	function loadAudioBuffer() 
+	/*
+	[
+		[[min...], [max...]], left
+		[[min...], [max...]]  right
+	]
+	*/
+	function waveformData(buffer:AudioBuffer, bytes:Bytes, time:Float, endTime:Float, multiply:Float = 1, ?array:Array<Array<Array<Float>>>, ?steps:Float):Array<Array<Array<Float>>>
 	{
-		if(audioBuffers[0] != null) {
-			audioBuffers[0].dispose();
+		#if (lime_cffi && !macro)
+		if (buffer == null || buffer.data == null) return [[[0], [0]], [[0], [0]]];
+
+		var khz:Float = (buffer.sampleRate / 1000);
+		var channels:Int = buffer.channels;
+
+		var index:Int = Std.int(time * khz);
+
+		var samples:Float = ((endTime - time) * khz);
+
+		if (steps == null) steps = 1280;
+
+		var samplesPerRow:Float = samples / steps;
+		var samplesPerRowI:Int = Std.int(samplesPerRow);
+
+		var gotIndex:Int = 0;
+
+		var lmin:Float = 0;
+		var lmax:Float = 0;
+
+		var rmin:Float = 0;
+		var rmax:Float = 0;
+
+		var rows:Float = 0;
+
+		var simpleSample:Bool = true;//samples > 17200;
+		var v1:Bool = false;
+
+		if (array == null) array = [[[0], [0]], [[0], [0]]];
+
+		while (index < (bytes.length - 1)) {
+			if (index >= 0) {
+				var byte:Int = bytes.getUInt16(index * channels * 2);
+
+				if (byte > 65535 / 2) byte -= 65535;
+
+				var sample:Float = (byte / 65535);
+
+				if (sample > 0) {
+					if (sample > lmax) lmax = sample;
+				} else if (sample < 0) {
+					if (sample < lmin) lmin = sample;
+				}
+
+				if (channels >= 2) {
+					byte = bytes.getUInt16((index * channels * 2) + 2);
+
+					if (byte > 65535 / 2) byte -= 65535;
+
+					sample = (byte / 65535);
+
+					if (sample > 0) {
+						if (sample > rmax) rmax = sample;
+					} else if (sample < 0) {
+						if (sample < rmin) rmin = sample;
+					}
+				}
+			}
+
+			v1 = samplesPerRowI > 0 ? (index % samplesPerRowI == 0) : false;
+			while (simpleSample ? v1 : rows >= samplesPerRow) {
+				v1 = false;
+				rows -= samplesPerRow;
+
+				gotIndex++;
+
+				var lRMin:Float = Math.abs(lmin) * multiply;
+				var lRMax:Float = lmax * multiply;
+
+				var rRMin:Float = Math.abs(rmin) * multiply;
+				var rRMax:Float = rmax * multiply;
+
+				if (gotIndex > array[0][0].length) array[0][0].push(lRMin);
+					else array[0][0][gotIndex - 1] = array[0][0][gotIndex - 1] + lRMin;
+
+				if (gotIndex > array[0][1].length) array[0][1].push(lRMax);
+					else array[0][1][gotIndex - 1] = array[0][1][gotIndex - 1] + lRMax;
+
+				if (channels >= 2) {
+					if (gotIndex > array[1][0].length) array[1][0].push(rRMin);
+						else array[1][0][gotIndex - 1] = array[1][0][gotIndex - 1] + rRMin;
+
+					if (gotIndex > array[1][1].length) array[1][1].push(rRMax);
+						else array[1][1][gotIndex - 1] = array[1][1][gotIndex - 1] + rRMax;
+				}
+				else {
+					if (gotIndex > array[1][0].length) array[1][0].push(lRMin);
+						else array[1][0][gotIndex - 1] = array[1][0][gotIndex - 1] + lRMin;
+
+					if (gotIndex > array[1][1].length) array[1][1].push(lRMax);
+						else array[1][1][gotIndex - 1] = array[1][1][gotIndex - 1] + lRMax;
+				}
+
+				lmin = 0;
+				lmax = 0;
+
+				rmin = 0;
+				rmax = 0;
+			}
+
+			index++;
+			rows++;
+			if(gotIndex > steps) break;
 		}
-		audioBuffers[0] = null;
-		
-		var leVocals:String = Paths.getPreloadPath('data/songs/' + _song.songId + 'Inst.ogg');
-		if (OpenFlAssets.exists(leVocals)) 
-		{
-			audioBuffers[0] = AudioBuffer.fromFile('./' + leVocals.substr(6));
-		}
-		
-		if(audioBuffers[1] != null) {
-			audioBuffers[1].dispose();
-		}
-		audioBuffers[1] = null;
-		var leVocals:String = Paths.getPreloadPath('data/songs/' + _song.songId + 'Voices.ogg');
-		if (OpenFlAssets.exists(leVocals)) 
-		{
-			audioBuffers[1] = AudioBuffer.fromFile('./' + leVocals.substr(6));
-		}
+
+		return array;
+		#else
+		return [[[0], [0]], [[0], [0]]];
+		#end
 	}
 
 	private function addSection(lengthInSteps:Int = 16):Void

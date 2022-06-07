@@ -88,8 +88,8 @@ import DiscordClient;
 using StringTools;
 using hx.strings.Strings;
 
-@:hscript(SONG, setHealth)
-class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
+//@:hscript(SONG, setHealth)
+class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 {
 	public static var instance:PlayState = null;
 
@@ -1405,6 +1405,29 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 		{
 			switch (StringTools.replace(curSong, " ", "-").toLowerCase())
 			{
+				case "monster":
+					var whiteScreen:FlxSprite = new FlxSprite(0, 0).makeGraphic(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2), FlxColor.WHITE);
+					add(whiteScreen);
+					whiteScreen.scrollFactor.set();
+					whiteScreen.blend = ADD;
+					camHUD.visible = false;
+					camFollow.setPosition(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
+					inCutscene = true;
+
+					FlxTween.tween(whiteScreen, {alpha: 0}, 1, {
+						startDelay: 0.1,
+						ease: FlxEase.linear,
+						onComplete: function(twn:FlxTween)
+						{
+							camHUD.visible = true;
+							remove(whiteScreen);
+							startCountdown();
+						}
+					});
+					FlxG.sound.play(Paths.soundRandom('thunder_', 1, 2));
+					if(gf != null) gf.playAnim('scared', true);
+					boyfriend.playAnim('scared', true);
+
 				case "winter-horrorland":
 					var blackScreen:FlxSprite = new FlxSprite(0, 0).makeGraphic(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2), FlxColor.BLACK);
 					add(blackScreen);
@@ -1860,6 +1883,8 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 			if (PlayState.SONG.songId == 'thorns')
 			{
 				add(red);
+				camHUD.visible = false;
+				Main.gjToastManager.visible = false;
 			}
 		}
 
@@ -1895,6 +1920,8 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 								{
 									remove(senpaiEvil);
 									remove(red);
+									camHUD.visible = true;
+									Main.gjToastManager.visible = true;
 									FlxG.camera.fade(FlxColor.WHITE, 0.01, true, function()
 									{
 										add(dialogueBox);
@@ -3940,7 +3967,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 								|| !daNote.mustPress
 								|| daNote.wasGoodHit
 								|| holdArray[Math.floor(Math.abs(daNote.noteData))]
-								&& (daNote.noteType != 1 || daNote.noteType != 'Hurt Note'))
+								&& !daNote.hurtNote)
 								&& daNote.y
 								- daNote.offset.y * daNote.scale.y
 								+ daNote.height >= (strumLine.y + Note.swagWidth / 2))
@@ -3983,7 +4010,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 								|| !daNote.mustPress
 								|| daNote.wasGoodHit
 								|| holdArray[Math.floor(Math.abs(daNote.noteData))]
-								&& (daNote.noteType != 1 || daNote.noteType != 'Hurt Note'))
+								&& !daNote.hurtNote)
 								&& daNote.y
 								+ daNote.offset.y * daNote.scale.y <= (strumLine.y + Note.swagWidth / 2))
 							{
@@ -4098,11 +4125,11 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 					}
 					else
 					{
-							if (daNote.noteType != 1)
+							if (!daNote.hurtNote)
 								vocals.volume = 0;
 							if (theFunne && !daNote.isSustainNote)
 							{
-								if (PlayStateChangeables.botPlay && daNote.noteType != 1)
+								if (PlayStateChangeables.botPlay && !daNote.hurtNote)
 								{
 									daNote.rating = "bad";
 									goodNoteHit(daNote);
@@ -4145,7 +4172,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 									else
 										updateAccuracy();
 								}
-								else if (!daNote.wasGoodHit && !daNote.isSustainNote && daNote.noteType != 1)
+								else if (!daNote.wasGoodHit && !daNote.isSustainNote && !daNote.hurtNote)
 								{
 									health -= 0.15;
 								}
@@ -4795,10 +4822,10 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 				if (!note.noAnimation){
 				switch (note.noteType)
 				{
-					case 2 | 'Bullet Note':{
+					case '2' | 'Bullet Note':{
 						boyfriend.playAnim('dodge', true);
 						FlxG.sound.play(Paths.sound('hankshoot'), FlxG.random.float(0.1, 0.2));}
-					case 1 | 'Hurt Note':
+					case '1' | 'Hurt Note':
 						health -= 0.2;
 						misses++;
 					default:{
@@ -5278,7 +5305,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 		if (PlayStateChangeables.botPlay)
 			notes.forEachAlive(function(daNote:Note)
 			{
-				if (daNote.mustPress && Conductor.songPosition >= daNote.strumTime && (daNote.noteType != 1 || daNote.noteType != 'Hurt Note'))
+				if (daNote.mustPress && Conductor.songPosition >= daNote.strumTime && !daNote.hurtNote)
 				{
 					goodNoteHit(daNote);
 					boyfriend.holdTimer = 0;
@@ -5326,17 +5353,27 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 
 	function noteMiss(direction:Int = 1, daNote:Note):Void
 	{
-		if (!boyfriend.stunned && (daNote.noteType != 1 || daNote.noteType != 'Hurt Note'))
+		if (daNote != null && daNote.hurtNote)
 		{
-			if (daNote.noteType == 2 || daNote.noteType == 'Bullet Note')
-			{
-				health = 0;
-			}
+			health += 0.15;
+			return;
+		}
+		else if (daNote != null && daNote.bulletNote)
+		{
+			health = 0;
+		}
+		else if (!boyfriend.stunned)
+		{
 			// health -= 0.2;
-			if (combo > 5 && gf.animOffsets.exists('sad') && (daNote.noteType != 1 || daNote.noteType != 'Hurt Note'))
+			if (combo > 5 && gf.animOffsets.exists('sad') && (daNote != null && !daNote.hurtNote))
 			{
 				gf.playAnim('sad');
 			}
+			else if (combo > 5 && gf.animOffsets.exists('sad') && daNote == null)
+			{
+				gf.playAnim('sad');
+			}	
+
 			if (combo != 0)
 			{
 				combo = 0;
@@ -5364,12 +5401,21 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 				|| boyfriend.curCharacter == 'bf-christmas'
 				|| boyfriend.curCharacter == 'bf-car'
 				|| boyfriend.curCharacter == 'bf-pixel'
-				&& (daNote.noteType != 1 || daNote.noteType != 'Hurt Note'))
+				&& daNote != null && !daNote.hurtNote)
 			{
 				boyfriend.playAnim('sing' + dataSuffix[direction] + 'miss', true);
 			}
+			else if (boyfriend.curCharacter == 'bf'
+				|| boyfriend.curCharacter == 'bf-christmas'
+				|| boyfriend.curCharacter == 'bf-car'
+				|| boyfriend.curCharacter == 'bf-pixel'
+				&& daNote == null)
+			{
+				boyfriend.playAnim('sing' + dataSuffix[direction] + 'miss', true);
+			}	
 
-			callOnLuas('noteMiss', [notes.members.indexOf(daNote), daNote.noteData, daNote.noteType, daNote.isSustainNote]);
+			if (daNote != null)
+				callOnLuas('noteMiss', [notes.members.indexOf(daNote), daNote.noteData, daNote.noteType, daNote.isSustainNote]);
 			if (FlxG.save.data.enablePsychInterface)
 				recalculateRating();
 			else
@@ -5377,26 +5423,6 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 		}
 	}
 
-	/*function badNoteCheck()
-		{
-			// just double pasting this shit cuz fuk u
-			// REDO THIS SYSTEM!
-			var upP = controls.UP_P;
-			var rightP = controls.RIGHT_P;
-			var downP = controls.DOWN_P;
-			var leftP = controls.LEFT_P;
-
-			if (leftP)
-				noteMiss(0);
-			if (upP)
-				noteMiss(2);
-			if (rightP)
-				noteMiss(3);
-			if (downP)
-				noteMiss(1);
-			updateAccuracy();
-		}
-	 */
 	function updateAccuracy()
 	{
 		totalPlayed += 1;

@@ -25,7 +25,7 @@
 	 - `haxelib run flixel-tools setup`
 	 - `haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit`
 	 - `haxelib git faxe https://github.com/uhrobots/faxe`
-	 - `haxelib install polymod`
+	 - `haxelib install polymod` Warning! Just for now (6 Juny) polymod is broken, please install by this `haxelib git polymod https://github.com/larsiusprime/polymod.git v1.5.1`
 	 - `haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc`
 	 - `haxelib git tentools https://github.com/TentaRJ/tentools.git`
 	 - `haxelib git systools https://github.com/haya3218/systools`

@@ -250,6 +250,11 @@ class DialogueBox extends FlxSpriteGroup
 				portraitRight.visible = false;
 				swagDialogue.alpha -= 1 / 5;
 				dropText.alpha = swagDialogue.alpha;
+				if (sound != null)
+				{
+					if (sound.playing)
+						sound.stop();
+				}
 			}, 5);
 
 			new FlxTimer().start(1.2, function(tmr:FlxTimer)
@@ -278,6 +283,11 @@ class DialogueBox extends FlxSpriteGroup
 						portraitRight.visible = false;
 						swagDialogue.alpha -= 1 / 5;
 						dropText.alpha = swagDialogue.alpha;
+						if (sound != null)
+						{
+							if (sound.playing)
+								sound.stop();
+						}
 					}, 5);
 
 					new FlxTimer().start(1.2, function(tmr:FlxTimer)

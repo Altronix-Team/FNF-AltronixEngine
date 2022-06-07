@@ -13,6 +13,7 @@ import polymod.format.ParseRules.TargetSignatureElement;
 import PlayState;
 import ChartingState;
 import openfl.display.BitmapData;
+import openfl.utils.Assets as OpenFlAssets;
 
 using StringTools;
 
@@ -78,6 +79,8 @@ class Note extends FlxSprite
 
 	public var noAnimation:Bool = false;
 	public var gfNote:Bool = false;
+	public var hurtNote:Bool = false;
+	public var bulletNote:Bool = false;
 
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inCharter:Bool = false, ?isAlt:Bool = false, ?bet:Float = 0, ?noteType:Dynamic = 0)
 	{
@@ -101,6 +104,12 @@ class Note extends FlxSprite
 
 			case '3' | 'GF Sing Note':
 				gfNote = true;
+
+			case '2' | 'Bullet Note':
+				bulletNote = true;
+			
+			case '1' | 'Hurt Note':
+				hurtNote = true;
 		}
 
 		x += 50;
@@ -311,7 +320,7 @@ class Note extends FlxSprite
 					}
 				default:
 					{
-						if (noteType == 'Default Note' || noteType == '0')
+						if (noteType == 'Default Note' || noteType == '0' || !OpenFlAssets.exists(Paths.image('specialnotes/' + noteType)))
 						{
 							frames = PlayState.noteskinSprite;
 
@@ -409,7 +418,7 @@ class Note extends FlxSprite
 			{
 				if (noteTypeCheck == 'pixel')
 				{
-					if (noteType == 'Default Note' || noteType == 'GF Sing Note' || noteType == 'No Anim Note' || noteType == '0' || noteType == '3' || noteType == '4')
+					if (noteType == 'Default Note' || noteType == 'GF Sing Note' || noteType == 'No Anim Note' || noteType == '0' || noteType == '3' || noteType == '4' || !OpenFlAssets.exists(Paths.image('specialnotes/' + noteType + '-pixel')))
 					{
 						loadGraphic(PlayState.noteskinPixelSprite, true, 17, 17);
 						if (isSustainNote)
@@ -444,7 +453,7 @@ class Note extends FlxSprite
 				}
 				else
 				{
-					if (noteType == 'Default Note' || noteType == 'GF Sing Note' || noteType == 'No Anim Note' || noteType == '0' || noteType == '3' || noteType == '4')
+					if (noteType == 'Default Note' || noteType == 'GF Sing Note' || noteType == 'No Anim Note' || noteType == '0' || noteType == '3' || noteType == '4' || !OpenFlAssets.exists(Paths.image('specialnotes/' + noteType)))
 					{
 						frames = PlayState.noteskinSprite;
 						for (i in 0...4)

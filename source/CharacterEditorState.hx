@@ -15,6 +15,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.graphics.FlxGraphic;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+import flixel.math.FlxPoint;
 import flixel.addons.ui.FlxInputText;
 import flixel.addons.ui.FlxUI9SliceSprite;
 import flixel.addons.ui.FlxUI;
@@ -142,8 +143,8 @@ class CharacterEditorState extends MusicBeatState
 		add(camFollow);
 
 		var tipText:FlxText = new FlxText(FlxG.width - 20, FlxG.height, 0,
-			"E/Q - Camera Zoom In/Out
-			\nJKLI - Move Camera
+			"SCROLLMOUSE - Camera Zoom In/Out
+			\nRMOUSE - Move Camera
 			\nW/S - Previous/Next Animation
 			\nSpace - Play Animation
 			\nArrow Keys - Move Character Offset
@@ -1083,6 +1084,9 @@ class CharacterEditorState extends MusicBeatState
 		#end
 	}
 
+	private var lastPosition:FlxPoint = new FlxPoint();
+	private var mouseDiff:FlxPoint = new FlxPoint();
+
 	override function update(elapsed:Float)
 	{
 		Stage.update(elapsed);
@@ -1135,6 +1139,8 @@ class CharacterEditorState extends MusicBeatState
 			
 			if (FlxG.keys.justPressed.R) {
 				FlxG.camera.zoom = 1;
+				if (FlxG.keys.pressed.SHIFT)
+					camFollow.screenCenter();
 			}
 
 			if (FlxG.keys.pressed.E && FlxG.camera.zoom < 3) {
@@ -1227,6 +1233,42 @@ class CharacterEditorState extends MusicBeatState
 		camMenu.zoom = FlxG.camera.zoom;
 		ghostChar.setPosition(char.x, char.y);
 		super.update(elapsed);
+		
+		if (FlxG.mouse.justPressedRight)
+			{
+				lastPosition.set(CoolUtil.boundTo(FlxG.mouse.getScreenPosition().x, 0, FlxG.width), 
+				CoolUtil.boundTo(FlxG.mouse.getScreenPosition().y, 0, FlxG.height));
+			}
+	
+			if (FlxG.mouse.pressedRight) // draggable camera with mouse movement
+			{
+				FlxG.mouse.visible = false;
+	
+				mouseDiff.set((lastPosition.x - FlxG.mouse.getScreenPosition().x), (lastPosition.y - FlxG.mouse.getScreenPosition().y));
+	
+				if (FlxG.mouse.justMoved)
+				{
+					var mult:Float = 1;
+	
+					if (FlxG.keys.pressed.SHIFT)
+						mult = 4;
+	
+					camFollow.x = camFollow.x - -CoolUtil.boundTo(mouseDiff.x, -FlxG.width, FlxG.width) * mult;
+					camFollow.y = camFollow.y - -CoolUtil.boundTo(mouseDiff.y, -FlxG.height, FlxG.height) * mult;
+	
+					lastPosition.set(CoolUtil.boundTo(FlxG.mouse.getScreenPosition().x, 0, FlxG.width), 
+					CoolUtil.boundTo(FlxG.mouse.getScreenPosition().y, 0, FlxG.height));
+				}
+			}
+			else
+			{
+				FlxG.mouse.visible = true;
+			}
+	
+			if (FlxG.mouse.wheel != 0)
+			{
+				FlxG.camera.zoom += FlxG.mouse.wheel / 10;
+			}
 	}
 
 	var _file:FileReference;

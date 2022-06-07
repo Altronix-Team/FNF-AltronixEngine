@@ -16,6 +16,7 @@ import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import flixel.effects.FlxFlicker;
 import openfl.utils.Assets;
+import flixel.util.FlxColor;
 import StageData;
 //import ScriptedStage;
 #if sys
@@ -63,11 +64,10 @@ class Stage extends MusicBeatState
 
 	public var started:Bool = false;
 	public var startedidle:Bool = false;
-	public var foregroundSprites:FlxTypedGroup<FlxSprite>;
+
 	var steve:FlxSprite;
-	var tankmanRun:FlxTypedGroup<TankmenBG>;
+	public var foregroundSprites:FlxTypedGroup<FlxSprite>;
 	public static var animationNotes:Array<Dynamic> = [];
-	var bgGhouls:BGSprite;
 	var limoMetalPole:BGSprite;
 	var limoLight:BGSprite;
 	var limoCorpse:BGSprite;
@@ -117,6 +117,13 @@ class Stage extends MusicBeatState
 					halloweenBG.antialiasing = FlxG.save.data.antialiasing;
 					swagBacks['halloweenBG'] = halloweenBG;
 					toAdd.push(halloweenBG);
+
+					var halloweenWhite = new BGSprite(null, -FlxG.width, -FlxG.height, 0, 0);
+					halloweenWhite.makeGraphic(Std.int(FlxG.width * 3), Std.int(FlxG.height * 3), FlxColor.WHITE);
+					halloweenWhite.alpha = 0;
+					halloweenWhite.blend = ADD;
+					swagBacks['halloweenWhite'] = halloweenWhite;
+					toAdd.push(halloweenWhite);
 				}
 			case 'philly':
 				{
@@ -462,11 +469,14 @@ class Stage extends MusicBeatState
 					swagBacks['bg'] = bg;
 					toAdd.push(bg);	
 
-					bgGhouls = new BGSprite('weeb/bgGhouls', -100, 190, 0.9, 0.9, ['BG freaks glitch instance'], false);
-					bgGhouls.setGraphicSize(Std.int(bgGhouls.width * CoolUtil.daPixelZoom));
-					bgGhouls.updateHitbox();
+					var bgGhouls:FlxSprite = new FlxSprite(-100, 190);
+					bgGhouls.frames = Paths.getSparrowAtlas('weeb/bgGhouls', 'week6');
+					bgGhouls.animation.addByPrefix('idle', 'BG freaks glitch instance', 24, false);
 					bgGhouls.visible = false;
 					bgGhouls.antialiasing = false;
+					bgGhouls.scrollFactor.set(0.9, 0.9);
+					bgGhouls.setGraphicSize(Std.int(bgGhouls.width * CoolUtil.daPixelZoom));
+					bgGhouls.updateHitbox();
 					if (FlxG.save.data.distractions)
 					{
 						swagBacks['bgGhouls'] = bgGhouls;
@@ -549,7 +559,7 @@ class Stage extends MusicBeatState
 					swagBacks['steve'] = steve;
 					toAdd.push(steve);
 
-					tankmanRun = new FlxTypedGroup<TankmenBG>();
+					var tankmanRun:FlxTypedGroup<TankmenBG> = new FlxTypedGroup<TankmenBG>();
 					if (FlxG.save.data.distractions)
 					{
 						swagGroup['tankmanRun'] = tankmanRun;
@@ -665,6 +675,19 @@ class Stage extends MusicBeatState
 					swagBacks['stageFront'] = stageFront;
 					toAdd.push(stageFront);
 
+					var stageLightLeft:BGSprite = new BGSprite('stage_light', -125, -100, 0.9, 0.9);
+					stageLightLeft.setGraphicSize(Std.int(stageLightLeft.width * 1.1));
+					stageLightLeft.updateHitbox();
+					swagBacks['stageLightLeft'] = stageLightLeft;
+					toAdd.push(stageLightLeft);
+
+					var stageLightRight:BGSprite = new BGSprite('stage_light', 1225, -100, 0.9, 0.9);
+					stageLightRight.setGraphicSize(Std.int(stageLightRight.width * 1.1));
+					stageLightRight.updateHitbox();
+					stageLightRight.flipX = true;
+					swagBacks['stageLightRight'] = stageLightRight;
+					toAdd.push(stageLightRight);
+
 					var stageCurtains:FlxSprite = new FlxSprite(-500, -300).loadGraphic(Paths.loadImage('stagecurtains', 'shared'));
 					stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
 					stageCurtains.updateHitbox();
@@ -702,6 +725,19 @@ class Stage extends MusicBeatState
 						swagBacks['stageFront'] = stageFront;
 						toAdd.push(stageFront);
 
+						var stageLightLeft:BGSprite = new BGSprite('stage_light', -125, -100, 0.9, 0.9);
+						stageLightLeft.setGraphicSize(Std.int(stageLightLeft.width * 1.1));
+						stageLightLeft.updateHitbox();
+						swagBacks['stageLightLeft'] = stageLightLeft;
+						toAdd.push(stageLightLeft);
+
+						var stageLightRight:BGSprite = new BGSprite('stage_light', 1225, -100, 0.9, 0.9);
+						stageLightRight.setGraphicSize(Std.int(stageLightRight.width * 1.1));
+						stageLightRight.updateHitbox();
+						stageLightRight.flipX = true;
+						swagBacks['stageLightRight'] = stageLightRight;
+						toAdd.push(stageLightRight);
+
 						var stageCurtains:FlxSprite = new FlxSprite(-500, -300).loadGraphic(Paths.loadImage('stagecurtains', 'shared'));
 						stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
 						stageCurtains.updateHitbox();
@@ -730,6 +766,19 @@ class Stage extends MusicBeatState
 						stageFront.active = false;
 						swagBacks['stageFront'] = stageFront;
 						toAdd.push(stageFront);
+
+						var stageLightLeft:BGSprite = new BGSprite('stage_light', -125, -100, 0.9, 0.9);
+						stageLightLeft.setGraphicSize(Std.int(stageLightLeft.width * 1.1));
+						stageLightLeft.updateHitbox();
+						swagBacks['stageLightLeft'] = stageLightLeft;
+						toAdd.push(stageLightLeft);
+
+						var stageLightRight:BGSprite = new BGSprite('stage_light', 1225, -100, 0.9, 0.9);
+						stageLightRight.setGraphicSize(Std.int(stageLightRight.width * 1.1));
+						stageLightRight.updateHitbox();
+						stageLightRight.flipX = true;
+						swagBacks['stageLightRight'] = stageLightRight;
+						toAdd.push(stageLightRight);
 
 						var stageCurtains:FlxSprite = new FlxSprite(-500, -300).loadGraphic(Paths.loadImage('stagecurtains', 'shared'));
 						stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
@@ -767,11 +816,6 @@ class Stage extends MusicBeatState
 					
 				case 'warzone':
 					moveTank(elapsed);
-
-				case 'schoolEvil':
-					if(PlayState.SONG.songId == 'thorns' && bgGhouls.animation.curAnim.finished) {
-						bgGhouls.visible = false;
-					}
 
 				case 'limo':
 					killShit(elapsed);
@@ -849,8 +893,7 @@ class Stage extends MusicBeatState
 					if ((curBeat == 64 || curBeat == 66 || curBeat == 69 || curBeat == 71 || curBeat == 73 || curBeat == 75 || curBeat == 77 || curBeat == 79 || curBeat == 81 || curBeat == 83 || curBeat == 85 || curBeat == 87 || curBeat == 89 || curBeat == 91 || curBeat == 93 || curBeat == 95 || curBeat == 161 || curBeat == 163 || curBeat == 164 || curBeat == 166 || curBeat == 168 || curBeat == 170 || curBeat == 172 || curBeat == 174 || curBeat == 176 || curBeat == 178 || curBeat == 180 || curBeat == 182 || curBeat == 184 || curBeat == 186 || curBeat == 188 || curBeat == 190 || curBeat == 256 || curBeat == 258 || curBeat == 260 || curBeat == 262 || curBeat == 264 || curBeat == 266 || curBeat == 268 || curBeat == 270 || curBeat == 272 || curBeat == 274 || curBeat == 276 || curBeat == 278 || curBeat == 280 || curBeat == 282 || curBeat == 284 || curBeat == 286) 
 						&& FlxG.save.data.distractions && PlayState.SONG.songId == 'thorns')
 					{
-						bgGhouls.visible = true;
-						bgGhouls.dance();
+						ghoulDance();
 					}
 				case 'limo':
 					if (FlxG.save.data.distractions)
@@ -1017,6 +1060,19 @@ class Stage extends MusicBeatState
 		}
 	}
 
+	function ghoulDance()
+	{
+		var ghoul = swagBacks['bgGhouls'];
+			
+		ghoul.visible = true;
+		ghoul.animation.play('idle');
+
+		ghoul.animation.finishCallback = function(name:String)
+		{
+			ghoul.visible = false;
+		};
+	}
+
 	function resetLimoKill():Void
 		{
 			if(curStage == 'limo') {
@@ -1058,6 +1114,15 @@ class Stage extends MusicBeatState
 		lightningStrikeBeat = curBeat;
 		lightningOffset = FlxG.random.int(8, 24);
 
+		if (FlxG.save.data.camzoom)
+		{
+			FlxG.camera.zoom += 0.015;
+			PlayState.instance.camHUD.zoom += 0.03;
+
+			FlxTween.tween(FlxG.camera, {zoom: PlayState.instance.defaultCamZoom}, 0.5);
+			FlxTween.tween(PlayState.instance.camHUD, {zoom: 1}, 0.5);
+		}
+
 		if (PlayState.instance.boyfriend != null)
 		{
 			PlayState.instance.boyfriend.playAnim('scared', true);
@@ -1067,6 +1132,12 @@ class Stage extends MusicBeatState
 		{
 			GameplayCustomizeState.boyfriend.playAnim('scared', true);
 			GameplayCustomizeState.gf.playAnim('scared', true);
+		}
+
+		if(FlxG.save.data.flashing) {
+			swagBacks['halloweenWhite'].alpha = 0.4;
+			FlxTween.tween(swagBacks['halloweenWhite'], {alpha: 0.5}, 0.075);
+			FlxTween.tween(swagBacks['halloweenWhite'], {alpha: 0}, 0.25, {startDelay: 0.15});
 		}
 	}
 

@@ -48,14 +48,6 @@ class PauseSubState extends MusicBeatSubstate
 	{
 		super();
 
-		if (FlxG.sound.music.playing)
-			FlxG.sound.music.pause();
-
-		for (i in FlxG.sound.list)
-		{
-			if (i.playing && i.ID != 9000)
-				i.pause();
-		}
 
 		pauseMusic = new FlxSound().loadEmbedded(Paths.music('breakfast'), true, true);
 		pauseMusic.volume = 0;

@@ -1571,7 +1571,7 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 			var songName:String = Paths.formatToSongPath(SONG.song);
 			dadGroup.alpha = 0.00001;
 			camHUD.visible = false;
-			//inCutscene = true; //this would stop the camera movement, oops
+			inCutscene = true;
 	
 			var tankman:FlxSprite = new FlxSprite(dad.x, dad.y);
 			tankman.frames = Paths.getSparrowAtlas('cutscenes/' + songName);
@@ -3043,12 +3043,10 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 	{
 		if (paused)
 		{
-			if (FlxG.sound.music.playing)
-			{
+			if(FlxG.sound.music != null) {
 				FlxG.sound.music.pause();
 				if (vocals != null)
-					if (vocals.playing)
-						vocals.pause();
+					vocals.pause();
 			}
 
 			if (startTimer != null && !startTimer.finished)
@@ -3083,6 +3081,8 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 		}
 		else if (paused)
 		{
+			canPause = true;
+
 			if (FlxG.sound.music != null && !startingSong)
 			{
 				resyncVocals();
@@ -3335,13 +3335,18 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 				paused = true;
 
 				// 1 / 1000 chance for Gitaroo Man easter egg
-				if (FlxG.random.bool(0.1))
+				/*if (FlxG.random.bool(0.1))
 				{
 					trace('GITAROO MAN EASTER EGG');
 					MusicBeatState.switchState(new GitarooPause());
 					clean();
 				}
-				else
+				else*/
+				if(FlxG.sound.music != null) {
+					FlxG.sound.music.pause();
+					if (vocals != null)
+						vocals.pause();
+				}
 					openSubState(new PauseSubState());
 			}
 		}
@@ -3498,7 +3503,7 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 			skipActive = false;
 		}
 
-		if (FlxG.keys.justPressed.SPACE && !skipActive)
+		if (FlxG.keys.justPressed.SPACE && !skipActive && !inCutscene)
 		{
 			if (boyfriend.animation.exists('hey'))
 				boyfriend.playAnim('hey', true);
@@ -4254,7 +4259,7 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 		paused = true;
 		canPause = false;
 		cancelMusicFadeTween();
-		MusicBeatState.switchState(new ChartingState());
+		LoadingState.loadAndSwitchState(new ChartingState());
 		chartingMode = true;
 
 		#if desktop
@@ -5963,29 +5968,18 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 
 	override function onWindowFocusOut():Void
 	{
-		if (!paused && !endingSong && songStarted && canPause)
-		{
-			Debug.logTrace("Lost Focus");
-			openSubState(new PauseSubState());
-			boyfriend.stunned = true;
-	
-			persistentUpdate = false;
-			persistentDraw = true;
-			paused = true;
-	
-			vocals.stop();
-			FlxG.sound.music.stop();
-		}
+		if (paused)
+			return;
+		persistentUpdate = false;
+		persistentDraw = true;
+		paused = true;
+
+		openSubState(new PauseSubState());
 	}
 	
 	override function onWindowFocusIn():Void
 	{
 		Debug.logTrace("IM BACK!!!");
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
-		if (paused)
-		{
-			return;
-		}
 	}
 }
-// u looked :O -ides

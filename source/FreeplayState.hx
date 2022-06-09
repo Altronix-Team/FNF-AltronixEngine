@@ -65,6 +65,8 @@ class FreeplayState extends MusicBeatState
 
 	public static var songData:Map<String, Array<SongData>> = [];
 
+	var blockInput:Bool = false;
+
 	public static function loadDiff(diff:Int, songId:String, array:Array<SongData>)
 	{
 		var diffName:String = "";
@@ -438,150 +440,136 @@ class FreeplayState extends MusicBeatState
 
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 
-		if (gamepad != null)
+		if (!blockInput)
 		{
-			if (gamepad.justPressed.DPAD_UP)
+			if (gamepad != null)
+			{
+				if (gamepad.justPressed.DPAD_UP)
+				{
+					changeSelection(-1);
+				}
+				if (gamepad.justPressed.DPAD_DOWN)
+				{
+					changeSelection(1);
+				}
+				if (gamepad.justPressed.DPAD_LEFT)
+				{
+					changeDiff(-1);
+				}
+				if (gamepad.justPressed.DPAD_RIGHT)
+				{
+					changeDiff(1);
+				}
+			}
+
+			if (upP)
 			{
 				changeSelection(-1);
 			}
-			if (gamepad.justPressed.DPAD_DOWN)
+			if (downP)
 			{
 				changeSelection(1);
 			}
-			if (gamepad.justPressed.DPAD_LEFT)
+		
+
+			if (FlxG.keys.justPressed.SPACE)
 			{
-				changeDiff(-1);
+				if (!songListen)
+				{	
+					#if PRELOAD_ALL
+					destroyFreeplayVocals();
+					FlxG.sound.music.volume = 0;
+					var currentSongData = songData.get(songs[curSelected].songName)[getShitSongID(diffTextStr)];
+					PlayState.SONG = currentSongData;
+					vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.songId));
+
+					FlxG.sound.list.add(vocals);
+					FlxG.sound.playMusic(Paths.inst(PlayState.SONG.songId), 0.7);
+					vocals.play();
+					vocals.persist = true;
+					vocals.looped = true;
+					vocals.volume = 0.7;
+					songListen = true;
+					#end
+				}
+				else
+				{
+					destroyFreeplayVocals();
+					FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)), 0);
+					FlxG.sound.music.fadeIn(4, 0, 0.7);
+					songListen = false;
+				}
 			}
-			if (gamepad.justPressed.DPAD_RIGHT)
+
+			if (FlxG.keys.pressed.SHIFT)
 			{
-				changeDiff(1);
-			}
+				if (FlxG.keys.justPressed.LEFT)
+				{
+					rate -= 0.05;
+					diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[getShitSongID(diffTextStr)])}';
+				}
+				if (FlxG.keys.justPressed.RIGHT)
+				{
+					rate += 0.05;
+					diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[getShitSongID(diffTextStr)])}';
+				}
 
-			// if (gamepad.justPressed.X && !openedPreview)
-			// openSubState(new DiffOverview());
-		}
+				if (FlxG.keys.justPressed.R)
+				{
+					rate = 1;
+					diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[getShitSongID(diffTextStr)])}';
+				}
 
-		if (upP)
-		{
-			changeSelection(-1);
-		}
-		if (downP)
-		{
-			changeSelection(1);
-		}
+				if (rate > 3)
+				{
+					rate = 3;
+					diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[getShitSongID(diffTextStr)])}';
+				}
+				else if (rate < 0.5)
+				{
+					rate = 0.5;
+					diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[getShitSongID(diffTextStr)])}';
+				}
 
-		// if (FlxG.keys.justPressed.SPACE && !openedPreview)
-		// openSubState(new DiffOverview());
-
-		if (FlxG.keys.justPressed.SPACE)
-		{
-			if (!songListen)
-			{	
-				#if PRELOAD_ALL
-				destroyFreeplayVocals();
-				FlxG.sound.music.volume = 0;
-				var currentSongData = songData.get(songs[curSelected].songName)[getShitSongID(diffTextStr)];
-				PlayState.SONG = currentSongData;
-				vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.songId));
-
-				FlxG.sound.list.add(vocals);
-				FlxG.sound.playMusic(Paths.inst(PlayState.SONG.songId), 0.7);
-				vocals.play();
-				vocals.persist = true;
-				vocals.looped = true;
-				vocals.volume = 0.7;
-				songListen = true;
-				#end
+				previewtext.text = "Speed: " + FlxMath.roundDecimal(rate, 2) + "x";
 			}
 			else
 			{
+				if (FlxG.keys.justPressed.LEFT)
+				{
+					changeDiff(-1);
+				}
+				if (FlxG.keys.justPressed.RIGHT)
+				{
+					changeDiff(1);
+				}
+			}
+
+			/*#if cpp
+			@:privateAccess
+			{
+				if (FlxG.sound.music.playing)
+					lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, rate);
+			}
+			#end*/
+
+			if (controls.BACK)
+			{
+				PlayState.isFreeplay = false;
+				FlxG.switchState(new MainMenuState());
+			}
+
+			if (accepted)
+			{
 				destroyFreeplayVocals();
-				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)), 0);
-				FlxG.sound.music.fadeIn(4, 0, 0.7);
-				songListen = false;
+				loadSong();
 			}
-		}
-
-		if (FlxG.keys.pressed.SHIFT)
-		{
-			if (FlxG.keys.justPressed.LEFT)
+			else if (charting)
 			{
-				rate -= 0.05;
-				diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[getShitSongID(diffTextStr)])}';
-			}
-			if (FlxG.keys.justPressed.RIGHT)
-			{
-				rate += 0.05;
-				diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[getShitSongID(diffTextStr)])}';
-			}
-
-			if (FlxG.keys.justPressed.R)
-			{
-				rate = 1;
-				diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[getShitSongID(diffTextStr)])}';
-			}
-
-			if (rate > 3)
-			{
-				rate = 3;
-				diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[getShitSongID(diffTextStr)])}';
-			}
-			else if (rate < 0.5)
-			{
-				rate = 0.5;
-				diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[getShitSongID(diffTextStr)])}';
-			}
-
-			previewtext.text = "Speed: " + FlxMath.roundDecimal(rate, 2) + "x";
-		}
-		else
-		{
-			if (FlxG.keys.justPressed.LEFT)
-			{
-				changeDiff(-1);
-			}
-			if (FlxG.keys.justPressed.RIGHT)
-			{
-				changeDiff(1);
+				destroyFreeplayVocals();	
+				loadSong(true);
 			}
 		}
-
-		/*#if cpp
-		@:privateAccess
-		{
-			if (FlxG.sound.music.playing)
-				lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, rate);
-		}
-		#end*/
-
-		if (controls.BACK)
-		{
-			PlayState.isFreeplay = false;
-			FlxG.switchState(new MainMenuState());
-		}
-
-		if (accepted)
-		{
-			destroyFreeplayVocals();
-			loadSong();
-		}
-		else if (charting)
-		{
-			destroyFreeplayVocals();	
-			loadSong(true);
-		}
-
-		// AnimationDebug and StageDebug are only enabled in debug builds.
-		/*#if debug
-		if (dadDebug)
-		{
-			loadAnimDebug(true);
-		}
-		if (bfDebug)
-		{
-			loadAnimDebug(false);
-		}
-		#end*/
 	}
 
 	function loadAnimDebug(dad:Bool = true)
@@ -607,6 +595,8 @@ class FreeplayState extends MusicBeatState
 
 	function loadSong(isCharting:Bool = false)
 	{
+		blockInput = true;
+		
 		loadSongInFreePlay(songs[curSelected].songName, curDifficulty, isCharting);
 
 		clean();
@@ -624,7 +614,7 @@ class FreeplayState extends MusicBeatState
 		if (songData == null || Lambda.count(songData) == 0)
 			populateSongData();
 
-		diffTextStr = CoolUtil.difficultyFromInt(curDifficulty);
+		diffTextStr = CoolUtil.difficultyFromInt(CoolUtil.difficultyArray.indexOf(songs[curSelected].diffs[difficulty]));
 
 		var currentSongData;
 		try
@@ -644,7 +634,7 @@ class FreeplayState extends MusicBeatState
 		}	
 
 		PlayState.SONG = currentSongData;
-		PlayState.storyDifficulty = difficulty;
+		PlayState.storyDifficulty = CoolUtil.difficultyArray.indexOf(songs[curSelected].diffs[difficulty]);
 		PlayState.storyWeek = songs[curSelected].week;
 		Debug.logInfo('Loading song ${PlayState.SONG.songName} from week ${PlayState.storyWeek} into Free Play...');
 		#if FEATURE_STEPMANIA
@@ -700,7 +690,7 @@ class FreeplayState extends MusicBeatState
 				songHighscore = 'Milf';
 		}
 
-		diffTextStr = CoolUtil.difficultyFromInt(curDifficulty);
+		diffTextStr = CoolUtil.difficultyFromInt(CoolUtil.difficultyArray.indexOf(songs[curSelected].diffs[curDifficulty]));
 
 		#if !switch
 		intendedScore = Highscore.getScore(songHighscore, curDifficulty);
@@ -709,7 +699,7 @@ class FreeplayState extends MusicBeatState
 
 		diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[getShitSongID(diffTextStr)])}';
 
-		diffText.text = CoolUtil.difficultyFromInt(curDifficulty).toUpperCase();
+		diffText.text = CoolUtil.difficultyFromInt(CoolUtil.difficultyArray.indexOf(songs[curSelected].diffs[curDifficulty])).toUpperCase();
 	}
 
 	function changeSelection(change:Int = 0)
@@ -725,17 +715,7 @@ class FreeplayState extends MusicBeatState
 
 		if (songs[curSelected].diffs.length != 4)
 		{
-			switch (songs[curSelected].diffs[0])
-			{
-				case "Easy":
-					curDifficulty = 0;
-				case "Normal":
-					curDifficulty = 1;
-				case "Hard":
-					curDifficulty = 2;
-				case "Hard P":
-					curDifficulty = 3;
-			}
+			curDifficulty = 0;
 		}
 
 		getCharacterColor();
@@ -769,7 +749,7 @@ class FreeplayState extends MusicBeatState
 				songHighscore = 'Milf';
 		}
 
-		diffTextStr = CoolUtil.difficultyFromInt(curDifficulty);
+		diffTextStr = CoolUtil.difficultyFromInt(CoolUtil.difficultyArray.indexOf(songs[curSelected].diffs[curDifficulty]));
 
 		#if !switch
 		intendedScore = Highscore.getScore(songHighscore, curDifficulty);
@@ -779,7 +759,7 @@ class FreeplayState extends MusicBeatState
 
 		diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[getShitSongID(diffTextStr)])}';
 
-		diffText.text = CoolUtil.difficultyFromInt(curDifficulty).toUpperCase();
+		diffText.text = CoolUtil.difficultyFromInt(CoolUtil.difficultyArray.indexOf(songs[curSelected].diffs[curDifficulty])).toUpperCase();
 
 		var hmm;
 		try

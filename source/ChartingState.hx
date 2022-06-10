@@ -144,6 +144,7 @@ class ChartingState extends MusicBeatState
 
 	var curRenderedNotes:FlxTypedGroup<Note>;
 	var curRenderedSustains:FlxTypedGroup<FlxSprite>;
+	var curRenderedNoteType:FlxTypedGroup<FlxText>;
 
 	var gridBG:FlxSprite;
 
@@ -297,6 +298,7 @@ class ChartingState extends MusicBeatState
 
 		curRenderedNotes = new FlxTypedGroup<Note>();
 		curRenderedSustains = new FlxTypedGroup<FlxSprite>();
+		curRenderedNoteType = new FlxTypedGroup<FlxText>();
 
 		FlxG.mouse.visible = true;
 
@@ -524,6 +526,7 @@ class ChartingState extends MusicBeatState
 		add(waveformSprite);
 		add(curRenderedNotes);
 		add(curRenderedSustains);
+		add(curRenderedNoteType);
 		selectedBoxes = new FlxTypedGroup();
 
 		add(selectedBoxes);
@@ -1793,7 +1796,7 @@ class ChartingState extends MusicBeatState
 		FlxG.sound.music.pause();
 
 		FlxG.sound.music.time = 0;
-		
+
 		if (!PlayState.isSM)
 			vocals.pause();
 
@@ -3328,6 +3331,11 @@ class ChartingState extends MusicBeatState
 			curRenderedSustains.remove(curRenderedSustains.members[0], true);
 		}
 
+		while (curRenderedNoteType.members.length > 0)
+		{
+			curRenderedNoteType.remove(curRenderedNoteType.members[0], true);
+		}
+
 		var currentSection = 0;
 
 		for (section in _song.notes)
@@ -3341,7 +3349,17 @@ class ChartingState extends MusicBeatState
 
 				var daType = null;
 				if (i[5] != null)
-					daType = i[5];
+				{
+					if(!Std.isOfType(i[5], String)) //Convert old note type to new note type format
+					{
+						i[5] = noteTypeIntMap.get(i[5]);
+						daType = i[5];
+					}
+					else
+					{
+						daType = i[5];
+					}
+				}
 				else
 					daType = 'Default Note';
 
@@ -3372,6 +3390,19 @@ class ChartingState extends MusicBeatState
 					note.noteCharterObject = sustainVis;
 
 					curRenderedSustains.add(sustainVis);
+				}
+				if(i[5] != null && note.noteType != null && note.noteType.length > 0) {
+					var typeInt:Null<Int> = noteTypeMap.get(i[5]);
+					var theType:String = '' + typeInt;
+					if(typeInt == null) theType = '?';
+	
+					var daText:AttachedFlxText = new AttachedFlxText(0, 0, 100, theType, 24);
+					daText.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+					daText.xAdd = -32;
+					daText.yAdd = 6;
+					daText.borderSize = 1;
+					curRenderedNoteType.add(daText);
+					daText.sprTracker = note;
 				}
 			}
 			currentSection++;
@@ -4234,6 +4265,28 @@ class ChartingState extends MusicBeatState
 		else
 		{
 			pausedCrashFix = true;
+		}
+	}
+}
+
+class AttachedFlxText extends FlxText
+{
+	public var sprTracker:FlxSprite;
+	public var xAdd:Float = 0;
+	public var yAdd:Float = 0;
+
+	public function new(X:Float = 0, Y:Float = 0, FieldWidth:Float = 0, ?Text:String, Size:Int = 8, EmbeddedFont:Bool = true) {
+		super(X, Y, FieldWidth, Text, Size, EmbeddedFont);
+	}
+
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
+
+		if (sprTracker != null) {
+			setPosition(sprTracker.x + xAdd, sprTracker.y + yAdd);
+			angle = sprTracker.angle;
+			alpha = sprTracker.alpha;
 		}
 	}
 }

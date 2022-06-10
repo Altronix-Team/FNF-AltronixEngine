@@ -73,12 +73,14 @@ class FreeplayState extends MusicBeatState
 
 		switch (diff)
 		{
-			case 0:
-				diffName = "-easy";
+			case 1:
+				diffName = "";
 			case 2:
 				diffName = "-hard";
 			case 3:
 				diffName = "-hardplus";
+			case 0:
+				diffName = "-easy";
 			default:
 				diffName = "-" + diffStr.toLowerCase();
 		}

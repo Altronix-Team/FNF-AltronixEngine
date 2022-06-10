@@ -17,6 +17,10 @@ class CoolUtil
 {
 	public static var difficultyArray:Array<String> = ['Easy', "Normal", "Hard", "Hard P"];
 
+	public static var defaultDifficulties:Array<String> = ['Easy', "Normal", "Hard", "Hard P"];
+
+	public static var songDiffs:Map<String, Array<String>> = [];
+
 	public static var daPixelZoom:Float = 6;
 
 	public static function difficultyFromInt(difficulty:Int):String

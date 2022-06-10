@@ -196,6 +196,25 @@ class FreeplaySongsEditorState extends MusicBeatState
 					}
 				}
 			}
+			else if (sender == weekDiffsInputText)
+			{
+				var splittedText:Array<String> = weekDiffsInputText.text.trim().split(',');
+				for (i in 0...splittedText.length) {
+					splittedText[i] = splittedText[i].trim();
+				}
+	
+				while(splittedText.length < curWeek.weekDiffs.length) {
+					curWeek.weekDiffs.pop();
+				}
+	
+				for (i in 0...splittedText.length) {
+					if(i >= curWeek.weekDiffs.length) {
+						curWeek.weekDiffs.push(splittedText[i]);
+					} else {
+						curWeek.weekDiffs[i] = splittedText[i];
+					}
+				}
+			}
 			else if (sender == weekIdInputText)
 			{
 				curWeek.weekID = Std.parseInt(weekIdInputText.text);
@@ -204,6 +223,7 @@ class FreeplaySongsEditorState extends MusicBeatState
 	}
 
 	var weekSongsInputText:FlxUIInputText;
+	var weekDiffsInputText:FlxUIInputText;
 	var weekIdInputText:FlxUIInputText;
 	var iconInputText:FlxUIInputText;
 
@@ -229,7 +249,8 @@ class FreeplaySongsEditorState extends MusicBeatState
 				{
 					weekChar: ['dad'],
 					weekID: 0,
-					weekSongs: ['test']
+					weekSongs: ['test'],
+					weekDiffs: ['Easy', 'Normal', 'Hard', 'Hard P']
 				}
 				weekFile.freeplaySonglist[curWeekInt] = newCurWeek;
 				reloadAllShit();
@@ -238,13 +259,16 @@ class FreeplaySongsEditorState extends MusicBeatState
 				removeWeek();
 		});
 
-		weekSongsInputText = new FlxUIInputText(10, 70, 200, '', 8);
+		weekSongsInputText = new FlxUIInputText(10, 50, 200, '', 8);
 		blockPressWhileTypingOn.push(weekSongsInputText);
 
-		iconInputText = new FlxUIInputText(10, weekSongsInputText.y + 20, 200, '', 8);
+		weekDiffsInputText = new FlxUIInputText(10, weekSongsInputText.y + 40, 200, '', 8);
+		blockPressWhileTypingOn.push(weekDiffsInputText);
+
+		iconInputText = new FlxUIInputText(10, weekDiffsInputText.y + 40, 200, '', 8);
 		blockPressWhileTypingOn.push(iconInputText);
 
-		weekIdInputText = new FlxUIInputText(150, weekSongsInputText.y + 50, 50, '', 8);
+		weekIdInputText = new FlxUIInputText(240, weekSongsInputText.y, 50, '', 8);
 		blockPressWhileTypingOn.push(weekIdInputText);
 		
 		tab_group.add(new FlxText(iconInputText.x, iconInputText.y - 18, 0, 'Week Character:'));
@@ -255,6 +279,9 @@ class FreeplaySongsEditorState extends MusicBeatState
 
 		tab_group.add(new FlxText(weekSongsInputText.x, weekSongsInputText.y - 18, 0, 'Week Songs:'));
 		tab_group.add(weekSongsInputText);
+
+		tab_group.add(new FlxText(weekDiffsInputText.x, weekDiffsInputText.y - 18, 0, 'Week Difficulties:'));
+		tab_group.add(weekDiffsInputText);
 
 		tab_group.add(saveWeekBtt);
 		tab_group.add(addWeekBtt);
@@ -268,6 +295,23 @@ class FreeplaySongsEditorState extends MusicBeatState
 			else
 				weekSongsInputText.text += curWeek.weekSongs[i];
 		}
+
+		weekDiffsInputText.text = '';
+		if (curWeek.weekDiffs != null)
+			{
+				for (i in 0...curWeek.weekDiffs.length)
+				{
+					if (i < curWeek.weekDiffs.length - 1)
+						weekDiffsInputText.text += curWeek.weekDiffs[i] + ', ';
+					else
+						weekDiffsInputText.text += curWeek.weekDiffs[i];
+				}
+			}
+		else
+		{
+			weekDiffsInputText.text = 'Easy, Normal, Hard, Hard P';
+		}
+	
 
 		var charString:String = curWeek.weekChar[0];
 		for (i in 1...curWeek.weekChar.length) {
@@ -289,6 +333,22 @@ class FreeplaySongsEditorState extends MusicBeatState
 				weekSongsInputText.text += curWeek.weekSongs[i] + ', ';
 			else
 				weekSongsInputText.text += curWeek.weekSongs[i];
+		}
+
+		weekDiffsInputText.text = '';
+		if (curWeek.weekDiffs != null)
+		{
+			for (i in 0...curWeek.weekDiffs.length)
+			{
+				if (i < curWeek.weekDiffs.length - 1)
+					weekDiffsInputText.text += curWeek.weekDiffs[i] + ', ';
+				else
+					weekDiffsInputText.text += curWeek.weekDiffs[i];
+			}
+		}
+		else
+		{
+			weekDiffsInputText.text = 'Easy, Normal, Hard, Hard P';
 		}
 
 		var charString:String = curWeek.weekChar[0];
@@ -331,6 +391,9 @@ class FreeplaySongsEditorState extends MusicBeatState
 				item.alpha = 1;
 			}
 		}
+
+		if (curWeek.weekDiffs == null)
+			curWeek.weekDiffs = ['Easy', 'Normal', 'Hard', 'Hard P'];
 
 		if (curWeek.weekChar.length > 1)
 			getCharacterColor(curWeek.weekChar[curSelected]);
@@ -438,7 +501,8 @@ class FreeplaySongsEditorState extends MusicBeatState
 		{
 			weekChar: ['dad'],
 			weekID: 0,
-			weekSongs: ['test']
+			weekSongs: ['test'],
+			weekDiffs: ['Easy', 'Normal', 'Hard', 'Hard P']
 		}
 		weekFile.freeplaySonglist[curWeekInt + 1] = newCurWeek;
 		reloadAllShit();
@@ -564,7 +628,10 @@ class FreeplaySongsEditorState extends MusicBeatState
 		if(loadedWeek != null) {
 			weekFile = loadedWeek;
 			loadedWeek = null;
+			curWeek = weekFile.freeplaySonglist[0];
 			reloadAllShit();
+			changeSelection();
+			getCharacterColor(curWeek.weekChar[0]);
 		}
 		var blockInput:Bool = false;
 		for (inputText in blockPressWhileTypingOn) {

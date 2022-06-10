@@ -477,7 +477,7 @@ class FunkinLua {
 
 		Lua_helper.add_callback(lua, "loadSong", function(?name:String = null, ?difficultyNum:Int = -1) {
 			if(name == null || name.length < 1)
-				name = PlayState.SONG.song;
+				name = PlayState.SONG.songId;
 			if (difficultyNum == -1)
 				difficultyNum = PlayState.storyDifficulty;
 
@@ -1531,9 +1531,7 @@ class FunkinLua {
 			return FlxG.random.bool(chance);
 		});
 		Lua_helper.add_callback(lua, "startDialogue", function(dialogueFile:String, music:String = null) {
-			var path:String;
-			
-			path = Paths.json(Paths.formatToSongPath(PlayState.SONG.song) + '/' + dialogueFile);
+			var path:String = Paths.json('songs/' + PlayState.SONG.songId + '/' + dialogueFile);
 
 			luaTrace('Trying to load dialogue: ' + path);
 

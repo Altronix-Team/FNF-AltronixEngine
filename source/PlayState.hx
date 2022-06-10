@@ -1257,7 +1257,6 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 		healthBar.scrollFactor.set();
 		// healthBar
 
-		// Add Kade Engine watermark
 		engineWatermark = new FlxText(4, healthBarBG.y
 			+ 50, 0,
 			SONG.songName
@@ -1568,7 +1567,7 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 
 	function tankIntro()
 		{
-			var songName:String = Paths.formatToSongPath(SONG.song);
+			var songName:String = Paths.formatToSongPath(SONG.songId);
 			dadGroup.alpha = 0.00001;
 			camHUD.visible = false;
 			inCutscene = true;
@@ -2449,9 +2448,9 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 				FlxG.sound.playMusic(sound);
 			}
 			else
-				FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), 1, false);
+				FlxG.sound.playMusic(Paths.inst(PlayState.SONG.songId), 1, false);
 			#else
-				FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), 1, false);
+				FlxG.sound.playMusic(Paths.inst(PlayState.SONG.songId), 1, false);
 			#end
 		}
 
@@ -2771,7 +2770,7 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 
 				if (songNotes[1] > 3 && section.mustHitSection)
 					gottaHitNote = false;
-				else if (songNotes[1] < 4 && !section.mustHitSection)
+				else if (songNotes[1] < 4 && (!section.mustHitSection || section.gfSection))
 					gottaHitNote = false;
 
 				var oldNote:Note;
@@ -2794,7 +2793,7 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 
 				swagNote.sustainLength = TimingStruct.getTimeFromBeat((TimingStruct.getBeatFromTime(songNotes[2] / songMultiplier)));
 				swagNote.scrollFactor.set(0, 0);
-				swagNote.gfNote = section.gfSection;
+				swagNote.gfNote = (section.gfSection && (songNotes[1]<4));
 				swagNote.noteType = daType;
 
 				var susLength:Float = swagNote.sustainLength;
@@ -2824,7 +2823,7 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 						|| (section.playerAltAnim && gottaHitNote);
 
 					sustainNote.mustPress = gottaHitNote;
-					sustainNote.gfNote = section.gfSection;
+					sustainNote.gfNote = (section.gfSection && (songNotes[1]<4));
 					sustainNote.noteType = daType;
 
 					if (sustainNote.mustPress)

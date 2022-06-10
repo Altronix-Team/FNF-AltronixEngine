@@ -143,36 +143,8 @@ class PauseSubState extends MusicBeatSubstate
 			grpMenuShit.add(songText);
 		}
 
-		var diffsList = Paths.listJsonInPath('assets/data/songs/' + PlayState.SONG.songId + '/');
-		for (i in diffsList) 
-		{
-			if (i == 'events')
-				continue;
+		difficultyChoices = CoolUtil.songDiffs.get(PlayState.SONG.songId);
 
-			if (i == '_meta')
-				continue;
-
-			if (i.endsWith('hard'))
-			{
-				var diff:String = '' + 'Hard';
-				difficultyChoices.push(diff);
-			}
-			else if (i.endsWith('easy'))
-			{
-				var diff:String = '' + 'Easy';
-				difficultyChoices.push(diff);
-			}
-			else if (i.endsWith('hardplus'))
-			{
-				var diff:String = '' + 'Hard P';
-				difficultyChoices.push(diff);
-			}
-			else
-			{
-				var diff:String = '' + 'Normal';
-				difficultyChoices.push(diff);
-			}
-		}
 		difficultyChoices.push('BACK');
 
 		changeSelection();
@@ -237,13 +209,39 @@ class PauseSubState extends MusicBeatSubstate
 				{
 					if(menuItems.length - 1 != curSelected && difficultyChoices.contains(daSelected)) 
 					{
-						var name:String = PlayState.SONG.songId;
-						var poop = Highscore.formatSongDiff(name, CoolUtil.difficultyArray.indexOf(daSelected));
-						PlayState.SONG = Song.loadFromJson(name, poop);
-						PlayState.storyDifficulty = CoolUtil.difficultyArray.indexOf(daSelected);
-						restartSong();
-						FlxG.sound.music.volume = 0;
-						return;	
+						if (PlayState.isFreeplay)
+						{
+							var currentSongData = FreeplayState.songData.get(PlayState.SONG.songId)[difficultyChoices.indexOf(daSelected)];
+							//var name:String = PlayState.SONG.songId;
+							//var poop = Highscore.formatSongDiff(name, CoolUtil.difficultyArray.indexOf(daSelected));
+							PlayState.SONG = currentSongData;
+							PlayState.storyDifficulty = CoolUtil.difficultyArray.indexOf(daSelected);
+							restartSong();
+							FlxG.sound.music.volume = 0;
+							return;	
+						}
+						else
+						{
+							var diff:String = '';
+							switch (daSelected)
+							{
+								case 'Easy':
+									diff = "-easy";
+								case 'Hard':
+									diff = "-hard";
+								case 'Hard P':
+									diff = "-hardplus";
+								case 'Normal':
+									diff = '';
+								default:
+									diff = "-" + daSelected.toLowerCase();
+							}
+							PlayState.SONG = Song.conversionChecks(Song.loadFromJson(PlayState.SONG.songId, diff));
+							PlayState.storyDifficulty = CoolUtil.difficultyArray.indexOf(daSelected);
+							restartSong();
+							FlxG.sound.music.volume = 0;
+							return;	
+						}
 					}
 	
 					menuItems = menuItemsOG;
@@ -295,6 +293,7 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.isExtras = false;
 					PlayState.fromPasswordMenu = false;
 					PlayState.isFreeplay = false;
+					PlayState.chartingMode = false;
 			}
 		}
 
@@ -307,7 +306,7 @@ class PauseSubState extends MusicBeatSubstate
 
 	public static function restartSong(noTrans:Bool = false)
 		{
-			PlayState.instance.paused = true; // For lua
+			PlayState.instance.paused = true;
 			FlxG.sound.music.volume = 0;
 			PlayState.instance.vocals.volume = 0;
 	

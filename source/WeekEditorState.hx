@@ -188,9 +188,12 @@ class WeekEditorState extends MusicBeatState
 		blockPressWhileTypingOn.push(weekBeforeInputText);
 		
 		displayNameInputText = new FlxUIInputText(10, weekBeforeInputText.y + 60, 200, '', 8);
-		blockPressWhileTypingOn.push(backgroundInputText);
+		blockPressWhileTypingOn.push(displayNameInputText);
 
-		weekNameInputText = new FlxUIInputText(10, displayNameInputText.y + 60, 150, '', 8);
+		difficultiesInputText = new FlxUIInputText(10, displayNameInputText.y + 40, 200, '', 8);
+		blockPressWhileTypingOn.push(displayNameInputText);
+
+		weekNameInputText = new FlxUIInputText(10, difficultiesInputText.y + 40, 150, '', 8);
 		blockPressWhileTypingOn.push(weekNameInputText);
 
 		weekFileInputText = new FlxUIInputText(10, weekNameInputText.y + 40, 100, '', 8);
@@ -204,6 +207,8 @@ class WeekEditorState extends MusicBeatState
 		//tab_group.add(new FlxText(weekNameInputText.x, weekNameInputText.y - 18, 0, 'Week Name (for Reset Score Menu):'));
 		tab_group.add(new FlxText(weekFileInputText.x, weekFileInputText.y - 18, 0, 'Week File:'));
 		tab_group.add(new FlxText(weekBeforeInputText.x, weekBeforeInputText.y - 18, 0, 'Week Before:'));
+		tab_group.add(new FlxText(difficultiesInputText.x, difficultiesInputText.y - 18, 0, 'Difficulties:'));
+		tab_group.add(new FlxText(difficultiesInputText.x, difficultiesInputText.y + 15, 0, 'Default difficulties are\n "Easy, Normal, Hard, Hard P"\nwithout quotes.'));
 
 		tab_group.add(songsInputText);
 		tab_group.add(opponentInputText);
@@ -212,6 +217,7 @@ class WeekEditorState extends MusicBeatState
 		tab_group.add(backgroundInputText);
 		tab_group.add(weekBeforeInputText);
 		tab_group.add(displayNameInputText);
+		tab_group.add(difficultiesInputText);
 		//tab_group.add(weekNameInputText);
 		tab_group.add(weekFileInputText);
 		UI_box.addGroup(tab_group);
@@ -236,6 +242,13 @@ class WeekEditorState extends MusicBeatState
 		girlfriendInputText.text = weekFile.weekCharacters[2];
 
 		weekBeforeInputText.text = Std.string(weekFile.weekBefore);
+
+		difficultiesInputText.text = '';
+		if(weekFile.difficulties != null) difficultiesInputText.text = weekFile.difficulties;
+		else {
+			weekFile.difficulties = 'Easy, Normal, Hard, Hard P';
+			difficultiesInputText.text = weekFile.difficulties;
+		}
 
 		reloadBG();
 		reloadWeekThing();
@@ -351,6 +364,8 @@ class WeekEditorState extends MusicBeatState
 				updateText();
 			} else if(sender == weekBeforeInputText) {
 				weekFile.weekBefore = weekBeforeInputText.text.trim();
+			} else if(sender == difficultiesInputText) {
+				weekFile.difficulties = difficultiesInputText.text.trim();
 			}
 		}
 	}

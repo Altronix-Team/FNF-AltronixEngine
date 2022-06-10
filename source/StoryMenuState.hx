@@ -195,6 +195,33 @@ class StoryMenuState extends MusicBeatState
 			grpWeekCharacters.add(weekCharacterThing);
 		}
 
+		var diffStr:String = firstWeek.difficulties;
+		if(diffStr != null) diffStr = diffStr.trim();
+		else{
+			firstWeek.difficulties = 'Easy, Normal, Hard, Hard P';
+			diffStr = firstWeek.difficulties;
+		}
+
+		if(diffStr != null && diffStr.length > 0)
+		{
+			var diffs:Array<String> = diffStr.split(',');
+			var i:Int = diffs.length - 1;
+			while (i > 0)
+			{
+				if(diffs[i] != null)
+				{
+					diffs[i] = diffs[i].trim();
+					if(diffs[i].length < 1) diffs.remove(diffs[i]);
+				}
+				--i;
+			}
+
+			if(diffs.length > 0 && diffs[0].length > 0)
+			{
+				weekDiffs = diffs;
+			}
+		}
+
 		difficultySelectors = new FlxGroup();
 		add(difficultySelectors);
 
@@ -392,6 +419,12 @@ class StoryMenuState extends MusicBeatState
 				songArray.push(leWeek[i]);
 			}
 
+			for (i in songArray)
+			{
+				if (CoolUtil.songDiffs.get(i) == null)
+					CoolUtil.songDiffs.set(i, weekDiffs);
+			}
+
 			PlayState.storyPlaylist = songArray;
 			PlayState.isStoryMode = true;
 			selectedWeek = true;
@@ -399,9 +432,28 @@ class StoryMenuState extends MusicBeatState
 
 			PlayState.isSM = false;
 
-			PlayState.storyDifficulty = curDifficulty;
+			for (i in weekDiffs)
+			{
+				if (!CoolUtil.difficultyArray.contains(i))
+					CoolUtil.difficultyArray.push(i);
+			}
 
-			var diff:String = ["-easy", "", "-hard", "-hardplus"][PlayState.storyDifficulty];
+			PlayState.storyDifficulty = CoolUtil.difficultyArray.indexOf(diffStr);
+
+			var diff:String = '';
+			switch (PlayState.storyDifficulty)
+			{
+				case 0:
+					diff = "-easy";
+				case 2:
+					diff = "-hard";
+				case 3:
+					diff = "-hardplus";
+				case 1:
+					diff = '';
+				default:
+					diff = "-" + diffStr.toLowerCase();
+			}
 
 			PlayState.sicks = 0;
 			PlayState.bads = 0;
@@ -422,20 +474,38 @@ class StoryMenuState extends MusicBeatState
 		}
 	}
 
+	var diffStr:String = '';
 	var tweenDifficulty:FlxTween;
+	var weekDiffs:Array<String> = [];
 	function changeDifficulty(change:Int = 0):Void
 	{
 		curDifficulty += change;
 
 		if (curDifficulty < 0)
-			curDifficulty = 3;
-		if (curDifficulty > 3)
+			curDifficulty = weekDiffs.length -1;
+		if (curDifficulty >= weekDiffs.length)
 			curDifficulty = 0;
 
 		sprDifficulty.offset.x = 0;
 
-		var defaultDifficulties = ['easy', 'normal', 'hard', 'hardplus'];
-		var newImage:FlxGraphic = Paths.loadImage('diffsImages/' + defaultDifficulties[curDifficulty]);
+		diffStr = weekDiffs[curDifficulty];
+
+		var diffToLoad = '';
+
+		switch (diffStr)
+		{
+			case 'Easy':
+				diffToLoad = 'easy';
+			case 'Normal':
+				diffToLoad = 'normal';
+			case 'Hard':
+				diffToLoad = 'hard';
+			case 'Hard P':
+				diffToLoad = 'hardplus';
+			default:
+				diffToLoad = diffStr.toLowerCase();
+		}
+		var newImage:FlxGraphic = Paths.loadImage('diffsImages/' + diffToLoad);
 
 		if(sprDifficulty.graphic != newImage)
 		{
@@ -494,6 +564,41 @@ class StoryMenuState extends MusicBeatState
 				item.alpha = 0.6;
 			bullShit++;
 		}
+
+		var diffStr:String = leWeek.difficulties;
+		if(diffStr != null) diffStr = diffStr.trim();
+		else{
+			leWeek.difficulties = 'Easy, Normal, Hard, Hard P';
+			diffStr = leWeek.difficulties;
+		}
+
+		if(diffStr != null && diffStr.length > 0)
+		{
+			var diffs:Array<String> = diffStr.split(',');
+			var i:Int = diffs.length - 1;
+			while (i > 0)
+			{
+				if(diffs[i] != null)
+				{
+					diffs[i] = diffs[i].trim();
+					if(diffs[i].length < 1) diffs.remove(diffs[i]);
+				}
+				--i;
+			}
+
+			if(diffs.length > 0 && diffs[0].length > 0)
+			{
+				weekDiffs = diffs;
+			}
+		}
+
+		if (weekDiffs.length != 4)
+		{
+			curDifficulty = 0;
+			changeDifficulty();
+		}
+		else
+			changeDifficulty();
 
 		FlxG.sound.play(Paths.sound('scrollMenu'));
 		weekbackgroundgenerate(leWeek.weekBackground);

@@ -25,13 +25,14 @@
 	 - `haxelib run flixel-tools setup`
 	 - `haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit`
 	 - `haxelib git faxe https://github.com/uhrobots/faxe`
-	 - `haxelib install polymod` Warning! Just for now (6 Juny) polymod is broken, please install by this `haxelib git polymod https://github.com/larsiusprime/polymod.git v1.5.1`
+	 - `haxelib install polymod`
 	 - `haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc`
 	 - `haxelib git tentools https://github.com/TentaRJ/tentools.git`
 	 - `haxelib git systools https://github.com/haya3218/systools`
 	 - `haxelib run lime rebuild systools [windows, mac, linux]`
 	 - `haxelib install haxe-strings 7.0.2`
 	 - `haxelib install hscript-ex 0.0.0`
+	 - `haxelib git hscript https://github.com/HaxeFoundation/hscript`
 	      - Note: for Linux, you need to install the `g++-multilib` and `gcc-multilib` packages respectively. (use apt to install them.)
 
 ### Windows-only dependencies (only for building *to* Windows. Building html5 on Windows does not require this)

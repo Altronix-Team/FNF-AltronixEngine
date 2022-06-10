@@ -42,11 +42,11 @@ class WeekData {
 		var weekFile:WeekFile = {
 			songs: ["Bopeebo", "Fresh", "Dad Battle"],
 			weekCharacters: ['dad', 'bf', 'gf'],
-			weekBackground: 'dad',
+			weekBackground: 'Dad',
 			weekBefore: 'tutorial',
 			weekImage: 'week1',
 			storyName: 'Your New Week',
-			difficulties: ''
+			difficulties: 'Easy, Normal, Hard, Hard P'
 		};
 		return weekFile;
 	}

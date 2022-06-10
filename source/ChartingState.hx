@@ -3,6 +3,9 @@ package;
 import Song.SongMeta;
 import openfl.system.System;
 import lime.app.Application;
+#if FEATURE_STEPMANIA
+import smTools.SMFile;
+#end
 #if FEATURE_FILESYSTEM
 import sys.io.File;
 import sys.FileSystem;
@@ -240,7 +243,21 @@ class ChartingState extends MusicBeatState
 			}
 			else
 			{
-				var diff:String = ["-easy", "", "-hard", "-hardplus"][PlayState.storyDifficulty];
+				var diff:String = "";
+
+				switch (PlayState.storyDifficulty)
+				{
+					case 0:
+						diff = "-easy";
+					case 2:
+						diff = "-hard";
+					case 3:
+						diff = "-hardplus";
+					case 1:
+						diff = '';
+					default:
+						diff = "-" + CoolUtil.difficultyFromInt(PlayState.storyDifficulty).toLowerCase();
+				}
 				_song = Song.conversionChecks(Song.loadFromJson(PlayState.SONG.songId, diff));
 			}
 		}
@@ -1747,7 +1764,22 @@ class ChartingState extends MusicBeatState
 		{
 			_song = PlayState.SONG;
 		}
-		// WONT WORK FOR TUTORIAL OR TEST SONG!!! REDO LATER
+
+		#if FEATURE_STEPMANIA
+		if (PlayState.isSM)
+		{
+			trace("Loading " + PlayState.pathToSm + "/" + PlayState.sm.header.MUSIC);
+			var bytes = File.getBytes(PlayState.pathToSm + "/" + PlayState.sm.header.MUSIC);
+			var sound = new Sound();
+			sound.loadCompressedDataFromByteArray(bytes.getData(), bytes.length);
+			FlxG.sound.playMusic(sound);
+		}
+		else
+			FlxG.sound.playMusic(Paths.inst(daSong), 1, false);
+		#else
+		FlxG.sound.playMusic(Paths.inst(daSong), 1, false);
+		#end
+		
 		#if FEATURE_STEPMANIA
 		if (PlayState.isSM)
 			vocals = null;
@@ -1759,6 +1791,9 @@ class ChartingState extends MusicBeatState
 		FlxG.sound.list.add(vocals);
 
 		FlxG.sound.music.pause();
+
+		FlxG.sound.music.time = 0;
+		
 		if (!PlayState.isSM)
 			vocals.pause();
 
@@ -2858,10 +2893,15 @@ class ChartingState extends MusicBeatState
 					sect.mustHitSection = !sect.mustHitSection;
 					updateHeads();
 					check_mustHitSection.checked = sect.mustHitSection;
+					check_GFSection.checked = sect.gfSection;
 					var i = sectionRenderes.members[curSection];
 					var cachedY = i.icon.y;
 					remove(i.icon);
-					var sectionicon = sect.mustHitSection ? new HealthIcon(getCharacterIcon(_song.player1)).clone() : new HealthIcon(getCharacterIcon(_song.player2)).clone();
+					var sectionicon = null;
+					if (sect.gfSection)
+						sectionicon = new HealthIcon(getCharacterIcon(_song.gfVersion)).clone();
+					else
+						sectionicon = sect.mustHitSection ? new HealthIcon(getCharacterIcon(_song.player1)).clone() : new HealthIcon(getCharacterIcon(_song.player2)).clone();
 					sectionicon.x = -95;
 					sectionicon.y = cachedY;
 					sectionicon.setGraphicSize(0, 45);
@@ -4098,7 +4138,20 @@ class ChartingState extends MusicBeatState
 
 	private function saveLevel()
 	{
-		var difficultyArray:Array<String> = ["-easy", "", "-hard", "-hardplus"];
+		var diff:String = '';
+		switch (PlayState.storyDifficulty)
+		{
+			case 0:
+				diff = "-easy";
+			case 2:
+				diff = "-hard";
+			case 3:
+				diff = "-hardplus";
+			case 1:
+				diff = '';
+			default:
+				diff = "-" + CoolUtil.difficultyFromInt(PlayState.storyDifficulty).toLowerCase();
+		}
 
 		var toRemove = [];
 
@@ -4125,7 +4178,7 @@ class ChartingState extends MusicBeatState
 			_file.addEventListener(Event.COMPLETE, onSaveComplete);
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-			_file.save(data.trim(), _song.songId.toLowerCase() + difficultyArray[PlayState.storyDifficulty] + ".json");
+			_file.save(data.trim(), _song.songId.toLowerCase() + diff + ".json");
 		}
 	}
 

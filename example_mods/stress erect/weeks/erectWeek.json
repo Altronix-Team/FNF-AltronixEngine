@@ -1,0 +1,15 @@
+{
+	"songs": [
+		"Stresstest"
+	],
+	"weekBackground": "Warzone",
+	"difficulties": "Erect",
+	"weekCharacters": [
+		"tankman",
+		"bf",
+		"gf"
+	],
+	"weekImage": "week1",
+	"storyName": "Erect Test",
+	"weekBefore": "tutorial"
+}

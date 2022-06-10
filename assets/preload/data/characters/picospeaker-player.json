@@ -98,8 +98,8 @@
 	"hasTrail": false,
 	"isDancing": false,
 	"camPos": [
-		0,
-		0
+		50,
+		-70
 	],
 	"holdLength": 4,
 	"charPos": [

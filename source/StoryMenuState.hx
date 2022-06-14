@@ -540,6 +540,8 @@ class StoryMenuState extends MusicBeatState
 
 	function changeWeek(change:Int = 0):Void
 	{
+		weekDiffs = [];
+		
 		curWeek += change;
 
 		if (curWeek >= loadedWeeks.length)

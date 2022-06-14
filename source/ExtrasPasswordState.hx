@@ -88,8 +88,7 @@ class ExtrasPasswordState extends MusicBeatState// implements polymod.hscript.HS
 
 	function loadSong(song:String)
 	{
-		var poop:String = Highscore.formatSongDiff(song, 2);
-		PlayState.SONG = Song.loadFromJson(song, poop);
+		PlayState.SONG = Song.conversionChecks(Song.loadFromJson(song, '-hard'));
 		PlayState.storyDifficulty = 2;
 	
 		var llll = FlxG.sound.play(Paths.sound('confirmMenu')).length;
@@ -103,7 +102,6 @@ class ExtrasPasswordState extends MusicBeatState// implements polymod.hscript.HS
 	}
 
 	/**
-	 * Mod hook called before the title screen starts.
 	 * @returns password and song.
 	 */
 	/* @:hscript({optional: true})

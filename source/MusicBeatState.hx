@@ -234,7 +234,8 @@ class MusicBeatState extends FlxUIState
 	function onWindowFocusOut():Void
 	{
 		Debug.logTrace("Why you do that?");
-		FlxG.sound.music.pause();
+		if (FlxG.sound.music.playing)
+			FlxG.sound.music.pause();
 	}
 
 	function onWindowFocusIn():Void

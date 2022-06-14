@@ -18,7 +18,7 @@
 	 - `haxelib install flixel`
 	 - `haxelib install flixel-tools`
 	 - `haxelib install flixel-ui`
-	 - `haxelib install hscript`
+	 - `haxelib git hscript https://github.com/HaxeFoundation/hscript`
 	 - `haxelib install flixel-addons`
 	 - `haxelib run lime setup`
 	 - `haxelib run lime setup flixel`
@@ -32,7 +32,6 @@
 	 - `haxelib run lime rebuild systools [windows, mac, linux]`
 	 - `haxelib install haxe-strings 7.0.2`
 	 - `haxelib install hscript-ex 0.0.0`
-	 - `haxelib git hscript https://github.com/HaxeFoundation/hscript`
 	      - Note: for Linux, you need to install the `g++-multilib` and `gcc-multilib` packages respectively. (use apt to install them.)
 
 ### Windows-only dependencies (only for building *to* Windows. Building html5 on Windows does not require this)

@@ -85,7 +85,11 @@ class FreeplayState extends MusicBeatState
 				diffName = "-" + diffStr.toLowerCase();
 		}
 
-		array.push(Song.conversionChecks(Song.loadFromJson(songId, diffName)));
+		var curSongData = Song.loadFromJson(songId, diffName);
+		if (curSongData == null)
+			Debug.displayAlert('ERROR', 'ERROR in Freeplay trying to load song data: ${songId} : ${diffName}');
+		else
+			array.push(Song.conversionChecks(Song.loadFromJson(songId, diffName)));
 	}
 
 	override function create()

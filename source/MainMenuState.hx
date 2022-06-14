@@ -312,18 +312,14 @@ class MainMenuState extends MusicBeatState
 		{
 			case 'story mode':
 				MusicBeatState.switchState(new StoryMenuState());
-				trace("Story Menu Selected");
 				FlxG.mouse.visible = false;
 				
 			case 'freeplay':
 				MusicBeatState.switchState(new FreeplayState());
-
-				trace("Freeplay Menu Selected");
 				FlxG.mouse.visible = false;
 
 			case 'gamejolt':
 				MusicBeatState.switchState(new GameJoltLogin());
-				trace('gamejolt login selected');
 
 			case 'options':
 				MusicBeatState.switchState(new OptionsDirect());
@@ -331,12 +327,10 @@ class MainMenuState extends MusicBeatState
 
 			case 'extras':
 				MusicBeatState.switchState(new ExtrasPasswordState());
-				trace('extras menu selected');
 				FlxG.mouse.visible = false;
 
 			case 'mods':
 				MusicBeatState.switchState(new ModMenuState());
-				trace('mods menu selected');
 
 			case 'credits':
 				FlxG.switchState(new CreditsState());

@@ -164,6 +164,9 @@ class EngineData
 
 		if (FlxG.save.data.logWriter == null)
 			FlxG.save.data.logWriter = true;
+		
+		if (FlxG.save.data.language == null)
+			FlxG.save.data.language = true;
 
 		if (FlxG.save.data.weekCompleted == null)
 		{

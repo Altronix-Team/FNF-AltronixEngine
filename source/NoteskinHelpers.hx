@@ -17,7 +17,6 @@ class NoteskinHelpers
 		var count:Int = 0;
 		for (i in Paths.listImagesInPath('noteskins/'))
 		{
-			
 			if (i.contains("-pixel"))
 				continue;
 

@@ -72,7 +72,7 @@ class FunkinLua {
 			var result:Dynamic = LuaL.dofile(lua, script);
 			var resultStr:String = Lua.tostring(lua, result);
 			if(resultStr != null && result != 0) {
-				trace('Error on lua script! ' + resultStr);
+				Debug.logTrace('Error on lua script! ' + resultStr);
 				#if windows
 				lime.app.Application.current.window.alert(resultStr, 'Error on lua script!');
 				#else
@@ -86,7 +86,7 @@ class FunkinLua {
 			return;
 		}
 		scriptName = script;
-		trace('lua file loaded succesfully:' + script);
+		Debug.logTrace('lua file loaded succesfully:' + script);
 
 		#if (haxe >= "4.0.0")
 		accessedProps = new Map();
@@ -207,7 +207,7 @@ class FunkinLua {
 
 		Lua_helper.add_callback(lua, "callOnLuas", function(?funcName:String, ?args:Array<Dynamic>, ignoreStops=false, ignoreSelf=true, ?exclusions:Array<String>){
 			if(funcName==null){
-				#if (linc_luajit > "0.0.6")
+				#if (linc_luajit >= "0.0.6")
 				LuaL.error(lua, "bad argument #1 to 'callOnLuas' (string expected, got nil)");
 				#end
 				return;
@@ -225,13 +225,13 @@ class FunkinLua {
 
 		Lua_helper.add_callback(lua, "callScript", function(?luaFile:String, ?funcName:String, ?args:Array<Dynamic>){
 			if(luaFile==null){
-				#if (linc_luajit > "0.0.6")
+				#if (linc_luajit >= "0.0.6")
 				LuaL.error(lua, "bad argument #1 to 'callScript' (string expected, got nil)");
 				#end
 				return;
 			}
 			if(funcName==null){
-				#if (linc_luajit > "0.0.6")
+				#if (linc_luajit >= "0.0.6")
 				LuaL.error(lua, "bad argument #2 to 'callScript' (string expected, got nil)");
 				#end
 				return;
@@ -265,13 +265,13 @@ class FunkinLua {
 
 		Lua_helper.add_callback(lua, "getGlobalFromScript", function(?luaFile:String, ?global:String){ // returns the global from a script
 			if(luaFile==null){
-				#if (linc_luajit > "0.0.6")
+				#if (linc_luajit >= "0.0.6")
 				LuaL.error(lua, "bad argument #1 to 'getGlobalFromScript' (string expected, got nil)");
 				#end
 				return;
 			}
 			if(global==null){
-				#if (linc_luajit > "0.0.6")
+				#if (linc_luajit >= "0.0.6")
 				LuaL.error(lua, "bad argument #2 to 'getGlobalFromScript' (string expected, got nil)");
 				#end
 				return;
@@ -475,14 +475,37 @@ class FunkinLua {
 			luaTrace("Script doesn't exist!");
 		});
 
+		Lua_helper.add_callback(lua, "luaSpriteExists", function(tag:String) {
+			return PlayState.instance.modchartSprites.exists(tag);
+		});
+		Lua_helper.add_callback(lua, "luaTextExists", function(tag:String) {
+			return PlayState.instance.modchartTexts.exists(tag);
+		});
+		Lua_helper.add_callback(lua, "luaSoundExists", function(tag:String) {
+			return PlayState.instance.modchartSounds.exists(tag);
+		});
+
 		Lua_helper.add_callback(lua, "loadSong", function(?name:String = null, ?difficultyNum:Int = -1) {
 			if(name == null || name.length < 1)
 				name = PlayState.SONG.songId;
 			if (difficultyNum == -1)
 				difficultyNum = PlayState.storyDifficulty;
 
-			var poop = Highscore.formatSong(name, difficultyNum);
-			PlayState.SONG = Song.loadFromJson(name, poop);
+			var diff:String = '';
+			switch (difficultyNum)
+			{
+				case 0:
+					diff = "-easy";
+				case 2:
+					diff = "-hard";
+				case 3:
+					diff = "-hardplus";
+				case 1:
+					diff = '';
+				default:
+					diff = "-" + CoolUtil.difficultyFromInt(difficultyNum).toLowerCase();
+			}
+			PlayState.SONG = Song.conversionChecks(Song.loadFromJson(name, diff));
 			PlayState.storyDifficulty = difficultyNum;
 			PlayState.instance.persistentUpdate = false;
 			LoadingState.loadAndSwitchState(new PlayState());
@@ -1875,6 +1898,11 @@ class FunkinLua {
 			return Paths.getTextFromFile(path);
 		});
 
+		Lua_helper.add_callback(lua, "logTrace", function(message:String) {
+			Debug.logTrace(message);
+			return;
+		});
+
 		// DEPRECATED, DONT MESS WITH THESE SHITS, ITS JUST THERE FOR BACKWARD COMPATIBILITY
 		Lua_helper.add_callback(lua, "luaSpriteMakeGraphic", function(tag:String, width:Int, height:Int, color:String) {
 			luaTrace("luaSpriteMakeGraphic is deprecated! Use makeGraphic instead", false, true);
@@ -2247,15 +2275,20 @@ class FunkinLua {
 	public function call(func:String, args:Array<Dynamic>): Dynamic{
 		#if LUA_ALLOWED
 		try {
-			if(lua==null)return Function_Continue;
+			if(lua == null) return Function_Continue;
 
 			Lua.getglobal(lua, func);
-			if(Lua.isfunction(lua, -1)==true){
+			#if (linc_luajit >= "0.0.6")
+			if(Lua.isfunction(lua, -1) == true)
+			#else
+			if(Lua.isfunction(lua, -1) == 1)
+			#end	
+			{
 				for(arg in args) Convert.toLua(lua, arg);
 				var result:Dynamic = Lua.pcall(lua, args.length, 1, 0);
-				if(result!=0){
+				if(result != 0){
 					var err = getErrorMessage();
-					if(errorHandler!=null){
+					if(errorHandler != null){
 						errorHandler(err);
 					}else{
 						Debug.displayAlert("Error in script","Script path: " + scriptName + "\nERROR: " + err);
@@ -2264,14 +2297,15 @@ class FunkinLua {
 				}else{
 					var conv:Dynamic = Convert.fromLua(lua, -1);
 					Lua.pop(lua, 1);
+					if(conv == null) conv = Function_Continue;
 					return conv;
 				}
 			}else{
 				Lua.pop(lua, 1);
-				return null;
+				return Function_Continue;
 			}
 		}catch(e:Dynamic){
-			trace(e);
+			Debug.logError(e);
 		}
 		#end
 		return Function_Continue;

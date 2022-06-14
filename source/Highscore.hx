@@ -106,6 +106,10 @@ class Highscore
 			daSong += '-hard';
 		else if (diff == 3)
 			daSong += '-hardplus';
+		else if (diff == 1)
+			daSong += '';
+		else
+			daSong += '-' + CoolUtil.difficultyFromInt(diff).toLowerCase();
 
 		return daSong;
 	}
@@ -136,8 +140,10 @@ class Highscore
 			songDiffEnd = '-hard';
 		else if (diff == 3)
 			songDiffEnd = '-hardplus';
-		else
+		else if (diff == 1)
 			songDiffEnd = '';
+		else
+			songDiffEnd = '-' + CoolUtil.difficultyFromInt(diff).toLowerCase();
 
 		return songDiffEnd;
 	}

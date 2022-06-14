@@ -78,14 +78,7 @@ class SecretState extends MusicBeatState
 		add(bg);
 		var debugText = new FlxText(0, 600, 0, "This is something shit, which you don't want to see", 24);
 		debugText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
-		add(debugText);
-
-		
-		// LOAD MUSIC
-
-		// LOAD CHARACTERS
-
-		
+		add(debugText);	
 
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);
@@ -298,13 +291,11 @@ class SecretState extends MusicBeatState
 				#if PRELOAD_ALL
 				destroyExtrasVocals();
 				FlxG.sound.music.volume = 0;
-				var poop:String = Highscore.formatSongDiff(songs[curSelected].songName.toLowerCase(), curDifficulty);
 
-				PlayState.SONG = Song.loadFromJson(songs[curSelected].songName.toLowerCase(), poop);
-				vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.songId));
+				vocals = new FlxSound().loadEmbedded(Paths.voices(songs[curSelected].songName));
 
 				FlxG.sound.list.add(vocals);
-				FlxG.sound.playMusic(Paths.inst(PlayState.SONG.songId), 0.7);
+				FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0.7);
 				vocals.play();
 				vocals.persist = true;
 				vocals.looped = true;
@@ -326,9 +317,23 @@ class SecretState extends MusicBeatState
 		{
 			destroyExtrasVocals();
 
-			var poop:String = Highscore.formatSongDiff(songs[curSelected].songName.toLowerCase(), curDifficulty);
+			var diff:String = "";
 
-			PlayState.SONG = Song.loadFromJson(songs[curSelected].songName.toLowerCase(), poop);
+			switch (curDifficulty)
+			{
+				case 0:
+					diff = "-easy";
+				case 2:
+					diff = "-hard";
+				case 3:
+					diff = "-hardplus";
+				case 1:
+					diff = '';
+				default:
+					diff = "-" + CoolUtil.difficultyFromInt(curDifficulty).toLowerCase();
+			}
+			
+			PlayState.SONG = Song.conversionChecks(Song.loadFromJson(songs[curSelected].songName.toLowerCase(), diff));
 			PlayState.isStoryMode = false;
 			PlayState.isFreeplay = false;
 			PlayState.isExtras = true;

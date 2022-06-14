@@ -124,11 +124,11 @@ class PauseSubState extends MusicBeatSubstate
 
 		#if desktop
 			if (PlayStateChangeables.botPlay){
-				if (!FlxG.save.data.language) DiscordClient.changePresence("Paused on " + PlayState.SONG.songName + " (" + storyDifficultyText + ") " + 'Botplay', iconRPC);
-				else DiscordClient.changePresence("Стоит на паузе " + PlayState.SONG.songName + " (" + storyDifficultyText + ") " + 'Бот-плей', iconRPC);}
+				if (!FlxG.save.data.language) DiscordClient.changePresence("Paused on " + PlayState.SONG.songName + " (" + storyDifficultyText + ") " + 'Botplay',null, iconRPC);
+				else DiscordClient.changePresence("Стоит на паузе " + PlayState.SONG.songName + " (" + storyDifficultyText + ") " + 'Бот-плей',null, iconRPC);}
 			else if (!PlayStateChangeables.botPlay){
-				if (!FlxG.save.data.language){DiscordClient.changePresence("PAUSED on "+ PlayState.SONG.songId+ " ("+ storyDifficultyText+ ") ", iconRPC);}
-				else{DiscordClient.changePresence("Стоит на паузе "+ PlayState.SONG.songId+ " ("+ storyDifficultyText+ ") ", iconRPC);}}
+				if (!FlxG.save.data.language){DiscordClient.changePresence("PAUSED on "+ PlayState.SONG.songId+ " ("+ storyDifficultyText+ ") ",null, iconRPC);}
+				else{DiscordClient.changePresence("Стоит на паузе "+ PlayState.SONG.songId+ " ("+ storyDifficultyText+ ") ",null, iconRPC);}}
 			#end
 
 		#if FEATURE_FILESYSTEM

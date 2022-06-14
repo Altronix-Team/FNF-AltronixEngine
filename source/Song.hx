@@ -72,10 +72,9 @@ class Song
 		while (!rawJson.endsWith("}"))
 		{
 			rawJson = rawJson.substr(0, rawJson.length - 1);
-			// LOL GOING THROUGH THE BULLSHIT TO CLEAN IDK WHATS STRANGE
 		}
-		var jsonData = Json.parse(rawJson);
 
+		var jsonData = Json.parse(rawJson);
 		return parseJSONshit("rawsong", jsonData, ["name" => jsonData.name]);
 	}
 
@@ -104,19 +103,42 @@ class Song
 	{
 		var songFile = '$songId/$songId$difficulty';
 
-		Debug.logInfo('Loading song JSON: $songFile');
-
-		var rawJson = Paths.loadJSON('songs/$songFile');
-
-		var metaData:SongMeta = loadMetadata(songId);
-
-		if (OpenFlAssets.exists(Paths.json('songs/$songId/events')))
+		if (OpenFlAssets.exists('assets/data/songs/' + songFile + '.json'))
 		{
-			var rawEvents = Paths.loadJSON('songs/$songId/events');
-			return parseJSONshit(songId, rawJson, metaData, rawEvents);
-		}	
+			Debug.logInfo('Loading song JSON: $songFile');
+
+			var rawJson = Paths.loadJSON('songs/$songFile');
+
+			var metaData:SongMeta = loadMetadata(songId);
+
+			if (OpenFlAssets.exists(Paths.json('songs/$songId/events')))
+			{
+				var rawEvents = Paths.loadJSON('songs/$songId/events');
+				return parseJSONshit(songId, rawJson, metaData, rawEvents);
+			}	
+			else
+				return parseJSONshit(songId, rawJson, metaData);	
+		}
+		else if (OpenFlAssets.exists(OpenFlAssets.getPath('assets/data/songs/' + songFile + '.json')))
+		{
+			Debug.logInfo('Loading song JSON: $songFile');
+	
+			var rawJson = Paths.loadJSON('songs/$songFile');
+	
+			var metaData:SongMeta = loadMetadata(songId);
+	
+			if (OpenFlAssets.exists(Paths.json('songs/$songId/events')))
+			{
+				var rawEvents = Paths.loadJSON('songs/$songId/events');
+				return parseJSONshit(songId, rawJson, metaData, rawEvents);
+			}	
+			else
+				return parseJSONshit(songId, rawJson, metaData);	
+		}
 		else
-			return parseJSONshit(songId, rawJson, metaData);		
+		{
+			return null;
+		}	
 	}
 
 	public static function conversionChecks(song:SongData):SongData
@@ -251,6 +273,8 @@ class Song
 
 	public static function parseJSONshit(songId:String, jsonData:Dynamic, jsonMetaData:Dynamic, ?jsonEvents:Dynamic):SongData
 	{
+		if (jsonData == null)
+			return null;	
 		var songData:SongData = cast jsonData.song;
 
 		songData.songId = songId;
@@ -288,5 +312,11 @@ class Song
 		}
 
 		return Song.conversionChecks(songData);
+	}
+	public static function parseAutosaveshit(rawJson:String):SongData
+	{
+		var swagShit:SongData = cast Json.parse(rawJson).song;
+		swagShit.validScore = true;
+		return Song.conversionChecks(swagShit);
 	}
 }

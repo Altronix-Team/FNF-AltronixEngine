@@ -109,13 +109,13 @@ class Note extends FlxSprite
 		
 		switch (noteType)
 		{
-			case '4' | 'No Anim Note':
+			case '4' | 'No Anim Note' | 'No Animation':
 			{
 				reloadNote('');
 				noAnimation = true;
 			}
 
-			case '3' | 'GF Sing Note':
+			case '3' | 'GF Sing Note' | 'GF Sing':
 			{
 				reloadNote('');
 				gfNote = true;

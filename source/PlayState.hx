@@ -4056,7 +4056,7 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 
 					if (daNote.gfNote)
 						checkNoteType('gf', daNote);
-					else if (daNote.noteType == 3 || daNote.noteType == 'GF Sing Note')
+					if (daNote.noteType == '3' || daNote.noteType == 'GF Sing Note' || daNote.noteType == 'GF Sing')
 						checkNoteType('gf', daNote);
 					else
 						checkNoteType('dad', daNote);
@@ -5697,7 +5697,7 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 
 			if (note.gfNote)
 				checkNoteType('gf', note);
-			else if (note.noteType == 3 || note.noteType == 'GF Sing Note')
+			else if (note.noteType == 3 || note.noteType == 'GF Sing Note' || note.noteType == 'GF Sing')
 				checkNoteType('gf', note);
 			else 
 				checkNoteType('bf', note);

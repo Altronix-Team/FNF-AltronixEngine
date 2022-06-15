@@ -72,8 +72,8 @@ class ChartingState extends MusicBeatState
 		'Default Note',
 		'Hurt Note',
 		'Bullet Note',
-		'GF Sing Note',
-		'No Anim Note'
+		'GF Sing',
+		'No Animation'
 	];
 
 	public static var eventTypeList:Array<String> = //Using for custom events.
@@ -3098,6 +3098,10 @@ class ChartingState extends MusicBeatState
 
 					case 'Screen Shake':
 						eventDescriptionText = 'Type in Event Value intensity and duration, like 0.15, 0.15';
+						eventDescription.text = eventDescriptionText;
+					
+					case 'Camera Follow Pos':
+						eventDescriptionText = 'Type in Event Value position of camera by x and, like 0.15, 0.15';
 						eventDescription.text = eventDescriptionText;
 
 					default:

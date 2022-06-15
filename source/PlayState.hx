@@ -335,12 +335,15 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 	public var boyfriendGroup:FlxSpriteGroup;
 	public var dadGroup:FlxSpriteGroup;
 	public var gfGroup:FlxSpriteGroup;
+	private var isCameraOnForcedPos:Bool = false;
 
 	public var songPosBarColorRGB:Array<Int> = [0, 255, 128];
 
 	public var hideGF:Bool;
 
 	private var chartingState:FlxText;
+
+	public static var isPixel:Bool;
 
 	// BotPlay text
 	private var botPlayState:FlxText;
@@ -371,6 +374,8 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 	var luaStage = false;
 
 	public static var doof = null;
+
+	public static var stageCheck:String = 'stage';
 
 	public function addObject(object:FlxBasic)
 	{
@@ -670,8 +675,14 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 				dialogueJson = DialogueBoxPsych.parseDialogue('assets/data/songs/' + PlayState.SONG.songId + '/dialogue.json');
 		}
 
-		// defaults if no stage was found in chart
-		var stageCheck:String = 'stage';
+		switch (SONG.noteStyle)
+		{
+			case 'pixel':
+				isPixel = true;
+			case 'normal':
+				isPixel = false;
+		}
+
 
 		// If the stage isn't specified in the chart, we use the story week value.
 		if (SONG.stage == null)
@@ -902,6 +913,15 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 						}
 				}
 			}
+
+		switch (boyfriend.curCharacter)
+		{
+			case 'bf-pixel':
+				GameOverSubstate.stageSuffix = '-pixel';
+				GameOverSubstate.characterName = 'bf-pixel-dead';
+			case 'bfAndGF':
+				GameOverSubstate.characterName = 'bfAndGF-DEAD';
+		}
 
 		// launch song scripts
 		#if LUA_ALLOWED
@@ -3163,8 +3183,6 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 
 	var currentLuaIndex = 0;
 
-	var blammedeventplayed:Bool = false;
-
 	public var newScroll = 1.0;
 
 	override public function update(elapsed:Float)
@@ -3725,13 +3743,13 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 
 			if (!currentSection.gfSection)
 			{
-				if (camFollow.x != dad.getMidpoint().x + 150 && !currentSection.mustHitSection)
+				if (camFollow.x != dad.getMidpoint().x + 150 && !currentSection.mustHitSection && !isCameraOnForcedPos)
 				{
 					moveCamera(true);
 					callOnLuas('onMoveCamera', ['dad']);
 				}
 
-				if (currentSection.mustHitSection && camFollow.x != boyfriend.getMidpoint().x - 100)
+				if (currentSection.mustHitSection && camFollow.x != boyfriend.getMidpoint().x - 100 && !isCameraOnForcedPos)
 				{
 					moveCamera(false);
 					callOnLuas('onMoveCamera', ['boyfriend']);
@@ -3971,7 +3989,7 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 								|| !daNote.mustPress
 								|| daNote.wasGoodHit
 								|| holdArray[Math.floor(Math.abs(daNote.noteData))]
-								&& !daNote.hurtNote)
+								&& !daNote.ignoreNote)
 								&& daNote.y
 								- daNote.offset.y * daNote.scale.y
 								+ daNote.height >= (strumLine.y + Note.swagWidth / 2))
@@ -4014,7 +4032,7 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 								|| !daNote.mustPress
 								|| daNote.wasGoodHit
 								|| holdArray[Math.floor(Math.abs(daNote.noteData))]
-								&& !daNote.hurtNote)
+								&& !daNote.ignoreNote)
 								&& daNote.y
 								+ daNote.offset.y * daNote.scale.y <= (strumLine.y + Note.swagWidth / 2))
 							{
@@ -4129,16 +4147,16 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 					}
 					else
 					{
-							if (!daNote.hurtNote)
+							if (!daNote.ignoreNote)
 								vocals.volume = 0;
 							if (theFunne && !daNote.isSustainNote)
 							{
-								if (PlayStateChangeables.botPlay && !daNote.hurtNote)
+								if (PlayStateChangeables.botPlay && !daNote.ignoreNote)
 								{
 									daNote.rating = "bad";
 									goodNoteHit(daNote);
 								}
-								else
+								else if (!daNote.ignoreNote)
 									noteMiss(daNote.noteData, daNote);
 							}
 
@@ -4176,7 +4194,7 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 									else
 										updateAccuracy();
 								}
-								else if (!daNote.wasGoodHit && !daNote.isSustainNote && !daNote.hurtNote)
+								else if (!daNote.wasGoodHit && !daNote.isSustainNote && !daNote.ignoreNote)
 								{
 									health -= 0.15;
 								}
@@ -4420,12 +4438,34 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 						
 								if(duration > 0 && intensity != 0) {
 									targetsArray[i].shake(intensity, duration);}}}
+					case 'Camera Follow Pos':
+						if (event.position <= curDecimalBeat && !pastEvents.contains(event)){
+							pastEvents.push(event);
+							var valuesArray:Array<String> = [event.value];
+							var split:Array<String> = [];
+							for (i in 0...valuesArray.length){
+								split = valuesArray[i].split(',');
+							}
+							var val1:Float = Std.parseFloat(split[0]);
+							var val2:Float = Std.parseFloat(split[1]);
+							if(Math.isNaN(val1)) val1 = 0;
+							if(Math.isNaN(val2)) val2 = 0;
+
+							isCameraOnForcedPos = false;
+							if(!Math.isNaN(Std.parseFloat(split[0])) || !Math.isNaN(Std.parseFloat(split[1]))) {
+								camFollow.x = val1;
+								camFollow.y = val2;
+								isCameraOnForcedPos = true;
+						}
+					}			
 					default:
 						if (event.position <= curDecimalBeat && !pastEvents.contains(event)){
 							pastEvents.push(event);
 							callOnLuas('onEvent', [event.type, event.value]);}	
 				}
 		}
+
+	var blammedeventplayed:Bool = false;
 
 	public function reloadHealthBarColors() {
 		healthBar.createFilledBar(FlxColor.fromRGB(dad.healthColorArray[0], dad.healthColorArray[1], dad.healthColorArray[2]),
@@ -4453,6 +4493,10 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 				boyfriend.alpha = 0.0000001;
 				boyfriendGroup.add(boyfriend);
 				boyfriend.alpha = 1;
+
+				boyfriend.setPosition(BF_X, BF_Y);
+				boyfriend.x += boyfriend.positionArray[0];
+				boyfriend.y += boyfriend.positionArray[1];
 				setOnLuas('boyfriendName', boyfriend.curCharacter);
 				if (boyfriend.hasTrail)
 				{
@@ -4482,6 +4526,10 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 				dad.alpha = 0.0000001;
 				dadGroup.add(dad);
 				dad.alpha = 1;
+
+				dad.setPosition(DAD_X, DAD_Y);
+				dad.x += dad.positionArray[0];
+				dad.y += dad.positionArray[1];
 				setOnLuas('dadName', dad.curCharacter);
 				if (dad.hasTrail)
 				{
@@ -4511,6 +4559,10 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 				gf.alpha = 0.0000001;
 				gfGroup.add(gf);
 				gf.alpha = 1;
+
+				gf.setPosition(GF_X, GF_Y);
+				gf.x += gf.positionArray[0];
+				gf.y += gf.positionArray[1];
 				setOnLuas('gfName', gf.curCharacter);
 				if (gf.hasTrail)
 				{
@@ -5378,7 +5430,7 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 		if (PlayStateChangeables.botPlay)
 			notes.forEachAlive(function(daNote:Note)
 			{
-				if (daNote.mustPress && Conductor.songPosition >= daNote.strumTime && !daNote.hurtNote)
+				if (daNote.mustPress && Conductor.songPosition >= daNote.strumTime && !daNote.ignoreNote)
 				{
 					goodNoteHit(daNote);
 					boyfriend.holdTimer = 0;
@@ -5426,19 +5478,14 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 
 	function noteMiss(direction:Int = 1, daNote:Note):Void
 	{
-		if (daNote != null && daNote.hurtNote)
-		{
-			health += 0.15;
-			return;
-		}
-		else if (daNote != null && daNote.bulletNote)
+		if (daNote != null && daNote.bulletNote)
 		{
 			health = 0;
 		}
 		else if (!boyfriend.stunned)
 		{
 			// health -= 0.2;
-			if (combo > 5 && gf.animOffsets.exists('sad') && (daNote != null && !daNote.hurtNote))
+			if (combo > 5 && gf.animOffsets.exists('sad') && (daNote != null && !daNote.ignoreNote))
 			{
 				gf.playAnim('sad');
 			}
@@ -5474,7 +5521,7 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 				|| boyfriend.curCharacter == 'bf-christmas'
 				|| boyfriend.curCharacter == 'bf-car'
 				|| boyfriend.curCharacter == 'bf-pixel'
-				&& daNote != null && !daNote.hurtNote)
+				&& daNote != null && !daNote.ignoreNote)
 			{
 				boyfriend.playAnim('sing' + dataSuffix[direction] + 'miss', true);
 			}

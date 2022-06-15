@@ -1,0 +1,22 @@
+{
+ "eventObjects": [
+  {
+   "name": "Init BPM",
+   "position": 0,
+   "value": 240,
+   "type": "BPM Change"
+  },
+  {
+   "name": "New Event 192",
+   "position": 191.99975,
+   "value": "240",
+   "type": "Image Appearance"
+  },
+  {
+   "name": "New Event 512",
+   "position": 512,
+   "value": "bf, sonic2",
+   "type": "Change Character"
+  }
+ ]
+}

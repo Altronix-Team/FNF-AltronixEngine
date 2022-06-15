@@ -9,7 +9,7 @@ import Controls;
 // Psych code comparability
 // With some deletions
 class ClientPrefs {
-	public static var downScroll:Bool = FlxG.save.data.downscroll;
+	/*public static var downScroll:Bool = FlxG.save.data.downscroll;
 	public static var middleScroll:Bool = FlxG.save.data.middleScroll;
 	public static var showFPS:Bool = FlxG.save.data.fps;
 	public static var flashing:Bool = FlxG.save.data.flashing;
@@ -25,5 +25,5 @@ class ClientPrefs {
 
 	public static var sickWindow:Int = FlxG.save.data.sickMs;
 	public static var goodWindow:Int = FlxG.save.data.goodMs;
-	public static var badWindow:Int = FlxG.save.data.badMs;
+	public static var badWindow:Int = FlxG.save.data.badMs;*/
 }

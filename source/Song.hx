@@ -239,8 +239,17 @@ class Song
 			{
 				if (song.chartVersion == null)
 				{
-					ii[3] = false;
-					ii[4] = TimingStruct.getBeatFromTime(ii[0]);
+					if(Std.isOfType(ii[3], String))
+					{
+						ii[5] = ii[3];
+						ii[3] = false;
+						ii[4] = TimingStruct.getBeatFromTime(ii[0]);
+					}
+					else
+					{
+						ii[3] = false;
+						ii[4] = TimingStruct.getBeatFromTime(ii[0]);
+					}
 				}
 
 				if (ii[3] == 0)

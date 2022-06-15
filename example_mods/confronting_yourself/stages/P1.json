@@ -1,0 +1,10 @@
+{
+	"directory": "",
+	"defaultZoom": 0.8,
+	"isPixelStage": false,
+	"hideGF": true,
+
+	"boyfriend": [450, -80],
+	"gf": [0, 130],
+	"dad": [-500, -80]
+}

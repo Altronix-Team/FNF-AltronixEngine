@@ -32,7 +32,10 @@ class NoteSplash extends FlxSprite
     public function setupNoteSplash(x:Float, y:Float, note:Int = 0, noteType:Int = 0)
     {
 		var texture:String;
-		setPosition(x - Note.swagWidth * 0.95, y - Note.swagWidth);
+		if (PlayState.isPixel)
+			setPosition(x + 30, (y + Note.swagWidth) / 2);
+		else
+			setPosition(x - Note.swagWidth * 0.95, y - Note.swagWidth);
     	alpha = 0.6;
 
 		switch (noteType)
@@ -59,13 +62,55 @@ class NoteSplash extends FlxSprite
 
 	function loadAnims(skin:String = 'default')
 	{
+		if (PlayState.isPixel)
+		{
+			if (OpenFlAssets.exists(Paths.image('notesplashes/' + skin + '-pixel')))
+			{
+				loadGraphic(Paths.image('notesplashes/' + skin + '-pixel'));
+				width = width / 8;
+				height = height / 4;
+				loadGraphic(Paths.image('notesplashes/' + skin + '-pixel'), true, Math.floor(width), Math.floor(height));
+
+				antialiasing = false;
+				setGraphicSize(Std.int(width * CoolUtil.daPixelZoom));
+
+				animation.add("note0-1", [0, 1, 2, 3], 12, false);
+				animation.add("note0-2", [4, 5, 6, 7], 12, false);
+				animation.add("note1-1", [8, 9, 10, 11], 12, false);
+				animation.add("note1-2", [12, 13, 14, 15], 12, false);
+				animation.add("note2-1", [16, 17, 18, 19], 12, false);
+				animation.add("note2-2", [20, 21, 22, 23], 12, false);
+				animation.add("note3-1", [24, 25, 26, 27], 12, false);
+				animation.add("note3-2", [28, 29, 30, 31], 12, false);
+			}
+			else
+			{
+				loadGraphic(Paths.image('notesplashes/Default-pixel'));
+				width = width / 8;
+				height = height / 4;
+				loadGraphic(Paths.image('notesplashes/Default-pixel'), true, Math.floor(width), Math.floor(height));
+
+				antialiasing = false;
+				setGraphicSize(Std.int(width * CoolUtil.daPixelZoom));
+
+				animation.add("note0-1", [0, 1, 2, 3], 12, false);
+				animation.add("note0-2", [4, 5, 6, 7], 12, false);
+				animation.add("note1-1", [8, 9, 10, 11], 12, false);
+				animation.add("note1-2", [12, 13, 14, 15], 12, false);
+				animation.add("note2-1", [16, 17, 18, 19], 12, false);
+				animation.add("note2-2", [20, 21, 22, 23], 12, false);
+				animation.add("note3-1", [24, 25, 26, 27], 12, false);
+				animation.add("note3-2", [28, 29, 30, 31], 12, false);
+			}
+		}
+		else{
 		frames = Paths.getSparrowAtlas("notesplashes/" + skin);
 		for (i in 1...3) {
 			animation.addByPrefix("note1-" + i, "note splash blue " + i, 24, false);
 			animation.addByPrefix("note2-" + i, "note splash green " + i, 24, false);
 			animation.addByPrefix("note0-" + i, "note splash purple " + i, 24, false);
 			animation.addByPrefix("note3-" + i, "note splash red " + i, 24, false);
-		}
+		}}
 	}
 
     override public function update(elapsed:Float)

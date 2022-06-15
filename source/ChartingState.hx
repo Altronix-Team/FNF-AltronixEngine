@@ -88,6 +88,7 @@ class ChartingState extends MusicBeatState
 		"Camera zoom",
 		"Toggle interface",
 		'Screen Shake',
+		'Camera Follow Pos',
 		"Toggle Alt Idle"/*,
 		"Change note skin"*/
 	];
@@ -3349,8 +3350,8 @@ class ChartingState extends MusicBeatState
 				var daNoteInfo = i[1];
 				var daStrumTime = i[0];
 				var daSus = i[2];
-
 				var daType = null;
+
 				if (i[5] != null)
 				{
 					if(!Std.isOfType(i[5], String)) //Convert old note type to new note type format

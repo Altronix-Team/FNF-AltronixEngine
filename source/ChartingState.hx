@@ -84,7 +84,7 @@ class ChartingState extends MusicBeatState
 		"Change Character",
 		"Change Stage",
 		"Song Overlay",
-		'Character play anim',
+		'Character play animation',
 		"Camera zoom",
 		"Toggle interface",
 		'Screen Shake',

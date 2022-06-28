@@ -22,8 +22,6 @@ import ModCore;
 
 class Main extends Sprite
 {
-	var modsToLoad = [];
-	public static var configFound = false;
 	public static var gjToastManager:GJToastManager;
 	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	var gameHeight:Int = 720; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
@@ -105,15 +103,7 @@ class Main extends Sprite
 		#end			
 
 		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
-		addChild(game);
-
-		#if FEATURE_MODCORE
-		modsToLoad = ModCore.getConfiguredMods();
-		configFound = (modsToLoad != null && modsToLoad.length > 0);
-		ModCore.loadConfiguredMods();
-		#else
-		configFound = false;	
-		#end	
+		addChild(game);	
 
 		#if !mobile
 		addChild(fpsCounter);

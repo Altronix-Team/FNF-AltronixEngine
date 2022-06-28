@@ -63,6 +63,9 @@ class TitleState extends MusicBeatState
 	var wackyImage:FlxSprite;
 
 	var checkVer:Bool = true;
+	
+	var modsToLoad = [];
+        public static var configFound = false;
 
 	override public function create():Void
 	{
@@ -114,6 +117,14 @@ class TitleState extends MusicBeatState
 		MusicBeatState.initSave = true;
 
 		Highscore.load();
+		
+		#if FEATURE_MODCORE
+                    modsToLoad = ModCore.getConfiguredMods();
+                    configFound = (modsToLoad != null && modsToLoad.length > 0);
+                    ModCore.loadConfiguredMods();
+                #else
+                    configFound = false; 
+                #end
 
 		if (FlxG.save.data.volume != null)
 			FlxG.sound.volume = FlxG.save.data.volume;

@@ -69,9 +69,6 @@ class TitleState extends MusicBeatState
 	var wackyImage:FlxSprite;
 
 	var checkVer:Bool = true;
-	
-	var modsToLoad = [];
-        public static var configFound = false;
 
 	var modsToLoad = [];
 	public static var configFound = false;

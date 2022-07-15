@@ -496,10 +496,10 @@ class FreeplayState extends MusicBeatState
 					FlxG.sound.music.volume = 0;
 					var currentSongData = songData.get(songs[curSelected].songName)[getShitSongID(diffTextStr)];
 					PlayState.SONG = currentSongData;
-					vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.songId));
+					vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.songId, PlayState.SONG.diffSoundAssets));
 
 					FlxG.sound.list.add(vocals);
-					FlxG.sound.playMusic(Paths.inst(PlayState.SONG.songId), 0.7);
+					FlxG.sound.playMusic(Paths.inst(PlayState.SONG.songId, PlayState.SONG.diffSoundAssets), 0.7);
 					vocals.play();
 					vocals.persist = true;
 					vocals.looped = true;
@@ -707,8 +707,8 @@ class FreeplayState extends MusicBeatState
 		diffTextStr = CoolUtil.difficultyFromInt(CoolUtil.difficultyArray.indexOf(songs[curSelected].diffs[curDifficulty]));
 
 		#if !switch
-		intendedScore = Highscore.getScore(songHighscore, curDifficulty);
-		combo = Highscore.getCombo(songHighscore, curDifficulty);
+		intendedScore = Highscore.getScore(songHighscore, CoolUtil.difficultyArray.indexOf(diffTextStr));
+		combo = Highscore.getCombo(songHighscore, CoolUtil.difficultyArray.indexOf(diffTextStr));
 		#end
 
 		diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[getShitSongID(diffTextStr)])}';
@@ -718,7 +718,8 @@ class FreeplayState extends MusicBeatState
 
 	function changeSelection(change:Int = 0)
 	{
-		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+		if (songs.length > 1)
+			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
 		curSelected += change;
 
@@ -766,8 +767,8 @@ class FreeplayState extends MusicBeatState
 		diffTextStr = CoolUtil.difficultyFromInt(CoolUtil.difficultyArray.indexOf(songs[curSelected].diffs[curDifficulty]));
 
 		#if !switch
-		intendedScore = Highscore.getScore(songHighscore, curDifficulty);
-		combo = Highscore.getCombo(songHighscore, curDifficulty);
+		intendedScore = Highscore.getScore(songHighscore, CoolUtil.difficultyArray.indexOf(diffTextStr));
+		combo = Highscore.getCombo(songHighscore, CoolUtil.difficultyArray.indexOf(diffTextStr));
 		// lerpScore = 0;
 		#end
 

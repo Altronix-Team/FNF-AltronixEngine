@@ -26,7 +26,7 @@ class LoadReplayState extends MusicBeatState
 	var selector:FlxText;
 	var curSelected:Int = 0;
 
-	var songs:Array<FreeplaySongMetadata> = [];
+	var songs:Array<SongMetadata> = [];
 
 	var controlsStrings:Array<String> = [];
 	var actualNames:Array<String> = [];

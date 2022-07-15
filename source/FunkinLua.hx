@@ -939,6 +939,7 @@ class FunkinLua {
 				case 'pause': key = PlayState.instance.getControl('PAUSE');
 				case 'reset': key = PlayState.instance.getControl('RESET');
 				case 'space': key = FlxG.keys.justPressed.SPACE;//an extra key for convinience
+				case 'shift': key = FlxG.keys.justPressed.SHIFT;
 			}
 			return key;
 		});
@@ -950,6 +951,7 @@ class FunkinLua {
 				case 'up': key = PlayState.instance.getControl('NOTE_UP');
 				case 'right': key = PlayState.instance.getControl('NOTE_RIGHT');
 				case 'space': key = FlxG.keys.pressed.SPACE;//an extra key for convinience
+				case 'shift': key = FlxG.keys.pressed.SHIFT;
 			}
 			return key;
 		});
@@ -961,6 +963,7 @@ class FunkinLua {
 				case 'up': key = PlayState.instance.getControl('NOTE_UP_R');
 				case 'right': key = PlayState.instance.getControl('NOTE_RIGHT_R');
 				case 'space': key = FlxG.keys.justReleased.SPACE;//an extra key for convinience
+				case 'shift': key = FlxG.keys.justReleased.SHIFT;
 			}
 			return key;
 		});
@@ -973,16 +976,14 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "precacheMusic", function(name:String) {
 			CoolUtil.precacheMusic(name);
 		});
-		Lua_helper.add_callback(lua, "triggerEvent", function(name:String, position:Int, value:Dynamic, type:String) {
-			var event = new Event(name, position, value, type);
-			PlayState.instance.doEvent(event);
+		Lua_helper.add_callback(lua, "triggerEvent", function(type:String, value:Dynamic) {
+			PlayState.instance.doEvent(type, value);
 		});
 
 		Lua_helper.add_callback(lua, "startCountdown", function(variable:String) {
 			PlayState.instance.startCountdown();
 		});
 		Lua_helper.add_callback(lua, "endSong", function() {
-			PlayState.instance.KillNotes();
 			PlayState.instance.endSong();
 			return true;
 		});
@@ -1054,6 +1055,9 @@ class FunkinLua {
 				default:
 					PlayState.instance.boyfriendGroup.y = value;
 			}
+		});
+		Lua_helper.add_callback(lua, "cameraFollowPos", function(x:Float, y:Float) {
+			PlayState.instance.camFollowPos(x, y);
 		});
 		Lua_helper.add_callback(lua, "cameraSetTarget", function(target:String) {
 			var isDad:Bool = false;
@@ -1579,7 +1583,7 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "startVideo", function(videoFile:String) {
 			#if VIDEOS_ALLOWED
 			if(Assets.exists(Paths.video(videoFile))) {
-				PlayState.instance.startVideo(videoFile);
+				PlayState.instance.playCutscene(videoFile);
 			} else {
 				luaTrace('Video file not found: ' + videoFile);
 			}

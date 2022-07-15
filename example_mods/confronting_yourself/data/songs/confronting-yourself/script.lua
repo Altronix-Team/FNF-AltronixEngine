@@ -19,55 +19,55 @@ function onUpdate()
     if followchars == true then
         if mustHitSection == false then
             if getProperty('dad.animation.curAnim.name') == 'singLEFT' then
-                triggerEvent('Camera Follow Pos',curBeat,'240,400','Camera Follow Pos')
+                cameraFollowPos(240, 400)
             end
             if getProperty('dad.animation.curAnim.name') == 'singRIGHT' then
-                triggerEvent('Camera Follow Pos',curBeat,'360,400','Camera Follow Pos')
+                cameraFollowPos(360,400)
             end
             if getProperty('dad.animation.curAnim.name') == 'singUP' then
-                triggerEvent('Camera Follow Pos',curBeat,'300,340','Camera Follow Pos')
+                cameraFollowPos(300,340)
             end
             if getProperty('dad.animation.curAnim.name') == 'singDOWN' then
-                triggerEvent('Camera Follow Pos',curBeat,'300,460','Camera Follow Pos')
+                cameraFollowPos(300,460)
             end
             if getProperty('dad.animation.curAnim.name') == 'singLEFT-alt' then
-                triggerEvent('Camera Follow Pos',curBeat,'240,400','Camera Follow Pos')
+                cameraFollowPos(240,400)
             end
             if getProperty('dad.animation.curAnim.name') == 'singRIGHT-alt' then
-                triggerEvent('Camera Follow Pos',curBeat,'360,400','Camera Follow Pos')
+                cameraFollowPos(360,400)
             end
             if getProperty('dad.animation.curAnim.name') == 'singUP-alt' then
-                triggerEvent('Camera Follow Pos',curBeat,'300,340','Camera Follow Pos')
+                cameraFollowPos(300,340)
             end
             if getProperty('dad.animation.curAnim.name') == 'singDOWN-alt' then
-                triggerEvent('Camera Follow Pos',curBeat,'300,460','Camera Follow Pos')
+                cameraFollowPos(300,460)
             end
             if getProperty('dad.animation.curAnim.name') == 'idle-alt' then
-                triggerEvent('Camera Follow Pos',curBeat,'300,400','Camera Follow Pos')
+                cameraFollowPos(300,400)
             end
             if getProperty('dad.animation.curAnim.name') == 'idle' then
-                triggerEvent('Camera Follow Pos',curBeat,'300,400','Camera Follow Pos')
+                cameraFollowPos(300,400)
             end
         else
 
             if getProperty('boyfriend.animation.curAnim.name') == 'singLEFT' then
-                triggerEvent('Camera Follow Pos',curBeat,'440,500','Camera Follow Pos')
+                cameraFollowPos(440,500)
             end
             if getProperty('boyfriend.animation.curAnim.name') == 'singRIGHT' then
-                triggerEvent('Camera Follow Pos',curBeat,'560,500','Camera Follow Pos')
+                cameraFollowPos(560,500)
             end
             if getProperty('boyfriend.animation.curAnim.name') == 'singUP' then
-                triggerEvent('Camera Follow Pos',curBeat,'500,440','Camera Follow Pos')
+                cameraFollowPos(500,440)
             end
             if getProperty('boyfriend.animation.curAnim.name') == 'singDOWN' then
-                triggerEvent('Camera Follow Pos',curBeat,'500,550','Camera Follow Pos')
+                cameraFollowPos(500,550)
             end
 	    if getProperty('boyfriend.animation.curAnim.name') == 'idle' then
-                triggerEvent('Camera Follow Pos',curBeat,'500,500','Camera Follow Pos')
+                cameraFollowPos(500,500)
             end
         end
     else
-        triggerEvent('Camera Follow Pos',curBeat,'')
+        triggerEvent('Camera Follow Pos','')
     end
     
 end

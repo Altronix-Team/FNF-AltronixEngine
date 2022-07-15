@@ -84,6 +84,8 @@ class CharacterEditorState extends MusicBeatState
 	var cameraFollowPointer:FlxSprite;
 	var healthBarBG:FlxSprite;
 
+	private var blockPressWhileScrolling:Array<FlxUIDropDownMenuCustom> = [];
+
 	override function create()
 	{
 		//FlxG.sound.playMusic(Paths.music('breakfast'), 0.5);
@@ -225,6 +227,7 @@ class CharacterEditorState extends MusicBeatState
 			reloadBGs();
 		},  new FlxUIDropDownHeader(85, null, new FlxUIText(10, 12, 0, 'Stage: ')));
 		stageDropDown.selectedLabel = daStage;
+		blockPressWhileScrolling.push(stageDropDown);
 		reloadStagesDropDown();
 
 		tab_group.add(new FlxText(stageDropDown.x, stageDropDown.y - 18, 0, 'Stage:'));
@@ -238,6 +241,9 @@ class CharacterEditorState extends MusicBeatState
 		stageDropDown.setData(FlxUIDropDownMenuCustom.makeStrIdLabelArray(stageList, true));
 		stageDropDown.selectedLabel = daStage;
 	}
+
+	var char_X:Float = 100;
+	var char_Y:Float = 100;
 
 	var loadedStageOnce:Bool = false;
 	var onPixelBG:Bool = false;
@@ -266,9 +272,17 @@ class CharacterEditorState extends MusicBeatState
 				for (char in charLayer)
 				{
 					if (check_player.checked)
+					{
 						char.setPosition(stageData.boyfriend[0], stageData.boyfriend[1]);
+						char_X = stageData.boyfriend[0];
+						char_Y = stageData.boyfriend[1];
+					}
 					else
+					{
 						char.setPosition(stageData.dad[0], stageData.dad[1]);
+						char_X = stageData.dad[0];
+						char_Y = stageData.dad[1];
+					}
 
 					char.x += char.positionArray[0];
 					char.y += char.positionArray[1];
@@ -308,6 +322,8 @@ class CharacterEditorState extends MusicBeatState
 				for (char in charLayer)
 				{
 					char.setPosition(stageData.boyfriend[0], stageData.boyfriend[1]);
+					char_X = stageData.boyfriend[0];
+					char_Y = stageData.boyfriend[1];
 					char.x += char.positionArray[0];
 					char.y += char.positionArray[1];
 				}
@@ -369,6 +385,7 @@ class CharacterEditorState extends MusicBeatState
 			reloadBGs();
 		});
 		charDropDown.selectedLabel = daAnim;
+		blockPressWhileScrolling.push(charDropDown);
 		reloadCharacterDropDown();
 
 		var reloadCharacter:FlxButton = new FlxButton(140, 20, "Reload Char", function()
@@ -615,6 +632,7 @@ class CharacterEditorState extends MusicBeatState
 			var indicesStr:String = anim.frameIndices.toString();
 			animationIndicesInputText.text = indicesStr.substr(1, indicesStr.length - 2);
 		});
+		blockPressWhileScrolling.push(animationDropDown);
 
 		ghostDropDown = new FlxUIDropDownMenuCustom(animationDropDown.x + 150, animationDropDown.y, FlxUIDropDownMenuCustom.makeStrIdLabelArray([''], true), function(pressed:String) {
 			var selectedAnimation:Int = Std.parseInt(pressed);
@@ -626,6 +644,7 @@ class CharacterEditorState extends MusicBeatState
 				char.alpha = 0.85;
 			}
 		});
+		blockPressWhileScrolling.push(ghostDropDown);
 
 		var addUpdateButton:FlxButton = new FlxButton(70, animationIndicesInputText.y + 30, "Add/Update", function() {
 			var indices:Array<Int> = [];
@@ -710,8 +729,8 @@ class CharacterEditorState extends MusicBeatState
 					if(char.animation.getByName(anim.name) != null) {
 						char.animation.remove(anim.name);
 					}
-					if(char.animOffsets.exists(anim.prefix)) {
-						char.animOffsets.remove(anim.prefix);
+					if(char.animOffsets.exists(anim.name)) {
+						char.animOffsets.remove(anim.name);
 					}
 					char.animationsArray.remove(anim);
 
@@ -920,11 +939,11 @@ class CharacterEditorState extends MusicBeatState
 			--i;
 		}
 		charLayer.clear();
-		ghostChar = new Character(100, 100, daAnim, !isDad);
+		ghostChar = new Character(char_X, char_Y, daAnim, !isDad);
 		ghostChar.debugMode = true;
 		ghostChar.alpha = 0.6;
 
-		char = new Character(100, 100, daAnim, !isDad);
+		char = new Character(char_X, char_Y, daAnim, !isDad);
 		if(char.animationsArray[0] != null) {
 			char.playAnim(char.animationsArray[0].name, true);
 		}
@@ -933,7 +952,8 @@ class CharacterEditorState extends MusicBeatState
 		charLayer.add(ghostChar);
 		charLayer.add(char);
 
-		char.setPosition(char.positionArray[0] + OFFSET_X + 100, char.positionArray[1]);
+		char.x += char.positionArray[0] + OFFSET_X;
+		char.y += char.positionArray[1];
 
 		if(blahBlahBlah) {
 			genBoyOffsets();
@@ -1090,6 +1110,17 @@ class CharacterEditorState extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		Stage.update(elapsed);
+
+		var blockInput = false;
+
+		if(!blockInput) {
+			for (dropDownMenu in blockPressWhileScrolling) {
+				if(dropDownMenu.dropPanel.visible) {
+					blockInput = true;
+					break;
+				}
+			}
+		}
 		
 		if(char.animationsArray[curAnim] != null) {
 			textAnim.text = char.animationsArray[curAnim].name;
@@ -1106,14 +1137,6 @@ class CharacterEditorState extends MusicBeatState
 		var inputTexts:Array<FlxUIInputText> = [animationInputText, imageInputText, healthIconInputText, startingAnimInputText, animationNameInputText, animationIndicesInputText, nextAnimationInputText];
 		for (i in 0...inputTexts.length) {
 			if(inputTexts[i].hasFocus) {
-				if(FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.V && Clipboard.text != null) { //Copy paste
-					inputTexts[i].text = ClipboardAdd(inputTexts[i].text);
-					inputTexts[i].caretIndex = inputTexts[i].text.length;
-					getEvent(FlxUIInputText.CHANGE_EVENT, inputTexts[i], null, []);
-				}
-				if(FlxG.keys.justPressed.ENTER) {
-					inputTexts[i].hasFocus = false;
-				}
 				FlxG.sound.muteKeys = [];
 				FlxG.sound.volumeDownKeys = [];
 				FlxG.sound.volumeUpKeys = [];
@@ -1150,23 +1173,6 @@ class CharacterEditorState extends MusicBeatState
 			if (FlxG.keys.pressed.Q && FlxG.camera.zoom > 0.1) {
 				FlxG.camera.zoom -= elapsed * FlxG.camera.zoom;
 				if(FlxG.camera.zoom < 0.1) FlxG.camera.zoom = 0.1;
-			}
-
-			if (FlxG.keys.pressed.I || FlxG.keys.pressed.J || FlxG.keys.pressed.K || FlxG.keys.pressed.L)
-			{
-				var addToCam:Float = 500 * elapsed;
-				if (FlxG.keys.pressed.SHIFT)
-					addToCam *= 4;
-
-				if (FlxG.keys.pressed.I)
-					camFollow.y -= addToCam;
-				else if (FlxG.keys.pressed.K)
-					camFollow.y += addToCam;
-
-				if (FlxG.keys.pressed.J)
-					camFollow.x -= addToCam;
-				else if (FlxG.keys.pressed.L)
-					camFollow.x += addToCam;
 			}
 
 			if(char.animationsArray.length > 0) {
@@ -1265,7 +1271,7 @@ class CharacterEditorState extends MusicBeatState
 				FlxG.mouse.visible = true;
 			}
 	
-			if (FlxG.mouse.wheel != 0)
+			if (FlxG.mouse.wheel != 0 && !blockInput)
 			{
 				FlxG.camera.zoom += FlxG.mouse.wheel / 10;
 			}

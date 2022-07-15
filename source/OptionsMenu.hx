@@ -652,8 +652,8 @@ class OptionsMenu extends FlxSubState
 
 						object.text = "> " + selectedOption.getValue();
 						Debug.logTrace("New text: " + object.text);
-						if (selectedOptionIndex == 7 && selectedCatIndex == 2)
-							FlxG.switchState(new OptionsDirect());
+						if (selectedOptionIndex == 8 && selectedCatIndex == 2)
+							FlxG.resetState();
 					}
 					else if (left)
 					{
@@ -665,8 +665,8 @@ class OptionsMenu extends FlxSubState
 
 						object.text = "> " + selectedOption.getValue();
 						Debug.logTrace("New text: " + object.text);
-						if (selectedOptionIndex == 7 && selectedCatIndex == 2)
-							FlxG.switchState(new OptionsDirect());
+						if (selectedOptionIndex == 8 && selectedCatIndex == 2)
+							FlxG.resetState();
 					}
 
 					if (escape)

@@ -21,7 +21,7 @@ class Note extends FlxSprite
 {
 	public var strumTime:Float = 0;
 	public var baseStrum:Float = 0;
-	public var noteType:Dynamic = null;
+	public var noteType(default, set):String = null;
 
 	public var charterSelected:Bool = false;
 
@@ -88,11 +88,35 @@ class Note extends FlxSprite
 	public var ignoreNote:Bool = false;
 	public var missHealth:Float = 0.0475;
 
+	public var animSuffix:String = '';
+
 	var animName:String = null;
 
 	var lasttexture:String = null;
 
-	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inCharter:Bool = false, ?isAlt:Bool = false, ?bet:Float = 0, ?noteType:Dynamic = 0)
+	private function set_noteType(value:String):String {
+		if(noteData > -1 && noteType != value) {
+			switch(value) {
+				case 'Bullet Note':
+					reloadNote('Bullet_Note');
+					bulletNote = true;
+
+				case 'Hurt Note':
+					ignoreNote = mustPress;
+					reloadNote('HURTNOTE_assets');
+
+					hurtNote = true;
+				case 'No Animation':
+					noAnimation = true;
+				case 'GF Sing':
+					gfNote = true;					
+			}
+			noteType = value;
+		}
+		return value;
+	}
+
+	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inCharter:Bool = false, ?isAlt:Bool = false, ?bet:Float = 0)
 	{
 		super();
 
@@ -103,40 +127,14 @@ class Note extends FlxSprite
 
 		this.isAlt = isAlt;
 
-		this.noteType = noteType;
 		this.prevNote = prevNote;
 		isSustainNote = sustainNote;
+
+		if (isAlt)
+			animSuffix = '-alt';
+
+		reloadNote('');
 		
-		switch (noteType)
-		{
-			case '4' | 'No Anim Note' | 'No Animation':
-			{
-				reloadNote('');
-				noAnimation = true;
-			}
-
-			case '3' | 'GF Sing Note' | 'GF Sing':
-			{
-				reloadNote('');
-				gfNote = true;
-			}
-
-			case '2' | 'Bullet Note':
-			{
-				reloadNote('Bullet_Note');
-				bulletNote = true;
-			}
-			
-			case '1' | 'Hurt Note':
-			{
-				reloadNote('HURTNOTE_assets');
-				ignoreNote = true;
-				hurtNote = true;
-			}
-			default:
-				reloadNote(texture);
-		}
-
 		x += 50;
 		// MAKE SURE ITS DEFINITELY OFF SCREEN?
 		y -= 2000;
@@ -214,11 +212,6 @@ class Note extends FlxSprite
 			originColor = col;
 		}
 
-		// we make sure its downscroll and its a SUSTAIN NOTE (aka a trail, not a note)
-		// and flip it so it doesn't look weird.
-		// THIS DOESN'T FUCKING FLIP THE NOTE, CONTRIBUTERS DON'T JUST COMMENT THIS OUT JESUS
-		// then what is this lol
-		// BRO IT LITERALLY SAYS IT FLIPS IF ITS A TRAIL AND ITS DOWNSCROLL
 		if (FlxG.save.data.downscroll && sustainNote)
 			flipY = true;
 
@@ -283,6 +276,9 @@ class Note extends FlxSprite
 					if (isSustainNote)
 						loadGraphic(BitmapData.fromFile('specialnotes/' + texture + '-pixel-ends.png'), true, 7, 6);
 					loadPixelAnims();
+
+					setGraphicSize(Std.int(width * CoolUtil.daPixelZoom));
+					updateHitbox();
 				}
 				else
 				{
@@ -290,11 +286,21 @@ class Note extends FlxSprite
 					{
 						frames = PlayState.noteskinSprite;
 						loadDefaultAnims();
+
+						setGraphicSize(Std.int(width * 0.7));
+						updateHitbox();
+
+						antialiasing = FlxG.save.data.antialiasing;
 					}
 					else
 					{
 						frames = Paths.getSparrowAtlas('specialnotes/' + texture);
 						loadDefaultAnims();
+
+						setGraphicSize(Std.int(width * 0.7));
+						updateHitbox();
+
+						antialiasing = FlxG.save.data.antialiasing;
 					}
 				}
 			}
@@ -305,11 +311,21 @@ class Note extends FlxSprite
 			{
 				frames = PlayState.noteskinSprite;
 				loadDefaultAnims();
+
+				setGraphicSize(Std.int(width * 0.7));
+				updateHitbox();
+
+				antialiasing = FlxG.save.data.antialiasing;
 			}
 			else
 			{
 				frames = Paths.getSparrowAtlas('specialnotes/' + texture);
 				loadDefaultAnims();
+
+				setGraphicSize(Std.int(width * 0.7));
+				updateHitbox();
+
+				antialiasing = FlxG.save.data.antialiasing;
 			}
 		}
 
@@ -382,6 +398,16 @@ class Note extends FlxSprite
 		}
 	}
 
+	public function changeStyle()
+	{
+		if (noteTypeCheck == 'pixel')
+			noteTypeCheck = 'normal';
+		else
+			noteTypeCheck = 'pixel';
+		
+		reloadNote(texture);
+	}
+
 	function loadDefaultAnims()
 	{
 		for (i in 0...4)
@@ -390,11 +416,6 @@ class Note extends FlxSprite
 			animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
 			animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
 		}
-
-		setGraphicSize(Std.int(width * 0.7));
-		updateHitbox();
-
-		antialiasing = FlxG.save.data.antialiasing;
 	}
 
 	function loadPixelAnims()
@@ -405,8 +426,5 @@ class Note extends FlxSprite
 			animation.add(dataColor[i] + 'hold', [i]);
 			animation.add(dataColor[i] + 'holdend', [i + 4]);
 		}
-
-		setGraphicSize(Std.int(width * CoolUtil.daPixelZoom));
-		updateHitbox();
 	}
 }

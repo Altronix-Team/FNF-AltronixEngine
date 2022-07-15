@@ -1,10 +1,14 @@
 {
  "song": {
+  "songName": "Stress [Erect Remix]",
+  "songId": "stresserect",
   "player1": "bfAndGF",
-  "songId": "stresstest",
-  "songName": "stresstest",
+  "hideGF": false,
+  "player2": "tankman",
   "notes": [
    {
+    "endTime": 1333.33333333333,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       0,
@@ -63,12 +67,12 @@
       3.50000000000001
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 1333.33333333333,
-    "startTime": 0,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 0
    },
    {
+    "endTime": 2666.66666666667,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       1500,
@@ -141,12 +145,12 @@
       7.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 2666.66666666667,
-    "startTime": 1333.33333333333,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 1333.33333333333
    },
    {
+    "endTime": 4000,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       2666.66666666667,
@@ -205,12 +209,12 @@
       11.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 4000,
-    "startTime": 2666.66666666667,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 2666.66666666667
    },
    {
+    "endTime": 5333.33333333333,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       4166.66666666667,
@@ -276,12 +280,12 @@
       15.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 5333.33333333333,
-    "startTime": 4000,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 4000
    },
    {
+    "endTime": 6666.66666666667,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       5333.33333333333,
@@ -340,12 +344,12 @@
       19.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 6666.66666666667,
-    "startTime": 5333.33333333333,
-    "mustHitSection": true
+    "mustHitSection": true,
+    "startTime": 5333.33333333333
    },
    {
+    "endTime": 8000,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       6833.33333333333,
@@ -418,12 +422,12 @@
       23.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 8000,
-    "startTime": 6666.66666666667,
-    "mustHitSection": true
+    "mustHitSection": true,
+    "startTime": 6666.66666666667
    },
    {
+    "endTime": 9333.33333333333,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       8000,
@@ -482,12 +486,12 @@
       27.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 9333.33333333333,
-    "startTime": 8000,
-    "mustHitSection": true
+    "mustHitSection": true,
+    "startTime": 8000
    },
    {
+    "endTime": 10666.6666666667,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       9500,
@@ -546,12 +550,12 @@
       30
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 10666.6666666667,
-    "startTime": 9333.33333333333,
-    "mustHitSection": true
+    "mustHitSection": true,
+    "startTime": 9333.33333333333
    },
    {
+    "endTime": 12000,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       11000,
@@ -582,12 +586,12 @@
       35.0000000000001
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 12000,
-    "startTime": 10666.6666666667,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 10666.6666666667
    },
    {
+    "endTime": 13333.3333333333,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       12000,
@@ -653,12 +657,12 @@
       38.4999999999999
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 13333.3333333333,
-    "startTime": 12000,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 12000
    },
    {
+    "endTime": 14666.6666666667,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       13333.3333333333,
@@ -724,12 +728,12 @@
       43.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 14666.6666666667,
-    "startTime": 13333.3333333333,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 13333.3333333333
    },
    {
+    "endTime": 16000,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       14666.6666666667,
@@ -872,13 +876,13 @@
       47.4999999999999
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 16000,
     "gfSection": false,
-    "mustHitSection": true,
-    "startTime": 14666.6666666667
+    "startTime": 14666.6666666667,
+    "mustHitSection": true
    },
    {
+    "endTime": 17333.3333333333,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       16000,
@@ -930,13 +934,13 @@
       51
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 17333.3333333333,
     "gfSection": true,
-    "mustHitSection": false,
-    "startTime": 16000
+    "startTime": 16000,
+    "mustHitSection": false
    },
    {
+    "endTime": 18666.6666666667,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       17333.3333333333,
@@ -995,13 +999,13 @@
       54.9999999999999
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 18666.6666666667,
     "gfSection": true,
-    "mustHitSection": false,
-    "startTime": 17333.3333333333
+    "startTime": 17333.3333333333,
+    "mustHitSection": false
    },
    {
+    "endTime": 20000,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       18666.6666666667,
@@ -1088,13 +1092,13 @@
       59.4999999999999
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 20000,
     "gfSection": true,
-    "mustHitSection": false,
-    "startTime": 18666.6666666667
+    "startTime": 18666.6666666667,
+    "mustHitSection": false
    },
    {
+    "endTime": 21333.3333333333,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       20166.6666666667,
@@ -1160,13 +1164,13 @@
       63
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 21333.3333333333,
     "gfSection": true,
-    "mustHitSection": false,
-    "startTime": 20000
+    "startTime": 20000,
+    "mustHitSection": false
    },
    {
+    "endTime": 22666.6666666667,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       21333.3333333333,
@@ -1287,12 +1291,12 @@
       "GF and Dad Sing"
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 22666.6666666667,
-    "startTime": 21333.3333333333,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 21333.3333333333
    },
    {
+    "endTime": 24000,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       23500,
@@ -1420,12 +1424,12 @@
       "GF and Dad Sing"
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 24000,
-    "startTime": 22666.6666666667,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 22666.6666666667
    },
    {
+    "endTime": 25333.3333333333,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       24000,
@@ -1505,7 +1509,7 @@
       0,
       false,
       72.9999999999999,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       24500,
@@ -1513,7 +1517,7 @@
       0,
       false,
       73.5,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       24166.6666666667,
@@ -1521,7 +1525,7 @@
       0,
       false,
       72.5000000000001,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       25000,
@@ -1529,15 +1533,15 @@
       0,
       false,
       75,
-      "GF Sing Note"
+      "GF Sing"
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 25333.3333333333,
-    "startTime": 24000,
-    "mustHitSection": true
+    "mustHitSection": true,
+    "startTime": 24000
    },
    {
+    "endTime": 26666.6666666667,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       25333.3333333333,
@@ -1624,7 +1628,7 @@
       0,
       false,
       76.5,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       25416.75,
@@ -1632,7 +1636,7 @@
       0,
       false,
       76.25025,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       25666.75,
@@ -1640,7 +1644,7 @@
       0,
       false,
       77.00025,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       25833.25,
@@ -1648,7 +1652,7 @@
       0,
       true,
       77.49975,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       26333.25,
@@ -1656,15 +1660,15 @@
       0,
       true,
       78.99975,
-      "GF Sing Note"
+      "GF Sing"
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 26666.6666666667,
-    "startTime": 25333.3333333333,
-    "mustHitSection": true
+    "mustHitSection": true,
+    "startTime": 25333.3333333333
    },
    {
+    "endTime": 28000,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       26666.6666666667,
@@ -1743,12 +1747,12 @@
       "GF and Dad Sing"
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 28000,
-    "startTime": 26666.6666666667,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 26666.6666666667
    },
    {
+    "endTime": 29333.3333333333,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       28000,
@@ -1840,7 +1844,7 @@
       0,
       true,
       85.25025,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       29250,
@@ -1848,7 +1852,7 @@
       0,
       true,
       87.75,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       29333.25,
@@ -1859,12 +1863,12 @@
       "Bullet Note"
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 29333.3333333333,
-    "startTime": 28000,
-    "mustHitSection": true
+    "mustHitSection": true,
+    "startTime": 28000
    },
    {
+    "endTime": 30666.6666666667,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       29500,
@@ -1947,12 +1951,12 @@
       "Bullet Note"
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 30666.6666666667,
-    "startTime": 29333.3333333333,
-    "mustHitSection": true
+    "mustHitSection": true,
+    "startTime": 29333.3333333333
    },
    {
+    "endTime": 32000,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       30666.6666666667,
@@ -2071,7 +2075,7 @@
       0,
       false,
       95.75025,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       31750,
@@ -2079,7 +2083,7 @@
       0,
       false,
       95.25,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       31166.75,
@@ -2087,7 +2091,7 @@
       0,
       false,
       93.50025,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       30833.25,
@@ -2095,15 +2099,15 @@
       0,
       false,
       92.49975,
-      "GF Sing Note"
+      "GF Sing"
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 32000,
-    "startTime": 30666.6666666667,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 30666.6666666667
    },
    {
+    "endTime": 33333.3333333333,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       32000,
@@ -2176,12 +2180,12 @@
       99.75
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 33333.3333333333,
-    "startTime": 32000,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 32000
    },
    {
+    "endTime": 34666.6666666667,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       33333.3333333333,
@@ -2247,12 +2251,12 @@
       103.75
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 34666.6666666667,
-    "startTime": 33333.3333333333,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 33333.3333333333
    },
    {
+    "endTime": 36000,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       34666.6666666667,
@@ -2318,12 +2322,12 @@
       107.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 36000,
-    "startTime": 34666.6666666667,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 34666.6666666667
    },
    {
+    "endTime": 37333.3333333333,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       36000,
@@ -2397,12 +2401,12 @@
       "Bullet Note"
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 37333.3333333333,
-    "startTime": 36000,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 36000
    },
    {
+    "endTime": 38666.6666666667,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       38000,
@@ -2468,13 +2472,13 @@
       115
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 38666.6666666667,
     "gfSection": true,
-    "mustHitSection": false,
-    "startTime": 37333.3333333333
+    "startTime": 37333.3333333333,
+    "mustHitSection": false
    },
    {
+    "endTime": 40000,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       38666.6666666667,
@@ -2554,13 +2558,13 @@
       119.125
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 40000,
     "gfSection": true,
-    "mustHitSection": false,
-    "startTime": 38666.6666666667
+    "startTime": 38666.6666666667,
+    "mustHitSection": false
    },
    {
+    "endTime": 41333.3333333333,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       40000,
@@ -2640,13 +2644,13 @@
       122
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 41333.3333333333,
     "gfSection": true,
-    "mustHitSection": false,
-    "startTime": 40000
+    "startTime": 40000,
+    "mustHitSection": false
    },
    {
+    "endTime": 42666.6666666667,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       41333.3333333333,
@@ -2705,13 +2709,13 @@
       127
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 42666.6666666667,
     "gfSection": true,
-    "mustHitSection": false,
-    "startTime": 41333.3333333333
+    "startTime": 41333.3333333333,
+    "mustHitSection": false
    },
    {
+    "endTime": 44000,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       42666.6666666667,
@@ -2791,12 +2795,12 @@
       131.75
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 44000,
-    "startTime": 42666.6666666667,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 42666.6666666667
    },
    {
+    "endTime": 45333.3333333333,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       44000,
@@ -2869,12 +2873,12 @@
       135.75
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 45333.3333333333,
-    "startTime": 44000,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 44000
    },
    {
+    "endTime": 46666.6666666667,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       45333.3333333333,
@@ -2940,12 +2944,12 @@
       139.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 46666.6666666667,
-    "startTime": 45333.3333333333,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 45333.3333333333
    },
    {
+    "endTime": 48000,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       46666.6666666667,
@@ -3004,12 +3008,12 @@
       143.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 48000,
-    "startTime": 46666.6666666667,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 46666.6666666667
    },
    {
+    "endTime": 49333.3333333333,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       48250,
@@ -3097,13 +3101,13 @@
       "Bullet Note"
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 49333.3333333333,
     "gfSection": true,
-    "mustHitSection": false,
-    "startTime": 48000
+    "startTime": 48000,
+    "mustHitSection": false
    },
    {
+    "endTime": 50666.6666666667,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       49333.3333333334,
@@ -3197,13 +3201,13 @@
       151
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 50666.6666666667,
     "gfSection": true,
-    "mustHitSection": false,
-    "startTime": 49333.3333333333
+    "startTime": 49333.3333333333,
+    "mustHitSection": false
    },
    {
+    "endTime": 52000,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       50666.6666666667,
@@ -3318,13 +3322,13 @@
       155.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 52000,
     "gfSection": true,
-    "mustHitSection": false,
-    "startTime": 50666.6666666667
+    "startTime": 50666.6666666667,
+    "mustHitSection": false
    },
    {
+    "endTime": 53333.3333333333,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       52000,
@@ -3453,13 +3457,13 @@
       159.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 53333.3333333333,
     "gfSection": true,
-    "mustHitSection": false,
-    "startTime": 52000
+    "startTime": 52000,
+    "mustHitSection": false
    },
    {
+    "endTime": 54666.6666666667,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       53333.3333333333,
@@ -3525,12 +3529,12 @@
       160
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 54666.6666666667,
-    "startTime": 53333.3333333333,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 53333.3333333333
    },
    {
+    "endTime": 56000,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       54833.3333333333,
@@ -3596,12 +3600,12 @@
       166
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 56000,
-    "startTime": 54666.6666666667,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 54666.6666666667
    },
    {
+    "endTime": 57333.3333333333,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       56000,
@@ -3667,12 +3671,12 @@
       168
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 57333.3333333333,
-    "startTime": 56000,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 56000
    },
    {
+    "endTime": 58666.6666666667,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       57500,
@@ -3745,12 +3749,12 @@
       174
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 58666.6666666667,
-    "startTime": 57333.3333333333,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 57333.3333333333
    },
    {
+    "endTime": 60000,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       58666.6666666667,
@@ -3837,12 +3841,12 @@
       179.25
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 60000,
-    "startTime": 58666.6666666667,
-    "mustHitSection": true
+    "mustHitSection": true,
+    "startTime": 58666.6666666667
    },
    {
+    "endTime": 61333.3333333333,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       60666.6666666667,
@@ -3922,12 +3926,12 @@
       181.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 61333.3333333333,
-    "startTime": 60000,
-    "mustHitSection": true
+    "mustHitSection": true,
+    "startTime": 60000
    },
    {
+    "endTime": 62666.6666666667,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       61500,
@@ -3935,7 +3939,7 @@
       0,
       true,
       184.5,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       61333.3333333334,
@@ -3943,7 +3947,7 @@
       0,
       true,
       184,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       61666.6666666667,
@@ -3951,7 +3955,7 @@
       0,
       true,
       185,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       61833.3333333334,
@@ -3959,7 +3963,7 @@
       0,
       true,
       185.5,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       62000,
@@ -3967,7 +3971,7 @@
       0,
       true,
       186,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       62166.6666666667,
@@ -3975,7 +3979,7 @@
       0,
       true,
       186.5,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       62333.3333333334,
@@ -3983,7 +3987,7 @@
       0,
       true,
       187,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       62500,
@@ -3991,16 +3995,16 @@
       0,
       true,
       187.5,
-      "GF Sing Note"
+      "GF Sing"
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 62666.6666666667,
     "altAnim": false,
-    "mustHitSection": false,
-    "startTime": 61333.3333333333
+    "startTime": 61333.3333333333,
+    "mustHitSection": false
    },
    {
+    "endTime": 64000,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       62666.6666666667,
@@ -4008,7 +4012,7 @@
       0,
       true,
       188,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       62833.3333333334,
@@ -4016,7 +4020,7 @@
       0,
       true,
       188.5,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       63000,
@@ -4024,7 +4028,7 @@
       0,
       true,
       189,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       63166.6666666667,
@@ -4032,7 +4036,7 @@
       0,
       true,
       189.5,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       63333.3333333334,
@@ -4040,7 +4044,7 @@
       0,
       true,
       190,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       63500,
@@ -4048,7 +4052,7 @@
       0,
       true,
       190.5,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       63666.6666666667,
@@ -4056,7 +4060,7 @@
       0,
       true,
       191,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       63833.3333333334,
@@ -4064,7 +4068,7 @@
       0,
       true,
       191.5,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       62666.6666666667,
@@ -4081,12 +4085,12 @@
       190
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 64000,
-    "startTime": 62666.6666666667,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 62666.6666666667
    },
    {
+    "endTime": 65333.3333333333,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       64000,
@@ -4159,12 +4163,12 @@
       195.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 65333.3333333333,
-    "startTime": 64000,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 64000
    },
    {
+    "endTime": 66666.6666666667,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       65333.3333333334,
@@ -4272,12 +4276,12 @@
       199.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 66666.6666666667,
-    "startTime": 65333.3333333333,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 65333.3333333333
    },
    {
+    "endTime": 68000,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       66666.6666666667,
@@ -4385,12 +4389,12 @@
       203.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 68000,
-    "startTime": 66666.6666666667,
-    "mustHitSection": true
+    "mustHitSection": true,
+    "startTime": 66666.6666666667
    },
    {
+    "endTime": 69333.3333333333,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       68000,
@@ -4491,12 +4495,12 @@
       207
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 69333.3333333333,
-    "startTime": 68000,
-    "mustHitSection": true
+    "mustHitSection": true,
+    "startTime": 68000
    },
    {
+    "endTime": 70666.6666666667,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       69500,
@@ -4555,12 +4559,12 @@
       211.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 70666.6666666667,
-    "startTime": 69333.3333333333,
-    "mustHitSection": true
+    "mustHitSection": true,
+    "startTime": 69333.3333333333
    },
    {
+    "endTime": 72000,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       70833.3333333334,
@@ -4633,12 +4637,12 @@
       215.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 72000,
-    "startTime": 70666.6666666667,
-    "mustHitSection": true
+    "mustHitSection": true,
+    "startTime": 70666.6666666667
    },
    {
+    "endTime": 73333.3333333333,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       72166.6666666667,
@@ -4753,12 +4757,12 @@
       219.75
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 73333.3333333333,
-    "startTime": 72000,
-    "mustHitSection": true
+    "mustHitSection": true,
+    "startTime": 72000
    },
    {
+    "endTime": 74666.6666666667,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       73333.3333333334,
@@ -4836,7 +4840,7 @@
       0,
       true,
       220,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       73500,
@@ -4844,7 +4848,7 @@
       0,
       true,
       220.5,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       73416.6666666667,
@@ -4852,7 +4856,7 @@
       0,
       true,
       220.25,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       73583.3333333334,
@@ -4860,7 +4864,7 @@
       0,
       true,
       220.75,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       73666.6666666667,
@@ -4868,7 +4872,7 @@
       0,
       true,
       221,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       73750,
@@ -4876,7 +4880,7 @@
       0,
       true,
       221.25,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       73833.3333333334,
@@ -4884,7 +4888,7 @@
       0,
       true,
       221.5,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       73916.6666666667,
@@ -4892,7 +4896,7 @@
       0,
       true,
       221.75,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       74000,
@@ -4900,7 +4904,7 @@
       0,
       true,
       222,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       74166.6666666667,
@@ -4908,7 +4912,7 @@
       0,
       true,
       222.5,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       74333.3333333334,
@@ -4916,7 +4920,7 @@
       0,
       true,
       223,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       74500,
@@ -4924,7 +4928,7 @@
       0,
       true,
       223.5,
-      "GF Sing Note"
+      "GF Sing"
      ],
      [
       74583.3333333334,
@@ -4932,15 +4936,15 @@
       0,
       true,
       223.75,
-      "GF Sing Note"
+      "GF Sing"
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 74666.6666666667,
-    "startTime": 73333.3333333333,
-    "mustHitSection": true
+    "mustHitSection": true,
+    "startTime": 73333.3333333333
    },
    {
+    "endTime": 76000,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       74666.6666666667,
@@ -5006,12 +5010,12 @@
       225.75
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 76000,
-    "startTime": 74666.6666666667,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 74666.6666666667
    },
    {
+    "endTime": 77333.3333333333,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       76000,
@@ -5070,12 +5074,12 @@
       231.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 77333.3333333333,
-    "startTime": 76000,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 76000
    },
    {
+    "endTime": 78666.6666666667,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       77333.3333333333,
@@ -5162,12 +5166,12 @@
       235.75
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 78666.6666666667,
-    "startTime": 77333.3333333333,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 77333.3333333333
    },
    {
+    "endTime": 80000,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       78666.6666666667,
@@ -5240,12 +5244,12 @@
       239.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 80000,
-    "startTime": 78666.6666666667,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 78666.6666666667
    },
    {
+    "endTime": 81333.3333333333,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       80000,
@@ -5311,13 +5315,13 @@
       243.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 81333.3333333333,
     "gfSection": true,
-    "mustHitSection": true,
-    "startTime": 80000
+    "startTime": 80000,
+    "mustHitSection": true
    },
    {
+    "endTime": 82666.6666666667,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       81333.3333333333,
@@ -5383,13 +5387,13 @@
       247
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 82666.6666666667,
     "gfSection": true,
-    "mustHitSection": true,
-    "startTime": 81333.3333333333
+    "startTime": 81333.3333333333,
+    "mustHitSection": true
    },
    {
+    "endTime": 84000,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       82666.6666666667,
@@ -5462,13 +5466,13 @@
       251.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 84000,
     "gfSection": true,
-    "mustHitSection": true,
-    "startTime": 82666.6666666667
+    "startTime": 82666.6666666667,
+    "mustHitSection": true
    },
    {
+    "endTime": 85333.3333333333,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       84000,
@@ -5527,13 +5531,13 @@
       255.125
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 85333.3333333333,
     "gfSection": true,
-    "mustHitSection": true,
-    "startTime": 84000
+    "startTime": 84000,
+    "mustHitSection": true
    },
    {
+    "endTime": 86666.6666666667,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       85333.3333333333,
@@ -5606,12 +5610,12 @@
       259.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 86666.6666666667,
-    "startTime": 85333.3333333333,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 85333.3333333333
    },
    {
+    "endTime": 88000,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       86666.6666666666,
@@ -5684,12 +5688,12 @@
       263.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 88000,
-    "startTime": 86666.6666666667,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 86666.6666666667
    },
    {
+    "endTime": 89333.3333333333,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       88000,
@@ -5769,12 +5773,12 @@
       267.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 89333.3333333333,
-    "startTime": 88000,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 88000
    },
    {
+    "endTime": 90666.6666666667,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       89333.3333333333,
@@ -5854,12 +5858,12 @@
       271
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 90666.6666666667,
-    "startTime": 89333.3333333333,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 89333.3333333333
    },
    {
+    "endTime": 92000,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       90666.6666666666,
@@ -5932,13 +5936,13 @@
       275.75
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 92000,
     "gfSection": true,
-    "mustHitSection": true,
-    "startTime": 90666.6666666667
+    "startTime": 90666.6666666667,
+    "mustHitSection": true
    },
    {
+    "endTime": 93333.3333333333,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       92000,
@@ -6004,13 +6008,13 @@
       279
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 93333.3333333333,
     "gfSection": true,
-    "mustHitSection": true,
-    "startTime": 92000
+    "startTime": 92000,
+    "mustHitSection": true
    },
    {
+    "endTime": 94666.6666666667,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       93333.3333333333,
@@ -6097,13 +6101,13 @@
       283.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 94666.6666666667,
     "gfSection": true,
-    "mustHitSection": true,
-    "startTime": 93333.3333333333
+    "startTime": 93333.3333333333,
+    "mustHitSection": true
    },
    {
+    "endTime": 96000,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       94666.6666666666,
@@ -6162,13 +6166,13 @@
       287.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 96000,
     "gfSection": true,
-    "mustHitSection": true,
-    "startTime": 94666.6666666667
+    "startTime": 94666.6666666667,
+    "mustHitSection": true
    },
    {
+    "endTime": 97333.3333333333,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       95999.9999999999,
@@ -6248,12 +6252,12 @@
       291.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 97333.3333333333,
-    "startTime": 96000,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 96000
    },
    {
+    "endTime": 98666.6666666667,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       97333.3333333333,
@@ -6319,12 +6323,12 @@
       295.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 98666.6666666667,
-    "startTime": 97333.3333333333,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 97333.3333333333
    },
    {
+    "endTime": 100000,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       98666.6666666666,
@@ -6404,12 +6408,12 @@
       299.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 100000,
-    "startTime": 98666.6666666667,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 98666.6666666667
    },
    {
+    "endTime": 101333.333333333,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       99999.9999999999,
@@ -6475,12 +6479,12 @@
       303.500000000001
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 101333.333333333,
-    "startTime": 100000,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 100000
    },
    {
+    "endTime": 102666.666666667,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       101333.333333333,
@@ -6560,12 +6564,12 @@
       307.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 102666.666666667,
-    "startTime": 101333.333333333,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 101333.333333333
    },
    {
+    "endTime": 104000,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       102666.666666667,
@@ -6631,12 +6635,12 @@
       311.499999999999
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 104000,
-    "startTime": 102666.666666667,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 102666.666666667
    },
    {
+    "endTime": 105333.333333333,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       104000,
@@ -6716,12 +6720,12 @@
       315.500000000001
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 105333.333333333,
-    "startTime": 104000,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 104000
    },
    {
+    "endTime": 106666.666666667,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       105333.333333333,
@@ -6787,12 +6791,12 @@
       319.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 106666.666666667,
-    "startTime": 105333.333333333,
-    "mustHitSection": false
+    "mustHitSection": false,
+    "startTime": 105333.333333333
    },
    {
+    "endTime": 108000,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       106666.666666667,
@@ -6942,13 +6946,13 @@
       323.499999999999
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 108000,
     "gfSection": false,
-    "mustHitSection": true,
-    "startTime": 106666.666666667
+    "startTime": 106666.666666667,
+    "mustHitSection": true
    },
    {
+    "endTime": 109333.333333333,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       108000,
@@ -7084,12 +7088,12 @@
       327.500000000001
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 109333.333333333,
-    "startTime": 108000,
-    "mustHitSection": true
+    "mustHitSection": true,
+    "startTime": 108000
    },
    {
+    "endTime": 110666.666666667,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       109333.333333333,
@@ -7239,12 +7243,12 @@
       331.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 110666.666666667,
-    "startTime": 109333.333333333,
-    "mustHitSection": true
+    "mustHitSection": true,
+    "startTime": 109333.333333333
    },
    {
+    "endTime": 112000,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       110666.666666667,
@@ -7394,12 +7398,12 @@
       333.500000000001
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 112000,
-    "startTime": 110666.666666667,
-    "mustHitSection": true
+    "mustHitSection": true,
+    "startTime": 110666.666666667
    },
    {
+    "endTime": 113333.333333333,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       112000,
@@ -7549,13 +7553,13 @@
       339.500000000001
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 113333.333333333,
     "gfSection": true,
-    "mustHitSection": true,
-    "startTime": 112000
+    "startTime": 112000,
+    "mustHitSection": true
    },
    {
+    "endTime": 114666.666666667,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       113333.333333333,
@@ -7698,13 +7702,13 @@
       340.5
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 114666.666666667,
     "gfSection": true,
-    "mustHitSection": true,
-    "startTime": 113333.333333333
+    "startTime": 113333.333333333,
+    "mustHitSection": true
    },
    {
+    "endTime": 116000,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       114666.666666667,
@@ -7875,13 +7879,13 @@
       347.750000000001
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 116000,
     "gfSection": true,
-    "mustHitSection": true,
-    "startTime": 114666.666666667
+    "startTime": 114666.666666667,
+    "mustHitSection": true
    },
    {
+    "endTime": 117333.333333333,
+    "lengthInSteps": 16,
     "sectionNotes": [
      [
       116000,
@@ -8003,2931 +8007,47 @@
       351.500000000001
      ]
     ],
-    "lengthInSteps": 16,
-    "endTime": 117333.333333333,
     "gfSection": true,
-    "mustHitSection": true,
-    "startTime": 116000
+    "startTime": 116000,
+    "mustHitSection": true
    },
    {
-    "sectionNotes": [],
-    "lengthInSteps": 16,
     "endTime": 118666.666666667,
-    "startTime": 117333.333333333,
-    "mustHitSection": false
+    "lengthInSteps": 16,
+    "sectionNotes": [],
+    "mustHitSection": false,
+    "startTime": 117333.333333333
    },
    {
-    "sectionNotes": [],
-    "lengthInSteps": 16,
     "endTime": 120000,
-    "startTime": 118666.666666667,
-    "mustHitSection": false
+    "lengthInSteps": 16,
+    "sectionNotes": [],
+    "mustHitSection": false,
+    "startTime": 118666.666666667
    },
    {
-    "sectionNotes": [],
-    "lengthInSteps": 16,
     "endTime": 121333.333333333,
-    "startTime": 120000,
-    "mustHitSection": true
+    "lengthInSteps": 16,
+    "sectionNotes": [],
+    "mustHitSection": true,
+    "startTime": 120000
    },
    {
-    "sectionNotes": [],
-    "lengthInSteps": 16,
     "endTime": null,
-    "startTime": 121333.333333333,
-    "mustHitSection": true
+    "lengthInSteps": 16,
+    "sectionNotes": [],
+    "mustHitSection": true,
+    "startTime": 121333.333333333
    }
   ],
-  "player2": "tankman",
-  "hideGF": false,
-  "player3": null,
   "showbgdancers": false,
+  "player3": null,
+  "offset": 0,
   "song": "Stress",
   "validScore": true,
   "speed": 3.2,
   "gfVersion": "picospeaker-player",
-  "events": [
-   [
-    0,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    166.666666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    250,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    333.333333333333,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    500,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    750,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    833.333333333333,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    1000,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    1166.66666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    1250,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    1333.33333333333,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    1500,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    1583.33333333333,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    1666.66666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    1833.33333333333,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    2083.33333333333,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    2166.66666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    2333.33333333333,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    2500,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    2666.66666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    2833.33333333333,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    2916.66666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    3000,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    3166.66666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    3416.66666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    3500,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    3666.66666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    3916.66666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    4000,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    4166.66666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    4250,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    4333.33333333333,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    4500,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    4750,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    4833.33333333333,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    5000,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    5333.33333333333,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    5500,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    5583.33333333333,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    5666.66666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    5833.33333333333,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    6083.33333333333,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    6166.66666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    6333.33333333333,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    6500,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    6583.33333333333,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    6666.66666666666,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    6833.33333333333,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    6916.66666666666,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    7000,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    7166.66666666666,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    7416.66666666666,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    7500,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    7666.66666666666,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    7833.33333333333,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    8000,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    8166.66666666666,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    8250,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    8333.33333333333,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    8500,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    8750,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    8833.33333333333,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    9000,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    9250,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    9333.33333333333,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    9500,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    9583.33333333333,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    9666.66666666666,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    9833.33333333333,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    32666.6666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    33666.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    34000,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    34666.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ],
-     [
-      "Screen Shake",
-      "0.7, 0.01",
-      ""
-     ]
-    ]
-   ],
-   [
-    35333.3333333333,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    35833.3333333333,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    36333.3333333333,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    36666.6666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    40000,
-    [
-     [
-      "Screen Shake",
-      "0.7, 0.01",
-      ""
-     ]
-    ]
-   ],
-   [
-    42666.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    43333.3333333333,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    44333.3333333333,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    44666.6666666666,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    45333.3333333333,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    45333.3333333333,
-    [
-     [
-      "Screen Shake",
-      "0.7, 0.01",
-      ""
-     ]
-    ]
-   ],
-   [
-    46000,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    46500,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    47000,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    47333.3333333333,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    50666.6666666667,
-    [
-     [
-      "Screen Shake",
-      "0.7, 0.01",
-      ""
-     ]
-    ]
-   ],
-   [
-    53333.3333333334,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    53666.6666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    54000,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    54333.3333333334,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    54666.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    55000,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    55333.3333333334,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    55666.6666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    55750,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    55833.3333333334,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    55916.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    56000,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    56333.3333333334,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    56666.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    57000,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    57333.3333333334,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    57666.6666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    58000,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    58083.3333333334,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    58166.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    58333.3333333334,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    58416.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    58500,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    58541.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    58583.3333333334,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    58625,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    58666.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    59000,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    59333.3333333334,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    59666.6666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    60000,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    60000,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    60333.3333333334,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    60666.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    61000,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    61166.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    64000,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    64166.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    64333.3333333334,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    64500,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    64583.3333333334,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    64666.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    64750,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    64833.3333333334,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    65000,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    65166.6666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    65250,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    65333.3333333334,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    65500,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    65666.6666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    65833.3333333334,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    65916.6666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    66000,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    66083.3333333334,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    66166.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    66333.3333333334,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    66500,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    66583.3333333334,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    66666.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    66833.3333333334,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    67000,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    67166.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    67250,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    67333.3333333334,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    67416.6666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    67500,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    67666.6666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    67833.3333333334,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    67916.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    68000,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    68166.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    68333.3333333334,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    68500,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    68583.3333333334,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    68666.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    68750,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    68833.3333333334,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    69000,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    69333.3333333334,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    69500,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    69666.6666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    69833.3333333334,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    69916.6666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    70000,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    70083.3333333334,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    70166.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    70333.3333333334,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    70500,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    70583.3333333334,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    70666.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    70833.3333333334,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    71000,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    71166.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    71250,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    71333.3333333334,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    71416.6666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    71500,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    71666.6666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    71833.3333333334,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    71916.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    72000,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    72166.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    72333.3333333334,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    72500,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    72583.3333333334,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    72666.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    72750,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    72833.3333333334,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    73000,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    73166.6666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    73250,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    74666.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    74916.6666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    75083.3333333334,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    75250,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    75666.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    76333.3333333333,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    76666.6666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    76833.3333333333,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    77000,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    77166.6666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    77333.3333333334,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    77583.3333333334,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    77750,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    77916.6666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    78333.3333333334,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    79000,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    79333.3333333334,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    79500,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    79666.6666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    85333.3333333334,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    85583.3333333334,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    85750,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    85916.6666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    86333.3333333334,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    87000,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    87333.3333333334,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    87500,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    87666.6666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    87833.3333333334,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    88000,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    88250,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    88416.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    88583.3333333334,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    89000,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    89333.3333333333,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    89666.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    90000,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    90166.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    90333.3333333334,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    96000,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    96166.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    96333.3333333334,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    96500,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    96583.3333333334,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    96666.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    96750,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    96833.3333333334,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    97000,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    97166.6666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    97333.3333333334,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    97500,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    97666.6666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    97833.3333333334,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    97916.6666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    98000,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ],
-     [
-      "Screen Shake",
-      "0.58, 0.01",
-      ""
-     ]
-    ]
-   ],
-   [
-    98041.6666666666,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    98083.3333333333,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    98124.9999999999,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    98166.6666666666,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    98208.3333333333,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    98249.9999999999,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    98291.6666666666,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    98333.3333333333,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    98374.9999999999,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    98416.6666666666,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    98458.3333333333,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    98499.9999999999,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    98666.6666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    99333.3333333333,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    100333.333333333,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    100666.666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    101333.333333333,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    102000,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    103000,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    103333.333333333,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    104000,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    104666.666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    105666.666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    106000,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    106666.666666667,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    107333.333333333,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    108333.333333333,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    108666.666666667,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    109333.333333333,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    110000,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ],
-   [
-    111000,
-    [
-     [
-      "Tankman Note",
-      "left",
-      ""
-     ]
-    ]
-   ],
-   [
-    111333.333333333,
-    [
-     [
-      "Tankman Note",
-      "right",
-      ""
-     ]
-    ]
-   ]
-  ],
+  "events": null,
   "chartVersion": "AE1",
   "eventObjects": [
    {
@@ -10935,11 +8055,1733 @@
     "position": 0,
     "value": 180,
     "type": "BPM Change"
+   },
+   {
+    "name": "Psych Event 0",
+    "position": 0,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 0.5",
+    "position": 0.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 0.75",
+    "position": 0.75,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 1",
+    "position": 1,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 1.5",
+    "position": 1.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 2.25",
+    "position": 2.25,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 2.5",
+    "position": 2.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 3",
+    "position": 3,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 3.5",
+    "position": 3.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 3.75",
+    "position": 3.75,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 4",
+    "position": 4,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 4.5",
+    "position": 4.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 4.75",
+    "position": 4.75,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 5",
+    "position": 5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 5.5",
+    "position": 5.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 6.25",
+    "position": 6.25,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 6.5",
+    "position": 6.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 7",
+    "position": 7,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 7.5",
+    "position": 7.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 8",
+    "position": 8,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 8.5",
+    "position": 8.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 8.75",
+    "position": 8.75,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 9",
+    "position": 9,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 9.5",
+    "position": 9.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 10.25",
+    "position": 10.25,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 10.5",
+    "position": 10.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 11",
+    "position": 11,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 11.75",
+    "position": 11.75,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 12",
+    "position": 12,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 12.5",
+    "position": 12.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 12.75",
+    "position": 12.75,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 13",
+    "position": 13,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 13.5",
+    "position": 13.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 14.25",
+    "position": 14.25,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 14.5",
+    "position": 14.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 15",
+    "position": 15,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 16",
+    "position": 16,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 16.5",
+    "position": 16.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 16.75",
+    "position": 16.75,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 17",
+    "position": 17,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 17.5",
+    "position": 17.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 18.25",
+    "position": 18.25,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 18.5",
+    "position": 18.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 19",
+    "position": 19,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 19.5",
+    "position": 19.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 19.75",
+    "position": 19.75,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 20",
+    "position": 20,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 20.5",
+    "position": 20.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 20.75",
+    "position": 20.75,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 21",
+    "position": 21,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 21.5",
+    "position": 21.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 22.25",
+    "position": 22.25,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 22.5",
+    "position": 22.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 23",
+    "position": 23,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 23.5",
+    "position": 23.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 24",
+    "position": 24,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 24.5",
+    "position": 24.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 24.75",
+    "position": 24.75,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 25",
+    "position": 25,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 25.5",
+    "position": 25.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 26.25",
+    "position": 26.25,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 26.5",
+    "position": 26.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 27",
+    "position": 27,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 27.75",
+    "position": 27.75,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 28",
+    "position": 28,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 28.5",
+    "position": 28.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 28.75",
+    "position": 28.75,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 29",
+    "position": 29,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 29.5",
+    "position": 29.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 98",
+    "position": 98,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 101",
+    "position": 101,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 102",
+    "position": 102,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 104",
+    "position": 104,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 104",
+    "position": 104,
+    "value": "0.7, 0.01",
+    "type": "Screen Shake"
+   },
+   {
+    "name": "Psych Event 106",
+    "position": 106,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 107.5",
+    "position": 107.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 109",
+    "position": 109,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 110",
+    "position": 110,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 120",
+    "position": 120,
+    "value": "0.7, 0.01",
+    "type": "Screen Shake"
+   },
+   {
+    "name": "Psych Event 128",
+    "position": 128,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 130",
+    "position": 130,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 133",
+    "position": 133,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 134",
+    "position": 134,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 136",
+    "position": 136,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 138",
+    "position": 138,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 139.5",
+    "position": 139.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 141",
+    "position": 141,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 142",
+    "position": 142,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 152",
+    "position": 152,
+    "value": "0.7, 0.01",
+    "type": "Screen Shake"
+   },
+   {
+    "name": "Psych Event 160",
+    "position": 160,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 161",
+    "position": 161,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 162",
+    "position": 162,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 163",
+    "position": 163,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 164",
+    "position": 164,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 165",
+    "position": 165,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 166",
+    "position": 166,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 167",
+    "position": 167,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 167.25",
+    "position": 167.25,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 167.5",
+    "position": 167.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 167.75",
+    "position": 167.75,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 168",
+    "position": 168,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 169",
+    "position": 169,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 170",
+    "position": 170,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 171",
+    "position": 171,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 172",
+    "position": 172,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 173",
+    "position": 173,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 174",
+    "position": 174,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 174.25",
+    "position": 174.25,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 174.5",
+    "position": 174.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 175",
+    "position": 175,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 175.25",
+    "position": 175.25,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 175.5",
+    "position": 175.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 175.625",
+    "position": 175.625,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 175.75",
+    "position": 175.75,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 175.875",
+    "position": 175.875,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 176",
+    "position": 176,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 177",
+    "position": 177,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 178",
+    "position": 178,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 179",
+    "position": 179,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 180",
+    "position": 180,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 181",
+    "position": 181,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 182",
+    "position": 182,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 183",
+    "position": 183,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 183.5",
+    "position": 183.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 192",
+    "position": 192,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 192.5",
+    "position": 192.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 193",
+    "position": 193,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 193.5",
+    "position": 193.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 193.75",
+    "position": 193.75,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 194",
+    "position": 194,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 194.25",
+    "position": 194.25,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 194.5",
+    "position": 194.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 195",
+    "position": 195,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 195.5",
+    "position": 195.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 195.75",
+    "position": 195.75,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 196",
+    "position": 196,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 196.5",
+    "position": 196.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 197",
+    "position": 197,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 197.5",
+    "position": 197.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 197.75",
+    "position": 197.75,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 198",
+    "position": 198,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 198.25",
+    "position": 198.25,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 198.5",
+    "position": 198.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 199",
+    "position": 199,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 199.5",
+    "position": 199.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 199.75",
+    "position": 199.75,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 200",
+    "position": 200,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 200.5",
+    "position": 200.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 201",
+    "position": 201,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 201.5",
+    "position": 201.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 201.75",
+    "position": 201.75,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 202",
+    "position": 202,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 202.25",
+    "position": 202.25,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 202.5",
+    "position": 202.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 203",
+    "position": 203,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 203.5",
+    "position": 203.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 203.75",
+    "position": 203.75,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 204",
+    "position": 204,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 204.5",
+    "position": 204.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 205",
+    "position": 205,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 205.5",
+    "position": 205.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 205.75",
+    "position": 205.75,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 206",
+    "position": 206,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 206.25",
+    "position": 206.25,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 206.5",
+    "position": 206.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 207",
+    "position": 207,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 208",
+    "position": 208,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 208.5",
+    "position": 208.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 209",
+    "position": 209,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 209.5",
+    "position": 209.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 209.75",
+    "position": 209.75,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 210",
+    "position": 210,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 210.25",
+    "position": 210.25,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 210.5",
+    "position": 210.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 211",
+    "position": 211,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 211.5",
+    "position": 211.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 211.75",
+    "position": 211.75,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 212",
+    "position": 212,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 212.5",
+    "position": 212.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 213",
+    "position": 213,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 213.5",
+    "position": 213.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 213.75",
+    "position": 213.75,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 214",
+    "position": 214,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 214.25",
+    "position": 214.25,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 214.5",
+    "position": 214.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 215",
+    "position": 215,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 215.5",
+    "position": 215.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 215.75",
+    "position": 215.75,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 216",
+    "position": 216,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 216.5",
+    "position": 216.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 217",
+    "position": 217,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 217.5",
+    "position": 217.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 217.75",
+    "position": 217.75,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 218",
+    "position": 218,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 218.25",
+    "position": 218.25,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 218.5",
+    "position": 218.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 219",
+    "position": 219,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 219.5",
+    "position": 219.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 219.75",
+    "position": 219.75,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 224",
+    "position": 224,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 224.75",
+    "position": 224.75,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 225.25",
+    "position": 225.25,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 225.75",
+    "position": 225.75,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 227",
+    "position": 227,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 229",
+    "position": 229,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 230",
+    "position": 230,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 230.5",
+    "position": 230.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 231",
+    "position": 231,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 231.5",
+    "position": 231.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 232",
+    "position": 232,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 232.75",
+    "position": 232.75,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 233.25",
+    "position": 233.25,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 233.75",
+    "position": 233.75,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 235",
+    "position": 235,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 237",
+    "position": 237,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 238",
+    "position": 238,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 238.5",
+    "position": 238.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 239",
+    "position": 239,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 256",
+    "position": 256,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 256.75",
+    "position": 256.75,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 257.25",
+    "position": 257.25,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 257.75",
+    "position": 257.75,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 259",
+    "position": 259,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 261",
+    "position": 261,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 262",
+    "position": 262,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 262.5",
+    "position": 262.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 263",
+    "position": 263,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 263.5",
+    "position": 263.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 264",
+    "position": 264,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 264.75",
+    "position": 264.75,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 265.25",
+    "position": 265.25,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 265.75",
+    "position": 265.75,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 267",
+    "position": 267,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 268",
+    "position": 268,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 269",
+    "position": 269,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 270",
+    "position": 270,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 270.5",
+    "position": 270.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 271",
+    "position": 271,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 288",
+    "position": 288,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 288.5",
+    "position": 288.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 289",
+    "position": 289,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 289.5",
+    "position": 289.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 289.75",
+    "position": 289.75,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 290",
+    "position": 290,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 290.25",
+    "position": 290.25,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 290.5",
+    "position": 290.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 291",
+    "position": 291,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 291.5",
+    "position": 291.5,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 292",
+    "position": 292,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 292.5",
+    "position": 292.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 293",
+    "position": 293,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 293.5",
+    "position": 293.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 293.75",
+    "position": 293.75,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 294",
+    "position": 294,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 294",
+    "position": 294,
+    "value": "0.58, 0.01",
+    "type": "Screen Shake"
+   },
+   {
+    "name": "Psych Event 294.125",
+    "position": 294.125,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 294.25",
+    "position": 294.25,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 294.375",
+    "position": 294.375,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 294.5",
+    "position": 294.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 294.625",
+    "position": 294.625,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 294.75",
+    "position": 294.75,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 294.875",
+    "position": 294.875,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 295",
+    "position": 295,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 295.125",
+    "position": 295.125,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 295.25",
+    "position": 295.25,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 295.375",
+    "position": 295.375,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 295.5",
+    "position": 295.5,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 296",
+    "position": 296,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 298",
+    "position": 298,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 301",
+    "position": 301,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 302",
+    "position": 302,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 304",
+    "position": 304,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 306",
+    "position": 306,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 309",
+    "position": 309,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 310",
+    "position": 310,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 312",
+    "position": 312,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 314",
+    "position": 314,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 317",
+    "position": 317,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 318",
+    "position": 318,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 320",
+    "position": 320,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 322",
+    "position": 322,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 325",
+    "position": 325,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 326",
+    "position": 326,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 328",
+    "position": 328,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 330",
+    "position": 330,
+    "value": "right",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 333",
+    "position": 333,
+    "value": "left",
+    "type": "Tankman Note"
+   },
+   {
+    "name": "Psych Event 334",
+    "position": 334,
+    "value": "right",
+    "type": "Tankman Note"
    }
   ],
-  "stage": "warzone",
   "needsVoices": true,
-  "noteStyle": "normal",
-  "bpm": 180
+  "stage": "warzone",
+  "bpm": 180,
+  "noteStyle": "normal"
  }
 }

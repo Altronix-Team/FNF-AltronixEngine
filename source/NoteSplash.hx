@@ -29,7 +29,7 @@ class NoteSplash extends FlxSprite
 		antialiasing = FlxG.save.data.antialiasing;
     }
 
-    public function setupNoteSplash(x:Float, y:Float, note:Int = 0, noteType:Int = 0)
+    public function setupNoteSplash(x:Float, y:Float, note:Int= 0, noteType:String = 'Default Note')
     {
 		var texture:String;
 		if (PlayState.isPixel)
@@ -40,10 +40,10 @@ class NoteSplash extends FlxSprite
 
 		switch (noteType)
 		{
-			case 2:
+			case 'Bullet Note':
 				texture = 'BulletNoteSplashes';
 
-			case 1:
+			case 'Hurt Note':
 				texture = 'HURTnoteSplashes';
 
 			default:

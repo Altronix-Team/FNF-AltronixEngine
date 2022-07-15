@@ -228,85 +228,6 @@ class Debug
 		//openfl.Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtError);
 	}
 
-	static final ERROR_REPORT_URL = "https://github.com/AltronMaxX/FNF-AltronixEngine";
-
-	/**
-	 * Called when OpenFL encounters an uncaught fatal error.
-	 * Note that the default logging system should NOT be used here in case that was the problem.
-	 * @param error The error that was thrown.
-	 */
-	public static function onUncaughtError(error:UncaughtErrorEvent)
-	{
-		#if FEATURE_FILESYSTEM
-		var crashLogLines:Array<String> = [];
-
-		crashLogLines.push('==========FATAL ERROR==========');
-		crashLogLines.push('An uncaught error was thrown, and the game had to close.');
-		crashLogLines.push('Please use the link below, create a new issue, and upload this file to report the error.');
-		crashLogLines.push('');
-		crashLogLines.push(ERROR_REPORT_URL);
-		crashLogLines.push('');
-
-		crashLogLines.push('==========SYSTEM INFO==========');
-		crashLogLines.push('Altronix Engine version: ${EngineConstants.engineVer}');
-		crashLogLines.push('  HaxeFlixel version: ${Std.string(FlxG.VERSION)}');
-		crashLogLines.push('  Friday Night Funkin\' version: ${MainMenuState.gameVer}');
-		crashLogLines.push('System telemetry:');
-		crashLogLines.push('  OS: ${Capabilities.os}');
-
-		crashLogLines.push('');
-
-		crashLogLines.push('==========STACK TRACE==========');
-		crashLogLines.push(error.error);
-
-		var errorCallStack:Array<StackItem> = CallStack.exceptionStack(true);
-
-		for (line in errorCallStack)
-		{
-			switch (line)
-			{
-				case CFunction:
-					crashLogLines.push('  function:');
-				case Module(m):
-					crashLogLines.push('  module:${m}');
-				case FilePos(s, file, line, column):
-					crashLogLines.push('  (${file}#${line},${column})');
-				case Method(className, method):
-					crashLogLines.push('  method:(${className}/${method}');
-				case LocalFunction(v):
-					crashLogLines.push('  localFunction:${v}');
-			}
-		}
-		crashLogLines.push('');
-
-		var logFolderPath = Util.createDirectoryIfNotExists('logs');
-
-		sys.io.File.saveContent('${logFolderPath}/Altronix Engine - ${DebugLogWriter.getDateString()}.crash', crashLogLines.join('\n'));
-
-		displayAlert('Catastrophic Error',
-			'An error has occurred and the game is forced to close.\nPlease access the "crash" folder and send the .crash file to the developers:\n' +
-			ERROR_REPORT_URL);
-
-		crashTheGame(false);
-		#else
-		displayAlert('Catastrophic Error',
-			'An error has occurred and the game is forced to close.\nWe cannot write a log file though. Tell the developers:\n' + ERROR_REPORT_URL);
-		#end
-	}
-
-	/**
-	 * Crashes the game, like Bob does at the end of ONSLAUGHT.
-	 * Only works on SYS platforms like Windows/Mac/Linux/Android/iOS
-	 * 
-	 * @param nice If false, the game will crash with a non-zero exit code, if you care about that.
-	 */
-	 public static function crashTheGame(?nice:Bool = true)
-		{
-			#if sys
-			Sys.exit(nice ? 0 : 1);
-			#end
-		}
-
 	/**
 	 * The game runs this function when it starts, but after Flixel is initialized.
 	 */
@@ -409,6 +330,12 @@ class Debug
 		{
 			Debug.logInfo('CONSOLE: Opening song $songName ($difficulty) in Chart Editor...');
 			FreeplayState.loadSongInFreePlay(songName, difficulty, true, true);
+		});
+
+		addConsoleCommand("changeCharacter", function(character:String, name:String)
+		{
+			Debug.logInfo('CONSOLE: Changing character $character to $name');
+			PlayState.instance.changeCharacter(character, name);
 		});
 	}
 

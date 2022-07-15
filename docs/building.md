@@ -32,6 +32,8 @@
 	 - `haxelib run lime rebuild systools [windows, mac, linux]`
 	 - `haxelib install haxe-strings 7.0.2`
 	 - `haxelib install hscript-ex 0.0.0`
+	 - `haxelib install hxCodec`
+	 - `haxelib git firetongue https://github.com/larsiusprime/firetongue`
 	      - Note: for Linux, you need to install the `g++-multilib` and `gcc-multilib` packages respectively. (use apt to install them.)
 
 ### Windows-only dependencies (only for building *to* Windows. Building html5 on Windows does not require this)

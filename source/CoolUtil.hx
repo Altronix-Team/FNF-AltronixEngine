@@ -19,13 +19,22 @@ class CoolUtil
 
 	public static var defaultDifficulties:Array<String> = ['Easy', "Normal", "Hard", "Hard P"];
 
+	public static var difficultyPrefixes:Array<String> = ['-easy', '', '-hard', '-hardplus'];
+
 	public static var songDiffs:Map<String, Array<String>> = [];
+	
+	public static var songDiffsPrefix:Map<String, Array<String>> = [];
 
 	public static var daPixelZoom:Float = 6;
 
 	public static function difficultyFromInt(difficulty:Int):String
 	{
 		return difficultyArray[difficulty];
+	}
+
+	public static function clearDifficultyArray(difficulty:Int)
+	{
+		difficultyArray = defaultDifficulties;
 	}
 
 	public static function coolTextFile(path:String):Array<String>

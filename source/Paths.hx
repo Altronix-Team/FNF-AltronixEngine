@@ -306,7 +306,7 @@ class Paths
 		return getPath('music/$key.$SOUND_EXT', MUSIC, library);
 	}
 
-	inline static public function voices(song:String)
+	inline static public function voices(song:String, useDiffSongAssets:Bool = false)
 	{
 		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
 		switch (songLowercase)
@@ -318,12 +318,34 @@ class Paths
 			case 'm.i.l.f':
 				songLowercase = 'milf';
 		}
-		var result = 'songs:assets/songs/${songLowercase}/Voices.$SOUND_EXT';
-		// Return null if the file does not exist.
+
+		var result = '';
+
+		var diff = '';
+		if (useDiffSongAssets)
+		{
+			switch (PlayState.storyDifficulty)
+			{
+				case 0:
+					diff = '-easy';
+				case 1:
+					diff = '';
+				case 2:
+					diff = '-hard';
+				case 3:
+					diff = '-hardplus';
+				default:
+					diff = '-' + CoolUtil.difficultyArray[PlayState.storyDifficulty].toLowerCase();
+			}
+			result = 'songs:assets/songs/${songLowercase}/Voices$diff.$SOUND_EXT';
+		}
+		else
+			result = 'songs:assets/songs/${songLowercase}/Voices.$SOUND_EXT';
+
 		return doesSoundAssetExist(result) ? result : null;
 	}
 
-	inline static public function inst(song:String)
+	inline static public function inst(song:String, useDiffSongAssets:Bool = false)
 	{
 		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
 		switch (songLowercase)
@@ -334,12 +356,28 @@ class Paths
 				songLowercase = 'philly';
 			case 'm.i.l.f':
 				songLowercase = 'milf';
-			case 'rain-glint':
-				songLowercase = 'rainglint';
-			case 'rain-glint-(old)':
-				songLowercase = 'rainglint(old)';
 		}
-		return 'songs:assets/songs/${songLowercase}/Inst.$SOUND_EXT';
+
+		var diff = '';
+		if (useDiffSongAssets)
+		{
+			switch (PlayState.storyDifficulty)
+			{
+				case 0:
+					diff = '-easy';
+				case 1:
+					diff = '';
+				case 2:
+					diff = '-hard';
+				case 3:
+					diff = '-hardplus';
+				default:
+					diff = '-' + CoolUtil.difficultyArray[PlayState.storyDifficulty].toLowerCase();
+			}
+			return 'songs:assets/songs/${songLowercase}/Inst$diff.$SOUND_EXT';
+		}
+		else
+			return 'songs:assets/songs/${songLowercase}/Inst.$SOUND_EXT';
 	}
 
 	static public function listSongsToCache()
@@ -376,7 +414,8 @@ class Paths
 	{
 		if (path == null || path == "")
 			return false;
-		return OpenFlAssets.exists(path, AssetType.SOUND) || OpenFlAssets.exists(path, AssetType.MUSIC);
+		return OpenFlAssets.exists(path, AssetType.SOUND) || OpenFlAssets.exists(path, AssetType.MUSIC) 
+		|| OpenFlAssets.exists(OpenFlAssets.getPath(path), AssetType.SOUND) || OpenFlAssets.exists(OpenFlAssets.getPath(path), AssetType.MUSIC);
 	}
 
 	inline static public function doesTextAssetExist(path:String)
@@ -423,6 +462,32 @@ class Paths
 				{
 					var suffixPos = data.indexOf(queryPath) + queryPath.length;
 					results.push(data.substr(suffixPos).replaceAll('.lua', ''));
+				}
+			}
+	
+			return results;
+		}
+
+	/**
+	 * List all the data txt files under a given subdirectory.
+	 * @param path The path to look under.
+	 * @return The list of txt files under that path.
+	 */
+	 public static function listTxtInPath(path:String)
+		{
+			var dataAssets = OpenFlAssets.list(TEXT);
+	
+			var queryPath = '${path}';
+	
+			var results:Array<String> = [];
+	
+			for (data in dataAssets)
+			{
+				if (data.indexOf(queryPath) != -1 && data.endsWith('.txt') && 
+					(!results.contains(data.substr(data.indexOf(queryPath) + queryPath.length).replaceAll('.txt', ''))))
+				{
+					var suffixPos = data.indexOf(queryPath) + queryPath.length;
+					results.push(data.substr(suffixPos).replaceAll('.txt', ''));
 				}
 			}
 	

@@ -22,6 +22,8 @@ class ModCore
 
 	static final MOD_DIRECTORY = "mods";
 
+	public static var loadedModsLength:Int = 0;
+
 	public static function loadConfiguredMods()
 		{
 			#if FEATURE_MODCORE
@@ -135,6 +137,11 @@ class ModCore
 					Debug.logInfo('Mod loading complete. We loaded ${loadedModList.length} / ${ids.length} mods.');
 				}
 			}
+
+			loadedModsLength = loadedModList.length;
+
+			if (loadedModsLength > 0)
+				Achievements.getAchievement(167264);
 	
 			if (loadedModList != null && loadedModList.length > 0)
 			{
@@ -167,6 +174,11 @@ class ModCore
 			for (item in fileList)
 				Debug.logTrace('  * $item');
 	
+			NoteskinHelpers.updateNoteskins();
+
+			MenuMusicStuff.updateMusic();
+
+			Character.initCharacterList();
 		}
 
 	public static function getAllMods():Array<ModMetadata>

@@ -76,13 +76,6 @@ class Stage extends MusicBeatState
 	var limoKillingState:Int = 0;
 	var grpLimoDancers:FlxTypedGroup<BackgroundDancer>;
 
-	var phillyLightsColors:Array<FlxColor>;
-	var blammedLightsBlack:FlxSprite;
-	var phillyWindowEvent:BGSprite;
-	var phillyGlowGradient:PhillyGlow.PhillyGlowGradient;
-	var phillyGlowParticles:FlxTypedGroup<PhillyGlow.PhillyGlowParticle>;
-	var street:FlxSprite;
-
 	public function new(daStage:String)
 	{
 		super();
@@ -134,7 +127,6 @@ class Stage extends MusicBeatState
 				}
 			case 'philly':
 				{
-					phillyLightsColors = [0xFF31A2FD, 0xFF31FD8C, 0xFFFB33F5, 0xFFFD4531, 0xFFFBA633];
 					var bg:FlxSprite = new FlxSprite(-100).loadGraphic(Paths.loadImage('philly/sky', 'week3'));
 					bg.scrollFactor.set(0.1, 0.1);
 					bg.antialiasing = FlxG.save.data.antialiasing;
@@ -185,29 +177,10 @@ class Stage extends MusicBeatState
 
 					// var cityLights:FlxSprite = new FlxSprite().loadGraphic(AssetPaths.win0.png);
 
-					street = new FlxSprite(-40, streetBehind.y).loadGraphic(Paths.loadImage('philly/street', 'week3'));
+					var street:FlxSprite = new FlxSprite(-40, streetBehind.y).loadGraphic(Paths.loadImage('philly/street', 'week3'));
 					street.antialiasing = FlxG.save.data.antialiasing;
 					swagBacks['street'] = street;
 					toAdd.push(street);
-
-					blammedLightsBlack = new FlxSprite(FlxG.width * -0.5, FlxG.height * -0.5).makeGraphic(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2), FlxColor.BLACK);
-					blammedLightsBlack.visible = false;
-					toAdd.push(blammedLightsBlack);
-
-					phillyWindowEvent = new BGSprite('philly/window', city.x, city.y, 0.3, 0.3);
-					phillyWindowEvent.setGraphicSize(Std.int(phillyWindowEvent.width * 0.85));
-					phillyWindowEvent.updateHitbox();
-					phillyWindowEvent.visible = false;
-					toAdd.push(phillyWindowEvent);
-
-
-					phillyGlowGradient = new PhillyGlow.PhillyGlowGradient(-400, 225);
-					phillyGlowGradient.visible = false;
-					toAdd.push(phillyGlowGradient);
-
-					phillyGlowParticles = new FlxTypedGroup<PhillyGlow.PhillyGlowParticle>();
-					phillyGlowParticles.visible = false;
-					toAdd.push(phillyGlowParticles);
 				}
 			case 'limo':
 				{
@@ -970,28 +943,6 @@ class Stage extends MusicBeatState
 							trace('train');
 						}
 					}
-					if (PlayState.SONG != null)
-					{
-						if (PlayState.SONG.songId == 'blammed')
-						{
-							if (!blammedeventplayed && FlxG.save.data.distractions)
-								{
-									if (curBeat >= 128 && curBeat <=192)
-										phillyGlow(2);
-									else if (curBeat == 128 || curBeat == 136 || curBeat == 144 || curBeat == 152 
-										|| curBeat == 160 || curBeat == 168 || curBeat == 176 || curBeat == 184)
-										{
-											phillyGlow(1);
-											phillyGlow(2);
-										}
-								}
-							else if (curBeat >= 192 && !blammedeventplayed && FlxG.save.data.distractions)
-							{
-								phillyGlow(0);
-								blammedeventplayed = true;
-							}
-						}
-					}
 				case 'warzone':
 					if (curBeat % 2 == 0)
 					{
@@ -1010,18 +961,28 @@ class Stage extends MusicBeatState
 	var blammedeventplayed:Bool = false;
 
 	function killHenchmen():Void
-		{
-			if(FlxG.save.data.distractions && curStage == 'limo') {
-				if(limoKillingState < 1) {
-					limoMetalPole.x = -400;
-					limoMetalPole.visible = true;
-					limoLight.visible = true;
-					limoCorpse.visible = false;
-					limoCorpseTwo.visible = false;
-					limoKillingState = 1;
+	{
+		if(FlxG.save.data.distractions && curStage == 'limo') {
+			var savedAchievements:Array<String> = FlxG.save.data.savedAchievements;
+			var killed:Int = FlxG.save.data.killedHenchmans;
+			if(limoKillingState < 1) {
+				limoMetalPole.x = -400;
+				limoMetalPole.visible = true;
+				limoLight.visible = true;
+				limoCorpse.visible = false;
+				limoCorpseTwo.visible = false;
+				limoKillingState = 1;
+				if (!savedAchievements.contains('blammed_completed') && !PlayStateChangeables.botPlay)
+				{
+					killed += 1;
+					FlxG.save.data.killedHenchmans = killed;
 				}
 			}
+			
+			if (killed == 100 && !savedAchievements.contains('blammed_completed') && !PlayStateChangeables.botPlay)
+				Achievements.getAchievement(167274);
 		}
+	}
 		
 	var limoSpeed:Float = 0;
 	function killShit(elapsed:Float)
@@ -1294,92 +1255,4 @@ class Stage extends MusicBeatState
 			});
 		}
 	}
-
-	var curLightEvent:Int = -1;
-
-	function phillyGlow(value:Int = 0)
-	{
-		var lightId:Int = value;
-		if(Math.isNaN(lightId)) lightId = 0;
-
-		var chars:Array<Character> = [PlayState.instance.boyfriend, PlayState.instance.gf, PlayState.instance.dad];
-		switch(lightId)
-		{
-			case 0:
-				if(phillyGlowGradient.visible)
-				{
-					FlxG.camera.flash(FlxColor.WHITE, 0.15, null, true);
-					FlxG.camera.zoom += 0.5;
-					if(FlxG.save.data.camzoom) PlayState.instance.camHUD.zoom += 0.1;
-
-					blammedLightsBlack.visible = false;
-					phillyWindowEvent.visible = false;
-					phillyGlowGradient.visible = false;
-					phillyGlowParticles.visible = false;
-					curLightEvent = -1;
-
-					for (who in chars)
-					{
-						who.color = FlxColor.WHITE;
-					}
-					street.color = FlxColor.WHITE;
-				}
-
-			case 1: //turn on
-				curLightEvent = FlxG.random.int(0, phillyLightsColors.length-1, [curLightEvent]);
-				var color:FlxColor = phillyLightsColors[curLightEvent];
-
-				if(!phillyGlowGradient.visible)
-				{
-					FlxG.camera.flash(FlxColor.WHITE, 0.15, null, true);
-					FlxG.camera.zoom += 0.5;
-					if(FlxG.save.data.camzoom) PlayState.instance.camHUD.zoom += 0.1;
-
-					blammedLightsBlack.visible = true;
-					blammedLightsBlack.alpha = 1;
-					phillyWindowEvent.visible = true;
-					phillyGlowGradient.visible = true;
-					phillyGlowParticles.visible = true;
-				}
-				else if(FlxG.save.data.flashing)
-				{
-					var colorButLower:FlxColor = color;
-					colorButLower.alphaFloat = 0.3;
-					FlxG.camera.flash(colorButLower, 0.5, null, true);
-				}
-
-				for (who in chars)
-				{
-					who.color = color;
-				}
-				phillyGlowParticles.forEachAlive(function(particle:PhillyGlow.PhillyGlowParticle)
-				{
-					particle.color = color;
-				});
-				phillyGlowGradient.color = color;
-				phillyWindowEvent.color = color;
-
-				var colorDark:FlxColor = color;
-				colorDark.brightness *= 0.5;
-				street.color = colorDark;
-
-			case 2: // spawn particles
-				if(!FlxG.save.data.distractions)
-				{
-					var particlesNum:Int = FlxG.random.int(8, 12);
-					var width:Float = (2000 / particlesNum);
-					var color:FlxColor = phillyLightsColors[curLightEvent];
-					for (j in 0...3)
-					{
-						for (i in 0...particlesNum)
-						{
-							var particle:PhillyGlow.PhillyGlowParticle = new PhillyGlow.PhillyGlowParticle(-400 + width * i + FlxG.random.float(-width / 5, width / 5), phillyGlowGradient.originalY + 200 + (FlxG.random.float(0, 125) + j * 40), color);
-							phillyGlowParticles.add(particle);
-						}
-					}
-				}
-				phillyGlowGradient.bop();
-		}
-	}
-
 }

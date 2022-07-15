@@ -204,6 +204,8 @@ class ModMenuState extends XMLLayoutState // extends MusicBeatState
 
 		ModCore.loadConfiguredMods();
 
+		FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)), 0);
+
 		FlxG.switchState(new TitleState());
 	}
 

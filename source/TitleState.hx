@@ -32,6 +32,8 @@ import flixel.input.keyboard.FlxKey;
 import GameJolt.GameJoltAPI;
 import openfl.utils.Assets as OpenFlAssets;
 import flash.net.URLRequest;
+import flixel.graphics.frames.FlxFrame;
+import flixel.math.FlxMath;
 
 #if FEATURE_MODCORE
 import ModCore;
@@ -42,6 +44,7 @@ import DiscordClient;
 #end
 
 using StringTools;
+using hx.strings.Strings;
 
 class TitleState extends MusicBeatState
 {
@@ -54,6 +57,9 @@ class TitleState extends MusicBeatState
 	var textGroup:FlxGroup;
 	var ngSpr:FlxSprite;
 
+	var titleTextColors:Array<FlxColor> = [0xFF33FFFF, 0xFF3333CC];
+	var titleTextAlphas:Array<Float> = [1, .64];
+
 	public var muteKeys:Array<FlxKey>;
 	public var volumeDownKeys:Array<FlxKey>;
 	public var volumeUpKeys:Array<FlxKey>;
@@ -64,15 +70,15 @@ class TitleState extends MusicBeatState
 
 	var checkVer:Bool = true;
 
+	var modsToLoad = [];
+	public static var configFound = false;
+
 	override public function create():Void
 	{
 		@:privateAccess
 		{
 			Debug.logTrace("We loaded " + openfl.Assets.getLibrary("default").assetsLoaded + " assets into the default library");
 		}
-
-		GameJoltAPI.connect();
-		GameJoltAPI.authDaUser(FlxG.save.data.gjUser, FlxG.save.data.gjToken);
 
 		FlxG.autoPause = false;
 
@@ -114,6 +120,24 @@ class TitleState extends MusicBeatState
 		MusicBeatState.initSave = true;
 
 		Highscore.load();
+
+		if (!initialized)
+		{
+			#if FEATURE_MODCORE
+				modsToLoad = ModCore.getConfiguredMods();
+				configFound = (modsToLoad != null && modsToLoad.length > 0);
+				ModCore.loadConfiguredMods();
+			#else
+				configFound = false;	
+			#end
+		}	
+
+		GameJoltAPI.leaderboardToggle = FlxG.save.data.toggleLeaderboard;
+
+		GameJoltAPI.connect();
+		GameJoltAPI.authDaUser(FlxG.save.data.gjUser, FlxG.save.data.gjToken);
+
+		cacheSongs();
 
 		if (FlxG.save.data.volume != null)
 			FlxG.sound.volume = FlxG.save.data.volume;
@@ -206,7 +230,7 @@ class TitleState extends MusicBeatState
 
 		titleText = new FlxSprite(100, FlxG.height * 0.8);
 		titleText.frames = Paths.getSparrowAtlas('titleEnter');
-		titleText.animation.addByPrefix('idle', "Press Enter to Begin", 24);
+		titleText.animation.addByPrefix('idle', "ENTER IDLE", 24);
 		titleText.animation.addByPrefix('press', "ENTER PRESSED", 24);
 		titleText.antialiasing = FlxG.save.data.antialiasing;
 		titleText.animation.play('idle');
@@ -295,6 +319,8 @@ class TitleState extends MusicBeatState
 
 	var transitioning:Bool = false;
 
+	var titleTimer:Float = 0;
+
 	override function update(elapsed:Float)
 	{
 		if (FlxG.sound.music != null)
@@ -312,10 +338,26 @@ class TitleState extends MusicBeatState
 		}
 		#end
 
+		titleTimer += CoolUtil.boundTo(elapsed, 0, 1);
+		if (titleTimer > 2) titleTimer -= 2;
+
+		if (!pressedEnter && !transitioning && skippedIntro)
+		{
+			var timer:Float = titleTimer;
+			if (timer >= 1)
+				timer = (-timer) + 2;
+
+			timer = FlxEase.quadInOut(timer);
+
+			titleText.color = FlxColor.interpolate(titleTextColors[0], titleTextColors[1], timer);
+			titleText.alpha = FlxMath.lerp(titleTextAlphas[0], titleTextAlphas[1], timer);
+		}
+
 		if (pressedEnter && !transitioning && skippedIntro)
 		{
-			if (FlxG.save.data.flashing)
-				titleText.animation.play('press');
+			titleText.color = FlxColor.WHITE;
+			titleText.alpha = 1;
+			titleText.animation.play('press');
 
 			FlxG.camera.flash(FlxColor.WHITE, 1);
 			FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
@@ -498,6 +540,42 @@ class TitleState extends MusicBeatState
 			FlxG.sound.music.time = 9400; // 9.4 seconds
 
 			skippedIntro = true;
+		}
+	}
+
+	function cacheSongs()
+	{
+		var songList:Array<String> = Paths.listSongsToCache();
+		
+		for (i in songList)
+		{
+			var diffs:Array<String> = [];
+			var list = Paths.listJsonInPath('assets/data/songs/' + i + '/');
+			for (j in list)
+			{
+				if (j == '_meta')
+					continue;
+				if (j == 'events')
+					continue;
+
+				if (j == i)
+				{
+					diffs.push('normal');
+				}
+				else
+				{
+					diffs.push(j.replaceAll(i+'-', ''));
+					if (!CoolUtil.difficultyPrefixes.contains(j.replaceAll(i+'-', '')))
+						CoolUtil.difficultyPrefixes.push(j.replaceAll(i+'-', ''));
+				}
+			}
+			if (diffs.length > 0)
+			{
+				if (CoolUtil.songDiffsPrefix.get(i) == null)
+					CoolUtil.songDiffsPrefix.set(i, diffs);
+			}
+			else
+				continue;
 		}
 	}
 }

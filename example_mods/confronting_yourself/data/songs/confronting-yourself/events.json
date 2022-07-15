@@ -1,22 +1,484 @@
 {
- "eventObjects": [
+ "eventsArray": [
   {
-   "name": "Init BPM",
-   "position": 0,
-   "value": 240,
-   "type": "BPM Change"
+   "events": [
+    {
+     "name": "Init BPM",
+     "value": 240,
+     "type": "BPM Change"
+    }
+   ],
+   "position": 0
   },
   {
-   "name": "New Event 192",
-   "position": 191.99975,
-   "value": "240",
-   "type": "Image Appearance"
+   "events": [
+    {
+     "name": "New Event 192",
+     "value": "240",
+     "type": "Image Appearance"
+    }
+   ],
+   "position": 191.99975
   },
   {
-   "name": "New Event 512",
-   "position": 512,
-   "value": "bf, sonic2",
-   "type": "Change Character"
+   "events": [
+    {
+     "name": "New Event 512",
+     "value": "bf, sonic2",
+     "type": "Change Character"
+    }
+   ],
+   "position": 512
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 56",
+     "value": "0.5, 0.1",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 56
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 57",
+     "value": "0.5, 0.1",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 57
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 58",
+     "value": "0.5, 0.1",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 58
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 59",
+     "value": "0.5, 0.1",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 59
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 60",
+     "value": "0.5, 0.1",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 60
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 61",
+     "value": "0.5, 0.1",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 61
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 62",
+     "value": "0.5, 0.1",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 62
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 64",
+     "value": "0.1, 0.05",
+     "type": "Camera zoom"
+    }
+   ],
+   "position": 64
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 72",
+     "value": "0.1, 0.05",
+     "type": "Camera zoom"
+    }
+   ],
+   "position": 72
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 80",
+     "value": "0.1, 0.05",
+     "type": "Camera zoom"
+    }
+   ],
+   "position": 80
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 88",
+     "value": "0.1, 0.05",
+     "type": "Camera zoom"
+    }
+   ],
+   "position": 88
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 96",
+     "value": "0.1, 0.05",
+     "type": "Camera zoom"
+    }
+   ],
+   "position": 96
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 104",
+     "value": "0.1, 0.05",
+     "type": "Camera zoom"
+    }
+   ],
+   "position": 104
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 112",
+     "value": "0.1, 0.05",
+     "type": "Camera zoom"
+    }
+   ],
+   "position": 112
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 120",
+     "value": "0.1, 0.05",
+     "type": "Camera zoom"
+    }
+   ],
+   "position": 120
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 192",
+     "value": "EXE, 0.05",
+     "type": "Image Appearance"
+    }
+   ],
+   "position": 192
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 248",
+     "value": "0.1, 0.03",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 248
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 249",
+     "value": "0.1, 0.03",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 249
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 250",
+     "value": "0.1, 0.03",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 250
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 251",
+     "value": "0.1, 0.03",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 251
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 252",
+     "value": "0.1, 0.03",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 252
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 253",
+     "value": "0.1, 0.03",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 253
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 254",
+     "value": "0.1, 0.03",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 254
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 504",
+     "value": "0.1, 0.03",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 504
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 505",
+     "value": "0.1, 0.03",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 505
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 506",
+     "value": "0.1, 0.03",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 506
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 507",
+     "value": "0.1, 0.03",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 507
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 508",
+     "value": "0.1, 0.03",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 508
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 509",
+     "value": "0.1, 0.03",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 509
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 510",
+     "value": "0.1, 0.03",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 510
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 512",
+     "value": "BF, sonic2",
+     "type": "Change Character"
+    }
+   ],
+   "position": 512
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 640",
+     "value": "0.1, 0.03",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 640
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 641",
+     "value": "0.1, 0.03",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 641
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 642",
+     "value": "0.1, 0.03",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 642
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 643",
+     "value": "0.1, 0.03",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 643
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 644",
+     "value": "0.1, 0.03",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 644
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 645",
+     "value": "0.1, 0.03",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 645
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 646",
+     "value": "0.1, 0.03",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 646
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 712",
+     "value": "0.1, 0.1",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 712
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 713",
+     "value": "0.1, 0.1",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 713
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 714.25",
+     "value": "0.1, 0.1",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 714.25
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 715.25",
+     "value": "0.1, 0.1",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 715.25
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 716.5",
+     "value": "0.1, 0.1",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 716.5
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 717.5",
+     "value": "0.1, 0.1",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 717.5
+  },
+  {
+   "events": [
+    {
+     "name": "Psych Event 718.75",
+     "value": "0.5, 0.1",
+     "type": "Screen Shake"
+    }
+   ],
+   "position": 718.75
   }
  ]
 }

@@ -22,7 +22,7 @@ class MasterEditorMenu extends MusicBeatState
 {
 	var options:Array<String> = [
 		'Character Editor',
-		'GF Editor',
+		//'GF Editor',
 		'Week Editor',
 		'Freeplay Songlist Editor',
 		'Dialogue Editor',

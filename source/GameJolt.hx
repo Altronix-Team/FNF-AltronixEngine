@@ -160,7 +160,7 @@ class GameJoltAPI // Connects to tentools.api.FlxGameJolt
 				trace("token:" + in2);
 				if (v)
 				{
-					Main.gjToastManager.createToast(GameJoltInfo.imagePath, in1
+					Main.gjToastManager.createToast(Paths.getPreloadPath('shared/images/checkMark.png'), in1
 						+ " signed in!",
 						"Time: "
 						+ Date.now()
@@ -171,6 +171,7 @@ class GameJoltAPI // Connects to tentools.api.FlxGameJolt
 						false);
 					trace("User authenticated!");
 					FlxG.save.data.userLoged = true;
+					FlxG.save.data.toggleLeaderboard = GameJoltAPI.leaderboardToggle;
 					FlxG.save.data.gjUser = in1;
 					FlxG.save.data.gjToken = in2;
 					Debug.logTrace(FlxG.save.data.gjUser + '\n' + FlxG.save.data.gjToken);
@@ -190,7 +191,7 @@ class GameJoltAPI // Connects to tentools.api.FlxGameJolt
 						GameJoltLogin.login = true;
 						FlxG.switchState(new GameJoltLogin());
 					}
-					Main.gjToastManager.createToast(GameJoltInfo.imagePath, "Not signed in!\nSign in to save GameJolt Trophies and Leaderboard Scores!", "",
+					Main.gjToastManager.createToast(Paths.getPreloadPath('shared/images/cross.png'), "Not signed in!\nSign in to save GameJolt Trophies and Leaderboard Scores!", "",
 						false);
 					trace("User login failure!");
 					// FlxG.switchState(new GameJoltLogin());
@@ -220,19 +221,26 @@ class GameJoltAPI // Connects to tentools.api.FlxGameJolt
 	 * Give a trophy!
 	 * @param trophyID Trophy ID. Check your game's API settings for trophy IDs.
 	 */
-	public static function getTrophy(trophyID:Int)
+	public static function getTrophy(trophyID:Int, imagePath:String = null)
 		/* Awards a trophy to the user! */
 	{
 		if (userLogin)
 		{
 			GJApi.addTrophy(trophyID, function(data:Map<String, String>)
 			{
-				trace(data);
 				var bool:Bool = false;
 				if (data.exists("message"))
 					bool = true;
-				Main.gjToastManager.createToast(GameJoltInfo.imagePath, "Unlocked a new trophy" + (bool ? "... again?" : "!"),
-					"Thank you for testing this out!", true);
+
+				if (bool == false)
+				{
+					Main.gjToastManager.createToast(Paths.getPreloadPath('images/achievements/normal/$imagePath.png'), 'Unlocked new Trophy!',
+						AchievementsState.findNameById(trophyID), true);
+				}
+				else
+				{
+					return;
+				}
 			});
 		}
 	}
@@ -240,7 +248,7 @@ class GameJoltAPI // Connects to tentools.api.FlxGameJolt
 	/**
 	 * Checks a trophy to see if it was collected
 	 * @param id TrophyID
-	 * @return Bool (True for achieved, false for unachieved)
+	 * @return Bool (True for achieved, false for unachieved) It don`t works (AltronMaxX)
 	 */
 	public static function checkTrophy(id:Int):Bool
 	{
@@ -281,12 +289,12 @@ class GameJoltAPI // Connects to tentools.api.FlxGameJolt
 			GJApi.addScore(score + "%20Points", score, tableID, false, null, formData, function(data:Map<String, String>)
 			{
 				trace("Score submitted with a result of: " + data.get("success"));
-				Main.gjToastManager.createToast(GameJoltInfo.imagePath, "Score submitted!", "Score: " + score + "\nExtra Data: " + extraData, true);
+				Main.gjToastManager.createToast(Paths.getPreloadPath('shared/images/checkMark.png'), "Score submitted!", "Score: " + score + "\n Extra Data: " + extraData, true);
 			});
 		}
 		else
 		{
-			Main.gjToastManager.createToast(GameJoltInfo.imagePath, "Score not submitted!",
+			Main.gjToastManager.createToast(Paths.getPreloadPath('shared/images/cross.png'), "Score not submitted!",
 				"Score: "
 				+ score
 				+ "Extra Data: "
@@ -688,7 +696,7 @@ class GameJoltLogin extends MusicBeatSubstate
 class GJToastManager extends Sprite
 {
 	public static var ENTER_TIME:Float = 0.5;
-	public static var DISPLAY_TIME:Float = 3.0;
+	public static var DISPLAY_TIME:Float = 2.0;
 	public static var LEAVE_TIME:Float = 0.5;
 	public static var TOTAL_TIME:Float = ENTER_TIME + DISPLAY_TIME + LEAVE_TIME;
 
@@ -855,6 +863,11 @@ class Toast extends Sprite
 		if (iconPath != null)
 		{
 			icon = new Bitmap(BitmapData.fromFile(iconPath));
+
+			if (icon.width != 80)
+				icon.width = 80;
+			if (icon.height != 80)
+				icon.height = 80;
 			icon.x = 10;
 			icon.y = 10;
 		}

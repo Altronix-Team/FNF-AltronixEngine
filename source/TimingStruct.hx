@@ -1,4 +1,5 @@
 import flixel.FlxG;
+import Section;
 
 class TimingStruct
 {
@@ -73,5 +74,26 @@ class TimingStruct
 				return i;
 		}
 		return null;
+	}
+
+	public static function getSectionByTime(ms:Float):SwagSection
+	{
+		if (PlayState.SONG != null)
+		{
+			for (i in PlayState.SONG.notes)
+			{
+				var start = TimingStruct.getTimeFromBeat((TimingStruct.getBeatFromTime(i.startTime)));
+				var end = TimingStruct.getTimeFromBeat((TimingStruct.getBeatFromTime(i.endTime)));
+		
+				if (ms >= start && ms < end)
+				{
+					return i;
+				}
+			}
+	
+			return null;
+		}
+		else
+			return null;
 	}
 }

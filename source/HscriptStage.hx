@@ -17,10 +17,10 @@ class HscriptStage extends FlxTypedGroup<FlxBasic> implements IHook
 	public final stageId:String;
 	public final stageCharacters:Map<Int, BaseCharacter> = new Map<Int, BaseCharacter>();
 
-	public static var distractions(get, null):Bool = true;
+	/*public static var distractions(get, null):Bool = true;
 
 	public static var currentBeat(get, null):Int = 0;
-	public static var currentStep(get, null):Int = 0;
+	public static var currentStep(get, null):Int = 0;*/
 
 	public var camZoom:Float = 1.0;
 
@@ -101,7 +101,7 @@ class HscriptStage extends FlxTypedGroup<FlxBasic> implements IHook
 		Debug.logTrace('Script hooks retrieved.');
 	}
 
-	function get_distractions():Bool
+	/*function get_distractions():Bool
 	{
 		// Output whether distractions are enabled in the Options menu.
 		return DistractionsAndEffectsOption.get() && MinimalModeOption.get();
@@ -109,14 +109,14 @@ class HscriptStage extends FlxTypedGroup<FlxBasic> implements IHook
 
 	function get_currentBeat():Int
 	{
-		return PlayState.instance.currentBeat;
+		return MusicBeatState.currentBeat;
 	}
 
 	function get_currentStep():Int
 	{
-		return PlayState.instance.currentStep;
+		return MusicBeatState.currentStep;
 	}
-
+*/
 	public function new(stageId:String)
 	{
 		this.stageId = stageId;

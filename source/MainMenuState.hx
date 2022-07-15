@@ -19,7 +19,6 @@ import lime.app.Application;
 import flash.text.TextField;
 import flixel.addons.ui.FlxInputText;
 import LoadingState.LoadingsState;
-import GameJolt.GameJoltAPI;
 import GameJolt.GameJoltLogin;
 #if desktop
 import DiscordClient;
@@ -39,7 +38,7 @@ class MainMenuState extends MusicBeatState
 	var menuItems:FlxTypedGroup<FlxSprite>;
 
 	#if !switch
-	var optionShit:Array<String> = ['story mode', 'freeplay', 'extras', 'gamejolt','credits', 'mods', 'options'];
+	var optionShit:Array<String> = ['story mode', 'freeplay', 'extras', 'gamejolt', 'mods', 'credits', 'awards', 'options'];
 	#else
 	var optionShit:Array<String> = ['story mode', 'freeplay'];
 	#end
@@ -50,7 +49,7 @@ class MainMenuState extends MusicBeatState
 	public static var firstStart:Bool = true;
 
 	public static var nightly:String = "";
-	public static var gameVer:String = "0.2.7.1";
+	public static var gameVer:String = "0.2.8";
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
@@ -60,11 +59,7 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
-		if (!FlxG.save.data.firstLogin || FlxG.save.data.firstLogin == null)
-		{
-			GameJoltAPI.getTrophy(160503);
-			FlxG.save.data.firstLogin = true;
-		}
+		Achievements.getAchievement(160503, 'engine');
 		camGame = new FlxCamera();
 		trace(0 / 2);
 		clean();
@@ -90,7 +85,7 @@ class MainMenuState extends MusicBeatState
 		var yScroll:Float = Math.max(0.25 - (0.05 * (optionShit.length - 4)), 0.1);
 		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.loadImage('menuBG'));
 		bg.scrollFactor.set(0, yScroll);
-		bg.setGraphicSize(Std.int(bg.width * 1.18));
+		bg.setGraphicSize(Std.int(bg.width * 1.5));
 		bg.updateHitbox();
 		bg.screenCenter();
 		bg.antialiasing = FlxG.save.data.antialiasing;
@@ -104,7 +99,7 @@ class MainMenuState extends MusicBeatState
 
 		magenta = new FlxSprite(-80).loadGraphic(Paths.loadImage('menuDesat'));
 		magenta.scrollFactor.set(0, yScroll);
-		magenta.setGraphicSize(Std.int(magenta.width * 1.18));
+		magenta.setGraphicSize(Std.int(magenta.width * 1.5));
 		magenta.updateHitbox();
 		magenta.screenCenter();
 		magenta.visible = false;
@@ -327,6 +322,10 @@ class MainMenuState extends MusicBeatState
 
 			case 'extras':
 				MusicBeatState.switchState(new ExtrasPasswordState());
+				FlxG.mouse.visible = false;
+			
+			case 'awards':
+				MusicBeatState.switchState(new AchievementsState());
 				FlxG.mouse.visible = false;
 
 			case 'mods':

@@ -54,7 +54,11 @@ class Character extends FlxSprite
 		super(x, y);
 
 		barColor = isPlayer ? 0xFF66FF33 : 0xFFFF0000;
+		#if (haxe >= "4.0.0")
+		animOffsets = new Map();
+		#else
 		animOffsets = new Map<String, Array<Dynamic>>();
+		#end
 		animInterrupt = new Map<String, Bool>();
 		animNext = new Map<String, String>();
 		animDanced = new Map<String, Bool>();
@@ -379,8 +383,6 @@ class Character extends FlxSprite
 
 		for (charId in pathcheck)
 		{
-			Debug.logTrace('Loading character: ' + charId);
-
 			characterList.push(charId);
 
 			var charData:CharacterData = Paths.loadJSON('characters/${charId}');

@@ -23,7 +23,10 @@ class EngineData
 
 		if (FlxG.save.data.missSounds == null)
 			FlxG.save.data.missSounds = true;
-
+		
+		if (FlxG.save.data.toggleLeaderboard == null)
+			FlxG.save.data.toggleLeaderboard = true;
+		
 		if (FlxG.save.data.dfjk == null)
 			FlxG.save.data.dfjk = false;
 
@@ -93,6 +96,9 @@ class EngineData
 
 		if (FlxG.save.data.botplay == null)
 			FlxG.save.data.botplay = false;
+		
+		if (FlxG.save.data.savedAchievements == null)
+			FlxG.save.data.savedAchievements = [];
 
 		if (FlxG.save.data.cpuStrums == null)
 			FlxG.save.data.cpuStrums = false;

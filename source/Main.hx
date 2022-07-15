@@ -15,6 +15,11 @@ import openfl.display.Sprite;
 import openfl.events.Event;
 import GameJolt.GJToastManager;
 import openfl.events.UncaughtErrorEvent;
+import Debug;
+import openfl.system.Capabilities;
+import haxe.CallStack;
+import haxe.Log;
+import haxe.PosInfos;
 
 #if FEATURE_MODCORE
 import ModCore;
@@ -22,8 +27,6 @@ import ModCore;
 
 class Main extends Sprite
 {
-	var modsToLoad = [];
-	public static var configFound = false;
 	public static var gjToastManager:GJToastManager;
 	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	var gameHeight:Int = 720; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
@@ -55,7 +58,7 @@ class Main extends Sprite
 
 		super();
 
-		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, Debug.onUncaughtError);
+		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtError);
 
 		if (stage != null)
 		{
@@ -107,14 +110,6 @@ class Main extends Sprite
 		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
 		addChild(game);
 
-		#if FEATURE_MODCORE
-		modsToLoad = ModCore.getConfiguredMods();
-		configFound = (modsToLoad != null && modsToLoad.length > 0);
-		ModCore.loadConfiguredMods();
-		#else
-		configFound = false;	
-		#end	
-
 		#if !mobile
 		addChild(fpsCounter);
 		toggleFPS(FlxG.save.data.fps);
@@ -125,6 +120,80 @@ class Main extends Sprite
 
 		// Finish up loading debug tools.
 		Debug.onGameStart();
+	}
+
+	static final ERROR_REPORT_URL = "https://github.com/AltronMaxX/FNF-AltronixEngine";
+
+	/**
+	 * Called when OpenFL encounters an uncaught fatal error.
+	 * Note that the default logging system should NOT be used here in case that was the problem.
+	 * @param error The error that was thrown.
+	 */
+	public static function onUncaughtError(error:UncaughtErrorEvent)
+	{
+		#if FEATURE_FILESYSTEM
+		var crashLogLines:Array<String> = [];
+
+		crashLogLines.push('==========FATAL ERROR==========');
+		crashLogLines.push('An uncaught error was thrown, and the game had to close.');
+		crashLogLines.push('Please use the link below, create a new issue, and upload this file to report the error.');
+		crashLogLines.push('');
+		crashLogLines.push(ERROR_REPORT_URL);
+		crashLogLines.push('');
+
+		crashLogLines.push('==========SYSTEM INFO==========');
+		crashLogLines.push('Altronix Engine version: ${EngineConstants.engineVer}');
+		crashLogLines.push('  HaxeFlixel version: ${Std.string(FlxG.VERSION)}');
+		crashLogLines.push('  Friday Night Funkin\' version: ${MainMenuState.gameVer}');
+		crashLogLines.push('System telemetry:');
+		crashLogLines.push('  OS: ${Capabilities.os}');
+
+		crashLogLines.push('');
+
+		crashLogLines.push('==========STACK TRACE==========');
+		crashLogLines.push(error.error);
+
+		var errorCallStack:Array<StackItem> = CallStack.exceptionStack(true);
+
+		for (line in errorCallStack)
+		{
+			switch (line)
+			{
+				case CFunction:
+					crashLogLines.push('  function:');
+				case Module(m):
+					crashLogLines.push('  module:${m}');
+				case FilePos(s, file, line, column):
+					crashLogLines.push('  (${file}#${line},${column})');
+				case Method(className, method):
+					crashLogLines.push('  method:(${className}/${method}');
+				case LocalFunction(v):
+					crashLogLines.push('  localFunction:${v}');
+				default:
+					Sys.println(line);
+			}
+		}
+		crashLogLines.push('');
+
+		var logFolderPath = Util.createDirectoryIfNotExists('logs');
+
+		sys.io.File.saveContent('${logFolderPath}/Altronix Engine - ${DebugLogWriter.getDateString()}.crash', crashLogLines.join('\n'));
+
+		crashLogLines.push('An error has occurred and the game is forced to close.\nPlease access the "crash" folder and send the .crash file to the developers:\n'
+			+ ERROR_REPORT_URL);
+
+		Debug.displayAlert('Catastrophic Error',
+			'An error has occurred and the game is forced to close.\nPlease access the "crash" folder and send the .crash file to the developers:\n' + ERROR_REPORT_URL);
+
+		Sys.println(crashLogLines);
+
+		#if sys
+		Sys.exit(1);
+		#end
+		#else
+		Application.current.window.alert('An error has occurred and the game is forced to close.\nWe cannot write a log file though. Tell the developers:\n'
+			+ ERROR_REPORT_URL, 'Catastrophic Error');
+		#end
 	}
 
 	var game:FlxGame;

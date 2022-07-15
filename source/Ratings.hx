@@ -126,7 +126,7 @@ class Ratings
 			if (!FlxG.save.data.language)
 				ranking = "BotPlay";
 			else
-				ranking = "Бот";
+				ranking = "Бот-игрок";
 		}
 
 		return ranking;

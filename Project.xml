@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin': Altronix Engine" file="Altronix Engine" packageName="com.altronmaxx.altronixengine" package="com.altronmaxx.altronixengine" main="Main" version="0.2.7.1" company="AltronMaxX" />
+	<app title="Friday Night Funkin': Altronix Engine" file="Altronix Engine" packageName="com.altronmaxx.altronixengine" package="com.altronmaxx.altronixengine" main="Main" version="0.2.8" company="AltronMaxX" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
@@ -43,6 +43,9 @@
 
 	<classpath name="source" />
 	
+	<define name="LUA_ALLOWED" if="desktop" />
+	<define name="VIDEOS_ALLOWED" if="web || windows" unless="32bits" />
+	
 	<assets path="assets/preload/videos" rename="assets/videos" include="*mp4" embed='false' />
 
 	<assets path="assets/videos" exclude="*.mp3" if="web"/>
@@ -51,9 +54,6 @@
 	<assets path="assets/preload/stages" rename="assets/stages" include="*lua" embed='false' />
 	
 	<assets path="assets/preload/weeks" rename="assets/weeks" include="*json" embed='false' />
-
-	<assets path="plugins/" rename='' if="windows"/>
-	<assets path="dlls/" rename='' if="windows"/>
 
 	<assets path="assets/preload" rename="assets" exclude="*.ogg" if="web"/>
 	<assets path="assets/preload" rename="assets" exclude="*.mp3" unless="web"/>
@@ -191,11 +191,13 @@
 	<haxelib name="faxe" if='switch'/>
 	<haxelib name="polymod"/>
 	<haxelib name="discord_rpc" if="desktop"/>
-	<haxelib name="linc_luajit" if="desktop"/>
+	<haxelib name="linc_luajit" if="LUA_ALLOWED"/>
+	<haxelib name="hxCodec" if="VIDEOS_ALLOWED"/>
 	<haxelib name="systools" />
 	<ndll name="systools" haxelib="systools" />
 	<haxelib name="tentools" />
 	<haxelib name="haxe-strings" />
+	<!--haxelib name="firetongue" /-->
 	<!--haxelib name="tjson" /-->
 	
 	<!--haxelib name="hscript-ex"/-->
@@ -278,8 +280,6 @@
 
   <!-- Defines whether the Mods menu will display before launching. -->
   <haxedef name="FEATURE_MODCORE" if="desktop" />
-  
-  <haxedef name="LUA_ALLOWED" if="desktop" />
   
   <!-- Use defines to configure the behavior of Polymod. -->
 	<haxedef name="POLYMOD_SCRIPT_EXT"

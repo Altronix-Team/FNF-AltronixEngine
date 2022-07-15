@@ -7,7 +7,7 @@ import openfl.utils.Assets as OpenFlAssets;
 
 using StringTools;
 
-class Event
+class Event //Kade Engine events
 {
 	public var name:String;
 	public var position:Float;
@@ -23,9 +23,29 @@ class Event
 	}
 }
 
+class EventObject
+{
+	public var name:String;
+	public var value:Dynamic;
+	public var type:String;
+
+	public function new(name:String, value:Dynamic, type:String)
+	{
+		this.name = name;
+		this.value = value;
+		this.type = type;
+	}
+}
+
+typedef EventsAtPos = //Altronix Engine Events
+{
+	var position:Float; //Song Beat
+	var events:Array<EventObject>; // Events
+}
+
 typedef SongData =
 {
-	@:deprecated
+	@:deprecated('SONG.song is deprecated, use SONG.songId instead.')
 	var ?song:String;
 
 	/**
@@ -41,7 +61,7 @@ typedef SongData =
 
 	var chartVersion:String;
 	var notes:Array<SwagSection>;
-	var eventObjects:Array<Event>;
+	var ?eventObjects:Array<Event>;//DO NOT USE THIS!!!!!!!!!!!
 	var bpm:Float;
 	var needsVoices:Bool;
 	var speed:Float;
@@ -51,15 +71,17 @@ typedef SongData =
 	var ?hideGF:Bool;
 	var noteStyle:String;
 	var stage:String;
+
+	var eventsArray:Array<EventsAtPos>; //Fuck yeah, now more conversions for old or Psych events
+	var ?events:Array<Dynamic>;//DO NOT USE THIS!!!!!!!!!!!
 	var ?validScore:Bool;
-	var ?offset:Int;
 	var ?scaredbgdancers:Bool;
 	var ?showbgdancers:Bool;
+	var ?diffSoundAssets:Bool;
 }
 
 typedef SongMeta =
 {
-	var ?offset:Int;
 	var ?name:String;
 }
 
@@ -147,22 +169,90 @@ class Song
 
 		var index = 0;
 		trace("conversion stuff " + song.songId + " " + song.notes.length);
-		var convertedStuff:Array<Song.Event> = [];
+		var convertedStuff:Array<Song.EventsAtPos> = [];
 
-		if (song.eventObjects == null)
-			song.eventObjects = [new Song.Event("Init BPM", 0, song.bpm, "BPM Change")];
+		if (song.eventsArray == null)
+		{	
+			trace('song events is null, wtf');
 
-		for (i in song.eventObjects)
-		{
-			var name = Reflect.field(i, "name");
-			var type = Reflect.field(i, "type");
-			var pos = Reflect.field(i, "position");
-			var value = Reflect.field(i, "value");
+			var initBpm:EventsAtPos = 
+			{
+				position: 0,
+				events: []
+			};
+			var firstEvent:Song.EventObject = new Song.EventObject("Init BPM", song.bpm, "BPM Change");
 
-			convertedStuff.push(new Song.Event(name, pos, value, type));
+			initBpm.events.push(firstEvent);
+			song.eventsArray = [initBpm];
 		}
 
-		song.eventObjects = convertedStuff;
+		for (i in song.eventsArray)
+		{			
+			var pos = Reflect.field(i, "position");
+
+			var convertedPos:EventsAtPos =
+			{
+				position: pos,
+				events: []
+			};
+
+			for (j in i.events)
+			{
+				var name = Reflect.field(j, "name");
+				var type = Reflect.field(j, "type");
+				var value = Reflect.field(j, "value");
+
+				var event:Song.EventObject = new Song.EventObject(name, value, type);
+
+				convertedPos.events.push(event);
+			}
+
+			convertedStuff.push(convertedPos);
+		}
+			
+		song.eventsArray = convertedStuff;
+
+		var checkedPositions:Array<Float> = [];
+
+		for (i in song.eventsArray)
+		{
+			checkedPositions.push(i.position);
+		}
+
+		var convertedEvents:Array<EventsAtPos> = [];
+		var eventsArray:Array<EventObject> = [];
+		if (song.eventObjects != null)
+		{
+			for (i in song.eventObjects)
+			{
+				var name = Reflect.field(i, "name");
+				var type = Reflect.field(i, "type");
+				var pos = Reflect.field(i, "position");
+				var value = Reflect.field(i, "value");
+
+				if (checkedPositions.contains(pos))
+				{
+					for (j in song.eventsArray)
+					{
+						if (j.position == pos)
+							j.events.push(new Song.EventObject(name, value, type));
+					}
+				}
+				else
+				{
+					var eventAtPos:EventsAtPos = 
+					{
+						position: pos,
+						events: [new Song.EventObject(name, value, type)]
+					};
+
+					checkedPositions.push(i.position);
+
+					song.eventsArray.push(eventAtPos);
+				}
+			}
+			song.eventObjects = null;
+		}
 
 		if (song.noteStyle == null)
 			song.noteStyle = "normal";
@@ -172,6 +262,9 @@ class Song
 
 		if (song.hideGF == null)
 			song.hideGF = false;
+
+		if (song.diffSoundAssets == null)
+			song.diffSoundAssets = false;
 
 		if (song.showbgdancers == null)
 			{
@@ -189,31 +282,122 @@ class Song
 
 		var currentIndex = 0;
 
-		for (i in song.eventObjects)
+		for (i in song.eventsArray)
 		{
-			switch (i.type)
+			var beat:Float = i.position;
+
+			for (j in i.events)
 			{
-				case "BPM Change":
-					var beat:Float = i.position;
+				switch (j.type)
+				{
+					case "BPM Change":
+						var endBeat:Float = Math.POSITIVE_INFINITY;
 
-					var endBeat:Float = Math.POSITIVE_INFINITY;
+						TimingStruct.addTiming(beat, j.value, endBeat, 0);
 
-					TimingStruct.addTiming(beat, i.value, endBeat, 0); // offset in this case = start time since we don't have a offset
+						if (currentIndex != 0)
+						{
+							var data = TimingStruct.AllTimings[currentIndex - 1];
+							data.endBeat = beat;
+							data.length = (data.endBeat - data.startBeat) / (data.bpm / 60);
+							var step = ((60 / data.bpm) * 1000) / 4;
+							TimingStruct.AllTimings[currentIndex].startStep = Math.floor(((data.endBeat / (data.bpm / 60)) * 1000) / step);
+							TimingStruct.AllTimings[currentIndex].startTime = data.startTime + data.length;
+						}
 
-					if (currentIndex != 0)
-					{
-						var data = TimingStruct.AllTimings[currentIndex - 1];
-						data.endBeat = beat;
-						data.length = (data.endBeat - data.startBeat) / (data.bpm / 60);
-						var step = ((60 / data.bpm) * 1000) / 4;
-						TimingStruct.AllTimings[currentIndex].startStep = Math.floor(((data.endBeat / (data.bpm / 60)) * 1000) / step);
-						TimingStruct.AllTimings[currentIndex].startTime = data.startTime + data.length;
-					}
-
-					currentIndex++;
+						currentIndex++;
+				}
 			}
 		}
 
+		if (song.events != null){
+			for (event in song.events)
+			{
+				var eventBeat:Float = HelperFunctions.truncateFloat(TimingStruct.getBeatFromTime(event[0]), 3);
+
+				if (checkedPositions.contains(eventBeat))
+				{
+					for (i in song.eventsArray)
+					{
+						if (i.position == eventBeat)
+						{
+							for (j in 0...event[1].length)
+							{
+								var eventType:String;
+			
+								switch (event[1][j][0])
+								{
+									case 'Add Camera Zoom':
+										eventType = 'Camera zoom';
+									case 'Change Scroll Speed':
+										eventType = 'Scroll Speed Change';
+									case 'Alt Idle Animation':
+										eventType = 'Toggle Alt Idle';
+									case 'Play Animation':
+										eventType = 'Character play animation';	
+									default:
+										eventType = event[1][j][0];
+								}
+			
+								var eventValue:Dynamic = '';
+			
+								if (event[1][j][1] != '')
+								{
+									eventValue = event[1][j][1];
+									if (event[1][j][2] != '')
+										eventValue += ', ' + event[1][j][2];
+								}
+			
+								i.events.push(new Song.EventObject('Psych Event ' + eventBeat, eventValue, eventType));
+							}
+						}
+					}
+				}
+				else
+				{
+					var eventAtPos:Song.EventsAtPos = 
+					{
+						position: eventBeat,
+						events: []
+					}
+					for (j in 0...event[1].length)
+					{
+						var eventType:String;
+		
+						switch (event[1][j][0])
+						{
+							case 'Add Camera Zoom':
+								eventType = 'Camera zoom';
+							case 'Change Scroll Speed':
+								eventType = 'Scroll Speed Change';
+							case 'Alt Idle Animation':
+								eventType = 'Toggle Alt Idle';
+							case 'Play Animation':
+								eventType = 'Character play animation';	
+							default:
+								eventType = event[1][j][0];
+						}
+		
+						var eventValue:Dynamic = '';
+		
+						if (event[1][j][1] != '')
+						{
+							eventValue = event[1][j][1];
+							if (event[1][j][2] != '')
+								eventValue += ', ' + event[1][j][2];
+						}	
+
+						checkedPositions.push(eventBeat);
+
+						eventAtPos.events.push(new Song.EventObject('Psych Event ' + eventBeat, eventValue, eventType));		
+					}
+					song.eventsArray.push(eventAtPos);
+				}
+			}
+
+			song.events = null;
+		}
+		
 		for (i in song.notes)
 		{
 			if (i.altAnim)
@@ -232,7 +416,14 @@ class Song
 			{
 				trace("converting changebpm for section " + index);
 				ba = i.bpm;
-				song.eventObjects.push(new Song.Event("FNF BPM Change " + index, beat, i.bpm, "BPM Change"));
+
+				var eventAtPos:EventsAtPos = 
+				{
+					position: beat,
+					events: [new Song.EventObject("FNF BPM Change " + index, i.bpm, "BPM Change")]
+				};
+
+				song.eventsArray.push(eventAtPos);
 			}
 
 			for (ii in i.sectionNotes)
@@ -241,16 +432,65 @@ class Song
 				{
 					if(Std.isOfType(ii[3], String))
 					{
-						ii[5] = ii[3];
-						ii[3] = false;
-						ii[4] = TimingStruct.getBeatFromTime(ii[0]);
+						//Did this for comparability with Psych Engine charts
+						//My tester was very angry, because he used to transfer notes by himself XD
+						if (ii[3] == 'Alt Animation')
+						{
+							ii[3] = true;
+							ii[4] = TimingStruct.getBeatFromTime(ii[0]);
+						}
+						else if (ii[3] == null || ii[3] == '')
+						{
+							ii[5] = 'Default Note';
+							ii[3] = false;
+							ii[4] = TimingStruct.getBeatFromTime(ii[0]);
+						}
+						else{
+							ii[5] = ii[3];
+							ii[3] = false;
+							ii[4] = TimingStruct.getBeatFromTime(ii[0]);
+						}
 					}
 					else
 					{
 						ii[3] = false;
 						ii[4] = TimingStruct.getBeatFromTime(ii[0]);
 					}
+
+					if (ii[3] == null)
+					{
+						ii[3] = false;
+						ii[4] = TimingStruct.getBeatFromTime(ii[0]);
+					}
 				}
+
+				//converting old types to strings
+				if (Std.isOfType(ii[5], Int))
+				{
+					switch (ii[5])
+					{
+						case 4:
+							ii[5] = 'No Animation';
+						case 3:
+							ii[5] = 'GF Sing';
+						case 2:
+							ii[5] = 'Bullet Note';
+						case 1:
+							ii[5] = 'Hurt Note';
+						default:
+							ii[5] = 'Default Note';
+					}
+				}
+
+				//renaming the type names
+				if (ii[5] == 'GF Sing Note')
+					ii[5] = 'GF Sing';
+				
+				if (ii[5] == 'No Anim Note')
+					ii[5] = 'No Animation';
+
+				if (ii[5] == null)
+					ii[5] = 'Default Note';
 
 				if (ii[3] == 0)
 					ii[3] == false;
@@ -280,7 +520,7 @@ class Song
 		return swagShit;
 	}
 
-	public static function parseJSONshit(songId:String, jsonData:Dynamic, jsonMetaData:Dynamic, ?jsonEvents:Dynamic):SongData
+	public static function parseJSONshit(songId:String, jsonData:Dynamic, jsonMetaData:Dynamic, jsonEvents:Dynamic = null):SongData
 	{
 		if (jsonData == null)
 			return null;	
@@ -305,8 +545,6 @@ class Song
 			{
 				songData.songName = songId.split('-').join(' ');
 			}
-
-			songData.offset = songMetaData.offset != null ? songMetaData.offset : 0;
 		}
 		else
 		{
@@ -317,7 +555,13 @@ class Song
 		{
 			var events = cast jsonEvents;
 
-			songData.eventObjects = events.eventObjects;
+			if (events.events != null)
+				songData.events = events.events;
+
+			if (events.eventObjects != null)
+				songData.eventObjects = events.eventObjects;
+
+			songData.eventsArray = events.eventsArray;
 		}
 
 		return Song.conversionChecks(songData);

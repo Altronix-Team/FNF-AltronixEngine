@@ -15,16 +15,19 @@ import openfl.Lib;
 import Conductor.BPMChangeEvent;
 import flixel.FlxG;
 import flixel.addons.ui.FlxUIState;
+import Section;
 
 class MusicBeatState extends FlxUIState
 {
 	private var lastBeat:Float = 0;
 	private var lastStep:Float = 0;
+	private var lastSection:SwagSection = null;
 
 	private var curStep:Int = 0;
 	private var curBeat:Int = 0;
 	private var curDecimalBeat:Float = 0;
 	private var controls(get, never):Controls;
+	private var curSection:SwagSection = null;
 
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;
@@ -85,11 +88,12 @@ class MusicBeatState extends FlxUIState
 
 	override function update(elapsed:Float)
 	{
-
 		if (Conductor.songPosition < 0)
 			curDecimalBeat = 0;
 		else
 		{
+			lastSection = curSection;
+
 			if (TimingStruct.AllTimings.length > 1)
 			{
 				var data = TimingStruct.getTimingAtTimestamp(Conductor.songPosition);
@@ -112,15 +116,16 @@ class MusicBeatState extends FlxUIState
 							curStep++;
 							updateBeat();
 							stepHit();
+							updateSection();
 						}
 					}
 					else if (ste < curStep)
 					{
-						trace("reset steps for some reason?? at " + Conductor.songPosition);
 						// Song reset?
 						curStep = ste;
 						updateBeat();
 						stepHit();
+						updateSection();
 					}
 				}
 			}
@@ -137,18 +142,19 @@ class MusicBeatState extends FlxUIState
 							curStep++;
 							updateBeat();
 							stepHit();
+							updateSection();
 						}
 					}
 					else if (nextStep < curStep)
 					{
 						// Song reset?
-						trace("(no bpm change) reset steps for some reason?? at " + Conductor.songPosition);
 						curStep = nextStep;
 						updateBeat();
 						stepHit();
+						updateSection();
 					}
 				}
-				Conductor.crochet = ((60 / Conductor.bpm) * 1000);
+				Conductor.crochet = ((60 / Conductor.bpm) * 1000);				
 			}
 		}
 
@@ -156,6 +162,16 @@ class MusicBeatState extends FlxUIState
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
 
 		super.update(elapsed);
+	}
+
+
+	private function updateSection():Void
+	{
+		curSection = TimingStruct.getSectionByTime(Conductor.songPosition);
+		if (lastSection != curSection)
+		{
+			sectionHit();
+		}
 	}
 
 	private function updateBeat():Void
@@ -214,7 +230,12 @@ class MusicBeatState extends FlxUIState
 
 	public function beatHit():Void
 	{
-		// do literally nothing dumbass
+		//beatHit
+	}
+
+	public function sectionHit():Void
+	{
+		//Section Hit
 	}
 
 	public function fancyOpenURL(schmancy:String)
@@ -233,14 +254,12 @@ class MusicBeatState extends FlxUIState
 
 	function onWindowFocusOut():Void
 	{
-		Debug.logTrace("Why you do that?");
 		if (FlxG.sound.music.playing)
 			FlxG.sound.music.pause();
 	}
 
 	function onWindowFocusIn():Void
 	{
-		Debug.logTrace("IM BACK!!!");
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
 		FlxG.sound.music.resume();
 	}

@@ -120,14 +120,6 @@ class TitleState extends MusicBeatState
 		MusicBeatState.initSave = true;
 
 		Highscore.load();
-		
-		#if FEATURE_MODCORE
-                    modsToLoad = ModCore.getConfiguredMods();
-                    configFound = (modsToLoad != null && modsToLoad.length > 0);
-                    ModCore.loadConfiguredMods();
-                #else
-                    configFound = false; 
-                #end
 
 		if (!initialized)
 		{

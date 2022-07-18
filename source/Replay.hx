@@ -9,6 +9,8 @@ import openfl.net.FileReference;
 import haxe.Json;
 import flixel.input.keyboard.FlxKey;
 import openfl.utils.Dictionary;
+import states.PlayState;
+import gameplayStuff.Conductor;
 
 class Ana
 {

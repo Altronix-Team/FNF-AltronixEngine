@@ -1,10 +1,3 @@
-0.4
- - Ohhhh, fuck.... AHIEVEMENTS???????????????????????????
- - New stuff in Charting, like difficulties ui
-    - You can change chart difficulty right there, without rejoin charting menu
-    - You can check box if you want use special Inst and Voices for this song difficulty (WOW WHAAAAAAAAAAAAAT)
- - Ability to skip cutscenes in week 7
- - NEW FUCKING EVENT SYSTEM!!!!!!!!
-    - Looks like from Psych engine, but other XD XD
- - Automatic converting events from Psych or Kade engine to Altronix engine events
- - And something more, which I don`t remember
+0.4.1
+ - Folder for lua scripts for difficulties
+ - Reload loaded mods button in mod menu

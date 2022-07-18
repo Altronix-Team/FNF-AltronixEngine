@@ -1,3 +1,4 @@
+import states.PlayState;
 class EtternaFunctions
 {
 	// erf constants

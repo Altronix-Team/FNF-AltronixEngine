@@ -14,6 +14,7 @@ import haxe.Json;
 import sys.io.File;
 import sys.FileSystem;
 #end
+import states.PlayState;
 
 using StringTools;
 using hx.strings.Strings;

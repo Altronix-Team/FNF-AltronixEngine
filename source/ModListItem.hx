@@ -86,7 +86,7 @@ class ModListItem extends InteractableUIGroup
 
 	var modList:ModList;
 
-	var modMenu:ModMenuState;
+	var modMenu:states.ModMenuState;
 
 	public function new(modMetadata:ModMetadata, X:Float = 0, Y:Float = 0, modList:ModList, loaded:Bool = false)
 	{

@@ -1,6 +1,9 @@
 #if FEATURE_STEPMANIA
 package smTools;
 
+import gameplayStuff.TimingStruct;
+import gameplayStuff.Song;
+
 class SMHeader
 {
 	private var _header:Array<String>;
@@ -17,7 +20,7 @@ class SMHeader
 	public var OFFSET = "";
 	public var BPMS = ""; // time=bpm
 
-	public var changeEvents:Array<Song.Event>;
+	public var changeEvents:Array<gameplayStuff.Song.Event>;
 
 	public function new(headerData:Array<String>)
 	{
@@ -75,7 +78,7 @@ class SMHeader
 					TimingStruct.AllTimings[currentIndex].startTime = data.startTime + data.length;
 				}
 
-				changeEvents.push(new Song.Event(HelperFunctions.truncateFloat(beat, 0) + "SM", beat, bpm, "BPM Change"));
+				changeEvents.push(new gameplayStuff.Song.Event(HelperFunctions.truncateFloat(beat, 0) + "SM", beat, bpm, "BPM Change"));
 
 				if (bpmSplit.length == 1)
 					break;

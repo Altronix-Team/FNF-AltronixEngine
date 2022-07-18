@@ -90,6 +90,7 @@ import openfl.text.TextFormat;
 import openfl.Lib;
 import flixel.FlxG;
 import openfl.display.Sprite;
+import gameplayStuff.Conductor;
 
 using StringTools;
 
@@ -235,7 +236,7 @@ class GameJoltAPI // Connects to tentools.api.FlxGameJolt
 				if (bool == false)
 				{
 					Main.gjToastManager.createToast(Paths.getPreloadPath('images/achievements/normal/$imagePath.png'), 'Unlocked new Trophy!',
-						AchievementsState.findNameById(trophyID), true);
+						states.AchievementsState.findNameById(trophyID), true);
 				}
 				else
 				{
@@ -369,7 +370,7 @@ class GameJoltInfo extends FlxSubState
 	/**
 	 * Variable to change which state to go to by hitting ESCAPE or the CONTINUE buttons.
 	 */
-	public static var changeState:FlxUIState = new MainMenuState();
+	public static var changeState:FlxUIState = new states.MainMenuState();
 
 	/**
 	 * Inline variable to change the font for the GameJolt API elements.
@@ -419,7 +420,7 @@ class GameJoltInfo extends FlxSubState
 	];
 }
 
-class GameJoltLogin extends MusicBeatSubstate
+class GameJoltLogin extends states.MusicBeatSubstate
 {
 	var gamejoltText1:FlxText;
 	var gamejoltText2:FlxText;

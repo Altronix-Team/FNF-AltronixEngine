@@ -2,7 +2,7 @@ import flixel.addons.transition.FlxTransitionableState;
 import flixel.FlxG;
 import flixel.FlxSprite;
 
-class OptionsDirect extends MusicBeatState
+class OptionsDirect extends states.MusicBeatState
 {
 	override function create()
 	{
@@ -19,6 +19,6 @@ class OptionsDirect extends MusicBeatState
 		menuBG.antialiasing = FlxG.save.data.antialiasing;
 		add(menuBG);
 
-		openSubState(new OptionsMenu());
+		openSubState(new states.OptionsMenu());
 	}
 }

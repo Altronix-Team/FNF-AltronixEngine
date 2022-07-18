@@ -7,6 +7,13 @@ import Controls.KeyboardScheme;
 import flixel.FlxG;
 import openfl.display.FPS;
 import openfl.Lib;
+import states.OptionsMenu;
+import states.GameplayCustomizeState;
+import states.PlayState;
+import states.StoryMenuState;
+import states.LoadingState;
+import gameplayStuff.Song;
+import gameplayStuff.Highscore;
 
 class Option
 {
@@ -2258,7 +2265,7 @@ class DebugMode extends Option
 
 	public override function press():Bool
 	{
-		FlxG.switchState(new AnimationDebug());
+		FlxG.switchState(new editors.AnimationDebug());
 		return false;
 	}
 

@@ -1,6 +1,6 @@
 package;
 
-import Conductor.BPMChangeEvent;
+import gameplayStuff.Conductor.BPMChangeEvent;
 import flixel.FlxG;
 import flixel.addons.ui.FlxUIState;
 import flixel.math.FlxRect;
@@ -13,8 +13,9 @@ import flixel.util.FlxGradient;
 import flixel.FlxSubState;
 import flixel.FlxSprite;
 import flixel.FlxCamera;
+import gameplayStuff.Conductor;
 
-class CustomFadeTransition extends MusicBeatSubstate {
+class CustomFadeTransition extends states.MusicBeatSubstate {
 	public static var finishCallback:Void->Void;
 	private var leTween:FlxTween = null;
 	public static var nextCamera:FlxCamera;

@@ -1,4 +1,7 @@
 import flixel.FlxG;
+import states.PlayState;
+import gameplayStuff.PlayStateChangeables;
+import gameplayStuff.Conductor;
 
 class Ratings
 {

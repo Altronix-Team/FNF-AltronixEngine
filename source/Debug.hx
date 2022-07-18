@@ -8,7 +8,7 @@ import flixel.util.FlxStringUtil;
 import haxe.CallStack;
 import haxe.Log;
 import haxe.PosInfos;
-import Song.SongData;
+import gameplayStuff.Song.SongData;
 import openfl.events.UncaughtErrorEvent;
 import openfl.system.Capabilities;
 
@@ -217,7 +217,7 @@ class Debug
 		#end
 		logInfo('HaxeFlixel version: ${Std.string(FlxG.VERSION)}');
 		logInfo('AltronixEngine version: ${EngineConstants.engineVer}');
-		logInfo('Friday Night Funkin\' version: ${MainMenuState.gameVer}');
+		logInfo('Friday Night Funkin\' version: ${states.MainMenuState.gameVer}');
 		logInfo('System telemetry:');
 		logInfo('  OS: ${Capabilities.os}');
 		logInfo('  CPU: ${Capabilities.cpuArchitecture}');
@@ -268,10 +268,10 @@ class Debug
 	static function defineTrackerProfiles()
 	{
 		// Example: This will display all the properties that FlxSprite does, along with curCharacter and barColor.
-		FlxG.debugger.addTrackerProfile(new TrackerProfile(Character, ["curCharacter", "isPlayer", "barColor"], [FlxSprite]));
-		FlxG.debugger.addTrackerProfile(new TrackerProfile(HealthIcon, ["char", "isPlayer", "isOldIcon"], [FlxSprite]));
-		FlxG.debugger.addTrackerProfile(new TrackerProfile(Note, ["x", "y", "strumTime", "mustPress", "rawNoteData", "sustainLength"], []));
-		FlxG.debugger.addTrackerProfile(new TrackerProfile(Song, [
+		FlxG.debugger.addTrackerProfile(new TrackerProfile(gameplayStuff.Character, ["curCharacter", "isPlayer", "barColor"], [FlxSprite]));
+		FlxG.debugger.addTrackerProfile(new TrackerProfile(gameplayStuff.HealthIcon, ["char", "isPlayer", "isOldIcon"], [FlxSprite]));
+		FlxG.debugger.addTrackerProfile(new TrackerProfile(gameplayStuff.Note, ["x", "y", "strumTime", "mustPress", "rawNoteData", "sustainLength"], []));
+		FlxG.debugger.addTrackerProfile(new TrackerProfile(gameplayStuff.Song, [
 			"chartVersion",
 			"song",
 			"speed",
@@ -293,17 +293,17 @@ class Debug
 		addConsoleCommand("trackBoyfriend", function()
 		{
 			Debug.logInfo("CONSOLE: Begin tracking Boyfriend...");
-			trackObject(PlayState.instance.boyfriend);
+			trackObject(states.PlayState.instance.boyfriend);
 		});
 		addConsoleCommand("trackGirlfriend", function()
 		{
 			Debug.logInfo("CONSOLE: Begin tracking Girlfriend...");
-			trackObject(PlayState.instance.gf);
+			trackObject(states.PlayState.instance.gf);
 		});
 		addConsoleCommand("trackDad", function()
 		{
 			Debug.logInfo("CONSOLE: Begin tracking Dad...");
-			trackObject(PlayState.instance.dad);
+			trackObject(states.PlayState.instance.dad);
 		});
 
 		addConsoleCommand("setLogLevel", function(logLevel:String)
@@ -324,18 +324,18 @@ class Debug
 		addConsoleCommand("playSong", function(songName:String, ?difficulty:Int = 1)
 		{
 			Debug.logInfo('CONSOLE: Opening song $songName ($difficulty) in Free Play...');
-			FreeplayState.loadSongInFreePlay(songName, difficulty, false);
+			states.FreeplayState.loadSongInFreePlay(songName, difficulty, false);
 		});
 		addConsoleCommand("chartSong", function(songName:String, ?difficulty:Int = 1)
 		{
 			Debug.logInfo('CONSOLE: Opening song $songName ($difficulty) in Chart Editor...');
-			FreeplayState.loadSongInFreePlay(songName, difficulty, true, true);
+			states.FreeplayState.loadSongInFreePlay(songName, difficulty, true, true);
 		});
 
 		addConsoleCommand("changeCharacter", function(character:String, name:String)
 		{
 			Debug.logInfo('CONSOLE: Changing character $character to $name');
-			PlayState.instance.changeCharacter(character, name);
+			states.PlayState.instance.changeCharacter(character, name);
 		});
 	}
 

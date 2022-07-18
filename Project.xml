@@ -75,6 +75,7 @@
 		<library name="week7"    preload="true" />
 		<library name="custom_events"    preload="true" />
 		<library name="custom_notetypes"    preload="true" />
+		<library name="custom_difficulties"    preload="true" />
 		<library name="sm"    preload="true" />
 	</section>
 	
@@ -95,6 +96,7 @@
 		<library name="week7"    preload="false" />
 		<library name="custom_events"    preload="false" />
 		<library name="custom_notetypes"    preload="false" />
+		<library name="custom_difficulties"    preload="false" />
 		<library name="sm"    preload="false" />
 	</section>
 	
@@ -128,6 +130,8 @@
 	<assets path="assets/custom_events"   library="custom_events"   exclude="*.mp3" unless="web"/>
 	<assets path="assets/custom_notetypes"   library="custom_notetypes"   exclude="*.ogg" if="web"/>
 	<assets path="assets/custom_notetypes"   library="custom_notetypes"   exclude="*.mp3" unless="web"/>
+	<assets path="assets/custom_difficulties"   library="custom_notetypes"   exclude="*.ogg" if="web"/>
+	<assets path="assets/custom_difficulties"   library="custom_notetypes"   exclude="*.mp3" unless="web"/>
 
 	<assets path='example_mods' rename='mods' embed='false'/>
 	<assets path='art/readme.txt' rename='do NOT readme.txt' />

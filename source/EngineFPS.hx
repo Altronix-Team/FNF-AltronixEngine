@@ -85,7 +85,7 @@ class EngineFPS extends TextField
 	@:noCompletion
 	private #if !flash override #end function __enterFrame(deltaTime:Float):Void
 	{
-		if (MusicBeatState.initSave)
+		if (states.MusicBeatState.initSave)
 			if (FlxG.save.data.fpsRain)
 			{
 				if (currentColor >= array.length)

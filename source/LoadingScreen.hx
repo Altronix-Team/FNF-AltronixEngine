@@ -16,7 +16,7 @@ import flixel.FlxCamera;
 import flixel.ui.FlxBar;
 import flixel.text.FlxText;
 
-class LoadingScreen extends MusicBeatSubstate {
+class LoadingScreen extends states.MusicBeatSubstate {
 	public static var finishCallback:Void->Void;
 	var loadingart:FlxSprite;
 	var logoBl:FlxSprite;

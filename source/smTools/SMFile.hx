@@ -4,8 +4,10 @@ package smTools;
 import sys.io.File;
 import haxe.Exception;
 import lime.app.Application;
-import Section.SwagSection;
+import gameplayStuff.Section.SwagSection;
 import haxe.Json;
+import gameplayStuff.TimingStruct;
+import gameplayStuff.Song;
 
 class SMFile
 {

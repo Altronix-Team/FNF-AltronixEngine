@@ -1,5 +1,6 @@
 import flixel.util.FlxColor;
 import flixel.FlxSprite;
+import gameplayStuff.Note;
 
 class ChartingBox extends FlxSprite
 {

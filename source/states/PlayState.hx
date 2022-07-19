@@ -96,6 +96,7 @@ import gameplayStuff.PlayStateChangeables;
 import gameplayStuff.Highscore;
 import gameplayStuff.CutsceneHandler;
 import gameplayStuff.TimingStruct;
+import gameplayStuff.HscriptStage;
 #if desktop
 import DiscordClient;
 #end
@@ -107,8 +108,8 @@ import vlc.MP4Handler;
 using StringTools;
 using hx.strings.Strings;
 
-//@:hscript(SONG, setHealth)
-class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
+@:hscript({context: [SONG, setHealth]})
+class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 {
 	public static var instance:PlayState = null;
 
@@ -851,6 +852,12 @@ class PlayState extends MusicBeatState// implements polymod.hscript.HScriptable
 		{
 			Stage = new Stage(SONG.stage);
 		}
+		/*#if FEATURE_MODCORE
+		else if (OpenFlAssets.exists(Paths.getPreloadPath('stages/' + SONG.stage + '.hscript')))
+		{
+			Stage = new HscriptStage(SONG.stage);
+		}
+		#end*/
 		else
 		{
 			#if LUA_ALLOWED

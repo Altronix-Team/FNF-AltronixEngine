@@ -20,7 +20,7 @@ import flixel.util.FlxColor;
 import states.PlayState;
 import states.GameplayCustomizeState;
 import gameplayStuff.StageData;
-//import ScriptedStage;
+//import gameplayStuff.ScriptedStage;
 #if sys
 import sys.FileSystem;
 #end
@@ -705,7 +705,8 @@ class Stage extends states.MusicBeatState
 					#if FEATURE_MODCORE
 					if (Assets.exists(Paths.getPreloadPath('stages/' + curStage + '.hscript')))
 					{
-						//var stage:ScriptedStage = ScriptedStage.init(curStage);
+						/*var defaultStageId:String = 'STAGE_${Std.random(256)}';
+						var stage:ScriptedStage = ScriptedStage.init(curStage, defaultStageId);*/
 					}
 					else
 					{

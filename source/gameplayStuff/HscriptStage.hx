@@ -1,26 +1,25 @@
-package;
+package gameplayStuff;
 
 import IHook;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.FlxBasic;
 
-@:hscript({
+/*@:hscript({
 	context: [
-		add, remove, Paths, distractions, PLAYER, OPPONENT, GIRLFRIEND, getCharacter, getBoyfriend, getDad, getGirlfriend
+		add, remove, Paths, PLAYER, OPPONENT, GIRLFRIEND, getCharacter, getBoyfriend, getDad, getGirlfriend
 	]
 })
-class HscriptStage extends FlxTypedGroup<FlxBasic> implements IHook
+class HscriptStage extends FlxTypedGroup<FlxBasic> implements polymod.hscript.HScriptable
 {
 	public static final PLAYER = 0;
 	public static final OPPONENT = 1;
 	public static final GIRLFRIEND = 2;
 
 	public final stageId:String;
-	public final stageCharacters:Map<Int, BaseCharacter> = new Map<Int, BaseCharacter>();
-
-	/*public static var distractions(get, null):Bool = true;
+	public final stageCharacters:Map<Int, Character> = new Map<Int, Character>();
 
 	public static var currentBeat(get, null):Int = 0;
-	public static var currentStep(get, null):Int = 0;*/
+	public static var currentStep(get, null):Int = 0;
 
 	public var camZoom:Float = 1.0;
 
@@ -43,7 +42,7 @@ class HscriptStage extends FlxTypedGroup<FlxBasic> implements IHook
 	/**
 	 * Mod hook called when the credits sequence starts.
 	 */
-	@:hscript({
+	/*@:hscript({
 		pathName: buildPathName, // Path name is generated at the time the function is called.
 	})
 	function buildStageHooks():Void
@@ -101,22 +100,16 @@ class HscriptStage extends FlxTypedGroup<FlxBasic> implements IHook
 		Debug.logTrace('Script hooks retrieved.');
 	}
 
-	/*function get_distractions():Bool
+	static function get_currentBeat():Int
 	{
-		// Output whether distractions are enabled in the Options menu.
-		return DistractionsAndEffectsOption.get() && MinimalModeOption.get();
+		return states.MusicBeatState.curBeat;
 	}
 
-	function get_currentBeat():Int
+	static function get_currentStep():Int
 	{
-		return MusicBeatState.currentBeat;
+		return states.MusicBeatState.curStep;
 	}
 
-	function get_currentStep():Int
-	{
-		return MusicBeatState.currentStep;
-	}
-*/
 	public function new(stageId:String)
 	{
 		this.stageId = stageId;
@@ -147,7 +140,7 @@ class HscriptStage extends FlxTypedGroup<FlxBasic> implements IHook
 
 	public override function add(object:FlxBasic)
 	{
-		object.antialiasing = pixelMode ? false : AntiAliasingOption.get();
+		object.antialiasing = pixelMode ? false : FlxG.save.data.antialiasing;
 		super.add(object);
 	}
 
@@ -155,7 +148,7 @@ class HscriptStage extends FlxTypedGroup<FlxBasic> implements IHook
 	 * The default characters get added by the PlayState, so you don't need to run this yourself.
 	 * Using this to add custom characters should work though. 
 	 */
-	public function addCharacter(character:BaseCharacter, id:Int)
+	/*public function addCharacter(character:Character, id:Int)
 	{
 	}
 
@@ -238,27 +231,27 @@ class HscriptStage extends FlxTypedGroup<FlxBasic> implements IHook
 			switch (id)
 			{
 				case PLAYER:
-					return PlayState.playerChar;
+					return states.PlayState.boyfriend;
 				case OPPONENT:
-					return PlayState.cpuChar;
+					return states.PlayState.dad;
 				case GIRLFRIEND:
-					return PlayState.gfChar;
+					return states.PlayState.gf;
 			}
 		}
 	}
 
-	public function getBoyfriend():BaseCharacter
+	public function getBoyfriend():Character
 	{
 		return getCharacter(PLAYER);
 	}
 
-	public function getDad():BaseCharacter
+	public function getDad():Character
 	{
 		return getCharacter(OPPONENT);
 	}
 
-	public function getGirlfriend():BaseCharacter
+	public function getGirlfriend():Character
 	{
 		return getCharacter(GIRLFRIEND);
 	}
-}
+}*/

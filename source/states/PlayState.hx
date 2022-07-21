@@ -1732,6 +1732,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 				startCountdown();
 		
 				Main.gjToastManager.visible = true;
+				camHUD.visible = true;
 				dadGroup.alpha = 1;
 				gfGroup.alpha = 1;
 				boyfriendGroup.alpha = 1;

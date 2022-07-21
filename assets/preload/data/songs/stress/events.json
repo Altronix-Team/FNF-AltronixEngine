@@ -1,16 +1,29 @@
 {
-"eventObjects": [
-   {
-    "name": "Init BPM",
-    "position": 0,
-    "value": 178,
-    "type": "BPM Change"
-   },
-   {
-    "name": "New Event 184",
-    "position": 184,
-    "value": "dad, prettygood",
-    "type": "Character play animation"
-   }
-  ]
+ "eventsArray": [
+  {
+   "events": [
+    {
+     "name": "Init BPM",
+     "value": 178,
+     "type": "BPM Change"
+    },
+    {
+     "name": "Init BPM",
+     "value": 178,
+     "type": "BPM Change"
+    }
+   ],
+   "position": 0
+  },
+  {
+   "events": [
+    {
+     "name": "New Event 184",
+     "value": "dad, prettygood",
+     "type": "Character play animation"
+    }
+   ],
+   "position": 184
+  }
+ ]
 }

@@ -132,26 +132,28 @@ class Main extends Sprite
 	public static function onUncaughtError(error:UncaughtErrorEvent)
 	{
 		#if FEATURE_FILESYSTEM
+
+		var errorMsg:String = '';
 		var crashLogLines:Array<String> = [];
 
-		crashLogLines.push('==========FATAL ERROR==========');
-		crashLogLines.push('An uncaught error was thrown, and the game had to close.');
-		crashLogLines.push('Please use the link below, create a new issue, and upload this file to report the error.');
-		crashLogLines.push('');
-		crashLogLines.push(ERROR_REPORT_URL);
-		crashLogLines.push('');
+		/*crashLogLines.push*/ errorMsg += '==========FATAL ERROR==========\n';
+		/*crashLogLines.push*/ errorMsg += 'An uncaught error was thrown, and the game had to close.\n';
+		/*crashLogLines.push*/ errorMsg += 'Please use the link below, create a new issue, and upload this file to report the error.\n';
+		/*crashLogLines.push*/ errorMsg += '\n';
+		/*crashLogLines.push*/ errorMsg +=  ERROR_REPORT_URL;
+		/*crashLogLines.push*/ errorMsg += '\n';
 
-		crashLogLines.push('==========SYSTEM INFO==========');
-		crashLogLines.push('Altronix Engine version: ${EngineConstants.engineVer}');
-		crashLogLines.push('  HaxeFlixel version: ${Std.string(FlxG.VERSION)}');
-		crashLogLines.push('  Friday Night Funkin\' version: ${states.MainMenuState.gameVer}');
-		crashLogLines.push('System telemetry:');
-		crashLogLines.push('  OS: ${Capabilities.os}');
+		/*crashLogLines.push*/ errorMsg += '==========SYSTEM INFO==========\n';
+		/*crashLogLines.push*/ errorMsg += 'Altronix Engine version: ${EngineConstants.engineVer}\n';
+		/*crashLogLines.push*/ errorMsg += '  HaxeFlixel version: ${Std.string(FlxG.VERSION)}\n';
+		/*crashLogLines.push*/ errorMsg += '  Friday Night Funkin\' version: ${states.MainMenuState.gameVer}\n';
+		/*crashLogLines.push*/ errorMsg += 'System telemetry:\n';
+		/*crashLogLines.push*/ errorMsg += '  OS: ${Capabilities.os}\n';
 
-		crashLogLines.push('');
+		/*crashLogLines.push*/ errorMsg += '\n';
 
-		crashLogLines.push('==========STACK TRACE==========');
-		crashLogLines.push(error.error);
+		/*crashLogLines.push*/ errorMsg += '==========STACK TRACE==========\n';
+		/*crashLogLines.push*/ errorMsg += error.error + '\n';
 
 		var errorCallStack:Array<StackItem> = CallStack.exceptionStack(true);
 
@@ -160,32 +162,31 @@ class Main extends Sprite
 			switch (line)
 			{
 				case CFunction:
-					crashLogLines.push('  function:');
+					/*crashLogLines.push*/ errorMsg += '  function:\n';
 				case Module(m):
-					crashLogLines.push('  module:${m}');
+					/*crashLogLines.push*/ errorMsg += '  module:${m}\n';
 				case FilePos(s, file, line, column):
-					crashLogLines.push('  (${file}#${line},${column})');
+					/*crashLogLines.push*/ errorMsg += '  (${file}#${line},${column})\n';
 				case Method(className, method):
-					crashLogLines.push('  method:(${className}/${method}');
+					/*crashLogLines.push*/ errorMsg += '  method:(${className}/${method}\n';
 				case LocalFunction(v):
-					crashLogLines.push('  localFunction:${v}');
+					/*crashLogLines.push*/ errorMsg += '  localFunction:${v}\n';
 				default:
 					Sys.println(line);
 			}
 		}
-		crashLogLines.push('');
+		/*crashLogLines.push*/ errorMsg += '\n';
 
 		var logFolderPath = Util.createDirectoryIfNotExists('logs');
 
-		sys.io.File.saveContent('${logFolderPath}/Altronix Engine - ${DebugLogWriter.getDateString()}.crash', crashLogLines.join('\n'));
+		sys.io.File.saveContent('${logFolderPath}/Altronix Engine - ${DebugLogWriter.getDateString()}.crash', /*crashLogLines.join('\n')*/ errorMsg + "\n");
 
-		crashLogLines.push('An error has occurred and the game is forced to close.\nPlease access the "crash" folder and send the .crash file to the developers:\n'
-			+ ERROR_REPORT_URL);
+		/*crashLogLines.push*/ errorMsg += 'An error has occurred and the game is forced to close.\nPlease access the "crash" folder and send the .crash file to the developers:\n'
+			+ ERROR_REPORT_URL +'\n';
 
-		Debug.displayAlert('Catastrophic Error',
-			'An error has occurred and the game is forced to close.\nPlease access the "crash" folder and send the .crash file to the developers:\n' + ERROR_REPORT_URL);
+		Application.current.window.alert('An error has occurred and the game is forced to close.\nPlease access the "crash" folder and send the .crash file to the developers:\n' + ERROR_REPORT_URL, 'Catastrophic Error');
 
-		Sys.println(crashLogLines);
+		Sys.println(errorMsg);
 
 		#if sys
 		Sys.exit(1);

@@ -13,6 +13,7 @@ import polymod.format.ParseRules.TargetSignatureElement;
 import states.PlayState;
 import openfl.display.BitmapData;
 import openfl.utils.Assets as OpenFlAssets;
+import flixel.text.FlxText;
 
 using StringTools;
 
@@ -42,6 +43,8 @@ class Note extends FlxSprite
 	public var luaID:Int = 0;
 
 	public var isAlt:Bool = false;
+
+	public var noteTypeText:AttachedFlxText;
 
 	public var noteCharterObject:FlxSprite;
 
@@ -93,16 +96,20 @@ class Note extends FlxSprite
 
 	var lasttexture:String = null;
 
+	var chartNote:Bool = false;
+
 	private function set_noteType(value:String):String {
 		if(noteData > -1 && noteType != value) {
 			switch(value) {
 				case 'Bullet Note':
-					reloadNote('Bullet_Note');
+					texture = 'Bullet_Note';
+					reloadNote(texture);
 					bulletNote = true;
 
 				case 'Hurt Note':
+					texture = 'HURTNOTE_assets';
 					ignoreNote = mustPress;
-					reloadNote('HURTNOTE_assets');
+					reloadNote(texture);
 
 					hurtNote = true;
 				case 'No Animation':
@@ -125,12 +132,28 @@ class Note extends FlxSprite
 		beat = bet;
 
 		this.isAlt = isAlt;
+		this.chartNote = inCharter;
 
 		this.prevNote = prevNote;
 		isSustainNote = sustainNote;
 
 		if (isAlt)
 			animSuffix = '-alt';
+
+		if (PlayState.SONG.noteStyle == null)
+		{
+			switch (PlayState.storyWeek)
+			{
+				case 6:
+					noteTypeCheck = 'pixel';
+				default:
+					noteTypeCheck = 'normal';
+			}
+		}
+		else
+		{
+			noteTypeCheck = PlayState.SONG.noteStyle;
+		}
 
 		reloadNote('');
 		
@@ -165,19 +188,6 @@ class Note extends FlxSprite
 			y += FlxG.save.data.offset + PlayState.songOffset;
 
 		this.noteData = noteData;
-
-		// defaults if no noteStyle was found in chart
-
-		if (PlayState.SONG.noteStyle == null)
-		{
-			switch (PlayState.storyWeek)
-			{
-				case 6:
-					noteTypeCheck = 'pixel';
-				default:
-					noteTypeCheck = 'normal';
-			}
-		}
 			
 		x += swagWidth * noteData;	
 		animation.play(dataColor[noteData] + 'Scroll');
@@ -337,7 +347,6 @@ class Note extends FlxSprite
 				prevNote.animation.play(dataColor[prevNote.originColor] + 'hold', true);
 			}
 		}
-
 	}
 
 	override function update(elapsed:Float)
@@ -424,6 +433,32 @@ class Note extends FlxSprite
 			animation.add(dataColor[i] + 'Scroll', [i + 4]);
 			animation.add(dataColor[i] + 'hold', [i]);
 			animation.add(dataColor[i] + 'holdend', [i + 4]);
+		}
+	}
+}
+
+class AttachedFlxText extends FlxText
+{
+	public var sprTracker:FlxSprite;
+	public var xAdd:Float = 0;
+	public var yAdd:Float = 0;
+	public var strumTime:Float = 0;
+	public var position:Int = 0;
+
+	public function new(X:Float = 0, Y:Float = 0, FieldWidth:Float = 0, ?Text:String, Size:Int = 8, EmbeddedFont:Bool = true)
+	{
+		super(X, Y, FieldWidth, Text, Size, EmbeddedFont);
+	}
+
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
+
+		if (sprTracker != null)
+		{
+			setPosition(sprTracker.x + xAdd, sprTracker.y + yAdd);
+			angle = sprTracker.angle;
+			alpha = sprTracker.alpha;
 		}
 	}
 }

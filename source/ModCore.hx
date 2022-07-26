@@ -25,6 +25,10 @@ class ModCore
 
 	public static var loadedModsLength:Int = 0;
 
+	public static var replacedFiles:Array<String> = [];
+
+	public static var polymodLoaded:Bool = false;
+
 	public static function loadConfiguredMods()
 	{
 		#if FEATURE_MODCORE
@@ -212,7 +216,12 @@ class ModCore
 		Debug.logInfo('Installed mods have replaced ${fileList.length} file.');
 		for (item in fileList)
 			Debug.logTrace('  * $item');
-	
+
+		replacedFiles = Polymod.listModFiles();
+
+		if (!polymodLoaded)
+			polymodLoaded = true;
+
 		NoteskinHelpers.updateNoteskins();
 
 		MenuMusicStuff.updateMusic();
@@ -270,6 +279,7 @@ class ModCore
 				"custom_events" => "./custom_events",
 				"custom_notetypes" => "./custom_notetypes",
 				"custom_difficulties" => "./custom_difficulties",
+				"art" => "./art",
 				'core' => './_core' // Don't override these files.
 			]
 		}

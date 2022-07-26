@@ -4,6 +4,7 @@ import gameplayStuff.Section.SwagSection;
 import haxe.Json;
 import haxe.format.JsonParser;
 import openfl.utils.Assets as OpenFlAssets;
+import flixel.util.FlxSort;
 
 using StringTools;
 
@@ -507,9 +508,16 @@ class Song
 			index++;
 		}
 
+		song.eventsArray.sort(sortByBeat);
+
 		song.chartVersion = latestChart;
 
 		return song;
+	}
+	
+	static function sortByBeat(Obj1:EventsAtPos, Obj2:EventsAtPos):Int
+	{
+		return FlxSort.byValues(FlxSort.ASCENDING, HelperFunctions.truncateFloat(Obj1.position, 3), HelperFunctions.truncateFloat(Obj2.position, 3));
 	}
 
 	public static function picospeakerLoad(jsonInput:String, ?folder:String):SongData

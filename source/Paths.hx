@@ -33,21 +33,42 @@ class Paths
 
 	public static function getPath(file:String, type:AssetType, ?library:Null<String>)
 	{
-		if (library != null)
-			return getLibraryPath(file, library);
-
-		if (currentLevel != null)
+		/*if (isFileReplaced(file) && ModCore.polymodLoaded)
 		{
-			var levelPath = getLibraryPathForce(file, currentLevel);
-			if (OpenFlAssets.exists(levelPath, type))
-				return levelPath;
+			if (library != null)
+				return OpenFlAssets.getPath(getLibraryPath(file, library));
 
-			levelPath = getLibraryPathForce(file, "shared");
-			if (OpenFlAssets.exists(levelPath, type))
-				return levelPath;
+			if (currentLevel != null)
+			{
+				var levelPath = OpenFlAssets.getPath(getLibraryPathForce(file, currentLevel));
+				if (OpenFlAssets.exists(levelPath, type))
+					return levelPath;
+
+				levelPath = OpenFlAssets.getPath(getLibraryPathForce(file, "shared"));
+				if (OpenFlAssets.exists(levelPath, type))
+					return levelPath;
+			}
+
+			return OpenFlAssets.getPath(getPreloadPath(file));
 		}
+		else
+		{*/
+			if (library != null)
+				return getLibraryPath(file, library);
 
-		return getPreloadPath(file);
+			if (currentLevel != null)
+			{
+				var levelPath = getLibraryPathForce(file, currentLevel);
+				if (OpenFlAssets.exists(levelPath, type))
+					return levelPath;
+
+				levelPath = getLibraryPathForce(file, "shared");
+				if (OpenFlAssets.exists(levelPath, type))
+					return levelPath;
+			}
+
+			return getPreloadPath(file);
+		//}
 	}
 
 	static public function getTextFromFile(key:String):String
@@ -103,6 +124,15 @@ class Paths
 			Debug.logWarn('Could not find image at path $path');
 			return null;
 		}
+	}
+
+	static public function isFileReplaced(path:String):Bool //Check for replaced files by polymod
+	{
+		if (ModCore.replacedFiles.contains(path))
+		{
+			return true;
+		}
+		return false;
 	}
 
 	static public function loadStageJSON(key:String, ?library:String):Dynamic

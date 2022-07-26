@@ -52,11 +52,23 @@ class NoteskinHelpers
 	static public function generatePixelSprite(id:Int, ends:Bool = false)
 	{
 		var path = "assets/shared/images/noteskins/" + getNoteskinByID(id) + "-pixel" + (ends ? "-ends" : "");
-		if (!OpenFlAssets.exists(OpenFlAssets.getPath(path)))
+
+		if (Paths.isFileReplaced("shared/images/noteskins/" + getNoteskinByID(id) + "-pixel" + (ends ? "-ends" : "") + '.png'))
 		{
-			Debug.logTrace("getting default pixel skin");
-			return BitmapData.fromFile(OpenFlAssets.getPath("assets/shared/images/noteskins" + "/Arrows-pixel" + (ends ? "-ends" : "") + ".png"));
+			if (!OpenFlAssets.exists(OpenFlAssets.getPath(path + '.png')))
+			{
+				return BitmapData.fromFile(OpenFlAssets.getPath("assets/shared/images/noteskins" + "/Arrows-pixel" + (ends ? "-ends" : "") + ".png"));
+			}
+			return BitmapData.fromFile(OpenFlAssets.getPath(path + '.png'));
 		}
-		return BitmapData.fromFile(OpenFlAssets.getPath(path + '.png'));
+		else
+		{
+			if (!OpenFlAssets.exists(Paths.image('noteskins/${getNoteskinByID(id)}-pixel' + (ends ? '-ends' : ''), 'shared')))
+			{
+				Debug.logTrace("getting default pixel skin");
+				return BitmapData.fromFile("assets/shared/images/noteskins" + "/Arrows-pixel" + (ends ? "-ends" : "") + ".png");
+			}
+			return BitmapData.fromFile(path + '.png');
+		}
 	}
 }	

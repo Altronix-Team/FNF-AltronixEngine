@@ -20,6 +20,8 @@ import openfl.system.Capabilities;
 import haxe.CallStack;
 import haxe.Log;
 import haxe.PosInfos;
+import sys.io.Process;
+import sys.FileSystem;
 
 #if FEATURE_MODCORE
 import ModCore;
@@ -179,7 +181,9 @@ class Main extends Sprite
 
 		var logFolderPath = Util.createDirectoryIfNotExists('logs');
 
-		sys.io.File.saveContent('${logFolderPath}/Altronix Engine - ${DebugLogWriter.getDateString()}.crash', /*crashLogLines.join('\n')*/ errorMsg + "\n");
+		var path:String = '${logFolderPath}/Altronix Engine - ${DebugLogWriter.getDateString()}.crash';
+
+		sys.io.File.saveContent(path, /*crashLogLines.join('\n')*/ errorMsg + "\n");
 
 		/*crashLogLines.push*/ errorMsg += 'An error has occurred and the game is forced to close.\nPlease access the "crash" folder and send the .crash file to the developers:\n'
 			+ ERROR_REPORT_URL +'\n';

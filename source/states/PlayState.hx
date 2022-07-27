@@ -96,7 +96,9 @@ import gameplayStuff.PlayStateChangeables;
 import gameplayStuff.Highscore;
 import gameplayStuff.CutsceneHandler;
 import gameplayStuff.TimingStruct;
-import gameplayStuff.HscriptStage;
+import scriptStuff.ModchartHelper;
+import scriptStuff.HscriptStage;
+import scriptStuff.ScriptHelper.ScriptException;
 #if desktop
 import DiscordClient;
 #end
@@ -108,8 +110,8 @@ import vlc.MP4Handler;
 using StringTools;
 using hx.strings.Strings;
 
-@:hscript({context: [SONG, setHealth]})
-class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
+//@:hscript({context: [SONG, setHealth]})
+class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 {
 	public static var instance:PlayState = null;
 
@@ -305,7 +307,10 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 
 	public var randomVar = false;
 
-	public static var Stage:Stage;
+	public var Stage:Stage;
+
+	public var hscriptStage:HscriptStage;
+	var modchartHelper:ModchartHelper;
 
 	public static var timeCurrently:Float = 0;
 	public static var timeCurrentlyR:Float = 0;
@@ -394,6 +399,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 	var dadAltAnim:Bool = false;
 
 	var luaStage = false;
+	var hscriptStageCheck = false;
 
 	public static var doof = null;
 
@@ -789,7 +795,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 			luaStage = true;
 		#end
 
-		if (luaStage)
+		if (luaStage && !hscriptStageCheck)
 		{
 			add(gfGroup);
 			add(dadGroup);
@@ -845,19 +851,29 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 			setOnLuas('dadName', dad.curCharacter);
 		}
 
+		var stageList = Paths.listHscriptInPath('assets/scripts/stages/');
+
 		if (!stageTesting 
 			#if LUA_ALLOWED
 			&& !OpenFlAssets.exists('assets/stages/' + SONG.stage + '.lua')
+			&& !OpenFlAssets.exists(Paths.getScriptFile(SONG.stage, 'stages'))
 			#end)
 		{
 			Stage = new Stage(SONG.stage);
 		}
-		/*#if FEATURE_MODCORE
-		else if (OpenFlAssets.exists(Paths.getPreloadPath('stages/' + SONG.stage + '.hscript')))
+		#if FEATURE_MODCORE
+		else if (stageList.contains(SONG.stage))
 		{
-			Stage = new HscriptStage(SONG.stage);
+			if (OpenFlAssets.exists(Paths.getScriptFile(SONG.stage, 'stages')))
+			{
+				hscriptStageCheck = true;
+				Debug.logTrace('Found hscript stage');
+				Debug.logTrace('At path: ' + Paths.getScriptFile(SONG.stage, 'stages'));
+				hscriptStage = new HscriptStage(Paths.getScriptFile(SONG.stage, 'stages'), this);
+				add(hscriptStage);
+			}
 		}
-		#end*/
+		#end
 		else
 		{
 			#if LUA_ALLOWED
@@ -926,8 +942,14 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 		if(girlfriendCameraOffset == null)
 			girlfriendCameraOffset = [0, 0];
 	
+		if (!luaStage && hscriptStageCheck)
+		{
+			add(gfGroup);
+			add(dadGroup);
+			add(boyfriendGroup);
+		}
 
-		if (!luaStage)
+		if (!luaStage && !hscriptStageCheck)
 		{
 			for (i in Stage.toAdd)
 			{
@@ -936,7 +958,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 			}
 		}
 
-		if (!PlayStateChangeables.Optimize && !luaStage)
+		if (!PlayStateChangeables.Optimize && (!luaStage && !hscriptStageCheck))
 			for (index => array in Stage.layInFront)
 			{
 				switch (index)
@@ -944,7 +966,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 					case 0:
 						add(gfGroup);
 						gfGroup.scrollFactor.set(0.95, 0.95);
-						if (!luaStage)
+						if (!luaStage && !hscriptStageCheck)
 						{
 							for (bg in array)
 							{
@@ -954,7 +976,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 						}
 					case 1:
 						add(dadGroup);
-						if (!luaStage)
+						if (!luaStage && !hscriptStageCheck)
 						{
 							for (bg in array)
 							{
@@ -964,7 +986,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 						}
 					case 2:
 						add(boyfriendGroup);
-						if (!luaStage)
+						if (!luaStage && !hscriptStageCheck)
 						{
 							for (bg in array)
 							{
@@ -984,7 +1006,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 				GameOverSubstate.characterName = 'bfAndGF-DEAD';
 		}
 
-		// launch song scripts
+		// launch song lua and hscript
 		#if LUA_ALLOWED
 		var filesToCheck:Array<String> = Paths.listLuaInPath('assets/data/songs/' + SONG.songId + '/');
 		var filesPushed:Array<String> = [];
@@ -1001,7 +1023,28 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 		}
 		#end
 
-		// launch global scripts
+		#if desktop
+		if (OpenFlAssets.exists(Paths.getScriptFile(SONG.songId, 'songs')))
+		{
+			try
+			{
+				modchartHelper = new ModchartHelper(Paths.getScriptFile(SONG.songId, 'songs'), this);
+				add(modchartHelper);
+			}
+			catch (e)
+			{
+				if (Std.isOfType(e, ScriptException))
+				{
+					scriptError(e);
+					return;
+				}
+				else
+					throw e;
+			}
+		}
+		#end
+
+		// launch global lua
 		#if LUA_ALLOWED
 		var filesToCheck:Array<String> = Paths.listLuaInPath('assets/scripts/');
 		var filesPushed:Array<String> = [];
@@ -1115,7 +1158,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 				gf.visible = true;
 		}
 
-		if (!luaStage)
+		if (!luaStage && !hscriptStageCheck)
 			Stage.update(0);
 
 		trace('uh ' + PlayStateChangeables.safeFrames);
@@ -3328,7 +3371,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 		#if !debug
 		perfectMode = false;
 		#end
-		if (!PlayStateChangeables.Optimize && !luaStage)
+		if (!PlayStateChangeables.Optimize && (!luaStage && !hscriptStageCheck))
 			Stage.update(elapsed);
 
 		if (!addedBotplay && FlxG.save.data.botplay)
@@ -3564,7 +3607,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 		}
 
 		#if debug
-		if (!PlayStateChangeables.Optimize && !luaStage)
+		if (!PlayStateChangeables.Optimize && (!luaStage && !hscriptStageCheck))
 			if (FlxG.keys.justPressed.EIGHT && songStarted)
 			{
 				paused = true;
@@ -4205,6 +4248,12 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 					daNote.destroy();
 
 					callOnLuas('opponentNoteHit', [notes.members.indexOf(daNote), Math.abs(daNote.noteData), daNote.noteType, daNote.isSustainNote]);
+
+					if (hscriptStage != null)
+						hscriptStage.opponentNoteHit(notes.members.indexOf(daNote), Math.abs(daNote.noteData), daNote.noteType, daNote.isSustainNote);
+
+					if (modchartHelper != null)
+						modchartHelper.opponentNoteHit(notes.members.indexOf(daNote), Math.abs(daNote.noteData), daNote.noteType, daNote.isSustainNote);
 				}
 
 				if (daNote.mustPress && !daNote.modifiedByLua)
@@ -4439,7 +4488,7 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 						PlayStateChangeables.scrollSpeed = newValue;
 
 					case "Change Stage":
-						if (!luaStage){
+					if (!luaStage && !hscriptStageCheck){
 							for (i in stageGroup)
 								remove(i);
 								
@@ -5894,6 +5943,12 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 				updateAccuracy();
 			}
 			callOnLuas('goodNoteHit', [notes.members.indexOf(note), Math.abs(note.noteData), note.noteType, note.isSustainNote]);
+
+			if (hscriptStage != null)
+				hscriptStage.goodNoteHit(notes.members.indexOf(note), Math.abs(note.noteData), note.noteType, note.isSustainNote);
+
+			if (modchartHelper != null)
+				modchartHelper.goodNoteHit(notes.members.indexOf(note), Math.abs(note.noteData), note.noteType, note.isSustainNote);
 		}
 	}
 
@@ -5944,6 +5999,12 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 		{
 			resyncVocals();
 		}
+
+		if (hscriptStage != null)
+			hscriptStage.onStep(curStep);
+
+		if (modchartHelper != null)
+			modchartHelper.onStep(curStep);
 
 		setOnLuas('curStep', curStep);
 		callOnLuas('onStepHit', []);
@@ -6066,6 +6127,11 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 				if (vocals.volume == 0 && !curSection.mustHitSection)
 					vocals.volume = 1;
 		}
+		if (hscriptStage != null)
+			hscriptStage.onBeat(curBeat);
+
+		if (modchartHelper != null)
+			modchartHelper.onBeat(curBeat);
 		setOnLuas('curBeat', curBeat);
 		callOnLuas('onBeatHit', []);
 	}
@@ -6258,20 +6324,43 @@ class PlayState extends MusicBeatState implements polymod.hscript.HScriptable
 	}
 
 	function startCharacterLua(name:String)
-		{
-			#if LUA_ALLOWED
-			var doPush:Bool = false;
-			var luaFile:String = 'assets/data/characters/' + name + '.lua';	
+	{
+		#if LUA_ALLOWED
+		var doPush:Bool = false;
+		var luaFile:String = 'assets/data/characters/' + name + '.lua';	
 
-			if(OpenFlAssets.exists(luaFile)) {
-				for (script in luaArray)
-					{
-						if(script.scriptName == luaFile) return;
-					}
-					luaArray.push(new FunkinLua(OpenFlAssets.getPath(luaFile)));
-			}
-			#end
+		if(OpenFlAssets.exists(luaFile)) {
+			for (script in luaArray)
+				{
+					if(script.scriptName == luaFile) return;
+				}
+				luaArray.push(new FunkinLua(OpenFlAssets.getPath(luaFile)));
 		}
+		#end
+	}
+
+	function scriptError(e:Exception)
+	{
+		Debug.displayAlert("Script error!", Std.string(e));
+
+		quit();
+	}
+
+	function quit()
+	{
+		if (isFreeplay)
+			MusicBeatState.switchState(new FreeplayState());
+		else if (isStoryMode)
+			MusicBeatState.switchState(new StoryMenuState());
+		else if (isExtras)
+			MusicBeatState.switchState(new SecretState());
+		else if (chartingMode)
+			openChartEditor();
+		else if (fromPasswordMenu)
+			MusicBeatState.switchState(new ExtrasPasswordState());
+		else
+			MusicBeatState.switchState(new MainMenuState());
+	}
 
 	override function onWindowFocusOut():Void
 	{

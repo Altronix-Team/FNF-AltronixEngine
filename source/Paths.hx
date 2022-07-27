@@ -9,6 +9,7 @@ import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
 import polymod.Polymod.ModMetadata;
 import flash.media.Sound;
+import openfl.display.BitmapData;
 import haxe.Json;
 #if sys
 import sys.io.File;
@@ -33,48 +34,27 @@ class Paths
 
 	public static function getPath(file:String, type:AssetType, ?library:Null<String>)
 	{
-		/*if (isFileReplaced(file) && ModCore.polymodLoaded)
+		if (library != null)
+			return getLibraryPath(file, library);
+
+		if (currentLevel != null)
 		{
-			if (library != null)
-				return OpenFlAssets.getPath(getLibraryPath(file, library));
+			var levelPath = getLibraryPathForce(file, currentLevel);
+			if (OpenFlAssets.exists(levelPath, type))
+				return levelPath;
 
-			if (currentLevel != null)
-			{
-				var levelPath = OpenFlAssets.getPath(getLibraryPathForce(file, currentLevel));
-				if (OpenFlAssets.exists(levelPath, type))
-					return levelPath;
-
-				levelPath = OpenFlAssets.getPath(getLibraryPathForce(file, "shared"));
-				if (OpenFlAssets.exists(levelPath, type))
-					return levelPath;
-			}
-
-			return OpenFlAssets.getPath(getPreloadPath(file));
+			levelPath = getLibraryPathForce(file, "shared");
+			if (OpenFlAssets.exists(levelPath, type))
+				return levelPath;
 		}
-		else
-		{*/
-			if (library != null)
-				return getLibraryPath(file, library);
 
-			if (currentLevel != null)
-			{
-				var levelPath = getLibraryPathForce(file, currentLevel);
-				if (OpenFlAssets.exists(levelPath, type))
-					return levelPath;
-
-				levelPath = getLibraryPathForce(file, "shared");
-				if (OpenFlAssets.exists(levelPath, type))
-					return levelPath;
-			}
-
-			return getPreloadPath(file);
-		//}
+		return getPreloadPath(file);
 	}
 
 	static public function getTextFromFile(key:String):String
-		{
-			return Assets.getText(getPath(key, TEXT));
-		}
+	{
+		return Assets.getText(getPath(key, TEXT));
+	}
 	
 	inline static public function atlasImage(key:String, ?library:String):FlxGraphic
 		{
@@ -124,6 +104,83 @@ class Paths
 			Debug.logWarn('Could not find image at path $path');
 			return null;
 		}
+	}
+
+	public static function getScriptFile(key:String, category:String = ''):String
+	{
+		if (category != '')
+			return 'assets/scripts/' + category + '/' + key + '.hscript';
+		return 'assets/scripts/' + key + '.hscript';
+	}
+
+	public static function getAssetPath(path:String, type:AssetType, group:String = ""):String
+	{
+		switch (type)
+		{
+			case IMAGE:
+				return "assets/" + group + "/images/" + path;
+			case SOUND:
+				return "assets/" + group + "/sounds/" + path;
+			case MUSIC:
+				return "assets/" + group + "/music/" + path;
+			default:
+				return "";
+		}
+	}
+
+	public static function getAsset(path:String, type:AssetType, group:String = ""):Dynamic
+	{
+		var actualPath:String = getAssetPath(path, type, group);
+
+		if (OpenFlAssets.exists(actualPath))
+		{
+			if (FlxG.bitmap.checkCache(actualPath) || OpenFlAssets.cache.hasSound(actualPath))
+			{
+				switch (type)
+				{
+					case IMAGE:
+						return FlxG.bitmap.get(actualPath);
+					case SOUND, MUSIC:
+						return OpenFlAssets.cache.getSound(actualPath);
+					default:
+						return null;
+				}
+			}
+			else if (OpenFlAssets.exists(actualPath))
+			{
+				switch (type)
+				{
+					case IMAGE:
+						return FlxGraphic.fromAssetKey(actualPath);
+					case SOUND:
+						return OpenFlAssets.getSound(actualPath);
+					case MUSIC:
+						return OpenFlAssets.getMusic(actualPath);
+					default:
+						return null;
+				}
+			}
+			else
+			{
+				actualPath = "./" + actualPath;
+				switch (type)
+				{
+					case IMAGE:
+						return FlxGraphic.fromBitmapData(BitmapData.fromFile(actualPath));
+					case SOUND, MUSIC:
+						if (!OpenFlAssets.cache.hasSound(actualPath))
+						{
+							var sound:Sound = Sound.fromFile(actualPath);
+							OpenFlAssets.cache.setSound(actualPath, sound);
+						}
+						return OpenFlAssets.cache.getSound(actualPath);
+					default:
+						return null;
+				}
+			}
+		}
+		
+		return null;
 	}
 
 	static public function isFileReplaced(path:String):Bool //Check for replaced files by polymod
@@ -471,6 +528,34 @@ class Paths
 	{
 		trace('assets/videos/$key.mp4');
 		return getPath('videos/$key.mp4', BINARY, library);
+	}
+
+
+	/**
+	 * List all the data hscript files under a given subdirectory.
+	 * @param path The path to look under.
+	 * @return The list of hscript files under that path.
+	 */
+	public static function listHscriptInPath(path:String)
+	{
+		var dataAssets = OpenFlAssets.list(TEXT);
+
+		var queryPath = '${path}';
+
+		var results:Array<String> = [];
+
+		for (data in dataAssets)
+		{
+			if (data.indexOf(queryPath) != -1
+				&& data.endsWith('.hscript')
+				&& (!results.contains(data.substr(data.indexOf(queryPath) + queryPath.length).replaceAll('.hscript', ''))))
+			{
+				var suffixPos = data.indexOf(queryPath) + queryPath.length;
+				results.push(data.substr(suffixPos).replaceAll('.hscript', ''));
+			}
+		}
+
+		return results;
 	}
 
 	/**

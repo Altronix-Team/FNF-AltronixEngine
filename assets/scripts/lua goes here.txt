@@ -1,1 +1,1 @@
-Initially this folder was used for hscript, but it doesn't work
+Using this for lua and hscript

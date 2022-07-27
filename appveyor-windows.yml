@@ -41,8 +41,6 @@ install:
   - haxelib git systools https://github.com/haya3218/systools
   - haxelib run lime rebuild systools windows
   - haxelib install haxe-strings 7.0.2 
-  - haxelib install haxeui-core
-  - haxelib install haxeui-openfl
   - haxelib list
 
 # No tests idk lol

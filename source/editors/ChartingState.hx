@@ -158,6 +158,7 @@ class ChartingState extends MusicBeatState
 
 	var curRenderedNotes:FlxTypedGroup<Note>;
 	var curRenderedSustains:FlxTypedGroup<FlxSprite>;
+	var curRenderedNoteTexts:FlxTypedGroup<gameplayStuff.Note.AttachedFlxText>;
 
 	var gridBG:FlxSprite;
 
@@ -318,6 +319,7 @@ class ChartingState extends MusicBeatState
 
 		curRenderedNotes = new FlxTypedGroup<Note>();
 		curRenderedSustains = new FlxTypedGroup<FlxSprite>();
+		curRenderedNoteTexts = new FlxTypedGroup<gameplayStuff.Note.AttachedFlxText>();
 
 		FlxG.mouse.visible = true;
 
@@ -585,6 +587,7 @@ class ChartingState extends MusicBeatState
 		add(gridBlackLine);
 		add(curRenderedNotes);
 		add(curRenderedSustains);
+		add(curRenderedNoteTexts);
 		selectedBoxes = new FlxTypedGroup();
 
 		add(selectedBoxes);
@@ -1650,6 +1653,11 @@ class ChartingState extends MusicBeatState
 			while (curRenderedSustains.members.length > 0)
 			{
 				curRenderedSustains.remove(curRenderedSustains.members[0], true);
+			}
+
+			while (curRenderedNoteTexts.members.length > 0)
+			{
+				curRenderedNoteTexts.remove(curRenderedNoteTexts.members[0], true);
 			}
 
 			while (waveformRenderes.members.length > 0)
@@ -3194,6 +3202,11 @@ class ChartingState extends MusicBeatState
 						curRenderedSustains.remove(curRenderedSustains.members[0], true);
 					}
 
+					while (curRenderedNoteTexts.members.length > 0)
+					{
+						curRenderedNoteTexts.remove(curRenderedNoteTexts.members[0], true);
+					}
+
 					while (sectionRenderes.members.length > 0)
 					{
 						sectionRenderes.remove(sectionRenderes.members[0], true);
@@ -3660,6 +3673,11 @@ class ChartingState extends MusicBeatState
 			curRenderedSustains.remove(curRenderedSustains.members[0], true);
 		}
 
+		while (curRenderedNoteTexts.members.length > 0)
+		{
+			curRenderedNoteTexts.remove(curRenderedNoteTexts.members[0], true);
+		}
+
 		var currentSection = 0;
 
 		for (section in _song.notes)
@@ -3717,9 +3735,7 @@ class ChartingState extends MusicBeatState
 
 					curRenderedSustains.add(sustainVis);
 				}
-				if((i[5] != null && note.noteType != null && note.noteType.length > 0) || (note.isAlt && i[3])) {
-					updateNoteText(note, i);
-				}
+				updateNoteText(note, i);
 			}
 			currentSection++;
 		}
@@ -3730,7 +3746,7 @@ class ChartingState extends MusicBeatState
 		var typeInt:Null<Int>;
 		var theType:String;
 
-		if (info[3] && info[5] == null)
+		if (info[3])
 		{
 			theType = 'A';
 		}
@@ -3753,7 +3769,7 @@ class ChartingState extends MusicBeatState
 		daText.strumTime = note.strumTime;
 		daText.position = note.noteData;
 		daText.sprTracker = note;
-		add(daText);
+		curRenderedNoteTexts.add(daText);
 
 		note.noteTypeText = daText;
 	}
@@ -3877,10 +3893,7 @@ class ChartingState extends MusicBeatState
 			}
 		}
 
-		if (note.noteTypeText != null)
-		{
-			note.noteTypeText.destroy();
-		}
+		curRenderedNoteTexts.remove(note.noteTypeText);
 	}
 
 	function clearSection():Void
@@ -4204,6 +4217,11 @@ class ChartingState extends MusicBeatState
 		while (curRenderedSustains.members.length > 0)
 		{
 			curRenderedSustains.remove(curRenderedSustains.members[0], true);
+		}
+
+		while (curRenderedNoteTexts.members.length > 0)
+		{
+			curRenderedNoteTexts.remove(curRenderedNoteTexts.members[0], true);
 		}
 
 		while (sectionRenderes.members.length > 0)

@@ -702,14 +702,6 @@ class Stage extends states.MusicBeatState
 				}
 			default:
 				{
-					#if FEATURE_MODCORE
-					if (Assets.exists(Paths.getPreloadPath('stages/' + curStage + '.hscript')))
-					{
-						/*var defaultStageId:String = 'STAGE_${Std.random(256)}';
-						var stage:ScriptedStage = ScriptedStage.init(curStage, defaultStageId);*/
-					}
-					else
-					{
 						curStage = 'stage';
 						camZoom = 0.9;
 						var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.loadImage('stageback', 'shared'));
@@ -750,49 +742,6 @@ class Stage extends states.MusicBeatState
 
 						swagBacks['stageCurtains'] = stageCurtains;
 						toAdd.push(stageCurtains);
-					}
-					#else
-						curStage = 'stage';
-						camZoom = 0.9;
-						var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.loadImage('stageback', 'shared'));
-						bg.antialiasing = FlxG.save.data.antialiasing;
-						bg.scrollFactor.set(0.9, 0.9);
-						bg.active = false;
-						swagBacks['bg'] = bg;
-						toAdd.push(bg);
-
-						var stageFront:FlxSprite = new FlxSprite(-650, 600).loadGraphic(Paths.loadImage('stagefront', 'shared'));
-						stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
-						stageFront.updateHitbox();
-						stageFront.antialiasing = FlxG.save.data.antialiasing;
-						stageFront.scrollFactor.set(0.9, 0.9);
-						stageFront.active = false;
-						swagBacks['stageFront'] = stageFront;
-						toAdd.push(stageFront);
-
-						var stageLightLeft:BGSprite = new BGSprite('stage_light', -125, -100, 0.9, 0.9);
-						stageLightLeft.setGraphicSize(Std.int(stageLightLeft.width * 1.1));
-						stageLightLeft.updateHitbox();
-						swagBacks['stageLightLeft'] = stageLightLeft;
-						toAdd.push(stageLightLeft);
-
-						var stageLightRight:BGSprite = new BGSprite('stage_light', 1225, -100, 0.9, 0.9);
-						stageLightRight.setGraphicSize(Std.int(stageLightRight.width * 1.1));
-						stageLightRight.updateHitbox();
-						stageLightRight.flipX = true;
-						swagBacks['stageLightRight'] = stageLightRight;
-						toAdd.push(stageLightRight);
-
-						var stageCurtains:FlxSprite = new FlxSprite(-500, -300).loadGraphic(Paths.loadImage('stagecurtains', 'shared'));
-						stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
-						stageCurtains.updateHitbox();
-						stageCurtains.antialiasing = FlxG.save.data.antialiasing;
-						stageCurtains.scrollFactor.set(1.3, 1.3);
-						stageCurtains.active = false;
-
-						swagBacks['stageCurtains'] = stageCurtains;
-						toAdd.push(stageCurtains);
-					#end
 				}
 		}
 	}
@@ -879,12 +828,14 @@ class Stage extends states.MusicBeatState
 			switch (curStage)
 			{
 				case 'halloween':
-					if (FlxG.random.bool(Conductor.bpm > 320 ? 100 : 10) && curBeat > lightningStrikeBeat + lightningOffset)
-					{
-						if (FlxG.save.data.distractions)
+					if (PlayState.SONG != null){
+						if (FlxG.random.bool(Conductor.bpm > 320 ? 100 : 10) && curBeat > lightningStrikeBeat + lightningOffset)
 						{
-							lightningStrikeShit();
-							trace('spooky');
+							if (FlxG.save.data.distractions)
+							{
+								lightningStrikeShit();
+								trace('spooky');
+							}
 						}
 					}
 				case 'school':

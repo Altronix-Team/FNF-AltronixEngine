@@ -1033,7 +1033,7 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 		{
 			if(!filesPushed.contains(file))
 			{
-				if (OpenFlAssets.exists(OpenFlAssets.getPath('assets/data/songs/' + SONG.songId + '/' + file + '.lua')))
+				if (OpenFlAssets.exists('assets/data/songs/' + SONG.songId + '/' + file + '.lua'))
 				{
 					luaArray.push(new FunkinLua(OpenFlAssets.getPath('assets/data/songs/' + SONG.songId + '/' + file + '.lua')));
 					filesPushed.push(file);
@@ -1071,7 +1071,7 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 		{
 			if(!filesPushed.contains(file))
 			{
-				if (OpenFlAssets.exists(OpenFlAssets.getPath('assets/scripts/' + file + '.lua')))
+				if (OpenFlAssets.exists('assets/scripts/' + file + '.lua'))
 				{
 					luaArray.push(new FunkinLua(OpenFlAssets.getPath('assets/scripts/' + file + '.lua')));
 					filesPushed.push(file);
@@ -1357,7 +1357,7 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 		{
 			if(!filesPushed.contains(file))
 			{
-				if (OpenFlAssets.exists(OpenFlAssets.getPath('assets/custom_events/' + file + '.lua')))
+				if (OpenFlAssets.exists('assets/custom_events/' + file + '.lua'))
 				{
 					luaArray.push(new FunkinLua(OpenFlAssets.getPath('assets/custom_events/' + file + '.lua')));
 					filesPushed.push(file);		
@@ -1374,7 +1374,7 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 		{
 			if(!filesPushed.contains(file))
 			{
-				if (OpenFlAssets.exists(OpenFlAssets.getPath('assets/custom_notetypes/' + file + '.lua')))
+				if (OpenFlAssets.exists('assets/custom_notetypes/' + file + '.lua'))
 				{
 					luaArray.push(new FunkinLua(OpenFlAssets.getPath('assets/custom_notetypes/' + file + '.lua')));
 					filesPushed.push(file);
@@ -1391,7 +1391,7 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 		{
 			if (!filesPushed.contains(file))
 			{
-				if (OpenFlAssets.exists(OpenFlAssets.getPath('assets/custom_difficulties/' + file + '.lua')))
+				if (OpenFlAssets.exists('assets/custom_difficulties/' + file + '.lua'))
 				{
 					luaArray.push(new FunkinLua(OpenFlAssets.getPath('assets/custom_difficulties/' + file + '.lua')));
 					filesPushed.push(file);
@@ -1399,8 +1399,6 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 			}
 		}
 		#end
-
-		var index = 0;
 
 		if (startTime != 0)
 		{
@@ -3035,7 +3033,11 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 				else
 					daType = 'Default Note';
 
-				var swagNote:Note = new Note(daStrumTime, daNoteData, oldNote, false, false, false, songNotes[4]);
+				var altNote = songNotes[3]
+					|| ((section.altAnim || section.CPUAltAnim) && !gottaHitNote)
+					|| (section.playerAltAnim && gottaHitNote);
+
+				var swagNote:Note = new Note(daStrumTime, daNoteData, oldNote, false, false, altNote, songNotes[4]);
 
 				if (!gottaHitNote && PlayStateChangeables.Optimize)
 					continue;
@@ -3050,9 +3052,7 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 				susLength = susLength / Conductor.stepCrochet;
 				unspawnNotes.push(swagNote);
 
-				swagNote.isAlt = songNotes[3]
-					|| ((section.altAnim || section.CPUAltAnim) && !gottaHitNote)
-					|| (section.playerAltAnim && gottaHitNote);
+				swagNote.isAlt = altNote;
 
 				if (songNotes[3])
 					swagNote.animSuffix = '-alt';
@@ -3064,14 +3064,16 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 
 				for (susNote in 0...Math.floor(susLength))
 				{
-					oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
-
-					var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, oldNote, true);
-					sustainNote.scrollFactor.set();
-					unspawnNotes.push(sustainNote);
-					sustainNote.isAlt = songNotes[3]
+					var altSusNote = songNotes[3]
 						|| ((section.altAnim || section.CPUAltAnim) && !gottaHitNote)
 						|| (section.playerAltAnim && gottaHitNote);
+
+					oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
+
+					var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, oldNote, true, false, altSusNote);
+					sustainNote.scrollFactor.set();
+					unspawnNotes.push(sustainNote);
+					sustainNote.isAlt = altSusNote;
 
 					sustainNote.mustPress = gottaHitNote;
 					sustainNote.gfNote = (section.gfSection && (songNotes[1]<4));

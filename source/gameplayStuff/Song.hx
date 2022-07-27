@@ -220,39 +220,9 @@ class Song
 			checkedPositions.push(i.position);
 		}
 
-		var convertedEvents:Array<EventsAtPos> = [];
-		var eventsArray:Array<EventObject> = [];
 		if (song.eventObjects != null)
 		{
-			for (i in song.eventObjects)
-			{
-				var name = Reflect.field(i, "name");
-				var type = Reflect.field(i, "type");
-				var pos = Reflect.field(i, "position");
-				var value = Reflect.field(i, "value");
-
-				if (checkedPositions.contains(pos))
-				{
-					for (j in song.eventsArray)
-					{
-						if (j.position == pos)
-							j.events.push(new Song.EventObject(name, value, type));
-					}
-				}
-				else
-				{
-					var eventAtPos:EventsAtPos = 
-					{
-						position: pos,
-						events: [new Song.EventObject(name, value, type)]
-					};
-
-					checkedPositions.push(i.position);
-
-					song.eventsArray.push(eventAtPos);
-				}
-			}
-			song.eventObjects = null;
+			convertKadeEvents(song, checkedPositions);
 		}
 
 		if (song.noteStyle == null)
@@ -311,92 +281,9 @@ class Song
 			}
 		}
 
-		if (song.events != null){
-			for (event in song.events)
-			{
-				var eventBeat:Float = HelperFunctions.truncateFloat(TimingStruct.getBeatFromTime(event[0]), 3);
-
-				if (checkedPositions.contains(eventBeat))
-				{
-					for (i in song.eventsArray)
-					{
-						if (i.position == eventBeat)
-						{
-							for (j in 0...event[1].length)
-							{
-								var eventType:String;
-			
-								switch (event[1][j][0])
-								{
-									case 'Add Camera Zoom':
-										eventType = 'Camera zoom';
-									case 'Change Scroll Speed':
-										eventType = 'Scroll Speed Change';
-									case 'Alt Idle Animation':
-										eventType = 'Toggle Alt Idle';
-									case 'Play Animation':
-										eventType = 'Character play animation';	
-									default:
-										eventType = event[1][j][0];
-								}
-			
-								var eventValue:Dynamic = '';
-			
-								if (event[1][j][1] != '')
-								{
-									eventValue = event[1][j][1];
-									if (event[1][j][2] != '')
-										eventValue += ', ' + event[1][j][2];
-								}
-			
-								i.events.push(new Song.EventObject('Psych Event ' + eventBeat, eventValue, eventType));
-							}
-						}
-					}
-				}
-				else
-				{
-					var eventAtPos:Song.EventsAtPos = 
-					{
-						position: eventBeat,
-						events: []
-					}
-					for (j in 0...event[1].length)
-					{
-						var eventType:String;
-		
-						switch (event[1][j][0])
-						{
-							case 'Add Camera Zoom':
-								eventType = 'Camera zoom';
-							case 'Change Scroll Speed':
-								eventType = 'Scroll Speed Change';
-							case 'Alt Idle Animation':
-								eventType = 'Toggle Alt Idle';
-							case 'Play Animation':
-								eventType = 'Character play animation';	
-							default:
-								eventType = event[1][j][0];
-						}
-		
-						var eventValue:Dynamic = '';
-		
-						if (event[1][j][1] != '')
-						{
-							eventValue = event[1][j][1];
-							if (event[1][j][2] != '')
-								eventValue += ', ' + event[1][j][2];
-						}	
-
-						checkedPositions.push(eventBeat);
-
-						eventAtPos.events.push(new Song.EventObject('Psych Event ' + eventBeat, eventValue, eventType));		
-					}
-					song.eventsArray.push(eventAtPos);
-				}
-			}
-
-			song.events = null;
+		if (song.events != null)
+		{
+			convertPsychEvents(song, checkedPositions);
 		}
 		
 		for (i in song.notes)
@@ -437,40 +324,48 @@ class Song
 
 			for (ii in i.sectionNotes)
 			{
-				if (song.chartVersion == null)
+				if (Std.isOfType(ii[3], String))
 				{
-					if(Std.isOfType(ii[3], String))
+					if (ii[3] == 'Alt Animation')
 					{
-						//Did this for comparability with Psych Engine charts
-						//My tester was very angry, because he used to transfer notes by himself XD
-						if (ii[3] == 'Alt Animation')
-						{
-							ii[3] = true;
-							ii[4] = TimingStruct.getBeatFromTime(ii[0]);
-						}
-						else if (ii[3] == null || ii[3] == '')
-						{
-							ii[5] = 'Default Note';
-							ii[3] = false;
-							ii[4] = TimingStruct.getBeatFromTime(ii[0]);
-						}
-						else{
-							ii[5] = ii[3];
-							ii[3] = false;
-							ii[4] = TimingStruct.getBeatFromTime(ii[0]);
-						}
+						ii[3] = true;
+						ii[4] = TimingStruct.getBeatFromTime(ii[0]);
+					}
+					else if (ii[3] == null || ii[3] == '')
+					{
+						ii[3] = false;
+						ii[4] = TimingStruct.getBeatFromTime(ii[0]);
 					}
 					else
 					{
+						ii[5] = ii[3];
 						ii[3] = false;
 						ii[4] = TimingStruct.getBeatFromTime(ii[0]);
 					}
+				}
 
-					if (ii[3] == null)
-					{
-						ii[3] = false;
-						ii[4] = TimingStruct.getBeatFromTime(ii[0]);
-					}
+				if (ii[3] == null)
+				{
+					ii[3] = false;
+					ii[4] = TimingStruct.getBeatFromTime(ii[0]);
+				}
+
+				if (ii[3] == 0)
+					ii[3] == false;
+
+				var gottaHitNote:Bool = true;
+
+				if (ii[1] > 3 && i.mustHitSection)
+					gottaHitNote = false;
+				else if (ii[1] < 4 && (!i.mustHitSection || i.gfSection))
+					gottaHitNote = false;
+
+				var altNote = ((i.altAnim || i.CPUAltAnim) && !gottaHitNote)
+					|| (i.playerAltAnim && gottaHitNote);
+
+				if (altNote != ii[3])
+				{
+					ii[3] = altNote;
 				}
 
 				//converting old types to strings
@@ -500,9 +395,6 @@ class Song
 
 				if (ii[5] == null)
 					ii[5] = 'Default Note';
-
-				if (ii[3] == 0)
-					ii[3] == false;
 			}
 
 			index++;
@@ -513,6 +405,126 @@ class Song
 		song.chartVersion = latestChart;
 
 		return song;
+	}
+
+	static function convertPsychEvents(song:SongData, checkedPositions:Array<Float>)
+	{
+		for (event in song.events)
+		{
+			var eventBeat:Float = HelperFunctions.truncateFloat(TimingStruct.getBeatFromTime(event[0]), 3);
+
+			if (checkedPositions.contains(eventBeat))
+			{
+				for (i in song.eventsArray)
+				{
+					if (i.position == eventBeat)
+					{
+						for (j in 0...event[1].length)
+						{
+							var eventType:String;
+
+							switch (event[1][j][0])
+							{
+								case 'Add Camera Zoom':
+									eventType = 'Camera zoom';
+								case 'Change Scroll Speed':
+									eventType = 'Scroll Speed Change';
+								case 'Alt Idle Animation':
+									eventType = 'Toggle Alt Idle';
+								case 'Play Animation':
+									eventType = 'Character play animation';
+								default:
+									eventType = event[1][j][0];
+							}
+
+							var eventValue:Dynamic = '';
+
+							if (event[1][j][1] != '')
+							{
+								eventValue = event[1][j][1];
+								if (event[1][j][2] != '')
+									eventValue += ', ' + event[1][j][2];
+							}
+
+							i.events.push(new Song.EventObject('Psych Event ' + eventBeat, eventValue, eventType));
+						}
+					}
+				}
+			}
+			else
+			{
+				var eventAtPos:Song.EventsAtPos = {
+					position: eventBeat,
+					events: []
+				}
+				for (j in 0...event[1].length)
+				{
+					var eventType:String;
+
+					switch (event[1][j][0])
+					{
+						case 'Add Camera Zoom':
+							eventType = 'Camera zoom';
+						case 'Change Scroll Speed':
+							eventType = 'Scroll Speed Change';
+						case 'Alt Idle Animation':
+							eventType = 'Toggle Alt Idle';
+						case 'Play Animation':
+							eventType = 'Character play animation';
+						default:
+							eventType = event[1][j][0];
+					}
+
+					var eventValue:Dynamic = '';
+
+					if (event[1][j][1] != '')
+					{
+						eventValue = event[1][j][1];
+						if (event[1][j][2] != '')
+							eventValue += ', ' + event[1][j][2];
+					}
+
+					checkedPositions.push(eventBeat);
+
+					eventAtPos.events.push(new Song.EventObject('Psych Event ' + eventBeat, eventValue, eventType));
+				}
+				song.eventsArray.push(eventAtPos);
+			}
+		}
+
+		song.events = null;
+	}
+
+	static function convertKadeEvents(song:SongData, checkedPositions:Array<Float>)
+	{
+		for (i in song.eventObjects)
+		{
+			var name = Reflect.field(i, "name");
+			var type = Reflect.field(i, "type");
+			var pos = Reflect.field(i, "position");
+			var value = Reflect.field(i, "value");
+
+			if (checkedPositions.contains(pos))
+			{
+				for (j in song.eventsArray)
+				{
+					if (j.position == pos)
+						j.events.push(new Song.EventObject(name, value, type));
+				}
+			}
+			else
+			{
+				var eventAtPos:EventsAtPos = {
+					position: pos,
+					events: [new Song.EventObject(name, value, type)]
+				};
+
+				checkedPositions.push(i.position);
+
+				song.eventsArray.push(eventAtPos);
+			}
+		}
+		song.eventObjects = null;
 	}
 	
 	static function sortByBeat(Obj1:EventsAtPos, Obj2:EventsAtPos):Int

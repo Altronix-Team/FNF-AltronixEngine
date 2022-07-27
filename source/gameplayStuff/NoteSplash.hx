@@ -14,18 +14,20 @@ class NoteSplash extends FlxSprite
 	private var idleAnim:String;
 	private var textureLoaded:String = null;
 
-    override public function new(x:Float = 0, y:Float = 0, ?note:Int = 0)
+    override public function new(x:Float = 0, y:Float = 0, ?note:Int = 0, ?noteType:String = null)
     {
 		super(x, y);
 
 		if (OpenFlAssets.exists(Paths.image("notesplashes/" + NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin))))
 			curNoteskinSprite = NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin);
+		else if (OpenFlAssets.exists(Paths.image("notesplashes/" + noteType)))
+			curNoteskinSprite = noteType;
 		else
 			curNoteskinSprite = 'Default';
 
 		loadAnims(curNoteskinSprite);
 		
-		setupNoteSplash(x, y, note);
+		setupNoteSplash(x, y, note, noteType);
 		antialiasing = FlxG.save.data.antialiasing;
     }
 

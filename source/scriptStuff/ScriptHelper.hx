@@ -41,6 +41,9 @@ class ScriptHelper
 		expose.set("StringTools", StringTools);
 		expose.set("FlxMath", FlxMath);
 		expose.set("Conductor", Conductor);
+		expose.set('Debug', Debug);
+		expose.set('Paths', Paths);
+		expose.set('PlayState', states.PlayState);
 		
 		expose.set("loadModule", loadModule);
 		expose.set("createSprite", createSprite);

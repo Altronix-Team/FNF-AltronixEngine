@@ -818,6 +818,12 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 			gfGroup.add(gf);
 			startCharacterLua(gf.curCharacter);
 
+			if (modchartHelper != null)
+				modchartHelper.set('gfName', gf.curCharacter);
+
+			if (hscriptStage != null)
+				hscriptStage.set('gfName', gf.curCharacter);
+
 			setOnLuas('gfName', gf.curCharacter);
 
 			boyfriend = new Boyfriend(770, 450, SONG.player1);
@@ -833,6 +839,12 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 			boyfriendGroup.add(boyfriend);
 			startCharacterLua(boyfriend.curCharacter);
 
+			if (modchartHelper != null)
+				modchartHelper.set('boyfriendName', boyfriend.curCharacter);
+
+			if (hscriptStage != null)
+				hscriptStage.set('boyfriendName', boyfriend.curCharacter);
+
 			setOnLuas('boyfriendName', boyfriend.curCharacter);
 
 			dad = new Character(100, 100, SONG.player2);
@@ -847,6 +859,13 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 			startCharacterPos(dad, true);
 			dadGroup.add(dad);
 			startCharacterLua(dad.curCharacter);
+
+			
+			if (modchartHelper != null)
+				modchartHelper.set('dadName', dad.curCharacter);
+
+			if (hscriptStage != null)
+				hscriptStage.set('dadName', dad.curCharacter);
 
 			setOnLuas('dadName', dad.curCharacter);
 		}
@@ -1274,10 +1293,35 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 		generateStaticArrows(1);
 		
 		for (i in 0...playerStrums.length) {
+			if (modchartHelper != null)
+				modchartHelper.set('defaultPlayerStrumX' + i, playerStrums.members[i].x);
+
+			if (hscriptStage != null)
+				hscriptStage.set('defaultPlayerStrumX' + i, playerStrums.members[i].x);
+
+			if (modchartHelper != null)
+				modchartHelper.set('defaultPlayerStrumY' + i, playerStrums.members[i].y);
+
+			if (hscriptStage != null)
+				hscriptStage.set('defaultPlayerStrumY' + i, playerStrums.members[i].y);
+
 			setOnLuas('defaultPlayerStrumX' + i, playerStrums.members[i].x);
 			setOnLuas('defaultPlayerStrumY' + i, playerStrums.members[i].y);
 		}
 		for (i in 0...opponentStrums.length) {
+
+			if (modchartHelper != null)
+				modchartHelper.set('defaultOpponentStrumX' + i, opponentStrums.members[i].x);
+
+			if (hscriptStage != null)
+				hscriptStage.set('defaultOpponentStrumX' + i, opponentStrums.members[i].x);
+
+			if (modchartHelper != null)
+				modchartHelper.set('defaultOpponentStrumY' + i, opponentStrums.members[i].y);
+
+			if (hscriptStage != null)
+				hscriptStage.set('defaultOpponentStrumY' + i, opponentStrums.members[i].y);
+
 			setOnLuas('defaultOpponentStrumX' + i, opponentStrums.members[i].x);
 			setOnLuas('defaultOpponentStrumY' + i, opponentStrums.members[i].y);
 		}
@@ -2292,6 +2336,11 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 			startedCountdown = true;	
 			Conductor.songPosition = 0;
 			Conductor.songPosition -= Conductor.crochet * 5;
+			if (modchartHelper != null)
+				modchartHelper.set('startedCountdown', true);
+
+			if (hscriptStage != null)
+				hscriptStage.set('startedCountdown', true);
 			setOnLuas('startedCountdown', true);
 			callOnLuas('onCountdownStarted', []);
 
@@ -2778,6 +2827,12 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 			FlxTween.tween(timeBar, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
 			FlxTween.tween(timeTxt, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
 		}
+
+		if (modchartHelper != null)
+			modchartHelper.set('songLength', songLength);
+
+		if (hscriptStage != null)
+			hscriptStage.set('songLength', songLength);
 
 		setOnLuas('songLength', songLength);
 		callOnLuas('onSongStart', []);
@@ -4393,6 +4448,23 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 
 		super.update(elapsed);
 
+		if (modchartHelper != null)
+			modchartHelper.set('cameraX', camFollow.x);
+
+		if (hscriptStage != null)
+			hscriptStage.set('cameraX', camFollow.x);
+
+		if (modchartHelper != null)
+			modchartHelper.set('cameraY', camFollow.y);
+
+		if (hscriptStage != null)
+			hscriptStage.set('cameraY', camFollow.y);
+
+		if (modchartHelper != null)
+			modchartHelper.set('botPlay', PlayStateChangeables.botPlay);
+
+		if (hscriptStage != null)
+			hscriptStage.set('botPlay', PlayStateChangeables.botPlay);
 		setOnLuas('cameraX', camFollow.x);
 		setOnLuas('cameraY', camFollow.y);
 		setOnLuas('botPlay', PlayStateChangeables.botPlay);
@@ -4657,6 +4729,13 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 				boyfriend.setPosition(BF_X, BF_Y);
 				boyfriend.x += boyfriend.positionArray[0];
 				boyfriend.y += boyfriend.positionArray[1];
+
+				if (modchartHelper != null)
+					modchartHelper.set('boyfriendName', boyfriend.curCharacter);
+
+				if (hscriptStage != null)
+					hscriptStage.set('boyfriendName', boyfriend.curCharacter);
+
 				setOnLuas('boyfriendName', boyfriend.curCharacter);
 				if (boyfriend.hasTrail)
 				{
@@ -4691,6 +4770,13 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 				dad.setPosition(DAD_X, DAD_Y);
 				dad.x += dad.positionArray[0];
 				dad.y += dad.positionArray[1];
+
+				if (modchartHelper != null)
+					modchartHelper.set('dadName', dad.curCharacter);
+
+				if (hscriptStage != null)
+					hscriptStage.set('dadName', dad.curCharacter);
+
 				setOnLuas('dadName', dad.curCharacter);
 				if (dad.hasTrail)
 				{
@@ -4725,6 +4811,13 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 				gf.setPosition(GF_X, GF_Y);
 				gf.x += gf.positionArray[0];
 				gf.y += gf.positionArray[1];
+
+				if (modchartHelper != null)
+					modchartHelper.set('gfName', gf.curCharacter);
+
+				if (hscriptStage != null)
+					hscriptStage.set('gfName', gf.curCharacter);
+
 				setOnLuas('gfName', gf.curCharacter);
 				if (gf.hasTrail)
 				{
@@ -5164,6 +5257,18 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 
 	private function popUpScore(daNote:Note):Void
 	{
+		if (modchartHelper != null)
+			modchartHelper.set('score', songScore);
+
+		if (hscriptStage != null)
+			hscriptStage.set('score', songScore);
+
+		if (modchartHelper != null)
+			modchartHelper.set('misses', misses);
+
+		if (hscriptStage != null)
+			hscriptStage.set('misses', misses);
+
 		setOnLuas('score', songScore);
 		setOnLuas('misses', misses);
 		var noteDiff:Float;
@@ -5792,6 +5897,24 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 				}
 			}
 
+		if (modchartHelper != null)
+			modchartHelper.set('rating', ratingPercent);
+
+		if (hscriptStage != null)
+			hscriptStage.set('rating', ratingPercent);
+
+		if (modchartHelper != null)
+			modchartHelper.set('ratingName', ratingName);
+
+		if (hscriptStage != null)
+			hscriptStage.set('ratingName', ratingName);
+
+		if (modchartHelper != null)
+			modchartHelper.set('ratingFC', ratingFC);
+
+		if (hscriptStage != null)
+			hscriptStage.set('ratingFC', ratingFC);
+
 		setOnLuas('rating', ratingPercent);
 		setOnLuas('ratingName', ratingName);
 		setOnLuas('ratingFC', ratingFC);
@@ -6016,6 +6139,24 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 
 		if (curSection != null)
 		{
+			if (modchartHelper != null)
+				modchartHelper.set('mustHitSection', curSection.mustHitSection);
+
+			if (hscriptStage != null)
+				hscriptStage.set('mustHitSection', curSection.mustHitSection);
+
+			if (modchartHelper != null)
+				modchartHelper.set('altAnim', curSection.playerAltAnim);
+
+			if (hscriptStage != null)
+				hscriptStage.set('altAnim', curSection.playerAltAnim);
+
+			if (modchartHelper != null)
+				modchartHelper.set('gfSection', curSection.gfSection);
+
+			if (hscriptStage != null)
+				hscriptStage.set('gfSection', curSection.gfSection);
+
 			setOnLuas('mustHitSection', curSection.mustHitSection);
 			setOnLuas('altAnim', curSection.playerAltAnim);
 			setOnLuas('gfSection', curSection.gfSection);
@@ -6029,6 +6170,18 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 				moveCameraSection();
 			}
 		}
+
+		if (modchartHelper != null)
+			modchartHelper.set('curSection', curSectionInt);
+
+		if (hscriptStage != null)
+			hscriptStage.set('curSection', curSectionInt);
+
+		if (modchartHelper != null)
+			modchartHelper.onSectionHit();
+
+		if (hscriptStage != null)
+			hscriptStage.onSectionHit();
 
 		setOnLuas('curSection', curSectionInt);
 		callOnLuas('onSectionHit', []);
@@ -6044,6 +6197,24 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 		}
 
 		currentBeat = curBeat;
+
+		if (modchartHelper != null)
+			modchartHelper.set('curBpm', Conductor.bpm);
+
+		if (hscriptStage != null)
+			hscriptStage.set('curBpm', Conductor.bpm);
+
+		if (modchartHelper != null)
+			modchartHelper.set('crochet', Conductor.crochet);
+
+		if (hscriptStage != null)
+			hscriptStage.set('crochet', Conductor.crochet);
+
+		if (modchartHelper != null)
+			modchartHelper.set('stepCrochet', Conductor.stepCrochet);
+
+		if (hscriptStage != null)
+			hscriptStage.set('stepCrochet', Conductor.stepCrochet);
 
 		setOnLuas('curBpm', Conductor.bpm);
 		setOnLuas('crochet', Conductor.crochet);
@@ -6132,6 +6303,13 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 
 		if (modchartHelper != null)
 			modchartHelper.onBeat(curBeat);
+
+		if (modchartHelper != null)
+			modchartHelper.set('curBeat', curBeat);
+
+		if (hscriptStage != null)
+			hscriptStage.set('curBeat', curBeat);
+
 		setOnLuas('curBeat', curBeat);
 		callOnLuas('onBeatHit', []);
 	}

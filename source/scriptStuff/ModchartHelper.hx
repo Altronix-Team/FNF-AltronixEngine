@@ -78,9 +78,21 @@ class ModchartHelper extends FlxTypedGroup<FlxBasic>
 			scriptHelper.get("onStep")(step);
 	}
 
+	public function onSectionHit()
+	{
+		if (scriptHelper.get("onSectionHit") != null)
+			scriptHelper.get("onSectionHit")();
+	}
+
 	public function onTick(tick:Int)
 	{
 		if (scriptHelper.get("onTick") != null)
 			scriptHelper.get("onTick")(tick);
 	}
+
+	public function get(field:String):Dynamic
+		return scriptHelper.get(field);
+
+	public function set(field:String, value:Dynamic)
+		scriptHelper.set(field, value);
 }

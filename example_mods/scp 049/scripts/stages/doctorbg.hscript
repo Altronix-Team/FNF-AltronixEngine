@@ -1,0 +1,9 @@
+var bg;
+
+function onCreate()
+{
+    bg = createSprite(-200, -300);
+    bg.loadGraphic(getGraphic("stage/049BG"));
+    bg.scrollFactor.set(0.9, 0.9);
+    stage.add(bg);
+}

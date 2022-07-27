@@ -1,0 +1,80 @@
+{
+	"animations": [
+		{
+			"offsets": [
+				0,
+				-9
+			],
+			"frameRate": 24,
+			"prefix": "GF Dancing Beat",
+			"frameIndices": [
+				30,
+				0,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10,
+				11,
+				12,
+				13,
+				14
+			],
+			"name": "danceLeft"
+		},
+		{
+			"offsets": [
+				0,
+				-9
+			],
+			"frameRate": 24,
+			"prefix": "GF Dancing Beat",
+			"frameIndices": [
+				15,
+				16,
+				17,
+				18,
+				19,
+				20,
+				21,
+				22,
+				23,
+				24,
+				25,
+				26,
+				27,
+				28,
+				29
+			],
+			"name": "danceRight"
+		}
+	],
+	"hasTrail": false,
+	"camPos": [
+		0,
+		0
+	],
+	"holdLength": 4.1,
+	"charPos": [
+		0,
+		0
+	],
+	"flipX": false,
+	"asset": "characters/scpgf",
+	"startingAnim": "danceRight",
+	"characterIcon": "gf",
+	"antialiasing": true,
+	"name": "characters/scpgf",
+	"barColorJson": [
+		165,
+		0,
+		77
+	],
+	"replacesGF": true,
+	"scale": 0
+}

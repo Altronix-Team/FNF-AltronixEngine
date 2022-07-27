@@ -1,0 +1,162 @@
+{
+	"animations": [
+		{
+			"offsets": [
+				-5,
+				0
+			],
+			"frameIndices": [],
+			"prefix": "bfidle",
+			"flipX": false,
+			"interrupt": true,
+			"name": "idle",
+			"looped": false,
+			"flipY": false,
+			"nextAnim": "idle",
+			"frameRate": 24
+		},
+		{
+			"offsets": [
+				-79,
+				54
+			],
+			"frameIndices": [],
+			"prefix": "bfup",
+			"flipX": false,
+			"interrupt": true,
+			"name": "singUP",
+			"looped": false,
+			"flipY": false,
+			"nextAnim": "idle",
+			"frameRate": 24
+		},
+		{
+			"offsets": [
+				-40,
+				10
+			],
+			"frameIndices": [],
+			"prefix": "bfleft",
+			"flipX": false,
+			"interrupt": true,
+			"name": "singLEFT",
+			"looped": false,
+			"flipY": false,
+			"nextAnim": "idle",
+			"frameRate": 24
+		},
+		{
+			"offsets": [
+				-11,
+				-17
+			],
+			"frameIndices": [],
+			"prefix": "bfright",
+			"flipX": false,
+			"interrupt": true,
+			"name": "singRIGHT",
+			"looped": false,
+			"flipY": false,
+			"nextAnim": "idle",
+			"frameRate": 24
+		},
+		{
+			"offsets": [
+				-63,
+				-45
+			],
+			"frameIndices": [],
+			"prefix": "bfdown",
+			"flipX": false,
+			"interrupt": true,
+			"name": "singDOWN",
+			"looped": false,
+			"flipY": false,
+			"nextAnim": "idle",
+			"frameRate": 24
+		},
+		{
+			"offsets": [
+				-80,
+				10
+			],
+			"frameIndices": [],
+			"prefix": "MISSu",
+			"flipX": false,
+			"interrupt": true,
+			"name": "singUPmiss",
+			"looped": false,
+			"flipY": false,
+			"nextAnim": "idle",
+			"frameRate": 24
+		},
+		{
+			"offsets": [
+				-45,
+				-16
+			],
+			"frameIndices": [],
+			"prefix": "MISSl",
+			"flipX": false,
+			"interrupt": true,
+			"name": "singLEFTmiss",
+			"looped": false,
+			"flipY": false,
+			"nextAnim": "idle",
+			"frameRate": 24
+		},
+		{
+			"offsets": [
+				-38,
+				-38
+			],
+			"frameIndices": [],
+			"prefix": "MISSr",
+			"flipX": false,
+			"interrupt": true,
+			"name": "singRIGHTmiss",
+			"looped": false,
+			"flipY": false,
+			"nextAnim": "idle",
+			"frameRate": 24
+		},
+		{
+			"offsets": [
+				-52,
+				-70
+			],
+			"frameIndices": [],
+			"prefix": "MISSd",
+			"flipX": false,
+			"interrupt": true,
+			"name": "singDOWNmiss",
+			"looped": false,
+			"flipY": false,
+			"nextAnim": "idle",
+			"frameRate": 24
+		}
+	],
+	"hasTrail": false,
+	"camPos": [
+		-20,
+		30
+	],
+	"holdLength": 4,
+	"charPos": [
+		0,
+		0
+	],
+	"flipX": true,
+	"asset": "characters/BOYFRIENDDBOY",
+	"startingAnim": "idle",
+	"characterIcon": "BfFoundation",
+	"antialiasing": true,
+	"name": "characters/BOYFRIENDDBOY",
+	"barColorJson": [
+		255,
+		170,
+		0
+	],
+	"replacesGF": false,
+	"scale": 1
+}

@@ -49,7 +49,10 @@ class NoteSplash extends FlxSprite
 				texture = 'HURTnoteSplashes';
 
 			default:
-				texture = curNoteskinSprite;
+				if (OpenFlAssets.exists(Paths.image("notesplashes/" + noteType)))
+					texture = noteType;
+				else
+					texture = curNoteskinSprite;
 		}
 
 		if(textureLoaded != texture) {

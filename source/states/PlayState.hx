@@ -886,8 +886,6 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 			if (OpenFlAssets.exists(Paths.getScriptFile(SONG.stage, 'stages')))
 			{
 				hscriptStageCheck = true;
-				Debug.logTrace('Found hscript stage');
-				Debug.logTrace('At path: ' + Paths.getScriptFile(SONG.stage, 'stages'));
 				hscriptStage = new HscriptStage(Paths.getScriptFile(SONG.stage, 'stages'), this);
 				add(hscriptStage);
 			}

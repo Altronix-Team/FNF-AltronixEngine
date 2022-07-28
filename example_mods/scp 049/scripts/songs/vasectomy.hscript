@@ -1,0 +1,4 @@
+function onCreate()
+{
+    GameOverSubstate.characterName = 'dbf-dead';
+}

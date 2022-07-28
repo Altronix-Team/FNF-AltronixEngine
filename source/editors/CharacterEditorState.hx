@@ -117,7 +117,7 @@ class CharacterEditorState extends MusicBeatState
 		cameraFollowPointer.color = FlxColor.WHITE;
 		add(cameraFollowPointer);
 
-		loadChar(!daAnim.startsWith('bf'), false);
+		loadChar(!daAnim.startsWith('bf') || !daAnim.endsWith('bf'), false);
 
 		healthBarBG = new FlxSprite(30, FlxG.height - 75).loadGraphic(Paths.image('healthBar'));
 		healthBarBG.scrollFactor.set();
@@ -347,7 +347,7 @@ class CharacterEditorState extends MusicBeatState
 		tab_group.name = "Settings";
 
 		check_player = new FlxUICheckBox(10, 60, null, null, "Playable Character", 100);
-		check_player.checked = (daAnim.startsWith('bf') || daAnim.endsWith('-player'));
+		check_player.checked = (daAnim.startsWith('bf') || daAnim.endsWith('bf') || daAnim.endsWith('-player'));
 		check_player.callback = function()
 		{
 			char.isPlayer = !char.isPlayer;
@@ -381,7 +381,7 @@ class CharacterEditorState extends MusicBeatState
 		charDropDown = new FlxUIDropDownMenuCustom(10, 30, FlxUIDropDownMenuCustom.makeStrIdLabelArray([''], true), function(character:String)
 		{
 			daAnim = characterList[Std.parseInt(character)];
-			check_player.checked = (daAnim.startsWith('bf') || daAnim.endsWith('-player'));
+			check_player.checked = (daAnim.startsWith('bf')  || daAnim.endsWith('bf') || daAnim.endsWith('-player'));
 			loadChar(!check_player.checked);
 			updatePresence();
 			reloadCharacterDropDown();

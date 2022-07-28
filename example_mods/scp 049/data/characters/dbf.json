@@ -7,12 +7,12 @@
 			],
 			"frameIndices": [],
 			"prefix": "bfidle",
-			"flipX": false,
-			"interrupt": true,
-			"name": "idle",
 			"looped": false,
-			"flipY": false,
+			"name": "idle",
+			"interrupt": true,
+			"flipX": false,
 			"nextAnim": "idle",
+			"flipY": false,
 			"frameRate": 24
 		},
 		{
@@ -22,42 +22,42 @@
 			],
 			"frameIndices": [],
 			"prefix": "bfup",
-			"flipX": false,
-			"interrupt": true,
-			"name": "singUP",
 			"looped": false,
-			"flipY": false,
+			"name": "singUP",
+			"interrupt": true,
+			"flipX": false,
 			"nextAnim": "idle",
+			"flipY": false,
 			"frameRate": 24
 		},
 		{
 			"offsets": [
-				-40,
-				10
+				-10,
+				-18
 			],
 			"frameIndices": [],
 			"prefix": "bfleft",
-			"flipX": false,
-			"interrupt": true,
-			"name": "singLEFT",
 			"looped": false,
-			"flipY": false,
+			"name": "singLEFT",
+			"interrupt": true,
+			"flipX": false,
 			"nextAnim": "idle",
+			"flipY": false,
 			"frameRate": 24
 		},
 		{
 			"offsets": [
-				-11,
-				-17
+				-42,
+				11
 			],
 			"frameIndices": [],
 			"prefix": "bfright",
-			"flipX": false,
-			"interrupt": true,
-			"name": "singRIGHT",
 			"looped": false,
-			"flipY": false,
+			"name": "singRIGHT",
+			"interrupt": true,
+			"flipX": false,
 			"nextAnim": "idle",
+			"flipY": false,
 			"frameRate": 24
 		},
 		{
@@ -67,12 +67,12 @@
 			],
 			"frameIndices": [],
 			"prefix": "bfdown",
-			"flipX": false,
-			"interrupt": true,
-			"name": "singDOWN",
 			"looped": false,
-			"flipY": false,
+			"name": "singDOWN",
+			"interrupt": true,
+			"flipX": false,
 			"nextAnim": "idle",
+			"flipY": false,
 			"frameRate": 24
 		},
 		{
@@ -82,42 +82,42 @@
 			],
 			"frameIndices": [],
 			"prefix": "MISSu",
-			"flipX": false,
-			"interrupt": true,
-			"name": "singUPmiss",
 			"looped": false,
-			"flipY": false,
+			"name": "singUPmiss",
+			"interrupt": true,
+			"flipX": false,
 			"nextAnim": "idle",
+			"flipY": false,
 			"frameRate": 24
 		},
 		{
 			"offsets": [
-				-45,
-				-16
+				-35,
+				-36
 			],
 			"frameIndices": [],
 			"prefix": "MISSl",
-			"flipX": false,
-			"interrupt": true,
-			"name": "singLEFTmiss",
 			"looped": false,
-			"flipY": false,
+			"name": "singLEFTmiss",
+			"interrupt": true,
+			"flipX": false,
 			"nextAnim": "idle",
+			"flipY": false,
 			"frameRate": 24
 		},
 		{
 			"offsets": [
-				-38,
-				-38
+				-48,
+				-18
 			],
 			"frameIndices": [],
 			"prefix": "MISSr",
-			"flipX": false,
-			"interrupt": true,
-			"name": "singRIGHTmiss",
 			"looped": false,
-			"flipY": false,
+			"name": "singRIGHTmiss",
+			"interrupt": true,
+			"flipX": false,
 			"nextAnim": "idle",
+			"flipY": false,
 			"frameRate": 24
 		},
 		{
@@ -127,12 +127,12 @@
 			],
 			"frameIndices": [],
 			"prefix": "MISSd",
-			"flipX": false,
-			"interrupt": true,
-			"name": "singDOWNmiss",
 			"looped": false,
-			"flipY": false,
+			"name": "singDOWNmiss",
+			"interrupt": true,
+			"flipX": false,
 			"nextAnim": "idle",
+			"flipY": false,
 			"frameRate": 24
 		}
 	],

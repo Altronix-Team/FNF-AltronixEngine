@@ -1,5 +1,6 @@
 package scriptStuff;
 
+import states.GameOverState;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.FlxGraphic;
@@ -44,6 +45,7 @@ class ScriptHelper
 		expose.set('Debug', Debug);
 		expose.set('Paths', Paths);
 		expose.set('PlayState', states.PlayState);
+		expose.set('GameOverSubstate', states.GameOverSubstate);
 		
 		expose.set("loadModule", loadModule);
 		expose.set("createSprite", createSprite);
@@ -70,6 +72,8 @@ class ScriptHelper
         {
 			if (OpenFlAssets.exists(path))
             {
+				Debug.logTrace('Found hscript');
+				Debug.logTrace('At path: ' + path);
                 try
                 {
 					ast = parser.parseString(OpenFlAssets.getText(path), path);
@@ -87,6 +91,8 @@ class ScriptHelper
             }
 			else if (OpenFlAssets.exists(OpenFlAssets.getPath(path)))
 			{
+				Debug.logTrace('Found hscript');
+				Debug.logTrace('At path: ' + OpenFlAssets.getPath(path));
 				try
 				{
 					ast = parser.parseString(OpenFlAssets.getText(OpenFlAssets.getPath(path)), path);

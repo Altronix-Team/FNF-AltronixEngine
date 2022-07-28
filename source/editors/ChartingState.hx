@@ -534,24 +534,24 @@ class ChartingState extends MusicBeatState
 		add(UI_box);
 
 		#if desktop
-		var luaList:Array<String> = Paths.listTxtInPath('assets/custom_events/');
-		for (i in 0...luaList.length)
+		var diffList:Array<String> = Paths.listTxtInPath('assets/custom_events/');
+		for (i in 0...diffList.length)
 		{
-			if (luaList[i] == 'readme')
+			if (diffList[i] == 'readme')
 				continue;
 			
-			if(!eventTypeList.contains(luaList[i])) {
-				eventTypeList.push(luaList[i]);
+			if (!eventTypeList.contains(diffList[i])) {
+				eventTypeList.push(diffList[i]);
 			}
 		}
 		#end
 
 		#if desktop
-		var luaList:Array<String> = Paths.listLuaInPath('assets/custom_notetypes/');
-		for (i in 0...luaList.length)
+		var noteList:Array<String> = Paths.listLuaInPath('assets/custom_notetypes/').concat(Paths.listHscriptInPath('assets/custom_notetypes/'));
+		for (i in 0...noteList.length)
 		{
-			if(!noteTypeList.contains(luaList[i])) {
-				noteTypeList.push(luaList[i]);
+			if (!noteTypeList.contains(noteList[i])) {
+				noteTypeList.push(noteList[i]);
 			}
 		}
 		#end

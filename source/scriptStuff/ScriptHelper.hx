@@ -222,4 +222,22 @@ class ScriptHelper
 	{
 		return new FlxTimer();
 	}
+
+	function getProperty(instance:Dynamic = null, variable:String):Any { //Copy from lua
+		if (instance == null)
+			return Reflect.getProperty(getInstance(), variable);
+		else
+			return Reflect.getProperty(instance, variable);
+	}
+
+	function setProperty(instance:Dynamic = null, variable:String, value:Dynamic) { // Copy from lua
+		if (instance == null)
+			Reflect.setProperty(getInstance(), variable, value);
+		else
+			Reflect.setProperty(instance, variable, value);
+	}
+
+	function getInstance() { //Copy from lua
+		return states.PlayState.instance.isDead ? states.GameOverSubstate.instance : states.PlayState.instance;
+	}
 }

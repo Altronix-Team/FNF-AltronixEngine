@@ -310,7 +310,7 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 	public var Stage:Stage;
 
 	public var hscriptStage:HscriptStage;
-	var modchartHelper:ModchartHelper;
+	var hscriptFiles:Array<ModchartHelper> = [];
 
 	public static var timeCurrently:Float = 0;
 	public static var timeCurrentlyR:Float = 0;
@@ -818,8 +818,7 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 			gfGroup.add(gf);
 			startCharacterLua(gf.curCharacter);
 
-			if (modchartHelper != null)
-				modchartHelper.set('gfName', gf.curCharacter);
+			setOnHscript('gfName', gf.curCharacter);
 
 			if (hscriptStage != null)
 				hscriptStage.set('gfName', gf.curCharacter);
@@ -839,8 +838,7 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 			boyfriendGroup.add(boyfriend);
 			startCharacterLua(boyfriend.curCharacter);
 
-			if (modchartHelper != null)
-				modchartHelper.set('boyfriendName', boyfriend.curCharacter);
+			setOnHscript('boyfriendName', boyfriend.curCharacter);
 
 			if (hscriptStage != null)
 				hscriptStage.set('boyfriendName', boyfriend.curCharacter);
@@ -860,9 +858,7 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 			dadGroup.add(dad);
 			startCharacterLua(dad.curCharacter);
 
-			
-			if (modchartHelper != null)
-				modchartHelper.set('dadName', dad.curCharacter);
+			setOnHscript('dadName', dad.curCharacter);
 
 			if (hscriptStage != null)
 				hscriptStage.set('dadName', dad.curCharacter);
@@ -1045,8 +1041,7 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 		{
 			try
 			{
-				modchartHelper = new ModchartHelper(Paths.getScriptFile(SONG.songId, 'songs'), this);
-				add(modchartHelper);
+				hscriptFiles.push(new ModchartHelper(Paths.getScriptFile(SONG.songId, 'songs'), this));
 			}
 			catch (e)
 			{
@@ -1291,14 +1286,12 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 		generateStaticArrows(1);
 		
 		for (i in 0...playerStrums.length) {
-			if (modchartHelper != null)
-				modchartHelper.set('defaultPlayerStrumX' + i, playerStrums.members[i].x);
+				setOnHscript('defaultPlayerStrumX' + i, playerStrums.members[i].x);
 
 			if (hscriptStage != null)
 				hscriptStage.set('defaultPlayerStrumX' + i, playerStrums.members[i].x);
 
-			if (modchartHelper != null)
-				modchartHelper.set('defaultPlayerStrumY' + i, playerStrums.members[i].y);
+				setOnHscript('defaultPlayerStrumY' + i, playerStrums.members[i].y);
 
 			if (hscriptStage != null)
 				hscriptStage.set('defaultPlayerStrumY' + i, playerStrums.members[i].y);
@@ -1308,14 +1301,12 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 		}
 		for (i in 0...opponentStrums.length) {
 
-			if (modchartHelper != null)
-				modchartHelper.set('defaultOpponentStrumX' + i, opponentStrums.members[i].x);
+				setOnHscript('defaultOpponentStrumX' + i, opponentStrums.members[i].x);
 
 			if (hscriptStage != null)
 				hscriptStage.set('defaultOpponentStrumX' + i, opponentStrums.members[i].x);
 
-			if (modchartHelper != null)
-				modchartHelper.set('defaultOpponentStrumY' + i, opponentStrums.members[i].y);
+				setOnHscript('defaultOpponentStrumY' + i, opponentStrums.members[i].y);
 
 			if (hscriptStage != null)
 				hscriptStage.set('defaultOpponentStrumY' + i, opponentStrums.members[i].y);
@@ -1348,8 +1339,8 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 		generateSong(SONG.songId);
 
 		// launch custom events
-		#if LUA_ALLOWED
-		var filesToCheck:Array<String> = Paths.listLuaInPath('assets/custom_events/');
+		#if desktop
+		var filesToCheck:Array<String> = Paths.listLuaInPath('assets/custom_events/').concat(Paths.listHscriptInPath('assets/custom_events/'));
 		var filesPushed:Array<String> = [];
 		for (file in filesToCheck)
 		{
@@ -1360,13 +1351,18 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 					luaArray.push(new FunkinLua(OpenFlAssets.getPath('assets/custom_events/' + file + '.lua')));
 					filesPushed.push(file);		
 				}
+				else if (OpenFlAssets.exists('assets/custom_events/' + file + '.hscript'))
+				{
+					hscriptFiles.push(new ModchartHelper(OpenFlAssets.getPath('assets/custom_events/' + file + '.hscript'), this));
+					filesPushed.push(file);
+				}
 			}
 		}		
 		#end
 
 		// launch custom notetypes
-		#if LUA_ALLOWED
-		var filesToCheck:Array<String> = Paths.listLuaInPath('assets/custom_notetypes/');
+		#if desktop
+		var filesToCheck:Array<String> = Paths.listLuaInPath('assets/custom_notetypes/').concat(Paths.listHscriptInPath('assets/custom_notetypes/'));
 		var filesPushed:Array<String> = [];
 		for (file in filesToCheck)
 		{
@@ -1377,13 +1373,18 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 					luaArray.push(new FunkinLua(OpenFlAssets.getPath('assets/custom_notetypes/' + file + '.lua')));
 					filesPushed.push(file);
 				}
+				else if (OpenFlAssets.exists('assets/custom_notetypes/' + file + '.hscript'))
+				{
+					hscriptFiles.push(new ModchartHelper(OpenFlAssets.getPath('assets/custom_notetypes/' + file + '.hscript'), this));
+					filesPushed.push(file);
+				}
 			}
 		}		
 		#end
 
-		// launch custom diffs luas
-		#if LUA_ALLOWED
-		var filesToCheck:Array<String> = Paths.listLuaInPath('assets/custom_difficulties/');
+		// launch custom diffs scripts
+		#if desktop
+		var filesToCheck:Array<String> = Paths.listLuaInPath('assets/custom_difficulties/').concat(Paths.listHscriptInPath('assets/custom_difficulties/'));
 		var filesPushed:Array<String> = [];
 		for (file in filesToCheck)
 		{
@@ -1392,6 +1393,11 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 				if (OpenFlAssets.exists('assets/custom_difficulties/' + file + '.lua'))
 				{
 					luaArray.push(new FunkinLua(OpenFlAssets.getPath('assets/custom_difficulties/' + file + '.lua')));
+					filesPushed.push(file);
+				}
+				else if (OpenFlAssets.exists('assets/custom_difficulties/' + file + '.hscript'))
+				{
+					hscriptFiles.push(new ModchartHelper(OpenFlAssets.getPath('assets/custom_difficulties/' + file + '.hscript'), this));
 					filesPushed.push(file);
 				}
 			}
@@ -2332,8 +2338,8 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 			startedCountdown = true;	
 			Conductor.songPosition = 0;
 			Conductor.songPosition -= Conductor.crochet * 5;
-			if (modchartHelper != null)
-				modchartHelper.set('startedCountdown', true);
+
+			setOnHscript('startedCountdown', true);
 
 			if (hscriptStage != null)
 				hscriptStage.set('startedCountdown', true);
@@ -2824,8 +2830,7 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 			FlxTween.tween(timeTxt, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
 		}
 
-		if (modchartHelper != null)
-			modchartHelper.set('songLength', songLength);
+		setOnHscript('songLength', songLength);
 
 		if (hscriptStage != null)
 			hscriptStage.set('songLength', songLength);
@@ -4307,8 +4312,8 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 					if (hscriptStage != null)
 						hscriptStage.opponentNoteHit(notes.members.indexOf(daNote), Math.abs(daNote.noteData), daNote.noteType, daNote.isSustainNote);
 
-					if (modchartHelper != null)
-						modchartHelper.opponentNoteHit(notes.members.indexOf(daNote), Math.abs(daNote.noteData), daNote.noteType, daNote.isSustainNote);
+					for (script in hscriptFiles)
+						script.opponentNoteHit(notes.members.indexOf(daNote), Math.abs(daNote.noteData), daNote.noteType, daNote.isSustainNote);
 				}
 
 				if (daNote.mustPress && !daNote.modifiedByLua)
@@ -4448,20 +4453,17 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 
 		super.update(elapsed);
 
-		if (modchartHelper != null)
-			modchartHelper.set('cameraX', camFollow.x);
+		setOnHscript('cameraX', camFollow.x);
 
 		if (hscriptStage != null)
 			hscriptStage.set('cameraX', camFollow.x);
 
-		if (modchartHelper != null)
-			modchartHelper.set('cameraY', camFollow.y);
+		setOnHscript('cameraY', camFollow.y);
 
 		if (hscriptStage != null)
 			hscriptStage.set('cameraY', camFollow.y);
 
-		if (modchartHelper != null)
-			modchartHelper.set('botPlay', PlayStateChangeables.botPlay);
+		setOnHscript('botPlay', PlayStateChangeables.botPlay);
 
 		if (hscriptStage != null)
 			hscriptStage.set('botPlay', PlayStateChangeables.botPlay);
@@ -4730,8 +4732,7 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 				boyfriend.x += boyfriend.positionArray[0];
 				boyfriend.y += boyfriend.positionArray[1];
 
-				if (modchartHelper != null)
-					modchartHelper.set('boyfriendName', boyfriend.curCharacter);
+				setOnHscript('boyfriendName', boyfriend.curCharacter);
 
 				if (hscriptStage != null)
 					hscriptStage.set('boyfriendName', boyfriend.curCharacter);
@@ -4771,8 +4772,7 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 				dad.x += dad.positionArray[0];
 				dad.y += dad.positionArray[1];
 
-				if (modchartHelper != null)
-					modchartHelper.set('dadName', dad.curCharacter);
+				setOnHscript('dadName', dad.curCharacter);
 
 				if (hscriptStage != null)
 					hscriptStage.set('dadName', dad.curCharacter);
@@ -4812,8 +4812,7 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 				gf.x += gf.positionArray[0];
 				gf.y += gf.positionArray[1];
 
-				if (modchartHelper != null)
-					modchartHelper.set('gfName', gf.curCharacter);
+				setOnHscript('gfName', gf.curCharacter);
 
 				if (hscriptStage != null)
 					hscriptStage.set('gfName', gf.curCharacter);
@@ -5257,14 +5256,12 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 
 	private function popUpScore(daNote:Note):Void
 	{
-		if (modchartHelper != null)
-			modchartHelper.set('score', songScore);
+		setOnHscript('score', songScore);
 
 		if (hscriptStage != null)
 			hscriptStage.set('score', songScore);
 
-		if (modchartHelper != null)
-			modchartHelper.set('misses', misses);
+		setOnHscript('misses', misses);
 
 		if (hscriptStage != null)
 			hscriptStage.set('misses', misses);
@@ -5897,20 +5894,17 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 				}
 			}
 
-		if (modchartHelper != null)
-			modchartHelper.set('rating', ratingPercent);
+		setOnHscript('rating', ratingPercent);
 
 		if (hscriptStage != null)
 			hscriptStage.set('rating', ratingPercent);
 
-		if (modchartHelper != null)
-			modchartHelper.set('ratingName', ratingName);
+		setOnHscript('ratingName', ratingName);
 
 		if (hscriptStage != null)
 			hscriptStage.set('ratingName', ratingName);
 
-		if (modchartHelper != null)
-			modchartHelper.set('ratingFC', ratingFC);
+		setOnHscript('ratingFC', ratingFC);
 
 		if (hscriptStage != null)
 			hscriptStage.set('ratingFC', ratingFC);
@@ -6070,8 +6064,8 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 			if (hscriptStage != null)
 				hscriptStage.goodNoteHit(notes.members.indexOf(note), Math.abs(note.noteData), note.noteType, note.isSustainNote);
 
-			if (modchartHelper != null)
-				modchartHelper.goodNoteHit(notes.members.indexOf(note), Math.abs(note.noteData), note.noteType, note.isSustainNote);
+			for (script in hscriptFiles)
+				script.goodNoteHit(notes.members.indexOf(note), Math.abs(note.noteData), note.noteType, note.isSustainNote);
 		}
 	}
 
@@ -6126,8 +6120,8 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 		if (hscriptStage != null)
 			hscriptStage.onStep(curStep);
 
-		if (modchartHelper != null)
-			modchartHelper.onStep(curStep);
+		for (script in hscriptFiles)
+			script.onStep(curStep);
 
 		setOnLuas('curStep', curStep);
 		callOnLuas('onStepHit', []);
@@ -6139,20 +6133,17 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 
 		if (curSection != null)
 		{
-			if (modchartHelper != null)
-				modchartHelper.set('mustHitSection', curSection.mustHitSection);
+			setOnHscript('mustHitSection', curSection.mustHitSection);
 
 			if (hscriptStage != null)
 				hscriptStage.set('mustHitSection', curSection.mustHitSection);
 
-			if (modchartHelper != null)
-				modchartHelper.set('altAnim', curSection.playerAltAnim);
+			setOnHscript('altAnim', curSection.playerAltAnim);
 
 			if (hscriptStage != null)
 				hscriptStage.set('altAnim', curSection.playerAltAnim);
 
-			if (modchartHelper != null)
-				modchartHelper.set('gfSection', curSection.gfSection);
+			setOnHscript('gfSection', curSection.gfSection);
 
 			if (hscriptStage != null)
 				hscriptStage.set('gfSection', curSection.gfSection);
@@ -6171,14 +6162,13 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 			}
 		}
 
-		if (modchartHelper != null)
-			modchartHelper.set('curSection', curSectionInt);
+		setOnHscript('curSection', curSectionInt);
 
 		if (hscriptStage != null)
 			hscriptStage.set('curSection', curSectionInt);
 
-		if (modchartHelper != null)
-			modchartHelper.onSectionHit();
+		for (script in hscriptFiles)
+			script.onSectionHit();
 
 		if (hscriptStage != null)
 			hscriptStage.onSectionHit();
@@ -6198,20 +6188,17 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 
 		currentBeat = curBeat;
 
-		if (modchartHelper != null)
-			modchartHelper.set('curBpm', Conductor.bpm);
+		setOnHscript('curBpm', Conductor.bpm);
 
 		if (hscriptStage != null)
 			hscriptStage.set('curBpm', Conductor.bpm);
 
-		if (modchartHelper != null)
-			modchartHelper.set('crochet', Conductor.crochet);
+		setOnHscript('crochet', Conductor.crochet);
 
 		if (hscriptStage != null)
 			hscriptStage.set('crochet', Conductor.crochet);
 
-		if (modchartHelper != null)
-			modchartHelper.set('stepCrochet', Conductor.stepCrochet);
+		setOnHscript('stepCrochet', Conductor.stepCrochet);
 
 		if (hscriptStage != null)
 			hscriptStage.set('stepCrochet', Conductor.stepCrochet);
@@ -6301,17 +6288,23 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 		if (hscriptStage != null)
 			hscriptStage.onBeat(curBeat);
 
-		if (modchartHelper != null)
-			modchartHelper.onBeat(curBeat);
+		for (script in hscriptFiles)
+			script.onBeat(curBeat);
 
-		if (modchartHelper != null)
-			modchartHelper.set('curBeat', curBeat);
+		setOnHscript('curBeat', curBeat);
 
 		if (hscriptStage != null)
 			hscriptStage.set('curBeat', curBeat);
 
 		setOnLuas('curBeat', curBeat);
 		callOnLuas('onBeatHit', []);
+	}
+
+	function setOnHscript(name:String, value:Dynamic) {
+		for (script in hscriptFiles)
+		{
+			script.set(name, value);
+		}
 	}
 
 	public function updateBars()

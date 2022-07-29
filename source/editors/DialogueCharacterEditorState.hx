@@ -63,7 +63,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 	var animText:FlxText;
 
 	var camGame:FlxCamera;
-	var camOther:FlxCamera;
+	var camHud:FlxCamera;
 
 	var mainGroup:FlxSpriteGroup;
 	var hudGroup:FlxSpriteGroup;
@@ -79,14 +79,14 @@ class DialogueCharacterEditorState extends MusicBeatState
 
 		persistentUpdate = persistentDraw = true;
 		camGame = new FlxCamera();
-		camOther = new FlxCamera();
+		camHud = new FlxCamera();
 		camGame.bgColor = FlxColor.fromHSL(0, 0, 0.5);
-		camOther.bgColor.alpha = 0;
+		camHud.bgColor.alpha = 0;
 
 		FlxG.cameras.reset(camGame);
-		FlxG.cameras.add(camOther);
+		FlxG.cameras.add(camHud, false);
 		//FlxCamera.defaultCameras = [camOther];
-		FlxG.cameras.setDefaultDrawTarget(camOther, true);
+		FlxG.cameras.setDefaultDrawTarget(camGame, true);
 		
 		mainGroup = new FlxSpriteGroup();
 		mainGroup.cameras = [camGame];
@@ -128,20 +128,20 @@ class DialogueCharacterEditorState extends MusicBeatState
 
 		tipText = new FlxText(10, 10, FlxG.width - 20, TIP_TEXT_MAIN, 8);
 		tipText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		tipText.cameras = [camOther];
+		tipText.cameras = [camHud];
 		tipText.scrollFactor.set();
 		add(tipText);
 
 		offsetLoopText = new FlxText(10, 10, 0, '', 32);
 		offsetLoopText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		offsetLoopText.cameras = [camOther];
+		offsetLoopText.cameras = [camHud];
 		offsetLoopText.scrollFactor.set();
 		add(offsetLoopText);
 		offsetLoopText.visible = false;
 
 		offsetIdleText = new FlxText(10, 46, 0, '', 32);
 		offsetIdleText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		offsetIdleText.cameras = [camOther];
+		offsetIdleText.cameras = [camHud];
 		offsetIdleText.scrollFactor.set();
 		add(offsetIdleText);
 		offsetIdleText.visible = false;
@@ -173,7 +173,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 		UI_typebox.x = 900;
 		UI_typebox.y = FlxG.height - UI_typebox.height - 50;
 		UI_typebox.scrollFactor.set();
-		UI_typebox.camera = camGame;
+		UI_typebox.camera = camHud;
 		addTypeUI();
 		add(UI_typebox);
 
@@ -186,7 +186,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 		UI_mainbox.x = UI_typebox.x + UI_typebox.width;
 		UI_mainbox.y = FlxG.height - UI_mainbox.height - 50;
 		UI_mainbox.scrollFactor.set();
-		UI_mainbox.camera = camGame;
+		UI_mainbox.camera = camHud;
 		addAnimationsUI();
 		addCharacterUI();
 		add(UI_mainbox);

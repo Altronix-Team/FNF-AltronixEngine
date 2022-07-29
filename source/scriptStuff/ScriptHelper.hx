@@ -1,6 +1,10 @@
 package scriptStuff;
 
-import states.GameOverState;
+import gameplayStuff.Character;
+import flixel.tweens.FlxEase;
+import flixel.FlxCamera;
+import flixel.tweens.FlxTween;
+import states.GameOverSubstate;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.FlxGraphic;
@@ -26,6 +30,7 @@ class ScriptHelper
     var interp:Interp;
 
     var ast:Expr;
+
     
     public function new()
     {        
@@ -45,8 +50,15 @@ class ScriptHelper
 		expose.set('Debug', Debug);
 		expose.set('Paths', Paths);
 		expose.set('PlayState', states.PlayState);
-		expose.set('GameOverSubstate', states.GameOverSubstate);
+		expose.set('GameOverSubstate', GameOverSubstate);
 		expose.set('FlxG', FlxG);
+		expose.set('FlxSprite', FlxSprite);
+		expose.set('FlxCamera', FlxCamera);
+		expose.set('FlxTween', FlxTween);
+		expose.set('FlxEase', FlxEase);
+		expose.set('Character', Character);
+		expose.set('Alphabet', Alphabet);
+
 		
 		expose.set("loadModule", loadModule);
 		expose.set("createSprite", createSprite);

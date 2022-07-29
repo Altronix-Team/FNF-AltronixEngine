@@ -46,6 +46,7 @@ class ScriptHelper
 		expose.set('Paths', Paths);
 		expose.set('PlayState', states.PlayState);
 		expose.set('GameOverSubstate', states.GameOverSubstate);
+		expose.set('FlxG', FlxG);
 		
 		expose.set("loadModule", loadModule);
 		expose.set("createSprite", createSprite);

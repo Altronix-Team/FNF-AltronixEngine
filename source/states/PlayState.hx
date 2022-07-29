@@ -6161,10 +6161,20 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 			if (hscriptStage != null)
 				hscriptStage.set('mustHitSection', curSection.mustHitSection);
 
-			setOnHscript('altAnim', curSection.playerAltAnim);
+			setOnHscript('playerAltAnim', curSection.playerAltAnim);
 
 			if (hscriptStage != null)
-				hscriptStage.set('altAnim', curSection.playerAltAnim);
+				hscriptStage.set('playerAltAnim', curSection.playerAltAnim);
+
+			setOnHscript('dadAltAnim', curSection.CPUAltAnim);
+
+			if (hscriptStage != null)
+				hscriptStage.set('dadAltAnim', curSection.CPUAltAnim);
+
+			setOnHscript('gfAltAnim', curSection.gfAltAnim);
+
+			if (hscriptStage != null)
+				hscriptStage.set('gfAltAnim', curSection.gfAltAnim);
 
 			setOnHscript('gfSection', curSection.gfSection);
 
@@ -6172,7 +6182,9 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 				hscriptStage.set('gfSection', curSection.gfSection);
 
 			setOnLuas('mustHitSection', curSection.mustHitSection);
-			setOnLuas('altAnim', curSection.playerAltAnim);
+			setOnLuas('playerAltAnim', curSection.playerAltAnim);
+			setOnLuas('dadAltAnim', curSection.CPUAltAnim);
+			setOnLuas('gfAltAnim', curSection.gfAltAnim);
 			setOnLuas('gfSection', curSection.gfSection);
 
 			dadAltAnim = curSection.CPUAltAnim;

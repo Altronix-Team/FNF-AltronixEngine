@@ -1134,10 +1134,12 @@ class Stage extends states.MusicBeatState
 			{
 				startedMoving = true;
 
-				if (PlayState.instance.gf != null)
-					PlayState.instance.gf.playAnim('hairBlow');
-				else
-					GameplayCustomizeState.gf.playAnim('hairBlow');
+				if (PlayState.SONG != null){
+					if (PlayState.instance.gf != null)
+						PlayState.instance.gf.playAnim('hairBlow');
+					else
+						GameplayCustomizeState.gf.playAnim('hairBlow');
+				}
 			}
 
 			if (startedMoving)
@@ -1164,10 +1166,12 @@ class Stage extends states.MusicBeatState
 	{
 		if (FlxG.save.data.distractions)
 		{
-			if (PlayState.instance.gf != null)
-				PlayState.instance.gf.playAnim('hairFall');
-			else
-				GameplayCustomizeState.gf.playAnim('hairFall');
+			if (PlayState.SONG != null){
+				if (PlayState.instance.gf != null)
+					PlayState.instance.gf.playAnim('hairFall');
+				else
+					GameplayCustomizeState.gf.playAnim('hairFall');
+			}
 
 			swagBacks['phillyTrain'].x = FlxG.width + 200;
 			trainMoving = false;

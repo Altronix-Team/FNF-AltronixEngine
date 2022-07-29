@@ -45,6 +45,8 @@ class Main extends Sprite
 
 	public static var watermarks = true; // Whether to put Altronix Engine literally anywhere
 
+	public static var memoryCount = true;
+
 	// You can pretty much ignore everything from here on - your code should go in your states.
 
 	public static function main():Void

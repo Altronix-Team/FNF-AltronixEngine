@@ -53,8 +53,18 @@ class ScriptHelper
 		expose.set("playSound", playSound);
 		expose.set("lazyPlaySound", lazyPlaySound);
 		expose.set("createTimer", createTimer);
+		expose.set('setProperty', setProperty);
+		expose.set('getProperty', getProperty);
+		expose.set('getInstance', getInstance);
+		expose.set('set', set);
+		expose.set('get', get);
+		expose.set('exists', exists);
+		
 
 		expose.set("getSparrowAtlas", Paths.getSparrowAtlas);
+
+		expose.set('setNoteTypeTexture', setNoteTypeTexture);
+		expose.set('setNoteTypeIgnore', setNoteTypeIgnore);
     }
 
     public function get(field:String):Dynamic
@@ -221,6 +231,16 @@ class ScriptHelper
 	function createTimer():FlxTimer
 	{
 		return new FlxTimer();
+	}
+
+	function setNoteTypeTexture(type:String, texture:String)
+	{
+		states.PlayState.instance.setNoteTypeTexture(type, texture);
+	}
+
+	function setNoteTypeIgnore(type:String, ignore:Bool)
+	{
+		states.PlayState.instance.setNoteTypeIgnore(type, ignore);
 	}
 
 	function getProperty(instance:Dynamic = null, variable:String):Any { //Copy from lua

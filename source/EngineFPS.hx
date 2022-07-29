@@ -2,9 +2,7 @@ import flixel.math.FlxMath;
 import flixel.util.FlxColor;
 import openfl.Lib;
 import openfl.display.Bitmap;
-import openfl.display.BitmapData;
 import flixel.FlxG;
-import haxe.Timer;
 import openfl.events.Event;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
@@ -14,6 +12,10 @@ import openfl.display._internal.stats.DrawCallContext;
 #end
 #if flash
 import openfl.Lib;
+#end
+
+#if openfl
+import openfl.system.System;
 #end
 
 /**
@@ -30,6 +32,8 @@ class EngineFPS extends TextField
 		The current frame rate, expressed using frames-per-second
 	**/
 	public var currentFPS(default, null):Int;
+	private var memoryMegas:Float = 0;
+	private var memoryTotal:Float = 0;
 
 	public var bitmap:Bitmap;
 
@@ -109,11 +113,19 @@ class EngineFPS extends TextField
 		var currentCount = times.length;
 		currentFPS = Math.round((currentCount + cacheCount) / 2);
 
+		memoryMegas = Math.abs(FlxMath.roundDecimal(System.totalMemory / 1000000, 1));
+
+		if (memoryMegas > memoryTotal)
+			memoryTotal = memoryMegas;
+
 		if (currentCount != cacheCount /*&& visible*/)
 		{
-			text = (FlxG.save.data.fps ? "FPS: "
-			 + currentFPS
-			 + (Main.watermarks ? "\nAE " + "v" + EngineConstants.engineVer : "") : (Main.watermarks ? "AE " + "v" + EngineConstants.engineVer : ""));
+			text = (''
+				+ (FlxG.save.data.fps ? "FPS: " + currentFPS : '')
+			#if openfl
+				+ (Main.memoryCount ? '\nMemory: ' + memoryMegas + " MB / " + memoryTotal + " MB" : '')
+			#end
+				+ (Main.watermarks ? "\nAE " + "v" + EngineConstants.engineVer : ''));
 
 			#if (gl_stats && !disable_cffi && (!html5 || !canvas))
 			text += "\ntotalDC: " + Context3DStats.totalDrawCalls();

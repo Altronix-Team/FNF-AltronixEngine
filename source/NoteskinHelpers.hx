@@ -33,6 +33,11 @@ class NoteskinHelpers
 		return noteskinArray;
 	}
 
+	public static function getIDByNoteskin(skin:String)
+	{
+		return noteskinArray.indexOf(skin);
+	}
+
 	public static function getNoteskinByID(id:Int)
 	{
 		return noteskinArray[id];

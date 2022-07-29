@@ -80,6 +80,8 @@ class MusicBeatState extends FlxUIState
 		Application.current.window.onFocusOut.add(onWindowFocusOut);
 		TimingStruct.clearTimings();
 
+		CoolUtil.daCam = FlxG.camera;
+
 		FlxG.sound.volumeHandler = volumeHandler;
 
 		if (transIn != null)

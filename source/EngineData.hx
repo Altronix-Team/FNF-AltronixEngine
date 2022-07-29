@@ -206,6 +206,9 @@ class EngineData
 		if (FlxG.save.data.menuMusic == null)
 			FlxG.save.data.menuMusic = 0;
 
+		if (FlxG.save.data.memoryCount == null)
+			FlxG.save.data.memoryCount = true;
+
 		// Gonna make this an option on another PR
 		if (FlxG.save.data.overrideNoteskins == null)
 			FlxG.save.data.overrideNoteskins = false;
@@ -218,6 +221,7 @@ class EngineData
 		PlayerSettings.player1.controls.loadKeyBinds();
 		KeyBinds.keyCheck();
 
+		Main.memoryCount = FlxG.save.data.memoryCount;
 		Main.watermarks = FlxG.save.data.watermark;
 
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);

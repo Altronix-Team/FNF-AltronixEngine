@@ -1114,6 +1114,8 @@ class CharacterEditorState extends MusicBeatState
 	{
 		Stage.update(elapsed);
 
+		CoolUtil.daCam = camMenu;
+
 		var blockInput = false;
 
 		if(!blockInput) {

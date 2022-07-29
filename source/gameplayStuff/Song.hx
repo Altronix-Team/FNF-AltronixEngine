@@ -72,6 +72,7 @@ typedef SongData =
 	var ?hideGF:Bool;
 	var noteStyle:String;
 	var stage:String;
+	var specialSongNoteSkin:String;
 
 	var eventsArray:Array<EventsAtPos>; //Fuck yeah, now more conversions for old or Psych events
 	var ?events:Array<Dynamic>;//DO NOT USE THIS!!!!!!!!!!!
@@ -236,6 +237,9 @@ class Song
 
 		if (song.diffSoundAssets == null)
 			song.diffSoundAssets = false;
+
+		if (song.specialSongNoteSkin == null)
+			song.specialSongNoteSkin = NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin);
 
 		if (song.showbgdancers == null)
 			{

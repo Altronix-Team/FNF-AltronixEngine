@@ -1,9 +1,6 @@
 package;
 
-import flixel.FlxG;
-import lime.utils.Assets as LimeAssets;
-import lime.utils.AssetLibrary;
-import lime.utils.AssetManifest;
+import flixel.FlxCamera;
 #if sys
 import sys.io.File;
 import sys.FileSystem;
@@ -26,6 +23,8 @@ class CoolUtil
 	public static var songDiffsPrefix:Map<String, Array<String>> = [];
 
 	public static var daPixelZoom:Float = 6;
+
+	public static var daCam:FlxCamera;
 
 	public static function difficultyFromInt(difficulty:Int):String
 	{

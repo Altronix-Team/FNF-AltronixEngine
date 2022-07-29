@@ -311,7 +311,7 @@ class FlxInputText extends FlxText
 		if (FlxG.mouse.justPressed)
 		{
 			var hadFocus:Bool = hasFocus;
-			if (FlxG.mouse.overlaps(this))
+			if (this.overlapsPoint(FlxG.mouse.getWorldPosition(CoolUtil.daCam), false))
 			{
 				caretIndex = getCaretIndex();
 				hasFocus = true;

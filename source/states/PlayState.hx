@@ -1278,9 +1278,16 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 		playerStrums = new FlxTypedGroup<StaticArrow>();
 		opponentStrums = new FlxTypedGroup<StaticArrow>();
 
-		noteskinPixelSprite = NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin);
-		noteskinSprite = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin);
-		noteskinPixelSpriteEnds = NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin, true);
+		if (SONG.specialSongNoteSkin != NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin)){
+			noteskinPixelSprite = NoteskinHelpers.generatePixelSprite(NoteskinHelpers.getIDByNoteskin(SONG.specialSongNoteSkin));
+			noteskinSprite = NoteskinHelpers.generateNoteskinSprite(NoteskinHelpers.getIDByNoteskin(SONG.specialSongNoteSkin));
+			noteskinPixelSpriteEnds = NoteskinHelpers.generatePixelSprite(NoteskinHelpers.getIDByNoteskin(SONG.specialSongNoteSkin), true);
+		}
+		else{
+			noteskinPixelSprite = NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin);
+			noteskinSprite = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin);
+			noteskinPixelSpriteEnds = NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin, true);
+		}
 
 		generateStaticArrows(0);
 		generateStaticArrows(1);
@@ -1353,7 +1360,12 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 				}
 				else if (OpenFlAssets.exists('assets/custom_events/' + file + '.hscript'))
 				{
-					hscriptFiles.push(new ModchartHelper(OpenFlAssets.getPath('assets/custom_events/' + file + '.hscript'), this));
+					hscriptFiles.push(new ModchartHelper('assets/custom_events/' + file + '.hscript', this));
+					filesPushed.push(file);
+				}
+				else
+				{
+					Debug.logError('Error with file ' + file);
 					filesPushed.push(file);
 				}
 			}
@@ -1375,7 +1387,12 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 				}
 				else if (OpenFlAssets.exists('assets/custom_notetypes/' + file + '.hscript'))
 				{
-					hscriptFiles.push(new ModchartHelper(OpenFlAssets.getPath('assets/custom_notetypes/' + file + '.hscript'), this));
+					hscriptFiles.push(new ModchartHelper('assets/custom_notetypes/' + file + '.hscript', this));
+					filesPushed.push(file);
+				}
+				else
+				{
+					Debug.logError('Error with file ' + file);
 					filesPushed.push(file);
 				}
 			}
@@ -1397,7 +1414,12 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 				}
 				else if (OpenFlAssets.exists('assets/custom_difficulties/' + file + '.hscript'))
 				{
-					hscriptFiles.push(new ModchartHelper(OpenFlAssets.getPath('assets/custom_difficulties/' + file + '.hscript'), this));
+					hscriptFiles.push(new ModchartHelper('assets/custom_difficulties/' + file + '.hscript', this));
+					filesPushed.push(file);
+				}
+				else
+				{
+					Debug.logError('Error with file ' + file);
 					filesPushed.push(file);
 				}
 			}
@@ -6384,6 +6406,34 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 		if(modchartSprites.exists(tag))return modchartSprites.get(tag);
 		if(text && modchartTexts.exists(tag))return modchartTexts.get(tag);
 		return null;
+	}
+
+	public function setNoteTypeTexture(type:String, texture:String)
+	{
+		if (type != null && texture != null)
+		{
+			for (note in unspawnNotes)
+			{
+				if (note.noteType == type)
+				{
+					note.texture = texture;
+				}
+			}
+		}
+	}
+
+	public function setNoteTypeIgnore(type:String, ignore:Bool = false)
+	{
+		if (type != null)
+		{
+			for (note in unspawnNotes)
+			{
+				if (note.noteType == type)
+				{
+					note.ignoreNote = ignore;
+				}
+			}
+		}
 	}
 
 	public var cleanedSong:SongData;

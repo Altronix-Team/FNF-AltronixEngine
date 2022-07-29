@@ -1737,6 +1737,45 @@ class CustomizeGameplay extends Option
 	}
 }
 
+class MemoryCountOption extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		if (OptionsMenu.isInPause)
+			if (!FlxG.save.data.language)
+				description = "This option cannot be toggled in the pause menu.";
+			else
+				description = "Эта опция не может быть переключена во время паузы";
+		else
+			description = desc;
+	}
+
+	public override function left():Bool
+	{
+		if (OptionsMenu.isInPause)
+			return false;
+		Main.memoryCount = !Main.memoryCount;
+		FlxG.save.data.memoryCount = Main.memoryCount;
+		display = updateDisplay();
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		left();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		if (!FlxG.save.data.language)
+			return "Using memory counter: < " + (Main.memoryCount ? "on" : "off") + " >";
+		else
+			return "Счётчик используемой памяти: < " + (Main.memoryCount ? "включено" : "выключено") + " >";
+	}
+}
+
 class WatermarkOption extends Option
 {
 	public function new(desc:String)

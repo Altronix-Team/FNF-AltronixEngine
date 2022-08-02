@@ -53,6 +53,14 @@ class MusicBeatState extends FlxUIState
 		return result;
 	}
 
+	public function assetExists(asset:FlxBasic):Bool
+	{
+		if (assets.contains(asset))
+			return true;
+		else
+			return false;
+	}
+
 	public function clean()
 	{
 		if (FlxG.save.data.optimize)

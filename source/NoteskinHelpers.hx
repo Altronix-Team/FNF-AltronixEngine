@@ -14,7 +14,6 @@ class NoteskinHelpers
 	public static function updateNoteskins()
 	{
 		noteskinArray = [];
-		var count:Int = 0;
 		for (i in Paths.listImagesInPath('noteskins/'))
 		{
 			if (i.contains("-pixel"))
@@ -43,9 +42,9 @@ class NoteskinHelpers
 		return noteskinArray[id];
 	}
 
-	static public function generateNoteskinSprite(id:Int)
+	static public function generateNoteskinSprite(id:String)
 	{
-		return Paths.getSparrowAtlas('noteskins/' + getNoteskinByID(id), "shared");	
+		return Paths.getSparrowAtlas('noteskins/' + id, "shared");	
 	}
 
 	static public function generateSpecialPixelSprite(id:String, ends:Bool = false)
@@ -54,26 +53,15 @@ class NoteskinHelpers
 		return BitmapData.fromFile(path + ".png");
 	}
 
-	static public function generatePixelSprite(id:Int, ends:Bool = false)
+	static public function generatePixelSprite(id:String, ends:Bool = false)
 	{
-		var path = "assets/shared/images/noteskins/" + getNoteskinByID(id) + "-pixel" + (ends ? "-ends" : "");
+		var path = "assets/shared/images/noteskins/" + id + "-pixel" + (ends ? "-ends" : "");
 
-		if (Paths.isFileReplaced("shared/images/noteskins/" + getNoteskinByID(id) + "-pixel" + (ends ? "-ends" : "") + '.png'))
+		if (!OpenFlAssets.exists(path + '.png'))
 		{
-			if (!OpenFlAssets.exists(OpenFlAssets.getPath(path + '.png')))
-			{
-				return BitmapData.fromFile(OpenFlAssets.getPath("assets/shared/images/noteskins" + "/Arrows-pixel" + (ends ? "-ends" : "") + ".png"));
-			}
-			return BitmapData.fromFile(OpenFlAssets.getPath(path + '.png'));
+			Debug.logTrace("getting default pixel skin");
+			return BitmapData.fromFile("assets/shared/images/noteskins/Arrows-pixel" + (ends ? "-ends" : "") + ".png");
 		}
-		else
-		{
-			if (!OpenFlAssets.exists(Paths.image('noteskins/${getNoteskinByID(id)}-pixel' + (ends ? '-ends' : ''), 'shared')))
-			{
-				Debug.logTrace("getting default pixel skin");
-				return BitmapData.fromFile("assets/shared/images/noteskins" + "/Arrows-pixel" + (ends ? "-ends" : "") + ".png");
-			}
-			return BitmapData.fromFile(path + '.png');
-		}
+		return BitmapData.fromFile(path + '.png');
 	}
 }	

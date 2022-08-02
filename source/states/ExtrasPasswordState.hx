@@ -9,10 +9,9 @@ import flash.text.TextField;
 import flixel.addons.ui.FlxInputText;
 import flixel.util.FlxTimer;
 import flixel.effects.FlxFlicker;
-import IHook;
 import gameplayStuff.Song;
 
-class ExtrasPasswordState extends MusicBeatState// implements polymod.hscript.HScriptable
+class ExtrasPasswordState extends MusicBeatState
 {
     public static var extra:Int = 1;
 	var passwordText:FlxInputText;

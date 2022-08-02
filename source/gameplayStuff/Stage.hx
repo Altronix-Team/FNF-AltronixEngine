@@ -20,7 +20,6 @@ import flixel.util.FlxColor;
 import states.PlayState;
 import states.GameplayCustomizeState;
 import gameplayStuff.StageData;
-//import gameplayStuff.ScriptedStage;
 #if sys
 import sys.FileSystem;
 #end

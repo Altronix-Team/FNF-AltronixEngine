@@ -1,5 +1,8 @@
 package scriptStuff;
 
+import states.MusicBeatState;
+import flixel.FlxObject;
+import flixel.text.FlxText;
 import gameplayStuff.Character;
 import flixel.tweens.FlxEase;
 import flixel.FlxCamera;
@@ -56,12 +59,16 @@ class ScriptHelper
 		expose.set('FlxCamera', FlxCamera);
 		expose.set('FlxTween', FlxTween);
 		expose.set('FlxEase', FlxEase);
+		expose.set('FlxText', FlxText);
+		expose.set('FlxObject', FlxObject);
 		expose.set('Character', Character);
 		expose.set('Alphabet', Alphabet);
+		expose.set('MusicBeatState', MusicBeatState);
 
 		
 		expose.set("loadModule", loadModule);
 		expose.set("createSprite", createSprite);
+		expose.set("createText", createText);
 		expose.set("getGraphic", getGraphic);
 		expose.set("playSound", playSound);
 		expose.set("lazyPlaySound", lazyPlaySound);
@@ -218,6 +225,12 @@ class ScriptHelper
 		{
 			throw new ScriptException("Path is empty!");
 		}
+	}
+
+	function createText(x:Float = 0, y:Float = 0, width:Float = 0, text:String = '', size:Int = 8, embedded:Bool = true):FlxText
+	{
+		var text = new FlxText(x, y, width, text, size, embedded);
+		return text;
 	}
 
 	function createSprite(x:Float, y:Float):FlxSprite

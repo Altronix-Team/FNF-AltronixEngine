@@ -78,9 +78,6 @@ import flixel.group.FlxSpriteGroup;
 import Replay.Ana;
 import Replay.Analysis;
 import animateatlas.AtlasFrameMaker;
-import hscript.Expr;
-import hscript.Parser;
-import hscript.Interp;
 import gameplayStuff.Character;
 import gameplayStuff.Boyfriend;
 import gameplayStuff.Note;
@@ -110,8 +107,7 @@ import vlc.MP4Handler;
 using StringTools;
 using hx.strings.Strings;
 
-//@:hscript({context: [SONG, setHealth]})
-class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
+class PlayState extends MusicBeatState
 {
 	public static var instance:PlayState = null;
 
@@ -510,15 +506,6 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 
 		Debug.logInfo('Searching for mod chart? ($executeModchart) at "songs/${PlayState.SONG.songId}/"');	
 
-		if (OpenFlAssets.exists('assets/data/songs/${SONG.songId}/haxeModchart.hx'))
-			{
-				var expr = Paths.getHaxeScript(SONG.songId);
-				var parser = new hscript.Parser();
-				var ast = parser.parseString(expr);
-				var interp = new hscript.Interp();
-				Debug.logTrace(interp.execute(ast));
-			}
-
 		if (executeModchart)
 			songMultiplier = 1;
 
@@ -820,11 +807,9 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 			gf.scrollFactor.set(0.95, 0.95);
 			gfGroup.add(gf);
 			startCharacterLua(gf.curCharacter);
+			startCharacterHscript(gf.curCharacter);
 
 			setOnHscript('gfName', gf.curCharacter);
-
-			if (hscriptStage != null)
-				hscriptStage.set('gfName', gf.curCharacter);
 
 			setOnLuas('gfName', gf.curCharacter);
 
@@ -840,11 +825,9 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 			startCharacterPos(boyfriend);
 			boyfriendGroup.add(boyfriend);
 			startCharacterLua(boyfriend.curCharacter);
+			startCharacterHscript(boyfriend.curCharacter);
 
 			setOnHscript('boyfriendName', boyfriend.curCharacter);
-
-			if (hscriptStage != null)
-				hscriptStage.set('boyfriendName', boyfriend.curCharacter);
 
 			setOnLuas('boyfriendName', boyfriend.curCharacter);
 
@@ -860,11 +843,9 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 			startCharacterPos(dad, true);
 			dadGroup.add(dad);
 			startCharacterLua(dad.curCharacter);
+			startCharacterHscript(dad.curCharacter);
 
 			setOnHscript('dadName', dad.curCharacter);
-
-			if (hscriptStage != null)
-				hscriptStage.set('dadName', dad.curCharacter);
 
 			setOnLuas('dadName', dad.curCharacter);
 		}
@@ -885,7 +866,20 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 			if (OpenFlAssets.exists(Paths.getScriptFile(SONG.stage, 'stages')))
 			{
 				hscriptStageCheck = true;
-				hscriptStage = new HscriptStage(Paths.getScriptFile(SONG.stage, 'stages'), this);
+				try
+				{
+					hscriptStage = new HscriptStage(Paths.getScriptFile(SONG.stage, 'stages'), this);
+				}						
+				catch (e)
+				{
+					if (Std.isOfType(e, ScriptException))
+					{
+						scriptError(e);
+						return;
+					}
+					else
+						throw e;
+				}
 				add(hscriptStage);
 			}
 		}
@@ -1305,30 +1299,18 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 		generateStaticArrows(1);
 		
 		for (i in 0...playerStrums.length) {
-				setOnHscript('defaultPlayerStrumX' + i, playerStrums.members[i].x);
+			setOnHscript('defaultPlayerStrumX' + i, playerStrums.members[i].x);
 
-			if (hscriptStage != null)
-				hscriptStage.set('defaultPlayerStrumX' + i, playerStrums.members[i].x);
-
-				setOnHscript('defaultPlayerStrumY' + i, playerStrums.members[i].y);
-
-			if (hscriptStage != null)
-				hscriptStage.set('defaultPlayerStrumY' + i, playerStrums.members[i].y);
+			setOnHscript('defaultPlayerStrumY' + i, playerStrums.members[i].y);
 
 			setOnLuas('defaultPlayerStrumX' + i, playerStrums.members[i].x);
 			setOnLuas('defaultPlayerStrumY' + i, playerStrums.members[i].y);
 		}
 		for (i in 0...opponentStrums.length) {
 
-				setOnHscript('defaultOpponentStrumX' + i, opponentStrums.members[i].x);
+			setOnHscript('defaultOpponentStrumX' + i, opponentStrums.members[i].x);
 
-			if (hscriptStage != null)
-				hscriptStage.set('defaultOpponentStrumX' + i, opponentStrums.members[i].x);
-
-				setOnHscript('defaultOpponentStrumY' + i, opponentStrums.members[i].y);
-
-			if (hscriptStage != null)
-				hscriptStage.set('defaultOpponentStrumY' + i, opponentStrums.members[i].y);
+			setOnHscript('defaultOpponentStrumY' + i, opponentStrums.members[i].y);
 
 			setOnLuas('defaultOpponentStrumX' + i, opponentStrums.members[i].x);
 			setOnLuas('defaultOpponentStrumY' + i, opponentStrums.members[i].y);
@@ -2393,9 +2375,6 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 
 			setOnHscript('startedCountdown', true);
 
-			if (hscriptStage != null)
-				hscriptStage.set('startedCountdown', true);
-
 			setOnLuas('startedCountdown', true);
 			callOnLuas('onCountdownStarted', []);
 
@@ -2929,9 +2908,6 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 		}
 
 		setOnHscript('songLength', songLength);
-
-		if (hscriptStage != null)
-			hscriptStage.set('songLength', songLength);
 
 		setOnLuas('songLength', songLength);
 
@@ -4583,18 +4559,10 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 
 		setOnHscript('cameraX', camFollow.x);
 
-		if (hscriptStage != null)
-			hscriptStage.set('cameraX', camFollow.x);
-
 		setOnHscript('cameraY', camFollow.y);
-
-		if (hscriptStage != null)
-			hscriptStage.set('cameraY', camFollow.y);
 
 		setOnHscript('botPlay', PlayStateChangeables.botPlay);
 
-		if (hscriptStage != null)
-			hscriptStage.set('botPlay', PlayStateChangeables.botPlay);
 		setOnLuas('cameraX', camFollow.x);
 		setOnLuas('cameraY', camFollow.y);
 		setOnLuas('botPlay', PlayStateChangeables.botPlay);
@@ -4876,17 +4844,8 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 				setOnHscript('boyfriendName', boyfriend.curCharacter);
 
 				if (hscriptStage != null)
-					hscriptStage.set('boyfriendName', boyfriend.curCharacter);
-
-				if (hscriptStage != null)
 				{
-					hscriptStage.set('boyfriend', boyfriend);
 					hscriptStage.boyfriend = boyfriend;
-				}
-
-				if (hscriptStage != null)
-				{
-					hscriptStage.set('boyfriendGroup', boyfriendGroup);
 					hscriptStage.boyfriendGroup = boyfriendGroup;
 				}
 
@@ -4903,6 +4862,7 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 					}
 				}}
 				startCharacterLua(boyfriend.curCharacter);
+				startCharacterHscript(boyfriend.curCharacter);
 			case 'dad':{
 				if (dad.hasTrail)
 				{
@@ -4928,17 +4888,8 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 				setOnHscript('dadName', dad.curCharacter);
 
 				if (hscriptStage != null)
-					hscriptStage.set('dadName', dad.curCharacter);
-
-				if (hscriptStage != null)
 				{
-					hscriptStage.set('dad', dad);
 					hscriptStage.dad = dad;
-				}
-
-				if (hscriptStage != null)
-				{
-					hscriptStage.set('dadGroup', dadGroup);
 					hscriptStage.dadGroup = dadGroup;
 				}
 
@@ -4955,6 +4906,7 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 					}
 				}}
 				startCharacterLua(dad.curCharacter);
+				startCharacterHscript(dad.curCharacter);
 			case 'gf':{
 				if (gf.hasTrail)
 				{
@@ -4980,17 +4932,8 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 				setOnHscript('gfName', gf.curCharacter);
 
 				if (hscriptStage != null)
-					hscriptStage.set('gfName', gf.curCharacter);
-
-				if (hscriptStage != null)
 				{
-					hscriptStage.set('gf', gf);
 					hscriptStage.gf = gf;
-				}
-
-				if (hscriptStage != null)
-				{
-					hscriptStage.set('gfGroup', gfGroup);
 					hscriptStage.gfGroup = gfGroup;
 				}
 
@@ -5006,7 +4949,8 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 						}
 					}
 				}}
-				startCharacterLua(gf.curCharacter);}
+				startCharacterLua(gf.curCharacter);
+				startCharacterHscript(gf.curCharacter);}
 		reloadHealthBarColors();
 		reloadIcons();
 	}
@@ -5442,13 +5386,7 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 	{
 		setOnHscript('score', songScore);
 
-		if (hscriptStage != null)
-			hscriptStage.set('score', songScore);
-
 		setOnHscript('misses', misses);
-
-		if (hscriptStage != null)
-			hscriptStage.set('misses', misses);
 
 		setOnLuas('score', songScore);
 		setOnLuas('misses', misses);
@@ -6096,18 +6034,9 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 
 		setOnHscript('rating', ratingPercent);
 
-		if (hscriptStage != null)
-			hscriptStage.set('rating', ratingPercent);
-
 		setOnHscript('ratingName', ratingName);
 
-		if (hscriptStage != null)
-			hscriptStage.set('ratingName', ratingName);
-
 		setOnHscript('ratingFC', ratingFC);
-
-		if (hscriptStage != null)
-			hscriptStage.set('ratingFC', ratingFC);
 
 		setOnLuas('rating', ratingPercent);
 		setOnLuas('ratingName', ratingName);
@@ -6356,28 +6285,13 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 		{
 			setOnHscript('mustHitSection', curSection.mustHitSection);
 
-			if (hscriptStage != null)
-				hscriptStage.set('mustHitSection', curSection.mustHitSection);
-
 			setOnHscript('playerAltAnim', curSection.playerAltAnim);
-
-			if (hscriptStage != null)
-				hscriptStage.set('playerAltAnim', curSection.playerAltAnim);
 
 			setOnHscript('dadAltAnim', curSection.CPUAltAnim);
 
-			if (hscriptStage != null)
-				hscriptStage.set('dadAltAnim', curSection.CPUAltAnim);
-
 			setOnHscript('gfAltAnim', curSection.gfAltAnim);
 
-			if (hscriptStage != null)
-				hscriptStage.set('gfAltAnim', curSection.gfAltAnim);
-
 			setOnHscript('gfSection', curSection.gfSection);
-
-			if (hscriptStage != null)
-				hscriptStage.set('gfSection', curSection.gfSection);
 
 			setOnLuas('mustHitSection', curSection.mustHitSection);
 			setOnLuas('playerAltAnim', curSection.playerAltAnim);
@@ -6397,9 +6311,6 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 
 		setOnHscript('curSectionNumber', curSectionInt);
 
-		if (hscriptStage != null)
-			hscriptStage.set('curSectionNumber', curSectionInt);
-
 		for (script in hscriptFiles)
 			script.onSectionHit();
 
@@ -6407,9 +6318,6 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 			hscriptStage.onSectionHit();
 
 		setOnHscript('curSection', curSection);
-
-		if (hscriptStage != null)
-			hscriptStage.set('curSection', curSection);
 
 		setOnLuas('curSection', curSectionInt);
 		callOnLuas('onSectionHit', []);
@@ -6428,18 +6336,9 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 
 		setOnHscript('curBpm', Conductor.bpm);
 
-		if (hscriptStage != null)
-			hscriptStage.set('curBpm', Conductor.bpm);
-
 		setOnHscript('crochet', Conductor.crochet);
 
-		if (hscriptStage != null)
-			hscriptStage.set('crochet', Conductor.crochet);
-
 		setOnHscript('stepCrochet', Conductor.stepCrochet);
-
-		if (hscriptStage != null)
-			hscriptStage.set('stepCrochet', Conductor.stepCrochet);
 
 		setOnLuas('curBpm', Conductor.bpm);
 		setOnLuas('crochet', Conductor.crochet);
@@ -6531,17 +6430,38 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 
 		setOnHscript('curBeat', curBeat);
 
-		if (hscriptStage != null)
-			hscriptStage.set('curBeat', curBeat);
-
 		setOnLuas('curBeat', curBeat);
 		callOnLuas('onBeatHit', []);
 	}
 
-	function setOnHscript(name:String, value:Dynamic) {
+	public function setOnHscript(name:String, value:Dynamic) {
 		for (script in hscriptFiles)
 		{
 			script.set(name, value);
+		}
+
+		if (hscriptStage != null)
+			hscriptStage.set(name, value);
+	}
+
+	public function callOnHscript(functionToCall:String, ?params:Array<Any>) //Maybe will use this in engine XD
+	{
+		for (script in hscriptFiles)
+		{
+			var scriptHelper = script.scriptHelper;
+			if (scriptHelper.get(functionToCall) != null)
+			{
+				scriptHelper.get(functionToCall)(params);
+			}
+		}
+
+		if (hscriptStage != null)
+		{
+			var scriptHelper = hscriptStage.scriptHelper;
+			if (scriptHelper.get(functionToCall) != null)
+			{
+				scriptHelper.get(functionToCall)(params);
+			}
 		}
 	}
 
@@ -6774,6 +6694,14 @@ class PlayState extends MusicBeatState  //implements polymod.hscript.HScriptable
 				luaArray.push(new FunkinLua(OpenFlAssets.getPath(luaFile)));
 		}
 		#end
+	}
+
+	function startCharacterHscript(name:String)
+	{
+		if (OpenFlAssets.exists(Paths.getScriptFile(name, 'characters')))
+		{
+			hscriptFiles.push(new ModchartHelper(OpenFlAssets.getPath(Paths.getScriptFile(name, 'characters')), this));
+		}
 	}
 
 	function scriptError(e:Exception)

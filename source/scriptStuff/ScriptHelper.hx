@@ -79,6 +79,7 @@ class ScriptHelper
 		expose.set('set', set);
 		expose.set('get', get);
 		expose.set('exists', exists);
+		expose.set('getEngineFont', getEngineFont);
 		
 
 		expose.set("getSparrowAtlas", Paths.getSparrowAtlas);
@@ -231,6 +232,18 @@ class ScriptHelper
 	{
 		var text = new FlxText(x, y, width, text, size, embedded);
 		return text;
+	}
+
+	function getEngineFont():String
+	{
+		if (!FlxG.save.data.language)
+		{
+			return Paths.font("vcr.ttf");
+		}
+		else
+		{
+			return Paths.font("UbuntuBold.ttf");
+		}
 	}
 
 	function createSprite(x:Float, y:Float):FlxSprite

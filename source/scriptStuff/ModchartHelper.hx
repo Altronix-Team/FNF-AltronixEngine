@@ -6,11 +6,13 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import Paths;
 import scriptStuff.ScriptHelper;
 import states.PlayState;
+import openfl.utils.Assets;
+import gameplayStuff.FunkinLua;
 
 @:access(states.PlayState)
 class ModchartHelper extends FlxTypedGroup<FlxBasic>
 {
-	var scriptHelper:ScriptHelper;
+	public var scriptHelper:ScriptHelper;
 	var playState:PlayState;
 
 	public function new(path:String, state:PlayState)
@@ -46,10 +48,18 @@ class ModchartHelper extends FlxTypedGroup<FlxBasic>
 		scriptHelper.expose.set("curStep", 0);
 		scriptHelper.expose.set("curSectionNumber", 0);
 
+		scriptHelper.expose.set("setOnHscript", playState.setOnHscript);
+		scriptHelper.expose.set("callOnHscript", playState.callOnHscript);
+
+		scriptHelper.expose.set("setOnLuas", playState.setOnLuas);
+		scriptHelper.expose.set("callOnLuas", playState.callOnLuas);
+
 		scriptHelper.expose.set("camGame", playState.camGame);
 		scriptHelper.expose.set("camHUD", playState.camHUD);
 		scriptHelper.expose.set("enemyStrumLine", playState.opponentStrums);
 		scriptHelper.expose.set("playerStrumLine", playState.playerStrums);
+
+		scriptHelper.expose.set("setObjectCam", setObjectCam);
 
 		scriptHelper.loadScript(path);
 
@@ -63,6 +73,35 @@ class ModchartHelper extends FlxTypedGroup<FlxBasic>
 
 		if (scriptHelper.get("onUpdate") != null)
 			scriptHelper.get("onUpdate")(elapsed);
+	}
+
+	public function startLuaScript(scriptName:String) //In Psych Engine you can start hscript from lua, but in Altronix we have another rules XD
+	{
+		if (Assets.exists('assets/scripts/$scriptName.lua'))
+		{
+			playState.luaArray.push(new FunkinLua(Assets.getPath('assets/scripts/$scriptName.lua')));
+		}
+	}
+
+	public function getCameraFromString(camera:String):FlxCamera{
+		switch (camera.toLowerCase())
+		{
+			case 'camhud' | 'hud':
+				return PlayState.instance.camHUD;
+			case 'camsustains' | 'sustains':
+				return PlayState.instance.camSustains;
+			case 'camnotes' | 'notes':
+				return PlayState.instance.camNotes;
+		}
+		return PlayState.instance.camGame;
+	}
+
+	public function setObjectCam(object:FlxBasic, camera:String)
+	{
+		if (object != null)
+		{
+			object.cameras = [getCameraFromString(camera)];
+		}
 	}
 
 	public function opponentNoteHit(noteIndex:Float, noteData:Float, noteType:String, sustainNote:Bool)

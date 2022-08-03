@@ -694,11 +694,6 @@ class Paths
 		return doesTextAssetExist(Paths.file('images/$key.xml', library));
 	}
 
-	static public function getHaxeScript(string:String)
-	{
-		return OpenFlAssets.getText('assets/data/songs/$string/haxeModchart.hx');
-	}
-
 	static public function getSparrowAtlas(key:String, ?library:String, ?isCharacter:Bool = false)
 	{
 		if (isCharacter)

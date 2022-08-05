@@ -1343,7 +1343,7 @@ class ChartingState extends MusicBeatState
 		#end
 
 		var skin = PlayState.SONG.specialSongNoteSkin;
-		if(skin == null) skin = NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin);
+		if(skin == null) skin = FlxG.save.data.noteskin;
 		noteSkinInputText = new FlxUIInputText(10, 280, 150, skin, 8);
 		blockPressWhileTypingOn.push(noteSkinInputText);
 
@@ -1506,8 +1506,8 @@ class ChartingState extends MusicBeatState
 		var tab_group_song = new FlxUI(null, UI_box);
 		tab_group_song.name = "Song";
 		tab_group_song.add(UI_songTitle);
-		tab_group_song.add(new FlxText(noteSkinInputText.x, noteSkinInputText.y - 15, 0, 'Song Special Note Texture:'));
 		tab_group_song.add(noteSkinInputText);
+		tab_group_song.add(new FlxText(noteSkinInputText.x, noteSkinInputText.y - 15, 0, 'Song Special Note Texture:'));
 		tab_group_song.add(reloadNotesButton);
 		tab_group_song.add(restart);
 		tab_group_song.add(check_voices);

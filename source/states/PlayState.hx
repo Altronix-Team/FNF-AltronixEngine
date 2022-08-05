@@ -1288,14 +1288,14 @@ class PlayState extends MusicBeatState
 		playerStrums = new FlxTypedGroup<StaticArrow>();
 		opponentStrums = new FlxTypedGroup<StaticArrow>();
 
-		if (SONG.specialSongNoteSkin != NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin) && SONG.specialSongNoteSkin != null){
+		if (SONG.specialSongNoteSkin != FlxG.save.data.noteskin && SONG.specialSongNoteSkin != null){
 			noteskinPixelSprite = NoteskinHelpers.generatePixelSprite(SONG.specialSongNoteSkin);
 			noteskinPixelSpriteEnds = NoteskinHelpers.generatePixelSprite(SONG.specialSongNoteSkin, true);
 			noteskinSprite = NoteskinHelpers.generateNoteskinSprite(SONG.specialSongNoteSkin);}
 		else{
-			noteskinPixelSprite = NoteskinHelpers.generatePixelSprite(NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin));
-			noteskinSprite = NoteskinHelpers.generateNoteskinSprite(NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin));
-			noteskinPixelSpriteEnds = NoteskinHelpers.generatePixelSprite(NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin), true);}
+			noteskinPixelSprite = NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin);
+			noteskinSprite = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin);
+			noteskinPixelSpriteEnds = NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin, true);}
 
 		generateStaticArrows(0);
 		generateStaticArrows(1);

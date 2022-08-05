@@ -2145,6 +2145,9 @@ class MiddleScrollOption extends Option
 
 class NoteskinOption extends Option
 {
+	var curSelectedId:Int = 0;
+	var curSkin:String = 'Arrows';
+
 	public function new(desc:String)
 	{
 		super();
@@ -2155,15 +2158,27 @@ class NoteskinOption extends Option
 				description = "Эта опция не может быть переключена во время паузы";
 		else
 			description = desc;
+
+		if (Std.isOfType(FlxG.save.data.noteskin, String))
+			curSkin = FlxG.save.data.noteskin;
+		else if (Std.isOfType(FlxG.save.data.noteskin, Int))
+			curSkin = NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin);
+
+		if (NoteskinHelpers.noteskinArray.contains(curSkin))
+			curSelectedId = NoteskinHelpers.noteskinArray.indexOf(curSkin);
 	}
 
 	public override function left():Bool
 	{
 		if (OptionsMenu.isInPause)
 			return false;
-		FlxG.save.data.noteskin--;
-		if (FlxG.save.data.noteskin < 0)
-			FlxG.save.data.noteskin = NoteskinHelpers.getNoteskins().length - 1;
+		curSelectedId--;
+		if (curSelectedId < 0)
+			curSelectedId = NoteskinHelpers.getNoteskins().length - 1;
+
+		curSkin = NoteskinHelpers.getNoteskinByID(curSelectedId);
+		FlxG.save.data.noteskin = curSkin;
+
 		display = updateDisplay();
 		return true;
 	}
@@ -2172,9 +2187,13 @@ class NoteskinOption extends Option
 	{
 		if (OptionsMenu.isInPause)
 			return false;
-		FlxG.save.data.noteskin++;
-		if (FlxG.save.data.noteskin > NoteskinHelpers.getNoteskins().length - 1)
-			FlxG.save.data.noteskin = 0;
+		curSelectedId++;
+		if (curSelectedId > NoteskinHelpers.getNoteskins().length - 1)
+			curSelectedId = 0;
+
+		curSkin = NoteskinHelpers.getNoteskinByID(curSelectedId);
+		FlxG.save.data.noteskin = curSkin;
+
 		display = updateDisplay();
 		return true;
 	}
@@ -2182,9 +2201,9 @@ class NoteskinOption extends Option
 	public override function getValue():String
 	{
 		if (!FlxG.save.data.language)
-			return "Current Noteskin: < " + NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin) + " >";
+			return "Current Noteskin: < " + curSkin + " >";
 		else
-			return "Выбранный вид стрелок: < " + NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin) + " >";
+			return "Выбранный вид стрелок: < " + curSkin + " >";
 	}
 }
 

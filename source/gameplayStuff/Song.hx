@@ -238,8 +238,8 @@ class Song
 		if (song.diffSoundAssets == null)
 			song.diffSoundAssets = false;
 
-		/*if (song.specialSongNoteSkin == null)
-			song.specialSongNoteSkin = NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin);*/
+		if (song.specialSongNoteSkin == null)
+			song.specialSongNoteSkin = FlxG.save.data.noteskin;
 
 		if (song.showbgdancers == null)
 			{

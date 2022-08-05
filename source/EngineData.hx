@@ -201,7 +201,10 @@ class EngineData
 		];
 
 		if (FlxG.save.data.noteskin == null)
-			FlxG.save.data.noteskin = 0;
+			FlxG.save.data.noteskin = 'Arrows';
+
+		if (!Std.isOfType(FlxG.save.data.noteskin, String))
+			FlxG.save.data.noteskin = 'Arrows';
 
 		if (FlxG.save.data.menuMusic == null)
 			FlxG.save.data.menuMusic = 0;

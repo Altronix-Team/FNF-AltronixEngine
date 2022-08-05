@@ -109,7 +109,6 @@ class TitleState extends MusicBeatState
 		volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
 
 		FlxG.mouse.visible = false;
-		FlxG.mouse.useSystemCursor = true;
 
 		FlxG.worldBounds.set(0, 0);
 

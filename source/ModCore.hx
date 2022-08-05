@@ -158,6 +158,8 @@ class ModCore
 	
 			// List of filenames to ignore in mods. Use the default list to ignore the metadata file, etc.
 			ignoredFiles: Polymod.getDefaultIgnoreList(),
+
+			firetongue: LanguageStuff.tongue,
 	
 			// Parsing rules for various data formats.
 			parseRules: buildParseRules(),

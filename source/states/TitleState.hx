@@ -29,7 +29,9 @@ import flixel.util.FlxTimer;
 import lime.app.Application;
 import openfl.Assets;
 import flixel.input.keyboard.FlxKey;
+#if desktop
 import GameJolt.GameJoltAPI;
+#end
 import openfl.utils.Assets as OpenFlAssets;
 import flash.net.URLRequest;
 import flixel.graphics.frames.FlxFrame;
@@ -100,6 +102,8 @@ class TitleState extends MusicBeatState
 
 		Character.initCharacterList();
 
+		LanguageStuff.initLanguages();
+
 		if (FlxG.save.data.volDownBind == null)
 			FlxG.save.data.volDownBind = "MINUS";
 		if (FlxG.save.data.volUpBind == null)
@@ -135,10 +139,12 @@ class TitleState extends MusicBeatState
 			#end
 		}	
 
+		#if desktop
 		GameJoltAPI.leaderboardToggle = FlxG.save.data.toggleLeaderboard;
 
 		GameJoltAPI.connect();
 		GameJoltAPI.authDaUser(FlxG.save.data.gjUser, FlxG.save.data.gjToken);
+		#end
 
 		cacheSongs();
 

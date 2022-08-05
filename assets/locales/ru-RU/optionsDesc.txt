@@ -1,0 +1,7 @@
+flag	content
+$GAMEPLAY_CATA	Геймплей
+$APPEARANCE_CATA	Внешний вид
+$MISC_CATA	Разное
+$SAVES_CATA	Сохранения
+$KEYBINDS_CATA	Редактирование управления
+$JUDGEMENTS_CATA	Редактирование оценок

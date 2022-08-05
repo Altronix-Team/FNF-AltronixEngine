@@ -137,6 +137,7 @@
 	<assets path="assets/art"   library="art"   exclude="*.ogg" if="web"/>
 	<assets path="assets/art"   library="art"   exclude="*.mp3" unless="web"/>
 
+	<assets path="assets/locales" rename="locales" />
 	<assets path='example_mods' rename='mods' embed='false'/>
 	<assets path='art/readme.txt' rename='do NOT readme.txt' />
 	<assets path='LICENSE' rename='LICENSE.txt' />
@@ -203,9 +204,9 @@
 	<haxelib name="hxCodec" if="VIDEOS_ALLOWED"/>
 	<haxelib name="systools" />
 	<ndll name="systools" haxelib="systools" />
-	<haxelib name="tentools" />
+	<haxelib name="tentools" if="desktop"/>
 	<haxelib name="haxe-strings" />
-	<!--haxelib name="firetongue" /-->
+	<haxelib name="firetongue" />
 	<!--haxelib name="tjson" /-->
 	
 	<!--haxelib name="hscript-ex"/-->

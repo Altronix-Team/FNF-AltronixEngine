@@ -1,0 +1,7 @@
+flag	content
+$GAMEPLAY_CATA	Gameplay
+$APPEARANCE_CATA	Appearance
+$MISC_CATA	Misc
+$SAVES_CATA	Saves
+$KEYBINDS_CATA	Editing Keybinds
+$JUDGEMENTS_CATA	Editing Judgements

@@ -68,7 +68,9 @@ import haxe.Json;
 import openfl.display.BlendMode;
 import openfl.display.StageQuality;
 import openfl.filters.ShaderFilter;
+#if desktop
 import GameJolt.GameJoltAPI;
+#end
 import gameplayStuff.FunkinLua;
 import flixel.util.FlxSave;
 import gameplayStuff.DialogueBoxPsych;
@@ -5338,8 +5340,10 @@ class PlayState extends MusicBeatState
 		vocals.volume = 0;
 		vocals.pause();
 
+		#if desktop
 		if (!chartingMode)
 			GameJoltAPI.addScore(Math.round(songScore), 716199, 'Song - ' + SONG.songName);
+		#end
 
 		if(FlxG.save.data.offset <= 0 || ignoreNoteOffset) {
 			finishCallback();

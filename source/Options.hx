@@ -1386,6 +1386,10 @@ class NoteSplashOption extends Option
 
 class LanguageOption extends Option
 {
+	var selectedId:Int = 0;
+
+	var curLocale:String = 'en_US';
+
 	public function new(desc:String)
 	{
 		super();
@@ -1396,29 +1400,53 @@ class LanguageOption extends Option
 				description = "Эта опция не может быть переключена во время паузы";
 		else
 			description = desc;
+
+		curLocale = FlxG.save.data.localeStr;
+		selectedId = LanguageStuff.locales.indexOf(curLocale);
 	}
 
 	public override function left():Bool
 	{
+		selectedId -= 1;
+
+		if (selectedId < 0)
+			selectedId = LanguageStuff.locales.length - 1;
+		if (selectedId > LanguageStuff.locales.length - 1)
+			selectedId = 0;
+
 		if (OptionsMenu.isInPause)
 			return false;
-		FlxG.save.data.language = !FlxG.save.data.language;
+		
+		FlxG.save.data.localeStr = LanguageStuff.locales[selectedId];
+		curLocale = FlxG.save.data.localeStr;
 		display = updateDisplay();
 		return true;
 	}
 
 	public override function right():Bool
 	{
-		left();
+		selectedId += 1;
+
+		if (selectedId < 0)
+			selectedId = LanguageStuff.locales.length;
+		if (selectedId > LanguageStuff.locales.length)
+			selectedId = 0;
+
+		if (OptionsMenu.isInPause)
+			return false;
+
+		FlxG.save.data.localeStr = LanguageStuff.locales[selectedId];
+		curLocale = FlxG.save.data.localeStr;
+		display = updateDisplay();
 		return true;
 	}
 
 	private override function updateDisplay():String
 	{
 		if (!FlxG.save.data.language)
-			return "Language: < " + (!FlxG.save.data.language ? "English" : "Russian") + " >";
+			return "Language: < " + curLocale + " >";
 		else
-			return "Язык: < " + (!FlxG.save.data.language ? "Английский" : "Русский") + " >";
+			return "Язык: < " + curLocale + " >";
 	}
 }
 

@@ -44,10 +44,7 @@ class OptionCata extends FlxSprite
 		optionObjects = new FlxTypedGroup();
 
 		titleObject = new FlxText((middleType ? 1180 / 2 : x), y + (middleType ? 0 : 16), 0, title);
-		if (!FlxG.save.data.language)
-			titleObject.setFormat(Paths.font("vcr.ttf"), 35, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		else
-			titleObject.setFormat(Paths.font("UbuntuBold.ttf"), 35, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		titleObject.setFormat(Paths.font(LanguageStuff.fontName), 35, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		titleObject.borderSize = 3;
 
 		if (middleType)
@@ -69,10 +66,7 @@ class OptionCata extends FlxSprite
 			{
 				text.screenCenter(X);
 			}
-			if (!FlxG.save.data.language)
-				text.setFormat(Paths.font("vcr.ttf"), 35, FlxColor.WHITE, FlxTextAlign.CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-			else
-				text.setFormat(Paths.font("UbuntuBold.ttf"), 35, FlxColor.WHITE, FlxTextAlign.CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+			text.setFormat(Paths.font(LanguageStuff.fontName), 35, FlxColor.WHITE, FlxTextAlign.CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 			text.borderSize = 3;
 			text.borderQuality = 1;
 			text.scrollFactor.set();
@@ -123,153 +117,69 @@ class OptionsMenu extends FlxSubState
 
 	override function create()
 	{
-		if (!FlxG.save.data.language)
-		{
-			options = [
-				new OptionCata(50, 40, "Gameplay", [
-					new ScrollSpeedOption("Change your scroll speed. (1 = Chart dependent)"),
-					new OffsetThing("Change the note audio offset (how many milliseconds a note is offset in a chart)"),
-					new AccuracyDOption("Change how accuracy is calculated. (Accurate = Simple, Complex = Milisecond Based)"),
-					new GhostTapOption("Toggle counting pressing a directional input when no arrow is there as a miss."),
-					new DownscrollOption("Toggle making the notes scroll down rather than up."),
-					new BotPlay("A bot plays for you!"),
-					#if desktop new FPSCapOption("Change your FPS Cap."),
-					#end
-					new ResetButtonOption("Toggle pressing R to gameover."),
-					new InstantRespawn("Toggle if you instantly respawn after dying."),
-					new CamZoomOption("Toggle the camera zoom in-game."),
-					new NoteSplashOption("Toggle note splashes after perfect hit"),
-					new PsychInterfaceOption('Toggles Psych Engine song interface'),
-					// new OffsetMenu("Get a note offset based off of your inputs!"),
-					new DFJKOption(),
-					new Judgement("Create a custom judgement preset"),
-					new CustomizeGameplay("Drag and drop gameplay modules to your prefered positions!")
-				]),
-				new OptionCata(345, 40, "Appearance", [
-					new NoteskinOption("Change your current noteskin"), new EditorRes("Not showing the editor grid will greatly increase editor performance"),
-					new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay."),
-					new MiddleScrollOption("Put your lane in the center or on the right."), new HealthBarOption("Toggles health bar visibility"),
-					new JudgementCounter("Show your judgements that you've gotten in the song"),
-					new LaneUnderlayOption("How transparent your lane is, higher = more visible."),
-					//new StepManiaOption("Sets the colors of the arrows depending on quantization instead of direction."),
-					new AccuracyOption("Display accuracy information on the info bar."),
-					new SongPositionOption("Show the song's current position as a scrolling bar."),
-					new Colour("The color behind icons now fit with their theme. (e.g. Pico = green)"),
-					new NPSDisplayOption("Shows your current Notes Per Second on the info bar."),
-					new RainbowFPSOption("Make the FPS Counter flicker through rainbow colors."),
-					new CpuStrums("Toggle the CPU's strumline lighting up when it hits a note."),
-				]),
-				new OptionCata(640, 40, "Misc", [
-					new MenuMusicOption('Change your current menu music'),
-					new FPSOption("Toggle the FPS Counter"),
-					new FlashingLightsOption("Toggle flashing lights that can cause epileptic seizures and strain."),
-					new WatermarkOption("Enable and disable all watermarks from the engine."),
-					new AntialiasingOption("Toggle antialiasing, improving graphics quality at a slight performance penalty."),
-					new MissSoundsOption("Toggle miss sounds playing when you don't hit a note."),
-					new ScoreScreen("Show the score screen after the end of a song"),
-					new ShowInput("Display every single input on the score screen."),
-					new LanguageOption("Change Engine Language (Only English or Russian)"),
-					new MemoryCountOption('Enable and disable memory counter'),
-					//new CacheImages("Toggle image caching"),
-					new FullscreenOnStartOption('Toggles fullscreen on game start'),
-					//new LogWriter('Toggles game log writer (need to restart the game!)'),
-					//new LoadingScreensOption("Toggles the display of loading screens when switching between different menus")
-				]),
-				new OptionCata(935, 40, "Saves", [
-					#if desktop // new ReplayOption("View saved song replays."),
-					#end
-					new ResetScoreOption("Reset your score on all songs and weeks. This is irreversible!"),
-					new LockWeeksOption("Reset your story mode progress. This is irreversible!"),
-					new ResetSettings("Reset ALL your settings. This is irreversible!")
-				]),
-				new OptionCata(-1, 125, "Editing Keybinds", [
-					new LeftKeybind("The left note's keybind"), new DownKeybind("The down note's keybind"), new UpKeybind("The up note's keybind"),
-					new RightKeybind("The right note's keybind"), new PauseKeybind("The keybind used to pause the game"),
-					new ResetBind("The keybind used to die instantly"), new MuteBind("The keybind used to mute game audio"),
-					new VolUpBind("The keybind used to turn the volume up"), new VolDownBind("The keybind used to turn the volume down"),
-					new AttackKeybind("The keybind used to attack enemies")], true),
-				new OptionCata(-1, 125, "Editing Judgements", [
-					new SickMSOption("How many milliseconds are in the SICK hit window"),
-					new GoodMsOption("How many milliseconds are in the GOOD hit window"),
-					new BadMsOption("How many milliseconds are in the BAD hit window"),
-					new ShitMsOption("How many milliseconds are in the SHIT hit window")
-				], true)
-			];
-		}
-		
-		if (FlxG.save.data.language)
-		{
-			options = [
-				new OptionCata(50, 40, "Геймплей", [
-					new ScrollSpeedOption("Изменить скорость стрелок. (1 = Настройка чарта)"),
-					new OffsetThing("Изменить смешение стрелки (как много миллисекунд будет стоять спрайт стрелки)"),
-					new AccuracyDOption("Изменить систему расчёта точности. (Точная = Простая, Сложная = Основана на милисекундах)"),
-					new GhostTapOption("Переключить подсчёт ошибок, если нажата не та нота."),
-					new DownscrollOption("Переключите, чтобы стрелки прокручивались сверху вниз."),
-					new BotPlay("Бот играет за тебя!"),
-					#if desktop new FPSCapOption("Изменить максимум FPS."),
-					#end
-					new ResetButtonOption("При нажатии на R, вы проигрываете."),
-					new InstantRespawn("Если включено, песня перезапускается сразу после смерти."),
-					new CamZoomOption("Переключить масштаб камеры в игре."),
-					new NoteSplashOption("Переключить брызги после идеального попадания по ноте"),
-					new PsychInterfaceOption('Переключить на интерфейс песен из Psych Engine'),
-					// new OffsetMenu("Get a note offset based off of your inputs!"),
-					new DFJKOption(),
-					new Judgement("Изменить время засчитывания стрелок (Sick/Good/Bad/Shit)."),
-					new CustomizeGameplay("Перемещайте геймплейные составляющие как хотите!")
-				]),
-				new OptionCata(345, 40, "Внешний вид", [
-					new NoteskinOption("Изменение внешнего вида нот."), new EditorRes("Отображение сетки в меню чартинга"),
-					new DistractionsAndEffectsOption("Переключить эффекты сцены, которые могут мешать комфортной игре."),
-					new MiddleScrollOption("Распологает стрелки интерфейса по центру."), new HealthBarOption("Переключает видимость полосы здоровья!"),
-					new JudgementCounter("Показывает оценки, которые вы получили в песне."),
-					new LaneUnderlayOption("Изменить прозрачность полосы здоровья (Чем больше, тем виднее)."),
-					//new StepManiaOption("Изменяет цвета стрелок в зависимости от 'квантования', а не от направления стрелки."),
-					new AccuracyOption("Отображение информации о точности на информационной панели."),
-					new SongPositionOption("Показывает текущую позицию песни в виде полосы."),
-					new Colour("Цвет здоровья персонажей позади иконки здоровья (например Пико - зелёный)."),
-					new NPSDisplayOption("Показывает количество стрелок в секунду на информационной панели."),
-					new RainbowFPSOption("Заставляет счётчик ФПС переливаться радужными цветами."),
-					new CpuStrums("Переключить цвет подсветки при нажатии бота на кнопку."),
-				]),
-				new OptionCata(640, 40, "Разное", [
-					new MenuMusicOption('Изменение музыки в меню'),
-					new FPSOption("Переключить отображение ФПС."),
-					new FlashingLightsOption("Переключить мигающие огни."),
-					new WatermarkOption("Переключить отображение водяных знаков в движке."),
-					new AntialiasingOption("Переключить сглаживание."),
-					new MissSoundsOption("Переключить воспроизведение звуков пропуска стрелки."),
-					new ScoreScreen("Показывает экран со счётом после конца песни."),
-					new ShowInput("Отобразить каждое отдельное нажатие на экране счёта"),
-					new LanguageOption("Изменить язык (Только русский или английский)"),
-					new MemoryCountOption('Переключает отображение счётчика используемой памяти'),
-					//new CacheImages("Переключить кэширование изображений"),
-					new FullscreenOnStartOption('Переключает полный экран при запуске игры'),
-					//new LogWriter('Переключает запись логов игры (необходимо перезапустить игру!)'),
-					//new LoadingScreensOption("Переключает отображение загрузочных экранов при переходе между разными меню")
-				]),
-				new OptionCata(935, 40, "Сохранения", [
-					#if desktop // new ReplayOption("View saved song replays."),
-					#end
-					new ResetScoreOption("Сбросить счёт во всех песнях и неделях. Это необратимо!"),
-					new LockWeeksOption("Сбросить весь прогресс недель. Это необратимо!"),
-					new ResetSettings("Сбросить все настройки. Это необратимо!")
-				]),
-				new OptionCata(-1, 125, "Редактирование управления", [
-					new LeftKeybind("Бинд стрелки влево"), new DownKeybind("Бинд стрелки вниз"), new UpKeybind("Бинд стрелки вверх"),
-					new RightKeybind("Бинд стрелки вправо"), new PauseKeybind("Бинд кнопки паузы"),
-					new ResetBind("Бинд кнопки мгновенной смерти"), new MuteBind("Бинд кнопки заглушения звуков"),
-					new VolUpBind("Бинд кнопки повышения громкости"), new VolDownBind("Бинд кнопки понижения гроскости"),
-					new AttackKeybind("Бинд атаки")], true),
-				new OptionCata(-1, 125, "Редактирование оценок", [
-					new SickMSOption("Как много миллисекунд вы можете получить оценку SICK"),
-					new GoodMsOption("Как много миллисекунд вы можете получить оценку GOOD"),
-					new BadMsOption("Как много миллисекунд вы можете получить оценку BAD"),
-					new ShitMsOption("Как много миллисекунд вы можете получить оценку SHIT")
-				], true)
-			];
-		}
+		options = [
+			new OptionCata(50, 40, LanguageStuff.getOptionDesc("$GAMEPLAY_CATA"), [
+				new ScrollSpeedOption("Change your scroll speed. (1 = Chart dependent)"),
+				new OffsetThing("Change the note audio offset (how many milliseconds a note is offset in a chart)"),
+				new AccuracyDOption("Change how accuracy is calculated. (Accurate = Simple, Complex = Milisecond Based)"),
+				new GhostTapOption("Toggle counting pressing a directional input when no arrow is there as a miss."),
+				new DownscrollOption("Toggle making the notes scroll down rather than up."),
+				new BotPlay("A bot plays for you!"),
+				#if desktop new FPSCapOption("Change your FPS Cap."),
+				#end
+				new ResetButtonOption("Toggle pressing R to gameover."),
+				new InstantRespawn("Toggle if you instantly respawn after dying."),
+				new CamZoomOption("Toggle the camera zoom in-game."),
+				new NoteSplashOption("Toggle note splashes after perfect hit"),
+				new PsychInterfaceOption('Toggles Psych Engine song interface'),
+				new DFJKOption(),
+				new Judgement("Create a custom judgement preset"),
+				new CustomizeGameplay("Drag and drop gameplay modules to your prefered positions!")
+			]),
+			new OptionCata(345, 40, LanguageStuff.getOptionDesc("$APPEARANCE_CATA"), [
+				new NoteskinOption("Change your current noteskin"), new EditorRes("Not showing the editor grid will greatly increase editor performance"),
+				new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay."),
+				new MiddleScrollOption("Put your lane in the center or on the right."), new HealthBarOption("Toggles health bar visibility"),
+				new JudgementCounter("Show your judgements that you've gotten in the song"),
+				new LaneUnderlayOption("How transparent your lane is, higher = more visible."),
+				new AccuracyOption("Display accuracy information on the info bar."),
+				new SongPositionOption("Show the song's current position as a scrolling bar."),
+				new Colour("The color behind icons now fit with their theme. (e.g. Pico = green)"),
+				new NPSDisplayOption("Shows your current Notes Per Second on the info bar."),
+				new RainbowFPSOption("Make the FPS Counter flicker through rainbow colors."),
+				//new CpuStrums("Toggle the CPU's strumline lighting up when it hits a note."),
+			]),
+			new OptionCata(640, 40, LanguageStuff.getOptionDesc("$MISC_CATA"), [
+				new MenuMusicOption('Change your current menu music'),
+				new FPSOption("Toggle the FPS Counter"),
+				new FlashingLightsOption("Toggle flashing lights that can cause epileptic seizures and strain."),
+				new WatermarkOption("Enable and disable all watermarks from the engine."),
+				new AntialiasingOption("Toggle antialiasing, improving graphics quality at a slight performance penalty."),
+				new MissSoundsOption("Toggle miss sounds playing when you don't hit a note."),
+				new ScoreScreen("Show the score screen after the end of a song"),
+				new ShowInput("Display every single input on the score screen."),
+				new LanguageOption("Change Engine Language"),
+				new MemoryCountOption('Enable and disable memory counter'),
+				new FullscreenOnStartOption('Toggles fullscreen on game start')
+			]),
+			new OptionCata(935, 40, LanguageStuff.getOptionDesc("$SAVES_CATA"), [
+				new ResetScoreOption("Reset your score on all songs and weeks. This is irreversible!"),
+				new LockWeeksOption("Reset your story mode progress. This is irreversible!"),
+				new ResetSettings("Reset ALL your settings. This is irreversible!")
+			]),
+			new OptionCata(-1, 125, LanguageStuff.getOptionDesc("$KEYBINDS_CATA"), [
+				new LeftKeybind("The left note's keybind"), new DownKeybind("The down note's keybind"), new UpKeybind("The up note's keybind"),
+				new RightKeybind("The right note's keybind"), new PauseKeybind("The keybind used to pause the game"),
+				new ResetBind("The keybind used to die instantly"), new MuteBind("The keybind used to mute game audio"),
+				new VolUpBind("The keybind used to turn the volume up"), new VolDownBind("The keybind used to turn the volume down"),
+				new AttackKeybind("The keybind used to attack enemies")], true),
+			new OptionCata(-1, 125, LanguageStuff.getOptionDesc("$JUDGEMENTS_CATA"), [
+				new SickMSOption("How many milliseconds are in the SICK hit window"),
+				new GoodMsOption("How many milliseconds are in the GOOD hit window"),
+				new BadMsOption("How many milliseconds are in the BAD hit window"),
+				new ShitMsOption("How many milliseconds are in the SHIT hit window")
+			], true)
+		];
 
 		instance = this;
 
@@ -318,10 +228,7 @@ class OptionsMenu extends FlxSubState
 		}
 
 		descText = new FlxText(62, 648);
-		if (!FlxG.save.data.language)
-			descText.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		else
-			descText.setFormat(Paths.font("UbuntuBold.ttf"), 20, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		descText.setFormat(Paths.font(LanguageStuff.fontName), 20, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		
 		descText.borderSize = 2;
 
@@ -656,7 +563,11 @@ class OptionsMenu extends FlxSubState
 						object.text = "> " + selectedOption.getValue();
 						Debug.logTrace("New text: " + object.text);
 						if (selectedOptionIndex == 8 && selectedCatIndex == 2)
+						{
+							var lang = FlxG.save.data.localeStr;
+							LanguageStuff.loadLanguage(lang);
 							FlxG.resetState();
+						}
 					}
 					else if (left)
 					{
@@ -669,7 +580,11 @@ class OptionsMenu extends FlxSubState
 						object.text = "> " + selectedOption.getValue();
 						Debug.logTrace("New text: " + object.text);
 						if (selectedOptionIndex == 8 && selectedCatIndex == 2)
+						{
+							var lang = FlxG.save.data.localeStr;
+							LanguageStuff.loadLanguage(lang);
 							FlxG.resetState();
+						}
 					}
 
 					if (escape)

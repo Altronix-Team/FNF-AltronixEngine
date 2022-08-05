@@ -1,8 +1,9 @@
 package;
 
 import flixel.FlxSprite;
+#if desktop
 import GameJolt.GameJoltAPI;
-import GameJolt.GameJoltLogin;
+#end
 import states.AchievementsState;
 
 class Achievements
@@ -13,10 +14,12 @@ class Achievements
 
 		if (!savedAchievements.contains(AchievementsState.findSaveIdById(id)))
         {
+			#if desktop
             if (imagePath == null)
 				GameJoltAPI.getTrophy(id, AchievementsState.findImageById(id));
             else
 				GameJoltAPI.getTrophy(id, imagePath);
+			#end
 			savedAchievements.push(AchievementsState.findSaveIdById(id));
 			FlxG.save.data.savedAchievements = savedAchievements;
         }

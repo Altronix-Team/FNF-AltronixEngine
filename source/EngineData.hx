@@ -209,9 +209,11 @@ class EngineData
 		if (FlxG.save.data.memoryCount == null)
 			FlxG.save.data.memoryCount = true;
 
-		// Gonna make this an option on another PR
 		if (FlxG.save.data.overrideNoteskins == null)
 			FlxG.save.data.overrideNoteskins = false;
+
+		if (FlxG.save.data.localeStr == null)
+			FlxG.save.data.localeStr = "en-US";
 
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 

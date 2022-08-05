@@ -3,3 +3,4 @@ $MISSING_FLAGS;<X> флагов локализации отсутствует:
 $MISSING_FILES;<X> файлов локализации отсутствует:
 $FONT_NAME;UbuntuBold.ttf
 $ENGINE_START;Все локализации найдены и успешно запущены!
+$VERSION;Версия игры: <version>

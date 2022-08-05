@@ -119,65 +119,72 @@ class OptionsMenu extends FlxSubState
 	{
 		options = [
 			new OptionCata(50, 40, LanguageStuff.getOptionDesc("$GAMEPLAY_CATA"), [
-				new ScrollSpeedOption("Change your scroll speed. (1 = Chart dependent)"),
-				new OffsetThing("Change the note audio offset (how many milliseconds a note is offset in a chart)"),
-				new AccuracyDOption("Change how accuracy is calculated. (Accurate = Simple, Complex = Milisecond Based)"),
-				new GhostTapOption("Toggle counting pressing a directional input when no arrow is there as a miss."),
-				new DownscrollOption("Toggle making the notes scroll down rather than up."),
-				new BotPlay("A bot plays for you!"),
-				#if desktop new FPSCapOption("Change your FPS Cap."),
+				new ScrollSpeedOption(LanguageStuff.getOptionDesc("$SCROLLSPEED_OPTION")),
+				new OffsetThing(LanguageStuff.getOptionDesc("$OFFSET_OPTION")),
+				new AccuracyDOption(LanguageStuff.getOptionDesc("$ACCURACYD_OPTION")),
+				new GhostTapOption(LanguageStuff.getOptionDesc("$GHOSTTAP_OPTION")),
+				new DownscrollOption(LanguageStuff.getOptionDesc("$DOWNSCROLL_OPTION")),
+				new BotPlay(LanguageStuff.getOptionDesc("$BOTPLAY_OPTION")),
+				#if desktop
+				new FPSCapOption(LanguageStuff.getOptionDesc("$FPSCAP_OPTION")),
 				#end
-				new ResetButtonOption("Toggle pressing R to gameover."),
-				new InstantRespawn("Toggle if you instantly respawn after dying."),
-				new CamZoomOption("Toggle the camera zoom in-game."),
-				new NoteSplashOption("Toggle note splashes after perfect hit"),
-				new PsychInterfaceOption('Toggles Psych Engine song interface'),
+				new ResetButtonOption(LanguageStuff.getOptionDesc("$RESETBUTTON_OPTION")),
+				new InstantRespawn(LanguageStuff.getOptionDesc("$INSTANTRESPAWN_OPTION")),
+				new CamZoomOption(LanguageStuff.getOptionDesc("$CAMZOOM_OPTION")),
+				new NoteSplashOption(LanguageStuff.getOptionDesc("$NOTESPLASH_OPTION")),
+				new PsychInterfaceOption(LanguageStuff.getOptionDesc("$PSYCHINTERFACE_OPTION")),
 				new DFJKOption(),
-				new Judgement("Create a custom judgement preset"),
-				new CustomizeGameplay("Drag and drop gameplay modules to your prefered positions!")
+				new Judgement(LanguageStuff.getOptionDesc("$JUDGEMENT")),
+				new CustomizeGameplay(LanguageStuff.getOptionDesc("$CUSTOMIZE_GAMEPLAY"))
 			]),
 			new OptionCata(345, 40, LanguageStuff.getOptionDesc("$APPEARANCE_CATA"), [
-				new NoteskinOption("Change your current noteskin"), new EditorRes("Not showing the editor grid will greatly increase editor performance"),
-				new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay."),
-				new MiddleScrollOption("Put your lane in the center or on the right."), new HealthBarOption("Toggles health bar visibility"),
-				new JudgementCounter("Show your judgements that you've gotten in the song"),
-				new LaneUnderlayOption("How transparent your lane is, higher = more visible."),
-				new AccuracyOption("Display accuracy information on the info bar."),
-				new SongPositionOption("Show the song's current position as a scrolling bar."),
-				new Colour("The color behind icons now fit with their theme. (e.g. Pico = green)"),
-				new NPSDisplayOption("Shows your current Notes Per Second on the info bar."),
-				new RainbowFPSOption("Make the FPS Counter flicker through rainbow colors."),
-				//new CpuStrums("Toggle the CPU's strumline lighting up when it hits a note."),
+				new NoteskinOption(LanguageStuff.getOptionDesc("$NOTESKIN_OPTION")),
+				new EditorRes(LanguageStuff.getOptionDesc("$EDITORBG_OPTION")),
+				new DistractionsAndEffectsOption(LanguageStuff.getOptionDesc("$DISTANDEFF_OPTION")),
+				new MiddleScrollOption(LanguageStuff.getOptionDesc("$MIDDLESCROLL_OPTION")),
+				new HealthBarOption(LanguageStuff.getOptionDesc("$HEALTHBAR_OPTION")),
+				new JudgementCounter(LanguageStuff.getOptionDesc("$JUDGEMENTCOUNTER_OPTION")),
+				new LaneUnderlayOption(LanguageStuff.getOptionDesc("$LANEUNDERLAY_OPTION")),
+				new AccuracyOption(LanguageStuff.getOptionDesc("$ACCURACY_OPTION")),
+				new SongPositionOption(LanguageStuff.getOptionDesc("$SONGPOS_OPTION")),
+				new Colour(LanguageStuff.getOptionDesc("$COLOUR_OPTION")),
+				new NPSDisplayOption(LanguageStuff.getOptionDesc("$NPSDISPLAY_OPTION")),
+				new RainbowFPSOption(LanguageStuff.getOptionDesc("$RAINBOWFPS_OPTION")),
 			]),
 			new OptionCata(640, 40, LanguageStuff.getOptionDesc("$MISC_CATA"), [
-				new MenuMusicOption('Change your current menu music'),
-				new FPSOption("Toggle the FPS Counter"),
-				new FlashingLightsOption("Toggle flashing lights that can cause epileptic seizures and strain."),
-				new WatermarkOption("Enable and disable all watermarks from the engine."),
-				new AntialiasingOption("Toggle antialiasing, improving graphics quality at a slight performance penalty."),
-				new MissSoundsOption("Toggle miss sounds playing when you don't hit a note."),
-				new ScoreScreen("Show the score screen after the end of a song"),
-				new ShowInput("Display every single input on the score screen."),
-				new LanguageOption("Change Engine Language"),
-				new MemoryCountOption('Enable and disable memory counter'),
-				new FullscreenOnStartOption('Toggles fullscreen on game start')
+				new MenuMusicOption(LanguageStuff.getOptionDesc("$MENUMUSIC_OPTION")),
+				new FPSOption(LanguageStuff.getOptionDesc("$FPS_OPTION")),
+				new FlashingLightsOption(LanguageStuff.getOptionDesc("$FLASHLIGHTS_OPTION")),
+				new WatermarkOption(LanguageStuff.getOptionDesc("$WATERMARK_OPTION")),
+				new AntialiasingOption(LanguageStuff.getOptionDesc("$ANTIALIASING_OPTION")),
+				new MissSoundsOption(LanguageStuff.getOptionDesc("$MISSSOUNDS_OPTION")),
+				new ScoreScreen(LanguageStuff.getOptionDesc("$SCORESCREEEN_OPTION")),
+				new ShowInput(LanguageStuff.getOptionDesc("$SHOWINPUT_OPTION")),
+				new LanguageOption(LanguageStuff.getOptionDesc("$LANGUAGE_OPTION")),
+				new MemoryCountOption(LanguageStuff.getOptionDesc("$MEMORYCOUNT_OPTION")),
+				new FullscreenOnStartOption(LanguageStuff.getOptionDesc("$FULLSCREENONSTART_OPTION"))
 			]),
 			new OptionCata(935, 40, LanguageStuff.getOptionDesc("$SAVES_CATA"), [
-				new ResetScoreOption("Reset your score on all songs and weeks. This is irreversible!"),
-				new LockWeeksOption("Reset your story mode progress. This is irreversible!"),
-				new ResetSettings("Reset ALL your settings. This is irreversible!")
+				new ResetScoreOption(LanguageStuff.getOptionDesc("$RESETSCORE_OPTION")),
+				new LockWeeksOption(LanguageStuff.getOptionDesc("$LOCKWEEKS_OPTION")),
+				new ResetSettings(LanguageStuff.getOptionDesc("$RESETSETTINGS"))
 			]),
 			new OptionCata(-1, 125, LanguageStuff.getOptionDesc("$KEYBINDS_CATA"), [
-				new LeftKeybind("The left note's keybind"), new DownKeybind("The down note's keybind"), new UpKeybind("The up note's keybind"),
-				new RightKeybind("The right note's keybind"), new PauseKeybind("The keybind used to pause the game"),
-				new ResetBind("The keybind used to die instantly"), new MuteBind("The keybind used to mute game audio"),
-				new VolUpBind("The keybind used to turn the volume up"), new VolDownBind("The keybind used to turn the volume down"),
-				new AttackKeybind("The keybind used to attack enemies")], true),
+				new LeftKeybind(LanguageStuff.getOptionDesc("$LEFTKEYBIND")),
+				new DownKeybind(LanguageStuff.getOptionDesc("$DOWNKEYBIND")),
+				new UpKeybind(LanguageStuff.getOptionDesc("$UPKEYBIND")),
+				new RightKeybind(LanguageStuff.getOptionDesc("$RIGHTKEYBIND")),
+				new PauseKeybind(LanguageStuff.getOptionDesc("$PAUSEKEYBIND")),
+				new ResetBind(LanguageStuff.getOptionDesc("$RESETKEYBIND")),
+				new MuteBind(LanguageStuff.getOptionDesc("$MUTEKEYBIND")),
+				new VolUpBind(LanguageStuff.getOptionDesc("$VOLUPKEYBIND")),
+				new VolDownBind(LanguageStuff.getOptionDesc("$VOLDOWNKEYBIND")),
+				new AttackKeybind(LanguageStuff.getOptionDesc("$ATTACKKEYBIND"))], true),
 			new OptionCata(-1, 125, LanguageStuff.getOptionDesc("$JUDGEMENTS_CATA"), [
-				new SickMSOption("How many milliseconds are in the SICK hit window"),
-				new GoodMsOption("How many milliseconds are in the GOOD hit window"),
-				new BadMsOption("How many milliseconds are in the BAD hit window"),
-				new ShitMsOption("How many milliseconds are in the SHIT hit window")
+				new SickMSOption(LanguageStuff.getOptionDesc("$SICKMS_OPTION")),
+				new GoodMsOption(LanguageStuff.getOptionDesc("$GOODMS_OPTION")),
+				new BadMsOption(LanguageStuff.getOptionDesc("$BASMS_OPTION")),
+				new ShitMsOption(LanguageStuff.getOptionDesc("$SHITMS_OPTION"))
 			], true)
 		];
 
@@ -391,7 +398,7 @@ class OptionsMenu extends FlxSubState
 		{
 			if (isInCat)
 			{
-				descText.text = "Please select a category";
+				descText.text = LanguageStuff.getOptionDesc("$SELECTCAT");
 				if (right)
 				{
 					FlxG.sound.play(Paths.sound('scrollMenu'));

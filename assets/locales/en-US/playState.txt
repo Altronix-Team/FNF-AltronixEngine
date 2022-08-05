@@ -1,0 +1,12 @@
+flag	content
+$PSYCH_RATING_WITH_AC	Score: <score> | Misses: <misses> | Rating: <ratingName>  (<ratingPercent>%) - <ratingFC>
+$KADE_RATING_WITHOUT_AC_WITH_NPC	NPS: <nps>  (Max <maxnps>) | Score: <score>
+$BOTPLAY	BOTPLAY
+$CHARTING	CHARTING
+$PSYCH_RATING_WITHOUT_AC	Score: <score> | Misses: <misses> | Rating: <ratingName>
+$KADE_RATING_WITH_AC_WITH_NPC	NPS: <nps>  (Max <maxnps>) | Score: <score> | Combo Breaks: <misses> | Accuracy: <accuracyPers> % | <accuracyStr> 
+$KADE_RATING_WITHOUT_AC_WITHOUT_NPC	Score: <score>
+$KADE_RATING_WITH_AC_WITHOUT_NPC	Score: <score> | Combo Breaks: <misses> | Accuracy: <accuracyPers> % | <accuracyStr> 
+$BOTPLAY_TEXT	Botplay
+$NA	N/A
+$PRESSTOSKIP	Press Space to Skip Intro

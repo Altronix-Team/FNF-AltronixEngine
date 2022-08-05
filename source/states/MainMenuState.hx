@@ -160,21 +160,12 @@ class MainMenuState extends MusicBeatState
 
 		altronix = new FlxText(5, FlxG.height - 36, 0, 'Altronix Engine ' + EngineConstants.engineVer, 12);
 		altronix.scrollFactor.set();
-		if (!FlxG.save.data.language)
-			altronix.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		else
-			altronix.setFormat(Paths.font("UbuntuBold.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		altronix.setFormat(Paths.font(LanguageStuff.fontName), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(altronix);
 
-		if (!FlxG.save.data.language)
-			gamever = new FlxText(5, FlxG.height - 18, 0, 'Game version ' + gameVer, 12);
-		else
-			gamever = new FlxText(5, FlxG.height - 18, 0, 'Версия игры ' + gameVer, 12);
+		gamever = new FlxText(5, FlxG.height - 18, 0, LanguageStuff.replaceFlagsAndReturn("$VERSION", 'data', ["<version>"], [gameVer]), 12);
 		gamever.scrollFactor.set();
-		if (!FlxG.save.data.language)
-			gamever.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		else
-			gamever.setFormat(Paths.font("UbuntuBold.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		gamever.setFormat(Paths.font(LanguageStuff.fontName), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(gamever);
 
 		if (FlxG.save.data.dfjk)

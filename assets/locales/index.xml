@@ -4,6 +4,7 @@
 	<file id="data" value="data.txt"/>
 	<file id="optionsDesc" value="optionsDesc.txt"/>
 	<file id="option" value="options.txt"/>
+	<file id="playState" value="playState.txt"/>
 	
 	<file id="fonts" value="fonts.xml"/>
 	

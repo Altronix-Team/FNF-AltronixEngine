@@ -1,5 +1,6 @@
 package scriptStuff;
 
+import flixel.util.FlxColor;
 import states.MusicBeatState;
 import flixel.FlxObject;
 import flixel.text.FlxText;

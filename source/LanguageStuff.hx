@@ -88,6 +88,11 @@ class LanguageStuff{
 		return tongue.get(key, context);
 	}
 
+	public static function getPlayState(key:String):String{
+		var context = "playState";
+		return tongue.get(key, context);
+	}
+
 	public static function getOption(key:String):String{
 		var context = "option";
 		return tongue.get(key, context);

@@ -1419,6 +1419,11 @@ class LanguageOption extends Option
 		
 		FlxG.save.data.localeStr = LanguageStuff.locales[selectedId];
 		curLocale = FlxG.save.data.localeStr;
+		if (curLocale == null)
+		{
+			curLocale = LanguageStuff.locales[0];
+			FlxG.save.data.localeStr = curLocale;
+		}
 		display = updateDisplay();
 		return true;
 	}
@@ -1437,6 +1442,11 @@ class LanguageOption extends Option
 
 		FlxG.save.data.localeStr = LanguageStuff.locales[selectedId];
 		curLocale = FlxG.save.data.localeStr;
+		if (curLocale == null)
+		{	
+			curLocale = LanguageStuff.locales[0];
+			FlxG.save.data.localeStr = curLocale;
+		}
 		display = updateDisplay();
 		return true;
 	}

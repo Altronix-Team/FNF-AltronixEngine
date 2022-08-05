@@ -93,16 +93,7 @@ class TitleState extends MusicBeatState
 
 		EngineData.initSave();
 
-		KeyBinds.keyCheck();
-		// It doesn't reupdate the list before u restart rn lmao
-		
-		NoteskinHelpers.updateNoteskins();
-
-		MenuMusicStuff.updateMusic();
-
-		Character.initCharacterList();
-
-		LanguageStuff.initLanguages();
+		KeyBinds.keyCheck();	
 
 		if (FlxG.save.data.volDownBind == null)
 			FlxG.save.data.volDownBind = "MINUS";
@@ -138,6 +129,14 @@ class TitleState extends MusicBeatState
 				configFound = false;	
 			#end
 		}	
+
+		NoteskinHelpers.updateNoteskins();
+
+		MenuMusicStuff.updateMusic();
+
+		Character.initCharacterList();
+
+		LanguageStuff.initLanguages();
 
 		#if desktop
 		GameJoltAPI.leaderboardToggle = FlxG.save.data.toggleLeaderboard;

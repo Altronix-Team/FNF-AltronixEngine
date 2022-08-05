@@ -8,51 +8,31 @@ class Ratings
 	public static function GenerateLetterRank(accuracy:Float) // generate a letter ranking
 	{
 		var ranking:String = "N/A";
-		if (FlxG.save.data.botplay/* && !PlayState.loadRep*/)
-			{
-			if (!FlxG.save.data.language)
-				ranking = "BotPlay";
-			else
-				ranking = "Бот-игрок";
-			}
+		if (FlxG.save.data.botplay)
+		{
+			ranking = "BotPlay";
+		}
 
 		if (PlayState.misses == 0 && PlayState.bads == 0 && PlayState.shits == 0 && PlayState.goods == 0) // Marvelous (SICK) Full Combo
 		{
-			if (!FlxG.save.data.language)
-				ranking = "(MFC)";
-			else
-				ranking = "(МПК)";
+			ranking = "(MFC)";
 		}
 		else if (PlayState.misses == 0 && PlayState.bads == 0 && PlayState.shits == 0 && PlayState.goods >= 1) // Good Full Combo (Nothing but Goods & Sicks)
 		{	
-			if (!FlxG.save.data.language)
-				ranking = "(GFC)";
-			else
-				ranking = "(ХПК)";
+			ranking = "(GFC)";
 		}
 		else if (PlayState.misses == 0) // Regular FC
 		{
-			if (!FlxG.save.data.language)
-				ranking = "(FC)";
-			else
-				ranking = "(ПК)";
+			ranking = "(FC)";
 		}
 		else if (PlayState.misses < 10) // Single Digit Combo Breaks
 		{
-			if (!FlxG.save.data.language)
-				ranking = "(SDCB)";
-			else
-				ranking = "(НКП)";
+			ranking = "(SDCB)";
 		}
 		else
 		{
-			if (!FlxG.save.data.language)
-				ranking = "(Clear)";
-			else
-				ranking = "(Чётко)";
+			ranking = "(Clear)";
 		}
-
-		// WIFE TIME :)))) (based on Wife3)
 
 		var wifeConditions:Array<Bool> = [
 			accuracy >= 99.9935, // AAAAA
@@ -119,17 +99,11 @@ class Ratings
 
 		if (accuracy == 0)
 		{
-			if (!FlxG.save.data.language)
-				ranking = "N/A";
-			else
-				ranking = "Недоступно";
+			ranking = LanguageStuff.getPlayState("$NA");
 		}
-		else if (FlxG.save.data.botplay/* && !PlayState.loadRep*/)
+		else if (FlxG.save.data.botplay)
 		{
-			if (!FlxG.save.data.language)
-				ranking = "BotPlay";
-			else
-				ranking = "Бот-игрок";
+			ranking = LanguageStuff.getPlayState("$BOTPLAY_TEXT");
 		}
 
 		return ranking;
@@ -164,48 +138,52 @@ class Ratings
 
 	public static function CalculateRanking(score:Int, scoreDef:Int, nps:Int, maxNPS:Int, accuracy:Float):String
 	{
-		if (!FlxG.save.data.language)
-		{
-		return (FlxG.save.data.npsDisplay ? // NPS Toggle
-			"NPS: "
-			+ nps
-			+ " (Max "
-			+ maxNPS
-			+ ")"
-			+ (!PlayStateChangeables.botPlay/* || PlayState.loadRep*/ ? " | " : "") : "") + // 	NPS
-			(!PlayStateChangeables.botPlay/*
-				|| PlayState.loadRep*/ ? "Score:" + (Conductor.safeFrames != 10 ? score + " (" + scoreDef + ")" : "" + score) + // Score
-					(FlxG.save.data.accuracyDisplay ? // Accuracy Toggle
-						" | Combo Breaks:"
-						+ PlayState.misses
-						+ // 	Misses/Combo Breaks
-						" | Accuracy:"
-						+ (PlayStateChangeables.botPlay/* && !PlayState.loadRep*/ ? "N/A" : HelperFunctions.truncateFloat(accuracy, 2) + " %")
-						+ // 	Accuracy
-						" | "
-						+ GenerateLetterRank(accuracy) : "") : ""); // 	Letter Rank
-		}
-		else
+		if (FlxG.save.data.accuracyDisplay){
+			if (FlxG.save.data.npsDisplay)
 			{
-			return (FlxG.save.data.npsDisplay ? // NPS Toggle
-				"Стрелок в секунду: "
-				+ nps
-				+ " (Максимально "
-				+ maxNPS
-				+ ")"
-				+ (!PlayStateChangeables.botPlay/* || PlayState.loadRep*/ ? " | " : "") : "") + // 	NPS
-				(!PlayStateChangeables.botPlay/*
-					|| PlayState.loadRep*/ ? "Счёт: " + (Conductor.safeFrames != 10 ? score + " (" + scoreDef + ")" : "" + score) + // Score
-						(FlxG.save.data.accuracyDisplay ? // Accuracy Toggle
-							" | Пропуски: "
-							+ PlayState.misses
-							+ // 	Misses/Combo Breaks
-							" | Точность: "
-							+ (PlayStateChangeables.botPlay/*
-								&& !PlayState.loadRep*/ ? "Недоступно" : HelperFunctions.truncateFloat(accuracy, 2) + " %")
-							+ // 	Accuracy
-							" | "
-							+ GenerateLetterRank(accuracy) : "") : ""); // 	Letter Rank
+				return LanguageStuff.replaceFlagsAndReturn("$KADE_RATING_WITH_AC_WITH_NPC", "playState",
+					["<nps>", "<maxnps>", "<score>", "<misses>", "<accuracyPers>", "<accuracyStr>"],
+					[
+						Std.string(nps),
+						Std.string(maxNPS),
+						(Conductor.safeFrames != 10 ? Std.string(score) + " (" + Std.string(scoreDef) + ")" : "" + Std.string(score)),
+						Std.string(PlayState.misses),
+						Std.string(HelperFunctions.truncateFloat(accuracy, 2)),
+						GenerateLetterRank(accuracy)
+					]);
 			}
+			else
+			{
+				return LanguageStuff.replaceFlagsAndReturn("$KADE_RATING_WITH_AC_WITHOUT_NPC", "playState",
+					["<score>", "<misses>", "<accuracyPers>", "<accuracyStr>"], 
+					[
+						Std.string(score),
+						(Conductor.safeFrames != 10 ? Std.string(score) + " (" + Std.string(scoreDef) + ")" : "" + Std.string(score)),
+						Std.string(PlayState.misses),
+						Std.string(HelperFunctions.truncateFloat(accuracy, 2)),
+						GenerateLetterRank(accuracy)
+					]);
+			}
+		}
+		else{
+			if (FlxG.save.data.npsDisplay)
+			{
+				return LanguageStuff.replaceFlagsAndReturn("$KADE_RATING_WITHOUT_AC_WITH_NPC", "playState",
+					["<nps>", "<maxnps>", "<score>"], 
+					[
+						Std.string(nps),
+						Std.string(maxNPS),
+						Std.string(score)
+					]);
+			}
+			else
+			{
+				return LanguageStuff.replaceFlagsAndReturn("$KADE_RATING_WITHOUT_AC_WITHOUT_NPC", "playState",
+					["<score>"], 
+					[
+						Std.string(score)
+					]);
+			}
+		}
 	}
 }

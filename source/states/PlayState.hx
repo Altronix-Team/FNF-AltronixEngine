@@ -1288,7 +1288,7 @@ class PlayState extends MusicBeatState
 		playerStrums = new FlxTypedGroup<StaticArrow>();
 		opponentStrums = new FlxTypedGroup<StaticArrow>();
 
-		if (SONG.specialSongNoteSkin != NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin)){
+		if (SONG.specialSongNoteSkin != NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin) && SONG.specialSongNoteSkin != null){
 			noteskinPixelSprite = NoteskinHelpers.generatePixelSprite(SONG.specialSongNoteSkin);
 			noteskinPixelSpriteEnds = NoteskinHelpers.generatePixelSprite(SONG.specialSongNoteSkin, true);
 			noteskinSprite = NoteskinHelpers.generateNoteskinSprite(SONG.specialSongNoteSkin);}
@@ -1482,10 +1482,7 @@ class PlayState extends MusicBeatState
 			+ " - "
 			+ CoolUtil.difficultyFromInt(storyDifficulty),
 			16);
-		if (!FlxG.save.data.language)
-			engineWatermark.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		else
-			engineWatermark.setFormat(Paths.font("UbuntuBold.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		engineWatermark.setFormat(Paths.font(LanguageStuff.fontName), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		engineWatermark.scrollFactor.set();
 		add(engineWatermark);
 
@@ -1495,27 +1492,20 @@ class PlayState extends MusicBeatState
 		scoreTxt = new FlxText(FlxG.width / 2 - 235, healthBarBG.y + 50, 0, "", 20);
 		scoreTxt.screenCenter(X);
 		scoreTxt.scrollFactor.set();
-		if (!FlxG.save.data.language)
-			scoreTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, FlxTextAlign.CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		else
-			scoreTxt.setFormat(Paths.font("UbuntuBold.ttf"), 16, FlxColor.WHITE, FlxTextAlign.CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		scoreTxt.setFormat(Paths.font(LanguageStuff.fontName), 16, FlxColor.WHITE, FlxTextAlign.CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		if (FlxG.save.data.enablePsychInterface)
 		{
-			if (!FlxG.save.data.language)
-			{
-				if(ratingName == '?') {
-					scoreTxt.text = 'Score: ' + songScore + ' | Misses: ' + misses + ' | Rating: ' + ratingName;
-				} else {
-					scoreTxt.text = 'Score: ' + songScore + ' | Misses: ' + misses + ' | Rating: ' + ratingName + ' (' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%)' + ' - ' + ratingFC;//peeps wanted no integer rating
-				}
-			}
-			else
-			{
-				if(ratingName == '?') {
-					scoreTxt.text = 'Счёт: ' + songScore + ' | Пропуски: ' + misses + ' | Рейтинг: ' + ratingName;
-				} else {
-					scoreTxt.text = 'Счёт: ' + songScore + ' | Пропуски: ' + misses + ' | Рейтинг: ' + ratingName + ' (' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%)' + ' - ' + ratingFC;//peeps wanted no integer rating
-				}
+			if(ratingName == '?') {
+			scoreTxt.text = LanguageStuff.replaceFlagsAndReturn("$PSYCH_RATING_WITHOUT_AC", "playState", ["<score>", "<misses>", "<ratingName>"],
+				[Std.string(songScore), Std.string(misses), ratingName]);
+			} else {
+				scoreTxt.text = LanguageStuff.replaceFlagsAndReturn("$PSYCH_RATING_WITH_AC", "playState", ["<score>", "<misses>", "<ratingName>", "<ratingPercent>", "<ratingFC>"],
+				[
+					Std.string(songScore),
+					Std.string(misses),
+					ratingName,
+					Std.string(Highscore.floorDecimal(ratingPercent * 100, 2)),
+					ratingFC]);
 			}
 		}
 		else
@@ -1525,10 +1515,7 @@ class PlayState extends MusicBeatState
 			scoreTxt.y = healthBarBG.y;
 
 		judgementCounter = new FlxText(20, 0, 0, "", 20);
-		if (!FlxG.save.data.language)
-			judgementCounter.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		else
-			judgementCounter.setFormat(Paths.font("UbuntuBold.ttf"), 20, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		judgementCounter.setFormat(Paths.font(LanguageStuff.fontName), 20, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		judgementCounter.borderSize = 2;
 		judgementCounter.borderQuality = 2;
 		judgementCounter.scrollFactor.set();
@@ -1542,15 +1529,9 @@ class PlayState extends MusicBeatState
 				judgementCounter.visible = false;
 		}
 
-		// Literally copy-paste of the above, fu
-		if (!FlxG.save.data.language)
-			botPlayState = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 75, healthBarBG.y + (PlayStateChangeables.useDownscroll ? 100 : -100), 0, "BOTPLAY", 20);
-		else
-			botPlayState = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 75, healthBarBG.y + (PlayStateChangeables.useDownscroll ? 100 : -100), 0, "БОТ-ПЛЕЙ", 20);
-		if (!FlxG.save.data.language)
-			botPlayState.setFormat(Paths.font("vcr.ttf"), 42, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		else
-			botPlayState.setFormat(Paths.font("UbuntuBold.ttf"), 42, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		botPlayState = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 75, healthBarBG.y + (PlayStateChangeables.useDownscroll ? 100 : -100), 0,
+			LanguageStuff.getPlayState("$BOTPLAY"), 20);
+		botPlayState.setFormat(Paths.font(LanguageStuff.fontName), 42, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		botPlayState.scrollFactor.set();
 		botPlayState.borderSize = 4;
 		botPlayState.borderQuality = 2;
@@ -1560,14 +1541,9 @@ class PlayState extends MusicBeatState
 
 		addedBotplay = PlayStateChangeables.botPlay;
 
-		if (!FlxG.save.data.language)
-			chartingState = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 75, healthBarBG.y + (PlayStateChangeables.useDownscroll ? 100 : -100), 0, "CHARTING", 20);
-		else
-			chartingState = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 75, healthBarBG.y + (PlayStateChangeables.useDownscroll ? 100 : -100), 0, "ЧАРТИНГ", 20);
-		if (!FlxG.save.data.language)
-			chartingState.setFormat(Paths.font("vcr.ttf"), 42, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		else
-			chartingState.setFormat(Paths.font("UbuntuBold.ttf"), 42, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		chartingState = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 75, healthBarBG.y + (PlayStateChangeables.useDownscroll ? 100 : -100), 0,
+			LanguageStuff.getPlayState("$CHARTING"), 20);
+		chartingState.setFormat(Paths.font(LanguageStuff.fontName), 42, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		chartingState.scrollFactor.set();
 		chartingState.borderSize = 4;
 		chartingState.borderQuality = 2;
@@ -2893,7 +2869,7 @@ class PlayState extends MusicBeatState
 		{
 			skipActive = true;
 			skipText = new FlxText(healthBarBG.x + 80, healthBarBG.y - 110, 500);
-			skipText.text = "Press Space to Skip Intro";
+			skipText.text = LanguageStuff.getPlayState("$PRESSTOSKIP");
 			skipText.size = 30;
 			skipText.color = FlxColor.WHITE;
 			skipText.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 2, 1);
@@ -2994,10 +2970,7 @@ class PlayState extends MusicBeatState
 			{
 				var showTime:Bool = FlxG.save.data.songPosition;
 				timeTxt = new FlxText(STRUM_X + (FlxG.width / 2) - 248, 19, 400, "", 32);
-				if (!FlxG.save.data.language)
-					timeTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-				else
-					timeTxt.setFormat(Paths.font("UbuntuBold.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+				timeTxt.setFormat(Paths.font(LanguageStuff.fontName), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 				timeTxt.scrollFactor.set();
 				timeTxt.borderSize = 2;
 				timeTxt.alpha = 0;
@@ -3057,10 +3030,7 @@ class PlayState extends MusicBeatState
 				songPosBG.width = songPosBar.width;
 
 				songName = new FlxText(songPosBG.x + (songPosBG.width / 2) - (SONG.songName.length * 5), songPosBG.y - 15, 0, SONG.songName, 16);
-				if (!FlxG.save.data.language)
-					songName.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-				else
-					songName.setFormat(Paths.font("UbuntuBold.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+				songName.setFormat(Paths.font(LanguageStuff.fontName), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 				songName.scrollFactor.set();
 
 				songName.text = SONG.songName + ' (' + FlxStringUtil.formatTime(songLength, false) + ')';
@@ -6019,22 +5989,22 @@ class PlayState extends MusicBeatState
 			else if (misses >= 10) ratingFC = "Clear";
 		}
 
-		if (!FlxG.save.data.language)
-			{
-				if(ratingName == '?') {
-					scoreTxt.text = 'Score: ' + songScore + ' | Misses: ' + misses + ' | Rating: ' + ratingName;
-				} else {
-					scoreTxt.text = 'Score: ' + songScore + ' | Misses: ' + misses + ' | Rating: ' + ratingName + ' (' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%)' + ' - ' + ratingFC;//peeps wanted no integer rating
-				}
-			}
-			else
-			{
-				if(ratingName == '?') {
-					scoreTxt.text = 'Счёт: ' + songScore + ' | Пропуски: ' + misses + ' | Рейтинг: ' + ratingName;
-				} else {
-					scoreTxt.text = 'Счёт: ' + songScore + ' | Пропуски: ' + misses + ' | Рейтинг: ' + ratingName + ' (' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%)' + ' - ' + ratingFC;//peeps wanted no integer rating
-				}
-			}
+		if (ratingName == '?')
+		{
+			scoreTxt.text = LanguageStuff.replaceFlagsAndReturn("$PSYCH_RATING_WITHOUT_AC", "playState", ["<score>", "<misses>", "<ratingName>"],
+				[Std.string(songScore), Std.string(misses), ratingName]);
+		}
+		else
+		{
+			scoreTxt.text = LanguageStuff.replaceFlagsAndReturn("$PSYCH_RATING_WITH_AC", "playState",
+				["<score>", "<misses>", "<ratingName>", "<ratingPercent>", "<ratingFC>"], [
+					Std.string(songScore),
+					Std.string(misses),
+					ratingName,
+					Std.string(Highscore.floorDecimal(ratingPercent * 100, 2)),
+					ratingFC
+				]);
+		}
 
 		setOnHscript('rating', ratingPercent);
 

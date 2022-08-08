@@ -25,7 +25,7 @@ class LanguageStuff{
 
 		locales = tongue.locales;
 
-		fontName = getData('%FONT_NAME');
+		fontName = getData("$FONT_NAME");
     }
 
     static function onFinish():Void {
@@ -124,6 +124,6 @@ class LanguageStuff{
 			checkMissing: true
 		});
 
-		fontName = getData('%FONT_NAME');
+		fontName = getData("$FONT_NAME");
     }
 }

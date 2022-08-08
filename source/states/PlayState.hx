@@ -857,7 +857,7 @@ class PlayState extends MusicBeatState
 		if (!stageTesting 
 			#if LUA_ALLOWED
 			&& !OpenFlAssets.exists('assets/stages/' + SONG.stage + '.lua')
-			&& !OpenFlAssets.exists(Paths.getScriptFile(SONG.stage, 'stages'))
+			&& !OpenFlAssets.exists('assets/scripts/stages/${SONG.stage}.hscript')
 			#end)
 		{
 			Stage = new Stage(SONG.stage);
@@ -865,12 +865,14 @@ class PlayState extends MusicBeatState
 		#if FEATURE_MODCORE
 		else if (stageList.contains(SONG.stage))
 		{
-			if (OpenFlAssets.exists(Paths.getScriptFile(SONG.stage, 'stages')))
+			if (OpenFlAssets.exists('assets/scripts/stages/${SONG.stage}.hscript'))
 			{
-				hscriptStageCheck = true;
 				try
 				{
-					hscriptStage = new HscriptStage(Paths.getScriptFile(SONG.stage, 'stages'), this);
+					hscriptStage = new HscriptStage(OpenFlAssets.getPath('assets/scripts/stages/${SONG.stage}.hscript'), this);
+					add(hscriptStage);
+					hscriptFiles.push(hscriptStage);
+					hscriptStageCheck = true;
 				}						
 				catch (e)
 				{
@@ -882,7 +884,11 @@ class PlayState extends MusicBeatState
 					else
 						throw e;
 				}
-				add(hscriptStage);
+			}
+			else
+			{
+				Debug.logError('Something strange with stage scripts, loading default stage');
+				Stage = new Stage('stage');
 			}
 		}
 		#end
@@ -901,7 +907,10 @@ class PlayState extends MusicBeatState
 			#end
 			else
 			#end
+			{
+				Debug.logError('Something strange with stage scripts, loading default stage');
 				Stage = new Stage('stage');
+			}
 		}	
 
 		stageGroup = new FlxTypedGroup<FlxSprite>();
@@ -1690,10 +1699,6 @@ class PlayState extends MusicBeatState
 			});
 		}
 
-
-		if (hscriptStage != null)
-			hscriptStage.onCreatePost();
-
 		for (script in hscriptFiles)
 			script.onCreatePost();
 
@@ -2336,9 +2341,6 @@ class PlayState extends MusicBeatState
 
 		inCutscene = false;
 
-		if (hscriptStage != null)
-			hscriptStage.onStartCountdown();
-
 		for (script in hscriptFiles)
 			script.onStartCountdown();
 
@@ -2355,9 +2357,6 @@ class PlayState extends MusicBeatState
 
 			setOnLuas('startedCountdown', true);
 			callOnLuas('onCountdownStarted', []);
-
-			if (hscriptStage != null)
-				hscriptStage.onCountdownStarted();
 
 			for (script in hscriptFiles)
 				script.onCountdownStarted();
@@ -2468,8 +2467,6 @@ class PlayState extends MusicBeatState
 				}
 
 				swagCounter += 1;
-				if (hscriptStage != null)
-					hscriptStage.onCountdownTick(swagCounter);
 
 				for (script in hscriptFiles)
 					script.onCountdownTick(swagCounter);
@@ -2550,9 +2547,6 @@ class PlayState extends MusicBeatState
 			return;
 
 		keys[data] = false;
-
-		if (hscriptStage != null)
-			hscriptStage.onKeyRelease(key);
 
 		for (script in hscriptFiles)
 			script.onKeyRelease(key);
@@ -2670,9 +2664,6 @@ class PlayState extends MusicBeatState
 			ana.hitJudge = Ratings.judgeNote(noteDiff);
 			ana.nearestNote = [coolNote.strumTime, coolNote.noteData, coolNote.sustainLength];
 
-			if (hscriptStage != null)
-				hscriptStage.onKeyPress(key);
-
 			for (script in hscriptFiles)
 				script.onKeyPress(key);
 
@@ -2686,9 +2677,6 @@ class PlayState extends MusicBeatState
 			ana.nearestNote = [];
 			health -= 0.20;
 
-			if (hscriptStage != null)
-				hscriptStage.noteMissPress(key);
-
 			for (script in hscriptFiles)
 				script.noteMissPress(key);
 
@@ -2699,9 +2687,6 @@ class PlayState extends MusicBeatState
 	function startNextDialogue() {
 		dialogueCount++;
 
-		if (hscriptStage != null)
-			hscriptStage.onNextDialogue(dialogueCount);
-
 		for (script in hscriptFiles)
 			script.onNextDialogue(dialogueCount);
 
@@ -2709,8 +2694,6 @@ class PlayState extends MusicBeatState
 	}
 
 	function skipDialogue() {
-		if (hscriptStage != null)
-			hscriptStage.onSkipDialogue(dialogueCount);
 
 		for (script in hscriptFiles)
 			script.onSkipDialogue(dialogueCount);
@@ -2888,9 +2871,6 @@ class PlayState extends MusicBeatState
 		setOnHscript('songLength', songLength);
 
 		setOnLuas('songLength', songLength);
-
-		if (hscriptStage != null)
-			hscriptStage.onSongStart();
 
 		for (script in hscriptFiles)
 			script.onSongStart();
@@ -3405,9 +3385,6 @@ class PlayState extends MusicBeatState
 				finishTimer.active = true;
 			paused = false;
 
-			if (hscriptStage != null)
-				hscriptStage.onResume();
-
 			for (script in hscriptFiles)
 				script.onResume();
 
@@ -3646,9 +3623,6 @@ class PlayState extends MusicBeatState
 			&& canPause
 			&& !cannotDie)
 		{
-			if (hscriptStage != null)
-				hscriptStage.onPause();
-
 			for (script in hscriptFiles)
 				script.onPause();
 
@@ -4099,8 +4073,6 @@ class PlayState extends MusicBeatState
 		{
 			if (!usedTimeTravel)
 			{
-				if (hscriptStage != null)
-					hscriptStage.onGameOver();
 
 				for (script in hscriptFiles)
 					script.onGameOver();
@@ -4385,9 +4357,6 @@ class PlayState extends MusicBeatState
 
 					callOnLuas('opponentNoteHit', [notes.members.indexOf(daNote), Math.abs(daNote.noteData), daNote.noteType, daNote.isSustainNote]);
 
-					if (hscriptStage != null)
-						hscriptStage.opponentNoteHit(notes.members.indexOf(daNote), Math.abs(daNote.noteData), daNote.noteType, daNote.isSustainNote);
-
 					for (script in hscriptFiles)
 						script.opponentNoteHit(notes.members.indexOf(daNote), Math.abs(daNote.noteData), daNote.noteType, daNote.isSustainNote);
 				}
@@ -4538,9 +4507,6 @@ class PlayState extends MusicBeatState
 		setOnLuas('cameraX', camFollow.x);
 		setOnLuas('cameraY', camFollow.y);
 		setOnLuas('botPlay', PlayStateChangeables.botPlay);
-
-		if (hscriptStage != null)
-			hscriptStage.onUpdatePost(elapsed);
 
 		for (script in hscriptFiles)
 			script.onUpdatePost(elapsed);
@@ -4769,9 +4735,6 @@ class PlayState extends MusicBeatState
 						}
 						if (split.length < 2)
 							split.push('');
-
-						if (hscriptStage != null)
-							hscriptStage.onEvent(eventType, split[0], split[1]);
 
 						for (script in hscriptFiles)
 							script.onEvent(eventType, split[0], split[1]);
@@ -5037,9 +5000,6 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.save.data.fpsCap > 290)
 			(cast(Lib.current.getChildAt(0), Main)).setFPSCap(290);
-
-		if (hscriptStage != null)
-			hscriptStage.onEndSong();
 
 		for (script in hscriptFiles)
 			script.onEndSong();
@@ -5830,9 +5790,6 @@ class PlayState extends MusicBeatState
 					FlxFlicker.flicker(dad, 0.2, 0.05, true);
 				health += 0.02;
 
-				if (hscriptStage != null)
-					hscriptStage.onAttack();
-
 				for (script in hscriptFiles)
 					script.onAttack();
 
@@ -5920,8 +5877,6 @@ class PlayState extends MusicBeatState
 
 			if (daNote != null)
 			{
-				if (hscriptStage != null)
-					hscriptStage.noteMiss(notes.members.indexOf(daNote), daNote.noteData, daNote.noteType, daNote.isSustainNote);
 
 				for (script in hscriptFiles)
 					script.noteMiss(notes.members.indexOf(daNote), daNote.noteData, daNote.noteType, daNote.isSustainNote);
@@ -5950,8 +5905,6 @@ class PlayState extends MusicBeatState
 	public var blockRecalculateRating:Bool = false;
 	public function recalculateRating() {
 		totalPlayed += 1;
-		if (hscriptStage != null)
-			hscriptStage.onRecalculateRating();
 
 		for (script in hscriptFiles)
 			script.onRecalculateRating();
@@ -6027,9 +5980,6 @@ class PlayState extends MusicBeatState
 			camFollow.y += gf.camPos[1] + girlfriendCameraOffset[1];
 			tweenCamIn();
 
-			if (hscriptStage != null)
-				hscriptStage.onMoveCamera('gf');
-
 			for (script in hscriptFiles)
 				script.onMoveCamera('gf');
 
@@ -6041,9 +5991,6 @@ class PlayState extends MusicBeatState
 		{
 			moveCamera(true);
 
-			if (hscriptStage != null)
-				hscriptStage.onMoveCamera('dad');
-
 			for (script in hscriptFiles)
 				script.onMoveCamera('dad');
 
@@ -6052,9 +5999,6 @@ class PlayState extends MusicBeatState
 		else
 		{
 			moveCamera(false);
-
-			if (hscriptStage != null)
-				hscriptStage.onMoveCamera('boyfriend');
 
 			for (script in hscriptFiles)
 				script.onMoveCamera('boyfriend');
@@ -6185,9 +6129,6 @@ class PlayState extends MusicBeatState
 			}
 			callOnLuas('goodNoteHit', [notes.members.indexOf(note), Math.abs(note.noteData), note.noteType, note.isSustainNote]);
 
-			if (hscriptStage != null)
-				hscriptStage.goodNoteHit(notes.members.indexOf(note), Math.abs(note.noteData), note.noteType, note.isSustainNote);
-
 			for (script in hscriptFiles)
 				script.goodNoteHit(notes.members.indexOf(note), Math.abs(note.noteData), note.noteType, note.isSustainNote);
 		}
@@ -6241,9 +6182,6 @@ class PlayState extends MusicBeatState
 			resyncVocals();
 		}
 
-		if (hscriptStage != null)
-			hscriptStage.onStep(curStep);
-
 		for (script in hscriptFiles)
 			script.onStep(curStep);
 
@@ -6287,9 +6225,6 @@ class PlayState extends MusicBeatState
 
 		for (script in hscriptFiles)
 			script.onSectionHit();
-
-		if (hscriptStage != null)
-			hscriptStage.onSectionHit();
 
 		setOnHscript('curSection', curSection);
 
@@ -6396,8 +6331,6 @@ class PlayState extends MusicBeatState
 				if (vocals.volume == 0 && !curSection.mustHitSection)
 					vocals.volume = 1;
 		}
-		if (hscriptStage != null)
-			hscriptStage.onBeat(curBeat);
 
 		for (script in hscriptFiles)
 			script.onBeat(curBeat);
@@ -6672,9 +6605,9 @@ class PlayState extends MusicBeatState
 
 	function startCharacterHscript(name:String)
 	{
-		if (OpenFlAssets.exists(Paths.getScriptFile(name, 'characters')))
+		if (OpenFlAssets.exists('assets/scripts/characters/$name.hscript'))
 		{
-			hscriptFiles.push(new ModchartHelper(OpenFlAssets.getPath(Paths.getScriptFile(name, 'characters')), this));
+			hscriptFiles.push(new ModchartHelper(OpenFlAssets.getPath('assets/scripts/characters/$name.hscript'), this));
 		}
 	}
 

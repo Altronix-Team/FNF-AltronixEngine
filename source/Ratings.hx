@@ -157,9 +157,8 @@ class Ratings
 				return LanguageStuff.replaceFlagsAndReturn("$KADE_RATING_WITH_AC_WITHOUT_NPC", "playState",
 					["<score>", "<misses>", "<accuracyPers>", "<accuracyStr>"], 
 					[
-						Std.string(score),
 						(Conductor.safeFrames != 10 ? Std.string(score) + " (" + Std.string(scoreDef) + ")" : "" + Std.string(score)),
-						Std.string(PlayState.misses),
+						Std.string(PlayState.misses),								
 						Std.string(HelperFunctions.truncateFloat(accuracy, 2)),
 						GenerateLetterRank(accuracy)
 					]);

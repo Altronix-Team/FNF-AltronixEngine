@@ -852,8 +852,6 @@ class PlayState extends MusicBeatState
 			setOnLuas('dadName', dad.curCharacter);
 		}
 
-		var stageList = Paths.listHscriptInPath('assets/scripts/stages/');
-
 		if (!stageTesting 
 			#if LUA_ALLOWED
 			&& !OpenFlAssets.exists('assets/stages/' + SONG.stage + '.lua')
@@ -862,14 +860,13 @@ class PlayState extends MusicBeatState
 		{
 			Stage = new Stage(SONG.stage);
 		}
-		#if FEATURE_MODCORE
-		else if (stageList.contains(SONG.stage))
+		else
 		{
 			if (OpenFlAssets.exists('assets/scripts/stages/${SONG.stage}.hscript'))
 			{
 				try
 				{
-					hscriptStage = new HscriptStage(OpenFlAssets.getPath('assets/scripts/stages/${SONG.stage}.hscript'), this);
+					hscriptStage = new HscriptStage('assets/scripts/stages/${SONG.stage}.hscript', this);
 					add(hscriptStage);
 					hscriptFiles.push(hscriptStage);
 					hscriptStageCheck = true;
@@ -890,10 +887,7 @@ class PlayState extends MusicBeatState
 				Debug.logError('Something strange with stage scripts, loading default stage');
 				Stage = new Stage('stage');
 			}
-		}
-		#end
-		else
-		{
+			
 			#if LUA_ALLOWED
 			if (OpenFlAssets.exists('assets/stages/' + SONG.stage + '.lua'))
 			{

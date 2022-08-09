@@ -7,7 +7,9 @@ import flixel.graphics.frames.FlxAtlasFrames;
 import lime.utils.Assets;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
+#if FEATURE_MODCORE
 import polymod.Polymod.ModMetadata;
+#end
 import flash.media.Sound;
 import openfl.display.BitmapData;
 import haxe.Json;

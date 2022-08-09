@@ -269,27 +269,28 @@ class FreeplayState extends MusicBeatState
 	var characterIcon:String = '';
 
 	function getCharacterIcon(char:String)
-		{	
-			if (char != null)
+	{	
+		if (char != null)
+		{
+			var jsonData;
+			if (OpenFlAssets.exists(Paths.json('characters/${char}')))
+				jsonData = Paths.loadJSON('characters/${char}');
+			else 
 			{
-				var jsonData;
-				if (OpenFlAssets.exists(Paths.json('characters/${char}')))
-					jsonData = Paths.loadJSON('characters/${char}');
-				else 
-				{
-					Debug.logError('Failed to parse JSON data for character ${char}');
-					return;
-				}
-	
-				var data:CharColor = cast jsonData;
-	
-				characterIcon = data.characterIcon;
+				Debug.logError('Failed to parse JSON data for character ${char}');
+				getCharacterIcon('bf');
+				return;
 			}
-			else
-			{
-				characterIcon = 'face';
-			}
+	
+			var data:CharColor = cast jsonData;
+	
+			characterIcon = data.characterIcon;
 		}
+		else
+		{
+			characterIcon = 'face';
+		}
+	}
 	
 	function getCharacterColor()
 	{
@@ -301,6 +302,7 @@ class FreeplayState extends MusicBeatState
 			else
 			{
 				Debug.logError('Failed to parse JSON data for character ${songs[curSelected].songCharacter}');
+				freeplayBgColor = FlxColor.fromRGB(0, 0, 0);
 				return;
 			}
 
@@ -468,29 +470,35 @@ class FreeplayState extends MusicBeatState
 			{
 				if (gamepad.justPressed.DPAD_UP)
 				{
-					changeSelection(-1);
+					if (songs.length > 1)
+						changeSelection(-1);
 				}
 				if (gamepad.justPressed.DPAD_DOWN)
 				{
-					changeSelection(1);
+					if (songs.length > 1)
+						changeSelection(1);
 				}
 				if (gamepad.justPressed.DPAD_LEFT)
 				{
-					changeDiff(-1);
+					if (songs[curSelected].diffs.length > 1)
+						changeDiff(-1);
 				}
 				if (gamepad.justPressed.DPAD_RIGHT)
 				{
-					changeDiff(1);
+					if (songs[curSelected].diffs.length > 1)
+						changeDiff(1);
 				}
 			}
 
 			if (upP)
 			{
-				changeSelection(-1);
+				if (songs.length > 1)
+					changeSelection(-1);
 			}
 			if (downP)
 			{
-				changeSelection(1);
+				if (songs.length > 1)
+					changeSelection(1);
 			}
 		
 
@@ -559,11 +567,13 @@ class FreeplayState extends MusicBeatState
 			{
 				if (FlxG.keys.justPressed.LEFT)
 				{
-					changeDiff(-1);
+					if (songs[curSelected].diffs.length > 1)
+						changeDiff(-1);
 				}
 				if (FlxG.keys.justPressed.RIGHT)
 				{
-					changeDiff(1);
+					if (songs[curSelected].diffs.length > 1)
+						changeDiff(1);
 				}
 			}
 

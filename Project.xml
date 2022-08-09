@@ -198,16 +198,18 @@
 	<!--In case you want to use the ui package-->
 	<haxelib name="flixel-ui" />
 	<haxelib name="faxe" if='switch'/>
-	<haxelib name="polymod"/>
+	<haxelib name="polymod" if='desktop'/>
 	<haxelib name="discord_rpc" if="desktop"/>
 	<haxelib name="linc_luajit" if="LUA_ALLOWED"/>
 	<haxelib name="hxCodec" if="VIDEOS_ALLOWED"/>
-	<haxelib name="systools" />
-	<ndll name="systools" haxelib="systools" />
+	<!--Waiting for extension-ffmpeg to replace hxCodec :3-->
+
+	<haxelib name="systools" if="cpp"/>
+	<ndll name="systools" haxelib="systools" if="cpp"/>
 	<haxelib name="tentools" if="desktop"/>
+
 	<haxelib name="haxe-strings" />
 	<haxelib name="firetongue" />
-	<!--haxelib name="tjson" /-->
 	
 	<!--haxelib name="hscript-ex"/-->
 	<haxelib name="hxcpp-debug-server" if="debug"/>
@@ -279,11 +281,13 @@
   
   <!-- Defines whether the file system can be read/written directly. Does not work in browser. -->
   <haxedef name="FEATURE_FILESYSTEM" if="desktop" />
+
   <!-- Defines whether Lua Modcharts should be enabled. Only works on Windows. -->
   <haxedef name="FEATURE_LUAMODCHART" if="windows" />
 
   <!-- Defines whether StepMania files can be loaded. -->
   <haxedef name="FEATURE_STEPMANIA" if="desktop" />
+
   <!-- Defines whether the Thread class can be used. -->
   <haxedef name="FEATURE_MULTITHREADING" if="cpp" />
 
@@ -303,7 +307,5 @@
 	<haxedef name="POLYMOD_ROOT_PATH"
 					 value="assets/scripts/" />
     <haxedef name="POLYMOD_DEBUG" if="debug" />
-	
-	<!--haxedef name="POLYMOD_USE_HSCRIPTEX" value="true" /-->
 
 </project>

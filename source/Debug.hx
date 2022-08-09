@@ -1,20 +1,12 @@
 import lime.app.Application;
-import polymod.Polymod.PolymodError;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.system.debug.log.LogStyle;
 import flixel.system.debug.watch.Tracker.TrackerProfile;
 import flixel.util.FlxStringUtil;
-import haxe.CallStack;
 import haxe.Log;
 import haxe.PosInfos;
-import gameplayStuff.Song.SongData;
-import openfl.events.UncaughtErrorEvent;
 import openfl.system.Capabilities;
-
-#if desktop
-import DiscordClient;
-#end
 
 using hx.strings.Strings;
 

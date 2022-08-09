@@ -2,15 +2,12 @@ package;
 
 import openfl.display.Bitmap;
 import lime.app.Application;
-import openfl.display.BlendMode;
-import openfl.text.TextFormat;
 import flixel.util.FlxColor;
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
 import openfl.Assets;
 import openfl.Lib;
-import openfl.display.FPS;
 import openfl.display.Sprite;
 import openfl.events.Event;
 import GameJolt.GJToastManager;
@@ -18,10 +15,6 @@ import openfl.events.UncaughtErrorEvent;
 import Debug;
 import openfl.system.Capabilities;
 import haxe.CallStack;
-import haxe.Log;
-import haxe.PosInfos;
-import sys.io.Process;
-import sys.FileSystem;
 
 #if FEATURE_MODCORE
 import ModCore;
@@ -138,26 +131,36 @@ class Main extends Sprite
 		#if FEATURE_FILESYSTEM
 
 		var errorMsg:String = '';
-		var crashLogLines:Array<String> = [];
 
-		/*crashLogLines.push*/ errorMsg += '==========FATAL ERROR==========\n';
-		/*crashLogLines.push*/ errorMsg += 'An uncaught error was thrown, and the game had to close.\n';
-		/*crashLogLines.push*/ errorMsg += 'Please use the link below, create a new issue, and upload this file to report the error.\n';
-		/*crashLogLines.push*/ errorMsg += '\n';
-		/*crashLogLines.push*/ errorMsg +=  ERROR_REPORT_URL;
-		/*crashLogLines.push*/ errorMsg += '\n';
+		var funnyTitle:Array<String> = 
+		[
+			'Fatal Error!',
+			'Monika deleted everything!',
+			'Catastrophic Error',
+			'Well-well-well, what have we got here?',
+			'Game over',
+			'Kade Engine moment',
+			'Tester couldn`t find it'
+		];
 
-		/*crashLogLines.push*/ errorMsg += '==========SYSTEM INFO==========\n';
-		/*crashLogLines.push*/ errorMsg += 'Altronix Engine version: ${EngineConstants.engineVer}\n';
-		/*crashLogLines.push*/ errorMsg += '  HaxeFlixel version: ${Std.string(FlxG.VERSION)}\n';
-		/*crashLogLines.push*/ errorMsg += '  Friday Night Funkin\' version: ${states.MainMenuState.gameVer}\n';
-		/*crashLogLines.push*/ errorMsg += 'System telemetry:\n';
-		/*crashLogLines.push*/ errorMsg += '  OS: ${Capabilities.os}\n';
+		errorMsg += '==========FATAL ERROR==========\n';
+		errorMsg += 'An uncaught error was thrown, and the game had to close.\n';
+		errorMsg += 'Please use the link below, create a new issue, and upload this file to report the error.\n';
+		errorMsg += '\n';
+		errorMsg +=  ERROR_REPORT_URL;
+		errorMsg += '\n';
 
-		/*crashLogLines.push*/ errorMsg += '\n';
+		errorMsg += '==========SYSTEM INFO==========\n';
+		errorMsg += 'Altronix Engine version: ${EngineConstants.engineVer}\n';
+		errorMsg += '  HaxeFlixel version: ${Std.string(FlxG.VERSION)}\n';
+		errorMsg += '  Friday Night Funkin\' version: ${states.MainMenuState.gameVer}\n';
+		errorMsg += 'System telemetry:\n';
+		errorMsg += '  OS: ${Capabilities.os}\n';
 
-		/*crashLogLines.push*/ errorMsg += '==========STACK TRACE==========\n';
-		/*crashLogLines.push*/ errorMsg += error.error + '\n';
+		errorMsg += '\n';
+
+		errorMsg += '==========STACK TRACE==========\n';
+		errorMsg += error.error + '\n';
 
 		var errorCallStack:Array<StackItem> = CallStack.exceptionStack(true);
 
@@ -166,31 +169,31 @@ class Main extends Sprite
 			switch (line)
 			{
 				case CFunction:
-					/*crashLogLines.push*/ errorMsg += '  function:\n';
+					errorMsg += '  function:\n';
 				case Module(m):
-					/*crashLogLines.push*/ errorMsg += '  module:${m}\n';
+					errorMsg += '  module:${m}\n';
 				case FilePos(s, file, line, column):
-					/*crashLogLines.push*/ errorMsg += '  (${file}#${line},${column})\n';
+					errorMsg += '  (${file}#${line},${column})\n';
 				case Method(className, method):
-					/*crashLogLines.push*/ errorMsg += '  method:(${className}/${method}\n';
+					errorMsg += '  method:(${className}/${method}\n';
 				case LocalFunction(v):
-					/*crashLogLines.push*/ errorMsg += '  localFunction:${v}\n';
+					errorMsg += '  localFunction:${v}\n';
 				default:
 					Sys.println(line);
 			}
 		}
-		/*crashLogLines.push*/ errorMsg += '\n';
+		errorMsg += '\n';
 
 		var logFolderPath = Util.createDirectoryIfNotExists('logs');
 
 		var path:String = '${logFolderPath}/Altronix Engine - ${DebugLogWriter.getDateString()}.crash';
 
-		sys.io.File.saveContent(path, /*crashLogLines.join('\n')*/ errorMsg + "\n");
+		sys.io.File.saveContent(path, errorMsg + "\n");
 
-		/*crashLogLines.push*/ errorMsg += 'An error has occurred and the game is forced to close.\nPlease access the "crash" folder and send the .crash file to the developers:\n'
+		errorMsg += 'An error has occurred and the game is forced to close.\nPlease access the "crash" folder and send the .crash file to the developers:\n'
 			+ ERROR_REPORT_URL +'\n';
 
-		Application.current.window.alert('An error has occurred and the game is forced to close.\nPlease access the "crash" folder and send the .crash file to the developers:\n' + ERROR_REPORT_URL, 'Catastrophic Error');
+		Application.current.window.alert('An error has occurred and the game is forced to close.\nPlease access the "crash" folder and send the .crash file to the developers:\n' + ERROR_REPORT_URL, funnyTitle[FlxG.random.int(0, funnyTitle.length - 1)]);
 
 		Sys.println(errorMsg);
 
@@ -199,7 +202,8 @@ class Main extends Sprite
 		#end
 		#else
 		Application.current.window.alert('An error has occurred and the game is forced to close.\nWe cannot write a log file though. Tell the developers:\n'
-			+ ERROR_REPORT_URL, 'Catastrophic Error');
+			+ ERROR_REPORT_URL,
+			funnyTitle[FlxG.random.int(0, funnyTitle.length - 1)]);
 		#end
 	}
 

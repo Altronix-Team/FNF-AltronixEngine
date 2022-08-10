@@ -1114,7 +1114,7 @@ class CharacterEditorState extends MusicBeatState
 	{
 		Stage.update(elapsed);
 
-		CoolUtil.daCam = camMenu;
+		MusicBeatState.camBeat = FlxG.camera;
 
 		var blockInput = false;
 

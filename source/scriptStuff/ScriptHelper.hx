@@ -1,5 +1,6 @@
 package scriptStuff;
 
+import flixel.addons.display.FlxRuntimeShader;
 import flixel.util.FlxColor;
 import states.MusicBeatState;
 import flixel.FlxObject;
@@ -227,6 +228,12 @@ class ScriptHelper
 		{
 			throw new ScriptException("Path is empty!");
 		}
+	}
+
+	function createRuntimeShader(fragmentSource:String = null, vertexSource:String = null, glslVersion:Int = 120):FlxRuntimeShader
+	{
+		var shader = new FlxRuntimeShader(fragmentSource, vertexSource, glslVersion);
+		return shader;
 	}
 
 	function createText(x:Float = 0, y:Float = 0, width:Float = 0, text:String = '', size:Int = 8, embedded:Bool = true):FlxText

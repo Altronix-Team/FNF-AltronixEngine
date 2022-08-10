@@ -1,7 +1,6 @@
 package states;
 
 import flixel.util.FlxSpriteUtil;
-import lime.media.openal.AL;
 import gameplayStuff.Song.Event;
 import openfl.media.Sound;
 #if FEATURE_FILESYSTEM
@@ -133,6 +132,7 @@ class PlayState extends MusicBeatState
 	public var visibleCombos:Array<FlxSprite> = [];
 
 	public var addedBotplay:Bool = false;
+	public var addedBotplayOnce:Bool = false;
 
 	public var visibleNotes:Array<Note> = [];
 
@@ -479,6 +479,7 @@ class PlayState extends MusicBeatState
 				];
 		}
 
+		PlayStateChangeables.useMiddlescroll = FlxG.save.data.middleScroll;
 		PlayStateChangeables.useDownscroll = FlxG.save.data.downscroll;
 		PlayStateChangeables.safeFrames = FlxG.save.data.frames;
 		PlayStateChangeables.scrollSpeed = FlxG.save.data.scrollSpeed * songMultiplier;
@@ -1206,7 +1207,7 @@ class PlayState extends MusicBeatState
 		Conductor.songPosition = -5000;
 		Conductor.rawPosition = Conductor.songPosition;
 
-		strumLine = new FlxSprite(FlxG.save.data.middleScroll ? STRUM_X_MIDDLESCROLL : STRUM_X, 50).makeGraphic(FlxG.width, 10);
+		strumLine = new FlxSprite(PlayStateChangeables.useMiddlescroll ? STRUM_X_MIDDLESCROLL : STRUM_X, 50).makeGraphic(FlxG.width, 10);
 		strumLine.scrollFactor.set();
 
 		if (PlayStateChangeables.useDownscroll)
@@ -1224,7 +1225,7 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.save.data.laneUnderlay && !PlayStateChangeables.Optimize)
 		{
-			if (!FlxG.save.data.middleScroll || executeModchart)
+			if (!PlayStateChangeables.useMiddlescroll || executeModchart)
 			{
 				add(laneunderlayOpponent);
 			}
@@ -1585,7 +1586,7 @@ class PlayState extends MusicBeatState
 					if(gf != null) gf.playAnim('scared', true);
 					boyfriend.playAnim('scared', true);
 
-					if (!PlayStateChangeables.botPlay)
+					if (!PlayStateChangeables.botPlay && !addedBotplayOnce)
 						Achievements.getAchievement(167272, 'lemon');
 
 				case "winter-horrorland":
@@ -2212,8 +2213,6 @@ class PlayState extends MusicBeatState
 			{
 				PlayStateChangeables.scrollSpeed = 4;
 			}
-			else
-				PlayStateChangeables.scrollSpeed = 1;
 		}, 4);
 	}
 
@@ -2743,39 +2742,7 @@ class PlayState extends MusicBeatState
 		if (vocals != null)
 			vocals.time = startTime;
 		Conductor.songPosition = startTime;
-		startTime = 0;
-
-		/*@:privateAccess
-			{
-				var aux = AL.createAux();
-				var fx = AL.createEffect();
-				AL.effectf(fx,AL.PITCH,songMultiplier);
-				AL.auxi(aux, AL.EFFECTSLOT_EFFECT, fx);
-				var instSource = FlxG.sound.music._channel.__source;
-
-				var backend:lime._internal.backend.native.NativeAudioSource = instSource.__backend;
-
-				AL.source3i(backend.handle, AL.AUXILIARY_SEND_FILTER, aux, 1, AL.FILTER_NULL);
-				if (vocals != null)
-				{
-					var vocalSource = vocals._channel.__source;
-
-					backend = vocalSource.__backend;
-					AL.source3i(backend.handle, AL.AUXILIARY_SEND_FILTER, aux, 1, AL.FILTER_NULL);
-				}
-
-				trace("pitched to " + songMultiplier);
-		}*/
-
-		/*#if cpp
-		@:privateAccess
-		{
-			lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
-			if (vocals.playing)
-				lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
-		}
-		trace("pitched inst and vocals to " + songMultiplier);
-		#end*/		
+		startTime = 0;	
 
 		for (i in 0...unspawnNotes.length)
 			if (unspawnNotes[i].strumTime < startTime)
@@ -3155,7 +3122,7 @@ class PlayState extends MusicBeatState
 			{
 				babyArrow.y -= 10;
 				// babyArrow.alpha = 0;
-				if (!FlxG.save.data.middleScroll || executeModchart || player == 1)
+				if (!PlayStateChangeables.useMiddlescroll || executeModchart || player == 1)
 					FlxTween.tween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
 			}
 
@@ -3174,9 +3141,9 @@ class PlayState extends MusicBeatState
 			babyArrow.x += 110;
 			babyArrow.x += ((FlxG.width / 2) * player);
 
-			if (PlayStateChangeables.Optimize || (FlxG.save.data.middleScroll && !executeModchart && player == 1))
+			if (PlayStateChangeables.Optimize || (PlayStateChangeables.useMiddlescroll && !executeModchart && player == 1))
 				babyArrow.x -= 320;
-			else if (PlayStateChangeables.Optimize || (FlxG.save.data.middleScroll && !executeModchart && player == 0))
+			else if (PlayStateChangeables.Optimize || (PlayStateChangeables.useMiddlescroll && !executeModchart && player == 0))
 			{
 				if (index < 2)
 					babyArrow.x -= 75;
@@ -3200,9 +3167,9 @@ class PlayState extends MusicBeatState
 		var index = 0;
 		strumLineNotes.forEach(function(babyArrow:FlxSprite)
 		{
-			if (isStoryMode && !FlxG.save.data.middleScroll || executeModchart)
+			if (isStoryMode && !PlayStateChangeables.useMiddlescroll || executeModchart)
 				babyArrow.alpha = 1;
-			if (FlxG.save.data.middleScroll)
+			if (PlayStateChangeables.useMiddlescroll)
 			{
 				if (storyDifficulty == 3)
 				{
@@ -3331,16 +3298,6 @@ class PlayState extends MusicBeatState
 		FlxG.sound.music.time = Conductor.songPosition * songMultiplier;
 		vocals.time = FlxG.sound.music.time;
 
-		/*@:privateAccess
-		{
-			#if desktop
-			// The __backend.handle attribute is only available on native.
-			lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
-			if (vocals.playing)
-				lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
-			#end
-		}*/
-
 		#if desktop
 		if (PlayStateChangeables.botPlay){
 			if (!FlxG.save.data.language)
@@ -3386,11 +3343,20 @@ class PlayState extends MusicBeatState
 		if (!PlayStateChangeables.Optimize && (!luaStage && !hscriptStageCheck))
 			Stage.update(elapsed);
 
-		if (!addedBotplay && FlxG.save.data.botplay)
+		if (FlxG.save.data.botplay != PlayStateChangeables.botPlay)
 		{
-			PlayStateChangeables.botPlay = true;
-			addedBotplay = true;
-			add(botPlayState);
+			PlayStateChangeables.botPlay = FlxG.save.data.botplay;
+			if (!addedBotplay)
+			{
+				addedBotplayOnce = true;
+				addedBotplay = true;
+				add(botPlayState);
+			}
+			else
+			{
+				addedBotplay = false;
+				botPlayState.kill();
+			}
 		}
 
 		if (unspawnNotes[0] != null)
@@ -3407,16 +3373,6 @@ class PlayState extends MusicBeatState
 				currentLuaIndex++;
 			}
 		}
-
-		/*#if cpp
-		if (FlxG.sound.music.playing)
-			@:privateAccess
-		{
-			lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
-			if (vocals.playing)
-				lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, songMultiplier);
-		}
-		#end*/
 
 		if (generatedMusic)
 		{
@@ -4009,19 +3965,22 @@ class PlayState extends MusicBeatState
 					}
 					else
 					{
-						if (storyWeek == 3 && isStoryMode && !PlayStateChangeables.botPlay)
+						if (storyWeek == 3 && isStoryMode && !PlayStateChangeables.botPlay && !addedBotplayOnce)
 						{
 							Achievements.getAchievement(167273, 'dead');
 						}
-						if (PlayState.SONG.songId == 'winter-horrorland' && isStoryMode && !PlayStateChangeables.botPlay)
+						if (PlayState.SONG.songId == 'winter-horrorland'
+							&& isStoryMode
+							&& !PlayStateChangeables.botPlay
+							&& !addedBotplayOnce)
 						{
 							Achievements.getAchievement(167275, 'corruption');
 						}
-						if (PlayState.SONG.songId == 'thorns' && isStoryMode && !PlayStateChangeables.botPlay)
+						if (PlayState.SONG.songId == 'thorns' && isStoryMode && !PlayStateChangeables.botPlay && !addedBotplayOnce)
 						{
 							Achievements.getAchievement(167276, 'dead-pixel');
 						}
-						if (PlayState.SONG.songId == 'stress' && isStoryMode && !PlayStateChangeables.botPlay)
+						if (PlayState.SONG.songId == 'stress' && isStoryMode && !PlayStateChangeables.botPlay && !addedBotplayOnce)
 						{
 							Achievements.getAchievement(167277, 'dead-withGf');
 						}
@@ -4300,7 +4259,7 @@ class PlayState extends MusicBeatState
 					daNote.modAngle = strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].modAngle;
 				}
 
-				if (!daNote.mustPress && FlxG.save.data.middleScroll && !executeModchart && storyDifficulty != 3)
+				if (!daNote.mustPress && PlayStateChangeables.useMiddlescroll && !executeModchart && storyDifficulty != 3)
 					daNote.alpha = 0.5;
 
 				if (storyDifficulty == 3 && !daNote.mustPress)
@@ -4897,6 +4856,7 @@ class PlayState extends MusicBeatState
 		PlayStateChangeables.botPlay = false;
 		PlayStateChangeables.scrollSpeed = 1 / songMultiplier;
 		PlayStateChangeables.useDownscroll = false;
+		PlayStateChangeables.useMiddlescroll = false;
 
 		if (FlxG.save.data.fpsCap > 290)
 			(cast(Lib.current.getChildAt(0), Main)).setFPSCap(290);
@@ -4955,7 +4915,10 @@ class PlayState extends MusicBeatState
 			{
 				var savedAchievements:Array<String> = FlxG.save.data.savedAchievements;
 
-				if (SONG.songId == 'blammed' && !savedAchievements.contains('blammed_completed') && !PlayStateChangeables.botPlay)
+				if (SONG.songId == 'blammed'
+					&& !savedAchievements.contains('blammed_completed')
+					&& !PlayStateChangeables.botPlay
+					&& !addedBotplayOnce)
 				{
 					var played:Int = FlxG.save.data.playedBlammed;
 					played += 1;
@@ -5031,7 +4994,8 @@ class PlayState extends MusicBeatState
 							&& (storyDifficulty == 2 || storyDifficulty == 3)
 							&& campaignMisses == 0
 							&& !savedAchievements.contains(AchievementsState.getWeekSaveId(storyWeek))
-							&& !PlayStateChangeables.botPlay)
+							&& !PlayStateChangeables.botPlay
+							&& !addedBotplayOnce)
 							Achievements.checkWeekAchievement(storyWeek);
 
 						if (savedAchievements.contains('week1_nomiss') && savedAchievements.contains('week2_nomiss')
@@ -5041,7 +5005,7 @@ class PlayState extends MusicBeatState
 							&& savedAchievements.contains('week6_nomiss')
 							&& savedAchievements.contains('week7_nomiss')
 							&& !savedAchievements.contains('vanila_game_completed')
-							&& !PlayStateChangeables.botPlay){
+							&& !PlayStateChangeables.botPlay && !addedBotplayOnce){
 								Achievements.getAchievement(167263);
 							}
 

@@ -925,14 +925,19 @@ class Stage extends states.MusicBeatState
 				limoCorpse.visible = false;
 				limoCorpseTwo.visible = false;
 				limoKillingState = 1;
-				if (!savedAchievements.contains('blammed_completed') && !PlayStateChangeables.botPlay)
+				if (!savedAchievements.contains('henchmen_dies')
+					&& !PlayStateChangeables.botPlay
+					&& !states.PlayState.instance.addedBotplayOnce)
 				{
 					killed += 1;
 					FlxG.save.data.killedHenchmans = killed;
 				}
 			}
 			
-			if (killed == 100 && !savedAchievements.contains('blammed_completed') && !PlayStateChangeables.botPlay)
+			if (killed == 100
+				&& !savedAchievements.contains('henchmen_dies')
+				&& !PlayStateChangeables.botPlay
+				&& !states.PlayState.instance.addedBotplayOnce)
 				Achievements.getAchievement(167274);
 		}
 	}

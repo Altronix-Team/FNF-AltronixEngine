@@ -77,7 +77,6 @@
 		<library name="custom_notetypes"    preload="true" />
 		<library name="custom_difficulties"    preload="true" />
 		<library name="art"    preload="true" />
-		<library name="sm"    preload="true" />
 	</section>
 	
 	<library name="core"
@@ -99,7 +98,6 @@
 		<library name="custom_notetypes"    preload="false" />
 		<library name="custom_difficulties"    preload="false" />
 		<library name="art"    preload="false" />
-		<library name="sm"    preload="false" />
 	</section>
 	
 	<library name="scripts" preload="true" />
@@ -124,8 +122,6 @@
 	<assets path="assets/week6"    library="week6"    exclude="*.mp3" unless="web"/>
 	<assets path="assets/week7"    library="week7"    exclude="*.ogg" if="web"/>
 	<assets path="assets/week7"    library="week7"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/sm"    library="sm"    exclude="*.ogg" if="web"/>
-	<assets path="assets/sm"    library="sm"    exclude="*.mp3" unless="web"/>
 	<assets path="assets/stages"   library="stages"   exclude="*.ogg" if="web"/>
 	<assets path="assets/stages"   library="stages"   exclude="*.mp3" unless="web"/>
 	<assets path="assets/custom_events"   library="custom_events"   exclude="*.ogg" if="web"/>

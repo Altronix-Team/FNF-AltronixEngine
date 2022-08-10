@@ -159,14 +159,14 @@ class TitleState extends MusicBeatState
 
 
 		if (FlxG.save.data.fullscreenOnStart)
-			{
-				FlxG.fullscreen = FlxG.save.data.fullscreenOnStart;
-			}
+		{
+			FlxG.fullscreen = FlxG.save.data.fullscreenOnStart;
+		}
 
 		if (FlxG.save.data.weekCompleted != null)
-			{
-				StoryMenuState.weekCompleted = FlxG.save.data.weekCompleted;
-			}
+		{
+			StoryMenuState.weekCompleted = FlxG.save.data.weekCompleted;
+		}
 
 		#if FREEPLAY
 		FlxG.switchState(new FreeplayState());

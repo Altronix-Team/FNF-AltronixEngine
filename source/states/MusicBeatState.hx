@@ -36,6 +36,8 @@ class MusicBeatState extends FlxUIState
 
 	public static var initSave:Bool = false;
 
+	public static var camBeat:FlxCamera;
+
 	private var assets:Array<FlxBasic> = [];
 
 	override function destroy()
@@ -88,7 +90,7 @@ class MusicBeatState extends FlxUIState
 		Application.current.window.onFocusOut.add(onWindowFocusOut);
 		TimingStruct.clearTimings();
 
-		CoolUtil.daCam = FlxG.camera;
+		camBeat = FlxG.camera;
 
 		FlxG.sound.volumeHandler = volumeHandler;
 

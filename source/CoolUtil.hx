@@ -23,9 +23,7 @@ class CoolUtil
 	public static var songDiffsPrefix:Map<String, Array<String>> = [];
 
 	public static var daPixelZoom:Float = 6;
-
-	public static var daCam:FlxCamera;
-
+	
 	public static function difficultyFromInt(difficulty:Int):String
 	{
 		return difficultyArray[difficulty];

@@ -219,11 +219,6 @@ class ChartingState extends MusicBeatState
 	{
 		curSectionInt = lastSectionInt;
 
-		//Debug.logTrace(1 > Math.POSITIVE_INFINITY);
-
-		//Debug.logTrace(PlayState.noteskinSprite);
-
-		PlayState.noteskinSprite = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin);
 		PlayState.chartingMode = true;
 
 		FlxG.mouse.visible = true;
@@ -292,6 +287,11 @@ class ChartingState extends MusicBeatState
 				specialSongNoteSkin: NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin)
 			};
 		}
+
+		if (_song.specialSongNoteSkin != FlxG.save.data.noteskin)
+			PlayState.noteskinSprite = NoteskinHelpers.generateNoteskinSprite(_song.specialSongNoteSkin);
+		else
+			PlayState.noteskinSprite = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin);
 
 		addGrid(1);
 
@@ -1589,7 +1589,32 @@ class ChartingState extends MusicBeatState
 				return;
 
 			sect.mustHitSection = check_mustHitSection.checked;
-			updateHeads();
+			
+			for (i in sectionRenderes) //Update head only for this section, not for all song
+			{
+				if (i.section == sect)
+				{
+					var cachedY = i.icon.y;
+					sectionIcons.remove(i.icon);
+					remove(i.icon);
+					var sectionicon = null;
+					if (sect.gfSection)
+						sectionicon = new HealthIcon(getCharacterIcon(_song.gfVersion)).clone();
+					else if (sect.mustHitSection)
+						sectionicon = new HealthIcon(getCharacterIcon(_song.player1)).clone();
+					else
+						sectionicon = new HealthIcon(getCharacterIcon(_song.player2)).clone();
+					sectionicon.x = -95;
+					sectionicon.y = cachedY;
+					sectionicon.setGraphicSize(0, 45);
+
+					i.icon = sectionicon;
+					i.lastUpdated = sect.mustHitSection;
+
+					add(sectionicon);
+					sectionIcons.add(sectionicon);
+				}
+			}
 		});
 		check_mustHitSection.checked = true;
 		// _song.needsVoices = check_mustHit.checked;
@@ -1612,7 +1637,32 @@ class ChartingState extends MusicBeatState
 				return;
 	
 			sect.gfSection = check_GFSection.checked;
-			updateHeads();
+
+			for (i in sectionRenderes) //Update head only for this section, not for all song
+			{
+				if (i.section == sect)
+				{
+					var cachedY = i.icon.y;
+					sectionIcons.remove(i.icon);
+					remove(i.icon);
+					var sectionicon = null;
+					if (sect.gfSection)
+						sectionicon = new HealthIcon(getCharacterIcon(_song.gfVersion)).clone();
+					else if (sect.mustHitSection)
+						sectionicon = new HealthIcon(getCharacterIcon(_song.player1)).clone();
+					else
+						sectionicon = new HealthIcon(getCharacterIcon(_song.player2)).clone();
+					sectionicon.x = -95;
+					sectionicon.y = cachedY;
+					sectionicon.setGraphicSize(0, 45);
+
+					i.icon = sectionicon;
+					i.lastUpdated = sect.mustHitSection;
+
+					add(sectionicon);
+					sectionIcons.add(sectionicon);
+				}
+			}
 		});
 		check_GFSection.name = 'check_GFSection';
 
@@ -1666,6 +1716,7 @@ class ChartingState extends MusicBeatState
 			{
 				sectionRenderes.remove(sectionRenderes.members[0], true);
 			}
+
 			var toRemove = [];
 
 			for (i in _song.notes)
@@ -1857,26 +1908,26 @@ class ChartingState extends MusicBeatState
 		}
 
 		noteTypeDropDown = new FlxUIDropDownMenuCustom(10, 75, FlxUIDropDownMenuCustom.makeStrIdLabelArray(displayNameList, true), function(character:String)
+		{
+			noteType = Std.parseInt(character);
+			if(curSelectedNote != null) 
 			{
-				noteType = Std.parseInt(character);
-				if(curSelectedNote != null) 
-				{
-					for (i in selectedBoxes)
-						{
-							i.connectedNoteData[5] = noteTypeIntMap.get(noteType);
+				for (i in selectedBoxes)
+					{
+						i.connectedNoteData[5] = noteTypeIntMap.get(noteType);
 		
-							for (ii in _song.notes)
-							{
-								for (n in ii.sectionNotes)
-									if (n[0] == i.connectedNoteData[0] && n[1] == i.connectedNoteData[1])
-										n[5] = i.connectedNoteData[5];
-							}
+						for (ii in _song.notes)
+						{
+							for (n in ii.sectionNotes)
+								if (n[0] == i.connectedNoteData[0] && n[1] == i.connectedNoteData[1])
+									n[5] = i.connectedNoteData[5];
 						}
-					//curSelectedNote[5] = noteType;
-					updateGrid();
-					updateNoteUI();
-				}
-			});
+					}
+				//curSelectedNote[5] = noteType;
+				updateGrid();
+				updateNoteUI();
+			}
+		});
 		blockPressWhileScrolling.push(noteTypeDropDown);
 
 		check_naltAnim = new FlxUICheckBox(10, 150, null, null, "Toggle Alternative Animation", 100);
@@ -3681,6 +3732,19 @@ class ChartingState extends MusicBeatState
 		}
 	}
 
+	function updateNoteTexts(note:Note) {
+		if (note != null)
+		{
+			if (note.noteTypeText != null)
+				curRenderedNoteTexts.remove(note.noteTypeText);
+		}
+		else
+		{
+			Debug.logWarn('Note is null, wtf');
+			curRenderedNotes.remove(note);
+		}
+	}
+
 	function updateNoteText(note:Note, info:Array<Dynamic>)
 	{
 		var typeInt:Null<Int>;
@@ -3817,6 +3881,8 @@ class ChartingState extends MusicBeatState
 			}
 		}
 
+		updateNoteTexts(note);
+
 		curRenderedNotes.remove(note);
 
 		if (note.sustainLength > 0)
@@ -3832,8 +3898,6 @@ class ChartingState extends MusicBeatState
 				return;
 			}
 		}
-
-		curRenderedNoteTexts.remove(note.noteTypeText);
 	}
 
 	function clearSection():Void

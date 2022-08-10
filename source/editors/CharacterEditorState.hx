@@ -171,7 +171,7 @@ class CharacterEditorState extends MusicBeatState
 		];
 
 		UI_box = new FlxUITabMenu(null, tabs, true);
-		UI_box.cameras = [camMenu];
+		UI_box.cameras = [camHUD];
 
 		UI_box.resize(250, 120);
 		UI_box.x = FlxG.width - 275;
@@ -183,7 +183,7 @@ class CharacterEditorState extends MusicBeatState
 		];
 
 		UI_stages = new FlxUITabMenu(null, stageTabs, true);
-		UI_stages.cameras = [camMenu];
+		UI_stages.cameras = [camHUD];
 
 		UI_stages.resize(100, 120);
 		UI_stages.x = FlxG.width - 375;
@@ -195,7 +195,7 @@ class CharacterEditorState extends MusicBeatState
 			{name: 'Animations', label: 'Animations'},
 		];
 		UI_characterbox = new FlxUITabMenu(null, tabs, true);
-		UI_characterbox.cameras = [camMenu];
+		UI_characterbox.cameras = [camHUD];
 
 		UI_characterbox.resize(350, 250);
 		UI_characterbox.x = UI_box.x - 100;

@@ -129,7 +129,7 @@ class Song
 
 		if (OpenFlAssets.exists('assets/data/songs/' + songFile + '.json'))
 		{
-			Debug.logInfo('Loading song JSON: $songFile');
+			//Debug.logInfo('Loading song JSON: $songFile');
 
 			var rawJson = Paths.loadJSON('songs/$songFile');
 
@@ -145,7 +145,7 @@ class Song
 		}
 		else if (OpenFlAssets.exists(OpenFlAssets.getPath('assets/data/songs/' + songFile + '.json')))
 		{
-			Debug.logInfo('Loading song JSON: $songFile');
+			//Debug.logInfo('Loading song JSON: $songFile');
 	
 			var rawJson = Paths.loadJSON('songs/$songFile');
 	
@@ -170,12 +170,12 @@ class Song
 		var ba = song.bpm;
 
 		var index = 0;
-		trace("conversion stuff " + song.songId + " " + song.notes.length);
+		//trace("conversion stuff " + song.songId + " " + song.notes.length);
 		var convertedStuff:Array<Song.EventsAtPos> = [];
 
 		if (song.eventsArray == null)
 		{	
-			trace('song events is null, wtf');
+			//trace('song events is null, wtf');
 
 			var initBpm:EventsAtPos = 
 			{
@@ -314,7 +314,7 @@ class Song
 
 			if (i.changeBPM && i.bpm != ba)
 			{
-				trace("converting changebpm for section " + index);
+				//trace("converting changebpm for section " + index);
 				ba = i.bpm;
 
 				var eventAtPos:EventsAtPos = 

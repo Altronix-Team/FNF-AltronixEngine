@@ -80,10 +80,10 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
-		@:privateAccess
+		/*@:privateAccess
 		{
 			Debug.logTrace("We loaded " + openfl.Assets.getLibrary("default").assetsLoaded + " assets into the default library");
-		}
+		}*/
 
 		FlxG.autoPause = false;
 

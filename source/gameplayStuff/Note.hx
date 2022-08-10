@@ -236,7 +236,11 @@ class Note extends FlxSprite
 		
 				loadPixelAnims();
 		
-				setGraphicSize(Std.int(width * CoolUtil.daPixelZoom));
+				if (chartNote)
+					setGraphicSize(40, 40);
+				else
+					setGraphicSize(Std.int(width * CoolUtil.daPixelZoom));
+
 				updateHitbox();
 			}
 			else
@@ -248,7 +252,11 @@ class Note extends FlxSprite
 						loadGraphic(BitmapData.fromFile('specialnotes/' + texture + '-pixel-ends.png'), true, 7, 6);
 					loadPixelAnims();
 
-					setGraphicSize(Std.int(width * CoolUtil.daPixelZoom));
+					if (chartNote)
+						setGraphicSize(40, 40);
+					else
+						setGraphicSize(Std.int(width * CoolUtil.daPixelZoom));
+					
 					updateHitbox();
 				}
 				else
@@ -258,7 +266,11 @@ class Note extends FlxSprite
 						frames = PlayState.noteskinSprite;
 						loadDefaultAnims();
 
-						setGraphicSize(Std.int(width * 0.7));
+						if (chartNote)
+							setGraphicSize(40, 40);
+						else
+							setGraphicSize(Std.int(width * 0.7));
+
 						updateHitbox();
 
 						antialiasing = FlxG.save.data.antialiasing;
@@ -268,7 +280,11 @@ class Note extends FlxSprite
 						frames = Paths.getSparrowAtlas('specialnotes/' + texture);
 						loadDefaultAnims();
 
-						setGraphicSize(Std.int(width * 0.7));
+						if (chartNote)
+							setGraphicSize(40, 40);
+						else
+							setGraphicSize(Std.int(width * 0.7));
+
 						updateHitbox();
 
 						antialiasing = FlxG.save.data.antialiasing;
@@ -283,7 +299,11 @@ class Note extends FlxSprite
 				frames = PlayState.noteskinSprite;
 				loadDefaultAnims();
 
-				setGraphicSize(Std.int(width * 0.7));
+				if (chartNote)
+					setGraphicSize(40, 40);
+				else
+					setGraphicSize(Std.int(width * 0.7));
+
 				updateHitbox();
 
 				antialiasing = FlxG.save.data.antialiasing;
@@ -293,7 +313,11 @@ class Note extends FlxSprite
 				frames = Paths.getSparrowAtlas('specialnotes/' + texture);
 				loadDefaultAnims();
 
-				setGraphicSize(Std.int(width * 0.7));
+				if (chartNote)
+					setGraphicSize(40, 40);
+				else
+					setGraphicSize(Std.int(width * 0.7));
+
 				updateHitbox();
 
 				antialiasing = FlxG.save.data.antialiasing;

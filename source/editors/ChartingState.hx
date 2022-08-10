@@ -3,9 +3,6 @@ package editors;
 import gameplayStuff.Song.SongMeta;
 import openfl.system.System;
 import lime.app.Application;
-#if FEATURE_STEPMANIA
-import smTools.SMFile;
-#end
 #if FEATURE_FILESYSTEM
 import sys.io.File;
 import sys.FileSystem;
@@ -256,32 +253,23 @@ class ChartingState extends MusicBeatState
 		TimingStruct.clearTimings();
 
 		if (PlayState.SONG != null)
-		{
-			if (PlayState.isSM)
-			{
-				#if FEATURE_STEPMANIA
-				_song = Song.conversionChecks(Song.loadFromJsonRAW(File.getContent(PlayState.pathToSm + "/converted.json")));
-				#end
-			}
-			else
-			{
-				var diff:String = "";
+		{		
+			var diff:String = "";
 
-				switch (PlayState.storyDifficulty)
-				{
-					case 0:
-						diff = "-easy";
-					case 2:
-						diff = "-hard";
-					case 3:
-						diff = "-hardplus";
-					case 1:
-						diff = '';
-					default:
-						diff = "-" + CoolUtil.difficultyFromInt(PlayState.storyDifficulty).toLowerCase();
-				}
-				_song = Song.conversionChecks(Song.loadFromJson(PlayState.SONG.songId, diff));
+			switch (PlayState.storyDifficulty)
+			{
+				case 0:
+					diff = "-easy";
+				case 2:
+					diff = "-hard";
+				case 3:
+					diff = "-hardplus";
+				case 1:
+					diff = '';
+				default:
+					diff = "-" + CoolUtil.difficultyFromInt(PlayState.storyDifficulty).toLowerCase();
 			}
+			_song = Song.conversionChecks(Song.loadFromJson(PlayState.SONG.songId, diff));	
 		}
 		else
 		{
@@ -1379,14 +1367,7 @@ class ChartingState extends MusicBeatState
 		var stepperSpeedLabel = new FlxText(74, 70, 'Scroll Speed');
 
 		var stepperVocalVol:FlxUINumericStepper = new FlxUINumericStepper(10, 25, 0.1, 1, 0.1, 10, 1);
-		#if FEATURE_STEPMANIA
-		if (!PlayState.isSM)
-			stepperVocalVol.value = vocals.volume;
-		else
-			stepperVocalVol.value = 1;
-		#else
 		stepperVocalVol.value = vocals.volume;
-		#end
 		stepperVocalVol.name = 'song_vocalvol';
 
 		var stepperVocalVolLabel = new FlxText(74, 25, 'Vocal Volume');
@@ -1658,8 +1639,8 @@ class ChartingState extends MusicBeatState
 			autosaveSong();
 			PlayState.SONG = _song;
 			FlxG.sound.music.stop();
-			if (!PlayState.isSM)
-				vocals.stop();
+			vocals.stop();
+
 			PlayState.startTime = _song.notes[curSectionInt].startTime;
 			while (curRenderedNotes.members.length > 0)
 			{
@@ -1732,8 +1713,7 @@ class ChartingState extends MusicBeatState
 			return;
 
 		FlxG.sound.music.time = (data.startTime + ((beat - data.startBeat) / (data.bpm / 60))) * 1000;
-		if (!PlayState.isSM)
-			vocals.time = FlxG.sound.music.time;
+		vocals.time = FlxG.sound.music.time;
 		curSectionInt = section;
 		Debug.logTrace("Going too " + FlxG.sound.music.time + " | " + section + " | Which is at " + beat);
 
@@ -2073,28 +2053,9 @@ class ChartingState extends MusicBeatState
 		}
 		if (reloadFromFile)
 		{
-			#if FEATURE_STEPMANIA
-			if (PlayState.isSM)
-			{
-				Debug.logTrace("Loading " + PlayState.pathToSm + "/" + PlayState.sm.header.MUSIC);
-				var bytes = File.getBytes(PlayState.pathToSm + "/" + PlayState.sm.header.MUSIC);
-				var sound = new Sound();
-				sound.loadCompressedDataFromByteArray(bytes.getData(), bytes.length);
-				FlxG.sound.playMusic(sound);
-			}
-			else
-				FlxG.sound.playMusic(Paths.inst(daSong, PlayState.SONG.diffSoundAssets), 0.6);
-			#else
 			FlxG.sound.playMusic(Paths.inst(daSong, PlayState.SONG.diffSoundAssets), 0.6);
-			#end
 
-			if (PlayState.isSM)
-			{
-				#if FEATURE_STEPMANIA
-				_song = Song.conversionChecks(Song.loadFromJsonRAW(File.getContent(PlayState.pathToSm + "/converted.json")));
-				#end
-			}
-			else if (loadDiff == null)
+			if (loadDiff == null)
 			{
 				var diff:String = CoolUtil.difficultyPrefixes[PlayState.storyDifficulty];
 				_song = Song.conversionChecks(Song.loadFromJson(PlayState.SONG.songId, diff));
@@ -2113,45 +2074,23 @@ class ChartingState extends MusicBeatState
 			_song = PlayState.SONG;
 		}
 
-		#if FEATURE_STEPMANIA
-		if (PlayState.isSM)
-		{
-			trace("Loading " + PlayState.pathToSm + "/" + PlayState.sm.header.MUSIC);
-			var bytes = File.getBytes(PlayState.pathToSm + "/" + PlayState.sm.header.MUSIC);
-			var sound = new Sound();
-			sound.loadCompressedDataFromByteArray(bytes.getData(), bytes.length);
-			FlxG.sound.playMusic(sound);
-		}
-		else
-			FlxG.sound.playMusic(Paths.inst(daSong, PlayState.SONG.diffSoundAssets), 1, false);
-		#else
 		FlxG.sound.playMusic(Paths.inst(daSong, PlayState.SONG.diffSoundAssets), 1, false);
-		#end
 		
-		#if FEATURE_STEPMANIA
-		if (PlayState.isSM)
-			vocals = null;
-		else
-			vocals = new FlxSound().loadEmbedded(Paths.voices(daSong, PlayState.SONG.diffSoundAssets));
-		#else
 		vocals = new FlxSound().loadEmbedded(Paths.voices(daSong, PlayState.SONG.diffSoundAssets));
-		#end
+
 		FlxG.sound.list.add(vocals);
 
 		FlxG.sound.music.pause();
 
 		FlxG.sound.music.time = 0;
 
-		if (!PlayState.isSM)
-			vocals.pause();
+		vocals.pause();
 
 		FlxG.sound.music.onComplete = function()
 		{
-			if (!PlayState.isSM)
-			{
-				vocals.pause();
-				vocals.time = 0;
-			}
+			vocals.pause();
+			vocals.time = 0;
+
 			FlxG.sound.music.pause();
 			FlxG.sound.music.time = 0;
 		};
@@ -2291,8 +2230,7 @@ class ChartingState extends MusicBeatState
 				case 'song_vocalvol':
 					if (nums.value <= 0.1)
 						nums.value = 0.1;
-					if (!PlayState.isSM)
-						vocals.volume = nums.value;
+					vocals.volume = nums.value;
 
 				case 'song_instvol':
 					if (nums.value <= 0.1)
@@ -2501,11 +2439,8 @@ class ChartingState extends MusicBeatState
 				{
 					FlxG.sound.music.pause();
 					FlxG.sound.music.time = FlxG.sound.music.length - 85;
-					if (!PlayState.isSM)
-					{
-						vocals.pause();
-						vocals.time = vocals.length - 85;
-					}
+					vocals.pause();
+					vocals.time = vocals.length - 85;
 				}
 
 			#if debug
@@ -2640,8 +2575,7 @@ class ChartingState extends MusicBeatState
 				{
 					FlxG.sound.music.pause();
 
-					if (!PlayState.isSM)
-						vocals.pause();
+					vocals.pause();
 					claps.splice(0, claps.length);
 
 					FlxG.sound.music.time -= (FlxG.mouse.wheel * Conductor.stepCrochet * 0.8);
@@ -2716,8 +2650,7 @@ class ChartingState extends MusicBeatState
 						else
 							FlxG.sound.music.time -= (FlxG.mouse.wheel * Conductor.stepCrochet * 0.4);
 
-						if (!PlayState.isSM)
-							vocals.time = FlxG.sound.music.time;
+						vocals.time = FlxG.sound.music.time;
 					}
 				}
 
@@ -3205,8 +3138,7 @@ class ChartingState extends MusicBeatState
 
 					PlayState.SONG = _song;
 					FlxG.sound.music.stop();
-					if (!PlayState.isSM)
-						vocals.stop();
+					vocals.stop();
 
 					while (curRenderedNotes.members.length > 0)
 					{
@@ -3346,8 +3278,7 @@ class ChartingState extends MusicBeatState
 						if (FlxG.keys.pressed.W || FlxG.keys.pressed.S)
 						{
 							FlxG.sound.music.pause();
-							if (!PlayState.isSM)
-								vocals.pause();
+							vocals.pause();
 							claps.splice(0, claps.length);
 
 							var daTime:Float = 700 * FlxG.elapsed;
@@ -3359,8 +3290,7 @@ class ChartingState extends MusicBeatState
 							else
 								FlxG.sound.music.time += daTime;
 
-							if (!PlayState.isSM)
-								vocals.time = FlxG.sound.music.time;
+							vocals.time = FlxG.sound.music.time;
 						}
 					}
 					else
@@ -3368,8 +3298,7 @@ class ChartingState extends MusicBeatState
 						if (FlxG.keys.justPressed.W || FlxG.keys.justPressed.S)
 						{
 							FlxG.sound.music.pause();
-							if (!PlayState.isSM)
-								vocals.pause();
+							vocals.pause();
 
 							var daTime:Float = Conductor.stepCrochet * 2;
 
@@ -3380,8 +3309,7 @@ class ChartingState extends MusicBeatState
 							else
 								FlxG.sound.music.time += daTime;
 
-							if (!PlayState.isSM)
-								vocals.time = FlxG.sound.music.time;
+							vocals.time = FlxG.sound.music.time;
 						}
 					}
 				}
@@ -3524,14 +3452,12 @@ class ChartingState extends MusicBeatState
 	function resetSection(songBeginning:Bool = false):Void
 	{
 		FlxG.sound.music.pause();
-		if (!PlayState.isSM)
-			vocals.pause();
+		vocals.pause();
 
 		// Basically old shit from changeSection???
 		FlxG.sound.music.time = 0;
 
-		if (!PlayState.isSM)
-			vocals.time = FlxG.sound.music.time;
+		vocals.time = FlxG.sound.music.time;
 
 		updateGrid();
 		if (!songBeginning)
@@ -3552,8 +3478,7 @@ class ChartingState extends MusicBeatState
 			if (updateMusic)
 			{
 				FlxG.sound.music.pause();
-				if (!PlayState.isSM)
-					vocals.pause();
+				vocals.pause();
 
 				/*var daNum:Int = 0;
 					var daLength:Float = 0;
@@ -3564,8 +3489,7 @@ class ChartingState extends MusicBeatState
 				}*/
 
 				FlxG.sound.music.time = sectionStartTime();
-				if (!PlayState.isSM)
-					vocals.time = FlxG.sound.music.time;
+				vocals.time = FlxG.sound.music.time;
 				updateCurStep();
 			}
 

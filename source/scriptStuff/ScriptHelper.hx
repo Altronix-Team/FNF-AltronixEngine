@@ -283,14 +283,14 @@ class ScriptHelper
 		states.PlayState.instance.setNoteTypeIgnore(type, ignore);
 	}
 
-	function getProperty(instance:Dynamic = null, variable:String):Any { //Copy from lua
+	function getProperty(instance:Null<Dynamic> = null, variable:String):Any { //Copy from lua
 		if (instance == null)
 			return Reflect.getProperty(getInstance(), variable);
 		else
 			return Reflect.getProperty(instance, variable);
 	}
 
-	function setProperty(instance:Dynamic = null, variable:String, value:Dynamic) { // Copy from lua
+	function setProperty(instance:Null<Dynamic> = null, variable:String, value:Dynamic) { // Copy from lua
 		if (instance == null)
 			Reflect.setProperty(getInstance(), variable, value);
 		else

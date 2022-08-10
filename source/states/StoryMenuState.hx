@@ -433,8 +433,6 @@ class StoryMenuState extends MusicBeatState
 			selectedWeek = true;
 			PlayState.songMultiplier = 1;
 
-			PlayState.isSM = false;
-
 			for (i in weekDiffs)
 			{
 				if (!CoolUtil.difficultyArray.contains(i))

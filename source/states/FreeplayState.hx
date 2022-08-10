@@ -3,9 +3,6 @@ package states;
 import openfl.utils.Future;
 import openfl.media.Sound;
 import flixel.system.FlxSound;
-#if FEATURE_STEPMANIA
-import smTools.SMFile;
-#end
 #if FEATURE_FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
@@ -111,48 +108,6 @@ class FreeplayState extends MusicBeatState
 		PlayState.isFreeplay = true;
 		PlayState.inDaPlay = false;
 		PlayState.currentSong = "bruh";
-
-		#if !FEATURE_STEPMANIA
-		trace("FEATURE_STEPMANIA was not specified during build, sm file loading is disabled.");
-		#elseif FEATURE_STEPMANIA
-		// TODO: Refactor this to use OpenFlAssets.
-		trace("tryin to load sm files");
-		for (i in FileSystem.readDirectory("assets/sm/"))
-		{
-			if (FileSystem.isDirectory("assets/sm/" + i))
-			{
-				trace("Reading SM file dir " + i);
-				for (file in FileSystem.readDirectory("assets/sm/" + i))
-				{
-					if (file.contains(" "))
-						FileSystem.rename("assets/sm/" + i + "/" + file, "assets/sm/" + i + "/" + file.replace(" ", "_"));
-					if (file.endsWith(".sm") && !FileSystem.exists("assets/sm/" + i + "/converted.json"))
-					{
-						trace("reading " + file);
-						var file:SMFile = SMFile.loadFile("assets/sm/" + i + "/" + file.replace(" ", "_"));
-						trace("Converting " + file.header.TITLE);
-						var data = file.convertToFNF("assets/sm/" + i + "/converted.json");
-						var meta = new SongMetadata(file.header.TITLE, 0, "sm", file, "assets/sm/" + i);
-						songs.push(meta);
-						var song = Song.loadFromJsonRAW(data);
-						songData.set(file.header.TITLE, [song, song, song]);
-					}
-					else if (FileSystem.exists("assets/sm/" + i + "/converted.json") && file.endsWith(".sm"))
-					{
-						trace("reading " + file);
-						var file:SMFile = SMFile.loadFile("assets/sm/" + i + "/" + file.replace(" ", "_"));
-						trace("Converting " + file.header.TITLE);
-						var data = file.convertToFNF("assets/sm/" + i + "/converted.json");
-						var meta = new SongMetadata(file.header.TITLE, 0, "sm", file, "assets/sm/" + i);
-						songs.push(meta);
-						var song = Song.loadFromJsonRAW(File.getContent("assets/sm/" + i + "/converted.json"));
-						trace("got content lol");
-						songData.set(file.header.TITLE, [song, song, song]);
-					}
-				}
-			}
-		}
-		#end
 
 		#if desktop
 		// Updating Discord Rich Presence
@@ -669,19 +624,6 @@ class FreeplayState extends MusicBeatState
 		PlayState.storyDifficulty = CoolUtil.difficultyArray.indexOf(songs[curSelected].diffs[difficulty]);
 		PlayState.storyWeek = songs[curSelected].week;
 		Debug.logInfo('Loading song ${PlayState.SONG.songName} from week ${PlayState.storyWeek} into Free Play...');
-		#if FEATURE_STEPMANIA
-		if (songs[curSelected].songCharacter == "sm")
-		{
-			Debug.logInfo('Song is a StepMania song!');
-			PlayState.isSM = true;
-			PlayState.sm = songs[curSelected].sm;
-			PlayState.pathToSm = songs[curSelected].path;
-		}
-		else
-			PlayState.isSM = false;
-		#else
-		PlayState.isSM = false;
-		#end
 
 		PlayState.songMultiplier = rate;
 

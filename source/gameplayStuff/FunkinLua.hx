@@ -2304,7 +2304,7 @@ class FunkinLua {
 					if(errorHandler != null){
 						errorHandler(err);
 					}else{
-						Debug.displayAlert("Error in script","Script path: " + scriptName + "\nERROR: " + err);
+						Debug.displayAlert("Error in script", "Script path: " + scriptName + "\nERROR: " + err);
 					}
 					//LuaL.error(lua,err);
 				}else{

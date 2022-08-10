@@ -646,69 +646,6 @@ class ShitMsOption extends Option
 		return "SHIT: < " + FlxG.save.data.shitMs + " ms >";
 	}
 }
-
-class CacheImages extends Option
-{
-	public function new(desc:String)
-	{
-		super();
-		description = desc;
-	}
-
-	public override function left():Bool
-	{
-		FlxG.save.data.cacheImages = !FlxG.save.data.cacheImages;
-
-		display = updateDisplay();
-		return true;
-	}
-
-	public override function right():Bool
-	{
-		left();
-		return true;
-	}
-
-	private override function updateDisplay():String
-	{
-		if (!FlxG.save.data.language)
-			return "Cache images: < " + (FlxG.save.data.cacheImages ? "Off" : "On") + " >";
-		else
-			return "Кеширование изображений: < " + (FlxG.save.data.cacheImages ? "Включено" : "Выключено") + " >";
-	}
-}
-
-class CpuStrums extends Option
-{
-	public function new(desc:String)
-	{
-		super();
-		description = desc;
-	}
-
-	public override function left():Bool
-	{
-		FlxG.save.data.cpuStrums = !FlxG.save.data.cpuStrums;
-
-		display = updateDisplay();
-		return true;
-	}
-
-	public override function right():Bool
-	{
-		left();
-		return true;
-	}
-
-	private override function updateDisplay():String
-	{
-		if (!FlxG.save.data.language)
-			return "CPU Strums: < " + (FlxG.save.data.cpuStrums ? "Light up" : "Stay static") + " >";
-		else
-			return "Подсветка нажатия бота: < " + (FlxG.save.data.cpuStrums ? "Подсвечивать" : "Оставить статичным") + " >";
-	}
-}
-
 class GraphicLoading extends Option
 {
 	public function new(desc:String)
@@ -827,38 +764,6 @@ class GhostTapOption extends Option
 			return "Ghost Tapping: < " + (FlxG.save.data.ghost ? "Enabled" : "Disabled") + " >";
 		else
 			return "Призрачные нажатия: < " + (FlxG.save.data.ghost ? "Включено" : "Выключено") + " >";
-	}
-}
-
-class LoadingScreensOption extends Option
-{
-	public function new(desc:String)
-	{
-		super();
-		description = desc;
-	}
-
-	public override function left():Bool
-	{
-		if (OptionsMenu.isInPause)
-			return false;
-		FlxG.save.data.enableLoadingScreens = !FlxG.save.data.enableLoadingScreens;
-		display = updateDisplay();
-		return true;
-	}
-
-	public override function right():Bool
-	{
-		left();
-		return true;
-	}
-
-	private override function updateDisplay():String
-	{
-		if (!FlxG.save.data.language)
-			return "Loading Screen < " + (!FlxG.save.data.enableLoadingScreens ? "Disabled" : "Enabled") + " >";
-		else
-			return "Загрузочный экран < " + (!FlxG.save.data.enableLoadingScreens ? "Выключен" : "Включен") + " >";
 	}
 }
 
@@ -1051,45 +956,6 @@ class Colour extends Option
 			return "Цветные полосы здоровья: < " + (FlxG.save.data.colour ? "Включены" : "Выключены") + " >";
 	}
 }
-
-class StepManiaOption extends Option
-{
-	public function new(desc:String)
-	{
-		super();
-		if (OptionsMenu.isInPause)
-			if (!FlxG.save.data.language)
-				description = "This option cannot be toggled in the pause menu.";
-			else
-				description = "Эта опция не может быть переключена во время паузы";
-		else
-			description = desc;
-	}
-
-	public override function left():Bool
-	{
-		if (OptionsMenu.isInPause)
-			return false;
-		FlxG.save.data.stepMania = !FlxG.save.data.stepMania;
-		display = updateDisplay();
-		return true;
-	}
-
-	public override function right():Bool
-	{
-		left();
-		return true;
-	}
-
-	private override function updateDisplay():String
-	{
-		if (!FlxG.save.data.language)
-			return "Color Quantization: < " + (!FlxG.save.data.stepMania ? "off" : "on") + " >";
-		else
-			return "Квантование цвета: < " + (!FlxG.save.data.stepMania ? "выключено" : "включено") + " >";
-	}
-}
-
 class ResetButtonOption extends Option
 {
 	public function new(desc:String)
@@ -1459,37 +1325,6 @@ class LanguageOption extends Option
 			return "Язык: < " + curLocale + " >";
 	}
 }
-
-class CachingOption extends Option
-{
-	public function new(desc:String)
-	{
-		super();
-		description = desc;
-	}
-
-	public override function left():Bool
-	{
-		FlxG.save.data.caching = !FlxG.save.data.caching;
-		display = updateDisplay();
-		return true;
-	}
-
-	public override function right():Bool
-	{
-		left();
-		return true;
-	}
-
-	private override function updateDisplay():String
-	{
-		if (!FlxG.save.data.language)
-			return "Caching: < " + (!FlxG.save.data.caching ? "Enabled" : "Disabled") + " >";
-		else
-			return "Кэширование: < " + (!FlxG.save.data.caching ? "Включено" : "Выключено") + " >";
-	}
-}
-
 class ScoreScreen extends Option
 {
 	public function new(desc:String)
@@ -2515,7 +2350,6 @@ class ResetSettings extends Option
 		FlxG.save.data.ghost = null;
 		FlxG.save.data.distractions = null;
 		FlxG.save.data.colour = null;
-		FlxG.save.data.stepMania = null;
 		FlxG.save.data.flashing = null;
 		FlxG.save.data.resetButton = null;
 		FlxG.save.data.botplay = null;
@@ -2534,11 +2368,9 @@ class ResetSettings extends Option
 		FlxG.save.data.modConfig = null;
 		FlxG.save.data.weekCompleted = null;
 		FlxG.save.data.logWriter = null;
-		FlxG.save.data.enableLoadingScreens = null;
 		FlxG.save.data.enablePsychInterface = null;
 		FlxG.save.data.notesplashes = null;
 		FlxG.save.data.fullscreenOnStart = null;
-		FlxG.save.data.caching = null;
 
 		EngineData.initSave();
 		confirm = false;

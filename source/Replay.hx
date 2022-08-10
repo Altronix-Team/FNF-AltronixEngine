@@ -95,18 +95,13 @@ class Replay
 
 	public function SaveReplay(notearray:Array<Dynamic>, judge:Array<String>, ana:Analysis)
 	{
-		#if FEATURE_STEPMANIA
-		var chartPath = PlayState.isSM ? PlayState.pathToSm + "/converted.json" : "";
-		#else
 		var chartPath = "";
-		#end
 
 		var json = {
 			"songName": PlayState.SONG.songId,
 			"songId": PlayState.SONG.songId,
 			"songDiff": PlayState.storyDifficulty,
 			"chartPath": chartPath,
-			"sm": PlayState.isSM,
 			"timestamp": Date.now(),
 			"replayGameVer": version,
 			"sf": Conductor.safeFrames,

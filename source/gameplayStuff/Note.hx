@@ -67,7 +67,6 @@ class Note extends FlxSprite
 	public var originAngle:Float = 0; // The angle the OG note of the sus note had (?)
 
 	public var dataColor:Array<String> = ['purple', 'blue', 'green', 'red'];
-	public var quantityColor:Array<Int> = [RED_NOTE, 2, BLUE_NOTE, 2, PURP_NOTE, 2, GREEN_NOTE, 2];
 	public var arrowAngles:Array<Int> = [180, 90, 270, 0];
 
 	public var isParent:Bool = false;
@@ -169,16 +168,7 @@ class Note extends FlxSprite
 		else
 		{
 			this.strumTime = strumTime;
-			#if FEATURE_STEPMANIA
-			if (PlayState.isSM)
-			{
-				rStrumTime = strumTime;
-			}
-			else
-				rStrumTime = strumTime;
-			#else
 			rStrumTime = strumTime;
-			#end
 		}
 
 		if (this.strumTime < 0)
@@ -192,34 +182,6 @@ class Note extends FlxSprite
 		x += swagWidth * noteData;	
 		animation.play(dataColor[noteData] + 'Scroll');
 		originColor = noteData; // The note's origin color will be checked by its sustain notes
-			
-		if (FlxG.save.data.stepMania && !isSustainNote && !PlayState.instance.executeModchart)
-		{
-			var col:Int = 0;
-
-			var beatRow = Math.round(beat * 48);
-
-			// STOLEN ETTERNA CODE (IN 2002)
-
-			if (beatRow % (192 / 4) == 0)
-				col = quantityColor[0];
-			else if (beatRow % (192 / 8) == 0)
-				col = quantityColor[2];
-			else if (beatRow % (192 / 12) == 0)
-				col = quantityColor[4];
-			else if (beatRow % (192 / 16) == 0)
-				col = quantityColor[6];
-			else if (beatRow % (192 / 24) == 0)
-				col = quantityColor[4];
-			else if (beatRow % (192 / 32) == 0)
-				col = quantityColor[4];
-
-			animation.play(dataColor[col] + 'Scroll');
-			localAngle -= arrowAngles[col];
-			localAngle += arrowAngles[noteData];
-			originAngle = localAngle;
-			originColor = col;
-		}
 
 		if (FlxG.save.data.downscroll && sustainNote)
 			flipY = true;

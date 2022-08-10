@@ -285,9 +285,6 @@
   <!-- Defines whether Lua Modcharts should be enabled. Only works on Windows. -->
   <haxedef name="FEATURE_LUAMODCHART" if="windows" />
 
-  <!-- Defines whether StepMania files can be loaded. -->
-  <haxedef name="FEATURE_STEPMANIA" if="desktop" />
-
   <!-- Defines whether the Thread class can be used. -->
   <haxedef name="FEATURE_MULTITHREADING" if="cpp" />
 

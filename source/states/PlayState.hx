@@ -4,9 +4,6 @@ import flixel.util.FlxSpriteUtil;
 import lime.media.openal.AL;
 import gameplayStuff.Song.Event;
 import openfl.media.Sound;
-#if FEATURE_STEPMANIA
-import smTools.SMFile;
-#end
 #if FEATURE_FILESYSTEM
 import sys.io.File;
 import Sys;
@@ -166,12 +163,6 @@ class PlayState extends MusicBeatState
 
 	public var vocals:FlxSound;
 
-	public static var isSM:Bool = false;
-	#if FEATURE_STEPMANIA
-	public static var sm:SMFile;
-	public static var pathToSm:String;
-	#end
-
 	public var dad:Character = null;
 	public var gf:Character = null;
 	public var boyfriend:Boyfriend = null;
@@ -248,8 +239,6 @@ class PlayState extends MusicBeatState
 	public var isDead:Bool = false;
 
 	public static var offsetTesting:Bool = false;
-
-	public var isSMFile:Bool = false;
 
 	var notesHitArray:Array<Date> = [];
 	var currentFrames:Int = 0;
@@ -881,15 +870,9 @@ class PlayState extends MusicBeatState
 					else
 						throw e;
 				}
-			}
-			else
-			{
-				Debug.logError('Something strange with stage scripts, loading default stage');
-				Stage = new Stage('stage');
-			}
-			
+			}	
 			#if LUA_ALLOWED
-			if (OpenFlAssets.exists('assets/stages/' + SONG.stage + '.lua'))
+			else if (OpenFlAssets.exists('assets/stages/' + SONG.stage + '.lua'))
 			{
 				luaArray.push(new FunkinLua(OpenFlAssets.getPath('assets/stages/' + SONG.stage + '.lua')));
 			}
@@ -1208,7 +1191,7 @@ class PlayState extends MusicBeatState
 			var playerTurn = false;
 			for (index => section in SONG.notes)
 			{
-				if (section.sectionNotes.length > 0 && !isSM)
+				if (section.sectionNotes.length > 0)
 				{
 					if (section.startTime > 5000)
 					{
@@ -1216,37 +1199,6 @@ class PlayState extends MusicBeatState
 						skipTo = section.startTime - 1000;
 					}
 					break;
-				}
-				else if (isSM)
-				{
-					for (note in section.sectionNotes)
-					{
-						if (note[0] < firstNoteTime)
-						{
-							if (!PlayStateChangeables.Optimize)
-							{
-								firstNoteTime = note[0];
-								if (note[1] > 3)
-									playerTurn = true;
-								else
-									playerTurn = false;
-							}
-							else if (note[1] > 3)
-							{
-								firstNoteTime = note[0];
-							}
-						}
-					}
-					if (index + 1 == SONG.notes.length)
-					{
-						var timing = ((!playerTurn && !PlayStateChangeables.Optimize) ? firstNoteTime : TimingStruct.getTimeFromBeat(TimingStruct.getBeatFromTime(firstNoteTime)
-							- 4));
-						if (timing > 5000)
-						{
-							needSkip = true;
-							skipTo = timing - 1000;
-						}
-					}
 				}
 			}
 		}
@@ -2714,20 +2666,7 @@ class PlayState extends MusicBeatState
 
 		if (!paused)
 		{
-			#if FEATURE_STEPMANIA
-			if (!isStoryMode && isSM)
-			{
-				trace("Loading " + pathToSm + "/" + sm.header.MUSIC);
-				var bytes = File.getBytes(pathToSm + "/" + sm.header.MUSIC);
-				var sound = new Sound();
-				sound.loadCompressedDataFromByteArray(bytes.getData(), bytes.length);
-				FlxG.sound.playMusic(sound);
-			}
-			else
-				FlxG.sound.playMusic(Paths.inst(PlayState.SONG.songId, PlayState.SONG.diffSoundAssets), 1, false);
-			#else
-				FlxG.sound.playMusic(Paths.inst(PlayState.SONG.songId, PlayState.SONG.diffSoundAssets), 1, false);
-			#end
+			FlxG.sound.playMusic(Paths.inst(PlayState.SONG.songId, PlayState.SONG.diffSoundAssets), 1, false);
 		}
 
 		FlxG.sound.music.onComplete = onSongComplete;
@@ -2888,17 +2827,10 @@ class PlayState extends MusicBeatState
 
 		curSong = songData.songId;
 
-		#if FEATURE_STEPMANIA
-		if (SONG.needsVoices && !isSM)
-			vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.songId, PlayState.SONG.diffSoundAssets));
-		else
-			vocals = new FlxSound();
-		#else
 		if (SONG.needsVoices)
 			vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.songId, PlayState.SONG.diffSoundAssets));
 		else
 			vocals = new FlxSound();
-		#end
 
 		trace('loaded vocals');
 
@@ -2906,20 +2838,7 @@ class PlayState extends MusicBeatState
 
 		if (!paused)
 		{
-			#if FEATURE_STEPMANIA
-			if (!isStoryMode && isSM)
-			{
-				trace("Loading " + pathToSm + "/" + sm.header.MUSIC);
-				var bytes = File.getBytes(pathToSm + "/" + sm.header.MUSIC);
-				var sound = new Sound();
-				sound.loadCompressedDataFromByteArray(bytes.getData(), bytes.length);
-				FlxG.sound.playMusic(sound);
-			}
-			else
-				FlxG.sound.playMusic(Paths.inst(PlayState.SONG.songId, PlayState.SONG.diffSoundAssets), 1, false);
-			#else
 			FlxG.sound.playMusic(Paths.inst(PlayState.SONG.songId, PlayState.SONG.diffSoundAssets), 1, false);
-			#end
 		}
 
 		FlxG.sound.music.volume = 1;
@@ -2927,10 +2846,8 @@ class PlayState extends MusicBeatState
 
 		FlxG.sound.music.pause();
 
-		if (SONG.needsVoices && !PlayState.isSM)
+		if (SONG.needsVoices)
 			FlxG.sound.cache(Paths.voices(PlayState.SONG.songId, PlayState.SONG.diffSoundAssets));
-		if (!PlayState.isSM)
-			FlxG.sound.cache(Paths.inst(PlayState.SONG.songId, PlayState.SONG.diffSoundAssets));
 
 		// Song duration in a float, useful for the time left feature
 		songLength = ((FlxG.sound.music.length / songMultiplier) / 1000);
@@ -4330,6 +4247,7 @@ class PlayState extends MusicBeatState
 					if(daNote.isSustainNote && !daNote.animation.curAnim.name.endsWith('end')) {
 						time += 0.15;
 					}
+
 					opponentStrums.forEach(function(spr:StaticArrow)
 					{
 						pressArrow(spr, spr.ID, daNote, time);
@@ -4470,18 +4388,6 @@ class PlayState extends MusicBeatState
 					daNote.visible = false;
 					daNote.kill();
 					notes.remove(daNote, true);
-				}
-			});
-		}
-
-		if (FlxG.save.data.cpuStrums)
-		{
-			opponentStrums.forEach(function(spr:StaticArrow)
-			{
-				if (spr.animation.finished)
-				{
-					spr.playAnim('static');
-					spr.centerOffsets();
 				}
 			});
 		}
@@ -5349,7 +5255,7 @@ class PlayState extends MusicBeatState
 				score = -300;
 				combo = 0;
 				misses++;
-				health -= 0.1;
+				health -= 0.1 * (daNote != null ? daNote.noteScore : 1);
 				ss = false;
 				shits++;
 				if (FlxG.save.data.accuracyMod == 0)
@@ -5357,7 +5263,7 @@ class PlayState extends MusicBeatState
 			case 'bad':
 				daRating = 'bad';
 				score = 0;
-				health -= 0.06;
+				health -= 0.06 * (daNote != null ? daNote.noteScore : 1);
 				ss = false;
 				bads++;
 				if (FlxG.save.data.accuracyMod == 0)
@@ -5366,13 +5272,14 @@ class PlayState extends MusicBeatState
 				daRating = 'good';
 				score = 200;
 				ss = false;
+				health += 0.023 * (daNote != null ? daNote.noteScore : 1);
 				goods++;
 				if (FlxG.save.data.accuracyMod == 0)
 					totalNotesHit += 0.75;
 			case 'sick':
 				daRating = 'sick';
 				if (health < 2)
-					health += 0.04;
+					health += 0.04 * (daNote != null ? daNote.noteScore : 1);
 				if (FlxG.save.data.accuracyMod == 0)
 					totalNotesHit += 1;
 				sicks++;
@@ -5380,8 +5287,6 @@ class PlayState extends MusicBeatState
 
 		if (songMultiplier >= 1.05)
 			score = getRatesScore(songMultiplier, score);
-
-		// trace('Wife accuracy loss: ' + wife + ' | Rating: ' + daRating + ' | Score: ' + score + ' | Weight: ' + (1 - wife));
 
 		if (daRating != 'shit' || daRating != 'bad')
 		{
@@ -5803,11 +5708,6 @@ class PlayState extends MusicBeatState
 				if (!keys[spr.ID])
 					spr.playAnim('static', false);
 			}
-			else if (FlxG.save.data.cpuStrums)
-			{
-				if (spr.animation.finished)
-					spr.playAnim('static');
-			}
 		});
 	}
 
@@ -6055,10 +5955,10 @@ class PlayState extends MusicBeatState
 			spawnNoteSplashOnNote(note);
 		}
 
-		if (note.isSustainNote && note.rating != "miss")
+		/*if (note.isSustainNote && note.rating != "miss")
 		{
 			health += 0.005;
-		}
+		}*/
 
 		// add newest note to front of notesHitArray
 		// the oldest notes are at the end and are removed first
@@ -6085,7 +5985,7 @@ class PlayState extends MusicBeatState
 				checkNoteType('bf', note);
 
 
-			if (!PlayStateChangeables.botPlay/* || FlxG.save.data.cpuStrums*/)
+			if (!PlayStateChangeables.botPlay)
 			{
 				playerStrums.forEach(function(spr:StaticArrow)
 				{
@@ -6149,16 +6049,8 @@ class PlayState extends MusicBeatState
 	{
 		if (Math.abs(daNote.noteData) == idCheck)
 		{
-			if (!FlxG.save.data.stepMania)
-			{
-				if (spr != null) spr.playAnim('confirm', true);
-				if (time != null) spr.resetAnim = time;
-			}
-			else
-			{
-				spr.playAnim('dirCon' + daNote.originColor, true);
-				spr.localAngle = daNote.originAngle;
-			}
+			if (spr != null) spr.playAnim('confirm', true);
+			if (time != null) spr.resetAnim = time;
 		}
 	}
 

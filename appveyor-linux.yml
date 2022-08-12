@@ -36,14 +36,13 @@ install:
   - haxelib git systools https://github.com/haya3218/systools
   - haxelib run lime rebuild systools linux
   - haxelib list
-  - cd /home/appveyor/projects/kade-engine-linux
 
 build_script:
   - haxelib run lime build linux
 
 after_build:
-  - tar -cvf KadeEngine-Linux.tar -C /home/appveyor/projects/kade-engine-linux/export/release/linux/bin .
+  - tar -cvf AltronixEngine-Linux.tar -C /home/appveyor/projects/altronixengine-linux/export/release/linux/bin .
 
 artifacts:
-- path: KadeEngine-Linux.tar
-  name: Kade Engine for Linux
+- path: AltronixEngine-Linux.tar
+  name: AltronixEngine for Linux

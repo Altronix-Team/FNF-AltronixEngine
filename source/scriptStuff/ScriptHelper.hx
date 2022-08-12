@@ -35,7 +35,6 @@ class ScriptHelper
     var interp:Interp;
 
     var ast:Expr;
-
     
     public function new()
     {        
@@ -43,6 +42,8 @@ class ScriptHelper
         interp = new Interp();
 
         parser.allowTypes = true;
+		parser.allowJSON = true;
+		parser.allowMetadata = true;
 
 		expose = new StringMap<Dynamic>();
 
@@ -67,7 +68,6 @@ class ScriptHelper
 		expose.set('Alphabet', Alphabet);
 		expose.set('MusicBeatState', MusicBeatState);
 
-		
 		expose.set("loadModule", loadModule);
 		expose.set("createSprite", createSprite);
 		expose.set("createText", createText);
@@ -83,7 +83,6 @@ class ScriptHelper
 		expose.set('exists', exists);
 		expose.set('getEngineFont', getEngineFont);
 		
-
 		expose.set("getSparrowAtlas", Paths.getSparrowAtlas);
 
 		expose.set('setNoteTypeTexture', setNoteTypeTexture);

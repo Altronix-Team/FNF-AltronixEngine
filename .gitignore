@@ -3,3 +3,4 @@ export/
 AltronixEngine.code-workspace
 deleted
 -_.txt
+.gitignore

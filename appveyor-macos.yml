@@ -27,7 +27,6 @@ install:
   - haxelib git faxe https://github.com/uhrobots/faxe
   - haxelib git polymod https://github.com/larsiusprime/polymod.git
   - haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
-  - haxelib git extension-webm https://github.com/KadeDev/extension-webm
   - haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit.git
   - haxelib git hxvm-luajit https://github.com/nebulazorua/hxvm-luajit
   - haxelib run lime rebuild extension-webm macos
@@ -41,9 +40,9 @@ install:
 build_script:
   - haxelib run lime build mac
 after_build:
-  - hdiutil create /Users/appveyor/temp.dmg -ov -volname "KadeEngine-macOS" -fs HFS+ -srcfolder "/Users/appveyor/projects/kade-engine-macos/export/release/macos/bin"
-  - hdiutil convert /Users/appveyor/temp.dmg -format UDZO -o KadeEngine-macOS.dmg
+  - hdiutil create /Users/appveyor/temp.dmg -ov -volname "AltronixEngine-macOS" -fs HFS+ -srcfolder "/Users/appveyor/projects/altronixengine-macos/export/release/macos/bin"
+  - hdiutil convert /Users/appveyor/temp.dmg -format UDZO -o AltronixEngine-macOS.dmg
 
 artifacts:
-- path: KadeEngine-macOS.dmg
-  name: Kade Engine for macOS
+- path: AltronixEngine-macOS.dmg
+  name: AltronixEngine for macOS

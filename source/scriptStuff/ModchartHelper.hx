@@ -27,8 +27,9 @@ class ModchartHelper extends FlxTypedGroup<FlxBasic>
 		if (!scriptHelper.expose.exists("PlayState"))
 			scriptHelper.expose.set("PlayState", playState);
 		
-		if (!scriptHelper.expose.exists("stage"))
-			scriptHelper.expose.set("stage", playState.hscriptStage);
+		if (playState.hscriptStage != null){
+			if (!scriptHelper.expose.exists("stage"))
+				scriptHelper.expose.set("stage", playState.hscriptStage);}
 		
 		if (!scriptHelper.expose.exists("gf") && playState.gf != null)
 			scriptHelper.expose.set("gf", playState.gf);

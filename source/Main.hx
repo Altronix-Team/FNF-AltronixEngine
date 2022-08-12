@@ -15,6 +15,7 @@ import openfl.events.UncaughtErrorEvent;
 import Debug;
 import openfl.system.Capabilities;
 import haxe.CallStack;
+//import scriptStuff.ScriptedTittleState;
 
 #if FEATURE_MODCORE
 import ModCore;
@@ -102,7 +103,12 @@ class Main extends Sprite
 		fpsCounter = new EngineFPS(10, 3, 0xFFFFFF);
 		bitmapFPS = ImageOutline.renderImage(fpsCounter, 1, 0x000000, true);
 		bitmapFPS.smoothing = true;
-		#end			
+		#end	
+		
+		/*if (Assets.exists('assets/scripts/ScriptedTittleState.hscript'))
+		{
+			initialState = ScriptedTittleState.init('ScriptedTittleState');
+		}*/
 
 		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
 		addChild(game);

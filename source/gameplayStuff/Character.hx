@@ -326,6 +326,14 @@ class Character extends FlxSprite
 			AnimName = AnimName.split('-')[0];
 		}
 
+		if (animation.getByName(AnimName) == null)
+		{
+			#if debug
+			FlxG.log.warn(['Such animation doesnt exist: ' + AnimName]);
+			#end
+			return;
+		}
+
 		animation.play(AnimName, Force, Reversed, Frame);
 
 		var daOffset = animOffsets.get(AnimName);

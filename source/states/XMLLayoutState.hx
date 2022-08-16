@@ -21,7 +21,7 @@ class XMLLayoutState extends FlxUIState
 
 	function getXMLId():String
 	{
-		throw 'assets/ui/mod_menu';
+		return 'assets/ui/mod_menu';
 	}
 
 	override function create()

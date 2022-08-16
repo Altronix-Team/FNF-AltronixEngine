@@ -2605,7 +2605,7 @@ class ChartingState extends MusicBeatState
 			}
 			}
 
-			if (PlayerSettings.player1.controls.BACK && !blockInput)
+			if (controls.BACK && !blockInput)
 				{
 					autosaveSong();
 					FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)), 0);

@@ -15,10 +15,14 @@ class KeyBinds
 
 	public static function resetBinds():Void
 	{
-		FlxG.save.data.upBind = "W";
-		FlxG.save.data.downBind = "S";
-		FlxG.save.data.leftBind = "A";
-		FlxG.save.data.rightBind = "D";
+		FlxG.save.data.upBindP2 = "W";
+		FlxG.save.data.downBindP2 = "S";
+		FlxG.save.data.leftBindP2 = "A";
+		FlxG.save.data.rightBindP2 = "D";
+		FlxG.save.data.upBind = "UP";
+		FlxG.save.data.downBind = "DOWN";
+		FlxG.save.data.leftBind = "LEFT";
+		FlxG.save.data.rightBind = "RIGHT";
 		FlxG.save.data.muteBind = "ZERO";
 		FlxG.save.data.volUpBind = "PLUS";
 		FlxG.save.data.volDownBind = "MINUS";
@@ -40,24 +44,45 @@ class KeyBinds
 
 	public static function keyCheck():Void
 	{
+		if (FlxG.save.data.upBindP2 == null)
+		{
+			FlxG.save.data.upBindP2 = "W";
+			trace("No UP");
+		}
+		if (FlxG.save.data.downBindP2 == null)
+		{
+			FlxG.save.data.downBindP2 = "S";
+			trace("No DOWN");
+		}
+		if (FlxG.save.data.leftBindP2 == null)
+		{
+			FlxG.save.data.leftBindP2 = "A";
+			trace("No LEFT");
+		}
+		if (FlxG.save.data.rightBindP2 == null)
+		{
+			FlxG.save.data.rightBindP2 = "D";
+			trace("No RIGHT");
+		}
+
 		if (FlxG.save.data.upBind == null)
 		{
-			FlxG.save.data.upBind = "W";
+			FlxG.save.data.upBind = "UP";
 			trace("No UP");
 		}
 		if (FlxG.save.data.downBind == null)
 		{
-			FlxG.save.data.downBind = "S";
+			FlxG.save.data.downBind = "DOWN";
 			trace("No DOWN");
 		}
 		if (FlxG.save.data.leftBind == null)
 		{
-			FlxG.save.data.leftBind = "A";
+			FlxG.save.data.leftBind = "LEFT";
 			trace("No LEFT");
 		}
 		if (FlxG.save.data.rightBind == null)
 		{
-			FlxG.save.data.rightBind = "D";
+			FlxG.save.data.rightBind = "RIGHT";
 			trace("No RIGHT");
 		}
 

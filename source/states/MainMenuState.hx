@@ -168,10 +168,10 @@ class MainMenuState extends MusicBeatState
 		gamever.setFormat(Paths.font(LanguageStuff.fontName), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(gamever);
 
-		if (FlxG.save.data.dfjk)
+		/*if (FlxG.save.data.dfjk)
 			controls.setKeyboardScheme(KeyboardScheme.Solo, true);
 		else
-			controls.setKeyboardScheme(KeyboardScheme.Duo(true), true);
+			controls.setKeyboardScheme(KeyboardScheme.Duo(true), true);*/
 
 		changeItem();
 

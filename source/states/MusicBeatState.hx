@@ -92,6 +92,8 @@ class MusicBeatState extends FlxUIState
 
 		camBeat = FlxG.camera;
 
+		FlxG.watch.addMouse();
+
 		FlxG.sound.volumeHandler = volumeHandler;
 
 		if (transIn != null)

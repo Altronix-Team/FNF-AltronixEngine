@@ -21,7 +21,7 @@ import polymod.Polymod.ModMetadata;
 import gameplayStuff.Character;
 import gameplayStuff.SongMetadata;
 
-class ModMenuState extends XMLLayoutState // extends MusicBeatState
+class ModMenuState extends XMLLayoutState
 {
 	var loadAllButton:FlxUIButton;
 	var unloadAllButton:FlxUIButton;
@@ -195,8 +195,15 @@ class ModMenuState extends XMLLayoutState // extends MusicBeatState
 		Debug.logInfo('Saving mod configuration and continuing to game...');
 		var loadedModIds:Array<String> = loadedModsUI.listCurrentMods().map(function(mod:ModMetadata) return mod.id);
 		var modConfigStr = loadedModIds.join('~');
+		if (modConfigStr != '' && modConfigStr != null){
 		FlxG.save.data.modConfig = modConfigStr;
 		FlxG.save.flush();
+		}
+		else
+		{
+			Debug.logWarn('mod list is empty or null, thats bad');
+			return;
+		}
 	}
 
 	function loadMainGame()

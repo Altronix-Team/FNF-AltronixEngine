@@ -33,6 +33,18 @@ enum abstract Action(String) to String from String
 	var RESET = "reset";
 	var CHEAT = "cheat";
 	var ATTACK = "attack";
+	var UPP2 = "w";
+	var LEFTP2 = "a";
+	var RIGHTP2 = "d";
+	var DOWNP2 = "s";
+	var UP_PP2 = "w-press";
+	var LEFT_PP2 = "a-press";
+	var RIGHT_PP2 = "d-press";
+	var DOWN_PP2 = "s-press";
+	var UP_RP2 = "w-release";
+	var LEFT_RP2 = "a-release";
+	var RIGHT_RP2 = "d-release";
+	var DOWN_RP2 = "s-release";
 }
 #else
 @:enum
@@ -56,6 +68,18 @@ abstract Action(String) to String from String
 	var RESET = "reset";
 	var CHEAT = "cheat";
 	var ATTACK = "attack";
+	var UPP2 = "w";
+	var LEFTP2 = "a";
+	var RIGHTP2 = "d";
+	var DOWNP2 = "s";
+	var UP_PP2 = "w-press";
+	var LEFT_PP2 = "a-press";
+	var RIGHT_PP2 = "d-press";
+	var DOWN_PP2 = "s-press";
+	var UP_RP2 = "w-release";
+	var LEFT_RP2 = "a-release";
+	var RIGHT_RP2 = "d-release";
+	var DOWN_RP2 = "s-release";
 }
 #end
 
@@ -76,6 +100,10 @@ enum Control
 	LEFT;
 	RIGHT;
 	DOWN;
+	UPP2;
+	LEFTP2;
+	RIGHTP2;
+	DOWNP2;
 	RESET;
 	ACCEPT;
 	BACK;
@@ -116,6 +144,19 @@ class Controls extends FlxActionSet
 	var _reset = new FlxActionDigital(Action.RESET);
 	var _cheat = new FlxActionDigital(Action.CHEAT);
 	var _attack = new FlxActionDigital(Action.ATTACK);
+
+	var _upP2 = new FlxActionDigital(Action.UPP2);
+	var _leftP2 = new FlxActionDigital(Action.LEFTP2);
+	var _rightP2 = new FlxActionDigital(Action.RIGHTP2);
+	var _downP2 = new FlxActionDigital(Action.DOWNP2);
+	var _upPP2 = new FlxActionDigital(Action.UP_PP2);
+	var _leftPP2 = new FlxActionDigital(Action.LEFT_PP2);
+	var _rightPP2 = new FlxActionDigital(Action.RIGHT_PP2);
+	var _downPP2 = new FlxActionDigital(Action.DOWN_PP2);
+	var _upRP2 = new FlxActionDigital(Action.UP_RP2);
+	var _leftRP2 = new FlxActionDigital(Action.LEFT_RP2);
+	var _rightRP2 = new FlxActionDigital(Action.RIGHT_RP2);
+	var _downRP2 = new FlxActionDigital(Action.DOWN_RP2);
 
 	#if (haxe >= "4.0.0")
 	var byName:Map<String, FlxActionDigital> = [];
@@ -216,6 +257,66 @@ class Controls extends FlxActionSet
 	inline function get_ATTACK()
 		return _attack.check();
 
+	public var UPP2(get, never):Bool;
+
+	inline function get_UPP2()
+		return _upP2.check();
+
+	public var LEFTP2(get, never):Bool;
+
+	inline function get_LEFTP2()
+		return _leftP2.check();
+
+	public var RIGHTP2(get, never):Bool;
+
+	inline function get_RIGHTP2()
+		return _rightP2.check();
+
+	public var DOWNP2(get, never):Bool;
+
+	inline function get_DOWNP2()
+		return _downP2.check();
+
+	public var UP_PP2(get, never):Bool;
+
+	inline function get_UP_PP2()
+		return _upPP2.check();
+
+	public var LEFT_PP2(get, never):Bool;
+
+	inline function get_LEFT_PP2()
+		return _leftPP2.check();
+
+	public var RIGHT_PP2(get, never):Bool;
+
+	inline function get_RIGHT_PP2()
+		return _rightPP2.check();
+
+	public var DOWN_PP2(get, never):Bool;
+
+	inline function get_DOWN_PP2()
+		return _downPP2.check();
+
+	public var UP_RP2(get, never):Bool;
+
+	inline function get_UP_RP2()
+		return _upRP2.check();
+
+	public var LEFT_RP2(get, never):Bool;
+
+	inline function get_LEFT_RP2()
+		return _leftRP2.check();
+
+	public var RIGHT_RP2(get, never):Bool;
+
+	inline function get_RIGHT_RP2()
+		return _rightRP2.check();
+
+	public var DOWN_RP2(get, never):Bool;
+
+	inline function get_DOWN_RP2()
+		return _downRP2.check();
+
 	#if (haxe >= "4.0.0")
 	public function new(name, scheme = None)
 	{
@@ -239,6 +340,19 @@ class Controls extends FlxActionSet
 		add(_reset);
 		add(_cheat);
 		add(_attack);
+
+		add(_upP2);
+		add(_leftP2);
+		add(_rightP2);
+		add(_downP2);
+		add(_upPP2);
+		add(_leftPP2);
+		add(_rightPP2);
+		add(_downPP2);
+		add(_upRP2);
+		add(_leftRP2);
+		add(_rightRP2);
+		add(_downRP2);
 
 		for (action in digitalActions)
 			byName[action.name] = action;
@@ -268,6 +382,19 @@ class Controls extends FlxActionSet
 		add(_reset);
 		add(_cheat);
 		add(_attack);
+
+		add(_upP2);
+		add(_leftP2);
+		add(_rightP2);
+		add(_downP2);
+		add(_upPP2);
+		add(_leftPP2);
+		add(_rightPP2);
+		add(_downPP2);
+		add(_upRP2);
+		add(_leftRP2);
+		add(_rightRP2);
+		add(_downRP2);
 
 		for (action in digitalActions)
 			byName[action.name] = action;
@@ -323,6 +450,10 @@ class Controls extends FlxActionSet
 			case RESET: _reset;
 			case CHEAT: _cheat;
 			case ATTACK: _attack;
+			case UPP2: _upP2;
+			case DOWNP2: _downP2;
+			case LEFTP2: _leftP2;
+			case RIGHTP2: _rightP2;
 		}
 	}
 
@@ -370,6 +501,22 @@ class Controls extends FlxActionSet
 				func(_cheat, JUST_PRESSED);
 			case ATTACK:
 				func(_attack, JUST_PRESSED);
+			case UPP2:
+				func(_upP2, PRESSED);
+				func(_upPP2, JUST_PRESSED);
+				func(_upRP2, JUST_RELEASED);
+			case LEFTP2:
+				func(_leftP2, PRESSED);
+				func(_leftPP2, JUST_PRESSED);
+				func(_leftRP2, JUST_RELEASED);
+			case RIGHTP2:
+				func(_rightP2, PRESSED);
+				func(_rightPP2, JUST_PRESSED);
+				func(_rightRP2, JUST_RELEASED);
+			case DOWNP2:
+				func(_downP2, PRESSED);
+				func(_downPP2, JUST_PRESSED);
+				func(_downRP2, JUST_RELEASED);
 		}
 	}
 
@@ -505,6 +652,34 @@ class Controls extends FlxActionSet
 	public function setKeyboardScheme(scheme:KeyboardScheme, reset = true)
 	{
 		loadKeyBinds();
+		loadKeyBindsP2();
+	}
+
+	public function loadKeyBindsP2()
+	{
+		// trace(FlxKey.fromString(FlxG.save.data.upBind));
+
+		removeKeyboard();
+		if (gamepadsAdded.length != 0)
+			removeGamepad();
+		KeyBinds.keyCheck();
+
+		var buttons = new Map<Control, Array<FlxGamepadInputID>>();
+
+		if (KeyBinds.gamepad)
+		{
+			buttons.set(Control.UPP2, [FlxGamepadInputID.fromString(FlxG.save.data.upBindP2)]);
+			buttons.set(Control.LEFTP2, [FlxGamepadInputID.fromString(FlxG.save.data.leftBindP2)]);
+			buttons.set(Control.DOWNP2, [FlxGamepadInputID.fromString(FlxG.save.data.downBindP2)]);
+			buttons.set(Control.RIGHTP2, [FlxGamepadInputID.fromString(FlxG.save.data.rightBindP2)]);
+
+			addGamepad(0, buttons);
+		}
+
+		inline bindKeys(Control.UPP2, [FlxKey.fromString(FlxG.save.data.upBindP2), FlxKey.W]);
+		inline bindKeys(Control.DOWNP2, [FlxKey.fromString(FlxG.save.data.downBindP2), FlxKey.S]);
+		inline bindKeys(Control.LEFTP2, [FlxKey.fromString(FlxG.save.data.leftBindP2), FlxKey.A]);
+		inline bindKeys(Control.RIGHTP2, [FlxKey.fromString(FlxG.save.data.rightBindP2), FlxKey.D]);
 	}
 
 	public function loadKeyBinds()

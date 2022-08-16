@@ -34,7 +34,10 @@ class ModCore
 			Debug.logInfo("Initializing ModCore (using user config)...");
 			Debug.logTrace('  User mod config: ${FlxG.save.data.modConfig}');
 			var userModConfig = getConfiguredMods();
-			loadModsById(userModConfig);
+			if (userModConfig != null && !userModConfig.contains(''))
+				loadModsById(userModConfig);
+			else
+				Debug.logError('Prevent crash with no mods to load');
 		#else
 			Debug.logInfo("ModCore not initialized; not supported on this platform.");
 		#end

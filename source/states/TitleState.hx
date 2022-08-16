@@ -1,8 +1,5 @@
 package states;
 
-#if FEATURE_STEPMANIA
-import smTools.SMFile;
-#end
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -123,7 +120,8 @@ class TitleState extends MusicBeatState
 			#if FEATURE_MODCORE
 				modsToLoad = ModCore.getConfiguredMods();
 				configFound = (modsToLoad != null && modsToLoad.length > 0);
-				ModCore.loadConfiguredMods();
+				if (configFound)
+					ModCore.loadConfiguredMods();
 			#else
 				configFound = false;	
 			#end
@@ -156,7 +154,6 @@ class TitleState extends MusicBeatState
 		// DEBUG BULLSHIT
 
 		super.create();
-
 
 		if (FlxG.save.data.fullscreenOnStart)
 		{
@@ -280,7 +277,11 @@ class TitleState extends MusicBeatState
 		FlxG.mouse.visible = false;
 
 		if (initialized)
+		{
+			if (!FlxG.sound.music.playing)
+				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)), 0);
 			skipIntro();
+		}
 		else
 		{
 			var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);

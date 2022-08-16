@@ -1,5 +1,6 @@
 package states;
 
+import gameplayStuff.PlayStateChangeables;
 import openfl.utils.Future;
 import openfl.media.Sound;
 import flixel.system.FlxSound;
@@ -51,6 +52,7 @@ class FreeplayState extends MusicBeatState
 	var diffText:FlxText;
 	var diffCalcText:FlxText;
 	var previewtext:FlxText;
+	var twoPlayersMode:FlxText;
 	var lerpScore:Int = 0;
 	var intendedScore:Int = 0;
 	var combo:String = '';
@@ -164,7 +166,7 @@ class FreeplayState extends MusicBeatState
 		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
 		// scoreText.alignment = RIGHT;
 
-		var scoreBG:FlxSprite = new FlxSprite(scoreText.x - 6, 0).makeGraphic(Std.int(FlxG.width * 0.4), 135, 0xFF000000);
+		var scoreBG:FlxSprite = new FlxSprite(scoreText.x - 6, 0).makeGraphic(Std.int(FlxG.width * 0.4), 165, 0xFF000000);
 		scoreBG.alpha = 0.6;
 		add(scoreBG);
 
@@ -179,6 +181,10 @@ class FreeplayState extends MusicBeatState
 		previewtext = new FlxText(scoreText.x, scoreText.y + 96, 0, "Speed: " + FlxMath.roundDecimal(rate, 2) + "x", 24);
 		previewtext.font = scoreText.font;
 		add(previewtext);
+
+		twoPlayersMode = new FlxText(scoreText.x, previewtext.y + 36, 0, "Two Players Mode: " + Std.string(PlayStateChangeables.twoPlayersMode), 24);
+		twoPlayersMode.font = scoreText.font;
+		add(twoPlayersMode);
 
 		comboText = new FlxText(diffText.x + 100, diffText.y, 0, "", 24);
 		comboText.font = diffText.font;
@@ -517,6 +523,19 @@ class FreeplayState extends MusicBeatState
 				}
 
 				previewtext.text = "Speed: " + FlxMath.roundDecimal(rate, 2) + "x";
+			}
+			else if (FlxG.keys.pressed.CONTROL)
+			{
+				if (FlxG.keys.justPressed.LEFT)
+				{
+					PlayStateChangeables.twoPlayersMode = !PlayStateChangeables.twoPlayersMode;
+					twoPlayersMode.text = "Two Players Mode: " + Std.string(PlayStateChangeables.twoPlayersMode);
+				}
+				if (FlxG.keys.justPressed.RIGHT)
+				{
+					PlayStateChangeables.twoPlayersMode = !PlayStateChangeables.twoPlayersMode;
+					twoPlayersMode.text = "Two Players Mode: " + Std.string(PlayStateChangeables.twoPlayersMode);
+				}
 			}
 			else
 			{

@@ -89,6 +89,8 @@ class Note extends FlxSprite
 	public var ignoreNote:Bool = false;
 	public var missHealth:Float = 0.0475;
 
+	public var hitByP2:Bool = false;
+
 	public var animSuffix:String = '';
 
 	var animName:String = null;

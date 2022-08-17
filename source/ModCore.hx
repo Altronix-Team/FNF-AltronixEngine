@@ -34,10 +34,7 @@ class ModCore
 			Debug.logInfo("Initializing ModCore (using user config)...");
 			Debug.logTrace('  User mod config: ${FlxG.save.data.modConfig}');
 			var userModConfig = getConfiguredMods();
-			if (userModConfig != null && !userModConfig.contains(''))
-				loadModsById(userModConfig);
-			else
-				Debug.logError('Prevent crash with no mods to load');
+			loadModsById(userModConfig);
 		#else
 			Debug.logInfo("ModCore not initialized; not supported on this platform.");
 		#end
@@ -127,19 +124,29 @@ class ModCore
 	#if FEATURE_MODCORE
 	public static function loadModsById(ids:Array<String>)
 	{
+		var modsToLoad:Array<String> = [];
+			
 		if (ids.length == 0)
 		{
 			Debug.logWarn('You attempted to load zero mods.');
 		}
 		else
 		{
-			Debug.logInfo('Attempting to load ${ids.length} mods...');
+			if (ids[0] != '' && ids != null)
+			{
+				Debug.logInfo('Attempting to load ${ids.length} mods...');
+				modsToLoad = ids;
+			}
+			else
+			{
+				modsToLoad = [];
+			}
 		}
 		var loadedModList = polymod.Polymod.init({
 			// Root directory for all mods.
 			modRoot: MOD_DIRECTORY,
 			// The directories for one or more mods to load.
-			dirs: ids,
+			dirs: modsToLoad,
 			// Framework being used to load assets. We're using a CUSTOM one which extends the OpenFL one.
 			framework: CUSTOM,
 			// The current version of our API.
@@ -166,7 +173,7 @@ class ModCore
 			// Parsing rules for various data formats.
 			parseRules: buildParseRules(),
 				
-			useScriptedClasses: true,
+			//useScriptedClasses: true,
 		});
 	
 		if (loadedModList == null)
@@ -177,11 +184,11 @@ class ModCore
 		{
 			if (loadedModList.length == 0)
 			{
-				Debug.logInfo('Mod loading complete. We loaded no mods / ${ids.length} mods.');
+				Debug.logInfo('Mod loading complete. We loaded no mods / ${modsToLoad.length} mods.');
 			}
 			else
 			{
-				Debug.logInfo('Mod loading complete. We loaded ${loadedModList.length} / ${ids.length} mods.');
+				Debug.logInfo('Mod loading complete. We loaded ${loadedModList.length} / ${modsToLoad.length} mods.');
 			}
 		}
 

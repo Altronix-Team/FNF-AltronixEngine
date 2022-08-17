@@ -196,14 +196,11 @@ class ModMenuState extends XMLLayoutState
 		var loadedModIds:Array<String> = loadedModsUI.listCurrentMods().map(function(mod:ModMetadata) return mod.id);
 		var modConfigStr = loadedModIds.join('~');
 		if (modConfigStr != '' && modConfigStr != null){
-		FlxG.save.data.modConfig = modConfigStr;
-		FlxG.save.flush();
-		}
-		else
-		{
-			Debug.logWarn('mod list is empty or null, thats bad');
-			return;
-		}
+			FlxG.save.data.modConfig = modConfigStr;
+			FlxG.save.flush();}
+		else{
+			FlxG.save.data.modConfig = [];
+			FlxG.save.flush();}
 	}
 
 	function loadMainGame()

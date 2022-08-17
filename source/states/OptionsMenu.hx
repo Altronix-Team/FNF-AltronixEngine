@@ -179,7 +179,9 @@ class OptionsMenu extends FlxSubState
 				new MuteBind(LanguageStuff.getOptionDesc("$MUTEKEYBIND")),
 				new VolUpBind(LanguageStuff.getOptionDesc("$VOLUPKEYBIND")),
 				new VolDownBind(LanguageStuff.getOptionDesc("$VOLDOWNKEYBIND")),
-				new AttackKeybind(LanguageStuff.getOptionDesc("$ATTACKKEYBIND"))], true),
+				new AttackKeybind(LanguageStuff.getOptionDesc("$ATTACKKEYBIND")),
+				new LeftP2Keybind(LanguageStuff.getOptionDesc("$LEFTKEYBIND")), new DownP2Keybind(LanguageStuff.getOptionDesc("$DOWNKEYBIND")),
+				new UpP2Keybind(LanguageStuff.getOptionDesc("$UPKEYBIND")), new RightP2Keybind(LanguageStuff.getOptionDesc("$RIGHTKEYBIND"))], true),
 			new OptionCata(-1, 125, LanguageStuff.getOptionDesc("$JUDGEMENTS_CATA"), [
 				new SickMSOption(LanguageStuff.getOptionDesc("$SICKMS_OPTION")),
 				new GoodMsOption(LanguageStuff.getOptionDesc("$GOODMS_OPTION")),

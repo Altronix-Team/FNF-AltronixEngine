@@ -359,7 +359,7 @@ class Note extends FlxSprite
 			reloadNote(texture);
 		}
 
-		if (mustPress)
+		if (mustPress || PlayStateChangeables.twoPlayersMode)
 		{
 			if (isSustainNote)
 			{
@@ -377,8 +377,9 @@ class Note extends FlxSprite
 				else
 					canBeHit = false;
 			}
-			/*if (strumTime - Conductor.songPosition < (-166 * Conductor.timeScale) && !wasGoodHit)
-				tooLate = true; */
+
+			if (strumTime - Conductor.songPosition < (((-166 * Conductor.timeScale) / (PlayState.songMultiplier < 1 ? PlayState.songMultiplier : 1))) && !wasGoodHit)
+				tooLate = true;
 		}
 		else
 		{

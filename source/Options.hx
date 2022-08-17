@@ -487,6 +487,146 @@ class FullscreenBind extends Option
 	}
 }
 
+class UpP2Keybind extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+		acceptType = true;
+	}
+
+	public override function onType(text:String)
+	{
+		if (waitingType)
+		{
+			FlxG.save.data.upBindP2 = text;
+			waitingType = false;
+		}
+	}
+
+	public override function press()
+	{
+		Debug.logTrace("keybind change");
+		waitingType = !waitingType;
+
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		if (!FlxG.save.data.language)
+			return "UP (P2): " + (waitingType ? "> " + FlxG.save.data.upBindP2 + " <" : FlxG.save.data.upBindP2) + "";
+		else
+			return "Вверх (игрок 2): " + (waitingType ? "> " + FlxG.save.data.upBindP2 + " <" : FlxG.save.data.upBindP2) + "";
+	}
+}
+
+class DownP2Keybind extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+		acceptType = true;
+	}
+
+	public override function onType(text:String)
+	{
+		if (waitingType)
+		{
+			FlxG.save.data.downBindP2 = text;
+			waitingType = false;
+		}
+	}
+
+	public override function press()
+	{
+		Debug.logTrace("keybind change");
+		waitingType = !waitingType;
+
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		if (!FlxG.save.data.language)
+			return "DOWN (P2): " + (waitingType ? "> " + FlxG.save.data.downBindP2 + " <" : FlxG.save.data.downBindP2) + "";
+		else
+			return "Вниз (игрок 2): " + (waitingType ? "> " + FlxG.save.data.downBindP2 + " <" : FlxG.save.data.downBindP2) + "";
+	}
+}
+
+class RightP2Keybind extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+		acceptType = true;
+	}
+
+	public override function onType(text:String)
+	{
+		if (waitingType)
+		{
+			FlxG.save.data.rightBindP2 = text;
+			waitingType = false;
+		}
+	}
+
+	public override function press()
+	{
+		Debug.logTrace("keybind change");
+		waitingType = !waitingType;
+
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		if (!FlxG.save.data.language)
+			return "RIGHT (P2): " + (waitingType ? "> " + FlxG.save.data.rightBindP2 + " <" : FlxG.save.data.rightBindP2) + "";
+		else
+			return "Вправо (игрок 2): " + (waitingType ? "> " + FlxG.save.data.rightBindP2 + " <" : FlxG.save.data.rightBindP2) + "";
+	}
+}
+
+class LeftP2Keybind extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+		acceptType = true;
+	}
+
+	public override function onType(text:String)
+	{
+		if (waitingType)
+		{
+			FlxG.save.data.leftBindP2 = text;
+			waitingType = false;
+		}
+	}
+
+	public override function press()
+	{
+		Debug.logTrace("keybind change");
+		waitingType = !waitingType;
+
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		if (!FlxG.save.data.language)
+			return "LEFT (P2): " + (waitingType ? "> " + FlxG.save.data.leftBindP2 + " <" : FlxG.save.data.leftBindP2) + "";
+		else
+			return "Влево (игрок 2): " + (waitingType ? "> " + FlxG.save.data.leftBindP2 + " <" : FlxG.save.data.leftBindP2) + "";
+	}
+}
+
 class SickMSOption extends Option
 {
 	public function new(desc:String)

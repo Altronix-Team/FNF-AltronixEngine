@@ -1910,11 +1910,21 @@ class BotPlay extends Option
 	public function new(desc:String)
 	{
 		super();
-		description = desc;
+
+		if (gameplayStuff.PlayStateChangeables.twoPlayersMode)
+			if (!FlxG.save.data.language)
+				description = "This option cannot be toggled while you playing two players mode.";
+			else
+				description = "Эта опция не может быть переключена в режиме двух игроков";
+		else
+			description = desc;
 	}
 
 	public override function left():Bool
 	{
+		if (gameplayStuff.PlayStateChangeables.twoPlayersMode)
+			return false;
+		
 		FlxG.save.data.botplay = !FlxG.save.data.botplay;
 		trace('BotPlay : ' + FlxG.save.data.botplay);
 		display = updateDisplay();

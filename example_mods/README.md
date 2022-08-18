@@ -56,7 +56,7 @@ Here's what the mod folder might look like for a simple "XXX over Boyfriend" mod
 
 ```
 <modRoot> (name this anything)
-|- _polymod_meta.json
+|- modMeta.json
 |- images
   |- characters
     |- BOYFRIEND.xml
@@ -75,7 +75,7 @@ To perfrom asset appending, place the assets in the relevant subfolder under the
 
 ```
 <modRoot> (name this anything)
-|- _polymod_meta.json
+|- modMeta.json
 |- _append
   |- data
     |- introText.txt

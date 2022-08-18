@@ -14,10 +14,10 @@ One day, we'll probably have a modloader that lets you control what order mods a
 
 You will want several pieces of metadata in order for Polymod to identify and display your mod. Note that only one of these is mandatory.
 
-* _polymod_meta.json
+* modMeta.json
   * This file tells Polymod all about your mod, such as name and description. This file is **MANDATORY**.
   * Learn more about how to write this file below.
-* _polymod_icon.png
+* modIcon.png
   * This icon will be used by mod browsers in the future. Make sure to provide one, 256x256 should be pretty good.
 * LICENSE.txt
   * This is the general sofware license used by the mod. Without a license, your mod is under All Rights Reserved.
@@ -26,10 +26,10 @@ You will want several pieces of metadata in order for Polymod to identify and di
   * Creative Commons is recommended.
 * CODE_LICENSE.txt (for code/script-specific licensing terms.
   * GPLv3, Apache, or MIT are recommended.
-* _polymod_pack.txt
+* modPack.txt
   * Used for modpacks.
 
-### _polymod_meta.json
+### modMeta.json
 
 Here is an example of a valid mod metadata file.
 

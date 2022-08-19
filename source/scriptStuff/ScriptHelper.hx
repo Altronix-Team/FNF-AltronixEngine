@@ -82,6 +82,7 @@ class ScriptHelper
 		expose.set('get', get);
 		expose.set('exists', exists);
 		expose.set('getEngineFont', getEngineFont);
+		expose.set('createRuntimeShader', createRuntimeShader);
 		
 		expose.set("getSparrowAtlas", Paths.getSparrowAtlas);
 

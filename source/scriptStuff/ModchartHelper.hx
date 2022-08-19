@@ -1,5 +1,7 @@
 package scriptStuff;
 
+import gameplayStuff.Boyfriend;
+import gameplayStuff.Character;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
 import flixel.group.FlxGroup.FlxTypedGroup;
@@ -14,6 +16,9 @@ class ModchartHelper extends FlxTypedGroup<FlxBasic>
 {
 	public var scriptHelper:ScriptHelper;
 	var playState:PlayState;
+	
+	var cachedChars:Map<String, Character> = [];
+	var cachedBFs:Map<String, Boyfriend> = [];
 
 	public function new(path:String, state:PlayState)
 	{
@@ -59,6 +64,8 @@ class ModchartHelper extends FlxTypedGroup<FlxBasic>
 		scriptHelper.expose.set("camHUD", playState.camHUD);
 		scriptHelper.expose.set("enemyStrumLine", playState.opponentStrums);
 		scriptHelper.expose.set("playerStrumLine", playState.playerStrums);
+		scriptHelper.expose.set("cacheCharacter", cacheCharacter);
+		scriptHelper.expose.set("changeCharacter", changeCharacter);
 
 		scriptHelper.expose.set("setObjectCam", setObjectCam);
 
@@ -74,6 +81,62 @@ class ModchartHelper extends FlxTypedGroup<FlxBasic>
 
 		if (scriptHelper.get("onUpdate") != null)
 			scriptHelper.get("onUpdate")(elapsed);
+	}
+
+	public function changeCharacter(tag:String = 'bf', charName:String = 'bf')
+	{
+		if (tag == 'bf')
+		{
+			if (cachedBFs.get(charName) != null)
+			{
+				PlayState.instance.changeCharacterToCached(tag, cachedBFs.get(charName));
+			}
+			else
+			{
+				Debug.logError('This character not cached');
+				return;
+			}
+		}
+		else
+		{
+			if (cachedChars.get(charName) != null)
+			{
+				PlayState.instance.changeCharacterToCached(tag, cachedChars.get(charName));
+			}
+			else
+			{
+				Debug.logError('This character not cached');
+				return;
+			}
+		}	
+	}
+
+	public function cacheCharacter(x:Float = 0, y:Float = 0, charName:String = 'bf', charType:String = 'bf')
+	{
+		if (charType == 'bf')
+		{
+			var newChar:Boyfriend = new Boyfriend(x, y, charName);
+			cachedBFs.set(charName, newChar);
+
+			if (cachedBFs.get(charName) == null)
+			{
+				Debug.logError('Error with character caching $charName');
+				cachedBFs.remove(charName);
+				return;
+			}
+		}
+		else
+		{
+			var newChar:Character = new Character(x, y, charName);
+			cachedChars.set(charName, newChar);
+
+			if (cachedChars.get(charName) == null)
+			{
+				Debug.logError('Error with character caching $charName');
+				cachedChars.remove(charName);
+				return;
+			}
+		}	
 	}
 
 	public function startLuaScript(scriptName:String) //In Psych Engine you can start hscript from lua, but in Altronix we have another rules XD
@@ -243,7 +306,7 @@ class ModchartHelper extends FlxTypedGroup<FlxBasic>
 			scriptHelper.get("onUpdatePost")(elapsed);
 	}
 
-	public function onEvent(eventType:String, value1:Dynamic, value2:Dynamic)
+	public function onEvent(eventType:String, value1:Dynamic, value2:Dynamic = '')
 	{
 		if (scriptHelper.get("onEvent") != null)
 			scriptHelper.get("onEvent")(eventType, value1, value2);

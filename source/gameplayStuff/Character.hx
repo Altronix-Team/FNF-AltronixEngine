@@ -78,7 +78,7 @@ class Character extends FlxSprite
 			flipX = !flipX;
 
 			// Doesn't flip for BF, since his are already in the right place???
-			if (!curCharacter.startsWith('bf'))
+			/*if (!curCharacter.startsWith('bf'))
 			{
 				if (animation.getByName('singRIGHT') != null && animation.getByName('singLEFT') != null){
 					var oldRight = animation.getByName('singRIGHT').frames;
@@ -93,7 +93,7 @@ class Character extends FlxSprite
 					animation.getByName('singRIGHTmiss').frames = animation.getByName('singLEFTmiss').frames;
 					animation.getByName('singLEFTmiss').frames = oldMiss;
 				}
-			}
+			}*/
 		}
 	}
 

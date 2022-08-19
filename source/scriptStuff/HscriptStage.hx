@@ -48,7 +48,6 @@ class HscriptStage extends ModchartHelper
 		scriptHelper.expose.set("addDadGroup", addDadGroup);
 		scriptHelper.expose.set("addBoyfriendGroup", addBoyfriendGroup);
 
-
 		this.state = state;
 		super(path, state);
 	}
@@ -84,31 +83,6 @@ class HscriptStage extends ModchartHelper
 	{
 		add(boyfriendGroup);
 		addedCharacterGroups.push(boyfriendGroup);
-	}
-
-	override public function update(elapsed:Float)
-	{
-		super.update(elapsed);
-	}
-
-	override public function onBeat(beat:Int)
-	{
-		super.onBeat(beat);
-	}
-
-	override public function onStep(step:Int)
-	{
-		super.onStep(step);
-	}
-
-	override public function opponentNoteHit(noteIndex:Float, noteData:Float, noteType:String, sustainNote:Bool)
-	{
-		super.opponentNoteHit(noteIndex, noteData, noteType, sustainNote);
-	}
-
-	override public function goodNoteHit(noteIndex:Float, noteData:Float, noteType:String, sustainNote:Bool)
-	{
-		super.goodNoteHit(noteIndex, noteData, noteType, sustainNote);
 	}
 
 	public function getCharacterByIndex(whose:Int):gameplayStuff.Character

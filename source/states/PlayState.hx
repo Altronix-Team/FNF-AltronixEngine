@@ -94,6 +94,7 @@ import gameplayStuff.TimingStruct;
 import scriptStuff.ModchartHelper;
 import scriptStuff.HscriptStage;
 import scriptStuff.ScriptHelper.ScriptException;
+import scriptStuff.PolymodHscriptStage;
 #if desktop
 import DiscordClient;
 #end
@@ -869,7 +870,7 @@ class PlayState extends MusicBeatState
 			{
 				try
 				{
-					hscriptStage = new HscriptStage('assets/scripts/stages/${SONG.stage}.hscript', this);
+					hscriptStage = /*PolymodHscriptStage.init(SONG.stage, FlxG.random.int());*/new HscriptStage('assets/scripts/stages/${SONG.stage}.hscript', this);
 					add(hscriptStage);
 					hscriptFiles.push(hscriptStage);
 					hscriptStageCheck = true;
@@ -882,7 +883,7 @@ class PlayState extends MusicBeatState
 						return;
 					}
 					else
-						throw e;
+						Debug.logError(e);
 				}
 			}	
 			#if LUA_ALLOWED
@@ -4920,6 +4921,151 @@ class PlayState extends MusicBeatState
 				gfGroup.clear();
 				gf = null;
 				gf = new Character(GF_X, GF_Y, newCharName);
+				gf.alpha = 0.0000001;
+				gfGroup.add(gf);
+				gf.alpha = 1;
+
+				gf.setPosition(GF_X, GF_Y);
+				gf.x += gf.positionArray[0];
+				gf.y += gf.positionArray[1];
+
+				setOnHscript('gfName', gf.curCharacter);
+
+				if (hscriptStage != null)
+				{
+					hscriptStage.gf = gf;
+					hscriptStage.gfGroup = gfGroup;
+				}
+
+				setOnLuas('gfName', gf.curCharacter);
+				if (gf.hasTrail)
+				{
+					if (FlxG.save.data.distractions)
+					{
+						if (!PlayStateChangeables.Optimize)
+						{
+							gfTrail = new FlxTrail(gf, null, 4, 24, 0.3, 0.069);
+							add(gfTrail);
+						}
+					}
+				}}
+				startCharacterLua(gf.curCharacter);
+				startCharacterHscript(gf.curCharacter);}
+		reloadHealthBarColors();
+		reloadIcons();
+	}
+
+	public function changeCharacterToCached(charType:String = 'bf', newChar:Dynamic)
+	{
+		if (newChar == null)
+		{
+			Debug.logError('Cached character is null');
+			return;
+		}
+
+		switch (charType){
+			case 'bf':{
+				if (boyfriend.hasTrail)
+				{
+					if (FlxG.save.data.distractions)
+					{
+						if (!PlayStateChangeables.Optimize)
+						{
+							remove(bfTrail);
+						}
+					}
+				}
+				boyfriendGroup.clear();
+				boyfriend = null;
+				boyfriend = newChar;
+				boyfriend.alpha = 0.0000001;
+				boyfriendGroup.add(boyfriend);
+				boyfriend.alpha = 1;
+
+				boyfriend.setPosition(BF_X, BF_Y);
+				boyfriend.x += boyfriend.positionArray[0];
+				boyfriend.y += boyfriend.positionArray[1];
+
+				setOnHscript('boyfriendName', boyfriend.curCharacter);
+
+				if (hscriptStage != null)
+				{
+					hscriptStage.boyfriend = boyfriend;
+					hscriptStage.boyfriendGroup = boyfriendGroup;
+				}
+
+				setOnLuas('boyfriendName', boyfriend.curCharacter);
+				if (boyfriend.hasTrail)
+				{
+					if (FlxG.save.data.distractions)
+					{
+						if (!PlayStateChangeables.Optimize)
+						{
+							bfTrail = new FlxTrail(boyfriend, null, 4, 24, 0.3, 0.069);
+							add(bfTrail);
+						}
+					}
+				}}
+				startCharacterLua(boyfriend.curCharacter);
+				startCharacterHscript(boyfriend.curCharacter);
+			case 'dad':{
+				if (dad.hasTrail)
+				{
+					if (FlxG.save.data.distractions)
+					{
+						if (!PlayStateChangeables.Optimize)
+						{
+							remove(dadTrail);
+						}
+					}
+				}
+				dadGroup.clear();
+				dad = null;
+				dad = newChar;
+				dad.alpha = 0.0000001;
+				dadGroup.add(dad);
+				dad.alpha = 1;
+
+				dad.setPosition(DAD_X, DAD_Y);
+				dad.x += dad.positionArray[0];
+				dad.y += dad.positionArray[1];
+
+				setOnHscript('dadName', dad.curCharacter);
+
+				if (hscriptStage != null)
+				{
+					hscriptStage.dad = dad;
+					hscriptStage.dadGroup = dadGroup;
+				}
+
+				setOnLuas('dadName', dad.curCharacter);
+				if (dad.hasTrail)
+				{
+					if (FlxG.save.data.distractions)
+					{
+						if (!PlayStateChangeables.Optimize)
+						{
+							dadTrail = new FlxTrail(dad, null, 4, 24, 0.3, 0.069);
+							add(dadTrail);
+						}
+					}
+				}}
+				startCharacterLua(dad.curCharacter);
+				startCharacterHscript(dad.curCharacter);
+			case 'gf':{
+				if (gf.hasTrail)
+				{
+					if (FlxG.save.data.distractions)
+					{
+						if (!PlayStateChangeables.Optimize)
+						{
+							remove(gfTrail);
+						}
+					}
+				}
+				gfGroup.clear();
+				gf = null;
+				gf = newChar;
 				gf.alpha = 0.0000001;
 				gfGroup.add(gf);
 				gf.alpha = 1;

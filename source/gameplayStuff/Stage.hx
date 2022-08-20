@@ -1,5 +1,6 @@
 package gameplayStuff;
 
+import flixel.addons.effects.chainable.FlxEffectSprite;
 import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.FlxBasic;
@@ -20,6 +21,7 @@ import flixel.util.FlxColor;
 import states.PlayState;
 import states.GameplayCustomizeState;
 import gameplayStuff.StageData;
+import WiggleEffect;
 #if sys
 import sys.FileSystem;
 #end
@@ -76,6 +78,8 @@ class Stage extends states.MusicBeatState
 	var grpLimoParticles:FlxTypedGroup<BGSprite>;
 	var limoKillingState:Int = 0;
 	var grpLimoDancers:FlxTypedGroup<BackgroundDancer>;
+
+	var wiggleShit:WiggleEffect;
 
 	public function new(daStage:String)
 	{
@@ -455,20 +459,36 @@ class Stage extends states.MusicBeatState
 				}
 			case 'schoolEvil':
 				{
-					var waveEffectBG = new FlxWaveEffect(FlxWaveMode.ALL, 2, -1, 3, 2);
-					var waveEffectFG = new FlxWaveEffect(FlxWaveMode.ALL, 2, -1, 5, 2);
-
 					var posX = 400;
 					var posY = 200;
 
-					var bg:FlxSprite = new FlxSprite(posX, posY);
+					//Animation is boring, lets use shaders!!!
+					/*var bg:FlxSprite = new FlxSprite(posX, posY);
 					bg.frames = Paths.getSparrowAtlas('weeb/animatedEvilSchool', 'week6');
 					bg.animation.addByPrefix('idle', 'background 2', 24);
 					bg.animation.play('idle');
 					bg.scrollFactor.set(0.8, 0.9);
 					bg.scale.set(6, 6);
 					swagBacks['bg'] = bg;
+					toAdd.push(bg);	*/
+					 
+					var bg:FlxSprite = new FlxSprite(posX + 10, posY + 165).loadGraphic(Paths.loadImage('weeb/evilSchoolBG'));
+					bg.scale.set(6, 6);
+					swagBacks['bg'] = bg;
 					toAdd.push(bg);	
+
+					var fg:FlxSprite = new FlxSprite(posX + 10, posY + 165).loadGraphic(Paths.loadImage('weeb/evilSchoolFG'));
+					fg.scale.set(6, 6);
+					swagBacks['fg'] = fg;
+					toAdd.push(fg);	
+
+					var effectType:Array<String> = ['DREAMY', 'WAVY', 'HEAT_WAVE_HORIZONTAL', 'HEAT_WAVE_VERTICAL', 'FLAG'];
+
+					wiggleShit = new WiggleEffect();
+					wiggleShit.effectType = effectType[FlxG.random.int(0, effectType.length - 1)];
+					wiggleShit.waveAmplitude = 0.01;
+					wiggleShit.waveFrequency = 60;
+					wiggleShit.waveSpeed = 0.8;
 
 					var bgGhouls:FlxSprite = new FlxSprite(-100, 190);
 					bgGhouls.frames = Paths.getSparrowAtlas('weeb/bgGhouls', 'week6');
@@ -483,6 +503,16 @@ class Stage extends states.MusicBeatState
 						swagBacks['bgGhouls'] = bgGhouls;
 						toAdd.push(bgGhouls);	
 					}
+
+					if (FlxG.save.data.distractions)
+					{
+						if (!PlayStateChangeables.Optimize)
+						{
+							bg.shader = wiggleShit.shader;
+							fg.shader = wiggleShit.shader;
+							bgGhouls.shader = wiggleShit.shader;
+						}
+					}					
 				}
 			case 'warzone':
 				{
@@ -764,6 +794,9 @@ class Stage extends states.MusicBeatState
 							trainFrameTiming = 0;
 						}
 					}
+
+				case 'schoolEvil':
+					wiggleShit.update(elapsed);
 					
 				case 'warzone':
 					moveTank(elapsed);

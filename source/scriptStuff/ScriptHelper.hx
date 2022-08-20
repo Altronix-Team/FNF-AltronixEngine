@@ -25,7 +25,14 @@ import Paths;
 import gameplayStuff.Conductor;
 import openfl.Assets as OpenFlAssets;
 
-class ScriptException extends Exception {}
+class ScriptException extends Exception 
+{
+	public function new(message:String, ?previous:Exception, ?native:Any):Void
+	{
+		super(message, previous, native);
+		Debug.displayAlert('Error with hscript file!', message);
+	}
+}
 
 class ScriptHelper
 {

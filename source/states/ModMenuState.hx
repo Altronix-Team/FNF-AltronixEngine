@@ -195,12 +195,13 @@ class ModMenuState extends XMLLayoutState
 		Debug.logInfo('Saving mod configuration and continuing to game...');
 		var loadedModIds:Array<String> = loadedModsUI.listCurrentMods().map(function(mod:ModMetadata) return mod.id);
 		var modConfigStr = loadedModIds.join('~');
-		if (modConfigStr != '' && modConfigStr != null){
+		//if (modConfigStr != '' && modConfigStr != null){
 			FlxG.save.data.modConfig = modConfigStr;
-			FlxG.save.flush();}
-		else{
-			FlxG.save.data.modConfig = [];
-			FlxG.save.flush();}
+			FlxG.save.flush();//}
+		/*else{
+			var empty:Array<String> = [];
+			FlxG.save.data.modConfig = empty;
+			FlxG.save.flush();}*/
 	}
 
 	function loadMainGame()

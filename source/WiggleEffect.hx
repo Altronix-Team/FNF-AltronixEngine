@@ -30,7 +30,7 @@ class WiggleEffect
 		shader.uTime.value[0] += elapsed;
 	}
 
-	function set_effectType(v:WiggleEffectType):WiggleEffectType
+	function set_effectType(v:Dynamic):WiggleEffectType
 	{
 		effectType = v;
 		shader.effectType.value = [WiggleEffectType.getConstructors().indexOf(Std.string(v))];

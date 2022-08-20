@@ -883,7 +883,7 @@ class PlayState extends MusicBeatState
 						return;
 					}
 					else
-						Debug.logError(e);
+						Debug.displayAlert('Error with hscript stage file!', Std.string(e));
 				}
 			}	
 			#if LUA_ALLOWED
@@ -1062,7 +1062,7 @@ class PlayState extends MusicBeatState
 					return;
 				}
 				else
-					throw e;
+					Debug.displayAlert('Error with hscript file!', Std.string(e));
 			}
 		}
 		#end

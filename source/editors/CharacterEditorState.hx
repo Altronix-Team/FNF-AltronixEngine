@@ -46,10 +46,8 @@ import sys.FileSystem;
 #end
 
 using StringTools;
+using hx.strings.Strings;
 
-/**
-	*DEBUG MODE
- */
 class CharacterEditorState extends MusicBeatState
 {
 	var Stage:Stage;
@@ -845,20 +843,8 @@ class CharacterEditorState extends MusicBeatState
 			lastAnim = char.animation.curAnim.name;
 		}
 		var anims:Array<AnimationData> = char.animationsArray.copy();
-		if(Paths.fileExists('shared/images/' + char.asset + '/Animation.json', TEXT)) 
-		{
-			char.frames = AtlasFrameMaker.construct(char.asset);
-		} 
-		else if(Paths.fileExists('shared/images/' + char.asset + '.txt', TEXT)) 
-		{
-			char.frames = Paths.getPackerAtlas(char.asset, 'shared');
-		}
-		else 
-		{
-			char.frames = Paths.getSparrowAtlas(char.asset, 'shared');
-		}
 
-		
+		char.frames = Paths.getCharacterFrames(char.asset.replaceAll('characters/', ''));
 		
 		if(char.animationsArray != null && char.animationsArray.length > 0) {
 			for (anim in char.animationsArray) {

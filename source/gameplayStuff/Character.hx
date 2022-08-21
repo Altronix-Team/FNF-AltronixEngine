@@ -13,6 +13,7 @@ import animateatlas.AtlasFrameMaker;
 import states.PlayState;
 
 using StringTools;
+using hx.strings.Strings;
 
 class Character extends FlxSprite
 {
@@ -121,20 +122,22 @@ class Character extends FlxSprite
 		var data:CharacterData = cast jsonData;
 		var tex:FlxAtlasFrames;
 
-		if (data.usePackerAtlas)
+		frames = Paths.getCharacterFrames(data.asset.replaceAll('characters/', ''));
+
+		/*if (OpenFlAssets.exists('assets/shared/images/characters/${data.asset}.txt'))
 		{
 			tex = Paths.getPackerAtlas(data.asset, 'shared');
 			frames = tex;
 		}
-		/*else if (data.useSpriteMap)
+		else if (OpenFlAssets.exists('assets/shared/images/characters/${data.asset}/spritemap.png'))
 		{
-			frames = AtlasFrameMaker.construct(data.asset);
-		}*/
+			frames = AtlasFrameMaker.construct('characters/${data.asset}');
+		}
 		else
 		{
 			tex = Paths.getSparrowAtlas(data.asset, 'shared');
 			frames = tex;
-		}
+		}*/
 
 		if (frames != null)
 			for (anim in data.animations)

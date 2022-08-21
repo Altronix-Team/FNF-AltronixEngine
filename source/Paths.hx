@@ -1,5 +1,7 @@
 package;
 
+import flixel.graphics.frames.FlxFramesCollection;
+import animateatlas.AtlasFrameMaker;
 import flixel.graphics.FlxGraphic;
 import flixel.FlxG;
 import flixel.system.FlxAssets;
@@ -59,31 +61,26 @@ class Paths
 	}
 	
 	inline static public function atlasImage(key:String, ?library:String):FlxGraphic
-		{
-			// streamlined the assets process more
-			var returnAsset:FlxGraphic = returnGraphic(key, library);
-			return returnAsset;
-		}
+	{
+		var returnAsset:FlxGraphic = returnGraphic(key, library);
+		return returnAsset;
+	}
 
-	public static var currentTrackedAssets:Map<String, FlxGraphic> = [];
 	public static function returnGraphic(key:String, ?library:String)
-		{
-			var path = getPath('images/$key.png', IMAGE, library);
-			if (OpenFlAssets.exists(path, IMAGE)) {
-				if(!currentTrackedAssets.exists(path)) {
-					var newGraphic:FlxGraphic = FlxG.bitmap.add(path, false, path);
-					currentTrackedAssets.set(path, newGraphic);
-				}
-				return currentTrackedAssets.get(path);
-			}
-			trace('oh no its returning null NOOOO');
-			return null;
+	{
+		var path = getPath('images/$key.png', IMAGE, library);
+		if (OpenFlAssets.exists(path, IMAGE)) {
+			var newGraphic:FlxGraphic = FlxG.bitmap.add(path, false, path);
+			return newGraphic;
 		}
+		trace('oh no its returning null NOOOO');
+		return null;
+	}
 
 	public static inline function songMeta(key:String, ?library:String)
-		{
-			return getPath('data/songs/$key/_meta.json', TEXT, library);
-		}
+	{
+		return getPath('data/songs/$key/_meta.json', TEXT, library);
+	}
 
 	/**
 	 * For a given key and library for an image, returns the corresponding BitmapData.
@@ -303,13 +300,13 @@ class Paths
 		}
 	}
 
-	inline static public function fileExists(key:String, type:AssetType, ?ignoreMods:Bool = false, ?library:String)
-		{		
-			if(OpenFlAssets.exists(getPath(key, type, library))) {
-				return true;
-			}
-			return false;
+	inline static public function fileExists(key:String, type:AssetType, ?library:String)
+	{		
+		if(OpenFlAssets.exists(getPath(key, type, library))) {
+			return true;
 		}
+		return false;
+	}
 
 	static public function getLibraryPath(file:String, library = "preload")
 	{
@@ -719,9 +716,17 @@ class Paths
 		return currentTrackedSounds.get(gottenPath);
 	}
 
-	/**
-	 * Senpai in Thorns uses this instead of Sparrow and IDK why.
-	 */
+	inline static public function getCharacterFrames(key:String):Any
+	{
+		if (OpenFlAssets.exists('assets/shared/images/characters/$key/spritemap.json'))
+			return AtlasFrameMaker.construct('characters/$key');
+		else if (OpenFlAssets.exists('assets/shared/images/characters/$key.txt'))
+			return FlxAtlasFrames.fromSpriteSheetPacker(loadImage('characters/$key', 'shared'), file('images/characters/$key.txt', 'shared'));
+		else
+			return FlxAtlasFrames.fromSparrow(loadImage('characters/$key', 'shared'), file('images/characters/$key.xml', 'shared'));
+
+	}
+
 	inline static public function getPackerAtlas(key:String, ?library:String, ?isCharacter:Bool = false)
 	{
 		if (isCharacter)

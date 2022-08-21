@@ -3213,11 +3213,11 @@ class PlayState extends MusicBeatState
 						babyArrow.x += Note.swagWidth * i;
 						babyArrow.animation.add('static', [i]);
 						babyArrow.animation.add('pressed', [4 + i, 8 + i], 12, false);
-						babyArrow.animation.add('confirm', [12 + i, 16 + i], 24, false);
+						babyArrow.animation.add('confirm', [12 + i, 16 + i], 12, false);
 
 						for (j in 0...4)
 						{
-							babyArrow.animation.add('dirCon' + j, [12 + j, 16 + j], 24, false);
+							babyArrow.animation.add('dirCon' + j, [12 + j, 16 + j], 12, false);
 						}
 					default:
 						babyArrow.frames = noteskinSprite;

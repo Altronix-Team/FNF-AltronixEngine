@@ -127,20 +127,23 @@ class TitleState extends MusicBeatState
 			#end
 		}	
 
-		NoteskinHelpers.updateNoteskins();
+		if (!initialized)
+		{
+			NoteskinHelpers.updateNoteskins();
 
-		MenuMusicStuff.updateMusic();
+			MenuMusicStuff.updateMusic();
 
-		Character.initCharacterList();
+			Character.initCharacterList();
 
-		LanguageStuff.initLanguages();
+			LanguageStuff.initLanguages();
 
-		#if desktop
-		GameJoltAPI.leaderboardToggle = FlxG.save.data.toggleLeaderboard;
+			#if desktop
+			GameJoltAPI.leaderboardToggle = FlxG.save.data.toggleLeaderboard;
 
-		GameJoltAPI.connect();
-		GameJoltAPI.authDaUser(FlxG.save.data.gjUser, FlxG.save.data.gjToken);
-		#end
+			GameJoltAPI.connect();
+			GameJoltAPI.authDaUser(FlxG.save.data.gjUser, FlxG.save.data.gjToken);
+			#end
+		}
 
 		cacheSongs();
 

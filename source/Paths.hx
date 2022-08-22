@@ -59,23 +59,6 @@ class Paths
 	{
 		return Assets.getText(getPath(key, TEXT));
 	}
-	
-	inline static public function atlasImage(key:String, ?library:String):FlxGraphic
-	{
-		var returnAsset:FlxGraphic = returnGraphic(key, library);
-		return returnAsset;
-	}
-
-	public static function returnGraphic(key:String, ?library:String)
-	{
-		var path = getPath('images/$key.png', IMAGE, library);
-		if (OpenFlAssets.exists(path, IMAGE)) {
-			var newGraphic:FlxGraphic = FlxG.bitmap.add(path, false, path);
-			return newGraphic;
-		}
-		trace('oh no its returning null NOOOO');
-		return null;
-	}
 
 	public static inline function songMeta(key:String, ?library:String)
 	{

@@ -54,7 +54,11 @@ class AtlasFrameMaker extends FlxFramesCollection
 		var animationData:AnimationData = Json.parse(Paths.getTextFromFile('images/$key/Animation.json'));
 		var atlasData:AtlasData = Json.parse(Paths.getTextFromFile('images/$key/spritemap.json').replace("\uFEFF", ""));
 
-		var graphic:FlxGraphic = Paths.atlasImage('$key/spritemap');
+		var graphic:FlxGraphic = Paths.loadImage('$key/spritemap');
+
+		if (graphic == null)
+			Debug.logWarn('Error with image $key');
+		
 		var ss:SpriteAnimationLibrary = new SpriteAnimationLibrary(animationData, atlasData, graphic.bitmap);
 		var t:SpriteMovieClip = ss.createAnimation(noAntialiasing);
 		if(_excludeArray == null)
@@ -62,7 +66,7 @@ class AtlasFrameMaker extends FlxFramesCollection
 			_excludeArray = t.getFrameLabels();
 			//trace('creating all anims');
 		}
-		trace('Creating: ' + _excludeArray);
+		Debug.logTrace('Creating: ' + _excludeArray);
 
 		frameCollection = new FlxFramesCollection(graphic, FlxFrameCollectionType.IMAGE);
 		for(x in _excludeArray)

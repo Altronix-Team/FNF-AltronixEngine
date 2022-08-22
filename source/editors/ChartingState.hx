@@ -322,8 +322,8 @@ class ChartingState extends MusicBeatState
 		Conductor.changeBPM(_song.bpm);
 		Conductor.mapBPMChanges(_song);
 
-		leftIcon = new HealthIcon(getCharacterIcon(_song.player1));
-		rightIcon = new HealthIcon(getCharacterIcon(_song.player2));
+		leftIcon = new HealthIcon(Character.getCharacterIcon(_song.player1));
+		rightIcon = new HealthIcon(Character.getCharacterIcon(_song.player2));
 
 		var index = 0;
 
@@ -460,9 +460,9 @@ class ChartingState extends MusicBeatState
 			var sectionicon = null;
 
 			if (_song.notes[awfgaw].gfSection)
-				sectionicon = new HealthIcon(getCharacterIcon(_song.gfVersion)).clone();
+				sectionicon = new HealthIcon(Character.getCharacterIcon(_song.gfVersion)).clone();
 			else
-				sectionicon = _song.notes[awfgaw].mustHitSection ? new HealthIcon(getCharacterIcon(_song.player1)).clone() : new HealthIcon(getCharacterIcon(_song.player2)).clone();
+				sectionicon = _song.notes[awfgaw].mustHitSection ? new HealthIcon(Character.getCharacterIcon(_song.player1)).clone() : new HealthIcon(Character.getCharacterIcon(_song.player2)).clone();
 
 			sectionicon.x = -95;
 			sectionicon.y = down - 75;
@@ -1599,11 +1599,11 @@ class ChartingState extends MusicBeatState
 					remove(i.icon);
 					var sectionicon = null;
 					if (sect.gfSection)
-						sectionicon = new HealthIcon(getCharacterIcon(_song.gfVersion)).clone();
+						sectionicon = new HealthIcon(Character.getCharacterIcon(_song.gfVersion)).clone();
 					else if (sect.mustHitSection)
-						sectionicon = new HealthIcon(getCharacterIcon(_song.player1)).clone();
+						sectionicon = new HealthIcon(Character.getCharacterIcon(_song.player1)).clone();
 					else
-						sectionicon = new HealthIcon(getCharacterIcon(_song.player2)).clone();
+						sectionicon = new HealthIcon(Character.getCharacterIcon(_song.player2)).clone();
 					sectionicon.x = -95;
 					sectionicon.y = cachedY;
 					sectionicon.setGraphicSize(0, 45);
@@ -1647,11 +1647,11 @@ class ChartingState extends MusicBeatState
 					remove(i.icon);
 					var sectionicon = null;
 					if (sect.gfSection)
-						sectionicon = new HealthIcon(getCharacterIcon(_song.gfVersion)).clone();
+						sectionicon = new HealthIcon(Character.getCharacterIcon(_song.gfVersion)).clone();
 					else if (sect.mustHitSection)
-						sectionicon = new HealthIcon(getCharacterIcon(_song.player1)).clone();
+						sectionicon = new HealthIcon(Character.getCharacterIcon(_song.player1)).clone();
 					else
-						sectionicon = new HealthIcon(getCharacterIcon(_song.player2)).clone();
+						sectionicon = new HealthIcon(Character.getCharacterIcon(_song.player2)).clone();
 					sectionicon.x = -95;
 					sectionicon.y = cachedY;
 					sectionicon.setGraphicSize(0, 45);
@@ -3256,9 +3256,9 @@ class ChartingState extends MusicBeatState
 					remove(i.icon);
 					var sectionicon = null;
 					if (sect.gfSection)
-						sectionicon = new HealthIcon(getCharacterIcon(_song.gfVersion)).clone();
+						sectionicon = new HealthIcon(Character.getCharacterIcon(_song.gfVersion)).clone();
 					else
-						sectionicon = sect.mustHitSection ? new HealthIcon(getCharacterIcon(_song.player1)).clone() : new HealthIcon(getCharacterIcon(_song.player2)).clone();
+						sectionicon = sect.mustHitSection ? new HealthIcon(Character.getCharacterIcon(_song.player1)).clone() : new HealthIcon(Character.getCharacterIcon(_song.player2)).clone();
 					sectionicon.x = -95;
 					sectionicon.y = cachedY;
 					sectionicon.setGraphicSize(0, 45);
@@ -3605,11 +3605,11 @@ class ChartingState extends MusicBeatState
 			remove(i.icon);
 			var sectionicon = null;
 			if (sect.gfSection)
-				sectionicon = new HealthIcon(getCharacterIcon(_song.gfVersion)).clone();
+				sectionicon = new HealthIcon(Character.getCharacterIcon(_song.gfVersion)).clone();
 			else if (sect.mustHitSection)
-				sectionicon = new HealthIcon(getCharacterIcon(_song.player1)).clone();
+				sectionicon = new HealthIcon(Character.getCharacterIcon(_song.player1)).clone();
 			else
-				sectionicon = new HealthIcon(getCharacterIcon(_song.player2)).clone();
+				sectionicon = new HealthIcon(Character.getCharacterIcon(_song.player2)).clone();
 			sectionicon.x = -95;
 			sectionicon.y = cachedY;
 			sectionicon.setGraphicSize(0, 45);
@@ -4258,31 +4258,6 @@ class ChartingState extends MusicBeatState
 		PlayState.SONG = Song.parseAutosaveshit(FlxG.save.data.autosave);
 
 		MusicBeatState.resetState();
-	}
-
-	function getCharacterIcon(char:String):String
-	{	
-		if (char != null)
-		{
-			var jsonData;
-			if (OpenFlAssets.exists(Paths.json('characters/${char}')))
-				jsonData = Paths.loadJSON('characters/${char}');
-			else
-			{
-				Debug.logError('Failed to parse JSON data for character ${char}');
-				return 'face';
-			}
-	
-			var data:CharacterData = cast jsonData;
-	
-			var characterIcon:String = data.characterIcon;
-
-			return characterIcon;
-		}
-		else
-		{
-			return 'face';
-		}
 	}
 
 	function autosaveSong():Void

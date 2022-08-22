@@ -1112,18 +1112,26 @@ class PlayState extends MusicBeatState
 		boyfriend.x = stageData.boyfriend[0];
 		boyfriend.y = stageData.boyfriend[1];
 
+		if (gf.positionArray != null){
 		gf.x += gf.positionArray[0];
-		gf.y += gf.positionArray[1];
+		gf.y += gf.positionArray[1];}
+		if (dad.positionArray != null){
 		dad.x += dad.positionArray[0];
-		dad.y += dad.positionArray[1];
+		dad.y += dad.positionArray[1];}
+		if (boyfriend.positionArray != null){
 		boyfriend.x += boyfriend.positionArray[0];
-		boyfriend.y += boyfriend.positionArray[1];
+		boyfriend.y += boyfriend.positionArray[1];}
 
 		camPos = new FlxPoint(girlfriendCameraOffset[0], girlfriendCameraOffset[1]);
 		if(gf != null)
 		{
-			camPos.x += gf.getGraphicMidpoint().x + gf.camPos[0];
-			camPos.y += gf.getGraphicMidpoint().y + gf.camPos[1];
+			if (gf.camPos != null){
+				camPos.x += gf.getGraphicMidpoint().x + gf.camPos[0];
+				camPos.y += gf.getGraphicMidpoint().y + gf.camPos[1];}
+			else{
+				camPos.x += gf.getGraphicMidpoint().x;
+				camPos.y += gf.getGraphicMidpoint().y;
+			}
 		}
 
 		if (dad.hasTrail)
@@ -4636,8 +4644,9 @@ class PlayState extends MusicBeatState
 			char.setPosition(GF_X, GF_Y);
 			char.scrollFactor.set(0.95, 0.95);
 		}
+		if (char.positionArray != null){
 		char.x += char.positionArray[0];
-		char.y += char.positionArray[1];
+		char.y += char.positionArray[1];}
 	}
 
 	public function camFollowPos(x:Float = 0, y:Float = 0)

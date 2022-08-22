@@ -109,10 +109,10 @@ class Note extends FlxSprite
 
 				case 'Hurt Note':
 					texture = 'HURTNOTE_assets';
-					ignoreNote = mustPress;
+					ignoreNote = true;
 					reloadNote(texture);
-
 					hurtNote = true;
+
 				case 'No Animation':
 					noAnimation = true;
 				case 'GF Sing':

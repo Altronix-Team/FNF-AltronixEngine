@@ -1,5 +1,6 @@
 package states;
 
+import gameplayStuff.Character;
 import gameplayStuff.PlayStateChangeables;
 import openfl.utils.Future;
 import openfl.media.Sound;
@@ -148,8 +149,7 @@ class FreeplayState extends MusicBeatState
 			songText.targetY = i;
 			grpSongs.add(songText);
 
-			getCharacterIcon(songs[i].songCharacter);
-			var icon:HealthIcon = new HealthIcon(characterIcon);
+			var icon:HealthIcon = new HealthIcon(Character.getCharacterIcon(songs[i].songCharacter));
 			icon.sprTracker = songText;
 
 			// using a FlxGroup is too much fuss!
@@ -228,56 +228,6 @@ class FreeplayState extends MusicBeatState
 	public static var cached:Bool = false;
 
 	var characterIcon:String = '';
-
-	function getCharacterIcon(char:String)
-	{	
-		if (char != null)
-		{
-			var jsonData;
-			if (OpenFlAssets.exists(Paths.json('characters/${char}')))
-				jsonData = Paths.loadJSON('characters/${char}');
-			else 
-			{
-				Debug.logError('Failed to parse JSON data for character ${char}');
-				getCharacterIcon('bf');
-				return;
-			}
-	
-			var data:CharColor = cast jsonData;
-	
-			characterIcon = data.characterIcon;
-		}
-		else
-		{
-			characterIcon = 'face';
-		}
-	}
-	
-	function getCharacterColor()
-	{
-		if (songs[curSelected].songCharacter != null)
-		{
-			var jsonData;
-			if (OpenFlAssets.exists(Paths.json('characters/${songs[curSelected].songCharacter}')))
-				jsonData = Paths.loadJSON('characters/${songs[curSelected].songCharacter}');
-			else
-			{
-				Debug.logError('Failed to parse JSON data for character ${songs[curSelected].songCharacter}');
-				freeplayBgColor = FlxColor.fromRGB(0, 0, 0);
-				return;
-			}
-
-			var data:CharColor = cast jsonData;
-
-			if (data.barColorJson != null && data.barColorJson.length > 2)
-				bgColorArray = data.barColorJson;
-			freeplayBgColor = FlxColor.fromRGB(bgColorArray[0], bgColorArray[1], bgColorArray[2]);
-		}
-		else
-		{
-			freeplayBgColor = FlxColor.fromRGB(0, 0, 0);
-		}
-	}
 
 	public static function populateSongData()
 	{
@@ -703,7 +653,9 @@ class FreeplayState extends MusicBeatState
 			curDifficulty = 0;
 		}
 
-		getCharacterColor();
+		var array:Array<Int> = Character.getCharacterColor(songs[curSelected].songCharacter);
+		freeplayBgColor = FlxColor.fromRGB(array[0], array[1], array[2]);
+
 		if (freeplayBgColor != intendedColor)
 		{
 			if (colorTween != null)

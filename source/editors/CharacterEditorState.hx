@@ -1304,8 +1304,8 @@ class CharacterEditorState extends MusicBeatState
 
 	function saveCharacter() {
 		var json = {
-			"name": char.asset,
-			"asset": char.asset,
+			"name": char.asset.replaceAll('characters/', ''),
+			"asset": char.asset.replaceAll('characters/', ''),
 			"characterIcon": char.characterIcon,
 			"scale": char.jsonScale,
 			"holdLength": char.holdLength,

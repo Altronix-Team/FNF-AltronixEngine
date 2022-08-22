@@ -146,23 +146,25 @@ class Stage extends states.MusicBeatState
 					swagBacks['city'] = city;
 					toAdd.push(city);
 
-					var phillyCityLights = new FlxTypedGroup<FlxSprite>();
+					/*var phillyCityLights = new FlxTypedGroup<FlxSprite>();
 					if (FlxG.save.data.distractions)
 					{
 						swagGroup['phillyCityLights'] = phillyCityLights;
 						toAdd.push(phillyCityLights);
-					}
+					}*/
 
-					for (i in 0...5)
-					{
-						var light:FlxSprite = new FlxSprite(city.x).loadGraphic(Paths.loadImage('philly/win' + i, 'week3'));
+					//for (i in 0...5)
+					//{
+						//Lets change color for white windows instead of using different sprites
+						var light:FlxSprite = new FlxSprite(city.x).loadGraphic(Paths.loadImage('philly/window', 'week3'));
 						light.scrollFactor.set(0.3, 0.3);
-						light.visible = false;
 						light.setGraphicSize(Std.int(light.width * 0.85));
 						light.updateHitbox();
 						light.antialiasing = FlxG.save.data.antialiasing;
-						phillyCityLights.add(light);
-					}
+						swagBacks['light'] = light;
+						toAdd.push(light);
+						//phillyCityLights.add(light);
+					//}
 
 					var streetBehind:FlxSprite = new FlxSprite(-40, 50).loadGraphic(Paths.loadImage('philly/behindTrain', 'week3'));
 					streetBehind.antialiasing = FlxG.save.data.antialiasing;
@@ -845,6 +847,10 @@ class Stage extends states.MusicBeatState
 		}
 	}
 
+	var oldLight = 999999;
+
+	public var windowColor:FlxColor = FlxColor.WHITE;
+
 	override function beatHit()
 	{
 		super.beatHit();
@@ -907,16 +913,29 @@ class Stage extends states.MusicBeatState
 
 						if (curBeat % 4 == 0)
 						{
-							var phillyCityLights = swagGroup['phillyCityLights'];
-							phillyCityLights.forEach(function(light:FlxSprite)
+							var phillyCityLight:FlxSprite = swagBacks['light'];
+
+							curLight = FlxG.random.int(0, 4, [oldLight]);
+							oldLight = curLight;
+
+							switch(curLight)
 							{
-								light.visible = false;
-							});
+								case 4:
+									windowColor = FlxColor.fromRGB(251, 166, 51);
+								case 3:
+									windowColor = FlxColor.fromRGB(253, 69, 49);
+								case 2:
+									windowColor = FlxColor.fromRGB(251, 51, 245);
+								case 1:
+									windowColor = FlxColor.fromRGB(49, 253, 140);
+								case 0:
+									windowColor = FlxColor.fromRGB(49, 162, 253);
+							}
 
-							curLight = FlxG.random.int(0, phillyCityLights.length - 1);
-
-							phillyCityLights.members[curLight].visible = true;
-							// phillyCityLights.members[curLight].alpha = 1;
+							if (PlayState.SONG != null){
+								if (PlayState.SONG.songId != 'blammed' || !(curBeat >= 128 && curBeat <= 192 && curBeat % 4 == 0))
+									phillyCityLight.color = windowColor;
+							}
 						}
 					}
 

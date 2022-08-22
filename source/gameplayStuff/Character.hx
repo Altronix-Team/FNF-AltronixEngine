@@ -50,6 +50,7 @@ class Character extends FlxSprite
 	public var characterIcon:String = 'face';
 	public var animationNotes:Array<Dynamic> = [];
 	public var specialAnim:Bool = false;
+	public var psychChar:Bool = false;
 
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
@@ -103,6 +104,7 @@ class Character extends FlxSprite
 		if (Reflect.field(jsonData, 'name') != null){
 			loadAltronixEngineCharacter(jsonData);}
 		else if (Reflect.field(jsonData, 'no_antialiasing') != null){
+			psychChar = true;
 			Debug.logTrace('Looks like Psych engine character');
 			loadPsychEngineCharacter(jsonData);}		
 	}

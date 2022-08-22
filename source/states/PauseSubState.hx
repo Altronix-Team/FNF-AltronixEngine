@@ -296,6 +296,7 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.fromPasswordMenu = false;
 					PlayState.isFreeplay = false;
 					PlayState.chartingMode = false;
+					PlayStateChangeables.twoPlayersMode = false;
 			}
 		}
 

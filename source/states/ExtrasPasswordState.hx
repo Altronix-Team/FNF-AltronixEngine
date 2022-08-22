@@ -125,10 +125,6 @@ class ExtrasPasswordState extends MusicBeatState
 					{
 						loadSong('levan-polkka');
 					}
-				case 'big guns':
-					{
-						loadSong('guns(erect)');	
-					}
 				default:
 					{
 						/*var custompassword = createNewPassword();

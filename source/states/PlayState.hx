@@ -248,8 +248,7 @@ class PlayState extends MusicBeatState
 	var forcedToIdle:Bool = false;
 	var allowedToHeadbang:Bool = true;
 	var allowedToCheer:Bool = false;
-	public var dialogueeng:Array<String> = ['dad:blah blah blah', 'bf:coolswag'];
-	public var dialogueru:Array<String> = ['dad:абоба', 'bf:ладно'];
+	public var dialogue:Array<String> = ['dad:blah blah blah', 'bf:coolswag'];
 	var dialogueJson:DialogueFile = null;
 
 	var overlay:ModchartSprite;
@@ -456,36 +455,18 @@ class PlayState extends MusicBeatState
 		highestCombo = 0;
 		inResults = false;
 
-		if (!FlxG.save.data.language)
-		{
-			ratingStuff = [
-				['You Suck!', 0.2], //From 0% to 19%
-				['Shit', 0.4], //From 20% to 39%
-				['Bad', 0.5], //From 40% to 49%
-				['Bruh', 0.6], //From 50% to 59%
-				['Meh', 0.69], //From 60% to 68%
-				['Nice', 0.7], //69%
-				['Good', 0.8], //From 70% to 79%
-				['Great', 0.9], //From 80% to 89%
-				['Sick!', 1], //From 90% to 99%
-				['Perfect!!', 1] //The value on this one isn't used actually, since Perfect is always "1"
-			];
-		}
-		else
-		{
-			ratingStuff = [
-				['Ты Отстой!', 0.2], //From 0% to 19%
-				['Дерьмо', 0.4], //From 20% to 39%
-				['Плохо', 0.5], //From 40% to 49%
-				['Bruh', 0.6], //From 50% to 59%
-				['Так себе', 0.69], //From 60% to 68%
-				['Нормально', 0.7], //69%
-				['Хорошо', 0.8], //From 70% to 79%
-				['Отлично', 0.9], //From 80% to 89%
-				['Великолепно!', 1], //From 90% to 99%
-				['Идеально!!', 1] //The value on this one isn't used actually, since Perfect is always "1"
-				];
-		}
+		ratingStuff = [
+			['You Suck!', 0.2], //From 0% to 19%
+			['Shit', 0.4], //From 20% to 39%
+			['Bad', 0.5], //From 40% to 49%
+			['Bruh', 0.6], //From 50% to 59%
+			['Meh', 0.69], //From 60% to 68%
+			['Nice', 0.7], //69%
+			['Good', 0.8], //From 70% to 79%
+			['Great', 0.9], //From 80% to 89%
+			['Sick!', 1], //From 90% to 99%
+			['Perfect!!', 1] //The value on this one isn't used actually, since Perfect is always "1"
+		];
 
 		PlayStateChangeables.useMiddlescroll = FlxG.save.data.middleScroll;
 		PlayStateChangeables.useDownscroll = FlxG.save.data.downscroll;
@@ -535,81 +516,55 @@ class PlayState extends MusicBeatState
 		// String that contains the mode defined here so it isn't necessary to call changePresence for each mode
 		if (isStoryMode)
 		{
-			if (!FlxG.save.data.language)
-				detailsText = "Story Mode: Week " + storyWeek + ":";
-			else
-				detailsText = "Режим истории: Неделя " + storyWeek + ":";
+			detailsText = LanguageStuff.replaceFlagsAndReturn("$STORY_MODE", "playState", ["<storyWeek>"], [Std.string(storyWeek)]);
 		}
 		if (isFreeplay)
 		{
-			if (!FlxG.save.data.language)
-				detailsText = "Freeplay";
-			else
-				detailsText = "Свободная игра";
+			detailsText = LanguageStuff.getPlayState("$FREEPLAY");
 		}
 		if (isExtras)
 		{
-			if (!FlxG.save.data.language)
-				detailsText = 'Extras';
-			else
-				detailsText = 'Дополнительно';
+			detailsText = LanguageStuff.getPlayState("$EXTRAS");
 		}
 		if (fromPasswordMenu)
 		{
-			if (!FlxG.save.data.language)
-				detailsText = 'Extras';
-			else
-				detailsText = 'Дополнительно';
+			detailsText = LanguageStuff.getPlayState("$EXTRAS");
 		}
 
 		// String for when the game is paused
-		if (!FlxG.save.data.language)
-			detailsPausedText = "Paused - " + detailsText;
-		else
-			detailsPausedText = "Стоит на паузе - " + detailsText;
+		detailsPausedText = LanguageStuff.replaceFlagsAndReturn("$PAUSED", "playState", ["<detailsText>"], [Std.string(detailsText)]);
 
 		// Updating Discord Rich Presence.
 		if (PlayStateChangeables.botPlay)
 		{
-			if (!FlxG.save.data.language)
-				DiscordClient.changePresence(detailsText + " " + SONG.songName + " (" + storyDifficultyText + ") " + 'Botplay', iconRPC);
-			else
-				DiscordClient.changePresence(detailsText + " " + SONG.songName + " (" + storyDifficultyText + ") " + 'Бот-плей', iconRPC);
+			DiscordClient.changePresence(LanguageStuff.replaceFlagsAndReturn("$DISCORD_RPC_ONE", "playState",
+				["<detailsText>", "<songName>", "<storyDifficultyText>", "<timeLeft>", "<accuracy>"],
+				[Std.string(detailsText), SONG.songName, storyDifficultyText, '', LanguageStuff.getPlayState("$BOTPLAY_TEXT")]), iconRPC);
 		}
 		else if (!PlayStateChangeables.botPlay)
-		{
-			if (!FlxG.save.data.language)
-				{
-			DiscordClient.changePresence(detailsText
-				+ " "
-				+ SONG.songName
-				+ " ("
-				+ storyDifficultyText
-				+ ") "
-				+ Ratings.GenerateLetterRank(accuracy),
-				"\nAcc: "
-				+ HelperFunctions.truncateFloat(accuracy, 2)
-				+ "% | Score: "
-				+ songScore
-				+ " | Misses: "
-				+ misses, iconRPC);
-			}
-			else
-				{
-				DiscordClient.changePresence(detailsText
-					+ " "
-					+ SONG.songName
-					+ " ("
-					+ storyDifficultyText
-					+ ") "
-					+ Ratings.GenerateLetterRank(accuracy),
-					"\nТочность: "
-					+ HelperFunctions.truncateFloat(accuracy, 2)
-					+ "% | Счёт: "
-					+ songScore
-					+ " | Пропуски: "
-					+ misses, iconRPC);
-				}
+		{	
+			DiscordClient.changePresence(LanguageStuff.replaceFlagsAndReturn("$DISCORD_RPC_ONE", "playState", [
+				"<detailsText>",
+				"<songName>",
+				"<storyDifficultyText>",
+				"<timeLeft>",
+				"<accuracy>"
+			], [
+				Std.string(detailsText),
+				SONG.songName,
+				storyDifficultyText,
+				'',
+				Ratings.GenerateLetterRank(accuracy)
+			]),
+				LanguageStuff.replaceFlagsAndReturn("$DISCORD_RPC_TWO", "playState", [
+				"<accuracy>",
+				"<songScore>",
+				"<misses>"
+				], [
+				HelperFunctions.truncateFloat(accuracy, 2),
+				songScore,
+				misses
+				]), iconRPC);
 		}
 		#end
 
@@ -699,22 +654,8 @@ class PlayState extends MusicBeatState
 		trace('INFORMATION ABOUT WHAT U PLAYIN WIT:\nFRAMES: ' + PlayStateChangeables.safeFrames + '\nZONE: ' + Conductor.safeZoneOffset + '\nTS: '
 			+ Conductor.timeScale + '\nBotPlay : ' + PlayStateChangeables.botPlay);
 
-		// if the song has dialogue, so we don't accidentally try to load a nonexistant file and crash the game
-		if (!FlxG.save.data.language)
-			{
-				if (Paths.doesTextAssetExist(Paths.txt('data/songs/${PlayState.SONG.songId}/dialogue-eng')))
-					dialogueeng = CoolUtil.coolTextFile(Paths.txt('data/songs/${PlayState.SONG.songId}/dialogue-eng'));
-				if (OpenFlAssets.exists('assets/data/songs/' + PlayState.SONG.songId + '/dialogue.json'))
-					dialogueJson = DialogueBoxPsych.parseDialogue('assets/data/songs/' + PlayState.SONG.songId + '/dialogue.json');
-			}
-
-		if (FlxG.save.data.language)
-		{
-			if (Paths.doesTextAssetExist(Paths.txt('data/songs/${PlayState.SONG.songId}/dialogue-ru')))
-				dialogueru = CoolUtil.coolTextFile(Paths.txt('data/songs/${PlayState.SONG.songId}/dialogue-ru'));
-			if (OpenFlAssets.exists('assets/data/songs/' + PlayState.SONG.songId + '/dialogue.json'))
-				dialogueJson = DialogueBoxPsych.parseDialogue('assets/data/songs/' + PlayState.SONG.songId + '/dialogue.json');
-		}
+		if (Paths.doesTextAssetExist(Paths.txt('data/songs/${PlayState.SONG.songId}/dialogue')))
+			dialogue = CoolUtil.coolTextFile(Paths.txt('data/songs/${PlayState.SONG.songId}/dialogue'));
 
 		switch (SONG.noteStyle)
 		{
@@ -1198,10 +1139,7 @@ class PlayState extends MusicBeatState
 
 		if (isStoryMode)
 		{
-			if (FlxG.save.data.language)
-				doof = new DialogueBox(false, dialogueru);
-			else if (!FlxG.save.data.language)
-				doof = new DialogueBox(false, dialogueeng);
+			doof = new DialogueBox(false, dialogue);
 			// doof.x += 70;
 			// doof.y = FlxG.height * 0.5;
 			doof.scrollFactor.set();
@@ -2257,7 +2195,7 @@ class PlayState extends MusicBeatState
 	var oldvalue:Dynamic;
 	var curColor = FlxColor.WHITE;
 
-	function songOverlay(value:Dynamic):Void
+	function songOverlay(value:Dynamic, time:Float = 1):Void
 	{
 		if (oldvalue != value)
 		{
@@ -2278,7 +2216,7 @@ class PlayState extends MusicBeatState
 				var charColor = FlxColor.fromRGB(red, green, blue, 255);
 
 				
-				colorTween = FlxTween.color(overlay, 1, overlay.color, overlayColor, {
+				colorTween = FlxTween.color(overlay, time, overlay.color, overlayColor, {
 					onComplete: function(twn:FlxTween)
 					{
 						colorTween = null;
@@ -2286,7 +2224,7 @@ class PlayState extends MusicBeatState
 				});
 
 				for (char in chars) {
-					char.colorTween = FlxTween.color(char, 1, curColor, charColor, {onComplete: function(twn:FlxTween) {
+					char.colorTween = FlxTween.color(char, time, curColor, charColor, {onComplete: function(twn:FlxTween) {
 						curColor = charColor;
 					}, ease: FlxEase.quadInOut});
 				}
@@ -2294,14 +2232,14 @@ class PlayState extends MusicBeatState
 			else
 			{
 				overlayColor = FlxColor.fromRGB(0, 0, 0, 0);
-				colorTween = FlxTween.color(overlay, 1, overlay.color, overlayColor, {
+				colorTween = FlxTween.color(overlay, time, overlay.color, overlayColor, {
 				onComplete: function(twn:FlxTween)
 				{
 					colorTween = null;
 				}
 				});
 				for (char in chars) {
-					char.colorTween = FlxTween.color(char, 1, char.color, FlxColor.WHITE, {onComplete: function(twn:FlxTween) {
+					char.colorTween = FlxTween.color(char, time, char.color, FlxColor.WHITE, {onComplete: function(twn:FlxTween) {
 
 					}, ease: FlxEase.quadInOut});
 				}
@@ -2829,45 +2767,44 @@ class PlayState extends MusicBeatState
 		#if desktop
 		if (PlayStateChangeables.botPlay)
 		{
-			if (!FlxG.save.data.language)
-				DiscordClient.changePresence(detailsText + " " + SONG.songName + " (" + storyDifficultyText + ") " + 'Botplay', iconRPC);
-			else
-				DiscordClient.changePresence(detailsText + " " + SONG.songName + " (" + storyDifficultyText + ") " + 'Бот-плей', iconRPC);
+				DiscordClient.changePresence(LanguageStuff.replaceFlagsAndReturn("$DISCORD_RPC_ONE", "playState", [
+					"<detailsText>",
+					"<songName>",
+					"<storyDifficultyText>",
+					"<timeLeft>",
+					"<accuracy>"
+				], [
+					Std.string(detailsText),
+					SONG.songName,
+					storyDifficultyText,
+					'',
+					LanguageStuff.getPlayState("$BOTPLAY_TEXT")
+				]), iconRPC);
 		}
 		else if (!PlayStateChangeables.botPlay)
 		{
-			if (!FlxG.save.data.language)
-				{
-			DiscordClient.changePresence(detailsText
-				+ " "
-				+ SONG.songName
-				+ " ("
-				+ storyDifficultyText
-				+ ") "
-				+ Ratings.GenerateLetterRank(accuracy),
-				"\nAcc: "
-				+ HelperFunctions.truncateFloat(accuracy, 2)
-				+ "% | Score: "
-				+ songScore
-				+ " | Misses: "
-				+ misses, iconRPC);
-			}
-			else
-				{
-				DiscordClient.changePresence(detailsText
-					+ " "
-					+ SONG.songName
-					+ " ("
-					+ storyDifficultyText
-					+ ") "
-					+ Ratings.GenerateLetterRank(accuracy),
-					"\nТочность: "
-					+ HelperFunctions.truncateFloat(accuracy, 2)
-					+ "% | Счёт: "
-					+ songScore
-					+ " | Пропуски: "
-					+ misses, iconRPC);
-				}
+			DiscordClient.changePresence(LanguageStuff.replaceFlagsAndReturn("$DISCORD_RPC_ONE", "playState", [
+				"<detailsText>",
+				"<songName>",
+				"<storyDifficultyText>",
+				"<timeLeft>",
+				"<accuracy>"
+			], [
+				Std.string(detailsText),
+				SONG.songName,
+				storyDifficultyText,
+				'',
+				Ratings.GenerateLetterRank(accuracy)
+			]),
+				LanguageStuff.replaceFlagsAndReturn("$DISCORD_RPC_TWO", "playState", [
+				"<accuracy>",
+				"<songScore>",
+				"<misses>"
+				], [
+				HelperFunctions.truncateFloat(accuracy, 2),
+				songScore,
+				misses
+				]), iconRPC);
 		}
 		#end
 
@@ -2884,14 +2821,10 @@ class PlayState extends MusicBeatState
 		if (needSkip)
 		{
 			skipActive = true;
-			skipText = new FlxText(healthBarBG.x + 80, healthBarBG.y - 110, 500);
-			skipText.text = LanguageStuff.getPlayState("$PRESSTOSKIP");
+			skipText = new FlxText(healthBarBG.x + 80, healthBarBG.y - 110, 500, "Press space to skip intro");
 			skipText.size = 30;
-			skipText.color = FlxColor.WHITE;
 			skipText.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 2, 1);
 			skipText.cameras = [camHUD];
-			skipText.alpha = 0;
-			FlxTween.tween(skipText, {alpha: 1}, 0.2);
 			add(skipText);
 		}
 
@@ -3404,9 +3337,26 @@ class PlayState extends MusicBeatState
 			#if desktop
 			if (startTimer != null){
 			if (startTimer.finished){
-				if (!FlxG.save.data.language){DiscordClient.changePresence(detailsText+ " "+ SONG.songName+ " ("+ storyDifficultyText+ ") "+ Ratings.GenerateLetterRank(accuracy),"\nAcc: "+ HelperFunctions.truncateFloat(accuracy, 2)+ "% | Score: "+ songScore+ " | Misses: "+ misses, iconRPC, true,songLength- Conductor.songPosition);}
-				else{DiscordClient.changePresence(detailsText+ " "+ SONG.songName+ " ("+ storyDifficultyText+ ") "+ Ratings.GenerateLetterRank(accuracy),"\nТочность: "+ HelperFunctions.truncateFloat(accuracy, 2)+ "% | Счёт: "+ songScore+ " | Пропуски: "+ misses, iconRPC, true,songLength- Conductor.songPosition);}}
-			else{DiscordClient.changePresence(detailsText, SONG.songName + " (" + storyDifficultyText + ") " + Ratings.GenerateLetterRank(accuracy), iconRPC);}}
+					DiscordClient.changePresence(LanguageStuff.replaceFlagsAndReturn("$DISCORD_RPC_ONE", "playState", [
+						"<detailsText>",
+						"<songName>",
+						"<storyDifficultyText>",
+						"<timeLeft>",
+						"<accuracy>"
+					],
+						[
+							Std.string(detailsText),
+							SONG.songName,
+							storyDifficultyText,
+							'',
+							Ratings.GenerateLetterRank(accuracy)
+						]),
+						LanguageStuff.replaceFlagsAndReturn("$DISCORD_RPC_TWO", "playState", ["<accuracy>", "<songScore>", "<misses>"],
+							[HelperFunctions.truncateFloat(accuracy, 2), songScore, misses]),
+						iconRPC, true,songLength- Conductor.songPosition);}
+			else{DiscordClient.changePresence(LanguageStuff.replaceFlagsAndReturn("$DISCORD_RPC_ONE", "playState",
+				["<detailsText>", "<songName>", "<storyDifficultyText>", "<timeLeft>", "<accuracy>"],
+				[Std.string(detailsText), SONG.songName, storyDifficultyText, '', Ratings.GenerateLetterRank(accuracy)]), iconRPC);}}
 			#end
 			for (tween in modchartTweens) {
 				tween.active = true;
@@ -3433,13 +3383,37 @@ class PlayState extends MusicBeatState
 
 		#if desktop
 		if (PlayStateChangeables.botPlay){
-			if (!FlxG.save.data.language)
-				DiscordClient.changePresence(detailsText + " " + SONG.songName + " (" + storyDifficultyText + ") " + 'Botplay', iconRPC);
-			else
-				DiscordClient.changePresence(detailsText + " " + SONG.songName + " (" + storyDifficultyText + ") " + 'Бот-плей', iconRPC);}
+			DiscordClient.changePresence(LanguageStuff.replaceFlagsAndReturn("$DISCORD_RPC_ONE", "playState", [
+				"<detailsText>",
+				"<songName>",
+				"<storyDifficultyText>",
+				"<timeLeft>",
+				"<accuracy>"
+			], [
+				Std.string(detailsText),
+				SONG.songName,
+				storyDifficultyText,
+				'',
+				LanguageStuff.getPlayState("$BOTPLAY_TEXT")
+			]), iconRPC);}
 		else if (!PlayStateChangeables.botPlay){
-			if (!FlxG.save.data.language){DiscordClient.changePresence(detailsText+ " "+ SONG.songName+ " ("+ storyDifficultyText+ ") "+ Ratings.GenerateLetterRank(accuracy),"\nAcc: "+ HelperFunctions.truncateFloat(accuracy, 2)+ "% | Score: "+ songScore+ " | Misses: "+ misses, iconRPC);}
-			else{DiscordClient.changePresence(detailsText+ " "+ SONG.songName+ " ("+ storyDifficultyText+ ") "+ Ratings.GenerateLetterRank(accuracy),"\nТочность: "+ HelperFunctions.truncateFloat(accuracy, 2)+ "% | Счёт: "+ songScore+ " | Пропуски: "+ misses, iconRPC);}}
+			DiscordClient.changePresence(LanguageStuff.replaceFlagsAndReturn("$DISCORD_RPC_ONE", "playState", [
+				"<detailsText>",
+				"<songName>",
+				"<storyDifficultyText>",
+				"<timeLeft>",
+				"<accuracy>"
+			],
+				[
+					Std.string(detailsText),
+					SONG.songName,
+					storyDifficultyText,
+					'',
+					Ratings.GenerateLetterRank(accuracy)
+				]),
+				LanguageStuff.replaceFlagsAndReturn("$DISCORD_RPC_TWO", "playState", ["<accuracy>", "<songScore>", "<misses>"],
+					[HelperFunctions.truncateFloat(accuracy, 2), songScore, misses]),
+				iconRPC);}
 		#end
 	}
 
@@ -3870,20 +3844,23 @@ class PlayState extends MusicBeatState
 				timerCount += 1;
 				if (timerCount > maxTimerCounter)
 				{
-					if (!FlxG.save.data.language)
-						{
-						DiscordClient.changePresence(detailsText + " " + SONG.songName + " (" + storyDifficultyText + ") " + " | Time left: " + time + " | "
-							+ Ratings.GenerateLetterRank(accuracy),
-							"\nAcc: " + HelperFunctions.truncateFloat(accuracy, 2) + "% | Score: " + songScore
-							+ " | Misses: " + misses, iconRPC);
-						}
-					else
-						{
-						DiscordClient.changePresence(detailsText + " " + SONG.songName + " (" + storyDifficultyText + ") " + " | Осталось времени: " + time + " | "
-							+ Ratings.GenerateLetterRank(accuracy),
-							"\nТочность: " + HelperFunctions.truncateFloat(accuracy, 2) + "% | Счёт: " + songScore
-							+ " | Пропуски: " + misses, iconRPC);
-						}
+					DiscordClient.changePresence(LanguageStuff.replaceFlagsAndReturn("$DISCORD_RPC_ONE", "playState", [
+						"<detailsText>",
+						"<songName>",
+						"<storyDifficultyText>",
+						"<timeLeft>",
+						"<accuracy>"
+					],
+						[
+							Std.string(detailsText),
+							SONG.songName,
+							storyDifficultyText,
+							LanguageStuff.getPlayState("$TIME_LEFT_TEXT") + time,
+							Ratings.GenerateLetterRank(accuracy)
+						]),
+						LanguageStuff.replaceFlagsAndReturn("$DISCORD_RPC_TWO", "playState", ["<accuracy>", "<songScore>", "<misses>"],
+							[HelperFunctions.truncateFloat(accuracy, 2), songScore, misses]),
+						iconRPC);
 					
 					timerCount = 0;
 				}
@@ -3960,27 +3937,6 @@ class PlayState extends MusicBeatState
 										else
 											triggeredAlready = false;
 									}
-								}
-								if ((curBeat == 128 || curBeat > 128) && curBeat < 192 && !blammedeventplayed && FlxG.save.data.distractions)
-									{
-										switch (Stage.curLight)
-										{
-											case 4:
-												songOverlay("251, 166, 51, 175");
-											case 3:
-												songOverlay("253, 69, 49, 175");
-											case 2:
-												songOverlay("251, 51, 245, 175");
-											case 1:
-												songOverlay("49, 253, 140, 175");
-											case 0:
-												songOverlay("49, 162, 253, 175");
-										}
-									}
-								else if (curBeat > 192 && !blammedeventplayed  && FlxG.save.data.distractions)
-								{
-									songOverlay('delete');
-									blammedeventplayed = true;
 								}
 							}
 						case 'cocoa':
@@ -4120,39 +4076,25 @@ class PlayState extends MusicBeatState
 						openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 					}
 
-
 					#if desktop
 					// Game Over doesn't get his own variable because it's only used here
-					if (!FlxG.save.data.language)
-					{
-					DiscordClient.changePresence("GAME OVER -- "
-						+ SONG.songName
-						+ " ("
-						+ storyDifficultyText
-						+ ") "
-						+ Ratings.GenerateLetterRank(accuracy),
-						"\nAcc: "
-						+ HelperFunctions.truncateFloat(accuracy, 2)
-						+ "% | Score: "
-						+ songScore
-						+ " | Misses: "
-						+ misses, iconRPC);
-					}
-					else
-						{
-						DiscordClient.changePresence("Проиграл -- "
-							+ SONG.songName
-							+ " ("
-							+ storyDifficultyText
-							+ ") "
-							+ Ratings.GenerateLetterRank(accuracy),
-							"\nТочность: "
-							+ HelperFunctions.truncateFloat(accuracy, 2)
-							+ "% | Счёт: "
-							+ songScore
-							+ " | Пропуски: "
-							+ misses, iconRPC);
-						}
+					DiscordClient.changePresence(LanguageStuff.replaceFlagsAndReturn("$DISCORD_RPC_ONE", "playState", [
+						"<detailsText>",
+						"<songName>",
+						"<storyDifficultyText>",
+						"<timeLeft>",
+						"<accuracy>"
+					],
+						[
+							LanguageStuff.getPlayState("$GAME_OVER"),
+							SONG.songName,
+							storyDifficultyText,
+							'',
+							Ratings.GenerateLetterRank(accuracy)
+						]),
+						LanguageStuff.replaceFlagsAndReturn("$DISCORD_RPC_TWO", "playState", ["<accuracy>", "<songScore>", "<misses>"],
+							[HelperFunctions.truncateFloat(accuracy, 2), songScore, misses]),
+						iconRPC);
 					#end
 					for (tween in modchartTweens) {
 						tween.active = true;
@@ -4194,36 +4136,23 @@ class PlayState extends MusicBeatState
 
 				#if desktop
 				// Game Over doesn't get his own variable because it's only used here
-				if (!FlxG.save.data.language)
-				{
-				DiscordClient.changePresence("GAME OVER -- "
-						+ SONG.songName
-					+ " ("
-					+ storyDifficultyText
-					+ ") "
-					+ Ratings.GenerateLetterRank(accuracy),
-					"\nAcc: "
-					+ HelperFunctions.truncateFloat(accuracy, 2)
-					+ "% | Score: "
-					+ songScore
-					+ " | Misses: "
-					+ misses, iconRPC);
-				}
-				else
-					{
-					DiscordClient.changePresence("Проиграл -- "
-						+ SONG.songName
-						+ " ("
-						+ storyDifficultyText
-						+ ") "
-						+ Ratings.GenerateLetterRank(accuracy),
-						"\nТочность: "
-						+ HelperFunctions.truncateFloat(accuracy, 2)
-						+ "% | Счёт: "
-						+ songScore
-						+ " | Пропуски: "
-						+ misses, iconRPC);
-					}
+				DiscordClient.changePresence(LanguageStuff.replaceFlagsAndReturn("$DISCORD_RPC_ONE", "playState", [
+					"<detailsText>",
+					"<songName>",
+					"<storyDifficultyText>",
+					"<timeLeft>",
+					"<accuracy>"
+				],
+					[
+						LanguageStuff.getPlayState("$GAME_OVER"),
+						SONG.songName,
+						storyDifficultyText,
+						'',
+						Ratings.GenerateLetterRank(accuracy)
+					]),
+					LanguageStuff.replaceFlagsAndReturn("$DISCORD_RPC_TWO", "playState", ["<accuracy>", "<songScore>", "<misses>"],
+						[HelperFunctions.truncateFloat(accuracy, 2), songScore, misses]),
+					iconRPC);
 				#end
 
 				// FlxG.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
@@ -4631,10 +4560,7 @@ class PlayState extends MusicBeatState
 		chartingMode = true;
 
 		#if desktop
-		if (!FlxG.save.data.language)
-			DiscordClient.changePresence("Chart Editor: " + PlayState.SONG.songName, null, null, true);
-		else
-			DiscordClient.changePresence("Редактирует чартинг: " + PlayState.SONG.songName, null, null, true);
+		DiscordClient.changePresence(LanguageStuff.getPlayState("$CHART_EDITOR_TEXT") + SONG.songName, null);
 		#end
 	}
 
@@ -6758,6 +6684,46 @@ class PlayState extends MusicBeatState
 			if (PlayStateChangeables.Optimize)
 				if (vocals.volume == 0 && !curSection.mustHitSection)
 					vocals.volume = 1;
+		}
+
+		if (curSong == 'blammed')
+		{
+			if ((curBeat >= 128 && curBeat <= 192 && curBeat % 4 == 0) && !blammedeventplayed && FlxG.save.data.distractions)
+			{
+				switch (Stage.curLight)
+				{
+					case 4:
+						camGame.flash(FlxColor.fromRGB(251, 166, 51), 0.1);
+						camHUD.flash(FlxColor.fromRGB(251, 166, 51), 0.1);
+						songOverlay("251, 166, 51, 175", 0.1);
+					case 3:
+						camGame.flash(FlxColor.fromRGB(253, 69, 49), 0.1);
+						camHUD.flash(FlxColor.fromRGB(253, 69, 49), 0.1);
+						songOverlay("253, 69, 49, 175", 0.1);
+					case 2:
+						camGame.flash(FlxColor.fromRGB(251, 51, 245), 0.1);
+						camHUD.flash(FlxColor.fromRGB(251, 51, 245), 0.1);
+						songOverlay("251, 51, 245, 175", 0.1);
+					case 1:
+						camGame.flash(FlxColor.fromRGB(49, 253, 140), 0.1);
+						camHUD.flash(FlxColor.fromRGB(49, 253, 140), 0.1);
+						songOverlay("49, 253, 140, 175", 0.1);
+					case 0:
+						camGame.flash(FlxColor.fromRGB(49, 162, 253), 0.1);
+						camHUD.flash(FlxColor.fromRGB(49, 162, 253), 0.1);
+						songOverlay("49, 162, 253, 175", 0.1);
+				}
+
+				var phillyCityLight:FlxSprite = Stage.swagBacks['light'];
+
+				phillyCityLight.color = overlay.color;
+
+			}
+			else if (curBeat >= 192 && !blammedeventplayed && FlxG.save.data.distractions)
+			{
+				songOverlay('delete', 0.1);
+				blammedeventplayed = true;
+			}
 		}
 
 		for (script in hscriptFiles)

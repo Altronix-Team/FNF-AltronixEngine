@@ -112,8 +112,13 @@ class LanguageStuff{
 		return tongue.getIndexString("$UI_LANGUAGE", targetlocale, curlocale);
 	}
 
-	public static function replaceFlagsAndReturn(key:String, context:String, flags:Array<String>, values:Array<String>):String {
-		return Replace.flags(getString(key, context), flags, values);
+	public static function replaceFlagsAndReturn(key:String, context:String, flags:Array<String>, values:Array<Dynamic>):String {
+		var stringArray:Array<String> = [];
+		for (i in values)
+		{
+			stringArray.push(Std.string(i));
+		}
+		return Replace.flags(getString(key, context), flags, stringArray);
     }
 
 	public static function loadLanguage(lang:String){

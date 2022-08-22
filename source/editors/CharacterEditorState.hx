@@ -381,6 +381,13 @@ class CharacterEditorState extends MusicBeatState
 			daAnim = characterList[Std.parseInt(character)];
 			check_player.checked = (daAnim.startsWith('bf')  || daAnim.endsWith('bf') || daAnim.endsWith('-player'));
 			loadChar(!check_player.checked);
+			if (char.psychChar)
+			{
+				Debug.logWarn('Character editor not supports Psych Engine characters');
+				charDropDown.selectedLabel = 'bf';
+				daAnim = 'bf';
+				loadChar(false);
+			}
 			updatePresence();
 			reloadCharacterDropDown();
 			reloadBGs();

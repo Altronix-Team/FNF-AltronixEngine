@@ -6,6 +6,7 @@ import flixel.math.FlxMath;
 
 using hx.strings.Strings;
 
+//TODO Move to CoolUtil 
 class Util
 {
 	public static function buildArrayFromRange(max:Int, ?min = 0):Array<Int>

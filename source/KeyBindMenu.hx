@@ -25,6 +25,7 @@ import flixel.input.FlxKeyManager;
 
 using StringTools;
 
+//TODO Remove if engine don't using this
 class KeyBindMenu extends FlxSubState
 {
 	var keyTextDisplay:FlxText;

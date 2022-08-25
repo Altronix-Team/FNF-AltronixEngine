@@ -1,6 +1,7 @@
 import flixel.FlxG;
 import flixel.math.FlxMath;
 
+//TODO Remove class due duplication by Util.hx
 class HelperFunctions
 {
 	public static function truncateFloat(number:Float, precision:Int):Float

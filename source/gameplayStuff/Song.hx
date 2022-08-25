@@ -62,7 +62,7 @@ typedef SongData =
 
 	var chartVersion:String;
 	var notes:Array<SwagSection>;
-	var ?eventObjects:Array<Event>;//DO NOT USE THIS!!!!!!!!!!!
+	var eventsArray:Array<EventsAtPos>;
 	var bpm:Float;
 	var needsVoices:Bool;
 	var speed:Float;
@@ -74,12 +74,19 @@ typedef SongData =
 	var stage:String;
 	var specialSongNoteSkin:String;
 
-	var eventsArray:Array<EventsAtPos>; //Fuck yeah, now more conversions for old or Psych events
-	var ?events:Array<Dynamic>;//DO NOT USE THIS!!!!!!!!!!!
 	var ?validScore:Bool;
 	var ?scaredbgdancers:Bool;
 	var ?showbgdancers:Bool;
 	var ?diffSoundAssets:Bool;
+
+	/** Do not use this in your code.
+	* Use eventsArray instead
+	*/
+	var ?eventObjects:Array<Event>; // Kade Engine events kekw
+	/** Do not use this in your code.
+	 * Use eventsArray instead
+	 */
+	var ?events:Array<Dynamic>; // Psych Engine events
 }
 
 typedef SongMeta =

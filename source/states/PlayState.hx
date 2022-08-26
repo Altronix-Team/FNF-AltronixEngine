@@ -168,6 +168,8 @@ class PlayState extends MusicBeatState
 	public var gf:Character = null;
 	public var boyfriend:Boyfriend = null;
 
+	var chars:Array<Character> = [];
+
 	public var notes:FlxTypedGroup<Note>;
 
 	public var unspawnNotes:Array<Note> = [];
@@ -665,63 +667,14 @@ class PlayState extends MusicBeatState
 				isPixel = false;
 		}
 
-
-		// If the stage isn't specified in the chart, we use the story week value.
-		if (SONG.stage == null)
-		{
-			switch (SONG.songId)
-			{
-				case 'spookeez' | 'south' | 'monster':
-					stageCheck = 'spooky';
-				case 'pico' | 'blammed' | 'philly':
-					stageCheck = 'philly';
-				case 'milf' | 'satin-panties' | 'high':
-					stageCheck = 'limo';
-				case 'cocoa' | 'eggnog':
-					stageCheck = 'mall';
-				case 'winter-horrorland':
-					stageCheck = 'mallEvil';
-				case 'senpai' | 'roses':
-					stageCheck = 'school';
-				case 'thorns':
-					stageCheck = 'schoolEvil';
-				case 'ugh' | 'guns' | 'stress':
-					stageCheck = 'warzone';
-				default:
-					stageCheck = 'stage';
-			}
-		}
-		else
-		{
-			stageCheck = SONG.stage;
-		}
+		stageCheck = SONG.stage;
 
 		if (isStoryMode)
 			songMultiplier = 1;
 
 		var gfCheck:String = 'gf';
 
-		if (SONG.gfVersion == null)
-		{
-			switch (stageCheck)
-			{
-				case 'limo':
-					gfCheck = 'gf-car';
-				case 'mall' | 'mallEvil':
-					gfCheck = 'gf-christmas';
-				case 'school' | 'schoolEvil':
-					gfCheck = 'gf-pixel';
-				case 'warzone':
-					if (SONG.songId != 'stress') gfCheck = 'gftank';
-					else gfCheck = 'picospeaker';
-				default:
-					gfCheck = 'gf';
-			}
-		}
-		else
-		{
-			gfCheck = SONG.gfVersion;
-		}
+		gfCheck = SONG.gfVersion;
 
 		boyfriendGroup = new FlxSpriteGroup(BF_X, BF_Y);
 		dadGroup = new FlxSpriteGroup(DAD_X, DAD_Y);
@@ -796,6 +749,8 @@ class PlayState extends MusicBeatState
 
 			setOnLuas('dadName', dad.curCharacter);
 		}
+
+		chars = [boyfriend, gf, dad];
 
 		if (!stageTesting 
 			#if LUA_ALLOWED
@@ -2200,7 +2155,6 @@ class PlayState extends MusicBeatState
 	{
 		if (oldvalue != value)
 		{
-			var chars:Array<Character> = [boyfriend, gf, dad];
 			if (value != 'delete')
 			{
 				/*if (!Std.isOfType(value, FlxColor)){
@@ -6744,7 +6698,18 @@ class PlayState extends MusicBeatState
 			
 			if (curBeat >= 192 && !blammedeventplayed && FlxG.save.data.distractions)
 			{
-				songOverlay('delete', 0.1);
+				overlayColor = FlxColor.fromRGB(0, 0, 0, 0);
+				colorTween = FlxTween.color(overlay, 0.1, overlay.color, overlayColor, {
+				onComplete: function(twn:FlxTween)
+				{
+					colorTween = null;
+				}
+				});
+				for (char in chars) {
+					char.colorTween = FlxTween.color(char, 0.1, char.color, FlxColor.WHITE, {onComplete: function(twn:FlxTween) {
+
+					}, ease: FlxEase.quadInOut});
+				}
 				blammedeventplayed = true;
 			}
 		}

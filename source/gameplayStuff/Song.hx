@@ -292,11 +292,53 @@ class Song
 			convertKadeEvents(song, checkedPositions);
 		}
 
+		if (song.stage == null)
+		{
+			switch (song.songId)
+			{
+				case 'spookeez' | 'south' | 'monster':
+					song.stage = 'spooky';
+				case 'pico' | 'blammed' | 'philly':
+					song.stage = 'philly';
+				case 'milf' | 'satin-panties' | 'high':
+					song.stage = 'limo';
+				case 'cocoa' | 'eggnog':
+					song.stage = 'mall';
+				case 'winter-horrorland':
+					song.stage = 'mallEvil';
+				case 'senpai' | 'roses':
+					song.stage = 'school';
+				case 'thorns':
+					song.stage = 'schoolEvil';
+				case 'ugh' | 'guns' | 'stress':
+					song.stage = 'warzone';
+				default:
+					song.stage = 'stage';
+			}
+		}
+
 		if (song.noteStyle == null)
 			song.noteStyle = "normal";
 
 		if (song.gfVersion == null)
-			song.gfVersion = "gf";
+		{
+			switch (song.stage)
+			{
+				case 'limo':
+					song.gfVersion = 'gf-car';
+				case 'mall' | 'mallEvil':
+					song.gfVersion = 'gf-christmas';
+				case 'school' | 'schoolEvil':
+					song.gfVersion = 'gf-pixel';
+				case 'warzone':
+					if (song.songId != 'stress')
+						song.gfVersion = 'gftank';
+					else
+						song.gfVersion = 'picospeaker';
+				default:
+					song.gfVersion = 'gf';
+			}
+		}
 
 		if (song.hideGF == null)
 			song.hideGF = false;

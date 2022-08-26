@@ -34,6 +34,16 @@
 
 	<!--Switch-specific-->
 	<window if="switch" orientation="landscape" fullscreen="true" width="0" height="0" resizable="true" />
+	
+	<!-- ____________________________ Unsupporded things ___________________________ -->
+	
+	<section if="html5">
+		<error value="html5 isn't supported!" />
+	</section>
+	
+	<section if="mobile">
+		<error value="mobile isn't supported!" />
+	</section>
 
 	<!-- _____________________________ Path Settings ____________________________ -->
 	

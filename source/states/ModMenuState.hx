@@ -1,6 +1,5 @@
 package states;
 
-import Util;
 import states.XMLLayoutState;
 import flixel.addons.ui.FlxUIButton;
 import ModCore;

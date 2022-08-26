@@ -87,7 +87,7 @@ class ResultsScreen extends FlxSubState
 		var shits = PlayState.isStoryMode ? PlayState.campaignShits : PlayState.shits;
 
 		comboText = new FlxText(20, -75, 0,
-			'Judgements:\nSicks - ${sicks}\nGoods - ${goods}\nBads - ${bads}\n\nCombo Breaks: ${(PlayState.isStoryMode ? PlayState.campaignMisses : PlayState.misses)}\nHighest Combo: ${PlayState.highestCombo + 1}\nScore: ${PlayState.instance.songScore}\nAccuracy: ${HelperFunctions.truncateFloat(PlayState.instance.accuracy, 2)}%\n\n${Ratings.GenerateLetterRank(PlayState.instance.accuracy)}\nRate: ${PlayState.songMultiplier}x\n\nF1 - Replay song
+			'Judgements:\nSicks - ${sicks}\nGoods - ${goods}\nBads - ${bads}\n\nCombo Breaks: ${(PlayState.isStoryMode ? PlayState.campaignMisses : PlayState.misses)}\nHighest Combo: ${PlayState.highestCombo + 1}\nScore: ${PlayState.instance.songScore}\nAccuracy: ${CoolUtil.truncateFloat(PlayState.instance.accuracy, 2)}%\n\n${Ratings.GenerateLetterRank(PlayState.instance.accuracy)}\nRate: ${PlayState.songMultiplier}x\n\nF1 - Replay song
         ');
 		comboText.size = 28;
 		comboText.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 4, 1);
@@ -102,8 +102,8 @@ class ResultsScreen extends FlxSubState
 		contText.scrollFactor.set();
 		add(contText);
 
-		var sicks = HelperFunctions.truncateFloat(PlayState.sicks / PlayState.goods, 1);
-		var goods = HelperFunctions.truncateFloat(PlayState.goods / PlayState.bads, 1);
+		var sicks = CoolUtil.truncateFloat(PlayState.sicks / PlayState.goods, 1);
+		var goods = CoolUtil.truncateFloat(PlayState.goods / PlayState.bads, 1);
 
 		if (sicks == Math.POSITIVE_INFINITY)
 			sicks = 0;
@@ -117,7 +117,7 @@ class ResultsScreen extends FlxSubState
 		if (goods == Math.POSITIVE_INFINITY || goods == Math.NaN)
 			goods = 0;
 
-		mean = HelperFunctions.truncateFloat(mean, 2);
+		mean = CoolUtil.truncateFloat(mean, 2);
 
 		settingsText = new FlxText(20, FlxG.height + 50, 0,
 			'Mean: ${mean}ms (SICK:${Ratings.timingWindows[3]}ms,GOOD:${Ratings.timingWindows[2]}ms,BAD:${Ratings.timingWindows[1]}ms,SHIT:${Ratings.timingWindows[0]}ms)');

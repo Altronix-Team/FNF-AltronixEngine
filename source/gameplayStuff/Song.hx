@@ -2,28 +2,10 @@ package gameplayStuff;
 
 import gameplayStuff.Section.SwagSection;
 import haxe.Json;
-import haxe.format.JsonParser;
 import openfl.utils.Assets as OpenFlAssets;
 import flixel.util.FlxSort;
 
 using StringTools;
-
-class Event //Kade Engine events
-{
-	public var name:String;
-	public var position:Float;
-	public var value:Dynamic;
-	public var type:String;
-
-	public function new(name:String, pos:Float, value:Dynamic, type:String)
-	{
-		this.name = name;
-		this.position = pos;
-		this.value = value;
-		this.type = type;
-	}
-}
-
 class EventObject
 {
 	public var name:String;
@@ -50,47 +32,124 @@ typedef SongData =
 	var ?song:String;
 
 	/**
-	 * The readable name of the song, as displayed to the user.
-	 		* Can be any string.
-	 */
+	* The readable name of the song, as displayed to the user.
+	* Can be any string.
+	*/
 	var songName:String;
 
 	/**
-	 * The internal name of the song, as used in the file system.
-	 */
+	* The internal name of the song, as used in the file system.
+	*/
 	var songId:String;
 
+	/**
+	* Used this to know on which version of the engine was the chart generated.
+	**/
 	var chartVersion:String;
+
+	/**
+	* Information about notes in this chart.
+	**/
 	var notes:Array<SwagSection>;
+
+	/**
+	* Altronix Engine events array.
+	* Always contains Init BPM event.
+	**/
 	var eventsArray:Array<EventsAtPos>;
+
+	/**
+	* Song BPM.
+	**/
 	var bpm:Float;
+
+	/**
+	* Should game use voices sound file.
+	**/
 	var needsVoices:Bool;
+
+	/**
+	* Speed of notes while playing this song.
+	**/
 	var speed:Float;
+
+	/**
+	* Player.
+	**/
 	var player1:String;
+
+	/**
+	* Opponent.
+	**/
 	var player2:String;
+
+	/**
+	* Which character will be used as gf.
+	**/
 	var gfVersion:String;
+
+	/**
+	* If true, toggles GF visibility to false.
+	**/
 	var ?hideGF:Bool;
+
+	/**
+	* Song note style, like "normal" or "pixel".
+	* Also affects to rating and countdown sprites and sounds.
+	**/
 	var noteStyle:String;
+
+	/**
+	* Name of stage, that will be used in song, while playing.
+	**/
 	var stage:String;
+
+	/**
+	* Name of sprite file of notes, that will be appear in this song.
+	**/
 	var specialSongNoteSkin:String;
 
+	/**
+	* Should game saves song result after playing.
+	**/
 	var ?validScore:Bool;
+
+	/**
+	* Makes senpai fans scared.
+	* Note: Works only on scholl stage.
+	**/
 	var ?scaredbgdancers:Bool;
+
+	/**
+	* Toggles visibility of senpai fans.
+	* Note: Works only on scholl stage.
+	**/
 	var ?showbgdancers:Bool;
+
+	/**
+	* Should game use special sound assets for this difficulty of song.
+	* (Example: Inst-hard, Voices-hard).
+	**/
 	var ?diffSoundAssets:Bool;
 
 	/** Do not use this in your code.
-	* Use eventsArray instead
+	* Use eventsArray instead.
+	* Used to convert Kade Engine events to Altronix Engine events.
 	*/
 	var ?eventObjects:Array<Event>; // Kade Engine events kekw
+
 	/** Do not use this in your code.
-	 * Use eventsArray instead
-	 */
+	* Use eventsArray instead.
+	* Used to convert Psych Engine events to Altronix Engine events.
+	*/
 	var ?events:Array<Dynamic>; // Psych Engine events
 }
 
 typedef SongMeta =
 {
+	/**
+	* Changes the displayed song name.
+	**/
 	var ?name:String;
 }
 
@@ -321,7 +380,6 @@ class Song
 
 			if (i.changeBPM && i.bpm != ba)
 			{
-				//trace("converting changebpm for section " + index);
 				ba = i.bpm;
 
 				var eventAtPos:EventsAtPos = 
@@ -422,7 +480,7 @@ class Song
 	{
 		for (event in song.events)
 		{
-			var eventBeat:Float = HelperFunctions.truncateFloat(TimingStruct.getBeatFromTime(event[0]), 3);
+			var eventBeat:Float = CoolUtil.truncateFloat(TimingStruct.getBeatFromTime(event[0]), 3);
 
 			if (checkedPositions.contains(eventBeat))
 			{
@@ -540,7 +598,7 @@ class Song
 	
 	static function sortByBeat(Obj1:EventsAtPos, Obj2:EventsAtPos):Int
 	{
-		return FlxSort.byValues(FlxSort.ASCENDING, HelperFunctions.truncateFloat(Obj1.position, 3), HelperFunctions.truncateFloat(Obj2.position, 3));
+		return FlxSort.byValues(FlxSort.ASCENDING, CoolUtil.truncateFloat(Obj1.position, 3), CoolUtil.truncateFloat(Obj2.position, 3));
 	}
 
 	public static function picospeakerLoad(jsonInput:String, ?folder:String):SongData
@@ -610,5 +668,21 @@ class Song
 		var swagShit:SongData = cast Json.parse(rawJson).song;
 		swagShit.validScore = true;
 		return Song.conversionChecks(swagShit);
+	}
+}
+
+class Event // Kade Engine events
+{
+	public var name:String;
+	public var position:Float;
+	public var value:Dynamic;
+	public var type:String;
+
+	public function new(name:String, pos:Float, value:Dynamic, type:String)
+	{
+		this.name = name;
+		this.position = pos;
+		this.value = value;
+		this.type = type;
 	}
 }

@@ -148,7 +148,7 @@ class Ratings
 						Std.string(maxNPS),
 						(Conductor.safeFrames != 10 ? Std.string(score) + " (" + Std.string(scoreDef) + ")" : "" + Std.string(score)),
 						Std.string(PlayState.misses),
-						Std.string(HelperFunctions.truncateFloat(accuracy, 2)),
+						Std.string(CoolUtil.truncateFloat(accuracy, 2)),
 						GenerateLetterRank(accuracy)
 					]);
 			}
@@ -159,7 +159,7 @@ class Ratings
 					[
 						(Conductor.safeFrames != 10 ? Std.string(score) + " (" + Std.string(scoreDef) + ")" : "" + Std.string(score)),
 						Std.string(PlayState.misses),								
-						Std.string(HelperFunctions.truncateFloat(accuracy, 2)),
+						Std.string(CoolUtil.truncateFloat(accuracy, 2)),
 						GenerateLetterRank(accuracy)
 					]);
 			}

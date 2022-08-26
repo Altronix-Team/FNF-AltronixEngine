@@ -190,7 +190,7 @@ class Main extends Sprite
 		}
 		errorMsg += '\n';
 
-		var logFolderPath = Util.createDirectoryIfNotExists('logs');
+		var logFolderPath = CoolUtil.createDirectoryIfNotExists('logs');
 
 		var path:String = '${logFolderPath}/Altronix Engine - ${DebugLogWriter.getDateString()}.crash';
 

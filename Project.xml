@@ -36,10 +36,14 @@
 	<window if="switch" orientation="landscape" fullscreen="true" width="0" height="0" resizable="true" />
 
 	<!-- _____________________________ Path Settings ____________________________ -->
-
+	
 	<set name="BUILD_DIR" value="export/debug" if="debug" />
 	<set name="BUILD_DIR" value="export/release" unless="debug" />
 	<set name="BUILD_DIR" value="export/32bit" if="32bit" />
+	
+	<!--I just don't want to clear the game files of my secret stuff :)-->
+	<!--define name="GITHUB_RELEASE"/>
+	<set name="BUILD_DIR" value="export/github-release" if="GITHUB_RELEASE" /-->
 
 	<classpath name="source" />
 	

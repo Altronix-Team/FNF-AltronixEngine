@@ -900,9 +900,9 @@ class ChartingState extends MusicBeatState
 		{
 			var pog:gameplayStuff.Song.EventObject;
 			if (lastEventType != null && lastEventValue != null)
-				pog = new gameplayStuff.Song.EventObject("New Event " + HelperFunctions.truncateFloat(curDecimalBeat, 3), lastEventValue, lastEventType);
+				pog = new gameplayStuff.Song.EventObject("New Event " + CoolUtil.truncateFloat(curDecimalBeat, 3), lastEventValue, lastEventType);
 			else
-				pog = new gameplayStuff.Song.EventObject("New Event " + HelperFunctions.truncateFloat(curDecimalBeat, 3),  _song.bpm, "BPM Change");
+				pog = new gameplayStuff.Song.EventObject("New Event " + CoolUtil.truncateFloat(curDecimalBeat, 3),  _song.bpm, "BPM Change");
 
 			Debug.logTrace("adding " + pog.name);
 
@@ -1071,7 +1071,7 @@ class ChartingState extends MusicBeatState
 		{
 			_song.eventsArray.remove(curTrackedEventAtPos);
 
-			curTrackedEventAtPos.position = HelperFunctions.truncateFloat(curDecimalBeat, 3);
+			curTrackedEventAtPos.position = CoolUtil.truncateFloat(curDecimalBeat, 3);
 
 			eventPos.text = curTrackedEventAtPos.position + '';
 
@@ -1127,8 +1127,8 @@ class ChartingState extends MusicBeatState
 		{
 			var newEventAtPos:gameplayStuff.Song.EventsAtPos = 
 			{
-				position: HelperFunctions.truncateFloat(curDecimalBeat, 3),
-				events: [new gameplayStuff.Song.EventObject("New Event " + HelperFunctions.truncateFloat(curDecimalBeat, 3), savedValue, savedType)]
+				position: CoolUtil.truncateFloat(curDecimalBeat, 3),
+				events: [new gameplayStuff.Song.EventObject("New Event " + CoolUtil.truncateFloat(curDecimalBeat, 3), savedValue, savedType)]
 			}
 
 			for (i in _song.eventsArray)
@@ -1139,12 +1139,12 @@ class ChartingState extends MusicBeatState
 
 			curTrackedEventAtPos = newEventAtPos;
 
-			eventsPosition.push(HelperFunctions.truncateFloat(curDecimalBeat, 3));
-			eventsPositionTexts.push('Position at beat ' + HelperFunctions.truncateFloat(curDecimalBeat, 3));
+			eventsPosition.push(CoolUtil.truncateFloat(curDecimalBeat, 3));
+			eventsPositionTexts.push('Position at beat ' + CoolUtil.truncateFloat(curDecimalBeat, 3));
 
 			eventPositionsList.setData(FlxUIDropDownMenuCustom.makeStrIdLabelArray(eventsPositionTexts, true));
 
-			eventPositionsList.selectedLabel = 'Position at beat ' + HelperFunctions.truncateFloat(curDecimalBeat, 3);
+			eventPositionsList.selectedLabel = 'Position at beat ' + CoolUtil.truncateFloat(curDecimalBeat, 3);
 
 			listOfEvents.setData(FlxUIDropDownMenuCustom.makeStrIdLabelArray([newEventAtPos.events[0].name], true));
 
@@ -1258,7 +1258,7 @@ class ChartingState extends MusicBeatState
 
 	function sortByBeat(Obj1:EventsAtPos, Obj2:EventsAtPos):Int
 	{
-		return FlxSort.byValues(FlxSort.ASCENDING, HelperFunctions.truncateFloat(Obj1.position, 3), HelperFunctions.truncateFloat(Obj2.position, 3));
+		return FlxSort.byValues(FlxSort.ASCENDING, CoolUtil.truncateFloat(Obj1.position, 3), CoolUtil.truncateFloat(Obj2.position, 3));
 	}
 
 	#if desktop
@@ -3058,13 +3058,13 @@ class ChartingState extends MusicBeatState
 				+ "\nCur Section: "
 				+ curSectionInt
 				+ "\nCurBeat: "
-				+ HelperFunctions.truncateFloat(curDecimalBeat, 3)
+				+ CoolUtil.truncateFloat(curDecimalBeat, 3)
 				+ "\nCurStep: "
 				+ curStep
 				+ "\nZoom: "
-				+ HelperFunctions.truncateFloat(zoomFactor, 2)
+				+ CoolUtil.truncateFloat(zoomFactor, 2)
 				+ "\nSpeed: "
-				+ HelperFunctions.truncateFloat(speed, 1)
+				+ CoolUtil.truncateFloat(speed, 1)
 				+ "\nCurTime: "
 				+ FlxStringUtil.formatTime(FlxG.sound.music.time / 1000, false)
 				+ '\nCurZoom: '

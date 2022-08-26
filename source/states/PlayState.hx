@@ -561,7 +561,7 @@ class PlayState extends MusicBeatState
 				"<songScore>",
 				"<misses>"
 				], [
-				HelperFunctions.truncateFloat(accuracy, 2),
+					CoolUtil.truncateFloat(accuracy, 2),
 				songScore,
 				misses
 				]), iconRPC);
@@ -2194,6 +2194,7 @@ class PlayState extends MusicBeatState
 
 	var oldvalue:Dynamic;
 	var curColor = FlxColor.WHITE;
+	var charColor:FlxColor = FlxColor.WHITE;
 
 	function songOverlay(value:Dynamic, time:Float = 1):Void
 	{
@@ -2202,6 +2203,7 @@ class PlayState extends MusicBeatState
 			var chars:Array<Character> = [boyfriend, gf, dad];
 			if (value != 'delete')
 			{
+				/*if (!Std.isOfType(value, FlxColor)){
 				var valueArray:Array<Dynamic> = [value];
 				var split:Array<String> = [];
 				for (i in 0...valueArray.length)
@@ -2213,9 +2215,15 @@ class PlayState extends MusicBeatState
 				var blue:Int = Std.parseInt(split[2].trim());
 				var alpha:Int = Std.parseInt(split[3].trim());
 				overlayColor = FlxColor.fromRGB(red, green, blue, alpha);
-				var charColor = FlxColor.fromRGB(red, green, blue, 255);
+				charColor = FlxColor.fromRGB(red, green, blue, 255);
+				}
+				else
+				{*/
+					overlayColor = value;
+					charColor = value;
+					charColor.alpha = 255;
+				//}
 
-				
 				colorTween = FlxTween.color(overlay, time, overlay.color, overlayColor, {
 					onComplete: function(twn:FlxTween)
 					{
@@ -2801,7 +2809,7 @@ class PlayState extends MusicBeatState
 				"<songScore>",
 				"<misses>"
 				], [
-				HelperFunctions.truncateFloat(accuracy, 2),
+					CoolUtil.truncateFloat(accuracy, 2),
 				songScore,
 				misses
 				]), iconRPC);
@@ -3352,7 +3360,7 @@ class PlayState extends MusicBeatState
 							Ratings.GenerateLetterRank(accuracy)
 						]),
 						LanguageStuff.replaceFlagsAndReturn("$DISCORD_RPC_TWO", "playState", ["<accuracy>", "<songScore>", "<misses>"],
-							[HelperFunctions.truncateFloat(accuracy, 2), songScore, misses]),
+							[CoolUtil.truncateFloat(accuracy, 2), songScore, misses]),
 						iconRPC, true,songLength- Conductor.songPosition);}
 			else{DiscordClient.changePresence(LanguageStuff.replaceFlagsAndReturn("$DISCORD_RPC_ONE", "playState",
 				["<detailsText>", "<songName>", "<storyDifficultyText>", "<timeLeft>", "<accuracy>"],
@@ -3412,7 +3420,7 @@ class PlayState extends MusicBeatState
 					Ratings.GenerateLetterRank(accuracy)
 				]),
 				LanguageStuff.replaceFlagsAndReturn("$DISCORD_RPC_TWO", "playState", ["<accuracy>", "<songScore>", "<misses>"],
-					[HelperFunctions.truncateFloat(accuracy, 2), songScore, misses]),
+					[CoolUtil.truncateFloat(accuracy, 2), songScore, misses]),
 				iconRPC);}
 		#end
 	}
@@ -3859,7 +3867,7 @@ class PlayState extends MusicBeatState
 							Ratings.GenerateLetterRank(accuracy)
 						]),
 						LanguageStuff.replaceFlagsAndReturn("$DISCORD_RPC_TWO", "playState", ["<accuracy>", "<songScore>", "<misses>"],
-							[HelperFunctions.truncateFloat(accuracy, 2), songScore, misses]),
+							[CoolUtil.truncateFloat(accuracy, 2), songScore, misses]),
 						iconRPC);
 					
 					timerCount = 0;
@@ -4093,7 +4101,7 @@ class PlayState extends MusicBeatState
 							Ratings.GenerateLetterRank(accuracy)
 						]),
 						LanguageStuff.replaceFlagsAndReturn("$DISCORD_RPC_TWO", "playState", ["<accuracy>", "<songScore>", "<misses>"],
-							[HelperFunctions.truncateFloat(accuracy, 2), songScore, misses]),
+							[CoolUtil.truncateFloat(accuracy, 2), songScore, misses]),
 						iconRPC);
 					#end
 					for (tween in modchartTweens) {
@@ -4151,7 +4159,7 @@ class PlayState extends MusicBeatState
 						Ratings.GenerateLetterRank(accuracy)
 					]),
 					LanguageStuff.replaceFlagsAndReturn("$DISCORD_RPC_TWO", "playState", ["<accuracy>", "<songScore>", "<misses>"],
-						[HelperFunctions.truncateFloat(accuracy, 2), songScore, misses]),
+						[CoolUtil.truncateFloat(accuracy, 2), songScore, misses]),
 					iconRPC);
 				#end
 
@@ -4654,7 +4662,20 @@ class PlayState extends MusicBeatState
 						changeCharacter(split[0], split[1].ltrim());
 
 					case "Song Overlay":
-						songOverlay(eventValue);
+						if (eventValue != 'delete'){
+							var valueArray:Array<Dynamic> = [eventValue];
+							var split:Array<String> = [];
+							for (i in 0...valueArray.length)
+							{
+								split = valueArray[i].split(',');
+							}
+							var red:Int = Std.parseInt(split[0].trim());
+							var green:Int = Std.parseInt(split[1].trim());
+							var blue:Int = Std.parseInt(split[2].trim());
+							var alpha:Int = Std.parseInt(split[3].trim());
+							songOverlay(FlxColor.fromRGB(red, green, blue, alpha));}
+						else
+							songOverlay('delete');
 					
 					case "Character play animation":
 						var valueArray:Array<Dynamic> = [eventValue];
@@ -5613,7 +5634,7 @@ class PlayState extends MusicBeatState
 			rating.velocity.y -= FlxG.random.int(140, 175);
 			rating.velocity.x -= FlxG.random.int(0, 10);
 
-			var msTiming = HelperFunctions.truncateFloat(noteDiff / songMultiplier, 3);
+			var msTiming = CoolUtil.truncateFloat(noteDiff / songMultiplier, 3);
 			if (PlayStateChangeables.botPlay)
 				msTiming = 0;
 
@@ -5654,7 +5675,7 @@ class PlayState extends MusicBeatState
 				for (i in hits)
 					total += i;
 
-				offsetTest = HelperFunctions.truncateFloat(total / hits.length, 2);
+				offsetTest = CoolUtil.truncateFloat(total / hits.length, 2);
 			}
 
 			/*if (currentTimingShown.alpha != 1)
@@ -6688,38 +6709,40 @@ class PlayState extends MusicBeatState
 
 		if (curSong == 'blammed')
 		{
-			if ((curBeat >= 128 && curBeat <= 192 && curBeat % 4 == 0) && !blammedeventplayed && FlxG.save.data.distractions)
-			{
+			if (curBeat % 4 == 0){
+				var windowColor:FlxColor = FlxColor.WHITE;
+
 				switch (Stage.curLight)
 				{
 					case 4:
-						camGame.flash(FlxColor.fromRGB(251, 166, 51), 0.1);
-						camHUD.flash(FlxColor.fromRGB(251, 166, 51), 0.1);
-						songOverlay("251, 166, 51, 175", 0.1);
+						windowColor = FlxColor.fromRGB(251, 166, 51);
 					case 3:
-						camGame.flash(FlxColor.fromRGB(253, 69, 49), 0.1);
-						camHUD.flash(FlxColor.fromRGB(253, 69, 49), 0.1);
-						songOverlay("253, 69, 49, 175", 0.1);
+						windowColor = FlxColor.fromRGB(253, 69, 49);
 					case 2:
-						camGame.flash(FlxColor.fromRGB(251, 51, 245), 0.1);
-						camHUD.flash(FlxColor.fromRGB(251, 51, 245), 0.1);
-						songOverlay("251, 51, 245, 175", 0.1);
+						windowColor = FlxColor.fromRGB(251, 51, 245);
 					case 1:
-						camGame.flash(FlxColor.fromRGB(49, 253, 140), 0.1);
-						camHUD.flash(FlxColor.fromRGB(49, 253, 140), 0.1);
-						songOverlay("49, 253, 140, 175", 0.1);
+						windowColor = FlxColor.fromRGB(49, 253, 140);
 					case 0:
-						camGame.flash(FlxColor.fromRGB(49, 162, 253), 0.1);
-						camHUD.flash(FlxColor.fromRGB(49, 162, 253), 0.1);
-						songOverlay("49, 162, 253, 175", 0.1);
+						windowColor = FlxColor.fromRGB(49, 162, 253);
+				}
+				if ((curBeat >= 128 && curBeat <= 192) && !blammedeventplayed && FlxG.save.data.distractions)
+				{
+					var eventColor:FlxColor = FlxColor.WHITE;
+
+					eventColor = windowColor;
+					eventColor.alpha = 175;
+
+					camGame.flash(windowColor, 0.1);
+					camHUD.flash(windowColor, 0.1);
+					songOverlay(eventColor, 0.1);
 				}
 
 				var phillyCityLight:FlxSprite = Stage.swagBacks['light'];
 
-				phillyCityLight.color = overlay.color;
-
+				phillyCityLight.color = windowColor;
 			}
-			else if (curBeat >= 192 && !blammedeventplayed && FlxG.save.data.distractions)
+			
+			if (curBeat >= 192 && !blammedeventplayed && FlxG.save.data.distractions)
 			{
 				songOverlay('delete', 0.1);
 				blammedeventplayed = true;

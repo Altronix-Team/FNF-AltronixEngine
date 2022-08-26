@@ -109,7 +109,7 @@ class DiffOverview extends FlxSubState
 		offset = new FlxText(10, FlxG.height
 			- 40, 0,
 			"Offset: "
-			+ HelperFunctions.truncateFloat(FlxG.save.data.offset, 0)
+			+ CoolUtil.truncateFloat(FlxG.save.data.offset, 0)
 			+ " (LEFT/RIGHT to decrease/increase)", 16);
 		offset.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 4, 1);
 		offset.color = FlxColor.WHITE;
@@ -286,7 +286,7 @@ class DiffOverview extends FlxSubState
 			}
 
 
-			offset.text = "Offset: " + HelperFunctions.truncateFloat(FlxG.save.data.offset,0) + " (LEFT/RIGHT to decrease/increase, SHIFT to go faster) - Time: " + HelperFunctions.truncateFloat(Conductor.songPosition / 1000,0) + "s - Step: " + currentStep;
+			offset.text = "Offset: " + CoolUtil.truncateFloat(FlxG.save.data.offset,0) + " (LEFT/RIGHT to decrease/increase, SHIFT to go faster) - Time: " + CoolUtil.truncateFloat(Conductor.songPosition / 1000,0) + "s - Step: " + currentStep;
 		 */
 
 		if (vocals != null)

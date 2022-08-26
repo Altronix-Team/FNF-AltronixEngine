@@ -4,7 +4,6 @@ import flixel.util.FlxColor;
 import flixel.addons.ui.FlxUISprite;
 import flixel.addons.ui.FlxUIButton;
 import flixel.FlxSprite;
-import Util;
 import Paths;
 import flixel.text.FlxText;
 import flixel.addons.ui.FlxUI;
@@ -96,7 +95,7 @@ class XMLLayoutState extends FlxUIState
 		}
 		else
 		{
-			Debug.logWarn('Received click event on non-TypedButton. ${Util.getTypeName(sender)}');
+			Debug.logWarn('Received click event on non-TypedButton. ${CoolUtil.getTypeName(sender)}');
 		}
 	}
 

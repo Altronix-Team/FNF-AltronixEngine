@@ -148,7 +148,7 @@ class Caching extends MusicBeatState
 	{
 		super.update(elapsed);
 		// Update the loading text. This should be done in the main UI thread.
-		var alpha = Util.truncateFloat(done / toBeDone * 100, 2) / 100;
+		var alpha = CoolUtil.truncateFloat(done / toBeDone * 100, 2) / 100;
 		gameLogo.alpha = alpha;
 		text.text = "Loading... (" + done + "/" + toBeDone + ")";
 		bar.value = done;

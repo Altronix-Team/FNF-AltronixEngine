@@ -933,7 +933,7 @@ class Stage extends states.MusicBeatState
 							}
 
 							if (PlayState.SONG != null){
-								if (PlayState.SONG.songId != 'blammed' || !(curBeat >= 128 && curBeat <= 192 && curBeat % 4 == 0))
+								if (PlayState.SONG.songId != 'blammed')
 									phillyCityLight.color = windowColor;
 							}
 						}

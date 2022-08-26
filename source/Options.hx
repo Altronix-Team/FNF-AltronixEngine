@@ -1560,9 +1560,9 @@ class ScrollSpeedOption extends Option
 	private override function updateDisplay():String
 	{
 		if (!FlxG.save.data.language)
-			return "Scroll Speed: < " + HelperFunctions.truncateFloat(FlxG.save.data.scrollSpeed, 1) + " >";
+			return "Scroll Speed: < " + CoolUtil.truncateFloat(FlxG.save.data.scrollSpeed, 1) + " >";
 		else
-			return "Скорость прокручивания: < " + HelperFunctions.truncateFloat(FlxG.save.data.scrollSpeed, 1) + " >";
+			return "Скорость прокручивания: < " + CoolUtil.truncateFloat(FlxG.save.data.scrollSpeed, 1) + " >";
 	}
 
 	override function right():Bool
@@ -1894,9 +1894,9 @@ class OffsetThing extends Option
 	private override function updateDisplay():String
 	{
 		if (!FlxG.save.data.language)
-			return "Note offset: < " + HelperFunctions.truncateFloat(FlxG.save.data.offset, 0) + " >";
+			return "Note offset: < " + CoolUtil.truncateFloat(FlxG.save.data.offset, 0) + " >";
 		else
-			return "Смещение стрелок: < " + HelperFunctions.truncateFloat(FlxG.save.data.offset, 0) + " >";
+			return "Смещение стрелок: < " + CoolUtil.truncateFloat(FlxG.save.data.offset, 0) + " >";
 	}
 
 	public override function getValue():String
@@ -2307,9 +2307,9 @@ class LaneUnderlayOption extends Option
 	private override function updateDisplay():String
 	{
 		if (!FlxG.save.data.language)
-			return "Lane Transparceny: < " + HelperFunctions.truncateFloat(FlxG.save.data.laneTransparency, 1) + " >";
+			return "Lane Transparceny: < " + CoolUtil.truncateFloat(FlxG.save.data.laneTransparency, 1) + " >";
 		else
-			return "Прозрачность полосы здоровья: < " + HelperFunctions.truncateFloat(FlxG.save.data.laneTransparency, 1) + " >";
+			return "Прозрачность полосы здоровья: < " + CoolUtil.truncateFloat(FlxG.save.data.laneTransparency, 1) + " >";
 	}
 
 	override function right():Bool

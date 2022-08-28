@@ -4,6 +4,7 @@ import openfl.media.Sound;
 import openfl.display.Graphics;
 import openfl.display.Sprite;
 
+//TODO remove
 class OFLWaveform extends Sprite
 {
 	public var musicLength = 0;

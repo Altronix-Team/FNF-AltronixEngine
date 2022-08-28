@@ -3,6 +3,7 @@ package;
 import flixel.util.FlxColor;
 import openfl.display.ShaderParameter;
 
+//TODO maybe remove
 typedef BlendModeShader =
 {
 	var uBlendColor:ShaderParameter<Float>;

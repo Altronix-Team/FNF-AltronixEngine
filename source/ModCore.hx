@@ -272,7 +272,7 @@ class ModCore
 	{
 		return {
 			assetLibraryPaths: [
-				"default" => "./preload", // ./preload
+				"default" => "./preload",
 				"sm" => "./sm",
 				"songs" => "./songs",
 				"shared" => "./",
@@ -291,7 +291,7 @@ class ModCore
 				"custom_notetypes" => "./custom_notetypes",
 				"custom_difficulties" => "./custom_difficulties",
 				"art" => "./art",
-				'core' => './_core' // Don't override these files.
+				'core' => './_core'
 			]
 		}
 	}

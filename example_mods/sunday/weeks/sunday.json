@@ -1,0 +1,17 @@
+{
+	"songs": [
+		"valentine",
+		"bi-nb",
+		"marx"
+	],
+	"weekBackground": "",
+	"difficulties": "Hard",
+	"weekCharacters": [
+		"",
+		"bf",
+		"gf"
+	],
+	"weekImage": "week1",
+	"storyName": "Sunday Valentine",
+	"weekBefore": "tutorial"
+}

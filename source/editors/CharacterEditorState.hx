@@ -3,7 +3,6 @@ package editors;
 #if desktop
 import DiscordClient;
 #end
-import animateatlas.AtlasFrameMaker;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;

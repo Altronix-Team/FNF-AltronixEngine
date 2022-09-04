@@ -1,0 +1,19 @@
+{
+	"freeplaySonglist": [
+		{
+			"weekSongs": [
+				"valentine",
+				"bi-nb",
+				"marx",
+				"madness"
+			],
+			"weekID": 0,
+			"weekChar": [
+				"sunday"
+			],
+			"weekDiffs": [
+				"Hard"
+			]
+		}
+	]
+}

@@ -99,12 +99,13 @@ class ChartingState extends MusicBeatState
 		"Toggle interface",
 		'Screen Shake',
 		'Camera Follow Pos',
-		"Toggle Alt Idle"/*,
-		"Change note skin"*/
+		"Toggle Alt Idle",
+		"Change strum note skin"
 	];
 
 	private var noteTypeIntMap:Map<Int, String> = new Map<Int, String>();
 	private var noteTypeMap:Map<String, Null<Int>> = new Map<String, Null<Int>>();
+	var noteStyles:Array<String>;
 
 	public static var instance:ChartingState;
 
@@ -128,6 +129,7 @@ class ChartingState extends MusicBeatState
 	public var zoomFactor:Float = 0.4;
 
 	public static var noteType:Int = 0;
+	public static var noteStyle:String = 'normal';
 
 	/**
 	 * Array of notes showing when each section STARTS in STEPS
@@ -1265,7 +1267,7 @@ class ChartingState extends MusicBeatState
 	var waveformEnabled:FlxUICheckBox;
 	#end
 
-	var noteStyleDropDown:FlxUIDropDownMenuCustom;
+	var songNoteStyleDropDown:FlxUIDropDownMenuCustom;
 	var noteSkinInputText:FlxUIInputText;
 
 	function addSongUI():Void
@@ -1401,7 +1403,7 @@ class ChartingState extends MusicBeatState
 		}
 		var gfVersions:Array<String> = Character.characterList;
 		var stages:Array<String> = Paths.listJsonInPath('assets/stages/');
-		var noteStyles:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/noteStyleList'));
+		noteStyles = CoolUtil.coolTextFile(Paths.txt('data/noteStyleList'));
 
 		var player1DropDown = new FlxUIDropDownMenuCustom(150, 108, FlxUIDropDownMenuCustom.makeStrIdLabelArray(characters, true), function(character:String)
 		{
@@ -1441,12 +1443,12 @@ class ChartingState extends MusicBeatState
 
 		var stageLabel = new FlxText(150, 213, 64, 'Stage');
 
-		noteStyleDropDown = new FlxUIDropDownMenuCustom(10, 300, FlxUIDropDownMenuCustom.makeStrIdLabelArray(noteStyles, true), function(noteStyle:String)
+		songNoteStyleDropDown = new FlxUIDropDownMenuCustom(10, 300, FlxUIDropDownMenuCustom.makeStrIdLabelArray(noteStyles, true), function(noteStyle:String)
 		{
 			_song.noteStyle = noteStyles[Std.parseInt(noteStyle)];
 			updateGrid();
 		});
-		noteStyleDropDown.selectedLabel = _song.noteStyle;
+		songNoteStyleDropDown.selectedLabel = _song.noteStyle;
 
 		var noteStyleLabel = new FlxText(10, 280, 64, 'Note Skin');
 
@@ -1521,7 +1523,7 @@ class ChartingState extends MusicBeatState
 
 		var tab_group_chartshit = new FlxUI(null, UI_box);
 		tab_group_chartshit.name = "Charting";
-		tab_group_chartshit.add(noteStyleDropDown);
+		tab_group_chartshit.add(songNoteStyleDropDown);
 		tab_group_chartshit.add(noteStyleLabel);
 		tab_group_chartshit.add(check_mute_inst);
 		tab_group_chartshit.add(hitsounds);
@@ -1881,6 +1883,7 @@ class ChartingState extends MusicBeatState
 
 	public var check_naltAnim:FlxUICheckBox;
 	var noteTypeDropDown:FlxUIDropDownMenuCustom;
+	var noteStyleDropDown:FlxUIDropDownMenuCustom;
 
 	function addNoteUI():Void
 	{
@@ -1930,6 +1933,29 @@ class ChartingState extends MusicBeatState
 		});
 		blockPressWhileScrolling.push(noteTypeDropDown);
 
+		noteStyleDropDown = new FlxUIDropDownMenuCustom(10, 200, FlxUIDropDownMenuCustom.makeStrIdLabelArray(noteStyles, true), function(character:String)
+		{
+			noteStyle = noteStyleDropDown.selectedLabel;
+			if (curSelectedNote != null)
+			{
+				for (i in selectedBoxes)
+				{
+					i.connectedNoteData[6] = noteStyle;
+
+					for (ii in _song.notes)
+					{
+						for (n in ii.sectionNotes)
+							if (n[0] == i.connectedNoteData[0] && n[1] == i.connectedNoteData[1])
+								n[6] = i.connectedNoteData[6];
+					}
+				}
+				updateGrid();
+				updateNoteUI();
+			}
+		});
+		blockPressWhileScrolling.push(noteTypeDropDown);
+		noteStyleDropDown.selectedLabel = _song.noteStyle;
+
 		check_naltAnim = new FlxUICheckBox(10, 150, null, null, "Toggle Alternative Animation", 100);
 		check_naltAnim.callback = function()
 		{
@@ -1955,6 +1981,7 @@ class ChartingState extends MusicBeatState
 		tab_group_note.add(stepperSusLengthLabel);
 		tab_group_note.add(check_naltAnim);
 		tab_group_note.add(noteTypeDropDown);
+		tab_group_note.add(noteStyleDropDown);
 
 		UI_box.addGroup(tab_group_note);
 	}
@@ -1978,8 +2005,7 @@ class ChartingState extends MusicBeatState
 
 					var thing = ii.sectionNotes[ii.sectionNotes.length - 1];
 
-					var note:Note = new Note(strum, Math.floor(i[1] % 4), null, false, true, i[3], i[4]);
-					note.noteTypeCheck = noteStyleDropDown.selectedLabel;
+					var note:Note = new Note(strum, Math.floor(i[1] % 4), null, false, true, i[3], i[4], i[6]);
 					note.rawNoteData = i[1];
 					note.sustainLength = i[2];
 					note.noteType = i[5];
@@ -2042,15 +2068,15 @@ class ChartingState extends MusicBeatState
 						originalNote.sustainLength,
 						originalNote.isAlt,
 						originalNote.beat,
-						originalNote.noteType
+						originalNote.noteType,
+						originalNote.noteStyle
 					];
 					ii.sectionNotes.push(newData);
 
 					var thing = ii.sectionNotes[ii.sectionNotes.length - 1];
 
 					var note:Note = new Note(strum, originalNote.noteData, originalNote.prevNote, originalNote.isSustainNote, true, originalNote.isAlt,
-						originalNote.beat);
-					note.noteTypeCheck = noteStyleDropDown.selectedLabel;
+						originalNote.beat, originalNote.noteStyle);
 					note.rawNoteData = originalNote.rawNoteData;
 					note.sustainLength = originalNote.sustainLength;
 					note.noteType = originalNote.noteType;
@@ -3696,8 +3722,7 @@ class ChartingState extends MusicBeatState
 				else
 					daType = 'Default Note';
 
-				var note:Note = new Note(daStrumTime, daNoteInfo % 4, null, false, true, i[3], i[4]);
-				note.noteTypeCheck = noteStyleDropDown.selectedLabel;
+				var note:Note = new Note(daStrumTime, daNoteInfo % 4, null, false, true, i[3], i[4], i[6]);
 				note.isAlt = i[3];
 				note.beat = TimingStruct.getBeatFromTime(daStrumTime);
 				note.rawNoteData = daNoteInfo;
@@ -4087,9 +4112,10 @@ class ChartingState extends MusicBeatState
 				n.sustainLength,
 				false,
 				TimingStruct.getBeatFromTime(n.strumTime),
-				n.noteType]);
+				n.noteType,
+				n.noteStyle]);
 		else
-			section.sectionNotes.push([noteStrum, noteData, noteSus, false, TimingStruct.getBeatFromTime(noteStrum), noteTypeIntMap.get(daType)]);
+			section.sectionNotes.push([noteStrum, noteData, noteSus, false, TimingStruct.getBeatFromTime(noteStrum), noteTypeIntMap.get(daType), noteStyle]);
 
 		var thingy = section.sectionNotes[section.sectionNotes.length - 1];
 
@@ -4101,9 +4127,8 @@ class ChartingState extends MusicBeatState
 
 		if (n == null)
 		{
-			note = new Note(noteStrum, noteData % 4, null, false, true, null, TimingStruct.getBeatFromTime(noteStrum));
+			note = new Note(noteStrum, noteData % 4, null, false, true, null, TimingStruct.getBeatFromTime(noteStrum), noteStyle);
 			note.rawNoteData = noteData;
-			note.noteTypeCheck = noteStyleDropDown.selectedLabel;
 			note.sustainLength = noteSus;
 			note.noteType = noteTypeIntMap.get(daType);
 			note.setGraphicSize(Math.floor(GRID_SIZE), Math.floor(GRID_SIZE));
@@ -4134,9 +4159,8 @@ class ChartingState extends MusicBeatState
 		}
 		else
 		{
-			note = new Note(n.strumTime, n.noteData % 4, null, false, true, n.isAlt, TimingStruct.getBeatFromTime(n.strumTime));
+			note = new Note(n.strumTime, n.noteData % 4, null, false, true, n.isAlt, TimingStruct.getBeatFromTime(n.strumTime), n.noteStyle);
 			note.beat = TimingStruct.getBeatFromTime(n.strumTime);
-			note.noteTypeCheck = noteStyleDropDown.selectedLabel;
 			note.rawNoteData = n.noteData;
 			note.sustainLength = noteSus;
 			note.noteType = n.noteType;

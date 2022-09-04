@@ -1,5 +1,6 @@
 package scriptStuff;
 
+import gameplayStuff.DialogueBoxPsych;
 import gameplayStuff.Boyfriend;
 import gameplayStuff.Character;
 import flixel.FlxBasic;
@@ -68,6 +69,8 @@ class ModchartHelper extends FlxTypedGroup<FlxBasic>
 		scriptHelper.expose.set("changeCharacter", changeCharacter);
 
 		scriptHelper.expose.set("setObjectCam", setObjectCam);
+
+		scriptHelper.expose.set("startDialogue", startDialogue);
 
 		scriptHelper.loadScript(path);
 
@@ -144,6 +147,31 @@ class ModchartHelper extends FlxTypedGroup<FlxBasic>
 		if (Assets.exists('assets/scripts/$scriptName.lua'))
 		{
 			playState.luaArray.push(new FunkinLua(Assets.getPath('assets/scripts/$scriptName.lua')));
+		}
+	}
+
+	public function startDialogue(dialogueFile:String, music:String = null)
+	{
+		var path:String = Paths.json('songs/' + PlayState.SONG.songId + '/' + dialogueFile);
+
+		if (Assets.exists(path))
+		{
+			var shit:DialogueFile = DialogueBoxPsych.parseDialogue(path);
+			if (shit.dialogue.length > 0)
+			{
+				PlayState.instance.startDialogue(shit, music);
+			}
+		}
+		else
+		{
+			if (PlayState.instance.endingSong)
+			{
+				PlayState.instance.endSong();
+			}
+			else
+			{
+				PlayState.instance.startCountdown();
+			}
 		}
 	}
 

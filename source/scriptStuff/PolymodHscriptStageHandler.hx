@@ -2,15 +2,12 @@ package scriptStuff;
 
 import states.PlayState;
 import flixel.FlxBasic;
-import flixel.group.FlxGroup.FlxTypedGroup;
-import polymod.hscript.HScriptable;
-import flixel.FlxG;
 import gameplayStuff.Character;
 import gameplayStuff.Boyfriend;
 import flixel.group.FlxSpriteGroup;
 import flixel.group.FlxGroup.FlxTypedGroup;
 
-class PolymodHscriptStageHandler extends FlxTypedGroup<FlxBasic> //I wish it could work at some time
+class PolymodHscriptStageHandler extends FlxTypedGroup<FlxBasic>
 {
 	public var gf:Character = null;
 	public var dad:Character = null;

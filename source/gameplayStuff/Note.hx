@@ -1,5 +1,6 @@
 package gameplayStuff;
 
+import hx.strings.String8;
 import openfl.display.Preloader.DefaultPreloader;
 import flixel.addons.effects.FlxSkewedSprite;
 import flixel.FlxG;
@@ -76,7 +77,8 @@ class Note extends FlxSprite
 
 	public var children:Array<Note> = [];
 
-	public var noteTypeCheck:String = PlayState.SONG.noteStyle;
+	var noteTypeCheck:String = PlayState.SONG.noteStyle;
+	public var noteStyle:String;
 
 	public var texture:String = null;
 
@@ -123,7 +125,8 @@ class Note extends FlxSprite
 		return value;
 	}
 
-	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inCharter:Bool = false, ?isAlt:Bool = false, ?bet:Float = 0)
+	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inCharter:Bool = false, ?isAlt:Bool = false,
+			?bet:Float = 0, ?noteStyle:String)
 	{
 		super();
 
@@ -138,10 +141,15 @@ class Note extends FlxSprite
 		this.prevNote = prevNote;
 		isSustainNote = sustainNote;
 
+		if (noteStyle == null)
+			this.noteStyle = noteTypeCheck;
+		else
+			this.noteStyle = noteStyle;
+
 		if (isAlt)
 			animSuffix = '-alt';
 
-		if (PlayState.SONG.noteStyle == null)
+		/*if (PlayState.SONG.noteStyle == null)
 		{
 			switch (PlayState.storyWeek)
 			{
@@ -154,7 +162,7 @@ class Note extends FlxSprite
 		else
 		{
 			noteTypeCheck = PlayState.SONG.noteStyle;
-		}
+		}*/
 
 		reloadNote('');
 		
@@ -228,7 +236,7 @@ class Note extends FlxSprite
 	}
 
 	function reloadNote(?texture:String = '') {
-		if (noteTypeCheck == 'pixel')
+		if (noteStyle == 'pixel')
 		{
 			if (texture == null || texture == '')
 			{
@@ -294,11 +302,42 @@ class Note extends FlxSprite
 				}
 			}
 		}
-		else
+		else if (noteStyle == 'normal')
 		{
 			if (texture == null || texture == '')
 			{
 				frames = PlayState.noteskinSprite;
+				loadDefaultAnims();
+
+				if (chartNote)
+					setGraphicSize(40, 40);
+				else
+					setGraphicSize(Std.int(width * 0.7));
+
+				updateHitbox();
+
+				antialiasing = FlxG.save.data.antialiasing;
+			}
+			else
+			{
+				frames = Paths.getSparrowAtlas('specialnotes/' + texture);
+				loadDefaultAnims();
+
+				if (chartNote)
+					setGraphicSize(40, 40);
+				else
+					setGraphicSize(Std.int(width * 0.7));
+
+				updateHitbox();
+
+				antialiasing = FlxG.save.data.antialiasing;
+			}
+		}
+		else
+		{
+			if (texture == null || texture == '')
+			{
+				frames = NoteskinHelpers.generateNoteskinSprite(noteStyle);
 				loadDefaultAnims();
 
 				if (chartNote)

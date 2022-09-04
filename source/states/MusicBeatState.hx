@@ -1,18 +1,11 @@
 package states;
 
-import flixel.math.FlxMath;
 import flixel.FlxCamera;
-import flixel.text.FlxText;
 import lime.app.Application;
 import flixel.FlxBasic;
-#if desktop
-import DiscordClient;
-#end
-import flixel.util.FlxColor;
 import flixel.FlxState;
 import flixel.addons.transition.FlxTransitionableState;
 import openfl.Lib;
-import gameplayStuff.Conductor.BPMChangeEvent;
 import flixel.FlxG;
 import flixel.addons.ui.FlxUIState;
 import gameplayStuff.Section;
@@ -214,24 +207,16 @@ class MusicBeatState extends FlxUIState
 
 	public static function switchState(nextState:FlxState) 
 	{
-		// Custom made Trans in
-		var curState:Dynamic = FlxG.state;
-		var leState:MusicBeatState = curState;
 		if(!FlxTransitionableState.skipNextTransIn) {
-			leState.openSubState(new CustomFadeTransition(0.6, false));
-			if(nextState == FlxG.state) {
-				CustomFadeTransition.finishCallback = function() {
-					FlxG.resetState();
-				};
-			} else {
-				CustomFadeTransition.finishCallback = function() {
-					FlxG.switchState(nextState);
-				};
-			}
-			return;
+			var switchState = new TransitionableState();
+			switchState.nextState = nextState;
+
+			FlxG.switchState(switchState);
 		}
-		FlxTransitionableState.skipNextTransIn = false;
-		FlxG.switchState(nextState);
+		else {
+			FlxTransitionableState.skipNextTransIn = false;
+			FlxG.switchState(nextState);
+		}
 	}
 
 	public static function resetState() {

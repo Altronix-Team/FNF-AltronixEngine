@@ -1,5 +1,6 @@
 package gameplayStuff;
 
+import animateatlas.AtlasFrameMaker;
 #if LUA_ALLOWED
 import llua.Lua;
 import llua.LuaL;
@@ -7,7 +8,6 @@ import llua.State;
 import llua.Convert;
 #end
 
-import animateatlas.AtlasFrameMaker;
 import flixel.FlxG;
 import flixel.addons.effects.FlxTrail;
 import flixel.input.keyboard.FlxKey;
@@ -1009,8 +1009,6 @@ class FunkinLua {
 			}
 
 			PlayState.cancelMusicFadeTween();
-			if(FlxTransitionableState.skipNextTransIn)
-				CustomFadeTransition.nextCamera = null;
 
 			if(PlayState.isStoryMode)
 				MusicBeatState.switchState(new StoryMenuState());
@@ -1589,10 +1587,10 @@ class FunkinLua {
 				}
 			}
 		});
-		Lua_helper.add_callback(lua, "startVideo", function(videoFile:String) {
+		Lua_helper.add_callback(lua, "startVideo", function(videoFile:String, atend:Bool, blockFinish:Bool) {
 			#if VIDEOS_ALLOWED
 			if(Assets.exists(Paths.video(videoFile))) {
-				PlayState.instance.playCutscene(videoFile);
+				PlayState.instance.playCutscene(videoFile, atend, blockFinish);
 			} else {
 				luaTrace('Video file not found: ' + videoFile);
 			}
@@ -2114,10 +2112,10 @@ class FunkinLua {
 		switch(spriteType.toLowerCase().trim())
 		{
 			case "texture" | "textureatlas" | "tex":
-				spr.frames = AtlasFrameMaker.construct(image);
+				spr.frames = AtlasFrameMaker.construct(Paths.image(image));
 
 			case "texture_noaa" | "textureatlas_noaa" | "tex_noaa":
-				spr.frames = AtlasFrameMaker.construct(image, null, true);
+				spr.frames = AtlasFrameMaker.construct(Paths.image(image), null, true);
 
 			case "packer" | "packeratlas" | "pac":
 				spr.frames = Paths.getPackerAtlas(image);

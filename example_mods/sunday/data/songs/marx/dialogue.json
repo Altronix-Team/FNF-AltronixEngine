@@ -1,0 +1,60 @@
+{
+	"dialogue": [
+		{
+			"sound": "",
+			"speed": 0.05,
+			"portrait": "sundayport",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "this one's the closer for the concert"
+		},
+		{
+			"sound": "",
+			"speed": 0.05,
+			"portrait": "sundayport",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "it's one of my personal favorites"
+		},
+		{
+			"sound": "",
+			"speed": 0.05,
+			"portrait": "bf",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "bepp?"
+		},
+		{
+			"sound": "",
+			"speed": 0.05,
+			"portrait": "sundayport",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "i would say what it's about but im not too sure people would understand the message"
+		},
+		{
+			"sound": "",
+			"speed": 0.05,
+			"portrait": "bf",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "bebebebebe"
+		},
+		{
+			"sound": "",
+			"speed": 0.05,
+			"portrait": "sundayport",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "lyrics? oh yea u can find them in the assets/data/marx folder i guess."
+		},
+		{
+			"sound": "",
+			"speed": 0.05,
+			"portrait": "sundayport",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "they're kinda edgy and political so i think i'll stick to vowels for the player's sake."
+		}
+	]
+}

@@ -1,5 +1,6 @@
 package scriptStuff;
 
+import flixel.addons.display.FlxBackdrop;
 import flixel.group.FlxSpriteGroup;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
@@ -25,6 +26,9 @@ class HscriptStage extends ModchartHelper
 	public var addedCharacters:Array<Character> = [];
 	public var addedCharacterGroups:Array<FlxSpriteGroup> = [];
 
+	public var objectsMap:Map<String, FlxBasic> = new Map<String, FlxBasic>();
+	public var objectsArray:Array<FlxBasic> = [];
+
 	public function new(path:String, state:PlayState)
 	{
 		scriptHelper = new ScriptHelper();
@@ -47,9 +51,46 @@ class HscriptStage extends ModchartHelper
 		scriptHelper.expose.set("addGfGroup", addGfGroup);
 		scriptHelper.expose.set("addDadGroup", addDadGroup);
 		scriptHelper.expose.set("addBoyfriendGroup", addBoyfriendGroup);
+		scriptHelper.expose.set("addObject", addObject);
+		scriptHelper.expose.set("getObject", getObject);
 
 		this.state = state;
 		super(path, state);
+	}
+
+	override public function add(object:FlxBasic):FlxBasic {
+		if (!objectsArray.contains(object))
+			Debug.logWarn('Use addObject(object, objectName) instead of add');
+
+		super.add(object);
+		return object;
+	}
+
+	public function addObject(object:FlxBasic, objectName:String) {
+		if (object != null)
+		{
+			if (objectName != null)
+				objectsMap.set(objectName, object);
+			objectsArray.push(object);
+			this.add(object);
+		}
+		else
+		{
+			Debug.logError('Failed to add object to stage');
+		} 	
+	}
+
+	public function getObject(objectName:String):FlxBasic
+	{
+		if (objectName != null)
+		{
+			return objectsMap.get(objectName);
+		}
+		else
+		{
+			Debug.logError('Failed to get object from stage');
+			return null;
+		}
 	}
 
 	public function addGf() {

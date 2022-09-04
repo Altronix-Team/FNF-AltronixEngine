@@ -3,13 +3,10 @@ package gameplayStuff;
 import flixel.util.FlxColor;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.animation.FlxBaseAnimation;
 import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.utils.Assets as OpenFlAssets;
-import haxe.Json;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxSort;
-import animateatlas.AtlasFrameMaker;
 import states.PlayState;
 
 using StringTools;
@@ -51,6 +48,8 @@ class Character extends FlxSprite
 	public var animationNotes:Array<Dynamic> = [];
 	public var specialAnim:Bool = false;
 	public var psychChar:Bool = false;
+
+	var wasAltIdle:Bool = false;
 
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
@@ -122,7 +121,7 @@ class Character extends FlxSprite
 				{
 					if (isDancing)
 						playAnim('danceLeft'); // overridden by dance correctly later
-					dance();
+					dance(false, wasAltIdle);
 					holdTimer = 0;
 				}
 			}
@@ -163,7 +162,7 @@ class Character extends FlxSprite
 			if (animation.curAnim.finished && specialAnim)
 			{
 				specialAnim = false;
-				dance();
+				dance(false, wasAltIdle);
 			}
 		}
 
@@ -196,6 +195,9 @@ class Character extends FlxSprite
 		if (!debugMode)
 		{
 			var canInterrupt = animInterrupt.get(animation.curAnim.name);
+			
+			if (altAnim != wasAltIdle)
+				wasAltIdle = altAnim;
 
 			if (canInterrupt)
 			{

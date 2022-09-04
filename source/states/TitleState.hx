@@ -82,41 +82,41 @@ class TitleState extends MusicBeatState
 			Debug.logTrace("We loaded " + openfl.Assets.getLibrary("default").assetsLoaded + " assets into the default library");
 		}*/
 
-		FlxG.autoPause = false;
-
-		FlxG.save.bind('funkin', 'ninjamuffin99');
-
-		PlayerSettings.init();
-
-		EngineData.initSave();
-
-		KeyBinds.keyCheck();	
-
-		if (FlxG.save.data.volDownBind == null)
-			FlxG.save.data.volDownBind = "MINUS";
-		if (FlxG.save.data.volUpBind == null)
-			FlxG.save.data.volUpBind = "PLUS";
-
-		FlxG.sound.muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
-		FlxG.sound.volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];
-		FlxG.sound.volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
-
-		muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
-		volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];
-		volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
-
-		FlxG.mouse.visible = false;
-
-		FlxG.worldBounds.set(0, 0);
-
-		FlxGraphic.defaultPersist = FlxG.save.data.cacheImages;
-
-		MusicBeatState.initSave = true;
-
-		Highscore.load();
-
 		if (!initialized)
 		{
+			FlxG.autoPause = false;
+
+			FlxG.save.bind('funkin', 'ninjamuffin99');
+
+			PlayerSettings.init();
+
+			EngineData.initSave();
+
+			KeyBinds.keyCheck();	
+
+			if (FlxG.save.data.volDownBind == null)
+				FlxG.save.data.volDownBind = "MINUS";
+			if (FlxG.save.data.volUpBind == null)
+				FlxG.save.data.volUpBind = "PLUS";
+
+			FlxG.sound.muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
+			FlxG.sound.volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];
+			FlxG.sound.volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
+
+			muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
+			volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];
+			volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
+
+			FlxG.mouse.visible = false;
+
+			FlxG.worldBounds.set(0, 0);
+
+			FlxGraphic.defaultPersist = FlxG.save.data.cacheImages;
+
+			MusicBeatState.initSave = true;
+
+			Highscore.load();
+
 			#if FEATURE_MODCORE
 				modsToLoad = ModCore.getConfiguredMods();
 				configFound = (modsToLoad != null && modsToLoad.length > 0);
@@ -125,10 +125,7 @@ class TitleState extends MusicBeatState
 			#else
 				configFound = false;	
 			#end
-		}	
 
-		if (!initialized)
-		{
 			NoteskinHelpers.updateNoteskins();
 
 			MenuMusicStuff.updateMusic();
@@ -143,30 +140,29 @@ class TitleState extends MusicBeatState
 			GameJoltAPI.connect();
 			GameJoltAPI.authDaUser(FlxG.save.data.gjUser, FlxG.save.data.gjToken);
 			#end
+
+			// cacheSongs();
+
+			if (FlxG.save.data.volume != null)
+				FlxG.sound.volume = FlxG.save.data.volume;
+
+			if (FlxG.save.data.fullscreenOnStart)
+			{
+				FlxG.fullscreen = FlxG.save.data.fullscreenOnStart;
+			}
+
+			if (FlxG.save.data.weekCompleted != null)
+			{
+				StoryMenuState.weekCompleted = FlxG.save.data.weekCompleted;
+			}
+
 		}
 
-		cacheSongs();
-
-		if (FlxG.save.data.volume != null)
-			FlxG.sound.volume = FlxG.save.data.volume;
-
 		curWacky = FlxG.random.getObject(getIntroTextShit());
-
-		trace('hello');
 
 		// DEBUG BULLSHIT
 
 		super.create();
-
-		if (FlxG.save.data.fullscreenOnStart)
-		{
-			FlxG.fullscreen = FlxG.save.data.fullscreenOnStart;
-		}
-
-		if (FlxG.save.data.weekCompleted != null)
-		{
-			StoryMenuState.weekCompleted = FlxG.save.data.weekCompleted;
-		}
 
 		#if FREEPLAY
 		FlxG.switchState(new FreeplayState());
@@ -546,9 +542,8 @@ class TitleState extends MusicBeatState
 					FlxTween.angle(logoBl, logoBl.angle, -4, 4, {ease: FlxEase.quartInOut});
 			}, 0);
 
-			// It always bugged me that it didn't do this before.
-			// Skip ahead in the song to the drop.
-			FlxG.sound.music.time = 9400; // 9.4 seconds
+			FlxG.sound.music.time = 9400;
+			FlxG.sound.music.volume = 0.7;
 
 			skippedIntro = true;
 		}

@@ -506,6 +506,9 @@ class Song
 
 				if (ii[5] == null)
 					ii[5] = 'Default Note';
+
+				if (ii[6] == null)
+					ii[6] = song.noteStyle;
 			}
 
 			index++;

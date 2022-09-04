@@ -38,7 +38,7 @@ class MainMenuState extends MusicBeatState
 	var menuItems:FlxTypedGroup<FlxSprite>;
 
 	#if !switch
-	var optionShit:Array<String> = ['story mode', 'freeplay', 'extras', 'gamejolt', 'mods', 'credits', 'awards', 'options'];
+	var optionShit:Array<String> = ['story mode', 'freeplay', 'extras',#if desktop 'gamejolt', 'mods',#end 'credits', 'awards', 'options'];
 	#else
 	var optionShit:Array<String> = ['story mode', 'freeplay'];
 	#end
@@ -61,15 +61,11 @@ class MainMenuState extends MusicBeatState
 	{
 		Achievements.getAchievement(160503, 'engine');
 		camGame = new FlxCamera();
-		trace(0 / 2);
 		clean();
 		PlayState.inDaPlay = false;
 		#if desktop
 		// Updating Discord Rich Presence
-		if (!FlxG.save.data.language)
-			DiscordClient.changePresence("In the Menus", null);
-		else
-			DiscordClient.changePresence("В главном меню", null);
+		DiscordClient.changePresence("In the Menus", null);
 		#end
 		FlxG.cameras.reset(camGame);
 		//FlxCamera.defaultCameras = [camGame];

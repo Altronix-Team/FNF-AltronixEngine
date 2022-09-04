@@ -1,7 +1,6 @@
 package scriptStuff;
 
 import flixel.addons.display.FlxRuntimeShader;
-import flixel.util.FlxColor;
 import states.MusicBeatState;
 import flixel.FlxObject;
 import flixel.text.FlxText;
@@ -18,12 +17,18 @@ import flixel.system.FlxSound;
 import flixel.util.FlxTimer;
 import haxe.Exception;
 import haxe.ds.StringMap;
-import hscript.Expr;
-import hscript.Interp;
-import hscript.Parser;
 import Paths;
 import gameplayStuff.Conductor;
 import openfl.Assets as OpenFlAssets;
+
+//Base hscript 
+import hscript.Expr;
+import hscript.Interp;
+import hscript.Parser;
+
+//Hscript classes
+/*import hscript.ParserEx;
+import hscript.InterpEx;*/
 
 class ScriptException extends Exception 
 {
@@ -40,6 +45,9 @@ class ScriptHelper
 	
 	var parser:Parser;
     var interp:Interp;
+
+	/*var parserEx:ParserEx;
+	var interpEx:InterpEx;*/
 
     var ast:Expr;
     
@@ -90,6 +98,7 @@ class ScriptHelper
 		expose.set('exists', exists);
 		expose.set('getEngineFont', getEngineFont);
 		expose.set('createRuntimeShader', createRuntimeShader);
+		//expose.set("instancePluginClass", instanceExClass);
 		
 		expose.set("getSparrowAtlas", Paths.getSparrowAtlas);
 
@@ -236,6 +245,11 @@ class ScriptHelper
 			throw new ScriptException("Path is empty!");
 		}
 	}
+
+	/*function instanceExClass(classname:String, args:Array<Dynamic> = null)
+	{
+		return interpEx.createScriptClassInstance(classname, args);
+	}*/
 
 	function createRuntimeShader(fragmentSource:String = null, vertexSource:String = null, glslVersion:Int = 120):FlxRuntimeShader
 	{

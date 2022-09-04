@@ -63,14 +63,14 @@ class WeekData {
 
 		this.fileName = fileName;
 	}
-
-	static var defaultWeeks:Array<String> = CoolUtil.coolTextFile('assets/weeks/weekList.txt');
+	
+	static var defaultWeeks:Array<String> = ['tutorial', 'week1', 'week2', 'week3', 'week4', 'week5', 'week6', 'week7'];
 	public static function reloadWeekFiles(isStoryMode:Null<Bool> = false)
 	{
 		weeksList = [];
 		weeksLoaded.clear();
 
-		var sexList:Array<String> = defaultWeeks.concat(listWeeksInPath('weeks/'));
+		var sexList:Array<String> = listWeeks();
 		for (i in 0...sexList.length) {
 			var fileToCheck:String = 'assets/weeks/' + sexList[i] + '.json';
 			if(!weeksLoaded.exists(sexList[i])) {
@@ -84,6 +84,21 @@ class WeekData {
 				}
 			}
 		}
+	}
+
+	static function listWeeks():Array<String>
+	{
+		var returnArr:Array<String> = [];
+		var mods:Array<String> = listWeeksInPath('weeks/');
+
+		returnArr = defaultWeeks;
+
+		for (i in mods)
+		{
+			returnArr.push(i);
+		}
+
+		return returnArr;
 	}
 
 	/**
@@ -102,30 +117,17 @@ class WeekData {
 			for (data in dataAssets)
 			{
 				if (data.indexOf(queryPath) != -1 && data.endsWith('.json')
-					 && !results.contains(data.substr(data.indexOf(queryPath) + queryPath.length).replaceAll('.json', ''))
-					 && !defaultWeeks.contains(data.substr(data.indexOf(queryPath) + queryPath.length).replaceAll('.json', '')))
+					 && !results.contains(data.substr(data.indexOf(queryPath) + queryPath.length).replaceAll('.json', '')))
 				{
 					var suffixPos = data.indexOf(queryPath) + queryPath.length;
-					results.push(data.substr(suffixPos).replaceAll('.json', ''));
+					if (!defaultWeeks.contains(data.substr(suffixPos).replaceAll('.json', '')))
+						results.push(data.substr(suffixPos).replaceAll('.json', ''));
 				}
 			}
 	
 			return results;
 		}
 
-	static function getTextShit():Array<String>
-		{
-			var fullText:String = Paths.getTextFromFile('weeks/weekList.txt');
-	
-			var firstArray:Array<String> = fullText.trim().split('\n');
-
-			for (i in 0...firstArray.length)
-				{
-					firstArray[i] = firstArray[i].trim();
-				}
-	
-			return firstArray;
-		}
 	private static function addWeek(weekToCheck:String, path:String, directory:String, i:Int, originalLength:Int)
 	{
 		if(!weeksLoaded.exists(weekToCheck))

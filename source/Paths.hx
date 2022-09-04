@@ -4,21 +4,13 @@ import flixel.graphics.frames.FlxFramesCollection;
 import animateatlas.AtlasFrameMaker;
 import flixel.graphics.FlxGraphic;
 import flixel.FlxG;
-import flixel.system.FlxAssets;
 import flixel.graphics.frames.FlxAtlasFrames;
 import lime.utils.Assets;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
-#if FEATURE_MODCORE
-import polymod.Polymod.ModMetadata;
-#end
 import flash.media.Sound;
 import openfl.display.BitmapData;
 import haxe.Json;
-#if sys
-import sys.io.File;
-import sys.FileSystem;
-#end
 import states.PlayState;
 
 using StringTools;
@@ -501,6 +493,11 @@ class Paths
 		return getPath('images/$key.png', IMAGE, library);
 	}
 
+	inline static public function getPathOpenFL(key:String, ?library:String):Null<String>
+	{
+		return OpenFlAssets.getPath(key);
+	}
+
 	inline static public function font(key:String)
 	{
 		return 'assets/fonts/$key';
@@ -699,7 +696,7 @@ class Paths
 		return currentTrackedSounds.get(gottenPath);
 	}
 
-	inline static public function getCharacterFrames(key:String):Any
+	inline static public function getCharacterFrames(key:String):FlxFramesCollection
 	{
 		if (OpenFlAssets.exists('assets/shared/images/characters/$key/spritemap.json'))
 			return AtlasFrameMaker.construct('characters/$key');

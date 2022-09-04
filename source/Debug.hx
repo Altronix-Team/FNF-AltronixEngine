@@ -1,3 +1,4 @@
+import haxe.CallStack;
 import lime.app.Application;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -7,6 +8,7 @@ import flixel.util.FlxStringUtil;
 import haxe.Log;
 import haxe.PosInfos;
 import openfl.system.Capabilities;
+import openfl.events.UncaughtErrorEvent;
 
 using hx.strings.Strings;
 
@@ -217,7 +219,34 @@ class Debug
 		logInfo('  Language: ${Capabilities.language}');
 		logInfo('  Screen resolution: ${Capabilities.screenResolutionX + "x" + Capabilities.screenResolutionY}');
 
-		//openfl.Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtError);
+		openfl.Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtError);
+	}
+
+	static function onUncaughtError(error:UncaughtErrorEvent)
+	{
+		logError('FATAL ERROR: An uncaught error was thrown by OpenFL.');
+
+		var errorCallStack:Array<StackItem> = CallStack.exceptionStack(true);
+
+		for (line in errorCallStack)
+		{
+			switch (line)
+			{
+				case CFunction:
+					logError('  function:');
+				case Module(m):
+					logError('  module:${m}');
+				case FilePos(s, file, line, column):
+					logError('  (${file}#${line},${column})');
+				case Method(className, method):
+					logError('  method:(${className}/${method}');
+				case LocalFunction(v):
+					logError('  localFunction:${v}');
+			}
+		}
+
+		logError('ADDITIONAL INFO:');
+		logError('Type of instigator: ${CoolUtil.getTypeName(error.error)}');
 	}
 
 	/**
@@ -482,7 +511,6 @@ class DebugLogWriter
 		#if sys
 		Sys.println(msg);
 		#else
-		// Pass null to exclude the position.
 		haxe.Log.trace(msg, null);
 		#end
 	}

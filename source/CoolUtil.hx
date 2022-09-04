@@ -19,9 +19,11 @@ class CoolUtil
 {
 	public static var difficultyArray:Array<String> = ['Easy', "Normal", "Hard", "Hard P"];
 
-	public static var defaultDifficulties:Array<String> = ['Easy', "Normal", "Hard", "Hard P"];
+	public static final defaultDifficulties:Array<String> = ['Easy', "Normal", "Hard", "Hard P"];
 
 	public static var difficultyPrefixes:Array<String> = ['-easy', '', '-hard', '-hardplus'];
+
+	public static final defaultDifficultyPrefixes:Array<String> = ['-easy', '', '-hard', '-hardplus'];
 
 	public static var songDiffs:Map<String, Array<String>> = [];
 	
@@ -42,12 +44,7 @@ class CoolUtil
 	public static function coolTextFile(path:String):Array<String>
 		{
 			var daList:Array<String> = [];
-			#if sys
-			if(FileSystem.exists(path)) daList = File.getContent(path).trim().split('\n');
-			else if (OpenFlAssets.exists(path)) daList = OpenFlAssets.getText(path).trim().split('\n');
-			#else
 			if(OpenFlAssets.exists(path)) daList = OpenFlAssets.getText(path).trim().split('\n');
-			#end
 
 			for (i in 0...daList.length)
 			{

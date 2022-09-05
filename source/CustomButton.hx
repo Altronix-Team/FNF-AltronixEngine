@@ -16,17 +16,17 @@ class CustomButton extends FlxSprite{
 	public function new(x:Float = 0, y:Float = 0, ?graphic:FlxGraphicAsset) {
         super(x,y,graphic);
 
-		originalWidth = this.width;
-        originalHeight = this.height;
+		originalWidth = width;
+        originalHeight = height;
     }
 
     var twenned:Bool = false;
     override public function update(elapsed:Float) {
         if (FlxG.mouse.overlaps(this))
         {
-            if (!twenned)
+           if (!twenned)
             {
-                FlxTween.tween(this, {width: originalWidth * 1.2, height: originalHeight * 1.2}, 0.5, {ease: FlxEase.linear, onComplete: function(twn:FlxTween){
+                FlxTween.tween(this, {width: width * 1.4, height: height * 1.4}, 0.5, {ease: FlxEase.linear, onComplete: function(twn:FlxTween){
                     twenned = true;
                 }});
             }
@@ -50,5 +50,6 @@ class CustomButton extends FlxSprite{
                 });
             }
         }
+		super.update(elapsed);
     }
 }

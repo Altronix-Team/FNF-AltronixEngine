@@ -38,7 +38,7 @@ class MainMenuState extends MusicBeatState
 	var menuItems:FlxTypedGroup<FlxSprite>;
 
 	#if !switch
-	var optionShit:Array<String> = ['story mode', 'freeplay', 'extras',#if desktop 'gamejolt', 'mods',#end 'credits', 'awards', 'options'];
+	var optionShit:Array<String> = ['story mode', 'freeplay', 'extras',#if desktop 'mods',#end 'credits', 'awards', 'options'];
 	#else
 	var optionShit:Array<String> = ['story mode', 'freeplay'];
 	#end
@@ -53,6 +53,7 @@ class MainMenuState extends MusicBeatState
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
+	var gjButton:CustomButton;
 
 	public static var finishedFunnyMove:Bool = false;
 	var dance:gameplayStuff.Character;
@@ -70,6 +71,8 @@ class MainMenuState extends MusicBeatState
 		FlxG.cameras.reset(camGame);
 		//FlxCamera.defaultCameras = [camGame];
 		FlxG.cameras.setDefaultDrawTarget(camGame, true);
+
+		FlxG.mouse.visible = true;
 
 		if (!FlxG.sound.music.playing)
 		{
@@ -117,12 +120,10 @@ class MainMenuState extends MusicBeatState
 		menuItems = new FlxTypedGroup<FlxSprite>();
 		add(menuItems);
 
-		var tex = Paths.getSparrowAtlas('FNF_main_menu_assets');
-
 		for (i in 0...optionShit.length)
 		{
 			var menuItem:FlxSprite = new FlxSprite(0, FlxG.height * 1.6);
-			menuItem.frames = tex;
+			menuItem.frames = Paths.getSparrowAtlas('mainmenuassets/${optionShit[i]}');
 			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
 			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
 			menuItem.animation.play('idle');
@@ -163,6 +164,12 @@ class MainMenuState extends MusicBeatState
 		gamever.scrollFactor.set();
 		gamever.setFormat(Paths.font(LanguageStuff.fontName), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(gamever);
+
+		gjButton = new CustomButton(1100, 600, Paths.loadImage('mainmenuassets/GameJoltLogo'));
+		gjButton.doOnClick = goToGJ;
+		gjButton.scrollFactor.set();
+		add(gjButton);
+
 
 		/*if (FlxG.save.data.dfjk)
 			controls.setKeyboardScheme(KeyboardScheme.Solo, true);
@@ -286,6 +293,32 @@ class MainMenuState extends MusicBeatState
 		});
 	}
 
+	function goToGJ() {
+		selectedSomethin = true;
+		FlxG.sound.play(Paths.sound('confirmMenu'));
+
+		if (FlxG.save.data.flashing)
+			FlxFlicker.flicker(magenta, 1.1, 0.15, false);
+
+		menuItems.forEach(function(spr:FlxSprite)
+		{
+			if (FlxG.save.data.flashing)
+			{
+				FlxFlicker.flicker(spr, 1, 0.06, false, false, function(flick:FlxFlicker)
+				{
+					MusicBeatState.switchState(new GameJoltLogin());
+				});
+			}
+			else
+			{
+				new FlxTimer().start(1, function(tmr:FlxTimer)
+				{
+					MusicBeatState.switchState(new GameJoltLogin());
+				});
+			}
+		});
+	}
+
 	function goToState()
 	{
 		var daChoice:String = optionShit[curSelected];
@@ -299,9 +332,6 @@ class MainMenuState extends MusicBeatState
 			case 'freeplay':
 				MusicBeatState.switchState(new FreeplayState());
 				FlxG.mouse.visible = false;
-
-			case 'gamejolt':
-				MusicBeatState.switchState(new GameJoltLogin());
 
 			case 'options':
 				MusicBeatState.switchState(new OptionsDirect());

@@ -1,16 +1,18 @@
 package;
 
-import firetongue.FireTongue;
 import firetongue.Replace;
+
+import firetongue.FireTongue;
+import flixel.addons.ui.interfaces.IFireTongue;
 
 class LanguageStuff{
 
-	public static var tongue:FireTongue;
+	public static var tongue:CustomFireTongue;
 	public static var locales:Array<String>;
     public static var fontName:String;
 
     public static function initLanguages(){
-		tongue = new FireTongue(OPENFL);
+		tongue = new CustomFireTongue(OPENFL);
 
 		var locale = "en-US";
 		if (FlxG.save.data.localeStr != null)
@@ -131,4 +133,14 @@ class LanguageStuff{
 
 		fontName = getData("$FONT_NAME");
     }
+}
+/**
+ * Required for IFireTongue implementation
+ */
+class CustomFireTongue extends FireTongue implements IFireTongue
+{
+	public function new(?framework:Framework, ?checkFile:String->Bool, ?getText:String->String, ?getDirectoryContents:String->Array<String>,
+		?forceCase:Case = Case.Upper) {
+		super(framework, checkFile, getText, getDirectoryContents, forceCase);
+	}
 }

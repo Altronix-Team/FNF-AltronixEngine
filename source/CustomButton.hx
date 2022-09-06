@@ -6,6 +6,8 @@ import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.FlxSprite;
 import flixel.FlxG;
 
+//TODO Rework to IntractableSprite instead of FlxSprite
+//He-he new usage for mod menu stuff from Enigma Engine
 class CustomButton extends FlxSprite{
     public var doOnClick:Void -> Void;
 

@@ -157,8 +157,8 @@ class GameJoltAPI // Connects to tentools.api.FlxGameJolt
 		{	
 			GJApi.authUser(in1, in2, function(v:Bool)
 			{
-				trace("user: " + (in1 == "" ? "n/a" : in1));
-				trace("token:" + in2);
+				Debug.logTrace("user: " + (in1 == "" ? "n/a" : in1));
+				Debug.logTrace("token:" + in2);
 				if (v)
 				{
 					Main.gjToastManager.createToast(Paths.getPreloadPath('shared/images/checkMark.png'), in1
@@ -170,7 +170,7 @@ class GameJoltAPI // Connects to tentools.api.FlxGameJolt
 						+ "\nScore Submitting: "
 						+ (GameJoltAPI.leaderboardToggle ? "Enabled" : "Disabled"),
 						false);
-					trace("User authenticated!");
+					Debug.logTrace("User authenticated!");
 					FlxG.save.data.userLoged = true;
 					FlxG.save.data.toggleLeaderboard = GameJoltAPI.leaderboardToggle;
 					FlxG.save.data.gjUser = in1;
@@ -194,7 +194,7 @@ class GameJoltAPI // Connects to tentools.api.FlxGameJolt
 					}
 					Main.gjToastManager.createToast(Paths.getPreloadPath('shared/images/cross.png'), "Not signed in!\nSign in to save GameJolt Trophies and Leaderboard Scores!", "",
 						false);
-					trace("User login failure!");
+					Debug.logError("User login failure!");
 					// FlxG.switchState(new GameJoltLogin());
 				}
 			});
@@ -323,6 +323,23 @@ class GameJoltAPI // Connects to tentools.api.FlxGameJolt
 			returnable = data;
 		});
 		return returnable;
+	}
+
+
+	/**
+	 * Get User Avetar Image
+	 * @return User avatar BitmapData if success, red cross BitmapData if not.
+	 */
+	public static function getUserAvatarImage():BitmapData
+	{
+		GJApi.fetchAvatarImage(function(data:BitmapData)
+		{
+			if (data != null)
+				return data;
+			else
+				return Paths.loadImage('cross', 'shared').bitmap;
+		});
+		return Paths.loadImage('cross', 'shared').bitmap;
 	}
 
 	/**
@@ -478,7 +495,7 @@ class GameJoltLogin extends states.MusicBeatSubstate
 		add(bg);
 
 		charBop = new FlxSprite(FlxG.width - 400, 250);
-		charBop.frames = Paths.getSparrowAtlas('characters/BOYFRIEND', 'shared', false);
+		charBop.frames = Paths.getCharacterFrames('BOYFRIEND');
 		charBop.animation.addByPrefix('idle', 'BF idle dance', 24, false);
 		charBop.animation.addByPrefix('loggedin', 'BF HEY', 24, false);
 		charBop.setGraphicSize(Std.int(charBop.width * 1.4));
@@ -719,7 +736,7 @@ class GJToastManager extends Sprite
 	 * @param description Description for the toast
 	 * @param sound Want to have an alert sound? Set this to **true**! Defaults to **false**.
 	 */
-	public function createToast(iconPath:String, title:String, description:String, ?sound:Bool = false):Void
+	public function createToast(iconPath:Dynamic, title:String, description:String, ?sound:Bool = false):Void
 	{
 		if (sound)
 			FlxG.sound.play(Paths.sound('confirmMenu'));
@@ -853,7 +870,7 @@ class Toast extends Sprite
 	var title:TextField;
 	var desc:TextField;
 
-	public function new(iconPath:String, titleText:String, description:String)
+	public function new(iconPath:Dynamic, titleText:String, description:String)
 	{
 		super();
 		back = new Bitmap(new BitmapData(500, 125, true, 0xFF000000));
@@ -863,7 +880,10 @@ class Toast extends Sprite
 
 		if (iconPath != null)
 		{
-			icon = new Bitmap(BitmapData.fromFile(iconPath));
+			if (Std.isOfType(iconPath, String))
+				icon = new Bitmap(BitmapData.fromFile(iconPath));
+			else if (Std.isOfType(iconPath, BitmapData))
+				icon = new Bitmap(iconPath);
 
 			if (icon.width != 80)
 				icon.width = 80;
@@ -871,6 +891,7 @@ class Toast extends Sprite
 				icon.height = 80;
 			icon.x = 10;
 			icon.y = 10;
+
 		}
 
 		title = new TextField();

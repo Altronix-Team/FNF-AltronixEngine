@@ -1,9 +1,9 @@
-var speakers;
-var garage;
-var aaa;
+var speakers:FlxSprite;
+var garage:FlxSprite;
+var aaa:FlxSprite;
 var carolEnter:FlxSprite;
-var ending;
-var fret;
+var ending:FlxSprite;
+var fret:FlxSprite;
 
 function onCreate()
 {
@@ -12,14 +12,14 @@ function onCreate()
         
     gfGroup.visible = false;
 
-    aaa = createSprite(-422.05, 284.05);
+    aaa = newType('FlxSprite', [-422.05, 284.05]);
     aaa.frames = getSparrowAtlas('sunday/aaa');
 	aaa.animation.addByIndices("none", "aaaa",[4],"", 24, false);
 	aaa.animation.addByIndices("idle", "aaaa",[0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,4],"", 24, false);
 	aaa.animation.play("none");
 
-    garage = createSprite(-316, -209);
-    speakers = createSprite(-298, 197);
+    garage = newType('FlxSprite', [-316, -209]);
+    speakers = newType('FlxSprite', [-298, 197]);
 
     if (PlayState.SONG.songId == 'valentine' || PlayState.SONG.songId == 'madness')
     {
@@ -57,19 +57,19 @@ function onCreate()
 		speakers.animation.addByPrefix("boom", "amp boom", 24, true);
 		speakers.setPosition( -260.75, 243.95);
 
-		carolEnter = createSprite(795.25-193.95-37, 45.35-237+173);
+		carolEnter = newType('FlxSprite', [795.25-193.95-37, 45.35-237+173]);
 		carolEnter.frames = getSparrowAtlas("sunday/carol_enter");
 		carolEnter.animation.addByPrefix("wait", "carol interupt", 0, false);
 		carolEnter.animation.addByPrefix("enter", "carol interupt", 24, false);
 		carolEnter.animation.play("wait");
 		addObject(carolEnter, 'carolEnter');
 
-		ending = createSprite();
+		ending = newType('FlxSprite', []);
         ending.loadGraphic(getGraphic("sunday/ending"));
 		ending.scrollFactor.set();
     }
 
-    fret = createSprite();
+    fret = newType('FlxSprite', []);
     fret.loadGraphic(getGraphic("sunday/fret"));
 	fret.alpha = 0;
 	fret.scrollFactor.set();
@@ -94,7 +94,7 @@ function onCreate()
 	{
 		addObject(fret, 'fret');
 
-		 setNoteTypeTexture('gh_note', 'GH_NOTES');
+		setNoteTypeTexture('gh_note', 'GH_NOTES');
 
 		for (note in PlayState.instance.unspawnNotes)
 		{

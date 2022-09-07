@@ -44,7 +44,7 @@ class ScriptHelper
     public var expose:StringMap<Dynamic>;
 	
 	var parser:Parser;
-    var interp:Interp;
+	var interp:CustomInterp;
 
 	/*var parserEx:ParserEx;
 	var interpEx:InterpEx;*/
@@ -54,7 +54,7 @@ class ScriptHelper
     public function new()
     {        
         parser = new Parser();
-        interp = new Interp();
+		interp = new CustomInterp();
 
         parser.allowTypes = true;
 		parser.allowJSON = true;
@@ -82,10 +82,11 @@ class ScriptHelper
 		expose.set('Character', Character);
 		expose.set('Alphabet', Alphabet);
 		expose.set('MusicBeatState', MusicBeatState);
+		expose.set('WindowUtil', WindowUtil);
+		expose.set('WindowShakeEvent', WindowUtil.WindowShakeEvent);
 
-		expose.set("loadModule", loadModule);
-		expose.set("createSprite", createSprite);
-		expose.set("createText", createText);
+		expose.set('newType', newType);
+		expose.set("loadModule", loadModule);		
 		expose.set("getGraphic", getGraphic);
 		expose.set("playSound", playSound);
 		expose.set("lazyPlaySound", lazyPlaySound);
@@ -97,13 +98,17 @@ class ScriptHelper
 		expose.set('get', get);
 		expose.set('exists', exists);
 		expose.set('getEngineFont', getEngineFont);
-		expose.set('createRuntimeShader', createRuntimeShader);
 		//expose.set("instancePluginClass", instanceExClass);
 		
 		expose.set("getSparrowAtlas", Paths.getSparrowAtlas);
 
 		expose.set('setNoteTypeTexture', setNoteTypeTexture);
 		expose.set('setNoteTypeIgnore', setNoteTypeIgnore);
+
+		//Depraceted
+		expose.set("createSprite", createSprite);
+		expose.set("createText", createText);
+		expose.set('createRuntimeShader', createRuntimeShader);
     }
 
     public function get(field:String):Dynamic
@@ -114,6 +119,14 @@ class ScriptHelper
 
     public function exists(field:String):Bool
         return interp.variables.exists(field);
+
+	/** Creates new class.
+	 * - Works like: new FlxText(x, y, width, text, size, embedded);
+	 * @param newClass The name of new class: (FlxText)
+	 * @param args Array with arguments to new function: ([x, y, width, text, size, embedded])
+	 **/
+	public function newType(newClass:String, args:Array<Dynamic>):Dynamic
+		return interp.newType(newClass, args);
 
     public function loadScript(path:String, execute:Bool = true)
     {
@@ -253,12 +266,14 @@ class ScriptHelper
 
 	function createRuntimeShader(fragmentSource:String = null, vertexSource:String = null, glslVersion:Int = 120):FlxRuntimeShader
 	{
+		Debug.logWarn('Deprecated! Use newType("FlxRuntimeShader", [fragmentSource, vertexSource, glslVersion]) instead');
 		var shader = new FlxRuntimeShader(fragmentSource, vertexSource, glslVersion);
 		return shader;
 	}
 
 	function createText(x:Float = 0, y:Float = 0, width:Float = 0, text:String = '', size:Int = 8, embedded:Bool = true):FlxText
 	{
+		Debug.logWarn('Deprecated! Use newType("FlxText", [x, y, width, text, size, embedded]) instead');
 		var text = new FlxText(x, y, width, text, size, embedded);
 		return text;
 	}
@@ -277,6 +292,7 @@ class ScriptHelper
 
 	function createSprite(x:Float, y:Float):FlxSprite
 	{
+		Debug.logWarn('Deprecated! Use newType("FlxSprite", [x, y]) instead');
 		var sprite = new FlxSprite(x, y);
 		return sprite;
 	}
@@ -328,4 +344,13 @@ class ScriptHelper
 	function getInstance() { //Copy from lua
 		return states.PlayState.instance.isDead ? states.GameOverSubstate.instance : states.PlayState.instance;
 	}
+}
+
+class CustomInterp extends Interp
+{
+	public function new()
+		super();
+
+	public function newType(newClass:String, args:Array<Dynamic>):Dynamic
+		return cnew(newClass, args);
 }

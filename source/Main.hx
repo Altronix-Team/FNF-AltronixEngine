@@ -113,6 +113,8 @@ class Main extends Sprite
 		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
 		addChild(game);
 
+		GestureUtil.initMouseControls();
+
 		#if !mobile
 		addChild(fpsCounter);
 		toggleFPS(FlxG.save.data.fps);

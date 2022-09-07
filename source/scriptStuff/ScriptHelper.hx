@@ -120,10 +120,10 @@ class ScriptHelper
     public function exists(field:String):Bool
         return interp.variables.exists(field);
 
-	/** Creates new class.
+	/** Creates new class and returns it.
 	 * - Works like: new FlxText(x, y, width, text, size, embedded);
 	 * @param newClass The name of new class: (FlxText)
-	 * @param args Array with arguments to new function: ([x, y, width, text, size, embedded])
+	 * @param args Array with arguments for the new function: ([x, y, width, text, size, embedded])
 	 **/
 	public function newType(newClass:String, args:Array<Dynamic>):Dynamic
 		return interp.newType(newClass, args);

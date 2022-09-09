@@ -58,6 +58,10 @@ class HscriptStage extends ModchartHelper
 		super(path, state);
 	}
 
+	override public function update(elapsed:Float) {
+		super.update(elapsed);
+	}
+
 	override public function add(object:FlxBasic):FlxBasic {
 		if (!objectsArray.contains(object))
 			Debug.logWarn('Use addObject(object, objectName) instead of add');

@@ -764,7 +764,21 @@ class PlayState extends MusicBeatState
 			&& !OpenFlAssets.exists('assets/scripts/stages/${SONG.stage}.hscript')
 			#end)
 		{
-			Stage = new Stage(SONG.stage);
+			#if FEATURE_FILESYSTEM
+			if (FileSystem.exists('assets/scripts/stages/${SONG.stage}.hscript')) //Try to find hscript stage port
+			{
+				hscriptStage = new HscriptStage('assets/scripts/stages/${SONG.stage}.hscript', this);
+				add(hscriptStage);
+				hscriptFiles.push(hscriptStage);
+				hscriptStageCheck = true;
+			}
+			else
+			{
+				Stage = new Stage(SONG.stage);
+			}
+			#else
+				Stage = new Stage(SONG.stage);
+			#end
 		}
 		else
 		{
@@ -772,7 +786,7 @@ class PlayState extends MusicBeatState
 			{
 				try
 				{
-					hscriptStage = /*PolymodHscriptStage.init(SONG.stage, FlxG.random.int());*/new HscriptStage('assets/scripts/stages/${SONG.stage}.hscript', this);
+					hscriptStage = new HscriptStage('assets/scripts/stages/${SONG.stage}.hscript', this);
 					add(hscriptStage);
 					hscriptFiles.push(hscriptStage);
 					hscriptStageCheck = true;
@@ -787,7 +801,7 @@ class PlayState extends MusicBeatState
 					else
 						Debug.displayAlert('Error with hscript stage file!', Std.string(e));
 				}
-			}	
+			}
 			#if LUA_ALLOWED
 			else if (OpenFlAssets.exists('assets/stages/' + SONG.stage + '.lua'))
 			{
@@ -6759,54 +6773,57 @@ class PlayState extends MusicBeatState
 
 		if (curSong == 'blammed')
 		{
-			if (curBeat % 4 == 0){
-				var windowColor:FlxColor = FlxColor.WHITE;
-
-				switch (Stage.curLight)
-				{
-					case 4:
-						windowColor = FlxColor.fromRGB(251, 166, 51);
-					case 3:
-						windowColor = FlxColor.fromRGB(253, 69, 49);
-					case 2:
-						windowColor = FlxColor.fromRGB(251, 51, 245);
-					case 1:
-						windowColor = FlxColor.fromRGB(49, 253, 140);
-					case 0:
-						windowColor = FlxColor.fromRGB(49, 162, 253);
-				}
-				if ((curBeat >= 128 && curBeat <= 192) && !blammedeventplayed && FlxG.save.data.distractions)
-				{
-					var eventColor:FlxColor = FlxColor.WHITE;
-
-					eventColor = windowColor;
-					eventColor.alpha = 175;
-
-					camGame.flash(windowColor, 0.1);
-					camHUD.flash(windowColor, 0.1);
-					songOverlay(eventColor, 0.1);
-				}
-
-				var phillyCityLight:FlxSprite = Stage.swagBacks['light'];
-
-				phillyCityLight.color = windowColor;
-			}
-			
-			if (curBeat >= 192 && !blammedeventplayed && FlxG.save.data.distractions)
+			if (!hscriptStageCheck)
 			{
-				overlayColor = FlxColor.fromRGB(0, 0, 0, 0);
-				colorTween = FlxTween.color(overlay, 0.1, overlay.color, overlayColor, {
-				onComplete: function(twn:FlxTween)
-				{
-					colorTween = null;
-				}
-				});
-				for (char in chars) {
-					char.colorTween = FlxTween.color(char, 0.1, char.color, FlxColor.WHITE, {onComplete: function(twn:FlxTween) {
+				if (curBeat % 4 == 0){
+					var windowColor:FlxColor = FlxColor.WHITE;
 
-					}, ease: FlxEase.quadInOut});
+					switch (Stage.curLight)
+					{
+						case 4:
+							windowColor = FlxColor.fromRGB(251, 166, 51);
+						case 3:
+							windowColor = FlxColor.fromRGB(253, 69, 49);
+						case 2:
+							windowColor = FlxColor.fromRGB(251, 51, 245);
+						case 1:
+							windowColor = FlxColor.fromRGB(49, 253, 140);
+						case 0:
+							windowColor = FlxColor.fromRGB(49, 162, 253);
+					}
+					if ((curBeat >= 128 && curBeat <= 192) && !blammedeventplayed && FlxG.save.data.distractions)
+					{
+						var eventColor:FlxColor = FlxColor.WHITE;
+
+						eventColor = windowColor;
+						eventColor.alpha = 175;
+
+						camGame.flash(windowColor, 0.1);
+						camHUD.flash(windowColor, 0.1);
+						songOverlay(eventColor, 0.1);
+					}
+
+					var phillyCityLight:FlxSprite = Stage.swagBacks['light'];
+
+					phillyCityLight.color = windowColor;
 				}
-				blammedeventplayed = true;
+				
+				if (curBeat >= 192 && !blammedeventplayed && FlxG.save.data.distractions)
+				{
+					overlayColor = FlxColor.fromRGB(0, 0, 0, 0);
+					colorTween = FlxTween.color(overlay, 0.1, overlay.color, overlayColor, {
+					onComplete: function(twn:FlxTween)
+					{
+						colorTween = null;
+					}
+					});
+					for (char in chars) {
+						char.colorTween = FlxTween.color(char, 0.1, char.color, FlxColor.WHITE, {onComplete: function(twn:FlxTween) {
+
+						}, ease: FlxEase.quadInOut});
+					}
+					blammedeventplayed = true;
+				}
 			}
 		}
 

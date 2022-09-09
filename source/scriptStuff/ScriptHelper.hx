@@ -1,5 +1,19 @@
 package scriptStuff;
 
+import gameplayStuff.BackgroundGirls;
+import gameplayStuff.BackgroundDancer;
+import haxe.Constraints.Function;
+import flixel.math.FlxMath;
+import flixel.system.macros.FlxMacroUtil;
+import flixel.util.FlxColor;
+import flixel.math.FlxRandom;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import gameplayStuff.TankmenBG;
+#if FEATURE_FILESYSTEM
+import sys.io.File;
+import sys.FileSystem;
+#end
+
 import flixel.addons.display.FlxRuntimeShader;
 import states.MusicBeatState;
 import flixel.FlxObject;
@@ -20,6 +34,7 @@ import haxe.ds.StringMap;
 import Paths;
 import gameplayStuff.Conductor;
 import openfl.Assets as OpenFlAssets;
+import gameplayStuff.BGSprite;
 
 //Base hscript 
 import hscript.Expr;
@@ -50,6 +65,8 @@ class ScriptHelper
 	var interpEx:InterpEx;*/
 
     var ast:Expr;
+
+	var color:FlxColor;
     
     public function new()
     {        
@@ -63,6 +80,7 @@ class ScriptHelper
 		expose = new StringMap<Dynamic>();
 
 		expose.set("Sys", Sys);
+		expose.set("Reflect", Reflect);
 		expose.set("Std", Std);
 		expose.set("Math", Math);
 		expose.set("StringTools", StringTools);
@@ -72,12 +90,22 @@ class ScriptHelper
 		expose.set('Paths', Paths);
 		expose.set('PlayState', states.PlayState);
 		expose.set('GameOverSubstate', GameOverSubstate);
+		expose.set("CoolUtil", CoolUtil);
 		expose.set('FlxG', FlxG);
+		expose.set('FlxRandom', FlxRandom);
 		expose.set('FlxSprite', FlxSprite);
+		expose.set('BGSprite', BGSprite);
+		expose.set('BackgroundGirls', BackgroundGirls);
+		expose.set('BackgroundDancer', BackgroundDancer);
+		expose.set('TankmenBG', TankmenBG);
+		expose.set('FlxTypedGroup', FlxTypedGroup);
+		expose.set('WiggleEffect', WiggleEffect);
 		expose.set('FlxCamera', FlxCamera);
+		expose.set('FlxSound', FlxSound);
 		expose.set('FlxTween', FlxTween);
 		expose.set('FlxEase', FlxEase);
 		expose.set('FlxText', FlxText);
+		expose.set('FlxTimer', FlxTimer);
 		expose.set('FlxObject', FlxObject);
 		expose.set('Character', Character);
 		expose.set('Alphabet', Alphabet);
@@ -86,6 +114,8 @@ class ScriptHelper
 		expose.set('WindowShakeEvent', WindowUtil.WindowShakeEvent);
 
 		expose.set('newType', newType);
+		expose.set('random', random);
+		expose.set('getRGBColor', getRGBColor);
 		expose.set("loadModule", loadModule);		
 		expose.set("getGraphic", getGraphic);
 		expose.set("playSound", playSound);
@@ -94,6 +124,7 @@ class ScriptHelper
 		expose.set('setProperty', setProperty);
 		expose.set('getProperty', getProperty);
 		expose.set('getInstance', getInstance);
+		expose.set('callMethod', callMethod);
 		expose.set('set', set);
 		expose.set('get', get);
 		expose.set('exists', exists);
@@ -101,6 +132,7 @@ class ScriptHelper
 		//expose.set("instancePluginClass", instanceExClass);
 		
 		expose.set("getSparrowAtlas", Paths.getSparrowAtlas);
+		expose.set("getPackerAtlas", Paths.getPackerAtlas);
 
 		expose.set('setNoteTypeTexture', setNoteTypeTexture);
 		expose.set('setNoteTypeIgnore', setNoteTypeIgnore);
@@ -170,6 +202,27 @@ class ScriptHelper
 					throw new ScriptException("Script parse error:\n" + e);
 				}
 			}
+			#if FEATURE_FILESYSTEM
+			else if (FileSystem.exists(path))
+			{
+				Debug.logTrace('Found hscript');
+				Debug.logTrace('At path: ' + path);
+				try
+				{
+					ast = parser.parseString(File.getContent(path), path);
+
+					for (v in expose.keys())
+						interp.variables.set(v, expose.get(v));
+
+					if (execute)
+						interp.execute(ast);
+				}
+				catch (e:Error)
+				{
+					throw new ScriptException("Script parse error:\n" + e);
+				}
+			}
+			#end
             else
             {
 				throw new ScriptException("Cannot locate script file in " + path);
@@ -248,6 +301,40 @@ class ScriptHelper
 					throw new ScriptException("Module parse error:\n" + e);
 				}
 			}
+			#if FEATURE_FILESYSTEM
+			else if (FileSystem.exists(path))
+			{
+				try
+				{
+					var moduleInterp = new Interp();
+					var moduleAst = parser.parseString(File.getContent(path), path);
+
+					for (v in expose.keys())
+						moduleInterp.variables.set(v, expose.get(v));
+
+					moduleInterp.execute(moduleAst);
+
+					var module:Dynamic = {};
+
+					for (v in moduleInterp.variables.keys())
+					{
+						switch (v)
+						{
+							case "null", "true", "false", "trace":
+								{/* Does nothing */}
+							default:
+								Reflect.setField(module, v, moduleInterp.variables.get(v));
+						}
+					}
+
+					return module;
+				}
+				catch (e:Error)
+				{
+					throw new ScriptException("Module parse error:\n" + e);
+				}
+			}
+			#end
 			else
 			{
 				throw new ScriptException("Cannot locate module file in " + path);
@@ -290,6 +377,20 @@ class ScriptHelper
 		}
 	}
 
+	function random(type:String, args:Array<Dynamic>):Dynamic
+	{
+		switch (type)
+		{
+			case 'bool':
+				return FlxG.random.bool(args[0]);
+			case 'int':
+				return FlxG.random.int(args[0], args[1], args[3]);
+			case 'float':
+				return FlxG.random.float(args[0], args[1], args[3]);
+		}
+		return null;
+	}
+
 	function createSprite(x:Float, y:Float):FlxSprite
 	{
 		Debug.logWarn('Deprecated! Use newType("FlxSprite", [x, y]) instead');
@@ -302,14 +403,14 @@ class ScriptHelper
 		return Paths.loadImage(path);
 	}
 
-	function playSound(path:String, group:String = ""):FlxSound
+	function playSound(path:String, group:String = null):FlxSound
 	{
-		return FlxG.sound.play(Paths.getAsset(path, SOUND, group));
+		return FlxG.sound.play(Paths.sound(path, group));
 	}
 
-	function lazyPlaySound(path:String, group:String = "")
+	function lazyPlaySound(path:String, group:String = null)
 	{
-		FlxG.sound.play(Paths.getAsset(path, SOUND, group));
+		FlxG.sound.play(Paths.sound(path, group));
 	}
 
 	function createTimer():FlxTimer
@@ -325,6 +426,19 @@ class ScriptHelper
 	function setNoteTypeIgnore(type:String, ignore:Bool)
 	{
 		states.PlayState.instance.setNoteTypeIgnore(type, ignore);
+	}
+
+	function getRGBColor(r:Int, g:Int, b:Int, ?a:Int):FlxColor
+	{
+		return FlxColor.fromRGB(r, g, b, a);
+	}
+
+	function callMethod(instance:Null<Dynamic> = null, func:Function, args:Array<Dynamic>):Dynamic
+	{
+		if (instance == null)
+			return Reflect.callMethod(getInstance(), func, args);
+		else
+			return Reflect.callMethod(instance, func, args);
 	}
 
 	function getProperty(instance:Null<Dynamic> = null, variable:String):Any { //Copy from lua

@@ -1,0 +1,19 @@
+function onCreate()
+{
+    var bg:FlxSprite = newType('FlxSprite', [-400, -500]).loadGraphic(getGraphic('christmas/evilBG', 'week5'));
+	bg.antialiasing = FlxG.save.data.antialiasing;
+	bg.scrollFactor.set(0.2, 0.2);
+	bg.active = false;
+	bg.setGraphicSize(Std.int(bg.width * 0.8));
+	bg.updateHitbox();
+	addObject(bg, 'bg');
+
+	var evilTree:FlxSprite = newType('FlxSprite', [300, -300]).loadGraphic(getGraphic('christmas/evilTree', 'week5'));
+	evilTree.antialiasing = FlxG.save.data.antialiasing;
+	evilTree.scrollFactor.set(0.2, 0.2);
+	addObject(evilTree, 'evilTree');
+
+	var evilSnow:FlxSprite = newType('FlxSprite', [-200, 700]).loadGraphic(getGraphic("christmas/evilSnow", 'week5'));
+	evilSnow.antialiasing = FlxG.save.data.antialiasing;
+	addObject(evilSnow, 'evilSnow');
+}

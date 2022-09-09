@@ -1,0 +1,211 @@
+var trainSound:FlxSound;
+var light;
+var phillyTrain;
+
+var trainMoving:Bool = false;
+var trainFrameTiming:Float = 0;
+
+var trainCars:Int = 8;
+var trainFinishing:Bool = false;
+var trainCooldown:Int = 0;
+
+var curLight:Int = 0;
+var oldLight:Int = 9999;
+
+var windowColor = 0xFFFFFFFF;
+var eventColor = 0xFFFFFFFF;
+
+function onCreate()
+{
+    var bg:FlxSprite = newType('FlxSprite', [-100]).loadGraphic(getGraphic('philly/sky'));
+	bg.scrollFactor.set(0.1, 0.1);
+	bg.antialiasing = FlxG.save.data.antialiasing;
+	addObject(bg, 'bg');
+
+	var city:FlxSprite = newType('FlxSprite', [-10]).loadGraphic(getGraphic('philly/city'));
+	city.scrollFactor.set(0.3, 0.3);
+	city.setGraphicSize(Std.int(city.width * 0.85));
+	city.updateHitbox();
+	city.antialiasing = FlxG.save.data.antialiasing;
+	addObject(city, 'city');
+
+	light = newType('FlxSprite', [city.x]).loadGraphic(getGraphic('philly/window'));
+	light.scrollFactor.set(0.3, 0.3);
+	light.setGraphicSize(Std.int(light.width * 0.85));
+	light.updateHitbox();
+	light.antialiasing = FlxG.save.data.antialiasing;
+	randomColor();
+	light.color = windowColor;
+	addObject(light, 'light');
+
+	var streetBehind:FlxSprite = newType('FlxSprite', [-40, 50]).loadGraphic(getGraphic('philly/behindTrain'));
+	streetBehind.antialiasing = FlxG.save.data.antialiasing;
+	addObject(streetBehind, 'streetBehind');
+
+	phillyTrain = newType('FlxSprite', [2000, 360]).loadGraphic(getGraphic('philly/train'));
+	phillyTrain.antialiasing = FlxG.save.data.antialiasing;
+	if (FlxG.save.data.distractions)
+	{
+		addObject(phillyTrain, 'phillyTrain');
+	}
+
+	trainSound = newType('FlxSound', []).loadEmbedded(Paths.sound('train_passes', 'shared'));
+	FlxG.sound.list.add(trainSound);
+
+	var street:FlxSprite = newType('FlxSprite', [-40, streetBehind.y]).loadGraphic(getGraphic('philly/street'));
+	street.antialiasing = FlxG.save.data.antialiasing;
+	addObject(street, 'street');   
+}
+
+function onUpdate(elapsed:Float)
+{
+	if (trainMoving)
+	{
+		trainFrameTiming += elapsed;
+
+		if (trainFrameTiming >= 1 / 24)
+		{
+			updateTrainPos();
+			trainFrameTiming = 0;
+		}
+	}
+}
+
+var blammedeventplayed = false;
+
+function onBeat(beat:Int)
+{
+	if (FlxG.save.data.distractions)
+	{
+		if (!trainMoving)
+			trainCooldown += 1;
+
+		if (beat % 4 == 0)
+		{
+			randomColor();
+
+			light.color = windowColor;
+
+			if ((beat >= 128 && beat <= 192) && !blammedeventplayed && PlayState.SONG.songId == 'blammed')
+			{
+				camGame.flash(windowColor, 0.1);
+				camHUD.flash(windowColor, 0.1);
+				/*FlxTween.color(PlayState.instance.overlay, 0.1, PlayState.instance.overlay.color, eventColor);
+				var chars = [gf, dad, boyfriend];
+				for (char in chars) {
+					FlxTween.color(char, 0.1, char.color, windowColor, {ease: FlxEase.quadInOut});
+				}*/
+			}
+			else if (beat >= 192 && !blammedeventplayed)
+			{
+				/*PlayState.instance.overlayColor = getRGBColor(0, 0, 0, 0);
+				FlxTween.color(PlayState.instance.overlay, 0.1, PlayState.instance.overlay.color, PlayState.instance.overlayColor);
+				var chars = [gf, dad, boyfriend];
+				for (char in chars) {
+					FlxTween.color(char, 0.1, char.color, 0xFFFFFFFF, {ease: FlxEase.quadInOut});
+				}*/
+				blammedeventplayed = true;
+			}
+		}
+
+		if (beat % 8 == 4 && random('bool', [Conductor.bpm > 320 ? 150 : 30]) && !trainMoving && trainCooldown > 8)
+		{
+			trainCooldown = random('int', [-4, 0]);
+			trainStart();
+		}
+	}
+}
+
+function randomColor()
+{
+	curLight = random('int', [0, 4, [oldLight]]);
+	oldLight = curLight;
+
+	switch(curLight)
+	{
+		case 4:
+		{
+			windowColor = getRGBColor(251, 166, 51);
+			eventColor = getRGBColor(251, 166, 51, 175);
+		}
+		case 3:
+		{
+			windowColor = getRGBColor(253, 69, 49);
+			eventColor = getRGBColor(251, 166, 51, 175);
+		}
+		case 2:
+		{
+			windowColor = getRGBColor(251, 51, 245);
+			eventColor = getRGBColor(251, 166, 51, 175);
+		}
+		case 1:
+		{
+			windowColor = getRGBColor(49, 253, 140);
+			eventColor = getRGBColor(251, 166, 51, 175);
+		}
+		case 0:
+		{
+			windowColor = getRGBColor(49, 162, 253);
+			eventColor = getRGBColor(251, 166, 51, 175);
+		}
+	}
+}
+
+var startedMoving:Bool = false;
+
+function trainStart():Void
+{
+	if (FlxG.save.data.distractions)
+	{
+		trainMoving = true;
+		trainSound.play(true);
+		newType('FlxTimer', []).start(4.7, function(tmr:FlxTimer){
+			startedMoving = true;
+			gf.playAnim("hairBlow", true);
+		});
+	}
+}
+
+function updateTrainPos():Void
+{
+	if (FlxG.save.data.distractions)
+	{
+		if (trainSound.time >= 4700)
+		{
+			startedMoving = true;
+
+			gf.playAnim("hairBlow", true);
+		}
+
+		if (startedMoving)
+		{
+			phillyTrain.x -= 400;
+
+			if (phillyTrain.x < -2000 && !trainFinishing)
+			{
+				phillyTrain.x = -1150;
+				trainCars -= 1;
+
+				if (trainCars <= 0)
+					trainFinishing = true;
+			}
+
+			if (phillyTrain.x < -4000 && trainFinishing)
+				trainReset();
+		}
+	}
+}
+
+function trainReset():Void
+{
+	if (FlxG.save.data.distractions)
+	{
+		gf.playAnim('hairFall', true);
+
+		phillyTrain.x = FlxG.width + 200;
+		trainMoving = false;
+		trainCars = 8;
+		trainFinishing = false;
+		startedMoving = false;
+	}
+}

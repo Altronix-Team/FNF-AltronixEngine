@@ -297,7 +297,7 @@ class Song
 			switch (song.songId)
 			{
 				case 'spookeez' | 'south' | 'monster':
-					song.stage = 'spooky';
+					song.stage = 'halloween';
 				case 'pico' | 'blammed' | 'philly':
 					song.stage = 'philly';
 				case 'milf' | 'satin-panties' | 'high':

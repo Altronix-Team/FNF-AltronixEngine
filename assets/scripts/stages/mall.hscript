@@ -1,0 +1,75 @@
+var animatedBacks = [];
+
+function onCreate()
+{
+    var bg:FlxSprite = newType('FlxSprite', [-1000, -500]).loadGraphic(getGraphic('christmas/bgWalls'));
+	bg.antialiasing = FlxG.save.data.antialiasing;
+	bg.scrollFactor.set(0.2, 0.2);
+	bg.active = false;
+	bg.setGraphicSize(Std.int(bg.width * 0.8));
+	bg.updateHitbox();
+	addObject(bg, 'bg');
+
+	var upperBoppers = newType('FlxSprite', [-240, -90]);
+	upperBoppers.frames = Paths.getSparrowAtlas('christmas/upperBop', 'week5');
+	upperBoppers.animation.addByPrefix('idle', "Upper Crowd Bob", 24, false);
+	upperBoppers.antialiasing = FlxG.save.data.antialiasing;
+	upperBoppers.scrollFactor.set(0.33, 0.33);
+	upperBoppers.setGraphicSize(Std.int(upperBoppers.width * 0.85));
+	upperBoppers.updateHitbox();
+	if (FlxG.save.data.distractions)
+	{
+		addObject(upperBoppers, 'upperBoppers');
+		animatedBacks.push(upperBoppers);
+	}
+
+	var bgEscalator:FlxSprite = newType('FlxSprite', [-1100, -600]).loadGraphic(getGraphic('christmas/bgEscalator', 'week5'));
+	bgEscalator.antialiasing = FlxG.save.data.antialiasing;
+	bgEscalator.scrollFactor.set(0.3, 0.3);
+	bgEscalator.active = false;
+	bgEscalator.setGraphicSize(Std.int(bgEscalator.width * 0.9));
+	bgEscalator.updateHitbox();
+	addObject(bgEscalator, 'bgEscalator');
+
+	var tree:FlxSprite = newType('FlxSprite', [370, -250]).loadGraphic(getGraphic('christmas/christmasTree'));
+	tree.antialiasing = FlxG.save.data.antialiasing;
+	tree.scrollFactor.set(0.40, 0.40);
+	addObject(tree, 'tree');
+
+	var bottomBoppers = newType('FlxSprite', [-300, 140]);
+	bottomBoppers.frames = Paths.getSparrowAtlas('christmas/bottomBop', 'week5');
+	bottomBoppers.animation.addByPrefix('idle', 'Bottom Level Boppers', 24, false);
+	bottomBoppers.antialiasing = FlxG.save.data.antialiasing;
+	bottomBoppers.scrollFactor.set(0.9, 0.9);
+	bottomBoppers.setGraphicSize(Std.int(bottomBoppers.width * 1));
+	bottomBoppers.updateHitbox();
+	if (FlxG.save.data.distractions)
+	{
+		addObject(bottomBoppers, 'bottomBoppers');
+		animatedBacks.push(bottomBoppers);
+	}
+
+	var fgSnow:FlxSprite = newType('FlxSprite', [-600, 700]).loadGraphic(getGraphic('christmas/fgSnow'));
+	fgSnow.active = false;
+	fgSnow.antialiasing = FlxG.save.data.antialiasing;
+	addObject(fgSnow, 'fgSnow');
+
+	var santa = newType('FlxSprite', [-840, 150]);
+	santa.frames = Paths.getSparrowAtlas('christmas/santa', 'week5');
+	santa.animation.addByPrefix('idle', 'santa idle in fear', 24, false);
+	santa.antialiasing = FlxG.save.data.antialiasing;
+	if (FlxG.save.data.distractions)
+	{
+		addObject(santa, 'santa');
+		animatedBacks.push(santa);
+	}
+}
+
+function onBeat(beat:Int)
+{
+	if (FlxG.save.data.distractions && animatedBacks.length > 0)
+	{
+		for (bg in animatedBacks)
+			bg.animation.play('idle', true);
+	}
+}

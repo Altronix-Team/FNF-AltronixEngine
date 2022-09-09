@@ -161,6 +161,8 @@ class Stage extends states.MusicBeatState
 						light.setGraphicSize(Std.int(light.width * 0.85));
 						light.updateHitbox();
 						light.antialiasing = FlxG.save.data.antialiasing;
+						randomColor();
+						light.color = windowColor;
 						swagBacks['light'] = light;
 						toAdd.push(light);
 						//phillyCityLights.add(light);
@@ -463,16 +465,6 @@ class Stage extends states.MusicBeatState
 				{
 					var posX = 400;
 					var posY = 200;
-
-					//Animation is boring, lets use shaders!!!
-					/*var bg:FlxSprite = new FlxSprite(posX, posY);
-					bg.frames = Paths.getSparrowAtlas('weeb/animatedEvilSchool', 'week6');
-					bg.animation.addByPrefix('idle', 'background 2', 24);
-					bg.animation.play('idle');
-					bg.scrollFactor.set(0.8, 0.9);
-					bg.scale.set(6, 6);
-					swagBacks['bg'] = bg;
-					toAdd.push(bg);	*/
 					 
 					var bg:FlxSprite = new FlxSprite(posX + 10, posY + 165).loadGraphic(Paths.loadImage('weeb/evilSchoolBG'));
 					bg.scale.set(6, 6);
@@ -486,11 +478,7 @@ class Stage extends states.MusicBeatState
 
 					var effectType:Array<String> = ['DREAMY', 'WAVY', 'HEAT_WAVE_HORIZONTAL', 'HEAT_WAVE_VERTICAL', 'FLAG'];
 
-					wiggleShit = new WiggleEffect();
-					wiggleShit.effectType = effectType[FlxG.random.int(0, effectType.length - 1)];
-					wiggleShit.waveAmplitude = 0.01;
-					wiggleShit.waveFrequency = 60;
-					wiggleShit.waveSpeed = 0.8;
+					wiggleShit = new WiggleEffect(effectType[FlxG.random.int(0, effectType.length - 1)], 0.8, 60, 0.01);
 
 					var bgGhouls:FlxSprite = new FlxSprite(-100, 190);
 					bgGhouls.frames = Paths.getSparrowAtlas('weeb/bgGhouls', 'week6');
@@ -708,16 +696,20 @@ class Stage extends states.MusicBeatState
 					swagBacks['stageFront'] = stageFront;
 					toAdd.push(stageFront);
 
-					var stageLightLeft:BGSprite = new BGSprite('stage_light', -125, -100, 0.9, 0.9);
+					var stageLightLeft:FlxSprite = new FlxSprite(-125, -100).loadGraphic(Paths.loadImage('stage_light', 'shared'));
 					stageLightLeft.setGraphicSize(Std.int(stageLightLeft.width * 1.1));
 					stageLightLeft.updateHitbox();
+					stageLightLeft.scrollFactor.set(0.9, 0.9);
+					stageLightLeft.antialiasing = FlxG.save.data.antialiasing;
 					swagBacks['stageLightLeft'] = stageLightLeft;
 					toAdd.push(stageLightLeft);
 
-					var stageLightRight:BGSprite = new BGSprite('stage_light', 1225, -100, 0.9, 0.9);
+					var stageLightRight:FlxSprite = new FlxSprite(1225, -100).loadGraphic(Paths.loadImage('stage_light', 'shared'));
 					stageLightRight.setGraphicSize(Std.int(stageLightRight.width * 1.1));
 					stageLightRight.updateHitbox();
 					stageLightRight.flipX = true;
+					stageLightRight.scrollFactor.set(0.9, 0.9);
+					stageLightRight.antialiasing = FlxG.save.data.antialiasing;
 					swagBacks['stageLightRight'] = stageLightRight;
 					toAdd.push(stageLightRight);
 
@@ -915,22 +907,7 @@ class Stage extends states.MusicBeatState
 						{
 							var phillyCityLight:FlxSprite = swagBacks['light'];
 
-							curLight = FlxG.random.int(0, 4, [oldLight]);
-							oldLight = curLight;
-
-							switch(curLight)
-							{
-								case 4:
-									windowColor = FlxColor.fromRGB(251, 166, 51);
-								case 3:
-									windowColor = FlxColor.fromRGB(253, 69, 49);
-								case 2:
-									windowColor = FlxColor.fromRGB(251, 51, 245);
-								case 1:
-									windowColor = FlxColor.fromRGB(49, 253, 140);
-								case 0:
-									windowColor = FlxColor.fromRGB(49, 162, 253);
-							}
+							randomColor();
 
 							if (PlayState.SONG != null){
 								if (PlayState.SONG.songId != 'blammed')
@@ -991,6 +968,25 @@ class Stage extends states.MusicBeatState
 				&& !PlayStateChangeables.botPlay
 				&& !states.PlayState.instance.addedBotplayOnce)
 				Achievements.getAchievement(167274);
+		}
+	}
+
+	function randomColor() {
+		curLight = FlxG.random.int(0, 4, [oldLight]);
+		oldLight = curLight;
+
+		switch(curLight)
+		{
+			case 4:
+				windowColor = FlxColor.fromRGB(251, 166, 51);
+			case 3:
+				windowColor = FlxColor.fromRGB(253, 69, 49);
+			case 2:
+				windowColor = FlxColor.fromRGB(251, 51, 245);
+			case 1:
+				windowColor = FlxColor.fromRGB(49, 253, 140);
+			case 0:
+				windowColor = FlxColor.fromRGB(49, 162, 253);
 		}
 	}
 		

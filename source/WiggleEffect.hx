@@ -20,9 +20,21 @@ class WiggleEffect
 	public var waveFrequency(default, set):Float = 0;
 	public var waveAmplitude(default, set):Float = 0;
 
-	public function new():Void
+	public function new(?effectType:Dynamic, ?waveSpeed:Float, ?waveFrequency:Float, ?waveAmplitude:Float):Void
 	{
 		shader.uTime.value = [0];
+
+		if (effectType != null)
+			this.effectType = effectType;
+
+		if (waveSpeed != null)
+			this.waveSpeed = waveSpeed;
+
+		if (waveFrequency != null)
+			this.waveFrequency = waveFrequency;
+
+		if (waveAmplitude != null)
+			this.waveAmplitude = waveAmplitude;
 	}
 
 	public function update(elapsed:Float):Void

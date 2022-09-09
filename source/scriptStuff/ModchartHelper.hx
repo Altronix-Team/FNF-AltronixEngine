@@ -1,5 +1,6 @@
 package scriptStuff;
 
+import gameplayStuff.PlayStateChangeables;
 import gameplayStuff.DialogueBoxPsych;
 import gameplayStuff.Boyfriend;
 import gameplayStuff.Character;
@@ -67,6 +68,7 @@ class ModchartHelper extends FlxTypedGroup<FlxBasic>
 		scriptHelper.expose.set("playerStrumLine", playState.playerStrums);
 		scriptHelper.expose.set("cacheCharacter", cacheCharacter);
 		scriptHelper.expose.set("changeCharacter", changeCharacter);
+		scriptHelper.expose.set("PlayStateChangeables", PlayStateChangeables);
 
 		scriptHelper.expose.set("setObjectCam", setObjectCam);
 

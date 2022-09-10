@@ -21,6 +21,7 @@ import haxe.CallStack;
 import ModCore;
 #end
 
+//TODO Altronix Engine start splash
 class Main extends Sprite
 {
 	public static var gjToastManager:GJToastManager;

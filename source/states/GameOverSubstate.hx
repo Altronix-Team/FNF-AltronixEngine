@@ -1,5 +1,6 @@
 package states;
 
+import scriptStuff.ScriptHelper;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSubState;
@@ -92,6 +93,14 @@ class GameOverSubstate extends MusicBeatSubstate
 			PlayState.isExtras = false;
 			PlayState.fromPasswordMenu = false;
 			PlayState.isFreeplay = false;
+			ScriptHelper.clearAllScripts();
+
+			if (PlayState.SONG.songId == 'thorns')
+			{
+				WindowUtil.resizeWindow(PlayState.windowWidth, PlayState.windowHeight);
+				if (PlayState.fullscree)
+					WindowUtil.setFullscreen(true);
+			}
 		}
 
 		if (boyfriend.animation.curAnim.name == 'firstDeath' && boyfriend.animation.curAnim.curFrame == 12)

@@ -20,6 +20,9 @@ using StringTools;
 
 class Note extends FlxSprite
 {
+	public var sprTracker:FlxSprite = null;
+	public var sustainNoteOffset:Int = 35;
+
 	public var strumTime:Float = 0;
 	public var baseStrum:Float = 0;
 	public var noteType(default, set):String = null;
@@ -188,8 +191,15 @@ class Note extends FlxSprite
 			y += FlxG.save.data.offset + PlayState.songOffset;
 
 		this.noteData = noteData;
+
+		if (noteStyle == 'pixel')
+			sustainNoteOffset = 30;
 			
-		x += swagWidth * noteData;	
+		if (sprTracker != null)
+			x = sprTracker.x;
+		else
+			x += swagWidth * noteData;	
+
 		animation.play(dataColor[noteData] + 'Scroll');
 		originColor = noteData; // The note's origin color will be checked by its sustain notes
 
@@ -211,13 +221,11 @@ class Note extends FlxSprite
 			originColor = prevNote.originColor;
 			originAngle = prevNote.originAngle;
 
-			animation.play(dataColor[originColor] + 'holdend'); // This works both for normal colors and quantization colors
+			animation.play(dataColor[originColor] + 'holdend');
 			updateHitbox();
 
 			x -= width / 2;
 
-			// if (noteTypeCheck == 'pixel')
-			//	x += 30;
 			if (inCharter)
 				x += 30;
 
@@ -396,6 +404,22 @@ class Note extends FlxSprite
 		{
 			lasttexture = texture;
 			reloadNote(texture);
+		}
+
+		if (sprTracker != null)
+		{
+			if (!isSustainNote)
+			{
+				if (x != sprTracker.x)
+					x = sprTracker.x;
+			}
+			else
+			{
+				if (parent != null && x != parent.x + sustainNoteOffset)
+				{
+					x = parent.x + sustainNoteOffset;
+				}
+			}
 		}
 
 		if (mustPress || PlayStateChangeables.twoPlayersMode)

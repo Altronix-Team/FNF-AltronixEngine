@@ -1,5 +1,9 @@
 package;
 
+#if FEATURE_FILESYSTEM
+import sys.FileSystem;
+#end
+
 import flixel.graphics.frames.FlxFramesCollection;
 import animateatlas.AtlasFrameMaker;
 import flixel.graphics.FlxGraphic;
@@ -523,15 +527,20 @@ class Paths
 
 		var results:Array<String> = [];
 
+		var ends:Array<String> = ['.hscript', '.hx'];
+
 		for (data in dataAssets)
 		{
-			if (data.indexOf(queryPath) != -1
-				&& data.endsWith('.hscript')
-				&& (!results.contains(data.substr(data.indexOf(queryPath) + queryPath.length).replaceAll('.hscript', ''))))
+			for (end in ends)
 			{
-				var suffixPos = data.indexOf(queryPath) + queryPath.length;
-				results.push(data.substr(suffixPos).replaceAll('.hscript', ''));
-			}
+				if (data.indexOf(queryPath) != -1
+					&& data.endsWith(end)
+					&& (!results.contains(data.substr(data.indexOf(queryPath) + queryPath.length))))
+				{
+					var suffixPos = data.indexOf(queryPath) + queryPath.length;
+					results.push(data.substr(suffixPos));
+				}
+			}			
 		}
 
 		return results;
@@ -667,6 +676,21 @@ class Paths
 	
 			return results;
 		}
+
+	public static function getHscriptPath(script:String, library:String = ''):String
+	{
+		if (OpenFlAssets.exists('assets/scripts/$library/$script.hscript'))
+			return 'assets/scripts/$library/$script.hscript';
+		else if (OpenFlAssets.exists('assets/scripts/$library/$script.hx'))
+			return 'assets/scripts/$library/$script.hx';
+		#if FEATURE_FILESYSTEM
+		else if (FileSystem.exists('assets/scripts/$library/$script.hscript'))
+			return 'assets/scripts/$library/$script.hscript';
+		else if (FileSystem.exists('assets/scripts/$library/$script.hx'))
+			return 'assets/scripts/$library/$script.hx';
+		#end
+		else return null;
+	}
 
 	public static function isAnimated(key:String, ?library:String)
 	{

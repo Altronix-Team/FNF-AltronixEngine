@@ -6,12 +6,12 @@ import flixel.FlxBasic;
 import flixel.FlxCamera;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import Paths;
-import scriptStuff.ScriptHelper;
+import scriptStuff.HScriptHandler;
 import states.PlayState;
 import gameplayStuff.Character;
 import gameplayStuff.Boyfriend;
 
-class HscriptStage extends ModchartHelper
+class HscriptStage extends HScriptModchart
 {
 	var state:PlayState;
 
@@ -31,7 +31,7 @@ class HscriptStage extends ModchartHelper
 
 	public function new(path:String, state:PlayState)
 	{
-		scriptHelper = new ScriptHelper();
+		scriptHelper = new HScriptHandler();
 
 		gf = state.gf;
 		dad = state.dad;
@@ -56,10 +56,6 @@ class HscriptStage extends ModchartHelper
 
 		this.state = state;
 		super(path, state);
-	}
-
-	override public function update(elapsed:Float) {
-		super.update(elapsed);
 	}
 
 	override public function add(object:FlxBasic):FlxBasic {

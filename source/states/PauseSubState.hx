@@ -1,5 +1,6 @@
 package states;
 
+import scriptStuff.ScriptHelper;
 import flixel.input.gamepad.FlxGamepad;
 import openfl.Lib;
 #if FEATURE_LUAMODCHART
@@ -297,6 +298,14 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.isFreeplay = false;
 					PlayState.chartingMode = false;
 					PlayStateChangeables.twoPlayersMode = false;
+					ScriptHelper.clearAllScripts();
+
+					if (PlayState.SONG.songId == 'thorns')
+					{
+						WindowUtil.resizeWindow(PlayState.windowWidth, PlayState.windowHeight);
+						if (PlayState.fullscree)
+							WindowUtil.setFullscreen(true);
+					}
 			}
 		}
 

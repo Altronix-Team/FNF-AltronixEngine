@@ -39,6 +39,15 @@ class WindowUtil
 	}
 
 	/**
+	 * Gets the window is the full screen.
+	 * Works on desktop and HTML5.l
+	 */
+	public static function getFullscreen():Bool
+	{
+		return LimeApplication.current.window.fullscreen;
+	}
+
+	/**
 	 * Sets whether the window should encompass the full screen.
 	 * Works on desktop and HTML5.
 	 */
@@ -88,6 +97,32 @@ class WindowUtil
 	{
 		LimeApplication.current.window.width = width;
 		LimeApplication.current.window.height = height;
+	}
+
+	/**
+	 * Returns the size of the current window.
+	 * @param param Width or Height
+	 * @return Window width or height
+	 */
+	public static function getWindowSize(param:String):Int
+	{
+		if (param == 'Width' || param == 'width')
+			return LimeApplication.current.window.width;
+		else
+			return LimeApplication.current.window.height;
+	}
+
+	/**
+	 * Returns the position of the current window.
+	 * @param param X or Y
+	 * @return Position of current window
+	 */
+	public static function getWindowPosition(param:String):Int
+	{
+		if (param == 'x' || param == 'X')
+			return LimeApplication.current.window.x;
+		else
+			return LimeApplication.current.window.y;
 	}
 
 	/**

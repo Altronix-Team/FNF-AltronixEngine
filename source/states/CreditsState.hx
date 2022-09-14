@@ -21,6 +21,19 @@ import openfl.Assets;
 
 using StringTools;
 
+typedef Credit = {
+	var nickname:String;
+	var icon:String;
+	var description:String;
+	var url:String;
+	var color:String;
+}
+
+typedef CreditsFile = {
+	var modName:String;
+	var credits:Array<Credit>;
+}
+
 class CreditsState extends MusicBeatState
 {
 	var curSelected:Int = -1;
@@ -53,19 +66,17 @@ class CreditsState extends MusicBeatState
 		grpOptions = new FlxTypedGroup<Alphabet>();
 		add(grpOptions);
 
-		if (Assets.getText(Paths.txt('data/credits')) != null)
+		if (Assets.exists(Paths.json('credits')))
 		{
-			var creditsFile:String = Paths.txt('data/credits');
-			var firstarray:Array<String> = Assets.getText(creditsFile).split('\n');
-			for (i in firstarray)
+			var file:CreditsFile = cast Paths.loadJSON('credits');
+			creditsStuff.push([file.modName]);
+
+			for (credit in file.credits)
 			{
-				var arr:Array<String> = i.replace('\\n', '\n').split("::");
-				if (arr.length >= 5)
-					arr.push('');
-				creditsStuff.push(arr);
+				creditsStuff.push([credit.nickname, credit.icon, credit.description, credit.url, credit.color]);
 			}
 			creditsStuff.push(['']);
-		};
+		}
 
 		var pisspoop:Array<Array<String>> = [ //Name - Icon name - Description - Link - BG Color
 			['Altronix Engine by'],

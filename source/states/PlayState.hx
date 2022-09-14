@@ -766,11 +766,12 @@ class PlayState extends MusicBeatState
 		if (!stageTesting 
 			#if LUA_ALLOWED
 			&& !OpenFlAssets.exists('assets/stages/' + SONG.stage + '.lua')
-			&& !OpenFlAssets.exists(Paths.getHscriptPath(SONG.stage, 'stages'))	
+			&& (!OpenFlAssets.exists(Paths.getHscriptPath(SONG.stage, 'stages'))
+				&& Paths.getHscriptPath(SONG.stage, 'stages') != null)	
 			#end)
 		{
 			#if FEATURE_FILESYSTEM
-			if (FileSystem.exists(Paths.getHscriptPath(SONG.stage, 'stages'))) //Try to find hscript stage in default directory
+			if (FileSystem.exists(Paths.getHscriptPath(SONG.stage, 'stages')) && Paths.getHscriptPath(SONG.stage, 'stages') != null) //Try to find hscript stage in default directory
 			{
 				hscriptStage = new HscriptStage(Paths.getHscriptPath(SONG.stage, 'stages'), this);
 				add(hscriptStage);
@@ -787,7 +788,7 @@ class PlayState extends MusicBeatState
 		}
 		else
 		{
-			if (OpenFlAssets.exists(Paths.getHscriptPath(SONG.stage, 'stages')))
+			if (OpenFlAssets.exists(Paths.getHscriptPath(SONG.stage, 'stages')) && Paths.getHscriptPath(SONG.stage, 'stages') != null)
 			{
 				try
 				{
@@ -969,7 +970,7 @@ class PlayState extends MusicBeatState
 		#end
 
 		#if desktop
-		if (OpenFlAssets.exists(Paths.getHscriptPath(SONG.songId, 'songs')))
+		if (OpenFlAssets.exists(Paths.getHscriptPath(SONG.songId, 'songs')) && Paths.getHscriptPath(SONG.songId, 'songs') != null)
 		{
 			try
 			{
@@ -6979,7 +6980,7 @@ class PlayState extends MusicBeatState
 
 	function startCharacterHscript(name:String)
 	{
-		if (OpenFlAssets.exists(Paths.getHscriptPath(name, 'characters')))
+		if (OpenFlAssets.exists(Paths.getHscriptPath(name, 'characters')) && Paths.getHscriptPath(name, 'characters') != null)
 		{
 			ScriptHelper.hscriptFiles.push(new ModchartHelper(OpenFlAssets.getPath(Paths.getHscriptPath(name, 'characters')), this));
 		}

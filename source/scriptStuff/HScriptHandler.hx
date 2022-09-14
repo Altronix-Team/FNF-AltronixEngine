@@ -67,6 +67,8 @@ class HScriptHandler
     var ast:Expr;
 
 	var color:FlxColor;
+
+	var file:String = '';
     
     public function new()
     {        
@@ -128,6 +130,7 @@ class HScriptHandler
 		expose.set('set', set);
 		expose.set('get', get);
 		expose.set('exists', exists);
+		expose.set('call', call);
 		expose.set('getEngineFont', getEngineFont);
 		expose.set('importClass', importClass);
 		//expose.set("instancePluginClass", instanceExClass);
@@ -153,6 +156,30 @@ class HScriptHandler
     public function exists(field:String):Bool
         return interp.variables.exists(field);
 
+	public function call(func:String, args:Array<Dynamic>):Dynamic {
+		if (func == null)
+		{
+			Debug.logError('Function name cannot be null for $file!');
+			return null;
+		}
+
+		var params:Array<Dynamic> = [];
+
+		if (args != null)
+		{
+			params = args;
+		}
+
+		if (!interp.variables.exists(func))
+		{
+			//Debug.logError('Function $func does not exist in $file.');
+			return null;
+		}
+
+		var functionField:Function = get(func);
+		return Reflect.callMethod(this, functionField, params);
+	}
+
 	/** Creates new class and returns it.
 	 * - Works like: new FlxText(x, y, width, text, size, embedded);
 	 * @param newClass The name of new class: (FlxText)
@@ -169,6 +196,7 @@ class HScriptHandler
     {
         if (path != "")
         {
+			file = path;
 			if (OpenFlAssets.exists(path))
             {
 				Debug.logTrace('Found hscript');
@@ -180,8 +208,10 @@ class HScriptHandler
 					for (v in expose.keys())
 						interp.variables.set(v, expose.get(v));
 					
-                    if (execute)
+                    if (execute){
                         interp.execute(ast);
+						return;
+					}
                 }
                 catch (e:Error)
                 {
@@ -199,8 +229,10 @@ class HScriptHandler
 					for (v in expose.keys())
 						interp.variables.set(v, expose.get(v));
 
-					if (execute)
+					if (execute){
 						interp.execute(ast);
+						return;
+					}
 				}
 				catch (e:Error)
 				{
@@ -219,8 +251,10 @@ class HScriptHandler
 					for (v in expose.keys())
 						interp.variables.set(v, expose.get(v));
 
-					if (execute)
+					if (execute){
 						interp.execute(ast);
+						return;
+					}
 				}
 				catch (e:Error)
 				{
@@ -247,7 +281,7 @@ class HScriptHandler
 			{
 				try
 				{
-					var moduleInterp = new Interp();
+					var moduleInterp = new CustomInterp();
 					var moduleAst = parser.parseString(OpenFlAssets.getText(path), path);
 
 					for (v in expose.keys())
@@ -278,7 +312,7 @@ class HScriptHandler
 			{
 				try
 				{
-					var moduleInterp = new Interp();
+					var moduleInterp = new CustomInterp();
 					var moduleAst = parser.parseString(OpenFlAssets.getText(OpenFlAssets.getPath(path)), path);
 
 					for (v in expose.keys())
@@ -311,7 +345,7 @@ class HScriptHandler
 			{
 				try
 				{
-					var moduleInterp = new Interp();
+					var moduleInterp = new CustomInterp();
 					var moduleAst = parser.parseString(File.getContent(path), path);
 
 					for (v in expose.keys())

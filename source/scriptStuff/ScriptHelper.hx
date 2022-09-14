@@ -37,10 +37,11 @@ class ScriptHelper
 		for (script in hscriptFiles)
 		{
 			var scriptHelper = script.scriptHelper;
-			if (scriptHelper.get(functionToCall) != null)
+			scriptHelper.call(functionToCall, params);
+			/*if (scriptHelper.get(functionToCall) != null)
 			{
 				scriptHelper.get(functionToCall)(params);
-			}
+			}*/
 		}
 	}
 

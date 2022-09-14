@@ -188,7 +188,7 @@ class HScriptHandler
                     throw new ScriptException("Script parse error:\n" + e);
                 }
             }
-			else if (OpenFlAssets.exists(OpenFlAssets.getPath(path, TEXT)))
+			else if (OpenFlAssets.exists(OpenFlAssets.getPath(path)))
 			{
 				Debug.logTrace('Found hscript');
 				Debug.logTrace('At path: ' + OpenFlAssets.getPath(path));

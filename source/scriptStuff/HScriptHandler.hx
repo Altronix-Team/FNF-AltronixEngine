@@ -176,8 +176,14 @@ class HScriptHandler
 			return null;
 		}
 
+		try{
 		var functionField:Function = get(func);
-		return Reflect.callMethod(this, functionField, params);
+		return Reflect.callMethod(this, functionField, params);}
+		catch (e)
+		{
+			Debug.logError('Error with calling function $func: ${e.messege} \n ${e.stack}');
+			return null;
+		}
 	}
 
 	/** Creates new class and returns it.

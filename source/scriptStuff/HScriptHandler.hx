@@ -177,11 +177,11 @@ class HScriptHandler
 		}
 
 		try{
-		var functionField:Function = get(func);
-		return Reflect.callMethod(this, functionField, params);}
+			var functionField:Function = get(func);
+			return Reflect.callMethod(this, functionField, params);}
 		catch (e)
 		{
-			Debug.logError('Error with calling function $func: ${e.messege} \n ${e.stack}');
+			Debug.logError('Error with calling function $func: ${e.message} \n ${e.stack}');
 			return null;
 		}
 	}

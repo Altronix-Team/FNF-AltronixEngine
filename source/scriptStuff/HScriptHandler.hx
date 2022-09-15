@@ -543,4 +543,42 @@ class CustomInterp extends Interp
 
 	public function newType(newClass:String, args:Array<Dynamic>):Dynamic
 		return cnew(newClass, args);
+
+	override private function resetVariables()
+	{
+		super.resetVariables();
+
+		variables.set("trace", Reflect.makeVarArgs(function(el)
+		{
+			var inf = posInfos();
+			var v = el.shift();
+			if (el.length > 0)
+				inf.customParams = el;
+			Debug.logTrace(Std.string(v));
+		}));
+		variables.set("info", Reflect.makeVarArgs(function(el)
+		{
+			var inf = posInfos();
+			var v = el.shift();
+			if (el.length > 0)
+				inf.customParams = el;
+			Debug.logInfo(Std.string(v));
+		}));
+		variables.set("warn", Reflect.makeVarArgs(function(el)
+		{
+			var inf = posInfos();
+			var v = el.shift();
+			if (el.length > 0)
+				inf.customParams = el;
+			Debug.logWarn(Std.string(v));
+		}));
+		variables.set("error", Reflect.makeVarArgs(function(el)
+		{
+			var inf = posInfos();
+			var v = el.shift();
+			if (el.length > 0)
+				inf.customParams = el;
+			Debug.logError(Std.string(v));
+		}));
+	}
 }

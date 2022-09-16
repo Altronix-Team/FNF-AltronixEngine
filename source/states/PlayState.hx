@@ -766,8 +766,7 @@ class PlayState extends MusicBeatState
 		if (!stageTesting 
 			#if LUA_ALLOWED
 			&& !OpenFlAssets.exists('assets/stages/' + SONG.stage + '.lua')
-			&& (!OpenFlAssets.exists(Paths.getHscriptPath(SONG.stage, 'stages'))
-				&& Paths.getHscriptPath(SONG.stage, 'stages') != null)	
+			&& (!OpenFlAssets.exists(Paths.getHscriptPath(SONG.stage, 'stages')))	
 			#end)
 		{
 			#if FEATURE_FILESYSTEM
@@ -822,8 +821,7 @@ class PlayState extends MusicBeatState
 			else
 			#end
 			{
-				Debug.logError('Something strange with stage scripts, loading default stage');
-				Stage = new Stage('stage');
+				Stage = new Stage(SONG.stage);
 			}
 		}	
 

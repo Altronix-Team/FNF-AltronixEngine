@@ -18,6 +18,12 @@ import flixel.text.FlxText;
 
 using StringTools;
 
+typedef NoteMeta = {
+	var imageFile:String;
+	var size:Float;
+	var listInSettings:Bool;
+} 
+
 class Note extends FlxSprite
 {
 	public var sprTracker:FlxSprite = null;
@@ -41,7 +47,6 @@ class Note extends FlxSprite
 	public var modifiedByLua:Bool = false;
 	public var sustainLength:Float = 0;
 	public var isSustainNote:Bool = false;
-	public var originColor:Int = 0; // The sustain note's original note's color
 	public var noteSection:Int = 0;
 
 	public var luaID:Int = 0;
@@ -104,18 +109,30 @@ class Note extends FlxSprite
 
 	var chartNote:Bool = false;
 
+	var stepHeight:Float = 0;
+
+	var created:Bool = false;
+
+	var noteMetaData:NoteMeta = {
+		imageFile: '',
+		size: 0.7,
+		listInSettings : true
+	};
+
 	private function set_noteType(value:String):String {
 		if(noteData > -1 && noteType != value) {
 			switch(value) {
 				case 'Bullet Note':
 					texture = 'Bullet_Note';
-					reloadNote(texture);
+					noteMetaData.imageFile = 'Bullet_Note';
+					reloadNote(noteMetaData);
 					bulletNote = true;
 
 				case 'Hurt Note':
 					texture = 'HURTNOTE_assets';
 					ignoreNote = true;
-					reloadNote(texture);
+					noteMetaData.imageFile = 'HURTNOTE_assets';
+					reloadNote(noteMetaData);
 					hurtNote = true;
 
 				case 'No Animation':
@@ -144,6 +161,8 @@ class Note extends FlxSprite
 		this.prevNote = prevNote;
 		isSustainNote = sustainNote;
 
+		texture = PlayState.SONG.specialSongNoteSkin != null ? PlayState.SONG.specialSongNoteSkin : FlxG.save.data.noteskin;
+
 		if (noteStyle == null)
 			this.noteStyle = noteTypeCheck;
 		else
@@ -152,22 +171,26 @@ class Note extends FlxSprite
 		if (isAlt)
 			animSuffix = '-alt';
 
-		/*if (PlayState.SONG.noteStyle == null)
+		if (OpenFlAssets.exists(Paths.imagesJson('noteskins/$texture')))
 		{
-			switch (PlayState.storyWeek)
-			{
-				case 6:
-					noteTypeCheck = 'pixel';
-				default:
-					noteTypeCheck = 'normal';
-			}
+			noteMetaData = cast Paths.loadImagesJSON('noteskins/$texture');
+			texture = noteMetaData.imageFile;
+		}
+		else if (OpenFlAssets.exists(Paths.imagesJson('noteskins/$noteStyle')))
+		{
+			noteMetaData = cast Paths.loadImagesJSON('noteskins/$noteStyle');
+			texture = noteMetaData.imageFile;
 		}
 		else
 		{
-			noteTypeCheck = PlayState.SONG.noteStyle;
-		}*/
+			noteMetaData = {
+				imageFile: texture,
+				size: 0.7,
+				listInSettings: true
+			}
+		}
 
-		reloadNote('');
+		reloadNote(noteMetaData);
 		
 		x += 50;
 		// MAKE SURE ITS DEFINITELY OFF SCREEN?
@@ -201,13 +224,55 @@ class Note extends FlxSprite
 			x += swagWidth * noteData;	
 
 		animation.play(dataColor[noteData] + 'Scroll');
-		originColor = noteData; // The note's origin color will be checked by its sustain notes
 
 		if (FlxG.save.data.downscroll && sustainNote)
 			flipY = true;
 
-		var stepHeight = (((0.45 * Conductor.stepCrochet)) * FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? PlayState.SONG.speed : PlayStateChangeables.scrollSpeed,
+		stepHeight = (((0.45 * Conductor.stepCrochet)) * FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? PlayState.SONG.speed : PlayStateChangeables.scrollSpeed,
 			2)) / PlayState.songMultiplier;
+
+		startAnim();
+
+		created = true;
+	}
+
+	function reloadNote(meta:NoteMeta) {
+		if (noteStyle == 'pixel')
+		{
+			loadGraphic(NoteskinHelpers.generatePixelSprite(meta.imageFile), true, 17, 17);
+			if (isSustainNote)
+				loadGraphic(NoteskinHelpers.generatePixelSprite(meta.imageFile, true), true, 7, 6);
+		
+			loadPixelAnims();
+
+			if (chartNote)
+				setGraphicSize(40, 40);
+			else
+				setGraphicSize(Std.int(width * CoolUtil.daPixelZoom));
+
+			updateHitbox();
+		}
+		else
+		{
+			frames = NoteskinHelpers.generateNoteskinSprite(meta.imageFile);
+			loadDefaultAnims();
+
+			if (chartNote)
+				setGraphicSize(40, 40);
+			else
+				setGraphicSize(Std.int(width * meta.size));
+
+			updateHitbox();
+
+			antialiasing = FlxG.save.data.antialiasing;
+		}
+
+		if (created)
+			startAnim();
+	}
+
+	function startAnim(){
+		animation.play(dataColor[noteData] + 'Scroll', true);
 
 		if (isSustainNote && prevNote != null)
 		{
@@ -218,20 +283,19 @@ class Note extends FlxSprite
 
 			x += width / 2;
 
-			originColor = prevNote.originColor;
 			originAngle = prevNote.originAngle;
 
-			animation.play(dataColor[originColor] + 'holdend');
+			animation.play(dataColor[noteData] + 'holdend');
 			updateHitbox();
 
 			x -= width / 2;
 
-			if (inCharter)
+			if (chartNote)
 				x += 30;
 
 			if (prevNote.isSustainNote)
 			{
-				prevNote.animation.play(dataColor[prevNote.originColor] + 'hold');
+				prevNote.animation.play(dataColor[prevNote.noteData] + 'hold');
 				prevNote.updateHitbox();
 
 				prevNote.scale.y *= stepHeight / prevNote.height;
@@ -239,147 +303,6 @@ class Note extends FlxSprite
 
 				if (antialiasing)
 					prevNote.scale.y *= 1.0 + (1.0 / prevNote.frameHeight);
-			}
-		}
-	}
-
-	function reloadNote(?texture:String = '') {
-		if (noteStyle == 'pixel')
-		{
-			if (texture == null || texture == '')
-			{
-				loadGraphic(PlayState.noteskinPixelSprite, true, 17, 17);
-				if (isSustainNote)
-					loadGraphic(PlayState.noteskinPixelSpriteEnds, true, 7, 6);
-		
-				loadPixelAnims();
-		
-				if (chartNote)
-					setGraphicSize(40, 40);
-				else
-					setGraphicSize(Std.int(width * CoolUtil.daPixelZoom));
-
-				updateHitbox();
-			}
-			else
-			{
-				if (OpenFlAssets.exists(Paths.image('specialnotes/' + texture + '-pixel')) && OpenFlAssets.exists(Paths.image('specialnotes/' + texture + '-pixel-ends')))
-				{
-					loadGraphic(BitmapData.fromFile('specialnotes/' + texture + '-pixel.png'), true, 17, 17);
-					if (isSustainNote)
-						loadGraphic(BitmapData.fromFile('specialnotes/' + texture + '-pixel-ends.png'), true, 7, 6);
-					loadPixelAnims();
-
-					if (chartNote)
-						setGraphicSize(40, 40);
-					else
-						setGraphicSize(Std.int(width * CoolUtil.daPixelZoom));
-					
-					updateHitbox();
-				}
-				else
-				{
-					if (texture == null || texture == '')
-					{
-						frames = PlayState.noteskinSprite;
-						loadDefaultAnims();
-
-						if (chartNote)
-							setGraphicSize(40, 40);
-						else
-							setGraphicSize(Std.int(width * 0.7));
-
-						updateHitbox();
-
-						antialiasing = FlxG.save.data.antialiasing;
-					}
-					else
-					{
-						frames = Paths.getSparrowAtlas('specialnotes/' + texture);
-						loadDefaultAnims();
-
-						if (chartNote)
-							setGraphicSize(40, 40);
-						else
-							setGraphicSize(Std.int(width * 0.7));
-
-						updateHitbox();
-
-						antialiasing = FlxG.save.data.antialiasing;
-					}
-				}
-			}
-		}
-		else if (noteStyle == 'normal')
-		{
-			if (texture == null || texture == '')
-			{
-				frames = PlayState.noteskinSprite;
-				loadDefaultAnims();
-
-				if (chartNote)
-					setGraphicSize(40, 40);
-				else
-					setGraphicSize(Std.int(width * 0.7));
-
-				updateHitbox();
-
-				antialiasing = FlxG.save.data.antialiasing;
-			}
-			else
-			{
-				frames = Paths.getSparrowAtlas('specialnotes/' + texture);
-				loadDefaultAnims();
-
-				if (chartNote)
-					setGraphicSize(40, 40);
-				else
-					setGraphicSize(Std.int(width * 0.7));
-
-				updateHitbox();
-
-				antialiasing = FlxG.save.data.antialiasing;
-			}
-		}
-		else
-		{
-			if (texture == null || texture == '')
-			{
-				frames = NoteskinHelpers.generateNoteskinSprite(noteStyle);
-				loadDefaultAnims();
-
-				if (chartNote)
-					setGraphicSize(40, 40);
-				else
-					setGraphicSize(Std.int(width * 0.7));
-
-				updateHitbox();
-
-				antialiasing = FlxG.save.data.antialiasing;
-			}
-			else
-			{
-				frames = Paths.getSparrowAtlas('specialnotes/' + texture);
-				loadDefaultAnims();
-
-				if (chartNote)
-					setGraphicSize(40, 40);
-				else
-					setGraphicSize(Std.int(width * 0.7));
-
-				updateHitbox();
-
-				antialiasing = FlxG.save.data.antialiasing;
-			}
-		}
-
-		animation.play(dataColor[noteData] + 'Scroll', true);
-		if (isSustainNote && prevNote != null)
-		{
-			animation.play(dataColor[originColor] + 'holdend', true);
-			if (prevNote.isSustainNote)
-			{
-				prevNote.animation.play(dataColor[prevNote.originColor] + 'hold', true);
 			}
 		}
 	}
@@ -403,7 +326,25 @@ class Note extends FlxSprite
 		if (lasttexture != texture)
 		{
 			lasttexture = texture;
-			reloadNote(texture);
+			if (OpenFlAssets.exists(Paths.imagesJson('noteskins/$texture')))
+			{
+				noteMetaData = cast Paths.loadImagesJSON('noteskins/$texture');
+				texture = noteMetaData.imageFile;
+			}
+			else if (OpenFlAssets.exists(Paths.imagesJson('noteskins/$noteStyle')))
+			{
+				noteMetaData = cast Paths.loadImagesJSON('noteskins/$noteStyle');
+					texture = noteMetaData.imageFile;
+			}
+			else
+			{
+				noteMetaData = {
+					imageFile: texture,
+					size: 0.7,
+					listInSettings: true
+				}
+			}
+			reloadNote(noteMetaData);
 		}
 
 		if (sprTracker != null)
@@ -465,7 +406,7 @@ class Note extends FlxSprite
 		else
 			noteTypeCheck = 'pixel';
 		
-		reloadNote(texture);
+		reloadNote(noteMetaData);
 	}
 
 	function loadDefaultAnims()

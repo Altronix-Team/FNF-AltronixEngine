@@ -4,6 +4,7 @@ import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.FlxG;
 import openfl.utils.Assets as OpenFlAssets;
+import gameplayStuff.Note;
 
 using StringTools;
 
@@ -16,6 +17,16 @@ class NoteskinHelpers
 		noteskinArray = [];
 		for (i in Paths.listImagesInPath('noteskins/'))
 		{
+			var noteMetaData:NoteMeta = null;
+			if (OpenFlAssets.exists(Paths.imagesJson('noteskins/$i')))
+			{
+				if (OpenFlAssets.exists(Paths.imagesJson('noteskins/$i')))
+					noteMetaData = cast Paths.loadImagesJSON('noteskins/$i');
+			}
+			if (noteMetaData != null)
+				if (!noteMetaData.listInSettings)
+					continue;
+
 			if (i.contains("-pixel"))
 				continue;
 
@@ -47,21 +58,21 @@ class NoteskinHelpers
 		return Paths.getSparrowAtlas('noteskins/' + id, "shared");	
 	}
 
-	static public function generateSpecialPixelSprite(id:String, ends:Bool = false)
+	/*static public function generateSpecialPixelSprite(id:String, ends:Bool = false)
 	{
 		var path = "assets/shared/images/specialnotes" + "/" + id + "-pixel" + (ends ? "-ends" : "");
 		return BitmapData.fromFile(path + ".png");
-	}
+	}*/
 
 	static public function generatePixelSprite(id:String, ends:Bool = false)
 	{
 		var path = "assets/shared/images/noteskins/" + id + "-pixel" + (ends ? "-ends" : "");
 
-		if (!OpenFlAssets.exists(path + '.png'))
+		if (!OpenFlAssets.exists(Paths.image(path)))
 		{
-			Debug.logTrace("getting default pixel skin");
+			//Debug.logTrace("getting default pixel skin");
 			return BitmapData.fromFile("assets/shared/images/noteskins/Arrows-pixel" + (ends ? "-ends" : "") + ".png");
 		}
-		return BitmapData.fromFile(path + '.png');
+		return BitmapData.fromFile(Paths.image(path));
 	}
 }	

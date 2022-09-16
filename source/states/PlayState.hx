@@ -144,6 +144,7 @@ class PlayState extends MusicBeatState
 	public static var noteskinSprite:FlxAtlasFrames;
 	public static var noteskinPixelSprite:BitmapData;
 	public static var noteskinPixelSpriteEnds:BitmapData;
+	public static var noteskinTexture:String;
 
 	public static var inResults:Bool = false;
 
@@ -378,7 +379,6 @@ class PlayState extends MusicBeatState
 
 	// Animation common suffixes
 	private var dataSuffix:Array<String> = ['LEFT', 'DOWN', 'UP', 'RIGHT'];
-	private var dataColor:Array<String> = ['purple', 'blue', 'green', 'red'];
 
 	public static var startTime = 0.0;
 
@@ -401,7 +401,7 @@ class PlayState extends MusicBeatState
 
 	public var events:Array<gameplayStuff.Song.EventsAtPos> = [];
 
-	var noteTypeCheck:String = 'normal';
+	public var noteTypeCheck:String = 'normal';
 
 	var funnyStartObjects:Array<FlxBasic> = [];
 
@@ -1186,11 +1186,13 @@ class PlayState extends MusicBeatState
 		if (SONG.specialSongNoteSkin != FlxG.save.data.noteskin && SONG.specialSongNoteSkin != null){
 			noteskinPixelSprite = NoteskinHelpers.generatePixelSprite(SONG.specialSongNoteSkin);
 			noteskinPixelSpriteEnds = NoteskinHelpers.generatePixelSprite(SONG.specialSongNoteSkin, true);
-			noteskinSprite = NoteskinHelpers.generateNoteskinSprite(SONG.specialSongNoteSkin);}
+			noteskinSprite = NoteskinHelpers.generateNoteskinSprite(SONG.specialSongNoteSkin);
+			noteskinTexture = SONG.specialSongNoteSkin;}
 		else{
 			noteskinPixelSprite = NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin);
 			noteskinSprite = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin);
-			noteskinPixelSpriteEnds = NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin, true);}
+			noteskinPixelSpriteEnds = NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin, true);
+			noteskinTexture =FlxG.save.data.noteskin;}
 
 		generateStaticArrows(0);
 		generateStaticArrows(1);
@@ -3206,59 +3208,11 @@ class PlayState extends MusicBeatState
 		{
 			// FlxG.log.add(i);
 			var babyArrow:StaticArrow = new StaticArrow(-10, strumLine.y);
+			babyArrow.noteData = i;
+			babyArrow.texture = noteskinTexture;
 
 			if (PlayStateChangeables.Optimize && player == 0)
 				continue;
-
-			switch (noteTypeCheck)
-			{
-				case 'pixel':
-					babyArrow.loadGraphic(noteskinPixelSprite, true, 17, 17);
-					babyArrow.animation.add('green', [6]);
-					babyArrow.animation.add('red', [7]);
-					babyArrow.animation.add('blue', [5]);
-					babyArrow.animation.add('purplel', [4]);
-
-					babyArrow.setGraphicSize(Std.int(babyArrow.width * CoolUtil.daPixelZoom));
-					babyArrow.updateHitbox();
-					babyArrow.antialiasing = false;
-
-					babyArrow.x += Note.swagWidth * i;
-					babyArrow.animation.add('static', [i]);
-					babyArrow.animation.add('pressed', [4 + i, 8 + i], 12, false);
-					babyArrow.animation.add('confirm', [12 + i, 16 + i], 12, false);
-				default:
-					if (noteTypeCheck == 'normal')
-					{
-						babyArrow.frames = noteskinSprite;
-
-						var lowerDir:String = dataSuffix[i].toLowerCase();
-
-						babyArrow.animation.addByPrefix('static', 'arrow' + dataSuffix[i]);
-						babyArrow.animation.addByPrefix('pressed', lowerDir + ' press', 24, false);
-						babyArrow.animation.addByPrefix('confirm', lowerDir + ' confirm', 24, false);
-
-						babyArrow.x += Note.swagWidth * i;
-
-						babyArrow.antialiasing = FlxG.save.data.antialiasing;
-						babyArrow.setGraphicSize(Std.int(babyArrow.width * 0.7));	
-					}
-					else
-					{
-						babyArrow.frames = NoteskinHelpers.generateNoteskinSprite(noteTypeCheck);
-
-						var lowerDir:String = dataSuffix[i].toLowerCase();
-
-						babyArrow.animation.addByPrefix('static', 'arrow' + dataSuffix[i]);
-						babyArrow.animation.addByPrefix('pressed', lowerDir + ' press', 24, false);
-						babyArrow.animation.addByPrefix('confirm', lowerDir + ' confirm', 24, false);
-
-						babyArrow.x += Note.swagWidth * i;
-
-						babyArrow.antialiasing = FlxG.save.data.antialiasing;
-						babyArrow.setGraphicSize(Std.int(babyArrow.width * 0.7));	
-					}						
-			}
 			
 			babyArrow.updateHitbox();
 			babyArrow.scrollFactor.set();

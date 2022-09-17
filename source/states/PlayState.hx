@@ -1,5 +1,6 @@
 package states;
 
+import gameplayStuff.StrumLine;
 import animateatlas.AtlasFrameMaker;
 import flixel.util.FlxSpriteUtil;
 import gameplayStuff.Song.Event;
@@ -187,11 +188,7 @@ class PlayState extends MusicBeatState
 	public var laneunderlay:FlxSprite;
 	public var laneunderlayOpponent:FlxSprite;
 
-	public var strumLineNotes:FlxTypedGroup<StaticArrow> = null;
-	public var playerStrums:FlxTypedGroup<StaticArrow> = null;
-	public var opponentStrums:FlxTypedGroup<StaticArrow> = null;
-
-	public var grpNoteSplashes:FlxTypedGroup<NoteSplash>;
+	public var strumLineNotes:StrumLine = null;
 
 	public var stageGroup:FlxTypedGroup<FlxSprite>;
 	public var ratingsGroup:FlxTypedGroup<FlxSprite>;
@@ -1171,45 +1168,39 @@ class PlayState extends MusicBeatState
 			add(laneunderlay);
 		}
 
-		grpNoteSplashes = new FlxTypedGroup<NoteSplash>();
-
-		strumLineNotes = new FlxTypedGroup<StaticArrow>();
-		add(strumLineNotes);
-		add(grpNoteSplashes);
-
-		var splash:NoteSplash = new NoteSplash(100, 100, 0);
-		grpNoteSplashes.add(splash);
-
-		playerStrums = new FlxTypedGroup<StaticArrow>();
-		opponentStrums = new FlxTypedGroup<StaticArrow>();
-
-		if (SONG.specialSongNoteSkin != FlxG.save.data.noteskin && SONG.specialSongNoteSkin != null){
+		if (SONG.specialSongNoteSkin != FlxG.save.data.noteskin && SONG.specialSongNoteSkin != null)
+		{
 			noteskinPixelSprite = NoteskinHelpers.generatePixelSprite(SONG.specialSongNoteSkin);
 			noteskinPixelSpriteEnds = NoteskinHelpers.generatePixelSprite(SONG.specialSongNoteSkin, true);
 			noteskinSprite = NoteskinHelpers.generateNoteskinSprite(SONG.specialSongNoteSkin);
-			noteskinTexture = SONG.specialSongNoteSkin;}
-		else{
+			noteskinTexture = SONG.specialSongNoteSkin;
+		}
+		else
+		{
 			noteskinPixelSprite = NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin);
 			noteskinSprite = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin);
 			noteskinPixelSpriteEnds = NoteskinHelpers.generatePixelSprite(FlxG.save.data.noteskin, true);
-			noteskinTexture =FlxG.save.data.noteskin;}
-
-		generateStaticArrows(0);
-		generateStaticArrows(1);
-		
-		for (i in 0...playerStrums.length) {
-			ScriptHelper.setOnScripts('defaultPlayerStrumX' + i, playerStrums.members[i].x);
-			ScriptHelper.setOnScripts('defaultPlayerStrumY' + i, playerStrums.members[i].y);
+			noteskinTexture = FlxG.save.data.noteskin;
 		}
-		for (i in 0...opponentStrums.length) {
-			ScriptHelper.setOnScripts('defaultOpponentStrumX' + i, opponentStrums.members[i].x);
-			ScriptHelper.setOnScripts('defaultOpponentStrumY' + i, opponentStrums.members[i].y);
+
+		strumLineNotes = new StrumLine();
+		add(strumLineNotes);
+		if (FlxG.save.data.notesplashes)
+			strumLineNotes.setupNoteSplashes();
+		
+		for (i in 0...strumLineNotes.playerStrums.length) {
+			ScriptHelper.setOnScripts('defaultPlayerStrumX' + i, strumLineNotes.playerStrums.members[i].x);
+			ScriptHelper.setOnScripts('defaultPlayerStrumY' + i, strumLineNotes.playerStrums.members[i].y);
+		}
+		for (i in 0...strumLineNotes.opponentStrums.length) {
+			ScriptHelper.setOnScripts('defaultOpponentStrumX' + i, strumLineNotes.opponentStrums.members[i].x);
+			ScriptHelper.setOnScripts('defaultOpponentStrumY' + i, strumLineNotes.opponentStrums.members[i].y);
 		}
 
 		// Update lane underlay positions AFTER static arrows :)
 
-		laneunderlay.x = playerStrums.members[0].x - 25;
-		laneunderlayOpponent.x = opponentStrums.members[0].x - 25;
+		laneunderlay.x = strumLineNotes.playerStrums.members[0].x - 25;
+		laneunderlayOpponent.x = strumLineNotes.opponentStrums.members[0].x - 25;
 
 		laneunderlay.screenCenter(Y);
 		laneunderlayOpponent.screenCenter(Y);
@@ -1552,7 +1543,6 @@ class PlayState extends MusicBeatState
 		}
 
 		strumLineNotes.cameras = [camHUD];
-		grpNoteSplashes.cameras = [camHUD];
 		notes.cameras = [camHUD];
 		healthBar.cameras = [camHUD];
 		healthBarBG.cameras = [camHUD];
@@ -3100,11 +3090,11 @@ class PlayState extends MusicBeatState
 
 				if (gottaHitNote)
 				{
-					swagNote.sprTracker = playerStrums.members[daNoteData];
+					swagNote.sprTracker = strumLineNotes.playerStrums.members[daNoteData];
 				}
 				else
 				{
-					swagNote.sprTracker = opponentStrums.members[daNoteData];
+					swagNote.sprTracker = strumLineNotes.opponentStrums.members[daNoteData];
 				}
 
 				var susLength:Float = swagNote.sustainLength;
@@ -3142,11 +3132,11 @@ class PlayState extends MusicBeatState
 
 					if (gottaHitNote)
 					{
-						sustainNote.sprTracker = playerStrums.members[daNoteData];
+						sustainNote.sprTracker = strumLineNotes.playerStrums.members[daNoteData];
 					}
 					else
 					{
-						sustainNote.sprTracker = opponentStrums.members[daNoteData];
+						sustainNote.sprTracker = strumLineNotes.opponentStrums.members[daNoteData];
 					}
 
 					if (songNotes[3])
@@ -3199,70 +3189,6 @@ class PlayState extends MusicBeatState
 	function sortByShit(Obj1:Note, Obj2:Note):Int
 	{
 		return FlxSort.byValues(FlxSort.ASCENDING, Obj1.strumTime, Obj2.strumTime);
-	}
-
-	private function generateStaticArrows(player:Int, tweenShit:Bool = true):Void
-	{
-		var index = 0;
-		for (i in 0...4)
-		{
-			// FlxG.log.add(i);
-			var babyArrow:StaticArrow = new StaticArrow(-10, strumLine.y);
-			babyArrow.noteData = i;
-			babyArrow.texture = noteskinTexture;
-
-			if (PlayStateChangeables.Optimize && player == 0)
-				continue;
-			
-			babyArrow.updateHitbox();
-			babyArrow.scrollFactor.set();
-
-			if (tweenShit)
-				babyArrow.alpha = 0;
-			
-			if (!isStoryMode)
-			{
-				babyArrow.y -= 10;
-				// babyArrow.alpha = 0;
-				if (tweenShit)
-					if (!PlayStateChangeables.useMiddlescroll || executeModchart || player == 1)
-						FlxTween.tween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
-			}
-
-			babyArrow.ID = i;
-
-			switch (player)
-			{
-				case 0:
-					babyArrow.x += 20;
-					opponentStrums.add(babyArrow);
-				case 1:
-					playerStrums.add(babyArrow);
-			}
-
-			babyArrow.playAnim('static');
-			babyArrow.x += 110;
-			babyArrow.x += ((FlxG.width / 2) * player);
-
-			if (PlayStateChangeables.Optimize || (PlayStateChangeables.useMiddlescroll && !executeModchart && player == 1))
-				babyArrow.x -= 320;
-			else if (PlayStateChangeables.Optimize || (PlayStateChangeables.useMiddlescroll && !executeModchart && player == 0))
-			{
-				if (index < 2)
-					babyArrow.x -= 75;
-				else
-					babyArrow.x += FlxG.width / 2 + 25;
-
-				index++;
-			}
-
-			opponentStrums.forEach(function(spr:FlxSprite)
-			{
-				spr.centerOffsets(); // CPU arrows start out slightly off-center
-			});
-
-			strumLineNotes.add(babyArrow);
-		}
 	}
 
 	private function appearStaticArrows():Void
@@ -4209,13 +4135,13 @@ class PlayState extends MusicBeatState
 					if (PlayStateChangeables.useDownscroll)
 					{
 						if (daNote.mustPress)
-							daNote.y = (playerStrums.members[Math.floor(Math.abs(daNote.noteData))].y
+							daNote.y = (strumLineNotes.playerStrums.members[Math.floor(Math.abs(daNote.noteData))].y
 								+
 								0.45 * ((Conductor.songPosition - daNote.strumTime) / songMultiplier) * (FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed,
 									2)))
 								- daNote.noteYOff;
 						else
-							daNote.y = (opponentStrums.members[Math.floor(Math.abs(daNote.noteData))].y
+							daNote.y = (strumLineNotes.opponentStrums.members[Math.floor(Math.abs(daNote.noteData))].y
 								+
 								0.45 * ((Conductor.songPosition - daNote.strumTime) / songMultiplier) * (FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed,
 									2)))
@@ -4258,12 +4184,12 @@ class PlayState extends MusicBeatState
 					else
 					{
 						if (daNote.mustPress)
-							daNote.y = (playerStrums.members[Math.floor(Math.abs(daNote.noteData))].y
+							daNote.y = (strumLineNotes.playerStrums.members[Math.floor(Math.abs(daNote.noteData))].y
 								- 0.45 * ((Conductor.songPosition - daNote.strumTime) / songMultiplier) * (FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed,
 									2)))
 								+ daNote.noteYOff;
 						else
-							daNote.y = (opponentStrums.members[Math.floor(Math.abs(daNote.noteData))].y
+							daNote.y = (strumLineNotes.opponentStrums.members[Math.floor(Math.abs(daNote.noteData))].y
 								- 0.45 * ((Conductor.songPosition - daNote.strumTime) / songMultiplier) * (FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed,
 									2)))
 								+ daNote.noteYOff;
@@ -4306,7 +4232,7 @@ class PlayState extends MusicBeatState
 						time += 0.15;
 					}
 
-					opponentStrums.forEach(function(spr:StaticArrow)
+					strumLineNotes.opponentStrums.forEach(function(spr:StaticArrow)
 					{
 						if (daNote.sprTracker == spr)
 							pressArrow(spr, spr.ID, daNote, time);
@@ -4343,16 +4269,16 @@ class PlayState extends MusicBeatState
 
 				if (daNote.mustPress && !daNote.modifiedByLua)
 				{
-					daNote.visible = playerStrums.members[Math.floor(Math.abs(daNote.noteData))].visible;
-					daNote.x = playerStrums.members[Math.floor(Math.abs(daNote.noteData))].x;
+					daNote.visible = strumLineNotes.playerStrums.members[Math.floor(Math.abs(daNote.noteData))].visible;
+					daNote.x = strumLineNotes.playerStrums.members[Math.floor(Math.abs(daNote.noteData))].x;
 					if (!daNote.isSustainNote)
-						daNote.modAngle = playerStrums.members[Math.floor(Math.abs(daNote.noteData))].modAngle;
+						daNote.modAngle = strumLineNotes.playerStrums.members[Math.floor(Math.abs(daNote.noteData))].modAngle;
 					if (daNote.sustainActive)
 					{
 						if (executeModchart)
-							daNote.alpha = playerStrums.members[Math.floor(Math.abs(daNote.noteData))].alpha;
+							daNote.alpha = strumLineNotes.playerStrums.members[Math.floor(Math.abs(daNote.noteData))].alpha;
 					}
-					daNote.modAngle = playerStrums.members[Math.floor(Math.abs(daNote.noteData))].modAngle;
+					daNote.modAngle = strumLineNotes.playerStrums.members[Math.floor(Math.abs(daNote.noteData))].modAngle;
 				}
 				else if (!daNote.wasGoodHit && !daNote.modifiedByLua)
 				{
@@ -4747,8 +4673,7 @@ class PlayState extends MusicBeatState
 					case "Change strum note skin":
 						noteTypeCheck = eventValue;
 						strumLineNotes.clear();
-						generateStaticArrows(0);
-						generateStaticArrows(1);
+						strumLineNotes.generateStrumLineArrows();
 
 					case 'Screen Shake':
 						var valuesArray:Array<String> = [eventValue];
@@ -6172,7 +6097,7 @@ class PlayState extends MusicBeatState
 
 		if (PlayStateChangeables.twoPlayersMode)
 		{
-			opponentStrums.forEach(function(spr:StaticArrow)
+			strumLineNotes.opponentStrums.forEach(function(spr:StaticArrow)
 			{
 				if (keys[spr.ID + 4]
 					&& spr.animation.curAnim.name != 'confirm'
@@ -6183,7 +6108,7 @@ class PlayState extends MusicBeatState
 			});
 		}
 
-		playerStrums.forEach(function(spr:StaticArrow)
+		strumLineNotes.playerStrums.forEach(function(spr:StaticArrow)
 		{
 			if (!PlayStateChangeables.botPlay)
 			{
@@ -6429,7 +6354,7 @@ class PlayState extends MusicBeatState
 
 		if (note.rating == 'sick' && !note.isSustainNote && !PlayStateChangeables.botPlay)
 		{
-			spawnNoteSplashOnNote(note);
+			strumLineNotes.spawnNoteSplashOnNote(note);
 		}
 
 		// add newest note to front of notesHitArray
@@ -6461,12 +6386,12 @@ class PlayState extends MusicBeatState
 			if (!PlayStateChangeables.botPlay)
 			{
 				if (note.hitByP2)
-					opponentStrums.forEach(function(spr:StaticArrow)
+					strumLineNotes.opponentStrums.forEach(function(spr:StaticArrow)
 					{
 						pressArrow(spr, spr.ID, note);
 					});
 				else
-					playerStrums.forEach(function(spr:StaticArrow)
+					strumLineNotes.playerStrums.forEach(function(spr:StaticArrow)
 					{
 						pressArrow(spr, spr.ID, note);
 					});
@@ -6477,7 +6402,7 @@ class PlayState extends MusicBeatState
 				if(note.isSustainNote && !note.animation.curAnim.name.endsWith('end')) {
 					time += 0.15;
 				}
-				playerStrums.forEach(function(spr:StaticArrow)
+				strumLineNotes.playerStrums.forEach(function(spr:StaticArrow)
 				{
 					pressArrow(spr, spr.ID, note, time);
 				});
@@ -6502,34 +6427,6 @@ class PlayState extends MusicBeatState
 			}
 			ScriptHelper.callOnScripts('goodNoteHit', [notes.members.indexOf(note), Math.abs(note.noteData), note.noteType, note.isSustainNote]);
 		}
-	}
-
-	function spawnNoteSplashOnNote(note:Note) {
-		if(FlxG.save.data.notesplashes && note != null) {
-			if (note.hitByP2)
-			{
-				var strum:StaticArrow = opponentStrums.members[note.noteData];
-				if (strum != null)
-				{
-					spawnNoteSplash(strum.x, strum.y, note.noteData, note);
-				}	
-			}
-			else
-			{
-				var strum:StaticArrow = playerStrums.members[note.noteData];
-				if(strum != null) {
-					spawnNoteSplash(strum.x, strum.y, note.noteData, note);
-				}
-			}
-		}
-	}
-
-	public function spawnNoteSplash(x:Float, y:Float, data:Int, ?note:Note = null) {
-		var type:String = note.noteType;
-
-		var splash:NoteSplash = grpNoteSplashes.recycle(NoteSplash);
-		splash.setupNoteSplash(x, y, data, type);
-		grpNoteSplashes.add(splash);
 	}
 
 	function pressArrow(spr:StaticArrow, idCheck:Int, daNote:Note, ?time:Float)

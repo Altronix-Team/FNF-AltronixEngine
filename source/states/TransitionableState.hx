@@ -6,7 +6,7 @@ import flixel.addons.transition.FlxTransitionableState;
 //Well, thats sooo big
 class TransitionableState extends FlxTransitionableState
 {
-    public var nextState:FlxState;
+	public var nextState:FlxState = FlxG.state;
 
     override public function create()
     {

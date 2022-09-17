@@ -113,6 +113,11 @@ class StrumLine extends FlxTypedGroup<StaticArrow>
 				grpNoteSplashes.spawnNoteSplash(note.sprTracker.x, note.sprTracker.y, note.noteData, note);
 			}
 		}
+        else
+        {
+            Debug.logTrace('Trying to spawn note splash, but they`re disabled in engine settings');
+            return;
+        }
 	}
 }
 

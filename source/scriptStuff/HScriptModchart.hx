@@ -74,15 +74,11 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 		scriptHelper.loadScript(path);
 
 		scriptHelper.call('onCreate', []);
-		//if (scriptHelper.get("onCreate") != null)
-			//scriptHelper.get("onCreate")();
 	}
 
 	override public function update(elapsed:Float) {
 		super.update(elapsed);
 		scriptHelper.call('onUpdate', [elapsed]);
-		//if (scriptHelper.get("onUpdate") != null)
-			//scriptHelper.get("onUpdate")(elapsed);
 	}
 
 	public function changeCharacter(tag:String = 'bf', charName:String = 'bf')

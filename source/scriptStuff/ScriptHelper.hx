@@ -38,10 +38,6 @@ class ScriptHelper
 		{
 			var scriptHelper = script.scriptHelper;
 			scriptHelper.call(functionToCall, params);
-			/*if (scriptHelper.get(functionToCall) != null)
-			{
-				scriptHelper.get(functionToCall)(params);
-			}*/
 		}
 	}
 

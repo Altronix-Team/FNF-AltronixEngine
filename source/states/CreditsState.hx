@@ -23,10 +23,10 @@ using StringTools;
 
 typedef Credit = {
 	var nickname:String;
-	var icon:String;
-	var description:String;
-	var url:String;
-	var color:String;
+	var ?icon:String;
+	var ?description:String;
+	var ?url:String;
+	var ?color:String;
 }
 
 typedef CreditsFile = {

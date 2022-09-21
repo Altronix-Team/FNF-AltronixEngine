@@ -73,6 +73,7 @@ typedef SwagSection =
 	var gfSection:Bool;
 }
 
+@:deprecated
 class Section
 {
 	public var startTime:Float = 0;
@@ -93,6 +94,6 @@ class Section
 
 	public function new(lengthInSteps:Int = 16)
 	{
-		this.lengthInSteps = lengthInSteps;
+		//this.lengthInSteps = lengthInSteps;
 	}
 }

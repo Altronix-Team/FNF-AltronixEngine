@@ -103,10 +103,7 @@ class MusicBeatSubstate extends FlxSubState
 			beatHit();
 	}
 
-	public function beatHit():Void
-	{
-		// do literally nothing dumbass
-	}
+	public function beatHit():Void{}
 
 	function onWindowFocusOut():Void
 	{

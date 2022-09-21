@@ -173,7 +173,6 @@ class MusicBeatState extends FlxUIState
 		super.update(elapsed);
 	}
 
-
 	private function updateSection():Void
 	{
 		curSection = TimingStruct.getSectionByTime(Conductor.songPosition);
@@ -227,16 +226,22 @@ class MusicBeatState extends FlxUIState
 	{
 		if (curStep % 4 == 0)
 			beatHit();
+		/*try{Reflect.callMethod(IMusicBeat, Reflect.field(IMusicBeat, 'stepHit'), []);}
+		catch (e) Debug.logError('error with IMusicBeat stepHit ' + e.details());*/
 	}
 
 	public function beatHit():Void
 	{
 		//beatHit
+		/*try{Reflect.callMethod(IMusicBeat, Reflect.field(IMusicBeat, 'beatHit'), []);}
+		catch (e) Debug.logError('error with IMusicBeat beatHit ' + e.details());*/
 	}
 
 	public function sectionHit():Void
 	{
 		//Section Hit
+		/*try{Reflect.callMethod(IMusicBeat, Reflect.field(IMusicBeat, 'sectionHit'), []);}
+		catch (e) Debug.logError('error with IMusicBeat sectionHit ' + e.details());*/
 	}
 
 	public function fancyOpenURL(schmancy:String)
@@ -264,4 +269,13 @@ class MusicBeatState extends FlxUIState
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
 		FlxG.sound.music.resume();
 	}
+}
+
+interface IMusicBeat
+{
+	public function stepHit():Void;
+
+	public function beatHit():Void;
+
+	public function sectionHit():Void;
 }

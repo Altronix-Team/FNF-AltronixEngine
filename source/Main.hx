@@ -15,7 +15,7 @@ import openfl.events.UncaughtErrorEvent;
 import Debug;
 import openfl.system.Capabilities;
 import haxe.CallStack;
-//import scriptStuff.ScriptedTittleState;
+import utils.EngineSave;
 
 #if FEATURE_MODCORE
 import ModCore;
@@ -38,11 +38,17 @@ class Main extends Sprite
 
 	public static var instance:Main;
 
+	/**
+	 * Custom FlxSave code to work without init of FlxG
+	 */
+	public static var save(default, null):EngineSave = new EngineSave();
+
 	public static var watermarks = true; // Whether to put Altronix Engine literally anywhere
 
 	public static var memoryCount = true;
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
+	// Ho-ho-ho, no
 
 	public static function main():Void
 	{
@@ -97,6 +103,12 @@ class Main extends Sprite
 		framerate = 60;
 		#end
 
+		save.bind('funkin', 'ninjamuffin99');
+
+		EngineData.initSave();
+
+		KeyBinds.keyCheck();
+
 		// Run this first so we can see logs.
 		Debug.onInitProgram();
 
@@ -104,17 +116,13 @@ class Main extends Sprite
 		fpsCounter = new EngineFPS(10, 3, 0xFFFFFF);
 		bitmapFPS = ImageOutline.renderImage(fpsCounter, 1, 0x000000, true);
 		bitmapFPS.smoothing = true;
-		#end	
-		
-		/*if (Assets.exists('assets/scripts/ScriptedTittleState.hscript'))
-		{
-			initialState = ScriptedTittleState.init('ScriptedTittleState');
-		}*/
+		#end		
 
-		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
+		if (save.data.fullscreenOnStart == null)
+			save.data.fullscreenOnStart = false;
+
+		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, save.data.fullscreenOnStart);
 		addChild(game);
-
-		GestureUtil.initMouseControls();
 
 		#if !mobile
 		addChild(fpsCounter);

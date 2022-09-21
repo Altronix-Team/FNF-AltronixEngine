@@ -86,13 +86,9 @@ class TitleState extends MusicBeatState
 		{
 			FlxG.autoPause = false;
 
-			FlxG.save.bind('funkin', 'ninjamuffin99');
+			PlayerSettings.init();	
 
-			PlayerSettings.init();
-
-			EngineData.initSave();
-
-			KeyBinds.keyCheck();	
+			EngineData.initAfterGame();
 
 			if (FlxG.save.data.volDownBind == null)
 				FlxG.save.data.volDownBind = "MINUS";
@@ -146,10 +142,10 @@ class TitleState extends MusicBeatState
 			if (FlxG.save.data.volume != null)
 				FlxG.sound.volume = FlxG.save.data.volume;
 
-			if (FlxG.save.data.fullscreenOnStart)
+			/*if (FlxG.save.data.fullscreenOnStart)
 			{
 				FlxG.fullscreen = FlxG.save.data.fullscreenOnStart;
-			}
+			}*/
 
 			if (FlxG.save.data.weekCompleted != null)
 			{

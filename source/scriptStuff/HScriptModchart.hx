@@ -61,8 +61,6 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 
 		scriptHelper.expose.set("camGame", playState.camGame);
 		scriptHelper.expose.set("camHUD", playState.camHUD);
-		scriptHelper.expose.set("enemyStrumLine", playState.strumLineNotes.opponentStrums);
-		scriptHelper.expose.set("playerStrumLine", playState.strumLineNotes.playerStrums);
 		scriptHelper.expose.set("cacheCharacter", cacheCharacter);
 		scriptHelper.expose.set("changeCharacter", changeCharacter);
 		scriptHelper.expose.set("PlayStateChangeables", PlayStateChangeables);

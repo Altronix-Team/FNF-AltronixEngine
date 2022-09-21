@@ -258,6 +258,7 @@ class PauseSubState extends MusicBeatSubstate
 				case "Restart Song":
 					restartSong();
 					PlayState.stageTesting = false;
+					ScriptHelper.clearAllScripts();
 
 				case 'Change Difficulty':
 					menuItems = difficultyChoices;

@@ -1197,6 +1197,9 @@ class PlayState extends MusicBeatState
 			ScriptHelper.setOnScripts('defaultOpponentStrumY' + i, strumLineNotes.opponentStrums.members[i].y);
 		}
 
+		ScriptHelper.setOnHscript("enemyStrumLine", strumLineNotes.opponentStrums);
+		ScriptHelper.setOnHscript("playerStrumLine", strumLineNotes.playerStrums);
+
 		// Update lane underlay positions AFTER static arrows :)
 
 		laneunderlay.x = strumLineNotes.playerStrums.members[0].x - 25;
@@ -1702,9 +1705,7 @@ class PlayState extends MusicBeatState
 					startCountdown();
 			}
 		}
-		if (OpenFlAssets.getPath(Paths.video(name)) != null)
-			video.playVideo(OpenFlAssets.getPath(Paths.video(name)));
-		else if (OpenFlAssets.exists(Paths.video(name)))
+		if (OpenFlAssets.exists(Paths.video(name)))
 			video.playVideo(Paths.video(name));
 		else
 		{
@@ -6453,7 +6454,6 @@ class PlayState extends MusicBeatState
 		}
 
 		ScriptHelper.setOnScripts('curStep', curStep);
-		ScriptHelper.callOnScripts('onStepHit', []);
 	}
 
 	override function sectionHit()
@@ -6637,7 +6637,6 @@ class PlayState extends MusicBeatState
 
 		ScriptHelper.setOnScripts('curBeat', curBeat);
 
-		ScriptHelper.callOnScripts('onBeatHit', []);
 		ScriptHelper.callOnScripts('onBeat', [curBeat]);
 	}
 

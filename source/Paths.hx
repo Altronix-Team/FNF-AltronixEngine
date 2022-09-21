@@ -32,7 +32,7 @@ class Paths
 		currentLevel = name.toLowerCase();
 	}
 
-	public static function getPath(file:String, type:AssetType, ?library:Null<String>)
+	public static function getPath(file:String, type:AssetType = null, ?library:Null<String>)
 	{
 		if (library != null)
 			return getLibraryPath(file, library);

@@ -5,7 +5,7 @@ import flixel.addons.ui.FlxUIList;
 import flixel.math.FlxPoint;
 import GestureUtil.SwipeDirection;
 
-class InteractableUIList extends FlxUIList implements IInteractable implements IRelative
+class InteractableUIList extends FlxUIList implements utils.IInteractable implements IRelative
 {
 	public function onJustPressed(pos:FlxPoint)
 	{

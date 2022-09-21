@@ -3491,10 +3491,7 @@ class ChartingState extends MusicBeatState
 				}
 			}
 		}
-		catch (e)
-		{
-			Debug.logError("Error on this shit???\n" + e + e.stack);
-		}
+		catch (e){Debug.logError('Error on update ' + e.details());}
 		super.update(elapsed);
 	}
 

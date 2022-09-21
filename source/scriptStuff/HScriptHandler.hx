@@ -224,7 +224,8 @@ class HScriptHandler
                     throw new ScriptException("Script parse error:\n" + e);
                 }
             }
-			else if (OpenFlAssets.exists(OpenFlAssets.getPath(path)))
+			#if FEATURE_MODCORE 
+			else if (OpenFlAssets.exists(OpenFlAssets.getPath(path)) && ModCore.loadedModsLength != 0)
 			{
 				Debug.logTrace('Found hscript');
 				Debug.logTrace('At path: ' + OpenFlAssets.getPath(path));
@@ -245,6 +246,7 @@ class HScriptHandler
 					throw new ScriptException("Script parse error:\n" + e);
 				}
 			}
+			#end
 			#if FEATURE_FILESYSTEM
 			else if (FileSystem.exists(path))
 			{
@@ -314,7 +316,8 @@ class HScriptHandler
 					throw new ScriptException("Module parse error:\n" + e);
 				}
 			}
-			else if (OpenFlAssets.exists(OpenFlAssets.getPath(path)))
+			#if FEATURE_MODCORE 
+			else if (OpenFlAssets.exists(OpenFlAssets.getPath(path)) && ModCore.loadedModsLength != 0)
 			{
 				try
 				{
@@ -346,6 +349,7 @@ class HScriptHandler
 					throw new ScriptException("Module parse error:\n" + e);
 				}
 			}
+			#end
 			#if FEATURE_FILESYSTEM
 			else if (FileSystem.exists(path))
 			{

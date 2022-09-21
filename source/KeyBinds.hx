@@ -15,26 +15,26 @@ class KeyBinds
 
 	public static function resetBinds():Void
 	{
-		FlxG.save.data.upBindP2 = "W";
-		FlxG.save.data.downBindP2 = "S";
-		FlxG.save.data.leftBindP2 = "A";
-		FlxG.save.data.rightBindP2 = "D";
-		FlxG.save.data.upBind = "UP";
-		FlxG.save.data.downBind = "DOWN";
-		FlxG.save.data.leftBind = "LEFT";
-		FlxG.save.data.rightBind = "RIGHT";
-		FlxG.save.data.muteBind = "ZERO";
-		FlxG.save.data.volUpBind = "PLUS";
-		FlxG.save.data.volDownBind = "MINUS";
-		FlxG.save.data.fullscreenBind = "F";
-		FlxG.save.data.gpupBind = "DPAD_UP";
-		FlxG.save.data.gpdownBind = "DPAD_DOWN";
-		FlxG.save.data.gpleftBind = "DPAD_LEFT";
-		FlxG.save.data.gprightBind = "DPAD_RIGHT";
-		FlxG.save.data.pauseBind = "ENTER";
-		FlxG.save.data.gppauseBind = "START";
-		FlxG.save.data.resetBind = "R";
-		FlxG.save.data.gpresetBind = "SELECT";
+		Main.save.data.upBindP2 = "W";
+		Main.save.data.downBindP2 = "S";
+		Main.save.data.leftBindP2 = "A";
+		Main.save.data.rightBindP2 = "D";
+		Main.save.data.upBind = "UP";
+		Main.save.data.downBind = "DOWN";
+		Main.save.data.leftBind = "LEFT";
+		Main.save.data.rightBind = "RIGHT";
+		Main.save.data.muteBind = "ZERO";
+		Main.save.data.volUpBind = "PLUS";
+		Main.save.data.volDownBind = "MINUS";
+		Main.save.data.fullscreenBind = "F";
+		Main.save.data.gpupBind = "DPAD_UP";
+		Main.save.data.gpdownBind = "DPAD_DOWN";
+		Main.save.data.gpleftBind = "DPAD_LEFT";
+		Main.save.data.gprightBind = "DPAD_RIGHT";
+		Main.save.data.pauseBind = "ENTER";
+		Main.save.data.gppauseBind = "START";
+		Main.save.data.resetBind = "R";
+		Main.save.data.gpresetBind = "SELECT";
 
 		FlxG.sound.muteKeys = ["ZERO", "NUMPADZERO"];
 		FlxG.sound.volumeDownKeys = ["MINUS", "NUMPADMINUS"];
@@ -44,110 +44,110 @@ class KeyBinds
 
 	public static function keyCheck():Void
 	{
-		if (FlxG.save.data.upBindP2 == null)
+		if (Main.save.data.upBindP2 == null)
 		{
-			FlxG.save.data.upBindP2 = "W";
+			Main.save.data.upBindP2 = "W";
 			trace("No UP");
 		}
-		if (FlxG.save.data.downBindP2 == null)
+		if (Main.save.data.downBindP2 == null)
 		{
-			FlxG.save.data.downBindP2 = "S";
+			Main.save.data.downBindP2 = "S";
 			trace("No DOWN");
 		}
-		if (FlxG.save.data.leftBindP2 == null)
+		if (Main.save.data.leftBindP2 == null)
 		{
-			FlxG.save.data.leftBindP2 = "A";
+			Main.save.data.leftBindP2 = "A";
 			trace("No LEFT");
 		}
-		if (FlxG.save.data.rightBindP2 == null)
+		if (Main.save.data.rightBindP2 == null)
 		{
-			FlxG.save.data.rightBindP2 = "D";
+			Main.save.data.rightBindP2 = "D";
 			trace("No RIGHT");
 		}
 
-		if (FlxG.save.data.upBind == null)
+		if (Main.save.data.upBind == null)
 		{
-			FlxG.save.data.upBind = "UP";
+			Main.save.data.upBind = "UP";
 			trace("No UP");
 		}
-		if (FlxG.save.data.downBind == null)
+		if (Main.save.data.downBind == null)
 		{
-			FlxG.save.data.downBind = "DOWN";
+			Main.save.data.downBind = "DOWN";
 			trace("No DOWN");
 		}
-		if (FlxG.save.data.leftBind == null)
+		if (Main.save.data.leftBind == null)
 		{
-			FlxG.save.data.leftBind = "LEFT";
+			Main.save.data.leftBind = "LEFT";
 			trace("No LEFT");
 		}
-		if (FlxG.save.data.rightBind == null)
+		if (Main.save.data.rightBind == null)
 		{
-			FlxG.save.data.rightBind = "RIGHT";
+			Main.save.data.rightBind = "RIGHT";
 			trace("No RIGHT");
 		}
 
-		if (FlxG.save.data.gpupBind == null)
+		if (Main.save.data.gpupBind == null)
 		{
-			FlxG.save.data.gpupBind = "DPAD_UP";
+			Main.save.data.gpupBind = "DPAD_UP";
 			trace("No GUP");
 		}
-		if (FlxG.save.data.gpdownBind == null)
+		if (Main.save.data.gpdownBind == null)
 		{
-			FlxG.save.data.gpdownBind = "DPAD_DOWN";
+			Main.save.data.gpdownBind = "DPAD_DOWN";
 			trace("No GDOWN");
 		}
-		if (FlxG.save.data.gpleftBind == null)
+		if (Main.save.data.gpleftBind == null)
 		{
-			FlxG.save.data.gpleftBind = "DPAD_LEFT";
+			Main.save.data.gpleftBind = "DPAD_LEFT";
 			trace("No GLEFT");
 		}
-		if (FlxG.save.data.gprightBind == null)
+		if (Main.save.data.gprightBind == null)
 		{
-			FlxG.save.data.gprightBind = "DPAD_RIGHT";
+			Main.save.data.gprightBind = "DPAD_RIGHT";
 			trace("No GRIGHT");
 		}
-		if (FlxG.save.data.pauseBind == null)
+		if (Main.save.data.pauseBind == null)
 		{
-			FlxG.save.data.pauseBind = "ENTER";
+			Main.save.data.pauseBind = "ENTER";
 			trace("No ENTER");
 		}
-		if (FlxG.save.data.gppauseBind == null)
+		if (Main.save.data.gppauseBind == null)
 		{
-			FlxG.save.data.gppauseBind = "START";
+			Main.save.data.gppauseBind = "START";
 			trace("No ENTER");
 		}
-		if (FlxG.save.data.resetBind == null)
+		if (Main.save.data.resetBind == null)
 		{
-			FlxG.save.data.resetBind = "R";
+			Main.save.data.resetBind = "R";
 			trace("No RESET");
 		}
-		if (FlxG.save.data.gpresetBind == null)
+		if (Main.save.data.gpresetBind == null)
 		{
-			FlxG.save.data.gpresetBind = "SELECT";
+			Main.save.data.gpresetBind = "SELECT";
 			trace("No RESET");
 		}
 		// VOLUME CONTROLS !!!!
-		if (FlxG.save.data.muteBind == null)
+		if (Main.save.data.muteBind == null)
 		{
-			FlxG.save.data.muteBind = "ZERO";
+			Main.save.data.muteBind = "ZERO";
 			trace("No MUTE");
 		}
-		if (FlxG.save.data.volumeUpKeys == null)
+		if (Main.save.data.volumeUpKeys == null)
 		{
-			FlxG.save.data.volumeUpKeys = ["PLUS"];
+			Main.save.data.volumeUpKeys = ["PLUS"];
 			trace("No VOLUP");
 		}
-		if (FlxG.save.data.volumeDownKeys == null)
+		if (Main.save.data.volumeDownKeys == null)
 		{
-			FlxG.save.data.volumeDownKeys = ["MINUS"];
+			Main.save.data.volumeDownKeys = ["MINUS"];
 			trace("No VOLDOWN");
 		}
-		if (FlxG.save.data.fullscreenBind == null)
+		if (Main.save.data.fullscreenBind == null)
 		{
-			FlxG.save.data.fullscreenBind = "F";
+			Main.save.data.fullscreenBind = "F";
 			trace("No FULLSCREEN");
 		}
 
-		trace('${FlxG.save.data.leftBind}-${FlxG.save.data.downBind}-${FlxG.save.data.upBind}-${FlxG.save.data.rightBind}');
+		trace('${Main.save.data.leftBind}-${Main.save.data.downBind}-${Main.save.data.upBind}-${Main.save.data.rightBind}');
 	}
 }

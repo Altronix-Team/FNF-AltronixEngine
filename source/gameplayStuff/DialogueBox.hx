@@ -153,17 +153,8 @@ class DialogueBox extends FlxSpriteGroup
 			return;
 		
 		skipText = new FlxText(10, 10, Std.int(FlxG.width * 0.6), "", 16);
-		if (!FlxG.save.data.language)
-		{
-			skipText.font = 'Pixel Arial 11 Bold';
-			skipText.text = 'press back to skip';
-		}
-		else
-		{
-			skipText.font = Paths.font("UbuntuBold.ttf");
-			skipText.size = 24;
-			skipText.text = 'нажми ESC или BACKSPACE для пропуска';
-		}
+		skipText.font = Paths.font(LanguageStuff.fontName);
+		skipText.text = 'press back to skip';
 
 		skipText.color = 0x000000;
 		skipText.scrollFactor.set();
@@ -178,25 +169,13 @@ class DialogueBox extends FlxSpriteGroup
 		}
 
 		dropText = new FlxText(242, 482, Std.int(FlxG.width * 0.6), "", 32);
-		if (!FlxG.save.data.language)
-			dropText.font = 'Pixel Arial 11 Bold';
-		else
-		{
-			dropText.font = Paths.font("UbuntuBold.ttf");
-			dropText.size = 48;
-		}
+		dropText.font = Paths.font(LanguageStuff.fontName);
 		dropText.color = 0xFFD89494;
 		dropText.scrollFactor.set();
 		add(dropText);
 
 		swagDialogue = new FlxTypeText(240, 480, Std.int(FlxG.width * 0.6), "", 32);
-		if (!FlxG.save.data.language)
-			swagDialogue.font = 'Pixel Arial 11 Bold';
-		else
-		{
-			swagDialogue.font = Paths.font("UbuntuBold.ttf");
-			swagDialogue.size = 48;
-		}
+		swagDialogue.font = Paths.font(LanguageStuff.fontName);
 		swagDialogue.color = 0xFF3F2021;
 		swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
 		swagDialogue.scrollFactor.set();

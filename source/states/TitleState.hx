@@ -36,6 +36,7 @@ import flixel.math.FlxMath;
 import gameplayStuff.Character;
 import gameplayStuff.Conductor;
 import gameplayStuff.Highscore;
+import gameplayStuff.Song;
 
 #if FEATURE_MODCORE
 import ModCore;
@@ -137,7 +138,7 @@ class TitleState extends MusicBeatState
 			GameJoltAPI.authDaUser(FlxG.save.data.gjUser, FlxG.save.data.gjToken);
 			#end
 
-			// cacheSongs();
+			//cacheSongs();
 
 			if (FlxG.save.data.volume != null)
 				FlxG.sound.volume = FlxG.save.data.volume;
@@ -547,11 +548,13 @@ class TitleState extends MusicBeatState
 
 	function cacheSongs()
 	{
+		Debug.logInfo('Starting to cache songs');
+
 		var songList:Array<String> = Paths.listSongsToCache();
 		
 		for (i in songList)
 		{
-			var diffs:Array<String> = [];
+			var songJsons:Array<SongData> = [];
 			var list = Paths.listJsonInPath('assets/data/songs/' + i + '/');
 			for (j in list)
 			{
@@ -560,24 +563,22 @@ class TitleState extends MusicBeatState
 				if (j == 'events')
 					continue;
 
-				if (j == i)
+				var diffName = '';
+
+				if (j != i)
 				{
-					diffs.push('normal');
+					diffName = j.replaceAll(i + '-', '');
 				}
-				else
+
+				if (Song.loadFromJson(i, diffName) != null)
 				{
-					diffs.push(j.replaceAll(i+'-', ''));
-					if (!CoolUtil.difficultyPrefixes.contains(j.replaceAll(i+'-', '')))
-						CoolUtil.difficultyPrefixes.push(j.replaceAll(i+'-', ''));
+					songJsons.push(Song.conversionChecks(Song.loadFromJson(i, diffName)));
 				}
 			}
-			if (diffs.length > 0)
+			if (songJsons.length > 0)
 			{
-				if (CoolUtil.songDiffsPrefix.get(i) == null)
-					CoolUtil.songDiffsPrefix.set(i, diffs);
+				Caching.songJsons.set(i, songJsons);
 			}
-			else
-				continue;
 		}
 	}
 }

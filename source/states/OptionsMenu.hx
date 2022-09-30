@@ -162,7 +162,8 @@ class OptionsMenu extends FlxSubState
 				new ShowInput(LanguageStuff.getOptionDesc("$SHOWINPUT_OPTION")),
 				new LanguageOption(LanguageStuff.getOptionDesc("$LANGUAGE_OPTION")),
 				new MemoryCountOption(LanguageStuff.getOptionDesc("$MEMORYCOUNT_OPTION")),
-				new FullscreenOnStartOption(LanguageStuff.getOptionDesc("$FULLSCREENONSTART_OPTION"))
+				new FullscreenOnStartOption(LanguageStuff.getOptionDesc("$FULLSCREENONSTART_OPTION")),
+				//new ScreenResolutionOption("Fullscreen test")
 			]),
 			new OptionCata(935, 40, LanguageStuff.getOptionDesc("$SAVES_CATA"), [
 				new ResetScoreOption(LanguageStuff.getOptionDesc("$RESETSCORE_OPTION")),

@@ -1,5 +1,6 @@
 package states;
 
+import scriptStuff.ScriptHelper;
 import flixel.FlxCamera;
 import lime.app.Application;
 import flixel.FlxBasic;
@@ -7,12 +8,11 @@ import flixel.FlxState;
 import flixel.addons.transition.FlxTransitionableState;
 import openfl.Lib;
 import flixel.FlxG;
-import flixel.addons.ui.FlxUIState;
 import gameplayStuff.Section;
 import gameplayStuff.Conductor;
 import gameplayStuff.TimingStruct;
 
-class MusicBeatState extends FlxUIState
+class MusicBeatState extends BaseState
 {
 	private var lastBeat:Float = 0;
 	private var lastStep:Float = 0;
@@ -167,7 +167,6 @@ class MusicBeatState extends FlxUIState
 			}
 		}
 
-
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
 
 		super.update(elapsed);
@@ -226,22 +225,19 @@ class MusicBeatState extends FlxUIState
 	{
 		if (curStep % 4 == 0)
 			beatHit();
-		/*try{Reflect.callMethod(IMusicBeat, Reflect.field(IMusicBeat, 'stepHit'), []);}
-		catch (e) Debug.logError('error with IMusicBeat stepHit ' + e.details());*/
+		ScriptHelper.stepHit();
 	}
 
 	public function beatHit():Void
 	{
 		//beatHit
-		/*try{Reflect.callMethod(IMusicBeat, Reflect.field(IMusicBeat, 'beatHit'), []);}
-		catch (e) Debug.logError('error with IMusicBeat beatHit ' + e.details());*/
+		ScriptHelper.beatHit();
 	}
 
 	public function sectionHit():Void
 	{
 		//Section Hit
-		/*try{Reflect.callMethod(IMusicBeat, Reflect.field(IMusicBeat, 'sectionHit'), []);}
-		catch (e) Debug.logError('error with IMusicBeat sectionHit ' + e.details());*/
+		ScriptHelper.sectionHit();
 	}
 
 	public function fancyOpenURL(schmancy:String)

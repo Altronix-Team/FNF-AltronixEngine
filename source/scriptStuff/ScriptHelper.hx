@@ -2,7 +2,7 @@ package scriptStuff;
 
 import scriptStuff.FunkinLua;
 @:allow(states.PlayState)
-class ScriptHelper implements IMusicBeat
+class ScriptHelper
 {
 	public static var hscriptFiles:Array<HScriptModchart> = [];
 	public static var luaArray:Array<FunkinLua> = [];
@@ -100,21 +100,18 @@ class ScriptHelper implements IMusicBeat
 		#end
 	}
 
-	public function stepHit()
+	public static function stepHit()
 	{
 		callOnScripts('onStepHit', []);
-		Debug.logInfo('Scripts stepHit');
 	}
 
-	public function beatHit()
+	public static function beatHit()
 	{
 		callOnScripts('onBeatHit', []);
-		Debug.logInfo('Scripts bitHit');
 	}
 
-	public function sectionHit()
+	public static function sectionHit()
 	{
 		callOnScripts('onSectionHit', []);
-		Debug.logInfo('Scripts sectionHit');
 	}
 }

@@ -1,5 +1,6 @@
 package states;
 
+import gameplayStuff.Song;
 #if FEATURE_FILESYSTEM
 
 import lime.app.Application;
@@ -44,8 +45,9 @@ class Caching extends MusicBeatState
 	var gameLogo:FlxSprite;
 	var bar:FlxBar;
 
-	public static var bitmapData:Map<String, FlxGraphic>;
+	public static var bitmapData:Map<String, FlxGraphic> = new Map<String, FlxGraphic>();
 	static var flxImageCache:Map<String, FlxGraphic> = new Map<String, FlxGraphic>();
+	public static var songJsons:Map<String, Array<SongData>> = new Map<String, Array<SongData>>();
 
 	var images = [];
 	var music = [];
@@ -155,21 +157,21 @@ class Caching extends MusicBeatState
 	}
 
 	function listImageFilesToCache(prefixes:Array<String>)
+	{
+		// We need to query OpenFlAssets, not the file system, because of Polymod.
+		var graphicsAssets = OpenFlAssets.list(IMAGE);
+	
+		var graphicsNames = [];
+	
+		for (graphic in graphicsAssets)
 		{
-			// We need to query OpenFlAssets, not the file system, because of Polymod.
-			var graphicsAssets = OpenFlAssets.list(IMAGE);
-	
-			var graphicsNames = [];
-	
-			for (graphic in graphicsAssets)
-			{
-				// Parse end-to-beginning to support mods.
-				var path = graphic.split('/');
-				path.reverse();
-			}
-	
-			return graphicsNames;
+			// Parse end-to-beginning to support mods.
+			var path = graphic.split('/');
+			path.reverse();
 		}
+	
+		return graphicsNames;
+	}
 
 	function cache()
 	{
@@ -229,22 +231,22 @@ class Caching extends MusicBeatState
 	}
 
 	public static function cacheImage(key:String, graphic:FlxGraphic)
-		{
-			graphic.persist = true;
-			graphic.destroyOnNoUse = false;
+	{
+		graphic.persist = true;
+		graphic.destroyOnNoUse = false;
 	
-			flxImageCache.set(key, graphic);
-		}
+		flxImageCache.set(key, graphic);
+	}
 
 	public static function doInBackground(cb:Void->Void)
+	{
+		#if FEATURE_MULTITHREADING
+		sys.thread.Thread.create(() ->
 		{
-			#if FEATURE_MULTITHREADING
-			sys.thread.Thread.create(() ->
-			{
-				// Run in the background.
-				cb();
-			});
-			#end
-		}
+			// Run in the background.
+			cb();
+		});
+		#end
+	}
 }
 #end

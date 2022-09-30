@@ -1626,6 +1626,64 @@ class RainbowFPSOption extends Option
 	}
 }
 
+class ScreenResolutionOption extends Option
+{
+	var curSelected:Int = 0;
+
+	var curRes:Array<Int> = [1280, 720];
+
+	public function new(desc:String)
+	{
+		super();
+
+		for (res in EngineConstants.screenResolution169)
+		{
+			if (Main.save.data.gameWidth != null && Main.save.data.gameHeight != null)
+			{
+				if (res[0] == Main.save.data.gameWidth && res[1] == Main.save.data.gameHeight)
+					curRes = res;
+			}
+		}
+		description = desc;
+	}
+
+	public override function left():Bool
+	{
+		curSelected -= 1;
+
+		if (curSelected < 0)
+			curSelected = EngineConstants.screenResolution169.length - 1;
+		if (curSelected > EngineConstants.screenResolution169.length - 1)
+			curSelected = 0;
+		curRes = EngineConstants.screenResolution169[curSelected];
+		Main.save.data.gameWidth = curRes[0];
+		Main.save.data.gameHeight = curRes[1];
+		display = updateDisplay();
+		return true;
+	}
+
+	public override function right():Bool
+	{
+		curSelected += 1;
+
+		if (curSelected < 0)
+			curSelected = EngineConstants.screenResolution169.length - 1;
+		if (curSelected > EngineConstants.screenResolution169.length - 1)
+			curSelected = 0;
+		curRes = EngineConstants.screenResolution169[curSelected];
+		Main.save.data.gameWidth = curRes[0];
+		Main.save.data.gameHeight = curRes[1];
+		display = updateDisplay();
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		WindowUtil.resizeWindow(curRes[0], curRes[1]);
+		return 'Placeholder: < ${curRes[0]}x${curRes[1]} >';
+	}
+}
+
 class NPSDisplayOption extends Option
 {
 	public function new(desc:String)

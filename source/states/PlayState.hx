@@ -1,5 +1,6 @@
 package states;
 
+import flixel.system.scaleModes.StageSizeScaleMode;
 import gameplayStuff.StrumLine;
 import animateatlas.AtlasFrameMaker;
 import flixel.util.FlxSpriteUtil;
@@ -96,6 +97,8 @@ import scriptStuff.HScriptModchart as ModchartHelper;
 import scriptStuff.HscriptStage;
 import scriptStuff.HScriptHandler.ScriptException;
 import scriptStuff.ScriptHelper;
+import openfl.filters.ShaderFilter;
+import Shaders;
 #if desktop
 import DiscordClient;
 #end
@@ -401,6 +404,12 @@ class PlayState extends MusicBeatState
 	public var noteTypeCheck:String = 'normal';
 
 	var funnyStartObjects:Array<FlxBasic> = [];
+
+	//week 6
+	//Stolen from Andromeda
+	//Nice fits with thorns shit :)
+	var vcrDistortionHUD:VCRDistortionEffect;
+	var vcrDistortionGame:VCRDistortionEffect;
 
 	//Thorns shit
 	public static var fullscree = false;
@@ -760,11 +769,7 @@ class PlayState extends MusicBeatState
 
 		chars = [boyfriend, gf, dad];
 
-		if (!stageTesting 
-			#if LUA_ALLOWED
-			&& !OpenFlAssets.exists('assets/stages/' + SONG.stage + '.lua')
-			&& (!OpenFlAssets.exists(Paths.getHscriptPath(SONG.stage, 'stages')))	
-			#end)
+		if (!stageTesting)
 		{
 			#if FEATURE_FILESYSTEM
 			if (FileSystem.exists(Paths.getHscriptPath(SONG.stage, 'stages')) && Paths.getHscriptPath(SONG.stage, 'stages') != null) //Try to find hscript stage in default directory
@@ -774,17 +779,11 @@ class PlayState extends MusicBeatState
 				ScriptHelper.hscriptFiles.push(hscriptStage);
 				hscriptStageCheck = true;
 			}
-			else
+			else if (FileSystem.exists('assets/stages/' + SONG.stage + '.lua'))
 			{
-				Stage = new Stage(SONG.stage);
+				ScriptHelper.luaArray.push(new FunkinLua('assets/stages/' + SONG.stage + '.lua'));
 			}
-			#else
-				Stage = new Stage(SONG.stage);
-			#end
-		}
-		else
-		{
-			if (OpenFlAssets.exists(Paths.getHscriptPath(SONG.stage, 'stages')) && Paths.getHscriptPath(SONG.stage, 'stages') != null)
+			#if FEATURE_FILESYSTEM else #end if (Paths.getHscriptPath(SONG.stage, 'stages') != null)
 			{
 				try
 				{
@@ -809,18 +808,15 @@ class PlayState extends MusicBeatState
 			{
 				ScriptHelper.luaArray.push(new FunkinLua(OpenFlAssets.getPath('assets/stages/' + SONG.stage + '.lua')));
 			}
-			#if FEATURE_FILESYSTEM
-			else if (FileSystem.exists('assets/stages/' + SONG.stage + '.lua'))
-			{
-				ScriptHelper.luaArray.push(new FunkinLua('assets/stages/' + SONG.stage + '.lua'));
-			}
 			#end
 			else
-			#end
 			{
 				Stage = new Stage(SONG.stage);
 			}
-		}	
+			#else
+				Stage = new Stage(SONG.stage);
+			#end
+		}
 
 		stageGroup = new FlxTypedGroup<FlxSprite>();
 			
@@ -965,7 +961,7 @@ class PlayState extends MusicBeatState
 		#end
 
 		#if desktop
-		if (OpenFlAssets.exists(Paths.getHscriptPath(SONG.songId, 'songs')) && Paths.getHscriptPath(SONG.songId, 'songs') != null)
+		if (Paths.getHscriptPath(SONG.songId, 'songs') != null)
 		{
 			try
 			{
@@ -1569,15 +1565,45 @@ class PlayState extends MusicBeatState
 		boyfriend.dance();
 		gf.dance();
 
+		if ((SONG.stage == 'school' || SONG.stage == 'schoolEvil') && storyWeek == 6)
+		{
+			vcrDistortionHUD = new VCRDistortionEffect();
+			vcrDistortionGame = new VCRDistortionEffect();
+
+			if (Main.save.data.distractions)
+			{
+				switch (SONG.songId)
+				{
+					case 'roses':
+						vcrDistortionHUD.setVignetteMoving(false);
+						vcrDistortionGame.setVignette(false);
+						vcrDistortionGame.setGlitchModifier(.025);
+						vcrDistortionHUD.setGlitchModifier(.025);
+					case 'thorns':
+						vcrDistortionGame.setGlitchModifier(.2);
+						vcrDistortionHUD.setGlitchModifier(.2);
+					default:
+						vcrDistortionHUD.setVignetteMoving(false);
+						vcrDistortionGame.setVignette(false);
+						vcrDistortionHUD.setDistortion(false);
+						vcrDistortionGame.setDistortion(false);
+				}
+
+				vcrDistortionGame.setNoise(false);
+				vcrDistortionHUD.setNoise(true);
+
+				camGame.setFilters([new ShaderFilter(vcrDistortionGame.shader)]);
+				camHUD.setFilters([new ShaderFilter(vcrDistortionHUD.shader)]);
+			}
+		}
+
 		if (SONG.songId == 'thorns') //Cool shit
 		{
 			fullscree = WindowUtil.getFullscreen();
-			windowWidth = WindowUtil.getWindowSize('width');
-			windowHeight = WindowUtil.getWindowSize('height');
 			WindowUtil.setFullscreen(false);
-			WindowUtil.resizeWindow(800, 600);
-			windowX = Std.int(flash.system.Capabilities.screenResolutionX / 2 - 400);
-			windowY = Std.int(flash.system.Capabilities.screenResolutionY / 2 - 300);
+			WindowUtil.resizeWindow(960, 720);
+			windowX = Std.int(flash.system.Capabilities.screenResolutionX / 2 - 430);
+			windowY = Std.int(flash.system.Capabilities.screenResolutionY / 2 - 360);
 			WindowUtil.repositionWindow(windowX,windowY);			
 		}
 
@@ -3402,6 +3428,16 @@ class PlayState extends MusicBeatState
 
 	override public function update(elapsed:Float)
 	{
+		if ((SONG.stage == 'school' || SONG.stage == 'schoolEvil') && storyWeek == 6)
+		{
+			if (Main.save.data.distractions)
+			{
+				vcrDistortionHUD.update(elapsed);
+				vcrDistortionGame.update(elapsed);
+			}
+		}
+
+		
 		ScriptHelper.callOnLuas('onUpdate', [elapsed]);
 
 		#if !debug
@@ -6828,9 +6864,9 @@ class PlayState extends MusicBeatState
 
 	function startCharacterHscript(name:String)
 	{
-		if (OpenFlAssets.exists(Paths.getHscriptPath(name, 'characters')) && Paths.getHscriptPath(name, 'characters') != null)
+		if (Paths.getHscriptPath(name, 'characters') != null)
 		{
-			ScriptHelper.hscriptFiles.push(new ModchartHelper(OpenFlAssets.getPath(Paths.getHscriptPath(name, 'characters')), this));
+			ScriptHelper.hscriptFiles.push(new ModchartHelper(Paths.getHscriptPath(name, 'characters'), this));
 		}
 	}
 

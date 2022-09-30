@@ -87,8 +87,14 @@ class Main extends Sprite
 
 	private function setupGame():Void
 	{
-		var stageWidth:Int = Lib.current.stage.stageWidth;
-		var stageHeight:Int = Lib.current.stage.stageHeight;
+		var stageWidth:Int = 1280;
+		var stageHeight:Int = 720;
+
+		save.bind('funkin', 'ninjamuffin99');
+
+		EngineData.initSave();
+
+		KeyBinds.keyCheck();
 
 		if (zoom == -1)
 		{
@@ -102,12 +108,6 @@ class Main extends Sprite
 		#if !cpp
 		framerate = 60;
 		#end
-
-		save.bind('funkin', 'ninjamuffin99');
-
-		EngineData.initSave();
-
-		KeyBinds.keyCheck();
 
 		// Run this first so we can see logs.
 		Debug.onInitProgram();
@@ -201,7 +201,7 @@ class Main extends Sprite
 		}
 		errorMsg += '\n';
 
-		var logFolderPath = CoolUtil.createDirectoryIfNotExists('logs');
+		var logFolderPath = CoolUtil.createDirectoryIfNotExists('crashes');
 
 		var path:String = '${logFolderPath}/Altronix Engine - ${DebugLogWriter.getDateString()}.crash';
 

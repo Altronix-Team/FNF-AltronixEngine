@@ -230,8 +230,7 @@ function changeToGuitar(){
 
 	guitar = true;
 	
-	PlayState.instance.generateStaticArrows(0, false);
-	PlayState.instance.generateStaticArrows(1, false);
+	PlayState.instance.strumLineNotes.generateStrumLineArrows(false);
 	if(fret != null)fret.alpha = 1;
 }
 	
@@ -241,7 +240,6 @@ function changeToSing(){
 
 	guitar = false;
 		
-	PlayState.instance.generateStaticArrows(0, false);
-	PlayState.instance.generateStaticArrows(1, false);
+	PlayState.instance.strumLineNotes.generateStrumLineArrows(false);
 	if(fret != null)FlxTween.tween(fret, {alpha:0}, 0.3);
 }

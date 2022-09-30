@@ -6,6 +6,9 @@
  */
 package utils;
 
+import flixel.system.scaleModes.RatioScaleMode;
+import openfl.Lib;
+import flixel.system.scaleModes.StageSizeScaleMode;
 import openfl.desktop.ClipboardFormats;
 import flixel.math.FlxPoint;
 import flixel.FlxG;
@@ -95,8 +98,13 @@ class WindowUtil
 	 */
 	public static function resizeWindow(width:Int = 1280, height:Int = 720)
 	{
-		LimeApplication.current.window.width = width;
-		LimeApplication.current.window.height = height;
+		Lib.application.window.resizable = !Lib.application.window.resizable;
+		if (FlxG.scaleMode is RatioScaleMode)
+			FlxG.scaleMode = new StageSizeScaleMode();
+		else
+			FlxG.scaleMode = new RatioScaleMode(false);
+		FlxG.resizeGame(width, height);
+		FlxG.resizeWindow(width, height);
 	}
 
 	/**

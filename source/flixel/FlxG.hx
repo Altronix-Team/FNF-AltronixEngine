@@ -190,6 +190,10 @@ class FlxG
 	 */
 	public static var worldBounds(default, null):FlxRect = FlxRect.get();
 
+	/**
+	 * Alias for Main.save;
+	 * Altronix Engine special :3
+	 */
 	public static var save(default, null):utils.EngineSave = Main.save;
 
 	/**

@@ -63,7 +63,6 @@ class Paths
 
 	/**
 	 * For a given key and library for an image, returns the corresponding BitmapData.
-	 		* We can probably move the cache handling here.
 	 * @param key 
 	 * @param library 
 	 * @return BitmapData
@@ -677,17 +676,17 @@ class Paths
 			return results;
 		}
 
-	public static function getHscriptPath(script:String, library:String = ''):String
+	public inline static function getHscriptPath(script:String, folder:String = '', ?library:String):String
 	{
-		if (OpenFlAssets.exists('assets/scripts/$library/$script.hscript'))
-			return 'assets/scripts/$library/$script.hscript';
-		else if (OpenFlAssets.exists('assets/scripts/$library/$script.hx'))
-			return 'assets/scripts/$library/$script.hx';
+		if (OpenFlAssets.exists(getPath('scripts/$folder/$script.hscript', BINARY, library)))
+			return getPath('scripts/$folder/$script.hscript', BINARY, library);
+		else if (OpenFlAssets.exists(getPath('scripts/$folder/$script.hx', BINARY, library)))
+			return getPath('scripts/$folder/$script.hx', BINARY, library);
 		#if FEATURE_FILESYSTEM
-		else if (FileSystem.exists('assets/scripts/$library/$script.hscript'))
-			return 'assets/scripts/$library/$script.hscript';
-		else if (FileSystem.exists('assets/scripts/$library/$script.hx'))
-			return 'assets/scripts/$library/$script.hx';
+		else if (FileSystem.exists(getPath('scripts/$folder/$script.hscript', BINARY, library)))
+			return getPath('scripts/$folder/$script.hscript', BINARY, library);
+		else if (FileSystem.exists(getPath('scripts/$folder/$script.hx', BINARY, library)))
+			return getPath('scripts/$folder/$script.hx', BINARY, library);
 		#end
 		else return null;
 	}

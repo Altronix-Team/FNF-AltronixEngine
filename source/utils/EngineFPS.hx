@@ -91,18 +91,17 @@ class EngineFPS extends TextField
 	@:noCompletion
 	private #if !flash override #end function __enterFrame(deltaTime:Float):Void
 	{
-		if (states.MusicBeatState.initSave)
-			if (FlxG.save.data.fpsRain)
-			{
-				if (currentColor >= array.length)
-					currentColor = 0;
-				currentColor = Math.round(FlxMath.lerp(0, array.length, skippedFrames / (FlxG.save.data.fpsCap / 3)));
-				(cast(Lib.current.getChildAt(0), Main)).changeFPSColor(array[currentColor]);
-				currentColor++;
-				skippedFrames++;
-				if (skippedFrames > (FlxG.save.data.fpsCap / 3))
-					skippedFrames = 0;
-			}
+		if (Main.save.data.fpsRain)
+		{
+			if (currentColor >= array.length)
+				currentColor = 0;
+			currentColor = Math.round(FlxMath.lerp(0, array.length, skippedFrames / (Main.save.data.fpsCap / 3)));
+			(cast(Lib.current.getChildAt(0), Main)).changeFPSColor(array[currentColor]);
+			currentColor++;
+			skippedFrames++;
+			if (skippedFrames > (Main.save.data.fpsCap / 3))
+				skippedFrames = 0;
+		}
 
 		currentTime += deltaTime;
 		times.push(currentTime);
@@ -123,7 +122,7 @@ class EngineFPS extends TextField
 		if (currentCount != cacheCount /*&& visible*/)
 		{
 			text = (''
-				+ (FlxG.save.data.fps ? "FPS: " + currentFPS : '')
+				+ (Main.save.data.fps ? "FPS: " + currentFPS : '')
 			#if openfl
 				+ (Main.memoryCount ? '\nMemory: ' + memoryMegas + " MB / " + memoryTotal + " MB" : '')
 			#end

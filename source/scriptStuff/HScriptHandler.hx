@@ -224,29 +224,6 @@ class HScriptHandler
                     throw new ScriptException("Script parse error:\n" + e);
                 }
             }
-			#if FEATURE_MODCORE 
-			else if (OpenFlAssets.exists(OpenFlAssets.getPath(path)) && ModCore.loadedModsLength != 0)
-			{
-				Debug.logTrace('Found hscript');
-				Debug.logTrace('At path: ' + OpenFlAssets.getPath(path));
-				try
-				{
-					ast = parser.parseString(OpenFlAssets.getText(OpenFlAssets.getPath(path)), path);
-
-					for (v in expose.keys())
-						interp.variables.set(v, expose.get(v));
-
-					if (execute){
-						interp.execute(ast);
-						return;
-					}
-				}
-				catch (e:Error)
-				{
-					throw new ScriptException("Script parse error:\n" + e);
-				}
-			}
-			#end
 			#if FEATURE_FILESYSTEM
 			else if (FileSystem.exists(path))
 			{
@@ -316,40 +293,6 @@ class HScriptHandler
 					throw new ScriptException("Module parse error:\n" + e);
 				}
 			}
-			#if FEATURE_MODCORE 
-			else if (OpenFlAssets.exists(OpenFlAssets.getPath(path)) && ModCore.loadedModsLength != 0)
-			{
-				try
-				{
-					var moduleInterp = new CustomInterp();
-					var moduleAst = parser.parseString(OpenFlAssets.getText(OpenFlAssets.getPath(path)), path);
-
-					for (v in expose.keys())
-						moduleInterp.variables.set(v, expose.get(v));
-
-					moduleInterp.execute(moduleAst);
-
-					var module:Dynamic = {};
-
-					for (v in moduleInterp.variables.keys())
-					{
-						switch (v)
-						{
-							case "null", "true", "false", "trace":
-								{/* Does nothing */}
-							default:
-								Reflect.setField(module, v, moduleInterp.variables.get(v));
-						}
-					}
-
-					return module;
-				}
-				catch (e:Error)
-				{
-					throw new ScriptException("Module parse error:\n" + e);
-				}
-			}
-			#end
 			#if FEATURE_FILESYSTEM
 			else if (FileSystem.exists(path))
 			{

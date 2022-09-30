@@ -225,6 +225,8 @@ class EngineData
 		Main.memoryCount = Main.save.data.memoryCount;
 		Main.watermarks = Main.save.data.watermark;
 
+		Main.save.data.language = false;
+
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(Main.save.data.fpsCap);
 	}
 

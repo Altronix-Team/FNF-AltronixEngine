@@ -1,5 +1,6 @@
 package gameplayStuff;
 
+import flixel.system.FlxSound;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.text.FlxTypeText;
@@ -40,8 +41,6 @@ typedef DialogueAnimArray = {
 	var idle_offsets:Array<Int>;
 }
 
-// Gonna try to kind of make it compatible to Forever Engine,
-// love u Shubs no homo :flushedh4:
 typedef DialogueFile = {
 	var dialogue:Array<DialogueLine>;
 }
@@ -187,6 +186,8 @@ class DialogueBoxPsych extends FlxSpriteGroup
 
 	var daText:FlxTypeText = null;
 
+	var dialogueSound:FlxSound = null;
+
 	//var charPositionList:Array<String> = ['left', 'center', 'right'];
 
 	public function new(dialogueList:DialogueFile, ?song:String = null)
@@ -230,16 +231,14 @@ class DialogueBoxPsych extends FlxSpriteGroup
 			curDialogue = dialogueList.dialogue[currentText];
 		} while(curDialogue == null);
 
+		dialogueSound = new FlxSound().loadEmbedded(Paths.sound(curDialogue.sound != null ? curDialogue.sound : 'dialogue'));
+		dialogueSound.volume = 0.6;
+
 		daText = new FlxTypeText(240, 500, Std.int(FlxG.width * 0.6), '', 32);
-		if (!FlxG.save.data.language)
-			daText.font = 'Pixel Arial 11 Bold';
-		else
-		{
-			daText.font = Paths.font("UbuntuBold.ttf");
-			daText.size = 48;
-		}
-		daText.sounds = [FlxG.sound.load(Paths.sound(curDialogue.sound), 0.6)];
+		daText.font = Paths.font(LanguageStuff.fontName);
+		daText.sounds = [dialogueSound];
 		daText.color = FlxColor.BLACK;
+		daText.skipCallback = skipDialogueThing;
 		daText.scrollFactor.set();
 		add(daText);
 
@@ -316,19 +315,7 @@ class DialogueBoxPsych extends FlxSpriteGroup
 			if(bgFade.alpha > 0.5) bgFade.alpha = 0.5;
 
 			if(PlayerSettings.player1.controls.ACCEPT) {
-				if(!finishedText) {
-					if(daText != null) {
-						daText.resetText(textToType);
-						daText.start(0.04, true, false, [FlxKey.ENTER], function()
-							{
-								finishedText = true;
-							});
-					}
-					
-					if(skipDialogueThing != null) {
-						skipDialogueThing();
-					}
-				} else if(currentText >= dialogueList.dialogue.length) {
+				if(currentText >= dialogueList.dialogue.length) {
 					dialogueEnded = true;
 					for (i in 0...textBoxTypes.length) {
 						var checkArray:Array<String> = ['', 'center-'];
@@ -342,15 +329,13 @@ class DialogueBoxPsych extends FlxSpriteGroup
 
 					box.animation.curAnim.curFrame = box.animation.curAnim.frames.length - 1;
 					box.animation.curAnim.reverse();
-					daText.resetText(textToType);
-					daText.start(0.04, true, false, [FlxKey.ENTER], function()
-						{
-							finishedText = true;
-						});
 					updateBoxOffsets(box);
 					FlxG.sound.music.fadeOut(1, 0);
 				} else {
-					startNextDialog();
+					if (!finishedText)
+						daText.skip();
+					else
+						startNextDialog();
 				}
 				FlxG.sound.play(Paths.sound('dialogueClose'));
 			} else if(finishedText) {
@@ -515,10 +500,10 @@ class DialogueBoxPsych extends FlxSpriteGroup
 
 		if(daText != null) {
 			daText.resetText(textToType);
-			daText.start(0.04, true, false, [FlxKey.ENTER], function()
-				{
-					finishedText = true;
-				});
+			daText.start(0.04, true, false, [], function()
+			{
+				finishedText = true;
+			});
 		}
 
 		var char:DialogueCharacter = arrayCharacters[character];

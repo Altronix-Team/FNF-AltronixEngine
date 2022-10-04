@@ -1,0 +1,52 @@
+{
+	"dialogue": [
+		{
+			"sound": "",
+			"speed": 0.05,
+			"portrait": "sundayport",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "эта мелодия близка и дорога моему сердцу"
+		},
+		{
+			"sound": "",
+			"speed": 0.05,
+			"portrait": "bf",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "биб"
+		},
+		{
+			"sound": "",
+			"speed": 0.05,
+			"portrait": "sundayport",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "наверное, это немного дрянно.."
+		},
+		{
+			"sound": "",
+			"speed": 0.05,
+			"portrait": "sundayport",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "это песня гордости, лол."
+		},
+		{
+			"sound": "",
+			"speed": 0.05,
+			"portrait": "bf",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "би"
+		},
+		{
+			"sound": "",
+			"speed": 0.05,
+			"portrait": "sundayport",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "как ты узнал"
+		}
+	]
+}

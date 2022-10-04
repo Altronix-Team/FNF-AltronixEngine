@@ -1,0 +1,44 @@
+{
+	"dialogue": [
+		{
+			"sound": "",
+			"speed": 0.05,
+			"portrait": "sundayport",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "итак, это одна из песен."
+		},
+		{
+			"sound": "",
+			"speed": 0.05,
+			"portrait": "sundayport",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "по сути, это тарабарщина."
+		},
+		{
+			"sound": "",
+			"speed": 0.05,
+			"portrait": "sundayport",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "ты ведь можешь говорить тарабарщину, верно?"
+		},
+		{
+			"sound": "",
+			"speed": 0.05,
+			"portrait": "bf",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "бип"
+		},
+		{
+			"sound": "",
+			"speed": 0.05,
+			"portrait": "sundayport",
+			"boxState": "normal",
+			"expression": "talk",
+			"text": "отлично"
+		}
+	]
+}

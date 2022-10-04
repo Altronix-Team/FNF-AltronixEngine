@@ -98,8 +98,8 @@ class GameOverSubstate extends MusicBeatSubstate
 
 			if (PlayState.SONG.songId == 'thorns')
 			{
-				WindowUtil.resizeWindow(PlayState.windowWidth, PlayState.windowHeight);
-				FlxG.resizeGame(FlxG.initialWidth, FlxG.initialHeight);
+				//WindowUtil.resizeWindow(FlxG.initialWidth, FlxG.initialHeight);
+				//WindowUtil.setBorderlessWindowed(false);
 				if (PlayState.fullscree)
 					WindowUtil.setFullscreen(true);
 			}

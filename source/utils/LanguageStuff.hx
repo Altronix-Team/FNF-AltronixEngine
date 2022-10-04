@@ -7,14 +7,12 @@ import flixel.addons.ui.interfaces.IFireTongue;
 
 class LanguageStuff{
 
-	public static var tongue:CustomFireTongue;
+	public static var tongue(default, null):CustomFireTongue = new CustomFireTongue(OPENFL);
 	public static var locales:Array<String>;
     public static var fontName:String;
+	public static var locale:String = "en-US";
 
     public static function initLanguages(){
-		tongue = new CustomFireTongue(OPENFL);
-
-		var locale = "en-US";
 		if (FlxG.save.data.localeStr != null)
 			locale = FlxG.save.data.localeStr;
 
@@ -24,6 +22,8 @@ class LanguageStuff{
 			directory: 'locales/',
 			checkMissing: true
 		});
+
+		locale = tongue.locale;
 
 		locales = tongue.locales;
 

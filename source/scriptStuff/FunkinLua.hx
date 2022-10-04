@@ -1569,11 +1569,11 @@ class FunkinLua {
 			return FlxG.random.bool(chance);
 		});
 		Lua_helper.add_callback(lua, "startDialogue", function(dialogueFile:String, music:String = null) {
-			var path:String = Paths.json('songs/' + PlayState.SONG.songId + '/' + dialogueFile);
+			var path:String = Paths.formatToDialoguePath(PlayState.SONG.songId + '/' + dialogueFile, true);
 
 			luaTrace('Trying to load dialogue: ' + path);
 
-			if(Assets.exists(path))
+			if (path != null)
 			{
 				var shit:DialogueFile = DialogueBoxPsych.parseDialogue(path);
 				if(shit.dialogue.length > 0) {

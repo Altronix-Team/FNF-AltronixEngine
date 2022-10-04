@@ -145,9 +145,9 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 
 	public function startDialogue(dialogueFile:String, music:String = null)
 	{
-		var path:String = Paths.json('songs/' + PlayState.SONG.songId + '/' + dialogueFile);
+		var path:String = Paths.formatToDialoguePath(PlayState.SONG.songId + '/' + dialogueFile, true);
 
-		if (Assets.exists(path))
+		if (path != null)
 		{
 			var shit:DialogueFile = DialogueBoxPsych.parseDialogue(path);
 			if (shit.dialogue.length > 0)

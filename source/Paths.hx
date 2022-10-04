@@ -355,6 +355,32 @@ class Paths
 		return path.toLowerCase().replace(' ', '-');
 	}
 
+	inline static public function formatToDialoguePath(file:String, isJSON:Bool = false):String {
+		var retPath:String ='';
+		var lang:String = '';
+		if (LanguageStuff.locale != 'en-US')
+			lang = LanguageStuff.locale;
+
+		if (isJSON)
+			retPath = Paths.json('songs/' + file + '-' + lang);
+		else
+			retPath = Paths.txt('data/songs/' + file + '-' + lang);
+			
+		if (OpenFlAssets.exists(retPath, TEXT))
+			return retPath;
+		else{
+			if (isJSON)
+				retPath = Paths.json('songs/' + file);
+			else
+				retPath = Paths.txt('data/songs/' + file);
+
+			if (OpenFlAssets.exists(retPath, TEXT)) 
+				return retPath;
+			else 
+				return null;
+		};
+	}
+
 	static public function dialogueSound(key:String, ?library:String):Sound
 		{
 			var sound:Sound = returnSound('sounds', key, library);

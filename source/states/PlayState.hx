@@ -677,8 +677,8 @@ class PlayState extends MusicBeatState
 		trace('INFORMATION ABOUT WHAT U PLAYIN WIT:\nFRAMES: ' + PlayStateChangeables.safeFrames + '\nZONE: ' + Conductor.safeZoneOffset + '\nTS: '
 			+ Conductor.timeScale + '\nBotPlay : ' + PlayStateChangeables.botPlay);
 
-		if (OpenFlAssets.exists(Paths.txt('data/songs/${PlayState.SONG.songId}/dialogue')))
-			dialogue = CoolUtil.coolTextFile(Paths.txt('data/songs/${PlayState.SONG.songId}/dialogue'));
+		if (Paths.formatToDialoguePath('${PlayState.SONG.songId}/dialogue', false) != null)
+			dialogue = CoolUtil.coolTextFile(Paths.formatToDialoguePath('${PlayState.SONG.songId}/dialogue', false));
 
 		switch (SONG.noteStyle)
 		{
@@ -1599,12 +1599,13 @@ class PlayState extends MusicBeatState
 
 		if (SONG.songId == 'thorns') //Cool shit
 		{
+			//WindowUtil.resizeWindow(960, 720);
 			fullscree = WindowUtil.getFullscreen();
 			WindowUtil.setFullscreen(false);
-			WindowUtil.resizeWindow(960, 720);
-			windowX = Std.int(flash.system.Capabilities.screenResolutionX / 2 - 430);
-			windowY = Std.int(flash.system.Capabilities.screenResolutionY / 2 - 360);
-			WindowUtil.repositionWindow(windowX,windowY);			
+			//WindowUtil.setBorderlessWindowed(true);	
+			windowX = Std.int(flash.system.Capabilities.screenResolutionX / 2 - WindowUtil.getWindowSize('width') / 2);
+			windowY = Std.int(flash.system.Capabilities.screenResolutionY / 2 - WindowUtil.getWindowSize('') / 2);
+			WindowUtil.repositionWindow(windowX, windowY);
 		}
 
 		if (isStoryMode/* && !seenCutscene*/)
@@ -4291,14 +4292,15 @@ class PlayState extends MusicBeatState
 
 					if (curBeat >= 64 && SONG.songId == 'thorns')
 					{
-						if (Math.abs(daNote.noteData) == 0)
+						WindowUtil.repositionWindow(windowX + FlxG.random.int(-200, 200), windowY + FlxG.random.int(-200, 200));
+						/*if (Math.abs(daNote.noteData) == 0)
 							WindowUtil.repositionWindow(windowX - offsetX, windowY);
 						else if (Math.abs(daNote.noteData) == 1)
 							WindowUtil.repositionWindow(windowX, windowY - offsetY);
 						else if (Math.abs(daNote.noteData) == 2)
 							WindowUtil.repositionWindow(windowX, windowY + offsetY);
 						else
-							WindowUtil.repositionWindow(windowX + offsetX, windowY);
+							WindowUtil.repositionWindow(windowX + offsetX, windowY);*/
 					}
 
 					ScriptHelper.callOnScripts('opponentNoteHit', [notes.members.indexOf(daNote), Math.abs(daNote.noteData), daNote.noteType, daNote.isSustainNote]);
@@ -4500,12 +4502,6 @@ class PlayState extends MusicBeatState
 					}
 				}
 			});
-		}
-
-		if (SONG.songId == 'thorns')
-		{
-			if ((WindowUtil.getWindowPosition('x') != windowX || WindowUtil.getWindowPosition('y') != windowY) && dad.animation.curAnim.name == 'idle')
-				WindowUtil.repositionWindow(windowX, windowY);
 		}
 
 		if (!inCutscene && songStarted)
@@ -5178,7 +5174,8 @@ class PlayState extends MusicBeatState
 
 			if (SONG.songId == 'thorns')
 			{
-				WindowUtil.resizeWindow(windowWidth, windowHeight);
+				//WindowUtil.resizeWindow(windowWidth, windowHeight);
+				//WindowUtil.setBorderlessWindowed(false);
 				if (fullscree)
 					WindowUtil.setFullscreen(true);
 			}
@@ -5458,7 +5455,7 @@ class PlayState extends MusicBeatState
 				if (!note.noAnimation){
 				if (note.bulletNote){
 					boyfriend.playAnim('dodge', true);
-					FlxG.sound.play(Paths.sound('hankshoot'), FlxG.random.float(0.1, 0.2));}
+					FlxG.sound.play(Paths.sound('hankshoot'));}
 				else if (note.hurtNote){
 					health -= 0.2;
 					misses++;}
@@ -6669,6 +6666,13 @@ class PlayState extends MusicBeatState
 					blammedeventplayed = true;
 				}
 			}
+		}
+
+		if (SONG.songId == 'thorns')
+		{
+			if ((WindowUtil.getWindowPosition('x') != windowX
+				|| WindowUtil.getWindowPosition('y') != windowY) /* && dad.animation.curAnim.name == 'idle'*/)
+				WindowUtil.repositionWindow(windowX, windowY);
 		}
 
 		ScriptHelper.setOnScripts('curBeat', curBeat);

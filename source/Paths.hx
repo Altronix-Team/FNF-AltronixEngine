@@ -366,19 +366,29 @@ class Paths
 		else
 			retPath = Paths.txt('data/songs/' + file + '-' + lang);
 			
-		if (OpenFlAssets.exists(retPath, TEXT))
+		if (OpenFlAssets.exists(retPath))
+		{
+			Debug.logInfo('Found dialogue file at path ' + retPath);
 			return retPath;
+		}
 		else{
+			Debug.logInfo('Failed found dialogue file with engine language. Trying to load dialogue with default language');
 			if (isJSON)
 				retPath = Paths.json('songs/' + file);
 			else
 				retPath = Paths.txt('data/songs/' + file);
 
-			if (OpenFlAssets.exists(retPath, TEXT)) 
+			if (OpenFlAssets.exists(retPath))
+			{ 
+				Debug.logInfo('Found dialogue file at path ' + retPath);
 				return retPath;
+			}
 			else 
+			{
+				Debug.logInfo('Failed found dialogue files, is they exists?');
 				return null;
-		};
+			}
+		}
 	}
 
 	static public function dialogueSound(key:String, ?library:String):Sound

@@ -81,6 +81,8 @@ class CharacterEditorState extends MusicBeatState
 	var leHealthIcon:HealthIcon;
 	var characterList:Array<String> = [];
 
+	var charFolder:String = 'bf';
+
 	var cameraFollowPointer:FlxSprite;
 	var healthBarBG:FlxSprite;
 
@@ -387,6 +389,7 @@ class CharacterEditorState extends MusicBeatState
 				daAnim = 'bf';
 				loadChar(false);
 			}
+			charFolder = daAnim;
 			updatePresence();
 			reloadCharacterDropDown();
 			reloadBGs();
@@ -450,6 +453,7 @@ class CharacterEditorState extends MusicBeatState
 	}
 	
 	var imageInputText:FlxUIInputText;
+	var folderInputText:FlxUIInputText;
 	var startingAnimInputText:FlxUIInputText;
 	var healthIconInputText:FlxUIInputText;
 
@@ -473,8 +477,9 @@ class CharacterEditorState extends MusicBeatState
 		var tab_group = new FlxUI(null, UI_box);
 		tab_group.name = "Character";
 
-		imageInputText = new FlxUIInputText(15, 30, 200, 'characters/BOYFRIEND', 8);
-		var reloadImage:FlxButton = new FlxButton(imageInputText.x + 210, imageInputText.y - 3, "Reload Image", function()
+		imageInputText = new FlxUIInputText(130, 30, 100, 'BOYFRIEND', 8);
+		folderInputText = new FlxUIInputText(15, 30, 100, 'bf', 8);
+		var reloadImage:FlxButton = new FlxButton(imageInputText.x + 110, imageInputText.y - 3, "Reload Image", function()
 		{
 			char.asset = imageInputText.text;
 			reloadCharacterImage();
@@ -558,7 +563,8 @@ class CharacterEditorState extends MusicBeatState
 		healthColorStepperG = new FlxUINumericStepper(singDurationStepper.x + 65, saveCharacterButton.y, 20, char.healthColorArray[1], 0, 255, 0);
 		healthColorStepperB = new FlxUINumericStepper(singDurationStepper.x + 130, saveCharacterButton.y, 20, char.healthColorArray[2], 0, 255, 0);
 
-		tab_group.add(new FlxText(15, imageInputText.y - 18, 0, 'Image file name:'));
+		tab_group.add(new FlxText(130, imageInputText.y - 18, 0, 'Image file name:'));
+		tab_group.add(new FlxText(10, folderInputText.y - 18, 0, 'Character folder name:'));
 		tab_group.add(new FlxText(120, startingAnimInputText.y - 18, 0, 'Starting anim name:'));
 		tab_group.add(new FlxText(15, healthIconInputText.y - 18, 0, 'Health icon name:'));
 		tab_group.add(new FlxText(15, singDurationStepper.y - 25, 0, 'Sing Animation\nlength:'));
@@ -566,6 +572,7 @@ class CharacterEditorState extends MusicBeatState
 		tab_group.add(new FlxText(positionXStepper.x, positionXStepper.y - 18, 0, 'Character X/Y:'));
 		tab_group.add(new FlxText(positionCameraXStepper.x, positionCameraXStepper.y - 18, 0, 'Camera X/Y:'));
 		tab_group.add(new FlxText(healthColorStepperR.x, healthColorStepperR.y - 18, 0, 'Health bar R/G/B:'));
+		tab_group.add(folderInputText);
 		tab_group.add(imageInputText);
 		tab_group.add(reloadImage);
 		tab_group.add(decideIconColor);
@@ -785,6 +792,10 @@ class CharacterEditorState extends MusicBeatState
 			if(sender == imageInputText) {
 				char.asset = imageInputText.text;
 			}
+			if (sender == folderInputText)
+			{
+				charFolder = folderInputText.text;
+			}
 		} else if(id == FlxUINumericStepper.CHANGE_EVENT && (sender is FlxUINumericStepper)) {
 			if (sender == scaleStepper)
 			{
@@ -850,7 +861,7 @@ class CharacterEditorState extends MusicBeatState
 		}
 		var anims:Array<AnimationData> = char.animationsArray.copy();
 
-		char.frames = Paths.getCharacterFrames(char.curCharacter, char.asset.replaceAll('characters/', ''));
+		char.frames = Paths.getCharacterFrames(charFolder, char.asset.replaceAll('characters/', ''));
 		
 		if(char.animationsArray != null && char.animationsArray.length > 0) {
 			for (anim in char.animationsArray) {
@@ -984,7 +995,9 @@ class CharacterEditorState extends MusicBeatState
 
 	function reloadCharacterOptions() {
 		if(UI_characterbox != null) {
-			imageInputText.text = char.asset;
+			charFolder = char.curCharacter;
+			folderInputText.text = charFolder;
+			imageInputText.text = char.asset.replaceAll('characters/', '');
 			startingAnimInputText.text = char.startingAnim;
 			healthIconInputText.text = char.characterIcon;
 			singDurationStepper.value = char.holdLength;
@@ -1131,7 +1144,7 @@ class CharacterEditorState extends MusicBeatState
 			textAnim.text = '';
 		}
 
-		var inputTexts:Array<FlxUIInputText> = [animationInputText, imageInputText, healthIconInputText, startingAnimInputText, animationNameInputText, animationIndicesInputText, nextAnimationInputText];
+		var inputTexts:Array<FlxUIInputText> = [animationInputText, imageInputText, folderInputText, healthIconInputText, startingAnimInputText, animationNameInputText, animationIndicesInputText, nextAnimationInputText];
 		for (i in 0...inputTexts.length) {
 			if(inputTexts[i].hasFocus) {
 				FlxG.sound.muteKeys = [];

@@ -495,7 +495,7 @@ class GameJoltLogin extends states.MusicBeatSubstate
 		add(bg);
 
 		charBop = new FlxSprite(FlxG.width - 400, 250);
-		charBop.frames = Paths.getCharacterFrames('BOYFRIEND');
+		charBop.frames = Paths.getCharacterFrames('bf', 'BOYFRIEND');
 		charBop.animation.addByPrefix('idle', 'BF idle dance', 24, false);
 		charBop.animation.addByPrefix('loggedin', 'BF HEY', 24, false);
 		charBop.setGraphicSize(Std.int(charBop.width * 1.4));

@@ -803,21 +803,21 @@ class Paths
 		return currentTrackedSounds.get(gottenPath);
 	}
 
-	inline static public function getCharacterFrames(charName:String, ?key:String):FlxFramesCollection
+	inline static public function getCharacterFrames(charName:String, key:String):FlxFramesCollection
 	{
 		//if (OpenFlAssets.exists('assets/characters/$key/spritemap.json'))
 			//return AtlasFrameMaker.construct('characters/$key');
 		/*else*/
-		var filePath = 'characters/$charName/${key != null ? key : charName}';
-		if (OpenFlAssets.exists('assets/characters/$charName/${key != null ? key : charName}.txt'))
-			return FlxAtlasFrames.fromSpriteSheetPacker(loadCharactersImage(charName, key != null ? key : charName), file('$filePath.txt'));
+		var filePath = 'characters/$charName/$key';
+		if (OpenFlAssets.exists('assets/characters/$charName/$key.txt'))
+			return FlxAtlasFrames.fromSpriteSheetPacker(loadCharactersImage(charName, key), file('$filePath.txt'));
 		else
 		{
-			if (OpenFlAssets.exists('assets/characters/$charName/${key != null ? key : charName}.xml'))
+			if (OpenFlAssets.exists('assets/characters/$charName/$key.xml'))
 			{
-				return FlxAtlasFrames.fromSparrow(loadCharactersImage(charName, key != null ? key : charName), file('$filePath.xml'));
+				return FlxAtlasFrames.fromSparrow(loadCharactersImage(charName, key), file('$filePath.xml'));
 			}
-			else if (OpenFlAssets.exists(findMatchingFiles(key != null ? key : charName + '.txt'))
+			/*else if (OpenFlAssets.exists(findMatchingFiles(key != null ? key : charName + '.txt'))
 				|| OpenFlAssets.exists(findMatchingFiles(key != null ? key : charName + '.xml')))
 			{
 				if (OpenFlAssets.exists(findMatchingFiles(key != null ? key : charName + '.txt')))
@@ -830,7 +830,7 @@ class Paths
 					filePath = findMatchingFiles(key != null ? key : charName + '.xml');
 					return FlxAtlasFrames.fromSparrow(loadCharactersImage(charName, key != null ? key : charName), file('$filePath.xml'));
 				}
-			}
+			}*/
 			else return null;
 		}	
 	}
@@ -851,7 +851,7 @@ class Paths
 		}
 		else
 		{
-			var search = findMatchingFiles('$key.png');
+			/*var search = findMatchingFiles('$key.png');
 
 			if (OpenFlAssets.exists(search, IMAGE) && search != null)
 			{
@@ -859,10 +859,10 @@ class Paths
 				return FlxGraphic.fromBitmapData(bitmap);
 			}
 			else
-			{
+			{*/
 				Debug.logWarn('Could not find image at path $path');
 				return null;
-			}
+			//}
 		}
 	}
 

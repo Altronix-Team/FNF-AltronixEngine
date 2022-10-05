@@ -731,7 +731,7 @@ class GirlfriendEditorState extends MusicBeatState
 			lastAnim = char.animation.curAnim.name;
 		}
 		var anims:Array<AnimationData> = char.animationsArray.copy();
-		char.frames = Paths.getCharacterFrames(char.asset.replaceAll('characters/', ''));
+		char.frames = Paths.getCharacterFrames(char.curCharacter, char.asset.replaceAll('characters/', ''));
 
 		if(char.animationsArray != null && char.animationsArray.length > 0) {
 			for (anim in char.animationsArray) {

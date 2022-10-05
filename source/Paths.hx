@@ -56,9 +56,9 @@ class Paths
 		return Assets.getText(getPath(key, TEXT));
 	}
 
-	public static inline function songMeta(key:String, ?library:String)
+	public static inline function songMeta(key:String)
 	{
-		return getPath('data/songs/$key/_meta.json', TEXT, library);
+		return getPath('$key/_meta.json', TEXT, 'songs');
 	}
 
 	/**
@@ -810,11 +810,14 @@ class Paths
 		/*else*/
 		var filePath = 'characters/$charName/${key != null ? key : charName}';
 		if (OpenFlAssets.exists('assets/characters/$charName/${key != null ? key : charName}.txt'))
-			return FlxAtlasFrames.fromSpriteSheetPacker(loadCharactersImage(charName, key != null ? key : charName),
-			file('$filePath.txt'));
+			return FlxAtlasFrames.fromSpriteSheetPacker(loadCharactersImage(charName, key != null ? key : charName), file('$filePath.txt'));
 		else
 		{
-			if (OpenFlAssets.exists(findMatchingFiles(key != null ? key : charName + '.txt'))
+			if (OpenFlAssets.exists('assets/characters/$charName/${key != null ? key : charName}.xml'))
+			{
+				return FlxAtlasFrames.fromSparrow(loadCharactersImage(charName, key != null ? key : charName), file('$filePath.xml'));
+			}
+			else if (OpenFlAssets.exists(findMatchingFiles(key != null ? key : charName + '.txt'))
 				|| OpenFlAssets.exists(findMatchingFiles(key != null ? key : charName + '.xml')))
 			{
 				if (OpenFlAssets.exists(findMatchingFiles(key != null ? key : charName + '.txt')))
@@ -828,7 +831,7 @@ class Paths
 					return FlxAtlasFrames.fromSparrow(loadCharactersImage(charName, key != null ? key : charName), file('$filePath.xml'));
 				}
 			}
-			return null;
+			else return null;
 		}	
 	}
 
@@ -876,7 +879,7 @@ class Paths
 		for (file in files)
 		{
 			if (file.endsWith(fileName))
-				return file;
+				return file.replaceAll('assets/', '');
 		}
 		return null;
 	}

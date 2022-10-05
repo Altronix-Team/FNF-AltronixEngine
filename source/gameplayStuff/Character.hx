@@ -423,7 +423,6 @@ class Character extends FlxSprite
 	public static function getCharacterColor(char:String):Array<Int>
 	{
 		var jsonData;
-		Debug.logTrace(Paths.getJson('characters/${char}/${char}'));
 		if (OpenFlAssets.exists(Paths.getJson('characters/${char}/${char}')))
 		{
 			jsonData = Paths.loadJSONInDefaultLibrary('characters/${char}/${char}');

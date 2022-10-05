@@ -291,8 +291,7 @@ class ModCore
 				"custom_notetypes" => "./custom_notetypes",
 				"custom_difficulties" => "./custom_difficulties",
 				"art" => "./art",
-				'core' => './_core',
-				'characters' => './characters'
+				'core' => './_core'
 			]
 		}
 	}

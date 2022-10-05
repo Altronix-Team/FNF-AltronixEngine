@@ -169,57 +169,53 @@ class Song
 	}
 
 	public static function loadMetadata(songId:String):SongMeta
+	{
+		var rawMetaJson = null;
+		if (OpenFlAssets.exists(Paths.songMeta(songId)))
 		{
-			var rawMetaJson = null;
-			if (OpenFlAssets.exists(Paths.songMeta(songId)))
-			{
-				rawMetaJson = Paths.loadJSON('songs/$songId/_meta');
-			}
-			else
-			{
-				Debug.logInfo('Hey, you didn\'t include a _meta.json with your song files (id ${songId}).Won\'t break anything but you should probably add one anyway.');
-			}
-			if (rawMetaJson == null)
-			{
-				return null;
-			}
-			else
-			{
-				return cast rawMetaJson;
-			}
+			rawMetaJson = Paths.loadJSONInDefaultLibrary('$songId/_meta', 'songs');
 		}
+		else
+		{
+			Debug.logInfo('Hey, you didn\'t include a _meta.json with your song files (id ${songId}).Won\'t break anything but you should probably add one anyway.');
+		}
+		if (rawMetaJson == null)
+		{
+			return null;
+		}
+		else
+		{
+			return cast rawMetaJson;
+		}
+	}
 
 	public static function loadFromJson(songId:String, difficulty:String):SongData
 	{
 		var songFile = '$songId/$songId$difficulty';
 
-		if (OpenFlAssets.exists('assets/data/songs/' + songFile + '.json'))
+		if (OpenFlAssets.exists(Paths.getJson('$songFile', 'songs')))
 		{
-			//Debug.logInfo('Loading song JSON: $songFile');
-
-			var rawJson = Paths.loadJSON('songs/$songFile');
+			var rawJson = Paths.loadJSONInDefaultLibrary('$songFile', 'songs');
 
 			var metaData:SongMeta = loadMetadata(songId);
 
-			if (OpenFlAssets.exists(Paths.json('songs/$songId/events')))
+			if (OpenFlAssets.exists(Paths.getJson('$songId/events', 'songs')))
 			{
-				var rawEvents = Paths.loadJSON('songs/$songId/events');
+				var rawEvents = Paths.loadJSONInDefaultLibrary('$songId/events', 'songs');
 				return parseJSONshit(songId, rawJson, metaData, rawEvents);
 			}	
 			else
 				return parseJSONshit(songId, rawJson, metaData);	
 		}
-		else if (OpenFlAssets.exists(OpenFlAssets.getPath('assets/data/songs/' + songFile + '.json')))
-		{
-			//Debug.logInfo('Loading song JSON: $songFile');
-	
-			var rawJson = Paths.loadJSON('songs/$songFile');
+		else if (OpenFlAssets.exists(OpenFlAssets.getPath(Paths.getJson('$songFile', 'songs'))))
+		{	
+			var rawJson = Paths.loadJSONInDefaultLibrary('$songFile', 'songs');
 	
 			var metaData:SongMeta = loadMetadata(songId);
 	
-			if (OpenFlAssets.exists(Paths.json('songs/$songId/events')))
+			if (OpenFlAssets.exists(Paths.getJson('$songId/events', 'songs')))
 			{
-				var rawEvents = Paths.loadJSON('songs/$songId/events');
+				var rawEvents = Paths.loadJSONInDefaultLibrary('$songId/events', 'songs');
 				return parseJSONshit(songId, rawJson, metaData, rawEvents);
 			}	
 			else
@@ -650,7 +646,7 @@ class Song
 	{
 		var folderLowercase = StringTools.replace(folder, " ", "-").toLowerCase();
 	
-		var rawJson = OpenFlAssets.getText(Paths.json('songs/' + folderLowercase + '/' + jsonInput.toLowerCase())).trim();
+		var rawJson = OpenFlAssets.getText(Paths.getJson(folderLowercase + '/' + jsonInput.toLowerCase(), 'songs')).trim();
 	
 		while (!rawJson.endsWith("}"))
 		{

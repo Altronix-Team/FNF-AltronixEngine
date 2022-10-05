@@ -6,7 +6,7 @@
 				0
 			],
 			"frameRate": 24,
-			"prefix": "Angry Senpai Idle",
+			"prefix": "Senpai Idle",
 			"frameIndices": [],
 			"name": "idle"
 		},
@@ -16,7 +16,7 @@
 				37
 			],
 			"frameRate": 24,
-			"prefix": "Angry Senpai UP NOTE",
+			"prefix": "SENPAI UP NOTE",
 			"frameIndices": [],
 			"name": "singUP"
 		},
@@ -26,7 +26,7 @@
 				0
 			],
 			"frameRate": 24,
-			"prefix": "Angry Senpai LEFT NOTE",
+			"prefix": "SENPAI LEFT NOTE",
 			"frameIndices": [],
 			"name": "singLEFT"
 		},
@@ -36,7 +36,7 @@
 				0
 			],
 			"frameRate": 24,
-			"prefix": "Angry Senpai RIGHT NOTE",
+			"prefix": "SENPAI RIGHT NOTE",
 			"frameIndices": [],
 			"name": "singRIGHT"
 		},
@@ -46,7 +46,7 @@
 				0
 			],
 			"frameRate": 24,
-			"prefix": "Angry Senpai DOWN NOTE",
+			"prefix": "SENPAI DOWN NOTE",
 			"frameIndices": [],
 			"name": "singDOWN"
 		}
@@ -62,15 +62,15 @@
 		0
 	],
 	"flipX": false,
-	"asset": "characters/senpai",
+	"asset": "characters/senpaiSprite",
 	"startingAnim": "idle",
 	"characterIcon": "senpai",
 	"antialiasing": false,
-	"name": "characters/senpai",
+	"name": "characters/senpaiSprite",
 	"barColorJson": [
 		255,
 		170,
-		131
+		111
 	],
 	"replacesGF": false,
 	"scale": 6

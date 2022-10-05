@@ -1494,7 +1494,7 @@ class PlayState extends MusicBeatState
 			funnyStartObjects.push(chartingState);
 		}
 
-		iconP1 = new HealthIcon(boyfriend.characterIcon, true);
+		iconP1 = boyfriend.healthIcon;
 		iconP1.y = healthBar.y - (iconP1.height / 2);
 
 		if (isStoryMode)
@@ -1503,7 +1503,7 @@ class PlayState extends MusicBeatState
 			funnyStartObjects.push(iconP1);
 		}
 
-		iconP2 = new HealthIcon(dad.characterIcon, false);
+		iconP2 = dad.healthIcon;
 		iconP2.y = healthBar.y - (iconP2.height / 2);
 		
 		if (isStoryMode)
@@ -5039,8 +5039,8 @@ class PlayState extends MusicBeatState
 	}
 
 	public function reloadIcons() {
-		iconP1.changeIcon(boyfriend.characterIcon);
-		iconP2.changeIcon(dad.characterIcon);}
+		iconP1.changeIcon(boyfriend.curCharacter, boyfriend.characterIcon);
+		iconP2.changeIcon(dad.curCharacter, dad.characterIcon);}
 
 	public function getSectionByTime(ms:Float):SwagSection
 	{
@@ -6854,7 +6854,7 @@ class PlayState extends MusicBeatState
 	{
 		#if LUA_ALLOWED
 		var doPush:Bool = false;
-		var luaFile:String = 'assets/data/characters/' + name + '.lua';	
+		var luaFile:String = 'assets/characters/' + name + '.lua';	
 
 		if(OpenFlAssets.exists(luaFile)) {
 			for (script in ScriptHelper.luaArray)
@@ -6868,9 +6868,9 @@ class PlayState extends MusicBeatState
 
 	function startCharacterHscript(name:String)
 	{
-		if (Paths.getHscriptPath(name, 'characters') != null)
+		if (Paths.getHscriptPath(name, name, true) != null)
 		{
-			ScriptHelper.hscriptFiles.push(new ModchartHelper(Paths.getHscriptPath(name, 'characters'), this));
+			ScriptHelper.hscriptFiles.push(new ModchartHelper(Paths.getHscriptPath(name, name, true), this));
 		}
 	}
 

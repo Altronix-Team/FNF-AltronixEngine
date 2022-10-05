@@ -49,6 +49,8 @@ class Character extends FlxSprite
 	public var specialAnim:Bool = false;
 	public var psychChar:Bool = false;
 
+	public var healthIcon:HealthIcon = null;
+
 	var wasAltIdle:Bool = false;
 
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
@@ -78,6 +80,8 @@ class Character extends FlxSprite
 		{
 			flipX = !flipX;
 		}
+
+		healthIcon = new HealthIcon(curCharacter, characterIcon, isPlayer);
 	}
 
 	function parseDataFile(){
@@ -85,14 +89,14 @@ class Character extends FlxSprite
 
 		// Load the data from JSON and cast it to a struct we can easily read.
 		var jsonData;
-		if (OpenFlAssets.exists(Paths.json('characters/${curCharacter}')))
+		if (OpenFlAssets.exists(Paths.getJson('characters/${curCharacter}/${curCharacter}')))
 		{
-			jsonData = Paths.loadJSON('characters/${curCharacter}');
+			jsonData = Paths.loadJSONInDefaultLibrary('characters/${curCharacter}/${curCharacter}');
 		}
 		else
 		{
 			Debug.logError('There is no character with this name!');
-			jsonData = Paths.loadJSON('characters/dad');
+			jsonData = Paths.loadJSONInDefaultLibrary('characters/dad/dad');
 		}
 		if (jsonData == null)
 		{
@@ -304,7 +308,7 @@ class Character extends FlxSprite
 		#if CHECK_FOR_DEFAULT_CHARACTERS
 		for (char in EngineConstants.defaultCharacters)
 		{
-			if (OpenFlAssets.exists(Paths.json('characters/${char}')))
+			if (OpenFlAssets.exists(Paths.getJson('characters/${char}/${char}')))
 				characterList.push(char);
 			else
 				missingChars.push(char);
@@ -325,7 +329,7 @@ class Character extends FlxSprite
 
 		girlfriendList = [];
 
-		var pathcheck = Paths.listJsonInPath('assets/data/characters/');
+		var pathcheck = listCharacters();
 
 		if (initDefaultCharacters())
 		{
@@ -337,7 +341,7 @@ class Character extends FlxSprite
 				else{
 					characterList.push(charId);
 
-					var charData:CharacterData = Paths.loadJSON('characters/${charId}');
+					var charData:CharacterData = Paths.loadJSONInDefaultLibrary('characters/${charId}/${charId}');
 					if (charData == null)
 					{
 						Debug.logError('Character $charId failed to load.');
@@ -372,7 +376,7 @@ class Character extends FlxSprite
 				else{
 					characterList.push(charId);
 
-					var charData:CharacterData = Paths.loadJSON('characters/${charId}');
+					var charData:CharacterData = Paths.loadJSONInDefaultLibrary('characters/${charId}/${charId}');
 					if (charData == null)
 					{
 						Debug.logError('Character $charId failed to load.');
@@ -387,9 +391,9 @@ class Character extends FlxSprite
 	public static function getCharacterIcon(char:String):String
 	{
 		var jsonData;
-		if (OpenFlAssets.exists(Paths.json('characters/${char}')))
+		if (OpenFlAssets.exists(Paths.getJson('characters/${char}/${char}')))
 		{
-			jsonData = Paths.loadJSON('characters/${char}');
+			jsonData = Paths.loadJSONInDefaultLibrary('characters/${char}/${char}');
 		}
 		else
 		{
@@ -419,9 +423,10 @@ class Character extends FlxSprite
 	public static function getCharacterColor(char:String):Array<Int>
 	{
 		var jsonData;
-		if (OpenFlAssets.exists(Paths.json('characters/${char}')))
+		Debug.logTrace(Paths.getJson('characters/${char}/${char}'));
+		if (OpenFlAssets.exists(Paths.getJson('characters/${char}/${char}')))
 		{
-			jsonData = Paths.loadJSON('characters/${char}');
+			jsonData = Paths.loadJSONInDefaultLibrary('characters/${char}/${char}');
 		}
 		else
 		{
@@ -453,7 +458,7 @@ class Character extends FlxSprite
 		var data:CharacterData = cast jsonData;
 		var tex:FlxAtlasFrames;
 
-		frames = Paths.getCharacterFrames(data.asset.replaceAll('characters/', ''));
+		frames = Paths.getCharacterFrames(curCharacter, data.asset.replaceAll('characters/', ''));
 
 		if (frames != null)
 			for (anim in data.animations)
@@ -518,7 +523,7 @@ class Character extends FlxSprite
 	function loadPsychEngineCharacter(rawJson:Dynamic) {
 		var json:PsychCharacterFile = cast rawJson;
 		
-		frames = Paths.getCharacterFrames(json.image.replaceAll('characters/', ''));
+		frames = Paths.getCharacterFrames(curCharacter, json.image.replaceAll('characters/', ''));
 
 		if (json.scale != 1)
 		{
@@ -589,6 +594,24 @@ class Character extends FlxSprite
 		barColor = FlxColor.fromRGB(healthColorArray[0], healthColorArray[1], healthColorArray[2]);
 
 		playAnim('idle');
+	}
+
+	static function listCharacters()
+	{
+		var dataAssets = OpenFlAssets.list(TEXT);
+
+		var queryPath = 'assets/characters/';
+
+		var results:Array<String> = [];
+
+		for (data in dataAssets)
+		{
+			if (data.contains(queryPath) && data.endsWith('.json'))
+			{
+				results.push(data.replaceAll('.json', '').replaceAll(queryPath, '').removeBefore('/').replaceAll('/', ''));
+			}
+		}
+		return results;
 	}
 }
 

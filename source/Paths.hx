@@ -252,6 +252,32 @@ class Paths
 		}
 	}
 
+	static public function loadJSONInDefaultLibrary(key:String, ?library:String):Dynamic
+	{
+		var rawJson = OpenFlAssets.getText(Paths.getJson(key, library)).trim();
+
+		// Perform cleanup on files that have bad data at the end.
+		while (!rawJson.endsWith("}"))
+		{
+			rawJson = rawJson.substr(0, rawJson.length - 1);
+		}
+
+		try
+		{
+			// Attempt to parse and return the JSON data.
+			return Json.parse(rawJson);
+		}
+		catch (e)
+		{
+			Debug.logError("AN ERROR OCCURRED parsing a JSON file.");
+			Debug.logError(e.message);
+			Debug.logError(e.stack);
+
+			// Return null.
+			return null;
+		}
+	}
+
 	static public function loadJSON(key:String, ?library:String):Dynamic
 	{
 		var rawJson = OpenFlAssets.getText(Paths.json(key, library)).trim();
@@ -329,6 +355,11 @@ class Paths
 	inline static public function json(key:String, ?library:String)
 	{
 		return getPath('data/$key.json', TEXT, library);
+	}
+
+	inline static public function getJson(key:String, ?library:String)
+	{
+		return getPath('$key.json', TEXT, library);
 	}
 
 	inline static public function imagesJson(key:String, ?library:String)
@@ -639,25 +670,25 @@ class Paths
 	 * @return The list of JSON files under that path.
 	 */
 	public static function listJsonInPath(path:String)
+	{
+		var dataAssets = OpenFlAssets.list(TEXT);
+	
+		var queryPath = '${path}';
+	
+		var results:Array<String> = [];
+	
+		for (data in dataAssets)
 		{
-			var dataAssets = OpenFlAssets.list(TEXT);
-	
-			var queryPath = '${path}';
-	
-			var results:Array<String> = [];
-	
-			for (data in dataAssets)
+			if (data.indexOf(queryPath) != -1 && data.endsWith('.json')
+				&& !results.contains(data.substr(data.indexOf(queryPath) + queryPath.length).replaceAll('.json', '')))
 			{
-				if (data.indexOf(queryPath) != -1 && data.endsWith('.json')
-					 && !results.contains(data.substr(data.indexOf(queryPath) + queryPath.length).replaceAll('.json', '')))
-				{
-					var suffixPos = data.indexOf(queryPath) + queryPath.length;
-					results.push(data.substr(suffixPos).replaceAll('.json', ''));
-				}
+				var suffixPos = data.indexOf(queryPath) + queryPath.length;
+				results.push(data.substr(suffixPos).replaceAll('.json', ''));
 			}
-	
-			return results;
 		}
+	
+		return results;
+	}
 
 	/**
 	 * List all the image files under a given subdirectory.
@@ -712,19 +743,38 @@ class Paths
 			return results;
 		}
 
-	public inline static function getHscriptPath(script:String, folder:String = '', ?library:String):String
+	public inline static function getHscriptPath(script:String, folder:String = '', isCharScript:Bool = false, ?library:String):String
 	{
-		if (OpenFlAssets.exists(getPath('scripts/$folder/$script.hscript', BINARY, library)))
-			return getPath('scripts/$folder/$script.hscript', BINARY, library);
-		else if (OpenFlAssets.exists(getPath('scripts/$folder/$script.hx', BINARY, library)))
-			return getPath('scripts/$folder/$script.hx', BINARY, library);
-		#if FEATURE_FILESYSTEM
-		else if (FileSystem.exists(getPath('scripts/$folder/$script.hscript', BINARY, library)))
-			return getPath('scripts/$folder/$script.hscript', BINARY, library);
-		else if (FileSystem.exists(getPath('scripts/$folder/$script.hx', BINARY, library)))
-			return getPath('scripts/$folder/$script.hx', BINARY, library);
-		#end
-		else return null;
+		if (isCharScript)
+		{
+			if (OpenFlAssets.exists(getPath('characters/$folder/$script.hscript', BINARY, library)))
+				return getPath('characters/$folder/$script.hscript', BINARY, library);
+			else if (OpenFlAssets.exists(getPath('scripts/$folder/$script.hx', BINARY, library)))
+				return getPath('characters/$folder/$script.hx', BINARY, library);
+			#if FEATURE_FILESYSTEM
+			else if (FileSystem.exists(getPath('characters/$folder/$script.hscript', BINARY, library)))
+				return getPath('characters/$folder/$script.hscript', BINARY, library);
+			else if (FileSystem.exists(getPath('characters/$folder/$script.hx', BINARY, library)))
+				return getPath('characters/$folder/$script.hx', BINARY, library);
+			#end
+			else
+				return null;
+		}
+		else
+		{
+			if (OpenFlAssets.exists(getPath('scripts/$folder/$script.hscript', BINARY, library)))
+				return getPath('scripts/$folder/$script.hscript', BINARY, library);
+			else if (OpenFlAssets.exists(getPath('scripts/$folder/$script.hx', BINARY, library)))
+				return getPath('scripts/$folder/$script.hx', BINARY, library);
+			#if FEATURE_FILESYSTEM
+			else if (FileSystem.exists(getPath('scripts/$folder/$script.hscript', BINARY, library)))
+				return getPath('scripts/$folder/$script.hscript', BINARY, library);
+			else if (FileSystem.exists(getPath('scripts/$folder/$script.hx', BINARY, library)))
+				return getPath('scripts/$folder/$script.hx', BINARY, library);
+			#end
+			else
+				return null;
+		}
 	}
 
 	public static function isAnimated(key:String, ?library:String)
@@ -753,15 +803,82 @@ class Paths
 		return currentTrackedSounds.get(gottenPath);
 	}
 
-	inline static public function getCharacterFrames(key:String):FlxFramesCollection
+	inline static public function getCharacterFrames(charName:String, ?key:String):FlxFramesCollection
 	{
-		if (OpenFlAssets.exists('assets/shared/images/characters/$key/spritemap.json'))
-			return AtlasFrameMaker.construct('characters/$key');
-		else if (OpenFlAssets.exists('assets/shared/images/characters/$key.txt'))
-			return FlxAtlasFrames.fromSpriteSheetPacker(loadImage('characters/$key', 'shared'), file('images/characters/$key.txt', 'shared'));
+		//if (OpenFlAssets.exists('assets/characters/$key/spritemap.json'))
+			//return AtlasFrameMaker.construct('characters/$key');
+		/*else*/
+		var filePath = 'characters/$charName/${key != null ? key : charName}';
+		if (OpenFlAssets.exists('assets/characters/$charName/${key != null ? key : charName}.txt'))
+			return FlxAtlasFrames.fromSpriteSheetPacker(loadCharactersImage(charName, key != null ? key : charName),
+			file('$filePath.txt'));
 		else
-			return FlxAtlasFrames.fromSparrow(loadImage('characters/$key', 'shared'), file('images/characters/$key.xml', 'shared'));
+		{
+			if (OpenFlAssets.exists(findMatchingFiles(key != null ? key : charName + '.txt'))
+				|| OpenFlAssets.exists(findMatchingFiles(key != null ? key : charName + '.xml')))
+			{
+				if (OpenFlAssets.exists(findMatchingFiles(key != null ? key : charName + '.txt')))
+				{
+					filePath = findMatchingFiles(key != null ? key : charName + '.txt');
+					return FlxAtlasFrames.fromSpriteSheetPacker(loadCharactersImage(charName, key != null ? key : charName), file('$filePath.txt'));
+				}
+				else
+				{
+					filePath = findMatchingFiles(key != null ? key : charName + '.xml');
+					return FlxAtlasFrames.fromSparrow(loadCharactersImage(charName, key != null ? key : charName), file('$filePath.xml'));
+				}
+			}
+			return null;
+		}	
+	}
 
+	inline static public function characterImage(charName:String, key:String, ?library:String)
+	{
+		return getPath('characters/$charName/$key.png', IMAGE, library);
+	}
+
+	static public function loadCharactersImage(charName:String, key:String, ?library:String):FlxGraphic
+	{
+		var path = characterImage(charName, key, library);
+
+		if (OpenFlAssets.exists(path, IMAGE))
+		{
+			var bitmap = OpenFlAssets.getBitmapData(path);
+			return FlxGraphic.fromBitmapData(bitmap);
+		}
+		else
+		{
+			var search = findMatchingFiles('$key.png');
+
+			if (OpenFlAssets.exists(search, IMAGE) && search != null)
+			{
+				var bitmap = OpenFlAssets.getBitmapData(search);
+				return FlxGraphic.fromBitmapData(bitmap);
+			}
+			else
+			{
+				Debug.logWarn('Could not find image at path $path');
+				return null;
+			}
+		}
+	}
+
+	/**
+	 * Function which wants to help find you this file all around the engine!
+	 * - and mods ;)
+	 * @param fileName name of file to find with extension
+	 * @return File path
+	 */
+	static public function findMatchingFiles(fileName:String):String
+	{
+		var files = OpenFlAssets.list();
+
+		for (file in files)
+		{
+			if (file.endsWith(fileName))
+				return file;
+		}
+		return null;
 	}
 
 	inline static public function getPackerAtlas(key:String, ?library:String, ?isCharacter:Bool = false)

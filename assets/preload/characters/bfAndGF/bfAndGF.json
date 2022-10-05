@@ -127,11 +127,11 @@
 		0
 	],
 	"flipX": true,
-	"asset": "characters/bfAndGF",
+	"asset": "characters/bfAndGFSprite",
 	"startingAnim": "idle",
 	"characterIcon": "bfAndGF",
 	"antialiasing": true,
-	"name": "characters/bfAndGF",
+	"name": "characters/bfAndGFSprite",
 	"barColorJson": [
 		49,
 		176,

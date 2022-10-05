@@ -121,7 +121,7 @@ class CharacterEditorState extends MusicBeatState
 		add(healthBarBG);
 		healthBarBG.cameras = [camHUD];
 
-		leHealthIcon = new HealthIcon(daAnim, false);
+		leHealthIcon = new HealthIcon('', 'face', false);
 		leHealthIcon.y = FlxG.height - 150;
 		add(leHealthIcon);
 		leHealthIcon.cameras = [camHUD];
@@ -779,7 +779,7 @@ class CharacterEditorState extends MusicBeatState
 	override function getEvent(id:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>) {
 		if(id == FlxUIInputText.CHANGE_EVENT && (sender is FlxUIInputText)) {
 			if(sender == healthIconInputText) {
-				leHealthIcon.changeIcon(healthIconInputText.text);
+				leHealthIcon.changeIcon(daAnim, healthIconInputText.text);
 				char.characterIcon = healthIconInputText.text;
 			}
 			if(sender == imageInputText) {
@@ -850,7 +850,7 @@ class CharacterEditorState extends MusicBeatState
 		}
 		var anims:Array<AnimationData> = char.animationsArray.copy();
 
-		char.frames = Paths.getCharacterFrames(char.asset.replaceAll('characters/', ''));
+		char.frames = Paths.getCharacterFrames(char.curCharacter, char.asset.replaceAll('characters/', ''));
 		
 		if(char.animationsArray != null && char.animationsArray.length > 0) {
 			for (anim in char.animationsArray) {
@@ -998,7 +998,7 @@ class CharacterEditorState extends MusicBeatState
 			noAntialiasingCheckBox.checked = char.charAntialiasing;
 			hasTrailCheckBox.checked = char.hasTrail;
 			resetHealthBarColor();
-			leHealthIcon.changeIcon(healthIconInputText.text);
+			leHealthIcon.changeIcon(daAnim, healthIconInputText.text);
 			if (char.positionArray != null)
 			{
 				positionXStepper.value = char.positionArray[0];

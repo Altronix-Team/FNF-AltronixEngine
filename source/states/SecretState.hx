@@ -1,5 +1,6 @@
 package states;
 
+import gameplayStuff.Character;
 import flash.text.TextField;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -94,7 +95,7 @@ class SecretState extends MusicBeatState
 			grpSongs.add(songText);
 
 			getCharacterIcon(songs[i].songCharacter);
-			var icon:HealthIcon = new HealthIcon(characterIcon);
+			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter, Character.getCharacterIcon(songs[i].songCharacter));
 			icon.sprTracker = songText;
 
 			// using a FlxGroup is too much fuss!

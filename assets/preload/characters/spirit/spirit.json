@@ -2,59 +2,67 @@
 	"animations": [
 		{
 			"offsets": [
-				0,
-				0
+				-220,
+				-280
 			],
 			"frameRate": 24,
-			"prefix": "Senpai Idle",
+			"prefix": "idle spirit_",
 			"frameIndices": [],
 			"name": "idle"
 		},
 		{
+			"nextAnim": "idle",
 			"offsets": [
-				5,
-				37
+				-220,
+				-240
 			],
 			"frameRate": 24,
-			"prefix": "SENPAI UP NOTE",
+			"prefix": "up_",
 			"frameIndices": [],
+			"interrupt": false,
 			"name": "singUP"
 		},
 		{
+			"nextAnim": "idle",
 			"offsets": [
-				40,
-				0
+				-200,
+				-280
 			],
 			"frameRate": 24,
-			"prefix": "SENPAI LEFT NOTE",
+			"prefix": "left_",
 			"frameIndices": [],
+			"interrupt": false,
 			"name": "singLEFT"
 		},
 		{
+			"nextAnim": "idle",
 			"offsets": [
-				0,
-				0
+				-220,
+				-280
 			],
 			"frameRate": 24,
-			"prefix": "SENPAI RIGHT NOTE",
+			"prefix": "right_",
 			"frameIndices": [],
+			"interrupt": false,
 			"name": "singRIGHT"
 		},
 		{
+			"nextAnim": "idle",
 			"offsets": [
-				14,
-				0
+				170,
+				110
 			],
 			"frameRate": 24,
-			"prefix": "SENPAI DOWN NOTE",
+			"prefix": "spirit down_",
 			"frameIndices": [],
+			"interrupt": false,
 			"name": "singDOWN"
 		}
 	],
-	"hasTrail": false,
+	"hasTrail": true,
 	"camPos": [
-		-150,
-		-370
+		-10,
+		0
 	],
 	"holdLength": 4,
 	"charPos": [
@@ -62,15 +70,15 @@
 		0
 	],
 	"flipX": false,
-	"asset": "characters/senpai",
+	"asset": "characters/spiritSprite",
 	"startingAnim": "idle",
-	"characterIcon": "senpai",
+	"characterIcon": "spirit",
 	"antialiasing": false,
-	"name": "characters/senpai",
+	"name": "characters/spiritSprite",
 	"barColorJson": [
 		255,
-		170,
-		111
+		60,
+		110
 	],
 	"replacesGF": false,
 	"scale": 6

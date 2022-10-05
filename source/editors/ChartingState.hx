@@ -324,8 +324,8 @@ class ChartingState extends MusicBeatState
 		Conductor.changeBPM(_song.bpm);
 		Conductor.mapBPMChanges(_song);
 
-		leftIcon = new HealthIcon(Character.getCharacterIcon(_song.player1));
-		rightIcon = new HealthIcon(Character.getCharacterIcon(_song.player2));
+		leftIcon = new HealthIcon(_song.player1, Character.getCharacterIcon(_song.player1));
+		rightIcon = new HealthIcon(_song.player1, Character.getCharacterIcon(_song.player2));
 
 		var index = 0;
 
@@ -462,9 +462,10 @@ class ChartingState extends MusicBeatState
 			var sectionicon = null;
 
 			if (_song.notes[awfgaw].gfSection)
-				sectionicon = new HealthIcon(Character.getCharacterIcon(_song.gfVersion)).clone();
+				sectionicon = new HealthIcon(_song.gfVersion, Character.getCharacterIcon(_song.gfVersion)).clone();
 			else
-				sectionicon = _song.notes[awfgaw].mustHitSection ? new HealthIcon(Character.getCharacterIcon(_song.player1)).clone() : new HealthIcon(Character.getCharacterIcon(_song.player2)).clone();
+				sectionicon = _song.notes[awfgaw].mustHitSection ? new HealthIcon(_song.player1,
+					Character.getCharacterIcon(_song.player1)).clone() : new HealthIcon(_song.player2, Character.getCharacterIcon(_song.player2)).clone();
 
 			sectionicon.x = -95;
 			sectionicon.y = down - 75;
@@ -1601,11 +1602,11 @@ class ChartingState extends MusicBeatState
 					remove(i.icon);
 					var sectionicon = null;
 					if (sect.gfSection)
-						sectionicon = new HealthIcon(Character.getCharacterIcon(_song.gfVersion)).clone();
+						sectionicon = new HealthIcon(_song.gfVersion, Character.getCharacterIcon(_song.gfVersion)).clone();
 					else if (sect.mustHitSection)
-						sectionicon = new HealthIcon(Character.getCharacterIcon(_song.player1)).clone();
+						sectionicon = new HealthIcon(_song.player1, Character.getCharacterIcon(_song.player1)).clone();
 					else
-						sectionicon = new HealthIcon(Character.getCharacterIcon(_song.player2)).clone();
+						sectionicon = new HealthIcon(_song.player2, Character.getCharacterIcon(_song.player2)).clone();
 					sectionicon.x = -95;
 					sectionicon.y = cachedY;
 					sectionicon.setGraphicSize(0, 45);
@@ -1649,11 +1650,11 @@ class ChartingState extends MusicBeatState
 					remove(i.icon);
 					var sectionicon = null;
 					if (sect.gfSection)
-						sectionicon = new HealthIcon(Character.getCharacterIcon(_song.gfVersion)).clone();
+						sectionicon = new HealthIcon(_song.gfVersion, Character.getCharacterIcon(_song.gfVersion)).clone();
 					else if (sect.mustHitSection)
-						sectionicon = new HealthIcon(Character.getCharacterIcon(_song.player1)).clone();
+						sectionicon = new HealthIcon(_song.player1, Character.getCharacterIcon(_song.player1)).clone();
 					else
-						sectionicon = new HealthIcon(Character.getCharacterIcon(_song.player2)).clone();
+						sectionicon = new HealthIcon(_song.player2, Character.getCharacterIcon(_song.player2)).clone();
 					sectionicon.x = -95;
 					sectionicon.y = cachedY;
 					sectionicon.setGraphicSize(0, 45);
@@ -3282,9 +3283,9 @@ class ChartingState extends MusicBeatState
 					remove(i.icon);
 					var sectionicon = null;
 					if (sect.gfSection)
-						sectionicon = new HealthIcon(Character.getCharacterIcon(_song.gfVersion)).clone();
+						sectionicon = new HealthIcon(_song.gfVersion, Character.getCharacterIcon(_song.gfVersion)).clone();
 					else
-						sectionicon = sect.mustHitSection ? new HealthIcon(Character.getCharacterIcon(_song.player1)).clone() : new HealthIcon(Character.getCharacterIcon(_song.player2)).clone();
+						sectionicon = sect.mustHitSection ? new HealthIcon(_song.player1, Character.getCharacterIcon(_song.player1)).clone() : new HealthIcon(_song.player2, Character.getCharacterIcon(_song.player2)).clone();
 					sectionicon.x = -95;
 					sectionicon.y = cachedY;
 					sectionicon.setGraphicSize(0, 45);
@@ -3628,11 +3629,11 @@ class ChartingState extends MusicBeatState
 			remove(i.icon);
 			var sectionicon = null;
 			if (sect.gfSection)
-				sectionicon = new HealthIcon(Character.getCharacterIcon(_song.gfVersion)).clone();
+				sectionicon = new HealthIcon(_song.gfVersion, Character.getCharacterIcon(_song.gfVersion)).clone();
 			else if (sect.mustHitSection)
-				sectionicon = new HealthIcon(Character.getCharacterIcon(_song.player1)).clone();
+				sectionicon = new HealthIcon(_song.player1, Character.getCharacterIcon(_song.player1)).clone();
 			else
-				sectionicon = new HealthIcon(Character.getCharacterIcon(_song.player2)).clone();
+				sectionicon = new HealthIcon(_song.player2, Character.getCharacterIcon(_song.player2)).clone();
 			sectionicon.x = -95;
 			sectionicon.y = cachedY;
 			sectionicon.setGraphicSize(0, 45);

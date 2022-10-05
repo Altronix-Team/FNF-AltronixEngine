@@ -28,39 +28,38 @@ typedef IconAnims =
 }
 class HealthIcon extends FlxSprite
 {
-	public var char:String = 'bf';
+	public var character:String = 'bf';
+	public var filename:String;
 	public var isPlayer:Bool = false;
 	public var isOldIcon:Bool = false;
 
-	/**
-	 * Used for FreeplayState! If you use it elsewhere, prob gonna annoying
-	 */
 	public var sprTracker:FlxSprite;
 
 	public var defaultAnim:String;
 	public var nearToDieAnim:String;
 
-	public function new(?char:String = "bf", ?isPlayer:Bool = false)
+	public function new(character:String, filename:String, ?isPlayer:Bool = false)
 	{
 		super();
 
-		this.char = char;
+		this.character = character;
 		this.isPlayer = isPlayer;
+		this.filename = filename;
 
 		isPlayer = isOldIcon = false;
 			
-		changeIcon(char);
+		changeIcon(character, filename);
 
 		scrollFactor.set();
 	}
 
 	public function swapOldIcon()
 	{
-		(isOldIcon = !isOldIcon) ? changeIcon("bf-old") : changeIcon(char);
+		(isOldIcon = !isOldIcon) ? changeIcon(character, "bf-old") : changeIcon(character, filename);
 	}
 
 	private var iconOffsets:Array<Float> = [0, 0];
-	public function changeIcon(char:String)
+	public function changeIcon(char:String, filename:String)
 	{
 		/*if (Paths.isAnimated('icons/$char'))
 		{
@@ -68,11 +67,11 @@ class HealthIcon extends FlxSprite
 		}
 		else
 		{*/
-			loadIconLegacy(char);
+			loadIconLegacy(char, filename);
 		//}
 	}
 
-	function loadIcon(char:String)
+	/*function loadIcon(char:String)
 	{
 		if (!OpenFlAssets.exists(Paths.image('icons/' + char)))
 		{
@@ -93,27 +92,28 @@ class HealthIcon extends FlxSprite
 		}
 	
 		animation.play(data.defaultAnim);
-	}
+	}*/
 	
-	function loadIconLegacy(char:String)
+	function loadIconLegacy(char:String, filename:String)
 	{
-		var image = Paths.image('icons/' + char);
+		var image = image(char != '' ? '/$char' : '', filename);
 		if (image == null)
 		{
 			Debug.logError('Error loading graphic for health icon ${char}');
 
-			loadGraphic(Paths.loadImage('icons/face'), true, 150, 150);
+			loadGraphic(loadImage('', 'face'), true, 150, 150);
 
 			antialiasing = FlxG.save.data.antialiasing;
 			animation.add('face', [0, 1], 0, false, isPlayer);
 			animation.play('face');
+			return;
 		}
 	
-		loadGraphic(Paths.loadImage('icons/' + char));
+		loadGraphic(loadImage(char, filename));
 		if (width <= 150)
-			loadGraphic(Paths.loadImage('icons/' + char), true, Math.floor(width), Math.floor(height));
+			loadGraphic(loadImage(char, filename), true, Math.floor(width), Math.floor(height));
 		else
-			loadGraphic(Paths.loadImage('icons/' + char), true, Math.floor(width / 2), Math.floor(height));
+			loadGraphic(loadImage(char, filename), true, Math.floor(width / 2), Math.floor(height));
 
 		iconOffsets[0] = (width - 150) / 2;
 		iconOffsets[1] = (width - 150) / 2;
@@ -129,11 +129,11 @@ class HealthIcon extends FlxSprite
 	}
 
 	override function updateHitbox()
-		{
-			super.updateHitbox();
-			offset.x = iconOffsets[0];
-			offset.y = iconOffsets[1];
-		}
+	{
+		super.updateHitbox();
+		offset.x = iconOffsets[0];
+		offset.y = iconOffsets[1];
+	}
 
 	override function update(elapsed:Float)
 	{
@@ -141,5 +141,25 @@ class HealthIcon extends FlxSprite
 
 		if (sprTracker != null)
 			setPosition(sprTracker.x + sprTracker.width + 10, sprTracker.y - 30);
+	}
+
+	inline static public function image(character:String = '', key:String, ?library:String)
+	{
+		return Paths.getPath('characters$character/$key.png', IMAGE, library);
+	}
+
+	static public function loadImage(character:String = '', key:String, ?library:String):FlxGraphic
+	{
+		var path = image(character != '' ? '/$character': '', key, library);
+
+		if (OpenFlAssets.exists(path, IMAGE))
+		{
+			var bitmap = OpenFlAssets.getBitmapData(path);
+			return FlxGraphic.fromBitmapData(bitmap);
+		}
+		else
+		{
+			return loadImage('', 'face');
+		}
 	}
 }

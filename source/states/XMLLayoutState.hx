@@ -20,7 +20,8 @@ class XMLLayoutState extends FlxUIState
 
 	function getXMLId():String
 	{
-		return 'assets/ui/mod_menu';
+		Debug.logTrace('override me!');
+		return 'string';
 	}
 
 	override function create()
@@ -29,7 +30,6 @@ class XMLLayoutState extends FlxUIState
 		// Make sure the XML gets loaded.
 		this._xml_id = getXMLId();
 
-		// You dumbass. You cretin. You nincompoop.
 		super.create();
 	}
 

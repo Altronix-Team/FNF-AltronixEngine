@@ -66,9 +66,9 @@ class CreditsState extends MusicBeatState
 		grpOptions = new FlxTypedGroup<Alphabet>();
 		add(grpOptions);
 
-		if (Assets.exists(Paths.json('credits')))
+		if (Assets.exists(Paths.json('data/credits')))
 		{
-			var file:CreditsFile = cast Paths.loadJSON('credits');
+			var file:CreditsFile = cast Paths.loadJSON('data/credits');
 			creditsStuff.push([file.modName]);
 
 			for (credit in file.credits)

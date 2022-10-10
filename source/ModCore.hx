@@ -7,6 +7,7 @@ import polymod.format.ParseRules.TextFileFormat;
 import polymod.Polymod;
 #end
 
+using hx.strings.Strings;
 /**
  * Okay now this is epic.
  */
@@ -112,6 +113,11 @@ class ModCore
 		Debug.logInfo('Installed mods have replaced ${fileList.length} file.');
 		for (item in fileList)
 			Debug.logTrace('  * $item');
+
+		replacedFiles = [];
+		var files = Polymod.listModFiles();
+		for (file in files)
+			replacedFiles.push(file.removeBefore('/'));
 
 		NoteskinHelpers.updateNoteskins();
 
@@ -228,7 +234,10 @@ class ModCore
 		for (item in fileList)
 			Debug.logTrace('  * $item');
 
-		replacedFiles = Polymod.listModFiles();
+		replacedFiles = [];
+		var files = Polymod.listModFiles();
+		for (file in files)
+			replacedFiles.push(file.removeBefore('/'));
 
 		if (!polymodLoaded)
 			polymodLoaded = true;

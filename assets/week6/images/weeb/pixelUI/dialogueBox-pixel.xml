@@ -7,4 +7,5 @@
 	<SubTexture name="Text Box Appear instance 10002" x="0" y="154" width="249" height="144"/>
 	<SubTexture name="Text Box Appear instance 10003" x="259" y="154" width="249" height="144"/>
 	<SubTexture name="Text Box Appear instance 10004" x="259" y="154" width="249" height="144"/>
+	<SubTexture name="Text Box Idle instance 10000" x="259" y="154" width="249" height="144"/>
 </TextureAtlas>

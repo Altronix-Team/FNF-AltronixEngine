@@ -8,7 +8,7 @@ class TimingStruct
 {
 	public static var AllTimings:Array<TimingStruct> = [];
 
-	public var bpm:Float = 0; // idk what does  this do
+	public var bpm:Float = 0; // idk what does this do
 
 	public var startBeat:Float = 0; // BEATS
 	public var startStep:Int = 0; // BAD MEASUREMENTS

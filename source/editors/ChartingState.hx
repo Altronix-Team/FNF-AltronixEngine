@@ -205,8 +205,6 @@ class ChartingState extends MusicBeatState
 	
 	var sectionIcons:FlxTypedGroup<FlxSprite>;
 
-	//var waveform:Waveform;
-
 	public function new(reloadOnInit:Bool = false)
 	{
 		super();
@@ -444,17 +442,12 @@ class ChartingState extends MusicBeatState
 			sectionRenderes.add(renderer);
 
 			#if desktop
-			/*if (FlxG.save.data.chart_waveform)
+			if (FlxG.save.data.chart_waveform)
 			{
-				for (awfgaw in 0..._song.notes.length)
-				{
-					var waveformrenderer = new WaveformRender(0, 640 * awfgaw, GRID_SIZE, _song.notes[awfgaw].startTime, _song.notes[awfgaw].endTime, vocals);
+				var waveformrenderer = new WaveformRender(0, 640 * awfgaw, _song, GRID_SIZE, _song.notes[awfgaw].lengthInSteps, awfgaw);
 
-					waveformrenderer.section = _song.notes[awfgaw];
-
-					waveformRenderes.add(waveformrenderer);
-				}
-			}*/
+				waveformRenderes.add(waveformrenderer);
+			}
 			#end
 
 			var down = getYfromStrum(renderer.section.startTime) * zoomFactor;
@@ -480,9 +473,6 @@ class ChartingState extends MusicBeatState
 		}
 
 		gridBlackLine = new FlxSprite(gridBG.width / 2).makeGraphic(2, height, FlxColor.BLACK);
-
-		/*waveform = new Waveform(0, 0, Paths.voices(_song.songId, PlayState.SONG.diffSoundAssets), height);
-		waveform.visible = FlxG.save.data.chart_waveform;*/
 
 		// leftIcon.scrollFactor.set();
 		// rightIcon.scrollFactor.set();
@@ -567,11 +557,6 @@ class ChartingState extends MusicBeatState
 		add(sectionRenderes);
 
 		add(waveformRenderes);
-
-		//if (waveform.visible)
-			//waveform.drawWaveform();
-
-		//add(waveform);
 		add(dummyArrow);
 		add(strumLine);
 		add(lines);
@@ -1319,17 +1304,15 @@ class ChartingState extends MusicBeatState
 
 			FlxG.save.data.chart_waveform = waveformEnabled.checked;
 
-			/*if (FlxG.save.data.chart_waveform)
+			if (FlxG.save.data.chart_waveform)
 			{
 				for (awfgaw in 0..._song.notes.length)
 				{
-					var waveformrenderer = new WaveformRender(0, 640 * awfgaw, GRID_SIZE, _song.notes[awfgaw].startTime, _song.notes[awfgaw].endTime, vocals);
-
-					waveformrenderer.section = _song.notes[awfgaw];
+					var waveformrenderer = new WaveformRender(0, 640 * awfgaw,_song, GRID_SIZE, _song.notes[awfgaw].lengthInSteps, awfgaw);
 
 					waveformRenderes.add(waveformrenderer);
 				}
-			}*/
+			}
 		};
 		#end
 
@@ -1533,7 +1516,7 @@ class ChartingState extends MusicBeatState
 		tab_group_chartshit.add(stepperSongVol);
 		tab_group_chartshit.add(stepperSongVolLabel);
 		#if desktop
-		//tab_group_chartshit.add(waveformEnabled);
+		tab_group_chartshit.add(waveformEnabled);
 		#end
 
 		UI_box.addGroup(tab_group_song);

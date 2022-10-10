@@ -1,5 +1,6 @@
 package states;
 
+import flixel.system.FlxSound;
 import scriptStuff.ScriptHelper;
 import flixel.FlxCamera;
 import lime.app.Application;
@@ -256,6 +257,11 @@ class MusicBeatState extends BaseState
 
 	function onWindowFocusOut():Void
 	{
+		/*soundList.forEach(function(sound:FlxSound)
+		{
+			if (sound.playing)
+				sound.pause();
+		});*/
 		if (FlxG.sound.music.playing)
 			FlxG.sound.music.pause();
 	}
@@ -263,6 +269,10 @@ class MusicBeatState extends BaseState
 	function onWindowFocusIn():Void
 	{
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
+		/*soundList.forEach(function(sound:FlxSound)
+		{
+			sound.resume();
+		});*/
 		FlxG.sound.music.resume();
 	}
 }

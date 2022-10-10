@@ -786,7 +786,7 @@ class CharacterEditorState extends MusicBeatState
 	override function getEvent(id:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>) {
 		if(id == FlxUIInputText.CHANGE_EVENT && (sender is FlxUIInputText)) {
 			if(sender == healthIconInputText) {
-				leHealthIcon.changeIcon(daAnim, healthIconInputText.text);
+				leHealthIcon.changeIcon(charFolder, healthIconInputText.text);
 				char.characterIcon = healthIconInputText.text;
 			}
 			if(sender == imageInputText) {
@@ -1011,7 +1011,7 @@ class CharacterEditorState extends MusicBeatState
 			noAntialiasingCheckBox.checked = char.charAntialiasing;
 			hasTrailCheckBox.checked = char.hasTrail;
 			resetHealthBarColor();
-			leHealthIcon.changeIcon(daAnim, healthIconInputText.text);
+			leHealthIcon.changeIcon(charFolder, healthIconInputText.text);
 			if (char.positionArray != null)
 			{
 				positionXStepper.value = char.positionArray[0];

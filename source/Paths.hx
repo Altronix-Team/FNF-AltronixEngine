@@ -252,32 +252,6 @@ class Paths
 		}
 	}
 
-	static public function loadJSONInDefaultLibrary(key:String, ?library:String):Dynamic
-	{
-		var rawJson = OpenFlAssets.getText(Paths.getJson(key, library)).trim();
-
-		// Perform cleanup on files that have bad data at the end.
-		while (!rawJson.endsWith("}"))
-		{
-			rawJson = rawJson.substr(0, rawJson.length - 1);
-		}
-
-		try
-		{
-			// Attempt to parse and return the JSON data.
-			return Json.parse(rawJson);
-		}
-		catch (e)
-		{
-			Debug.logError("AN ERROR OCCURRED parsing a JSON file.");
-			Debug.logError(e.message);
-			Debug.logError(e.stack);
-
-			// Return null.
-			return null;
-		}
-	}
-
 	static public function loadJSON(key:String, ?library:String):Dynamic
 	{
 		var rawJson = OpenFlAssets.getText(Paths.json(key, library)).trim();
@@ -354,11 +328,6 @@ class Paths
 
 	inline static public function json(key:String, ?library:String)
 	{
-		return getPath('data/$key.json', TEXT, library);
-	}
-
-	inline static public function getJson(key:String, ?library:String)
-	{
 		return getPath('$key.json', TEXT, library);
 	}
 
@@ -386,39 +355,55 @@ class Paths
 		return path.toLowerCase().replace(' ', '-');
 	}
 
-	inline static public function formatToDialoguePath(file:String, isJSON:Bool = false):String {
+	static public function formatToDialoguePath(file:String):Dynamic {
 		var retPath:String ='';
 		var lang:String = '';
 		if (LanguageStuff.locale != 'en-US')
 			lang = LanguageStuff.locale;
 
-		if (isJSON)
-			retPath = Paths.json('songs/' + file + '-' + lang);
-		else
-			retPath = Paths.txt('data/songs/' + file + '-' + lang);
+		retPath = Paths.json(file + '-' + lang, 'songs');
 			
 		if (OpenFlAssets.exists(retPath))
 		{
 			Debug.logInfo('Found dialogue file at path ' + retPath);
-			return retPath;
 		}
 		else{
 			Debug.logInfo('Failed found dialogue file with engine language. Trying to load dialogue with default language');
-			if (isJSON)
-				retPath = Paths.json('songs/' + file);
-			else
-				retPath = Paths.txt('data/songs/' + file);
+
+			retPath = Paths.json(file, 'songs');
 
 			if (OpenFlAssets.exists(retPath))
 			{ 
 				Debug.logInfo('Found dialogue file at path ' + retPath);
-				return retPath;
 			}
 			else 
 			{
 				Debug.logInfo('Failed found dialogue files, is they exists?');
 				return null;
 			}
+		}
+
+		var rawJson = OpenFlAssets.getText(retPath).trim();
+
+		// Perform cleanup on files that have bad data at the end.
+		while (!rawJson.endsWith("}"))
+		{
+			rawJson = rawJson.substr(0, rawJson.length - 1);
+		}
+
+		try
+		{
+			// Attempt to parse and return the JSON data.
+			return Json.parse(rawJson);
+		}
+		catch (e)
+		{
+			Debug.logError("AN ERROR OCCURRED parsing a JSON file.");
+			Debug.logError(e.message);
+			Debug.logError(e.stack);
+
+			// Return null.
+			return null;
 		}
 	}
 

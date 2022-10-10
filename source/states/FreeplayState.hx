@@ -103,7 +103,7 @@ class FreeplayState extends MusicBeatState
 			if (curSongData == null)
 				Debug.displayAlert('ERROR', 'ERROR in Freeplay trying to load song data: ${songId} : ${diffName}');
 			else
-				array.push(Song.conversionChecks(Song.loadFromJson(songId, diffName)));
+				array.push(/*Song.conversionChecks(*/Song.loadFromJson(songId, diffName))/*)*/;
 		}
 	}
 
@@ -240,7 +240,7 @@ class FreeplayState extends MusicBeatState
 	public static function populateSongData()
 	{
 		cached = false;
-		var freeplaySonglist = Paths.loadJSON('freeplaySonglist');
+		var freeplaySonglist = Paths.loadJSON('data/freeplaySonglist');
 
 		songData = [];
 		songs = [];

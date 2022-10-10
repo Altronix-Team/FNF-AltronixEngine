@@ -14,4 +14,5 @@
 	<SubTexture name="Spirit Textbox spawn instance 10009" x="0" y="310" width="249" height="145"/>
 	<SubTexture name="Spirit Textbox spawn instance 10010" x="259" y="310" width="249" height="145"/>
 	<SubTexture name="Spirit Textbox spawn instance 10011" x="259" y="310" width="249" height="145"/>
+	<SubTexture name="Spirit Textbox idle instance 10000" x="259" y="310" width="249" height="145"/>
 </TextureAtlas>

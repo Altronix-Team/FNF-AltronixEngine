@@ -145,7 +145,7 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 
 	public function startDialogue(dialogueFile:String, music:String = null)
 	{
-		var path:String = Paths.formatToDialoguePath(PlayState.SONG.songId + '/' + dialogueFile, true);
+		var path:String = Paths.formatToDialoguePath(PlayState.SONG.songId + '/' + dialogueFile);
 
 		if (path != null)
 		{

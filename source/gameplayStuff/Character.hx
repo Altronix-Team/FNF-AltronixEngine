@@ -89,14 +89,14 @@ class Character extends FlxSprite
 
 		// Load the data from JSON and cast it to a struct we can easily read.
 		var jsonData;
-		if (OpenFlAssets.exists(Paths.getJson('characters/${curCharacter}/${curCharacter}')))
+		if (OpenFlAssets.exists(Paths.json('characters/${curCharacter}/${curCharacter}')))
 		{
-			jsonData = Paths.loadJSONInDefaultLibrary('characters/${curCharacter}/${curCharacter}');
+			jsonData = Paths.loadJSON('characters/${curCharacter}/${curCharacter}');
 		}
 		else
 		{
 			Debug.logError('There is no character with this name!');
-			jsonData = Paths.loadJSONInDefaultLibrary('characters/dad/dad');
+			jsonData = Paths.loadJSON('characters/dad/dad');
 		}
 		if (jsonData == null)
 		{
@@ -308,7 +308,7 @@ class Character extends FlxSprite
 		#if CHECK_FOR_DEFAULT_CHARACTERS
 		for (char in EngineConstants.defaultCharacters)
 		{
-			if (OpenFlAssets.exists(Paths.getJson('characters/${char}/${char}')))
+			if (OpenFlAssets.exists(Paths.json('characters/${char}/${char}')))
 				characterList.push(char);
 			else
 				missingChars.push(char);
@@ -341,7 +341,7 @@ class Character extends FlxSprite
 				else{
 					characterList.push(charId);
 
-					var charData:CharacterData = Paths.loadJSONInDefaultLibrary('characters/${charId}/${charId}');
+					var charData:CharacterData = Paths.loadJSON('characters/${charId}/${charId}');
 					if (charData == null)
 					{
 						Debug.logError('Character $charId failed to load.');
@@ -376,7 +376,7 @@ class Character extends FlxSprite
 				else{
 					characterList.push(charId);
 
-					var charData:CharacterData = Paths.loadJSONInDefaultLibrary('characters/${charId}/${charId}');
+					var charData:CharacterData = Paths.loadJSON('characters/${charId}/${charId}');
 					if (charData == null)
 					{
 						Debug.logError('Character $charId failed to load.');
@@ -391,9 +391,9 @@ class Character extends FlxSprite
 	public static function getCharacterIcon(char:String):String
 	{
 		var jsonData;
-		if (OpenFlAssets.exists(Paths.getJson('characters/${char}/${char}')))
+		if (OpenFlAssets.exists(Paths.json('characters/${char}/${char}')))
 		{
-			jsonData = Paths.loadJSONInDefaultLibrary('characters/${char}/${char}');
+			jsonData = Paths.loadJSON('characters/${char}/${char}');
 		}
 		else
 		{
@@ -423,9 +423,9 @@ class Character extends FlxSprite
 	public static function getCharacterColor(char:String):Array<Int>
 	{
 		var jsonData;
-		if (OpenFlAssets.exists(Paths.getJson('characters/${char}/${char}')))
+		if (OpenFlAssets.exists(Paths.json('characters/${char}/${char}')))
 		{
-			jsonData = Paths.loadJSONInDefaultLibrary('characters/${char}/${char}');
+			jsonData = Paths.loadJSON('characters/${char}/${char}');
 		}
 		else
 		{

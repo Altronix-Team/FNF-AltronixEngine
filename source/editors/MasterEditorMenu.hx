@@ -27,8 +27,8 @@ class MasterEditorMenu extends states.MusicBeatState
 		//'GF Editor',
 		'Week Editor',
 		'Freeplay Songlist Editor',
-		'Dialogue Editor',
-		'Dialogue Character Editor',
+		//'Dialogue Editor',
+		//'Dialogue Character Editor',
 		'Chart Editor'
 	];
 	private var grpTexts:FlxTypedGroup<Alphabet>;
@@ -91,12 +91,12 @@ class MasterEditorMenu extends states.MusicBeatState
 					LoadingState.loadAndSwitchState(new CharacterEditorState(Character.DEFAULT_CHARACTER, false));
 				//case 'Chart Editor':
 					//LoadingState.loadAndSwitchState(new ChartingState(), false);
-				case 'Dialogue Editor':
-					LoadingState.loadAndSwitchState(new DialogueEditorState());
+				//case 'Dialogue Editor':
+					//LoadingState.loadAndSwitchState(new DialogueEditorState());
 				case 'Week Editor':
 					LoadingState.loadAndSwitchState(new WeekEditorState());
-				case 'Dialogue Character Editor':
-					LoadingState.loadAndSwitchState(new DialogueCharacterEditorState());
+			//	case 'Dialogue Character Editor':
+					//LoadingState.loadAndSwitchState(new DialogueCharacterEditorState());
 				case 'Freeplay Songlist Editor':
 					LoadingState.loadAndSwitchState(new FreeplaySongsEditorState());
 				case 'GF Editor':

@@ -54,7 +54,7 @@ typedef DialogueLine = {
 	var sound:Null<String>;
 }
 
-class DialogueCharacter extends FlxSprite
+class PsychDialogueCharacter extends FlxSprite
 {
 	private static var IDLE_SUFFIX:String = '-IDLE';
 	public static var DEFAULT_CHARACTER:String = 'bf';
@@ -93,13 +93,13 @@ class DialogueCharacter extends FlxSprite
 		var characterPath:String = 'images/dialogue/' + character + '.json';
 		var rawJson = null;
 
-		if (Assets.exists(Paths.json('dialogue/$character')))
+		if (Assets.exists(Paths.json('data/dialogue/$character')))
 		{
-			rawJson = Paths.loadJSON('dialogue/$character');
+			rawJson = Paths.loadJSON('data/dialogue/$character');
 		}
 		else
 		{
-			rawJson = Paths.loadJSON('dialogue/bf');
+			rawJson = Paths.loadJSON('data/dialogue/bf');
 		}
 		if (rawJson == null)
 		{
@@ -175,7 +175,7 @@ class DialogueBoxPsych extends FlxSpriteGroup
 	var box:FlxSprite;
 	var textToType:String = '';
 
-	var arrayCharacters:Array<DialogueCharacter> = [];
+	var arrayCharacters:Array<PsychDialogueCharacter> = [];
 
 	var currentText:Int = 0;
 	var offsetPos:Float = -600;
@@ -270,8 +270,8 @@ class DialogueBoxPsych extends FlxSpriteGroup
 		for (individualChar in charsMap.keys()) {
 			var x:Float = LEFT_CHAR_X;
 			var y:Float = DEFAULT_CHAR_Y;
-			var char:DialogueCharacter = new DialogueCharacter(x + offsetPos, y, individualChar);
-			char.setGraphicSize(Std.int(char.width * DialogueCharacter.DEFAULT_SCALE * char.jsonFile.scale));
+			var char:PsychDialogueCharacter = new PsychDialogueCharacter(x + offsetPos, y, individualChar);
+			char.setGraphicSize(Std.int(char.width * PsychDialogueCharacter.DEFAULT_SCALE * char.jsonFile.scale));
 			char.updateHitbox();
 			char.scrollFactor.set();
 			char.alpha = 0.00001;
@@ -339,12 +339,12 @@ class DialogueBoxPsych extends FlxSpriteGroup
 				}
 				FlxG.sound.play(Paths.sound('dialogueClose'));
 			} else if(finishedText) {
-				var char:DialogueCharacter = arrayCharacters[lastCharacter];
+				var char:PsychDialogueCharacter = arrayCharacters[lastCharacter];
 				if(char != null && char.animation.curAnim != null && char.animationIsLoop() && char.animation.finished) {
 					char.playAnim(char.animation.curAnim.name, true);
 				}
 			} else {
-				var char:DialogueCharacter = arrayCharacters[lastCharacter];
+				var char:PsychDialogueCharacter = arrayCharacters[lastCharacter];
 				if(char != null && char.animation.curAnim != null && char.animation.finished) {
 					char.animation.curAnim.restart();
 				}
@@ -419,7 +419,7 @@ class DialogueBoxPsych extends FlxSpriteGroup
 			}
 
 			for (i in 0...arrayCharacters.length) {
-				var leChar:DialogueCharacter = arrayCharacters[i];
+				var leChar:PsychDialogueCharacter = arrayCharacters[i];
 				if(leChar != null) {
 					switch(arrayCharacters[i].jsonFile.dialogue_pos) {
 						case 'left':
@@ -435,7 +435,7 @@ class DialogueBoxPsych extends FlxSpriteGroup
 
 			if(box == null && bgFade == null) {
 				for (i in 0...arrayCharacters.length) {
-					var leChar:DialogueCharacter = arrayCharacters[0];
+					var leChar:PsychDialogueCharacter = arrayCharacters[0];
 					if(leChar != null) {
 						arrayCharacters.remove(leChar);
 						leChar.kill();
@@ -506,7 +506,7 @@ class DialogueBoxPsych extends FlxSpriteGroup
 			});
 		}
 
-		var char:DialogueCharacter = arrayCharacters[character];
+		var char:PsychDialogueCharacter = arrayCharacters[character];
 		if(char != null) {
 			char.playAnim(curDialogue.expression, finishedText);
 			if(char.animation.curAnim != null) {

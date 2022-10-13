@@ -10,12 +10,12 @@ Links: **[itch.io page](https://ninja-muffin24.itch.io/funkin) ⋅ [Newgrounds](
 > Uh oh! Your tryin to kiss ur hot girlfriend, but her MEAN and EVIL dad is trying to KILL you! He's an ex-rockstar, the only way to get to his heart? The power of music... 
 
 ## Altronix Engine
-**Altronix Engine** is a mod for Friday Night Funkin', including a full engine rework, replays, and more.
+**Altronix Engine** is a mod for Friday Night Funkin' based on Kade Engine, including an engine rework, and more.
 
 **REMEMBER**: This is a **mod**. This is not the vanilla game and should be treated as a **modification**. This is not and probably will never be official, so don't get confused.
 
 # Features
- -TBD. 
+ I will add it sometime XD
 
 # Credits
 ### Friday Night Funkin'

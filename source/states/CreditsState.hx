@@ -81,7 +81,7 @@ class CreditsState extends MusicBeatState
 		var pisspoop:Array<Array<String>> = [ //Name - Icon name - Description - Link - BG Color
 			['Altronix Engine by'],
 			['AltronMaxX', 'altronmaxx', 'Programmer of Altronix Engine', 'https://twitter.com/AltronMaxx', '00ff00'],
-			['Tut byl ya', 'broken', 'Tester of Altronix Engine', 'https://github.com/tut-byl-ya', '676A75'],
+			['Tut byl ya', 'broken', 'Tester of Altronix Engine', 'source/states/CreditsState.hx', '676A75'],
 			[''],
 			['Kade Engine by'],
 			['KadeDeveloper', 'kadedev', 'Main Developer of Kade Engine', 'https://twitter.com/kade0912', '4b6448'],

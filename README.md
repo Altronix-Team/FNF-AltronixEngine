@@ -25,4 +25,4 @@ Links: **[itch.io page](https://ninja-muffin24.itch.io/funkin) ⋅ [Newgrounds](
 
 This game was made with love to Newgrounds and its community. Extra love to Tom Fulp.
 ### Altronix Engine
-- [AltronMaxX](https://twitter.com/AltronMaxx) - Engine Programmer
+- [AltronMaxX](https://discord.com/users/324794944042565643) - Engine Programmer

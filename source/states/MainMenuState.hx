@@ -38,7 +38,7 @@ class MainMenuState extends MusicBeatState
 	var menuItems:FlxTypedGroup<FlxSprite>;
 
 	#if !switch
-	var optionShit:Array<String> = ['story mode', 'freeplay', 'extras',#if desktop 'mods',#end 'credits', 'awards', 'options'];
+	var optionShit:Array<String> = ['story mode', 'freeplay',/* 'extras', */#if desktop 'mods',#end 'credits', 'awards', 'options'];
 	#else
 	var optionShit:Array<String> = ['story mode', 'freeplay'];
 	#end
@@ -337,9 +337,9 @@ class MainMenuState extends MusicBeatState
 				MusicBeatState.switchState(new OptionsDirect());
 				FlxG.mouse.visible = false;
 
-			case 'extras':
+			/*case 'extras':
 				MusicBeatState.switchState(new ExtrasPasswordState());
-				FlxG.mouse.visible = false;
+				FlxG.mouse.visible = false;*/
 			
 			case 'awards':
 				MusicBeatState.switchState(new AchievementsState());

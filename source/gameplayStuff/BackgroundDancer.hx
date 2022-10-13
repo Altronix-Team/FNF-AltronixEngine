@@ -4,20 +4,6 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
-
-class BackgroundDancers extends FlxTypedGroup<BackgroundDancer>
-{
-	public function new()
-	{
-		super();
-		for (i in 0...5)
-		{
-			var dancer:BackgroundDancer = new BackgroundDancer((370 * i) + 130, 80);
-			dancer.scrollFactor.set(0.4, 0.4);
-			add(dancer);
-		}
-	}
-}
 class BackgroundDancer extends FlxSprite
 {
 	public function new(x:Float, y:Float)

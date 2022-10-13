@@ -82,10 +82,10 @@ class GameOverSubstate extends MusicBeatSubstate
 				GameplayCustomizeState.freeplayWeek = 1;
 				MusicBeatState.switchState(new StoryMenuState());
 			}
-			else if (PlayState.isExtras)
+			/*else if (PlayState.isExtras)
 				MusicBeatState.switchState(new SecretState());
 			else if (PlayState.fromPasswordMenu)
-				MusicBeatState.switchState(new MainMenuState());
+				MusicBeatState.switchState(new MainMenuState());*/
 			else
 				MusicBeatState.switchState(new FreeplayState());
 			//PlayState.loadRep = false;

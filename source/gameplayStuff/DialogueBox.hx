@@ -335,11 +335,18 @@ class DialogueBox extends FlxSpriteGroup
 			dialogue = value;}
 		return value;
 	}
-//TODO Stop sound if it exists and make it null and regenerate 
+
 	function set_dialogueSound(value:String):String
 	{
 		if (value != null && value != '' && dialogueSound != value)
 		{
+			if (sound.playing)
+			{
+				sound.stop();
+				FlxG.sound.list.remove(sound);
+			}
+			sound = null;
+
 			sound = new FlxSound().loadEmbedded(Paths.music(value), true);
 			sound.volume = 0;
 			FlxG.sound.list.add(sound);

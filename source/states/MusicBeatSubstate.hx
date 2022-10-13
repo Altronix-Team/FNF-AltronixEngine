@@ -1,5 +1,6 @@
 package states;
 
+import gameplayStuff.Section.SwagSection;
 import lime.app.Application;
 import openfl.Lib;
 import flixel.text.FlxText;
@@ -10,8 +11,13 @@ import flixel.FlxSubState;
 import gameplayStuff.Conductor;
 import gameplayStuff.TimingStruct;
 
-class MusicBeatSubstate extends FlxSubState
+class MusicBeatSubstate extends FlxSubState implements IMusicBeat
 {
+	public var curStep:Int = 0;
+	public var curBeat:Int = 0;
+	public var curDecimalBeat:Float = 0;
+	public var curSection:SwagSection = null;
+
 	public function new()
 	{
 		super();
@@ -29,13 +35,10 @@ class MusicBeatSubstate extends FlxSubState
 		super.create();
 		Application.current.window.onFocusIn.add(onWindowFocusIn);
 		Application.current.window.onFocusOut.add(onWindowFocusOut);
+
+		Conductor.MusicBeatInterface = this;
 	}
 
-	private var lastBeat:Float = 0;
-	private var lastStep:Float = 0;
-
-	private var curStep:Int = 0;
-	private var curBeat:Int = 0;
 	private var controls(get, never):Controls;
 
 	inline function get_controls():Controls
@@ -43,67 +46,32 @@ class MusicBeatSubstate extends FlxSubState
 
 	override function update(elapsed:Float)
 	{
-		// everyStep();
-		var nextStep = updateCurStep();
-
-		if (nextStep >= 0)
-		{
-			if (nextStep > curStep)
-			{
-				for (i in curStep...nextStep)
-				{
-					curStep++;
-					updateBeat();
-					stepHit();
-				}
-			}
-			else if (nextStep < curStep)
-			{
-				// Song reset?
-				curStep = nextStep;
-				updateBeat();
-				stepHit();
-			}
-		}
-
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 		if (gamepad != null)
 			KeyBinds.gamepad = true;
 		else
 			KeyBinds.gamepad = false;
 
+		if (Conductor.MusicBeatInterface == this)
+			Conductor.updateSongPosition(elapsed);
+
 		super.update(elapsed);
-	}
-
-	private function updateBeat():Void
-	{
-		lastBeat = curBeat;
-		curBeat = Math.floor(curStep / 4);
-	}
-
-	private function updateCurStep():Int
-	{
-		var lastChange:BPMChangeEvent = {
-			stepTime: 0,
-			songTime: 0,
-			bpm: 0
-		}
-		for (i in 0...Conductor.bpmChangeMap.length)
-		{
-			if (Conductor.songPosition > Conductor.bpmChangeMap[i].songTime)
-				lastChange = Conductor.bpmChangeMap[i];
-		}
-
-		return lastChange.stepTime + Math.floor((Conductor.songPosition - lastChange.songTime) / Conductor.stepCrochet);
 	}
 
 	public function stepHit():Void
 	{
-		if (curStep % 4 == 0)
-			beatHit();
+		//Step Hit
 	}
 
-	public function beatHit():Void{}
+	public function beatHit():Void
+	{
+		//Beat Hit
+	}
+
+	public function sectionHit():Void
+	{
+		//Section Hit
+	}
 
 	function onWindowFocusOut():Void
 	{

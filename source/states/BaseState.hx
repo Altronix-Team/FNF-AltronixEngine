@@ -7,7 +7,7 @@ import flixel.FlxG;
 
 class BaseState extends FlxUIState
 {
-	public var soundList(default, null):FlxTypedGroup<FlxSound> = new FlxTypedGroup<FlxSound>();
+	public var soundList:FlxTypedGroup<FlxSound> = new FlxTypedGroup<FlxSound>();
 
     override function update(elapsed:Float) {
 		// fetch all current sounds being played in the game.
@@ -15,10 +15,8 @@ class BaseState extends FlxUIState
 		if (soundList.members != FlxG.sound.list.members)
 		{
 			soundList.clear();
-			for (sound in FlxG.sound.list.members)
-				soundList.add(sound);
+			soundList.members = FlxG.sound.list.members.copy();
 		}
         super.update(elapsed);
-    }
-    
+    }  
 }

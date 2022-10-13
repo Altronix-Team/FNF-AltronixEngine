@@ -2620,9 +2620,9 @@ class ChartingState extends MusicBeatState
 					autosaveSong();
 					FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)), 0);
 					PlayState.chartingMode = false;
-					if (PlayState.isExtras)
+					/*if (PlayState.isExtras)
 						MusicBeatState.switchState(new states.SecretState());
-					else if (PlayState.isFreeplay)
+					else*/ if (PlayState.isFreeplay)
 						MusicBeatState.switchState(new states.FreeplayState());
 					else if (PlayState.isStoryMode)
 						MusicBeatState.switchState(new states.StoryMenuState());
@@ -3548,7 +3548,7 @@ class ChartingState extends MusicBeatState
 
 				FlxG.sound.music.time = sectionStartTime();
 				vocals.time = FlxG.sound.music.time;
-				updateCurStep();
+				//updateCurStep();
 			}
 
 			updateGrid();

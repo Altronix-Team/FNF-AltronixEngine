@@ -1,5 +1,6 @@
 package scriptStuff;
 
+import flixel.FlxSprite;
 import gameplayStuff.PlayStateChangeables;
 import gameplayStuff.DialogueBoxPsych;
 import gameplayStuff.Boyfriend;
@@ -69,6 +70,9 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 
 		scriptHelper.expose.set("startDialogue", startDialogue);
 
+		scriptHelper.expose.set('add', add);
+		scriptHelper.expose.set('remove', remove);
+
 		scriptHelper.loadScript(path);
 
 		scriptHelper.call('onCreate', []);
@@ -77,6 +81,13 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 	override public function update(elapsed:Float) {
 		super.update(elapsed);
 		scriptHelper.call('onUpdate', [elapsed]);
+	}
+
+	override public function add(Object:FlxBasic):FlxBasic
+	{
+		if (!FlxG.save.data.antialiasing && Std.isOfType(Object, FlxSprite))
+			cast(Object, FlxSprite).antialiasing = false;
+		return super.add(Object);
 	}
 
 	public function changeCharacter(tag:String = 'bf', charName:String = 'bf')

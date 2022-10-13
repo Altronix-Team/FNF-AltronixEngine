@@ -166,7 +166,7 @@ class ResultsScreen extends FlxSubState
 				Conductor.changeBPM(102);
 				MusicBeatState.switchState(new StoryMenuState());
 			}
-			else if (PlayState.isExtras)
+			/*else if (PlayState.isExtras)
 			{
 				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)));
 				MusicBeatState.switchState(new SecretState());
@@ -175,7 +175,7 @@ class ResultsScreen extends FlxSubState
 			{
 				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)));
 				MusicBeatState.switchState(new MainMenuState());
-			}
+			}*/
 			else
 			{
 				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)));

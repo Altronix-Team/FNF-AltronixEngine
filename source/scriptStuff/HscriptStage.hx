@@ -1,5 +1,9 @@
 package scriptStuff;
 
+import gameplayStuff.TankmenBG;
+import gameplayStuff.BackgroundDancer;
+import gameplayStuff.BackgroundGirls;
+import gameplayStuff.BGSprite;
 import flixel.addons.display.FlxBackdrop;
 import flixel.group.FlxSpriteGroup;
 import flixel.FlxBasic;
@@ -53,17 +57,25 @@ class HscriptStage extends HScriptModchart
 		scriptHelper.expose.set("addBoyfriendGroup", addBoyfriendGroup);
 		scriptHelper.expose.set("addObject", addObject);
 		scriptHelper.expose.set("getObject", getObject);
+		scriptHelper.expose.set('BGSprite', BGSprite);
+		scriptHelper.expose.set('BackgroundGirls', BackgroundGirls);
+		scriptHelper.expose.set('BackgroundDancer', BackgroundDancer);
+		scriptHelper.expose.set('TankmenBG', TankmenBG);
 
 		this.state = state;
 		super(path, state);
 	}
 
 	override public function add(object:FlxBasic):FlxBasic {
-		if (!objectsArray.contains(object))
-			Debug.logWarn('Use addObject(object, objectName) instead of add');
-
-		super.add(object);
-		return object;
+		if (object != null)
+		{
+			return super.add(object);
+		}
+		else
+		{
+			Debug.logError('Failed to add object to stage');
+			return null;
+		} 
 	}
 
 	public function addObject(object:FlxBasic, objectName:String) {

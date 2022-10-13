@@ -59,7 +59,7 @@ class HScriptHandler
     public var expose:StringMap<Dynamic>;
 	
 	var parser:Parser;
-	var interp:CustomInterp;
+	public var interp:CustomInterp;
 
 	/*var parserEx:ParserEx;
 	var interpEx:InterpEx;*/
@@ -96,10 +96,6 @@ class HScriptHandler
 		expose.set('FlxG', FlxG);
 		expose.set('FlxRandom', FlxRandom);
 		expose.set('FlxSprite', FlxSprite);
-		expose.set('BGSprite', BGSprite);
-		expose.set('BackgroundGirls', BackgroundGirls);
-		expose.set('BackgroundDancer', BackgroundDancer);
-		expose.set('TankmenBG', TankmenBG);
 		expose.set('FlxTypedGroup', FlxTypedGroup);
 		expose.set('WiggleEffect', WiggleEffect);
 		expose.set('FlxCamera', FlxCamera);

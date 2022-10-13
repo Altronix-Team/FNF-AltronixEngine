@@ -1,6 +1,6 @@
 package;
 
 /**
- * Alias for states.MusicBeatState.IMusicBeat
+ * Alias for gameplayStuff.Conductor.IMusicBeat
  */
-typedef IMusicBeat = utils.IMusicBeat;
+typedef IMusicBeat = gameplayStuff.Conductor.IMusicBeat;

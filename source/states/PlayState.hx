@@ -2811,7 +2811,7 @@ class PlayState extends MusicBeatState
 			FlxG.sound.playMusic(Paths.inst(PlayState.SONG.songId, PlayState.SONG.diffSoundAssets), 1, false);
 		}
 
-		FlxG.sound.music.onComplete = onSongComplete;
+		FlxG.sound.music.onComplete = function() {finishSong();}
 
 		songLength = ((FlxG.sound.music.length / songMultiplier) / 1000);
 		
@@ -3484,10 +3484,10 @@ class PlayState extends MusicBeatState
 				{
 					Debug.logTrace("we're fuckin ending the song ");
 					endingSong = true;
-					new FlxTimer().start(2, function(timer)
+					/*new FlxTimer().start(2, function(timer)
 						{
 							endSong();
-						});
+						});*/
 				}
 			}
 		}
@@ -5329,7 +5329,7 @@ class PlayState extends MusicBeatState
 						clean();
 					}
 				}
-				else if (isExtras){
+				/*else if (isExtras){
 					trace('WENT BACK TO EXTRAS MENU??');
 					paused = true;
 
@@ -5356,7 +5356,7 @@ class PlayState extends MusicBeatState
 					else{
 						MusicBeatState.switchState(new MainMenuState());
 						FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)), 0);
-						clean();}}
+						clean();}}*/
 				else if (chartingMode){
 					openChartEditor();
 					return;}
@@ -5407,14 +5407,14 @@ class PlayState extends MusicBeatState
 		return actualScore;
 	}
 
-	private function onSongComplete()
+	/*private function onSongComplete()
 	{
-		finishSong(false);
-	}
+		finishSong();
+	}*/
 
 	var finishTimer:FlxTimer = null;
 
-	public function finishSong(?ignoreNoteOffset:Bool = false):Void
+	public function finishSong():Void
 	{
 		var finishCallback:Void->Void = endSong; //In case you want to change it in a specific song.
 	
@@ -5427,7 +5427,7 @@ class PlayState extends MusicBeatState
 			GameJoltAPI.addScore(Math.round(songScore), 716199, 'Song - ' + SONG.songName);
 		#end
 
-		if(FlxG.save.data.offset <= 0 || ignoreNoteOffset) {
+		if(FlxG.save.data.offset <= 0) {
 			finishCallback();
 		} else {
 			finishTimer = new FlxTimer().start(FlxG.save.data.offset / 1000, function(tmr:FlxTimer) {
@@ -6870,24 +6870,16 @@ class PlayState extends MusicBeatState
 	{
 		Debug.displayAlert("Script error!", Std.string(e));
 
-		quit();
-	}
-
-	function quit()
-	{
 		if (isFreeplay)
 			MusicBeatState.switchState(new FreeplayState());
 		else if (isStoryMode)
 			MusicBeatState.switchState(new StoryMenuState());
-		else if (isExtras)
-			MusicBeatState.switchState(new SecretState());
 		else if (chartingMode)
 			openChartEditor();
-		else if (fromPasswordMenu)
-			MusicBeatState.switchState(new ExtrasPasswordState());
 		else
 			MusicBeatState.switchState(new MainMenuState());
 	}
+
 
 	override function onWindowFocusOut():Void
 	{

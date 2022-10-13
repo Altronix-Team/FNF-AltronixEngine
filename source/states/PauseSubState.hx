@@ -289,10 +289,10 @@ class PauseSubState extends MusicBeatSubstate
 					}
 					else if (PlayState.isFreeplay)
 						MusicBeatState.switchState(new FreeplayState());
-					else if (PlayState.isExtras)
+					/*else if (PlayState.isExtras)
 						MusicBeatState.switchState(new SecretState());
 					else if (PlayState.fromPasswordMenu)
-						MusicBeatState.switchState(new MainMenuState());
+						MusicBeatState.switchState(new MainMenuState());*/
 					PlayState.isStoryMode = false;
 					PlayState.isExtras = false;
 					PlayState.fromPasswordMenu = false;

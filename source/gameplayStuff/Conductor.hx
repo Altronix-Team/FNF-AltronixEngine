@@ -1,5 +1,6 @@
 package gameplayStuff;
 
+import gameplayStuff.Section.SwagSection;
 import gameplayStuff.Song.SongData;
 import flixel.FlxG;
 
@@ -26,6 +27,17 @@ class Conductor
 	public static var timeScale:Float = Conductor.safeZoneOffset / 166;
 
 	public static var bpmChangeMap:Array<BPMChangeEvent> = [];
+
+	public static var MusicBeatInterface:IMusicBeat;
+
+	private static var lastBeat:Float = 0;
+	private static var lastStep:Float = 0;
+	private static var lastSection:SwagSection = null;
+
+	private static var curStep:Int = 0;
+	private static var curBeat:Int = 0;
+	private static var curDecimalBeat:Float = 0;
+	private static var curSection:SwagSection = null;
 
 	public function new()
 	{
@@ -88,4 +100,128 @@ class Conductor
 		crochet = ((60 / bpm) * 1000);
 		stepCrochet = crochet / 4;
 	}
+
+	public static function updateSongPosition(elapsed:Float)
+	{
+		if (songPosition < 0)
+			curDecimalBeat = 0;
+		else
+		{
+			lastSection = curSection;
+
+			if (TimingStruct.AllTimings.length > 1)
+			{
+				var data = TimingStruct.getTimingAtTimestamp(songPosition);
+
+				FlxG.watch.addQuick("Current Conductor Timing Seg", data.bpm);
+
+				crochet = ((60 / data.bpm) * 1000);
+
+				var step = ((60 / data.bpm) * 1000) / 4;
+				var startInMS = (data.startTime * 1000);
+
+				curDecimalBeat = data.startBeat + ((((songPosition / 1000)) - data.startTime) * (data.bpm / 60));
+				MusicBeatInterface.curDecimalBeat = curDecimalBeat;
+				var ste:Int = Math.floor(data.startStep + ((songPosition) - startInMS) / step);
+				if (ste >= 0)
+				{
+					if (ste > curStep)
+					{
+						for (i in curStep...ste)
+						{
+							curStep++;
+							updateBeat();
+							stepHit();
+							updateSection();
+						}
+					}
+					else if (ste < curStep)
+					{
+						// Song reset?
+						curStep = ste;
+						updateBeat();
+						stepHit();
+						updateSection();
+					}
+				}
+			}
+			else
+			{
+				curDecimalBeat = (((songPosition / 1000))) * (bpm / 60);
+				MusicBeatInterface.curDecimalBeat = curDecimalBeat;
+				var nextStep:Int = Math.floor((songPosition) / stepCrochet);
+				if (nextStep >= 0)
+				{
+					if (nextStep > curStep)
+					{
+						for (i in curStep...nextStep)
+						{
+							curStep++;
+							updateBeat();
+							stepHit();
+							updateSection();
+						}
+					}
+					else if (nextStep < curStep)
+					{
+						// Song reset?
+						curStep = nextStep;
+						updateBeat();
+						stepHit();
+						updateSection();
+					}
+				}
+				crochet = ((60 / bpm) * 1000);
+			}
+		}
+	}
+
+	private static function updateSection():Void
+	{
+		curSection = TimingStruct.getSectionByTime(songPosition);
+		if (lastSection != curSection)
+		{
+			MusicBeatInterface.curSection = curSection;
+			sectionHit();
+		}
+	}
+
+	private static function updateBeat():Void
+	{
+		lastBeat = curBeat;
+		curBeat = Math.floor(curStep / 4);
+		MusicBeatInterface.curBeat = curBeat;
+	}
+
+	public static function stepHit():Void
+	{
+		MusicBeatInterface.stepHit();
+		MusicBeatInterface.curStep = curStep;
+		if (curStep % 4 == 0)
+			beatHit();
+	}
+
+	public static function beatHit():Void
+	{
+		MusicBeatInterface.beatHit();
+	}
+
+	public static function sectionHit():Void
+	{
+		MusicBeatInterface.sectionHit();
+	}
+}
+
+interface IMusicBeat
+{
+	public var curStep:Int;
+	public var curBeat:Int;
+	public var curDecimalBeat:Float;
+	public var curSection:SwagSection;
+
+	public function stepHit():Void;
+
+	public function beatHit():Void;
+
+	public function sectionHit():Void;
 }

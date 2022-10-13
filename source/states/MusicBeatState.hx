@@ -13,17 +13,14 @@ import gameplayStuff.Section;
 import gameplayStuff.Conductor;
 import gameplayStuff.TimingStruct;
 
-class MusicBeatState extends BaseState
+class MusicBeatState extends BaseState implements IMusicBeat
 {
-	private var lastBeat:Float = 0;
-	private var lastStep:Float = 0;
-	private var lastSection:SwagSection = null;
-
-	private var curStep:Int = 0;
-	private var curBeat:Int = 0;
-	private var curDecimalBeat:Float = 0;
 	private var controls(get, never):Controls;
-	private var curSection:SwagSection = null;
+
+	public var curStep:Int = 0;
+	public var curBeat:Int = 0;
+	public var curDecimalBeat:Float = 0;
+	public var curSection:SwagSection = null;
 
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;
@@ -93,115 +90,19 @@ class MusicBeatState extends BaseState
 		if (transIn != null)
 			trace('reg ' + transIn.region);
 
+		Conductor.MusicBeatInterface = this;
+
 		super.create();
 	}
 
 	override function update(elapsed:Float)
 	{
-		if (Conductor.songPosition < 0)
-			curDecimalBeat = 0;
-		else
-		{
-			lastSection = curSection;
-
-			if (TimingStruct.AllTimings.length > 1)
-			{
-				var data = TimingStruct.getTimingAtTimestamp(Conductor.songPosition);
-
-				FlxG.watch.addQuick("Current Conductor Timing Seg", data.bpm);
-
-				Conductor.crochet = ((60 / data.bpm) * 1000);
-
-				var step = ((60 / data.bpm) * 1000) / 4;
-				var startInMS = (data.startTime * 1000);
-
-				curDecimalBeat = data.startBeat + ((((Conductor.songPosition / 1000)) - data.startTime) * (data.bpm / 60));
-				var ste:Int = Math.floor(data.startStep + ((Conductor.songPosition) - startInMS) / step);
-				if (ste >= 0)
-				{
-					if (ste > curStep)
-					{
-						for (i in curStep...ste)
-						{
-							curStep++;
-							updateBeat();
-							stepHit();
-							updateSection();
-						}
-					}
-					else if (ste < curStep)
-					{
-						// Song reset?
-						curStep = ste;
-						updateBeat();
-						stepHit();
-						updateSection();
-					}
-				}
-			}
-			else
-			{
-				curDecimalBeat = (((Conductor.songPosition / 1000))) * (Conductor.bpm / 60);
-				var nextStep:Int = Math.floor((Conductor.songPosition) / Conductor.stepCrochet);
-				if (nextStep >= 0)
-				{
-					if (nextStep > curStep)
-					{
-						for (i in curStep...nextStep)
-						{
-							curStep++;
-							updateBeat();
-							stepHit();
-							updateSection();
-						}
-					}
-					else if (nextStep < curStep)
-					{
-						// Song reset?
-						curStep = nextStep;
-						updateBeat();
-						stepHit();
-						updateSection();
-					}
-				}
-				Conductor.crochet = ((60 / Conductor.bpm) * 1000);				
-			}
-		}
+		if (Conductor.MusicBeatInterface == this)
+			Conductor.updateSongPosition(elapsed);
 
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
 
 		super.update(elapsed);
-	}
-
-	private function updateSection():Void
-	{
-		curSection = TimingStruct.getSectionByTime(Conductor.songPosition);
-		if (lastSection != curSection)
-		{
-			sectionHit();
-		}
-	}
-
-	private function updateBeat():Void
-	{
-		lastBeat = curBeat;
-		curBeat = Math.floor(curStep / 4);
-	}
-
-	private function updateCurStep():Int
-	{
-		var lastChange:BPMChangeEvent = {
-			stepTime: 0,
-			songTime: 0,
-			bpm: 0
-		}
-		for (i in 0...Conductor.bpmChangeMap.length)
-		{
-			if (Conductor.songPosition >= Conductor.bpmChangeMap[i].songTime)
-				lastChange = Conductor.bpmChangeMap[i];
-		}
-
-		return lastChange.stepTime + Math.floor((Conductor.songPosition - lastChange.songTime) / Conductor.stepCrochet);
 	}
 
 	public static function switchState(nextState:FlxState) 
@@ -224,8 +125,8 @@ class MusicBeatState extends BaseState
 
 	public function stepHit():Void
 	{
-		if (curStep % 4 == 0)
-			beatHit();
+		/*if (curStep % 4 == 0)
+			beatHit();*/
 		ScriptHelper.stepHit();
 	}
 
@@ -275,13 +176,4 @@ class MusicBeatState extends BaseState
 		});*/
 		FlxG.sound.music.resume();
 	}
-}
-
-interface IMusicBeat
-{
-	public function stepHit():Void;
-
-	public function beatHit():Void;
-
-	public function sectionHit():Void;
 }

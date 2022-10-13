@@ -162,7 +162,7 @@ class ChartingState extends MusicBeatState
 	var gridBG:FlxSprite;
 
 	public var sectionRenderes:FlxTypedGroup<SectionRender>;
-	public var waveformRenderes:FlxTypedGroup<WaveformRender>;
+	//public var waveformRenderes:FlxTypedGroup<WaveformRender>;
 
 	public static var _song:SongData;
 
@@ -239,7 +239,7 @@ class ChartingState extends MusicBeatState
 			FlxG.save.data.showHelp = true;
 
 		sectionRenderes = new FlxTypedGroup<SectionRender>();
-		waveformRenderes = new FlxTypedGroup<WaveformRender>();
+		//waveformRenderes = new FlxTypedGroup<WaveformRender>();
 		lines = new FlxTypedGroup<FlxSprite>();
 		texts = new FlxTypedGroup<EventText>();
 
@@ -441,14 +441,14 @@ class ChartingState extends MusicBeatState
 
 			sectionRenderes.add(renderer);
 
-			#if desktop
+			/*#if desktop
 			if (FlxG.save.data.chart_waveform)
 			{
 				var waveformrenderer = new WaveformRender(0, 640 * awfgaw, _song, GRID_SIZE, _song.notes[awfgaw].lengthInSteps, awfgaw);
 
 				waveformRenderes.add(waveformrenderer);
 			}
-			#end
+			#end*/
 
 			var down = getYfromStrum(renderer.section.startTime) * zoomFactor;
 
@@ -556,7 +556,7 @@ class ChartingState extends MusicBeatState
 
 		add(sectionRenderes);
 
-		add(waveformRenderes);
+		//add(waveformRenderes);
 		add(dummyArrow);
 		add(strumLine);
 		add(lines);
@@ -1297,14 +1297,14 @@ class ChartingState extends MusicBeatState
 		waveformEnabled.checked = FlxG.save.data.chart_waveform;
 		waveformEnabled.callback = function()
 		{
-			while (waveformRenderes.members.length > 0)
+			/*while (waveformRenderes.members.length > 0)
 			{
 				waveformRenderes.remove(waveformRenderes.members[0], true);
-			}
+			}*/
 
 			FlxG.save.data.chart_waveform = waveformEnabled.checked;
 
-			if (FlxG.save.data.chart_waveform)
+			/*if (FlxG.save.data.chart_waveform)
 			{
 				for (awfgaw in 0..._song.notes.length)
 				{
@@ -1312,7 +1312,7 @@ class ChartingState extends MusicBeatState
 
 					waveformRenderes.add(waveformrenderer);
 				}
-			}
+			}*/
 		};
 		#end
 
@@ -1516,7 +1516,7 @@ class ChartingState extends MusicBeatState
 		tab_group_chartshit.add(stepperSongVol);
 		tab_group_chartshit.add(stepperSongVolLabel);
 		#if desktop
-		tab_group_chartshit.add(waveformEnabled);
+		//tab_group_chartshit.add(waveformEnabled);
 		#end
 
 		UI_box.addGroup(tab_group_song);
@@ -1693,10 +1693,10 @@ class ChartingState extends MusicBeatState
 				curRenderedNoteTexts.remove(curRenderedNoteTexts.members[0], true);
 			}
 
-			while (waveformRenderes.members.length > 0)
+			/*while (waveformRenderes.members.length > 0)
 			{
 				waveformRenderes.remove(waveformRenderes.members[0], true);
-			}
+			}*/
 
 			while (sectionRenderes.members.length > 0)
 			{
@@ -3221,10 +3221,10 @@ class ChartingState extends MusicBeatState
 						sectionRenderes.remove(sectionRenderes.members[0], true);
 					}
 
-					while (waveformRenderes.members.length > 0)
+					/*while (waveformRenderes.members.length > 0)
 					{
 						waveformRenderes.remove(waveformRenderes.members[0], true);
-					}
+					}*/
 
 					var toRemove = [];
 
@@ -4238,10 +4238,10 @@ class ChartingState extends MusicBeatState
 			sectionRenderes.remove(sectionRenderes.members[0], true);
 		}
 
-		while (waveformRenderes.members.length > 0)
+		/*while (waveformRenderes.members.length > 0)
 		{
 			waveformRenderes.remove(waveformRenderes.members[0], true);
-		}
+		}*/
 
 		var toRemove = [];
 

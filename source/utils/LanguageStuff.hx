@@ -1,5 +1,8 @@
 package utils;
 
+import openfl.utils.AssetType;
+import flixel.graphics.FlxGraphic;
+import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.Assets;
 import firetongue.Replace;
 
@@ -91,6 +94,35 @@ class LanguageStuff{
 		if (Assets.exists('locales/$locale/images/$key.png', IMAGE))
 		{
 			return 'locales/$locale/images/$key.png';
+		}
+		return null;
+	}
+
+	public static function getFilePath(key:String, type:AssetType = TEXT):String
+	{
+		if (Assets.exists('locales/$locale/$key', type))
+		{
+			return 'locales/$locale/$key';
+		}
+		return null;
+	}
+
+	public static function getSparrowAtlas(key:String)
+	{
+		if (Assets.exists('locales/$locale/images/$key.png', IMAGE) && Assets.exists('locales/$locale/images/$key.xml', TEXT))
+		{
+			return FlxAtlasFrames.fromSparrow(FlxGraphic.fromBitmapData(Assets.getBitmapData('locales/$locale/images/$key.png')),
+				'locales/$locale/images/$key.xml');
+		}
+		return null;
+	}
+
+	public static function getPackerAtlas(key:String)
+	{
+		if (Assets.exists('locales/$locale/images/$key.png', IMAGE) && Assets.exists('locales/$locale/images/$key.txt', TEXT))
+		{
+			return FlxAtlasFrames.fromSpriteSheetPacker(FlxGraphic.fromBitmapData(Assets.getBitmapData('locales/$locale/images/$key.png')),
+				'locales/$locale/images/$key.txt');
 		}
 		return null;
 	}

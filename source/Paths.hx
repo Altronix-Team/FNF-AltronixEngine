@@ -73,21 +73,13 @@ class Paths
 
 		if (OpenFlAssets.exists(path, IMAGE))
 		{
-			var bitmap = OpenFlAssets.getBitmapData(path);
-			return FlxGraphic.fromBitmapData(bitmap);
+			return FlxGraphic.fromBitmapData(OpenFlAssets.getBitmapData(path));
 		}
 		else
 		{
 			Debug.logWarn('Could not find image at path $path');
 			return null;
 		}
-	}
-
-	public static function getScriptFile(key:String, category:String = ''):String
-	{
-		if (category != '')
-			return 'assets/scripts/' + category + '/' + key + '.hscript';
-		return 'assets/scripts/' + key + '.hscript';
 	}
 
 	static public function isFileReplaced(path:String):Bool //Check for replaced files by polymod
@@ -150,17 +142,10 @@ class Paths
 
 	inline static public function file(file:String, ?library:String, type:AssetType = TEXT)
 	{
-		return getPath(file, type, library);
-	}
-
-	inline static public function lua(key:String, ?library:String)
-	{
-		return getPath('data/$key.lua', TEXT, library);
-	}
-
-	inline static public function luaImage(key:String, ?library:String)
-	{
-		return getPath('data/$key.png', IMAGE, library);
+		if (LanguageStuff.getFilePath(file, type) != null)
+			return LanguageStuff.getFilePath(file, type);
+		else
+			return getPath(file, type, library);
 	}
 
 	inline static public function txt(key:String, ?library:String)
@@ -258,15 +243,6 @@ class Paths
 	inline static public function voices(song:String, useDiffSongAssets:Bool = false)
 	{
 		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
-		/*switch (songLowercase)
-		{
-			case 'dad-battle':
-				songLowercase = 'dadbattle';
-			case 'philly-nice':
-				songLowercase = 'philly';
-			case 'm.i.l.f':
-				songLowercase = 'milf';
-		}*/
 
 		var result = '';
 
@@ -297,15 +273,6 @@ class Paths
 	inline static public function inst(song:String, useDiffSongAssets:Bool = false)
 	{
 		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
-		/*switch (songLowercase)
-		{
-			case 'dad-battle':
-				songLowercase = 'dadbattle';
-			case 'philly-nice':
-				songLowercase = 'philly';
-			case 'm.i.l.f':
-				songLowercase = 'milf';
-		}*/
 
 		var diff = '';
 		if (useDiffSongAssets)
@@ -602,13 +569,16 @@ class Paths
 		return doesTextAssetExist(Paths.file('images/$key.xml', library));
 	}
 
-	static public function getSparrowAtlas(key:String, ?library:String, ?isCharacter:Bool = false)
+	static public function getSparrowAtlas(key:String, ?library:String)
 	{
-		if (isCharacter)
+		if (LanguageStuff.getSparrowAtlas(key) != null)
 		{
-			return FlxAtlasFrames.fromSparrow(loadImage('characters/$key', library), file('images/characters/$key.xml', library));
+			return LanguageStuff.getSparrowAtlas(key);
 		}
-		return FlxAtlasFrames.fromSparrow(loadImage(key, library), file('images/$key.xml', library));
+		else
+		{
+			return FlxAtlasFrames.fromSparrow(loadImage(key, library), file('images/$key.xml', library));
+		}
 	}
 
 	inline static public function getCharacterFrames(charName:String, key:String):FlxFramesCollection
@@ -665,12 +635,15 @@ class Paths
 		return null;
 	}
 
-	inline static public function getPackerAtlas(key:String, ?library:String, ?isCharacter:Bool = false)
+	inline static public function getPackerAtlas(key:String, ?library:String)
 	{
-		if (isCharacter)
+		if (LanguageStuff.getPackerAtlas(key) != null)
 		{
-			return FlxAtlasFrames.fromSpriteSheetPacker(loadImage('characters/$key', library), file('images/characters/$key.txt', library));
+			return LanguageStuff.getPackerAtlas(key);
 		}
-		return FlxAtlasFrames.fromSpriteSheetPacker(loadImage(key, library), file('images/$key.txt', library));
+		else
+		{
+			return FlxAtlasFrames.fromSpriteSheetPacker(loadImage(key, library), file('images/$key.txt', library));
+		}		
 	}
 }

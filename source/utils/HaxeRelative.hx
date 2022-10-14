@@ -22,20 +22,20 @@ class HaxeRelative
 		fields = fields.concat(MacroUtil.buildProperty("relativeAngle", macro:Float, null, null, propertyBody, true));
 
 		var updatePosBody = macro
+		{
+			if (this.parent != null)
 			{
-				if (this.parent != null)
-				{
-					// Set the absolute X and Y relative to the parent.
-					this.x = this.parent.x + this.relativeX;
-					this.y = this.parent.y + this.relativeY;
-					this.angle = this.parent.angle + this.relativeAngle;
-				}
-				else
-				{
-					this.x = this.relativeX;
-					this.y = this.relativeY;
-				}
-			};
+				// Set the absolute X and Y relative to the parent.
+				this.x = this.parent.x + this.relativeX;
+				this.y = this.parent.y + this.relativeY;
+				this.angle = this.parent.angle + this.relativeAngle;
+			}
+			else
+			{
+				this.x = this.relativeX;
+				this.y = this.relativeY;
+			}
+		};
 		fields.push(MacroUtil.buildFunction("updatePosition", [updatePosBody], false, false));
 
 		return fields;

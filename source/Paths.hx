@@ -90,76 +90,6 @@ class Paths
 		return 'assets/scripts/' + key + '.hscript';
 	}
 
-	public static function getAssetPath(path:String, type:AssetType, group:String = ""):String
-	{
-		switch (type)
-		{
-			case IMAGE:
-				return "assets/" + group + "/images/" + path;
-			case SOUND:
-				return "assets/" + group + "/sounds/" + path;
-			case MUSIC:
-				return "assets/" + group + "/music/" + path;
-			default:
-				return "";
-		}
-	}
-
-	public static function getAsset(path:String, type:AssetType, group:String = ""):Dynamic
-	{
-		var actualPath:String = getAssetPath(path, type, group);
-
-		if (OpenFlAssets.exists(actualPath))
-		{
-			if (FlxG.bitmap.checkCache(actualPath) || OpenFlAssets.cache.hasSound(actualPath))
-			{
-				switch (type)
-				{
-					case IMAGE:
-						return FlxG.bitmap.get(actualPath);
-					case SOUND, MUSIC:
-						return OpenFlAssets.cache.getSound(actualPath);
-					default:
-						return null;
-				}
-			}
-			else if (OpenFlAssets.exists(actualPath))
-			{
-				switch (type)
-				{
-					case IMAGE:
-						return FlxGraphic.fromAssetKey(actualPath);
-					case SOUND:
-						return OpenFlAssets.getSound(actualPath);
-					case MUSIC:
-						return OpenFlAssets.getMusic(actualPath);
-					default:
-						return null;
-				}
-			}
-			else
-			{
-				actualPath = "./" + actualPath;
-				switch (type)
-				{
-					case IMAGE:
-						return FlxGraphic.fromBitmapData(BitmapData.fromFile(actualPath));
-					case SOUND, MUSIC:
-						if (!OpenFlAssets.cache.hasSound(actualPath))
-						{
-							var sound:Sound = Sound.fromFile(actualPath);
-							OpenFlAssets.cache.setSound(actualPath, sound);
-						}
-						return OpenFlAssets.cache.getSound(actualPath);
-					default:
-						return null;
-				}
-			}
-		}
-		
-		return null;
-	}
-
 	static public function isFileReplaced(path:String):Bool //Check for replaced files by polymod
 	{
 		if (ModCore.replacedFiles.contains(path))
@@ -167,89 +97,6 @@ class Paths
 			return true;
 		}
 		return false;
-	}
-
-	static public function loadStageJSON(key:String, ?library:String):Dynamic
-		{
-			var rawJson = OpenFlAssets.getText(Paths.stageJson(key, library)).trim();
-	
-			// Perform cleanup on files that have bad data at the end.
-			while (!rawJson.endsWith("}"))
-			{
-				rawJson = rawJson.substr(0, rawJson.length - 1);
-			}
-	
-			try
-			{
-				// Attempt to parse and return the JSON data.
-				return Json.parse(rawJson);
-			}
-			catch (e)
-			{
-				Debug.logError("AN ERROR OCCURRED parsing a JSON file.");
-				Debug.logError(e.message);
-				Debug.logError(e.stack);
-	
-				// Return null.
-				return null;
-			}
-		}
-
-	static public function loadWeeksJSON(key:String, ?library:String):Dynamic
-		{
-			if (OpenFlAssets.exists(Paths.weeksJson(key, library)))
-			{
-				var rawJson = OpenFlAssets.getText(Paths.weeksJson(key, library)).trim();
-			
-				// Perform cleanup on files that have bad data at the end.
-				while (!rawJson.endsWith("}"))
-				{
-					rawJson = rawJson.substr(0, rawJson.length - 1);
-				}
-			
-				try
-				{
-					// Attempt to parse and return the JSON data.
-					return Json.parse(rawJson);
-				}
-				catch (e)
-				{
-					Debug.logError("AN ERROR OCCURRED parsing a JSON file.");
-					Debug.logError(e.message);
-					Debug.logError(e.stack);
-			
-					// Return null.
-					return null;
-				}
-			}
-			else
-				return null;
-		}
-
-	static public function loadImagesJSON(key:String, ?library:String):Dynamic
-	{
-		var rawJson = OpenFlAssets.getText(Paths.imagesJson(key, library)).trim();
-
-		// Perform cleanup on files that have bad data at the end.
-		while (!rawJson.endsWith("}"))
-		{
-			rawJson = rawJson.substr(0, rawJson.length - 1);
-		}
-
-		try
-		{
-			// Attempt to parse and return the JSON data.
-			return Json.parse(rawJson);
-		}
-		catch (e)
-		{
-			Debug.logError("AN ERROR OCCURRED parsing a JSON file.");
-			Debug.logError(e.message);
-			Debug.logError(e.stack);
-
-			// Return null.
-			return null;
-		}
 	}
 
 	static public function loadJSON(key:String, ?library:String):Dynamic
@@ -331,21 +178,6 @@ class Paths
 		return getPath('$key.json', TEXT, library);
 	}
 
-	inline static public function imagesJson(key:String, ?library:String)
-	{
-		return getPath('images/$key.json', TEXT, library);
-	}
-
-	inline static public function weeksJson(key:String, ?library:String)
-	{
-		return getPath('weeks/$key', TEXT, library);
-	}
-
-	inline static public function stageJson(key:String, ?library:String)
-	{
-		return getPath('stages/$key.json', TEXT, library);
-	}
-
 	static public function sound(key:String, ?library:String)
 	{
 		return getPath('sounds/$key.$SOUND_EXT', SOUND, library);
@@ -408,10 +240,10 @@ class Paths
 	}
 
 	static public function dialogueSound(key:String, ?library:String):Sound
-		{
-			var sound:Sound = returnSound('sounds', key, library);
-			return sound;
-		}
+	{
+		var sound:Sound = OpenFlAssets.getSound(sound(key, library));
+		return sound;
+	}
 
 	inline static public function soundRandom(key:String, min:Int, max:Int, ?library:String)
 	{
@@ -426,7 +258,7 @@ class Paths
 	inline static public function voices(song:String, useDiffSongAssets:Bool = false)
 	{
 		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
-		switch (songLowercase)
+		/*switch (songLowercase)
 		{
 			case 'dad-battle':
 				songLowercase = 'dadbattle';
@@ -434,7 +266,7 @@ class Paths
 				songLowercase = 'philly';
 			case 'm.i.l.f':
 				songLowercase = 'milf';
-		}
+		}*/
 
 		var result = '';
 
@@ -465,7 +297,7 @@ class Paths
 	inline static public function inst(song:String, useDiffSongAssets:Bool = false)
 	{
 		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
-		switch (songLowercase)
+		/*switch (songLowercase)
 		{
 			case 'dad-battle':
 				songLowercase = 'dadbattle';
@@ -473,7 +305,7 @@ class Paths
 				songLowercase = 'philly';
 			case 'm.i.l.f':
 				songLowercase = 'milf';
-		}
+		}*/
 
 		var diff = '';
 		if (useDiffSongAssets)
@@ -776,23 +608,8 @@ class Paths
 		return FlxAtlasFrames.fromSparrow(loadImage(key, library), file('images/$key.xml', library));
 	}
 
-	public static var localTrackedAssets:Array<String> = [];
-	public static var currentTrackedSounds:Map<String, Sound> = [];
-
-	public static function returnSound(path:String, key:String, ?library:String) {
-		var gottenPath:String = getPath('$path/$key.$SOUND_EXT', SOUND, library);	
-		gottenPath = gottenPath.substring(gottenPath.indexOf(':') + 1, gottenPath.length);
-		if(!currentTrackedSounds.exists(gottenPath)) 
-			currentTrackedSounds.set(gottenPath, OpenFlAssets.getSound(getPath('$path/$key.$SOUND_EXT', SOUND, library)));
-		localTrackedAssets.push(gottenPath);
-		return currentTrackedSounds.get(gottenPath);
-	}
-
 	inline static public function getCharacterFrames(charName:String, key:String):FlxFramesCollection
 	{
-		//if (OpenFlAssets.exists('assets/characters/$key/spritemap.json'))
-			//return AtlasFrameMaker.construct('characters/$key');
-		/*else*/
 		var filePath = 'characters/$charName/$key';
 		if (OpenFlAssets.exists('assets/characters/$charName/$key.txt'))
 			return FlxAtlasFrames.fromSpriteSheetPacker(loadCharactersImage(charName, key), file('$filePath.txt'));
@@ -802,20 +619,6 @@ class Paths
 			{
 				return FlxAtlasFrames.fromSparrow(loadCharactersImage(charName, key), file('$filePath.xml'));
 			}
-			/*else if (OpenFlAssets.exists(findMatchingFiles(key != null ? key : charName + '.txt'))
-				|| OpenFlAssets.exists(findMatchingFiles(key != null ? key : charName + '.xml')))
-			{
-				if (OpenFlAssets.exists(findMatchingFiles(key != null ? key : charName + '.txt')))
-				{
-					filePath = findMatchingFiles(key != null ? key : charName + '.txt');
-					return FlxAtlasFrames.fromSpriteSheetPacker(loadCharactersImage(charName, key != null ? key : charName), file('$filePath.txt'));
-				}
-				else
-				{
-					filePath = findMatchingFiles(key != null ? key : charName + '.xml');
-					return FlxAtlasFrames.fromSparrow(loadCharactersImage(charName, key != null ? key : charName), file('$filePath.xml'));
-				}
-			}*/
 			else return null;
 		}	
 	}
@@ -836,18 +639,8 @@ class Paths
 		}
 		else
 		{
-			/*var search = findMatchingFiles('$key.png');
-
-			if (OpenFlAssets.exists(search, IMAGE) && search != null)
-			{
-				var bitmap = OpenFlAssets.getBitmapData(search);
-				return FlxGraphic.fromBitmapData(bitmap);
-			}
-			else
-			{*/
-				Debug.logWarn('Could not find image at path $path');
-				return null;
-			//}
+			Debug.logWarn('Could not find image at path $path');
+			return null;
 		}
 	}
 

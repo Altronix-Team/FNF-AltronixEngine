@@ -475,7 +475,8 @@ class Song
 					ii[3] = altNote;
 				}
 
-				//converting old types to strings
+				//Stuff from beta testing
+				/*//converting old types to strings
 				if (Std.isOfType(ii[5], Int))
 				{
 					switch (ii[5])
@@ -504,7 +505,7 @@ class Song
 					ii[5] = 'Default Note';
 
 				if (ii[6] == null)
-					ii[6] = song.noteStyle;
+					ii[6] = song.noteStyle;*/
 			}
 
 			index++;

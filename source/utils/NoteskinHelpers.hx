@@ -20,10 +20,10 @@ class NoteskinHelpers
 		for (i in Paths.listImagesInPath('noteskins/'))
 		{
 			var noteMetaData:NoteMeta = null;
-			if (OpenFlAssets.exists(Paths.imagesJson('noteskins/$i')))
+			if (OpenFlAssets.exists(Paths.json('images/noteskins/$i')))
 			{
-				if (OpenFlAssets.exists(Paths.imagesJson('noteskins/$i')))
-					noteMetaData = cast Paths.loadImagesJSON('noteskins/$i');
+				if (OpenFlAssets.exists(Paths.json('images/noteskins/$i')))
+					noteMetaData = cast Paths.loadJSON('images/noteskins/$i');
 			}
 			if (noteMetaData != null)
 				if (!noteMetaData.listInSettings)
@@ -59,12 +59,6 @@ class NoteskinHelpers
 	{
 		return Paths.getSparrowAtlas('noteskins/' + id, "shared");	
 	}
-
-	/*static public function generateSpecialPixelSprite(id:String, ends:Bool = false)
-	{
-		var path = "assets/shared/images/specialnotes" + "/" + id + "-pixel" + (ends ? "-ends" : "");
-		return BitmapData.fromFile(path + ".png");
-	}*/
 
 	static public function generatePixelSprite(id:String, ends:Bool = false)
 	{

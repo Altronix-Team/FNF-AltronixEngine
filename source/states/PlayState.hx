@@ -2811,7 +2811,8 @@ class PlayState extends MusicBeatState
 			FlxG.sound.playMusic(Paths.inst(PlayState.SONG.songId, PlayState.SONG.diffSoundAssets), 1, false);
 		}
 
-		FlxG.sound.music.onComplete = function() {finishSong();}
+		FlxG.sound.music.onComplete = function() {FlxG.sound.music.time = 0; FlxG.sound.music.stop(); finishSong();}
+		vocals.onComplete = function() {vocals.time = 0; vocals.stop();};
 
 		songLength = ((FlxG.sound.music.length / songMultiplier) / 1000);
 		
@@ -3344,6 +3345,8 @@ class PlayState extends MusicBeatState
 			for (timer in modchartTimers) {
 				timer.active = true;
 			}
+
+			Conductor.MusicBeatInterface = this;
 		}
 
 		super.closeSubState();
@@ -5406,11 +5409,6 @@ class PlayState extends MusicBeatState
 
 		return actualScore;
 	}
-
-	/*private function onSongComplete()
-	{
-		finishSong();
-	}*/
 
 	var finishTimer:FlxTimer = null;
 

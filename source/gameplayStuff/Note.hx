@@ -171,14 +171,14 @@ class Note extends FlxSprite
 		if (isAlt)
 			animSuffix = '-alt';
 
-		if (OpenFlAssets.exists(Paths.imagesJson('noteskins/$texture')))
+		if (OpenFlAssets.exists(Paths.json('images/noteskins/$texture')))
 		{
-			noteMetaData = cast Paths.loadImagesJSON('noteskins/$texture');
+			noteMetaData = cast Paths.loadJSON('images/noteskins/$texture');
 			texture = noteMetaData.imageFile;
 		}
-		else if (OpenFlAssets.exists(Paths.imagesJson('noteskins/$noteStyle')))
+		else if (OpenFlAssets.exists(Paths.json('images/noteskins/$noteStyle')))
 		{
-			noteMetaData = cast Paths.loadImagesJSON('noteskins/$noteStyle');
+			noteMetaData = cast Paths.loadJSON('images/noteskins/$noteStyle');
 			texture = noteMetaData.imageFile;
 		}
 		else
@@ -326,14 +326,14 @@ class Note extends FlxSprite
 		if (lasttexture != texture)
 		{
 			lasttexture = texture;
-			if (OpenFlAssets.exists(Paths.imagesJson('noteskins/$texture')))
+			if (OpenFlAssets.exists(Paths.json('images/noteskins/$texture')))
 			{
-				noteMetaData = cast Paths.loadImagesJSON('noteskins/$texture');
+				noteMetaData = cast Paths.loadJSON('images/noteskins/$texture');
 				texture = noteMetaData.imageFile;
 			}
-			else if (OpenFlAssets.exists(Paths.imagesJson('noteskins/$noteStyle')))
+			else if (OpenFlAssets.exists(Paths.json('images/noteskins/$noteStyle')))
 			{
-				noteMetaData = cast Paths.loadImagesJSON('noteskins/$noteStyle');
+				noteMetaData = cast Paths.loadJSON('images/noteskins/$noteStyle');
 					texture = noteMetaData.imageFile;
 			}
 			else

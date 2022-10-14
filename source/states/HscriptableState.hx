@@ -5,7 +5,6 @@ import flixel.FlxG;
 
 class ScriptedSubstate extends MusicBeatSubstate
 {
-	public static var stateName:Null<String>;
 	public static var instance:ScriptedSubstate;
 
 	override function create()
@@ -19,31 +18,29 @@ class ScriptedSubstate extends MusicBeatSubstate
 		ScriptHelper.callOnScripts('substatePostCreate', []);
 	}
 
-	public function new(stateName:Null<String>)
+	public function new()
 	{
-		ScriptedSubstate.stateName = stateName;
-		ScriptHelper.callOnScripts('newSubstate', [stateName]);
+		ScriptHelper.callOnScripts('newSubstate', []);
 		super();
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 	}
 
 	override function update(elapsed:Float)
 	{
-		ScriptHelper.callOnScripts('substateUpdate', [stateName, elapsed]);
+		ScriptHelper.callOnScripts('substateUpdate', [elapsed]);
 		super.update(elapsed);
-		ScriptHelper.callOnScripts('substatePostUpdate', [stateName, elapsed]);
+		ScriptHelper.callOnScripts('substatePostUpdate', [elapsed]);
 	}
 
 	override function destroy()
 	{
-		ScriptHelper.callOnScripts('substateDestroy', [stateName]);
+		ScriptHelper.callOnScripts('substateDestroy', []);
 		super.destroy();
 	}
 }
 
 class ScriptedState extends MusicBeatState
 {
-	public static var stateName:Null<String>;
 	public static var instance:ScriptedState;
 
 	override function create()
@@ -56,24 +53,23 @@ class ScriptedState extends MusicBeatState
 		ScriptHelper.callOnScripts('statePostCreate', []);
 	}
 
-	public function new(stateName:Null<String>)
+	public function new()
 	{
-		ScriptedSubstate.stateName = stateName;
-		ScriptHelper.callOnScripts('newState', [stateName]);
+		ScriptHelper.callOnScripts('newState', []);
 		super();
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 	}
 
 	override function update(elapsed:Float)
 	{
-		ScriptHelper.callOnScripts('stateUpdate', [stateName, elapsed]);
+		ScriptHelper.callOnScripts('stateUpdate', [elapsed]);
 		super.update(elapsed);
-		ScriptHelper.callOnScripts('statePostUpdate', [stateName, elapsed]);
+		ScriptHelper.callOnScripts('statePostUpdate', [elapsed]);
 	}
 
 	override function destroy()
 	{
-		ScriptHelper.callOnScripts('stateDestroy', [stateName]);
+		ScriptHelper.callOnScripts('stateDestroy', []);
 		super.destroy();
 	}
 }

@@ -3476,7 +3476,7 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		if (generatedMusic)
+		/*if (generatedMusic) Kade engine stuff :)
 		{
 			if (songStarted && !endingSong)
 			{
@@ -3487,13 +3487,13 @@ class PlayState extends MusicBeatState
 				{
 					Debug.logTrace("we're fuckin ending the song ");
 					endingSong = true;
-					/*new FlxTimer().start(2, function(timer)
+					new FlxTimer().start(2, function(timer)
 						{
 							endSong();
-						});*/
+						});
 				}
 			}
-		}
+		}*/
 
 		if (updateFrame == 4)
 		{
@@ -5152,10 +5152,10 @@ class PlayState extends MusicBeatState
 		#end
 
 		canPause = false;
-		FlxG.sound.music.volume = 0;
+		/*FlxG.sound.music.volume = 0;
 		vocals.volume = 0;
 		FlxG.sound.music.pause();
-		vocals.pause();
+		vocals.pause();*/
 		if(ret != FunkinLua.Function_Stop && !blockSongEnd) {
 			if (SONG.validScore)
 			{
@@ -5332,45 +5332,14 @@ class PlayState extends MusicBeatState
 						clean();
 					}
 				}
-				/*else if (isExtras){
-					trace('WENT BACK TO EXTRAS MENU??');
-					paused = true;
-
-					FlxG.sound.music.stop();
-					vocals.stop();
-
-					if (FlxG.save.data.scoreScreen){
-						openSubState(new ResultsScreen());
-						new FlxTimer().start(1, function(tmr:FlxTimer){inResults = true;});}
-					else{
-						MusicBeatState.switchState(new SecretState());
-						FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)), 0);
-						clean();}}
-				else if (fromPasswordMenu){
-					trace('WENT BACK TO EXTRAS MENU??');
-					paused = true;
-		
-					FlxG.sound.music.stop();
-					vocals.stop();
-
-					if (FlxG.save.data.scoreScreen){
-						openSubState(new ResultsScreen());
-						new FlxTimer().start(1, function(tmr:FlxTimer){inResults = true;});}
-					else{
-						MusicBeatState.switchState(new MainMenuState());
-						FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)), 0);
-						clean();}}*/
 				else if (chartingMode){
 					openChartEditor();
 					return;}
 				else{
-					trace('WENT BACK TO FREEPLAY??');
-
 					paused = true;
 
 					FlxG.sound.music.stop();
 					vocals.stop();
-
 
 					if (FlxG.save.data.scoreScreen){
 						openSubState(new ResultsScreen());
@@ -5414,11 +5383,12 @@ class PlayState extends MusicBeatState
 
 	public function finishSong():Void
 	{
+		Debug.logTrace("we're fuckin ending the song ");
+		
 		var finishCallback:Void->Void = endSong; //In case you want to change it in a specific song.
 	
 		FlxG.sound.music.volume = 0;
 		vocals.volume = 0;
-		vocals.pause();
 
 		#if desktop
 		if (!chartingMode && !PlayStateChangeables.twoPlayersMode)

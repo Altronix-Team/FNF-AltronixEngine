@@ -100,7 +100,7 @@ class CreditsState extends MusicBeatState
 	
 		for (i in 0...creditsStuff.length)
 		{
-			var isSelectable:Bool = !unselectableCheck(i);
+			var isSelectable:Bool = !(creditsStuff[i].length <= 1);
 			var optionText:Alphabet = new Alphabet(0, 70 * i, creditsStuff[i][0], !isSelectable, false);
 			optionText.isMenuItem = true;
 			optionText.screenCenter(X);
@@ -184,7 +184,8 @@ class CreditsState extends MusicBeatState
 				curSelected = creditsStuff.length - 1;
 			if (curSelected >= creditsStuff.length)
 				curSelected = 0;
-		} while(unselectableCheck(curSelected));
+		}
+		while (creditsStuff[curSelected].length <= 1);
 
 		var newColor:Int = getCurrentBGColor();
 		if(newColor != intendedColor) {
@@ -206,7 +207,7 @@ class CreditsState extends MusicBeatState
 			item.targetY = bullShit - curSelected;
 			bullShit++;
 
-			if(!unselectableCheck(bullShit-1)) {
+			if (!(creditsStuff[bullShit - 1].length <= 1)) {
 				item.alpha = 0.6;
 				if (item.targetY == 0) {
 					item.alpha = 1;
@@ -222,9 +223,5 @@ class CreditsState extends MusicBeatState
 			bgColor = '0xFF' + bgColor;
 		}
 		return Std.parseInt(bgColor);
-	}
-
-	private function unselectableCheck(num:Int):Bool {
-		return creditsStuff[num].length <= 1;
 	}
 }

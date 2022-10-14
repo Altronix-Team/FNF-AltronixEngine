@@ -1,3 +1,7 @@
 0.5 (Currently in development)
- - Two players mode in freeplay songs
+ - Two players mode in freeplay songs (beta)
  - Firetongue localization system
+ - DialogueBox.hx rework
+ - Credits editor (not now)
+ - Moved all characters stuff in one folder
+ - Moved all songs stuff in one folder

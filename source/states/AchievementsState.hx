@@ -171,10 +171,7 @@ class AchievementsState extends MusicBeatState
 
 		#if desktop
 		// Updating Discord Rich Presence
-		if (!FlxG.save.data.language)
-			DiscordClient.changePresence("In the Achievements Menu", null);
-		else
-			DiscordClient.changePresence("В меню достижений", null);
+		DiscordClient.changePresence("In the Achievements Menu", null);
 		#end
 
 		var isDebug:Bool = false;

@@ -377,7 +377,10 @@ class Paths
 
 	inline static public function image(key:String, ?library:String)
 	{
-		return getPath('images/$key.png', IMAGE, library);
+		if (LanguageStuff.getImagePath(key) != null)
+			return LanguageStuff.getImagePath(key);
+		else
+			return getPath('images/$key.png', IMAGE, library);
 	}
 
 	inline static public function getPathOpenFL(key:String, ?library:String):Null<String>

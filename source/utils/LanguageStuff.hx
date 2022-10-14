@@ -1,5 +1,6 @@
 package utils;
 
+import openfl.Assets;
 import firetongue.Replace;
 
 import firetongue.FireTongue;
@@ -84,6 +85,15 @@ class LanguageStuff{
 			Debug.logTrace(getData("$ENGINE_START"));
         }
     }
+
+	public static function getImagePath(key:String):String
+	{
+		if (Assets.exists('locales/$locale/images/$key.png', IMAGE))
+		{
+			return 'locales/$locale/images/$key.png';
+		}
+		return null;
+	}
 
 	public static function getData(key:String):String{
 		var context = "data";

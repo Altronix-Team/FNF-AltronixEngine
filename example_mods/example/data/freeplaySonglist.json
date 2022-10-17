@@ -1,0 +1,19 @@
+{
+	"freeplaySonglist": [
+		{
+			"weekSongs": [
+				"test"
+			],
+			"weekID": 0,
+			"weekChar": [
+				"bf"
+			],
+			"weekDiffs": [
+				"Easy",
+				"Normal",
+				"Hard",
+				"Hard P"
+			]
+		}
+	]
+}

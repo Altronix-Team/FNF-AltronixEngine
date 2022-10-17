@@ -1,1 +1,2 @@
-Using this for lua and hscript
+Use this folder for lua and hscript
+Hscript scripts also uses stages and songs folder

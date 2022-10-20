@@ -26,6 +26,7 @@ typedef IconAnims =
 	var name:String;
 	var prefix:String;
 }
+//TODO Deal with animated icons
 class HealthIcon extends FlxSprite
 {
 	public var character:String = 'bf';

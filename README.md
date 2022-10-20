@@ -14,7 +14,7 @@ Links: **[itch.io page](https://ninja-muffin24.itch.io/funkin) ⋅ [Newgrounds](
 
 **REMEMBER**: This is a **mod**. This is not the vanilla game and should be treated as a **modification**. This is not and probably will never be official, so don't get confused.
 
-[Repository size](https://img.shields.io/github/repo-size/altronmaxx/FNF-AltronixEngine?color=brightgreen&label=Repository%20size)
+![Repository size](https://img.shields.io/github/repo-size/altronmaxx/FNF-AltronixEngine?color=brightgreen&label=Repository%20size)
 
 # Features
  I will add it sometime XD

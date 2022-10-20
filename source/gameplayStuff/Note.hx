@@ -24,6 +24,7 @@ typedef NoteMeta = {
 	var listInSettings:Bool;
 } 
 
+//TODO Try to rework sustain note system
 class Note extends FlxSprite
 {
 	public var sprTracker:FlxSprite = null;

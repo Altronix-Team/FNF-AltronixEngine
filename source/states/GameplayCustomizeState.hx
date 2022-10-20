@@ -76,6 +76,8 @@ class GameplayCustomizeState extends MusicBeatState
 	public var GF_X:Float = 400;
 	public var GF_Y:Float = 130;
 
+	var created = false;
+
 	public override function create()
 	{
 		super.create();
@@ -374,6 +376,8 @@ class GameplayCustomizeState extends MusicBeatState
 		sick.y = FlxG.save.data.changedHitY;
 
 		FlxG.mouse.visible = true;
+
+		created = true;
 	}
 
 	override function update(elapsed:Float)
@@ -526,23 +530,24 @@ class GameplayCustomizeState extends MusicBeatState
 	{
 		super.beatHit();
 
-		if (curBeat % 2 == 0)
+		if (created)
 		{
-			boyfriend.dance();
-			dad.dance();
+			if (curBeat % 2 == 0)
+			{
+				boyfriend.dance();
+				dad.dance();
+			}
+			else if (dad.curCharacter == 'spooky' || dad.curCharacter == 'gf')
+				dad.dance();
+
+			gf.dance();
+
+			if (!FlxG.keys.pressed.SPACE)
+			{
+				FlxG.camera.zoom += 0.015;
+				camHUD.zoom += 0.010;
+			}
 		}
-		else if (dad.curCharacter == 'spooky' || dad.curCharacter == 'gf')
-			dad.dance();
-
-		gf.dance();
-
-		if (!FlxG.keys.pressed.SPACE)
-		{
-			FlxG.camera.zoom += 0.015;
-			camHUD.zoom += 0.010;
-		}
-
-		trace('beat');
 	}
 
 	// ripped from playstate cuz lol
@@ -591,11 +596,6 @@ class GameplayCustomizeState extends MusicBeatState
 
 				default:
 					babyArrow.frames = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin);
-					for (j in 0...4)
-					{
-						babyArrow.animation.addByPrefix(dataColor[j], 'arrow' + dataSuffix[j]);
-						babyArrow.animation.addByPrefix('dirCon' + j, dataSuffix[j].toLowerCase() + ' confirm', 24, false);
-					}
 
 					var lowerDir:String = dataSuffix[i].toLowerCase();
 

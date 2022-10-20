@@ -27,7 +27,7 @@ import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import flash.net.FileFilter;
 import haxe.Json;
-import gameplayStuff.DialogueBoxPsych;
+import gameplayStuff.DialogueBox;
 import lime.system.Clipboard;
 import states.MusicBeatState;
 #if sys
@@ -36,6 +36,7 @@ import sys.io.File;
 
 using StringTools;
 
+//TODO Test this
 class DialogueEditorState extends MusicBeatState
 {
 	var character:DialogueCharacter;
@@ -45,23 +46,25 @@ class DialogueEditorState extends MusicBeatState
 	var selectedText:FlxText;
 	var animText:FlxText;
 
-	var defaultLine:DialogueLine;
-	var dialogueFile:DialogueFile = null;
+	var defaultLine:DialogueLines;
+	var dialogueFile:DialogueJson = null;
 
 	override function create() {
 		persistentUpdate = persistentDraw = true;
 		FlxG.camera.bgColor = FlxColor.fromHSL(0, 0, 0.5);
 
 		defaultLine = {
-			portrait: DialogueCharacter.DEFAULT_CHARACTER,
+			character: 'bf',
 			expression: 'talk',
-			text: DEFAULT_TEXT,
+			line: DEFAULT_TEXT,
 			boxState: DEFAULT_BUBBLETYPE,
 			speed: 0.05,
 			sound: ''
 		};
 
 		dialogueFile = {
+			boxType: 'speech_bubble',
+			sound: '',
 			dialogue: [
 				copyDefaultLine()
 			]
@@ -142,7 +145,7 @@ class DialogueEditorState extends MusicBeatState
 		var tab_group = new FlxUI(null, UI_box);
 		tab_group.name = "Dialogue Line";
 
-		characterInputText = new FlxUIInputText(10, 20, 80, DialogueCharacter.DEFAULT_CHARACTER, 8);
+		characterInputText = new FlxUIInputText(10, 20, 80, 'bf', 8);
 		blockPressWhileTypingOn.push(characterInputText);
 
 		speedStepper = new FlxUINumericStepper(10, characterInputText.y + 40, 0.005, 0.05, 0, 0.5, 3);
@@ -181,11 +184,11 @@ class DialogueEditorState extends MusicBeatState
 		UI_box.addGroup(tab_group);
 	}
 
-	function copyDefaultLine():DialogueLine {
-		var copyLine:DialogueLine = {
-			portrait: defaultLine.portrait,
+	function copyDefaultLine():DialogueLines {
+		var copyLine:DialogueLines = {
+			character: defaultLine.character,
 			expression: defaultLine.expression,
-			text: defaultLine.text,
+			line: defaultLine.line,
 			boxState: defaultLine.boxState,
 			speed: defaultLine.speed,
 			sound: ''
@@ -198,10 +201,10 @@ class DialogueEditorState extends MusicBeatState
 		var isAngry:Bool = angryCheckbox.checked;
 		var anim:String = isAngry ? 'angry' : 'normal';
 
-		switch(character.jsonFile.dialogue_pos) {
+		switch(character.jsonFile.pos) {
 			case 'left':
 				box.flipX = true;
-			case 'center':
+			case 'middle':
 				if(isAngry) {
 					anim = 'center-angry';
 				} else {
@@ -209,33 +212,33 @@ class DialogueEditorState extends MusicBeatState
 				}
 		}
 		box.animation.play(anim, true);
-		DialogueBoxPsych.updateBoxOffsets(box);
+		//DialogueBoxPsych.updateBoxOffsets(box);
 	}
 
 	function reloadCharacter() {
 		character.frames = Paths.getSparrowAtlas('dialogue/' + character.jsonFile.image);
 		character.jsonFile = character.jsonFile;
-		character.reloadAnimations();
-		character.setGraphicSize(Std.int(character.width * DialogueCharacter.DEFAULT_SCALE * character.jsonFile.scale));
+		character.reloadAnims();
+		character.setGraphicSize(Std.int(character.width * 0.9 * character.jsonFile.scale));
 		character.updateHitbox();
-		character.x = DialogueBoxPsych.LEFT_CHAR_X;
-		character.y = DialogueBoxPsych.DEFAULT_CHAR_Y;
+		character.x = DialogueCharacter.LEFT_CHAR_X;
+		character.y = DialogueCharacter.DEFAULT_CHAR_Y;
 
-		switch(character.jsonFile.dialogue_pos) {
+		switch(character.jsonFile.pos) {
 			case 'right':
-				character.x = FlxG.width - character.width + DialogueBoxPsych.RIGHT_CHAR_X;
+				character.x = FlxG.width - character.width + DialogueCharacter.RIGHT_CHAR_X;
 			
 			case 'center':
 				character.x = FlxG.width / 2;
 				character.x -= character.width / 2;
 		}
-		character.x += character.jsonFile.position[0];
-		character.y += character.jsonFile.position[1];
+		character.x += character.jsonFile.portraitX;
+		character.y += character.jsonFile.portraitY;
 		character.playAnim(); //Plays random animation
 		characterAnimSpeed();
 
 		if(character.animation.curAnim != null) {
-			animText.text = 'Animation: ' + character.jsonFile.animations[curAnim].anim + ' (' + (curAnim + 1) +' / ' + character.jsonFile.animations.length + ') - Press W or S to scroll';
+			animText.text = 'Animation: ' + character.jsonFile.animations[curAnim].prefix + ' (' + (curAnim + 1) +' / ' + character.jsonFile.animations.length + ') - Press W or S to scroll';
 		} else {
 			animText.text = 'ERROR! NO ANIMATIONS FOUND';
 		}
@@ -264,7 +267,7 @@ class DialogueEditorState extends MusicBeatState
 
 		if(speed > 0) {
 			if(character.jsonFile.animations.length > curAnim && character.jsonFile.animations[curAnim] != null) {
-				character.playAnim(character.jsonFile.animations[curAnim].anim);
+				character.playAnim(character.jsonFile.animations[curAnim].prefix);
 			}
 			characterAnimSpeed();
 		}
@@ -282,26 +285,27 @@ class DialogueEditorState extends MusicBeatState
 		if(id == FlxUIInputText.CHANGE_EVENT && (sender is FlxUIInputText)) {
 			if (sender == characterInputText)
 			{
-				character.reloadCharacterJson(characterInputText.text);
+				character.reloadJson(characterInputText.text);
 				reloadCharacter();
 				updateTextBox();
 
 				if(character.jsonFile.animations.length > 0) {
 					curAnim = 0;
 					if(character.jsonFile.animations.length > curAnim && character.jsonFile.animations[curAnim] != null) {
-						character.playAnim(character.jsonFile.animations[curAnim].anim, finishedText);
-						animText.text = 'Animation: ' + character.jsonFile.animations[curAnim].anim + ' (' + (curAnim + 1) +' / ' + character.jsonFile.animations.length + ') - Press W or S to scroll';
+						character.playAnim(character.jsonFile.animations[curAnim].prefix, finishedText);
+						animText.text = 'Animation: '
+							+ character.jsonFile.animations[curAnim].prefix + ' (' + (curAnim + 1) +' / ' + character.jsonFile.animations.length + ') - Press W or S to scroll';
 					} else {
 						animText.text = 'ERROR! NO ANIMATIONS FOUND';
 					}
 					characterAnimSpeed();
 				}
-				dialogueFile.dialogue[curSelected].portrait = characterInputText.text;
+				dialogueFile.dialogue[curSelected].character = characterInputText.text;
 			}
 			else if(sender == lineInputText)
 			{
 				reloadText(0);
-				dialogueFile.dialogue[curSelected].text = lineInputText.text;
+				dialogueFile.dialogue[curSelected].line = lineInputText.text;
 			}
 			else if(sender == soundInputText)
 			{
@@ -330,7 +334,7 @@ class DialogueEditorState extends MusicBeatState
 
 		if(character.animation.curAnim != null) {
 			if(finishedText) {
-				if(character.animationIsLoop() && character.animation.curAnim.finished) {
+				if(character.animation.curAnim.finished) {
 					character.playAnim(character.animation.curAnim.name, true);
 				}
 			} else if(character.animation.curAnim.finished) {
@@ -379,8 +383,8 @@ class DialogueEditorState extends MusicBeatState
 					if(curAnim < 0) curAnim = character.jsonFile.animations.length - 1;
 					else if(curAnim >= character.jsonFile.animations.length) curAnim = 0;
 
-					var animToPlay:String = character.jsonFile.animations[curAnim].anim;
-					if(character.dialogueAnimations.exists(animToPlay)) {
+					var animToPlay:String = character.jsonFile.animations[curAnim].prefix;
+					if(character.animations.exists(animToPlay)) {
 						character.playAnim(animToPlay, finishedText);
 						dialogueFile.dialogue[curSelected].expression = animToPlay;
 					}
@@ -413,14 +417,14 @@ class DialogueEditorState extends MusicBeatState
 		if(curSelected < 0) curSelected = dialogueFile.dialogue.length - 1;
 		else if(curSelected >= dialogueFile.dialogue.length) curSelected = 0;
 
-		var curDialogue:DialogueLine = dialogueFile.dialogue[curSelected];
-		characterInputText.text = curDialogue.portrait;
-		lineInputText.text = curDialogue.text;
+		var curDialogue:DialogueLines = dialogueFile.dialogue[curSelected];
+		characterInputText.text = curDialogue.character;
+		lineInputText.text = curDialogue.line;
 		angryCheckbox.checked = (curDialogue.boxState == 'angry');
 		speedStepper.value = curDialogue.speed;
 
 		curAnim = 0;
-		character.reloadCharacterJson(characterInputText.text);
+		character.reloadJson(characterInputText.text);
 		reloadCharacter();
 		updateTextBox();
 		reloadText(curDialogue.speed);
@@ -428,14 +432,15 @@ class DialogueEditorState extends MusicBeatState
 		var leLength:Int = character.jsonFile.animations.length;
 		if(leLength > 0) {
 			for (i in 0...leLength) {
-				var leAnim:DialogueAnimArray = character.jsonFile.animations[i];
-				if(leAnim != null && leAnim.anim == curDialogue.expression) {
+				var leAnim:DialogueAnimArrayJson = character.jsonFile.animations[i];
+				if (leAnim != null && leAnim.prefix == curDialogue.expression) {
 					curAnim = i;
 					break;
 				}
 			}
-			character.playAnim(character.jsonFile.animations[curAnim].anim, finishedText);
-			animText.text = 'Animation: ' + character.jsonFile.animations[curAnim].anim + ' (' + (curAnim + 1) +' / ' + leLength + ') - Press W or S to scroll';
+			character.playAnim(character.jsonFile.animations[curAnim].prefix, finishedText);
+			animText.text = 'Animation: '
+				+ character.jsonFile.animations[curAnim].prefix + ' (' + (curAnim + 1) +' / ' + leLength + ') - Press W or S to scroll';
 		} else {
 			animText.text = 'ERROR! NO ANIMATIONS FOUND';
 		}
@@ -488,7 +493,7 @@ class DialogueEditorState extends MusicBeatState
 		if(fullPath != null) {
 			var rawJson:String = File.getContent(fullPath);
 			if(rawJson != null) {
-				var loadedDialog:DialogueFile = cast Json.parse(rawJson);
+				var loadedDialog:DialogueJson = cast Json.parse(rawJson);
 				if(loadedDialog.dialogue != null && loadedDialog.dialogue.length > 0) //Make sure it's really a dialogue file
 				{
 					var cutName:String = _file.name.substr(0, _file.name.length - 5);

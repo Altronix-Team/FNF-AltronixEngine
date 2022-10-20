@@ -132,11 +132,6 @@ class DiffOverview extends FlxSubState
 			// FlxG.log.add(i);
 			var babyArrow:StaticArrow = new StaticArrow(-10, strumLine.y);
 			babyArrow.frames = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin);
-			for (j in 0...4)
-			{
-				babyArrow.animation.addByPrefix(dataColor[j], 'arrow' + dataSuffix[j]);
-				babyArrow.animation.addByPrefix('dirCon' + j, dataSuffix[j].toLowerCase() + ' confirm', 24, false);
-			}
 
 			var lowerDir:String = dataSuffix[i].toLowerCase();
 

@@ -63,7 +63,6 @@ import gameplayStuff.Song;
 import gameplayStuff.TimingStruct;
 import gameplayStuff.Song;
 import gameplayStuff.Conductor;
-import gameplayStuff.WaveformRender;
 import gameplayStuff.Note.AttachedFlxText;
 #if desktop
 import DiscordClient;
@@ -162,7 +161,6 @@ class ChartingState extends MusicBeatState
 	var gridBG:FlxSprite;
 
 	public var sectionRenderes:FlxTypedGroup<SectionRender>;
-	//public var waveformRenderes:FlxTypedGroup<WaveformRender>;
 
 	public static var _song:SongData;
 
@@ -175,9 +173,6 @@ class ChartingState extends MusicBeatState
 	var tempBpm:Float = 0;
 	var gridBlackLine:FlxSprite;
 	public static var vocals:FlxSound;
-
-	var player2:Character = new Character(0, 0, "dad");
-	var player1:Boyfriend = new Boyfriend(0, 0, "bf");
 
 	public static var leftIcon:HealthIcon;
 
@@ -239,7 +234,6 @@ class ChartingState extends MusicBeatState
 			FlxG.save.data.showHelp = true;
 
 		sectionRenderes = new FlxTypedGroup<SectionRender>();
-		//waveformRenderes = new FlxTypedGroup<WaveformRender>();
 		lines = new FlxTypedGroup<FlxSprite>();
 		texts = new FlxTypedGroup<EventText>();
 
@@ -264,11 +258,11 @@ class ChartingState extends MusicBeatState
 				default:
 					diff = "-" + CoolUtil.difficultyFromInt(PlayState.storyDifficulty).toLowerCase();
 			}
-			_song = Song.conversionChecks(Song.loadFromJson(PlayState.SONG.songId, diff));	
+			_song = Song.loadFromJson(PlayState.SONG.songId, diff);	
 		}
 		else
 		{
-			_song = {
+			_song = Song.conversionChecks({
 				chartVersion: latestChartVersion,
 				songId: 'test',
 				songName: 'Test',
@@ -285,7 +279,7 @@ class ChartingState extends MusicBeatState
 				speed: 1,
 				validScore: false,
 				specialSongNoteSkin: NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin)
-			};
+			});
 		}
 
 		if (_song.specialSongNoteSkin != FlxG.save.data.noteskin)
@@ -323,7 +317,7 @@ class ChartingState extends MusicBeatState
 		Conductor.mapBPMChanges(_song);
 
 		leftIcon = new HealthIcon(_song.player1, Character.getCharacterIcon(_song.player1));
-		rightIcon = new HealthIcon(_song.player1, Character.getCharacterIcon(_song.player2));
+		rightIcon = new HealthIcon(_song.player2, Character.getCharacterIcon(_song.player2));
 
 		var index = 0;
 
@@ -433,22 +427,11 @@ class ChartingState extends MusicBeatState
 
 		for (awfgaw in 0..._song.notes.length) // grids/steps
 		{
-			var renderer = new SectionRender(0, 640 * awfgaw, GRID_SIZE, _song.notes[awfgaw].lengthInSteps);
+			var renderer = new SectionRender(0, 640 * awfgaw, GRID_SIZE, vocals, _song.notes[awfgaw], _song.notes[awfgaw].lengthInSteps);
 			if (_song.notes[awfgaw] == null)
 				_song.notes.push(newSection(16, true, false, false));
 
-			renderer.section = _song.notes[awfgaw];
-
 			sectionRenderes.add(renderer);
-
-			/*#if desktop
-			if (FlxG.save.data.chart_waveform)
-			{
-				var waveformrenderer = new WaveformRender(0, 640 * awfgaw, _song, GRID_SIZE, _song.notes[awfgaw].lengthInSteps, awfgaw);
-
-				waveformRenderes.add(waveformrenderer);
-			}
-			#end*/
 
 			var down = getYfromStrum(renderer.section.startTime) * zoomFactor;
 
@@ -469,7 +452,7 @@ class ChartingState extends MusicBeatState
 
 			sectionIcons.add(sectionicon);
 			add(sectionicon);
-			height = Math.floor(renderer.y);
+			height = Math.floor(renderer.sectionSprite.y);
 		}
 
 		gridBlackLine = new FlxSprite(gridBG.width / 2).makeGraphic(2, height, FlxColor.BLACK);
@@ -556,7 +539,6 @@ class ChartingState extends MusicBeatState
 
 		add(sectionRenderes);
 
-		//add(waveformRenderes);
 		add(dummyArrow);
 		add(strumLine);
 		add(lines);
@@ -1297,22 +1279,7 @@ class ChartingState extends MusicBeatState
 		waveformEnabled.checked = FlxG.save.data.chart_waveform;
 		waveformEnabled.callback = function()
 		{
-			/*while (waveformRenderes.members.length > 0)
-			{
-				waveformRenderes.remove(waveformRenderes.members[0], true);
-			}*/
-
 			FlxG.save.data.chart_waveform = waveformEnabled.checked;
-
-			/*if (FlxG.save.data.chart_waveform)
-			{
-				for (awfgaw in 0..._song.notes.length)
-				{
-					var waveformrenderer = new WaveformRender(0, 640 * awfgaw,_song, GRID_SIZE, _song.notes[awfgaw].lengthInSteps, awfgaw);
-
-					waveformRenderes.add(waveformrenderer);
-				}
-			}*/
 		};
 		#end
 
@@ -1692,11 +1659,6 @@ class ChartingState extends MusicBeatState
 			{
 				curRenderedNoteTexts.remove(curRenderedNoteTexts.members[0], true);
 			}
-
-			/*while (waveformRenderes.members.length > 0)
-			{
-				waveformRenderes.remove(waveformRenderes.members[0], true);
-			}*/
 
 			while (sectionRenderes.members.length > 0)
 			{
@@ -2512,7 +2474,7 @@ class ChartingState extends MusicBeatState
 
 			for (i in sectionRenderes)
 			{
-				var diff = i.y - strumLine.y;
+				var diff = i.sectionSprite.y - strumLine.y;
 				if (diff < 2000 && diff >= -2000)
 				{
 					i.active = true;
@@ -2526,33 +2488,6 @@ class ChartingState extends MusicBeatState
 			}
 
 			shownNotes = [];
-
-			if (FlxG.sound.music != null)
-			{
-				if (FlxG.sound.music.playing)
-				{
-					/*@:privateAccess
-					{
-						#if desktop
-						// The __backend.handle attribute is only available on native.
-						lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, speed);
-						try
-						{
-							// We need to make CERTAIN vocals exist and are non-empty
-							// before we try to play them. Otherwise the game crashes.
-							if (vocals != null && vocals.length > 0)
-							{
-								lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, speed);
-							}
-						}
-						catch (e)
-						{
-							// Debug.logTrace("failed to pitch vocals (probably cuz they don't exist)");
-						}
-						#end
-					}*/
-				}
-			}
 
 			for (note in curRenderedNotes)
 			{
@@ -3221,11 +3156,6 @@ class ChartingState extends MusicBeatState
 						sectionRenderes.remove(sectionRenderes.members[0], true);
 					}
 
-					/*while (waveformRenderes.members.length > 0)
-					{
-						waveformRenderes.remove(waveformRenderes.members[0], true);
-					}*/
-
 					var toRemove = [];
 
 					for (i in _song.notes)
@@ -3464,7 +3394,7 @@ class ChartingState extends MusicBeatState
 					default:
 						if (Paths.doesTextAssetExist('assets/custom_events/' + eventType.selectedLabel))
 						{
-							eventDescriptionText = OpenFlAssets.getText('assets/custom_events/' + eventType.selectedLabel + '.txt');
+							eventDescriptionText = Paths.getTextFromFile('custom_events/' + eventType.selectedLabel + '.txt');
 							eventDescription.text = eventDescriptionText;
 						}
 						else
@@ -4237,11 +4167,6 @@ class ChartingState extends MusicBeatState
 		{
 			sectionRenderes.remove(sectionRenderes.members[0], true);
 		}
-
-		/*while (waveformRenderes.members.length > 0)
-		{
-			waveformRenderes.remove(waveformRenderes.members[0], true);
-		}*/
 
 		var toRemove = [];
 

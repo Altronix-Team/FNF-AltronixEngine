@@ -550,16 +550,13 @@ class Character extends FlxSprite
 		setGraphicSize(Std.int(width * jsonScale));
 		updateHitbox();
 
-		if (json.no_antialiasing)
+		if (json.no_antialiasing || !FlxG.save.data.antialiasing)
 		{
 			antialiasing = false;
 		}
 
 		if (json.healthbar_colors != null && json.healthbar_colors.length > 2)
 			healthColorArray = json.healthbar_colors;
-
-		if (!FlxG.save.data.antialiasing)
-			antialiasing = false;
 
 		if (json.animations != null && json.animations.length > 0)
 		{

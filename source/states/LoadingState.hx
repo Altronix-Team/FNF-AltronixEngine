@@ -57,6 +57,7 @@ class LoadingState extends MusicBeatState
 	var gfDance:FlxSprite;
 	var danceLeft = false;
 
+	var created = false;
 
 	function new(target:FlxState, stopMusic:Bool)
 	{
@@ -101,6 +102,8 @@ class LoadingState extends MusicBeatState
 			FlxG.camera.fade(FlxG.camera.bgColor, fadeTime, true);
 			new FlxTimer().start(fadeTime + MIN_TIME, function(_) introComplete());
 		});
+
+		created = true;
 	}
 
 	function checkLoadSong(path:String)
@@ -142,13 +145,16 @@ class LoadingState extends MusicBeatState
 	{
 		super.beatHit();
 
-		logo.animation.play('bump');
-		danceLeft = !danceLeft;
+		if (created)
+		{
+			logo.animation.play('bump');
+			danceLeft = !danceLeft;
 
-		if (danceLeft)
-			gfDance.animation.play('danceRight');
-		else
-			gfDance.animation.play('danceLeft');
+			if (danceLeft)
+				gfDance.animation.play('danceRight');
+			else
+				gfDance.animation.play('danceLeft');
+		}		
 	}
 
 	override function update(elapsed:Float)

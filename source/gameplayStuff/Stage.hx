@@ -38,12 +38,12 @@ class Stage extends states.MusicBeatState
 	public var toAdd:Array<Dynamic> = []; // Add BGs on stage startup, load BG in by using "toAdd.push(bgVar);"
 	// Layering algorithm for noobs: Everything loads by the method of "On Top", example: You load wall first(Every other added BG layers on it), then you load road(comes on top of wall and doesn't clip through it), then loading street lights(comes on top of wall and road)
 	public var swagBacks:Map<String,
-		Dynamic> = []; // Store BGs here to use them later (for example with slowBacks, using your custom stage event or to adjust position in stage debug menu(press 8 while in PlayState with debug build of the game))
-	public var swagGroup:Map<String, FlxTypedGroup<Dynamic>> = []; // Store Groups
+		Dynamic> = new Map(); // Store BGs here to use them later (for example with slowBacks, using your custom stage event or to adjust position in stage debug menu(press 8 while in PlayState with debug build of the game))
+	public var swagGroup:Map<String, FlxTypedGroup<Dynamic>> = new Map(); // Store Groups
 	public var animatedBacks:Array<FlxSprite> = []; // Store animated backgrounds and make them play animation(Animation must be named Idle!! Else use swagGroup/swagBacks and script it in stepHit/beatHit function of this file!!)
 	public var layInFront:Array<Array<FlxSprite>> = [[], [], []]; // BG layering, format: first [0] - in front of GF, second [1] - in front of opponent, third [2] - in front of boyfriend(and technically also opponent since Haxe layering moment)
 	public var slowBacks:Map<Int,
-		Array<FlxSprite>> = []; // Change/add/remove backgrounds mid song! Format: "slowBacks[StepToBeActivated] = [Sprites,To,Be,Changed,Or,Added];"
+		Array<FlxSprite>> = new Map(); // Change/add/remove backgrounds mid song! Format: "slowBacks[StepToBeActivated] = [Sprites,To,Be,Changed,Or,Added];"
 
 	// BGs still must be added by using toAdd Array for them to show in game after slowBacks take effect!!
 	// BGs still must be added by using toAdd Array for them to show in game after slowBacks take effect!!
@@ -807,7 +807,7 @@ class Stage extends states.MusicBeatState
 
 		if (!PlayStateChangeables.Optimize)
 		{
-			var array = slowBacks[curStep];
+			var array = if (slowBacks != null) slowBacks[curStep]; else [];
 			if (array != null && array.length > 0)
 			{
 				if (hideLastBG)
@@ -847,10 +847,13 @@ class Stage extends states.MusicBeatState
 	{
 		super.beatHit();
 
-		if (FlxG.save.data.distractions && animatedBacks.length > 0)
+		if (animatedBacks != null)
 		{
-			for (bg in animatedBacks)
-				bg.animation.play('idle', true);
+			if (FlxG.save.data.distractions && animatedBacks.length > 0)
+			{
+				for (bg in animatedBacks)
+					bg.animation.play('idle', true);
+			}
 		}
 
 		if (!PlayStateChangeables.Optimize)

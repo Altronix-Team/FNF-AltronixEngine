@@ -76,6 +76,8 @@ class TitleState extends MusicBeatState
 	var modsToLoad = [];
 	public static var configFound = false;
 
+	var created:Bool = false;
+
 	override public function create():Void
 	{
 		/*@:privateAccess
@@ -142,11 +144,6 @@ class TitleState extends MusicBeatState
 
 			if (FlxG.save.data.volume != null)
 				FlxG.sound.volume = FlxG.save.data.volume;
-
-			/*if (FlxG.save.data.fullscreenOnStart)
-			{
-				FlxG.fullscreen = FlxG.save.data.fullscreenOnStart;
-			}*/
 
 			if (FlxG.save.data.weekCompleted != null)
 			{
@@ -271,6 +268,8 @@ class TitleState extends MusicBeatState
 		FlxTween.tween(credTextShit, {y: credTextShit.y + 20}, 2.9, {ease: FlxEase.quadInOut, type: PINGPONG});
 
 		FlxG.mouse.visible = false;
+
+		created = true;
 
 		if (initialized)
 		{
@@ -460,54 +459,57 @@ class TitleState extends MusicBeatState
 	{
 		super.beatHit();
 
-		logoBl.animation.play('bump', true);
-		danceLeft = !danceLeft;
-
-		if (danceLeft)
-			gfDance.animation.play('danceRight');
-		else
-			gfDance.animation.play('danceLeft');
-
-		switch (curBeat)
+		if (created)
 		{
-			case 0:
-				deleteCoolText();
-			case 1:
-				createCoolText(['ninjamuffin99', 'phantomArcade', 'kawaisprite', 'evilsk8er']);
-			case 3:
-				addMoreText('present');
-			case 4:
-				deleteCoolText();
-			case 5:
-				if (Main.watermarks)
-					createCoolText(['Altronix Engine', 'by']);
-				else
-					createCoolText(['In Partnership', 'with']);
-			case 7:
-				if (Main.watermarks)
-					addMoreText('AltronMaxX');
-				else
-				{
-					addMoreText('Newgrounds');
-					ngSpr.visible = true;
-				}
-			case 8:
-				deleteCoolText();
-				ngSpr.visible = false;
-			case 9:
-				createCoolText([curWacky[0]]);
-			case 11:
-				addMoreText(curWacky[1]);
-			case 12:
-				deleteCoolText();
-			case 13:
-				addMoreText('Friday');
-			case 14:
-				addMoreText('Night');
-			case 15:
-				addMoreText('Funkin');
-			case 16:
-				skipIntro();
+			logoBl.animation.play('bump', true);
+			danceLeft = !danceLeft;
+
+			if (danceLeft)
+				gfDance.animation.play('danceRight');
+			else
+				gfDance.animation.play('danceLeft');
+
+			switch (curBeat)
+			{
+				case 0:
+					deleteCoolText();
+				case 1:
+					createCoolText(['ninjamuffin99', 'phantomArcade', 'kawaisprite', 'evilsk8er']);
+				case 3:
+					addMoreText('present');
+				case 4:
+					deleteCoolText();
+				case 5:
+					if (Main.watermarks)
+						createCoolText(['Altronix Engine', 'by']);
+					else
+						createCoolText(['In Partnership', 'with']);
+				case 7:
+					if (Main.watermarks)
+						addMoreText('AltronMaxX');
+					else
+					{
+						addMoreText('Newgrounds');
+						ngSpr.visible = true;
+					}
+				case 8:
+					deleteCoolText();
+					ngSpr.visible = false;
+				case 9:
+					createCoolText([curWacky[0]]);
+				case 11:
+					addMoreText(curWacky[1]);
+				case 12:
+					deleteCoolText();
+				case 13:
+					addMoreText('Friday');
+				case 14:
+					addMoreText('Night');
+				case 15:
+					addMoreText('Funkin');
+				case 16:
+					skipIntro();
+			}
 		}
 	}
 

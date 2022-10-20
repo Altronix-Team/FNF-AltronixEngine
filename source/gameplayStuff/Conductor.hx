@@ -1,5 +1,6 @@
 package gameplayStuff;
 
+import haxe.Constraints.Function;
 import gameplayStuff.Section.SwagSection;
 import gameplayStuff.Song.SongData;
 import flixel.FlxG;
@@ -29,6 +30,7 @@ class Conductor
 	public static var bpmChangeMap:Array<BPMChangeEvent> = [];
 
 	public static var MusicBeatInterface:IMusicBeat;
+	//public static var MusicBeatInterfaces:Array<Class<IMusicBeat>> = listIntClasses();
 
 	private static var lastBeat:Float = 0;
 	private static var lastStep:Float = 0;
@@ -38,6 +40,23 @@ class Conductor
 	private static var curBeat:Int = 0;
 	private static var curDecimalBeat:Float = 0;
 	private static var curSection:SwagSection = null;
+
+	private static function listIntClasses():Array<Class<IMusicBeat>>
+	{
+		var returnArray:Array<Class<IMusicBeat>> = [];
+
+		var list:List<Class<IMusicBeat>> = utils.MacroUtil.getAllClasses(IMusicBeat);
+
+		var val:Null<Class<IMusicBeat>> = list.first();
+
+		while (val != null)
+		{
+			returnArray.push(val);
+			list.remove(val);
+			val = list.first();
+		}
+		return returnArray;
+	}
 
 	public function new()
 	{
@@ -103,6 +122,11 @@ class Conductor
 
 	public static function updateSongPosition(elapsed:Float)
 	{
+		/*if (MusicBeatInterfaces.length == 0)
+		{
+			MusicBeatInterfaces = listIntClasses();
+		}*/
+
 		if (songPosition < 0)
 			curDecimalBeat = 0;
 		else
@@ -122,6 +146,7 @@ class Conductor
 
 				curDecimalBeat = data.startBeat + ((((songPosition / 1000)) - data.startTime) * (data.bpm / 60));
 				MusicBeatInterface.curDecimalBeat = curDecimalBeat;
+				//setOnMusicBeatInterfaces('curDecimalBeat', curDecimalBeat);
 				var ste:Int = Math.floor(data.startStep + ((songPosition) - startInMS) / step);
 				if (ste >= 0)
 				{
@@ -149,6 +174,7 @@ class Conductor
 			{
 				curDecimalBeat = (((songPosition / 1000))) * (bpm / 60);
 				MusicBeatInterface.curDecimalBeat = curDecimalBeat;
+				//setOnMusicBeatInterfaces('curDecimalBeat', curDecimalBeat);
 				var nextStep:Int = Math.floor((songPosition) / stepCrochet);
 				if (nextStep >= 0)
 				{
@@ -182,6 +208,7 @@ class Conductor
 		if (lastSection != curSection)
 		{
 			MusicBeatInterface.curSection = curSection;
+			//setOnMusicBeatInterfaces('curSection', curSection);
 			sectionHit();
 		}
 	}
@@ -190,11 +217,14 @@ class Conductor
 	{
 		lastBeat = curBeat;
 		curBeat = Math.floor(curStep / 4);
+		//setOnMusicBeatInterfaces('curBeat', curBeat);
 		MusicBeatInterface.curBeat = curBeat;
 	}
 
 	public static function stepHit():Void
 	{
+		//setOnMusicBeatInterfaces('curStep', curStep);
+		//callOnMusicBeatInterfaces('stepHit');
 		MusicBeatInterface.stepHit();
 		MusicBeatInterface.curStep = curStep;
 		if (curStep % 4 == 0)
@@ -203,12 +233,49 @@ class Conductor
 
 	public static function beatHit():Void
 	{
+		//callOnMusicBeatInterfaces('beatHit');
 		MusicBeatInterface.beatHit();
 	}
 
 	public static function sectionHit():Void
 	{
+		//callOnMusicBeatInterfaces('sectionHit');
 		MusicBeatInterface.sectionHit();
+	}
+
+	//it works but without callOnMusicBeatInterfaces, it`s peace of shit
+	public static function setOnMusicBeatInterfaces(variable:String, arg:Dynamic)
+	{
+		/*for (int in MusicBeatInterfaces)
+		{
+			try
+			{
+				Reflect.setProperty(int, variable, arg);
+			}
+			catch (e)
+			{
+				Debug.logError('Error with setting variable $variable: ${e.message} \n ${e.stack}');
+			}
+		}*/
+	}
+
+	//if it worked, it would be cool, but alas, it doesn't call the necessary functions.
+	public static function callOnMusicBeatInterfaces(func:String)
+	{
+		/*for (int in MusicBeatInterfaces)
+		{
+			try
+			{
+				var cl:IMusicBeat = Type.createEmptyInstance(int);
+				var functionField:Function = Reflect.field(cl, func);
+				Reflect.callMethod(cl, functionField, []);
+			}
+			catch (e)
+			{
+				Debug.logError('Error with calling function $func: ${e.message} \n ${e.stack}');
+				continue;
+			}
+		}*/
 	}
 }
 

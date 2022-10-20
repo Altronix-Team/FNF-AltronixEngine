@@ -36,6 +36,7 @@ import sys.io.File;
 
 using StringTools;
 
+//TODO Redo to work with DialogueBox.hx
 class DialogueCharacterEditorState extends MusicBeatState
 {
 	var box:FlxSprite;

@@ -1,5 +1,6 @@
 package utils;
 
+import gameplayStuff.PlayStateChangeables;
 import flixel.input.gamepad.FlxGamepad;
 import openfl.Lib;
 import flixel.FlxG;
@@ -226,6 +227,14 @@ class EngineData
 		Main.watermarks = Main.save.data.watermark;
 
 		Main.save.data.language = false;
+
+		PlayStateChangeables.useMiddlescroll = FlxG.save.data.middleScroll;
+		PlayStateChangeables.useDownscroll = FlxG.save.data.downscroll;
+		PlayStateChangeables.safeFrames = FlxG.save.data.frames;
+		PlayStateChangeables.scrollSpeed = FlxG.save.data.scrollSpeed;
+		PlayStateChangeables.botPlay = FlxG.save.data.botplay;
+		PlayStateChangeables.Optimize = FlxG.save.data.optimize;
+		PlayStateChangeables.zoom = FlxG.save.data.zoom;
 
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(Main.save.data.fpsCap);
 	}

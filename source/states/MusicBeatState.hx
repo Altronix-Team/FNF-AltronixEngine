@@ -13,7 +13,7 @@ import gameplayStuff.Section;
 import gameplayStuff.Conductor;
 import gameplayStuff.TimingStruct;
 
-class MusicBeatState extends BaseState implements IMusicBeat
+class MusicBeatState extends BaseState implements gameplayStuff.Conductor.IMusicBeat
 {
 	private var controls(get, never):Controls;
 

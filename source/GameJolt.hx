@@ -692,7 +692,8 @@ class GameJoltLogin extends states.MusicBeatSubstate
 	override function beatHit()
 	{
 		super.beatHit();
-		charBop.animation.play((GameJoltAPI.getStatus() ? "loggedin" : "idle"));
+		if (charBop != null)
+			charBop.animation.play((GameJoltAPI.getStatus() ? "loggedin" : "idle"));
 	}
 
 	function openLink(url:String)

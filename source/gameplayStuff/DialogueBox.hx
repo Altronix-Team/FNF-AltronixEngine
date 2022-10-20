@@ -97,13 +97,8 @@ class DialogueBox extends FlxSpriteGroup
 		swagDialogue = new FlxTypeText(240, 480, Std.int(FlxG.width * 0.6), "", 32);
 		swagDialogue.font = Paths.font(LanguageStuff.fontName);
 		swagDialogue.color = 0xFF3F2021;
-		swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
 		swagDialogue.scrollFactor.set();
-		swagDialogue.skipCallback = function()
-		{
-			if (skipLineThing != null)
-				skipLineThing();
-		};
+		swagDialogue.skipCallback = function(){if (skipLineThing != null)skipLineThing();};
 
 		if (dialogueBoxJson.textYOffset != null)
 			swagDialogue.y += dialogueBoxJson.textYOffset;
@@ -187,10 +182,9 @@ class DialogueBox extends FlxSpriteGroup
 	{
 		reloadLine();
 
+		swagDialogue.sounds = [FlxG.sound.load(Paths.sound(curLine.sound != null ? curLine.sound : 'pixelText'), 0.6)];
 		swagDialogue.resetText(dialogueLines[curLineInt]);
-		swagDialogue.start(curLine.speed != null ? curLine.speed : 0.03, true, false, [], function(){
-			isTyping = false;
-		});
+		swagDialogue.start(curLine.speed != null ? curLine.speed : 0.03, true, false, [], function(){isTyping = false;});
 		isTyping = true;
 
 		curDialogueCharacter.reloadCharacter(curDialogueCharacter.reloadJson(curLine.character));
@@ -370,7 +364,7 @@ class DialogueBox extends FlxSpriteGroup
 class DialogueCharacter extends FlxSprite
 {
 	var animOffsets:Map<String, Array<Int>> = new Map();
-	var animations:Map<String, DialogueAnimArrayJson> = new Map();
+	public var animations:Map<String, DialogueAnimArrayJson> = new Map();
 	public var jsonFile:DialogueCharacterJson = null;
 	public var characterName:String = 'bf';
 	public var position:CharacterPositions = RIGHT;
@@ -419,14 +413,7 @@ class DialogueCharacter extends FlxSprite
 	public function reloadCharacter(json:DialogueCharacterJson) {
 		Debug.logTrace('Reloading character');
 		frames = Paths.getSparrowAtlas('dialogue/' + json.image);
-		for (anim in json.animations)
-		{
-			animation.addByPrefix(anim.prefix, anim.idle_name, 24, false);
-			animation.addByPrefix(anim.prefix + '-loop', anim.loop_name, 24, false);
-			animOffsets.set(anim.prefix, anim.idle_offsets);
-			animOffsets.set(anim.prefix + '-loop', anim.loop_offsets);
-			animations.set(anim.prefix, anim);
-		}
+		reloadAnims(json);
 
 		setGraphicSize(Std.int(width * json.scale * 0.9));
 		updateHitbox();
@@ -468,27 +455,58 @@ class DialogueCharacter extends FlxSprite
 		playAnim(json.startingAnim);
 	}
 
-	public function playAnim(animName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void
+	public function reloadAnims(?json:DialogueCharacterJson)
 	{
-		if (animation.getByName(animName) == null)
+		var anims = json != null ? json.animations : jsonFile.animations;
+		if (anims == null) return;
+		for (anim in anims)
 		{
-			#if debug
-			Debug.logWarn(['Such animation doesnt exist: ' + animName]);
-			#end
-			return;
+			animation.addByPrefix(anim.prefix, anim.idle_name, 24, false);
+			animation.addByPrefix(anim.prefix + '-loop', anim.loop_name, 24, false);
+			animOffsets.set(anim.prefix, anim.idle_offsets);
+			animOffsets.set(anim.prefix + '-loop', anim.loop_offsets);
+			animations.set(anim.prefix, anim);
 		}
+	}
 
-		animation.play(animName, Force, Reversed, Frame);
-
-		curAnim = animName;
-
-		var daOffset = animOffsets.get(animName);
-		if (animOffsets.exists(animName))
+	public function playAnim(?animName:String, ?Force:Bool = false, ?Reversed:Bool = false, ?Frame:Int = 0):Void
+	{
+		if (animName != null)
 		{
-			offset.set(daOffset[0], daOffset[1]);
+			if (animation.getByName(animName) == null)
+			{
+				#if debug
+				Debug.logWarn(['Such animation doesnt exist: ' + animName]);
+				#end
+				return;
+			}
+
+			animation.play(animName, Force, Reversed, Frame);
+
+			curAnim = animName;
+
+			var daOffset = animOffsets.get(animName);
+			if (animOffsets.exists(animName))
+			{
+				offset.set(daOffset[0], daOffset[1]);
+			}
+			else
+				offset.set(0, 0);
 		}
 		else
-			offset.set(0, 0);
+		{
+			animation.play(animation.getNameList()[0], Force, Reversed, Frame);
+
+			curAnim = animation.getNameList()[0];
+
+			var daOffset = animOffsets.get(animation.getNameList()[0]);
+			if (animOffsets.exists(animation.getNameList()[0]))
+			{
+				offset.set(daOffset[0], daOffset[1]);
+			}
+			else
+				offset.set(0, 0);
+		}	
 	}
 
 	override public function update(elapsed:Float)
@@ -624,6 +642,7 @@ typedef DialogueLines = {
 	var line:String;
 	var boxState:String;
 	var speed:Null<Float>;
+	var sound:Null<String>;
 }
 
 typedef DialogueBoxJson =

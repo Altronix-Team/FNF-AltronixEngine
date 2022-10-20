@@ -424,6 +424,8 @@ class PlayState extends MusicBeatState
 	var offsetX = 100;
 	//Thorns shit end
 
+	var created = false;
+
 	public function addObject(object:FlxBasic)
 	{
 		add(object);
@@ -1706,6 +1708,8 @@ class PlayState extends MusicBeatState
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, releaseInput);
 
 		super.create();
+
+		created = true;
 	}
 
 	var video:MP4Handler;
@@ -1759,6 +1763,7 @@ class PlayState extends MusicBeatState
 		#end
 	}
 
+	//TODO Redo to work with DialogueBox.hx
 	var dialogueCount:Int = 0;
 	public var psychDialogue:DialogueBoxPsych;
 	//You don't have to add a song, just saying. You can just do "startDialogue(dialogueJson);" and it should work
@@ -6438,14 +6443,16 @@ class PlayState extends MusicBeatState
 	{
 		super.stepHit();
 
-		currentStep = curStep;
+		if (created)
+		{	
+			currentStep = curStep;
 
-		if (Math.abs(FlxG.sound.music.time - (Conductor.songPosition - Conductor.offset)) > 20
-			|| (SONG.needsVoices && Math.abs(vocals.time - (Conductor.songPosition - Conductor.offset)) > 20))
-		{
-			resyncVocals();
+			if (Math.abs(FlxG.sound.music.time - (Conductor.songPosition - Conductor.offset)) > 20
+				|| (SONG.needsVoices && Math.abs(vocals.time - (Conductor.songPosition - Conductor.offset)) > 20))
+			{
+				resyncVocals();
+			}
 		}
-
 		ScriptHelper.setOnScripts('curStep', curStep);
 	}
 
@@ -6487,7 +6494,8 @@ class PlayState extends MusicBeatState
 			notes.sort(FlxSort.byY, (PlayStateChangeables.useDownscroll ? FlxSort.ASCENDING : FlxSort.DESCENDING));
 		}
 
-		currentBeat = curBeat;
+		if (created)
+			currentBeat = curBeat;
 
 		ScriptHelper.setOnScripts('curBpm', Conductor.bpm);
 		ScriptHelper.setOnScripts('crochet', Conductor.crochet);
@@ -6508,131 +6516,135 @@ class PlayState extends MusicBeatState
 				dad.dance(forcedToIdle, dadAltAnim);
 		}
 		// FlxG.log.add('change bpm' + SONG.notes[Std.int(curStep / 16)].changeBPM);
-		wiggleShit.update(Conductor.crochet);
-
-		if (FlxG.save.data.camzoom && songMultiplier == 1)
+		if (created)
 		{
-			// HARDCODING FOR MILF ZOOMS!
-			if (PlayState.SONG.songId == 'milf' && curBeat >= 168 && curBeat < 200 && camZooming && FlxG.camera.zoom < 1.35)
+			wiggleShit.update(Conductor.crochet);
+
+		
+			if (FlxG.save.data.camzoom && songMultiplier == 1)
 			{
-				FlxG.camera.zoom += 0.015 / songMultiplier;
-				camHUD.zoom += 0.03 / songMultiplier;
+				// HARDCODING FOR MILF ZOOMS!
+				if (PlayState.SONG.songId == 'milf' && curBeat >= 168 && curBeat < 200 && camZooming && FlxG.camera.zoom < 1.35)
+				{
+					FlxG.camera.zoom += 0.015 / songMultiplier;
+					camHUD.zoom += 0.03 / songMultiplier;
+				}
+
+				if (camZooming && FlxG.camera.zoom < 1.35 && curBeat % 4 == 0)
+				{
+					FlxG.camera.zoom += 0.015 / songMultiplier;
+					camHUD.zoom += 0.03 / songMultiplier;
+				}
+			}
+			if (songMultiplier == 1)
+			{
+				iconP1.setGraphicSize(Std.int(iconP1.width + 30));
+				iconP2.setGraphicSize(Std.int(iconP2.width + 30));
+
+				iconP1.updateHitbox();
+				iconP2.updateHitbox();
+			}
+			else
+			{
+				iconP1.setGraphicSize(Std.int(iconP1.width + 4));
+				iconP2.setGraphicSize(Std.int(iconP2.width + 4));
+
+				iconP1.updateHitbox();
+				iconP2.updateHitbox();
 			}
 
-			if (camZooming && FlxG.camera.zoom < 1.35 && curBeat % 4 == 0)
+			if (!endingSong && curSection != null)
 			{
-				FlxG.camera.zoom += 0.015 / songMultiplier;
-				camHUD.zoom += 0.03 / songMultiplier;
-			}
-		}
-		if (songMultiplier == 1)
-		{
-			iconP1.setGraphicSize(Std.int(iconP1.width + 30));
-			iconP2.setGraphicSize(Std.int(iconP2.width + 30));
+				gfAltAnim = curSection.gfAltAnim;
+				if (allowedToHeadbang && (!gf.animation.curAnim.name.startsWith("sing") || gf.animation.curAnim.finished) && (gf.animation.exists('danceRight') && gf.animation.exists('danceLeft')))
+					gf.dance(forcedToIdle, gfAltAnim);
 
-			iconP1.updateHitbox();
-			iconP2.updateHitbox();
-		}
-		else
-		{
-			iconP1.setGraphicSize(Std.int(iconP1.width + 4));
-			iconP2.setGraphicSize(Std.int(iconP2.width + 4));
-
-			iconP1.updateHitbox();
-			iconP2.updateHitbox();
-		}
-
-		if (!endingSong && curSection != null)
-		{
-			gfAltAnim = curSection.gfAltAnim;
-			if (allowedToHeadbang && (!gf.animation.curAnim.name.startsWith("sing") || gf.animation.curAnim.finished) && (gf.animation.exists('danceRight') && gf.animation.exists('danceLeft')))
-				gf.dance(forcedToIdle, gfAltAnim);
-
-			if (curBeat % 8 == 7 && curSong == 'Bopeebo')
-			{
-				boyfriend.playAnim('hey', true);
-			}
-
-			if (curBeat % 16 == 15 && SONG.songId == 'tutorial' && dad.curCharacter == 'gf' && curBeat > 16 && curBeat < 48)
-			{
-				if (vocals.volume != 0)
+				if (curBeat % 8 == 7 && curSong == 'Bopeebo')
 				{
 					boyfriend.playAnim('hey', true);
-					dad.playAnim('cheer', true);
 				}
-				else
+
+				if (curBeat % 16 == 15 && SONG.songId == 'tutorial' && dad.curCharacter == 'gf' && curBeat > 16 && curBeat < 48)
 				{
-					dad.playAnim('sad', true);
-					FlxG.sound.play(Paths.soundRandom('GF_', 1, 4, 'shared'), 0.3);
+					if (vocals.volume != 0)
+					{
+						boyfriend.playAnim('hey', true);
+						dad.playAnim('cheer', true);
+					}
+					else
+					{
+						dad.playAnim('sad', true);
+						FlxG.sound.play(Paths.soundRandom('GF_', 1, 4, 'shared'), 0.3);
+					}
 				}
+
+				if (PlayStateChangeables.Optimize)
+					if (vocals.volume == 0 && !curSection.mustHitSection)
+						vocals.volume = 1;
 			}
 
-			if (PlayStateChangeables.Optimize)
-				if (vocals.volume == 0 && !curSection.mustHitSection)
-					vocals.volume = 1;
-		}
-
-		if (curSong == 'blammed')
-		{
-			if (!hscriptStageCheck)
+			if (curSong == 'blammed')
 			{
-				if (curBeat % 4 == 0){
-					var windowColor:FlxColor = FlxColor.WHITE;
-
-					switch (Stage.curLight)
-					{
-						case 4:
-							windowColor = FlxColor.fromRGB(251, 166, 51);
-						case 3:
-							windowColor = FlxColor.fromRGB(253, 69, 49);
-						case 2:
-							windowColor = FlxColor.fromRGB(251, 51, 245);
-						case 1:
-							windowColor = FlxColor.fromRGB(49, 253, 140);
-						case 0:
-							windowColor = FlxColor.fromRGB(49, 162, 253);
-					}
-					if ((curBeat >= 128 && curBeat <= 192) && !blammedeventplayed && FlxG.save.data.distractions)
-					{
-						var eventColor:FlxColor = FlxColor.WHITE;
-
-						eventColor = windowColor;
-						eventColor.alpha = 175;
-
-						camGame.flash(windowColor, 0.1);
-						camHUD.flash(windowColor, 0.1);
-						songOverlay(eventColor, 0.1);
-					}
-
-					var phillyCityLight:FlxSprite = Stage.swagBacks['light'];
-
-					phillyCityLight.color = windowColor;
-				}
-				
-				if (curBeat >= 192 && !blammedeventplayed && FlxG.save.data.distractions)
+				if (!hscriptStageCheck)
 				{
-					overlayColor = FlxColor.fromRGB(0, 0, 0, 0);
-					colorTween = FlxTween.color(overlay, 0.1, overlay.color, overlayColor, {
-					onComplete: function(twn:FlxTween)
-					{
-						colorTween = null;
-					}
-					});
-					for (char in chars) {
-						char.colorTween = FlxTween.color(char, 0.1, char.color, FlxColor.WHITE, {onComplete: function(twn:FlxTween) {
+					if (curBeat % 4 == 0){
+						var windowColor:FlxColor = FlxColor.WHITE;
 
-						}, ease: FlxEase.quadInOut});
+						switch (Stage.curLight)
+						{
+							case 4:
+								windowColor = FlxColor.fromRGB(251, 166, 51);
+							case 3:
+								windowColor = FlxColor.fromRGB(253, 69, 49);
+							case 2:
+								windowColor = FlxColor.fromRGB(251, 51, 245);
+							case 1:
+								windowColor = FlxColor.fromRGB(49, 253, 140);
+							case 0:
+								windowColor = FlxColor.fromRGB(49, 162, 253);
+						}
+						if ((curBeat >= 128 && curBeat <= 192) && !blammedeventplayed && FlxG.save.data.distractions)
+						{
+							var eventColor:FlxColor = FlxColor.WHITE;
+
+							eventColor = windowColor;
+							eventColor.alpha = 175;
+
+							camGame.flash(windowColor, 0.1);
+							camHUD.flash(windowColor, 0.1);
+							songOverlay(eventColor, 0.1);
+						}
+
+						var phillyCityLight:FlxSprite = Stage.swagBacks['light'];
+
+						phillyCityLight.color = windowColor;
 					}
-					blammedeventplayed = true;
+					
+					if (curBeat >= 192 && !blammedeventplayed && FlxG.save.data.distractions)
+					{
+						overlayColor = FlxColor.fromRGB(0, 0, 0, 0);
+						colorTween = FlxTween.color(overlay, 0.1, overlay.color, overlayColor, {
+						onComplete: function(twn:FlxTween)
+						{
+							colorTween = null;
+						}
+						});
+						for (char in chars) {
+							char.colorTween = FlxTween.color(char, 0.1, char.color, FlxColor.WHITE, {onComplete: function(twn:FlxTween) {
+
+							}, ease: FlxEase.quadInOut});
+						}
+						blammedeventplayed = true;
+					}
 				}
 			}
-		}
 
-		if (SONG.songId == 'thorns')
-		{
-			if ((WindowUtil.getWindowPosition('x') != windowX
-				|| WindowUtil.getWindowPosition('y') != windowY) /* && dad.animation.curAnim.name == 'idle'*/)
-				WindowUtil.repositionWindow(windowX, windowY);
+			if (SONG.songId == 'thorns')
+			{
+				if ((WindowUtil.getWindowPosition('x') != windowX
+					|| WindowUtil.getWindowPosition('y') != windowY) /* && dad.animation.curAnim.name == 'idle'*/)
+					WindowUtil.repositionWindow(windowX, windowY);
+			}
 		}
 
 		ScriptHelper.setOnScripts('curBeat', curBeat);

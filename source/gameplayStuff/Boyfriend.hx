@@ -27,12 +27,11 @@ class Boyfriend extends Character
 			else
 				holdTimer = 0;
 
-			if (animation.curAnim.name.endsWith('miss') && animation.curAnim.finished && !debugMode)
+			if (animation.curAnim.name.endsWith('miss') && animation.curAnim.finished && !curCharacter.endsWith('-car'))
 			{
 				playAnim('idle', true, false, 10);
 			}
-
-			if (curCharacter.endsWith('-car') && !animation.curAnim.name.startsWith('sing') && animation.curAnim.finished)
+			else if (curCharacter.endsWith('-car') && !animation.curAnim.name.startsWith('sing') && animation.curAnim.finished)
 				playAnim('idleHair');
 
 			if (animation.curAnim.name == 'firstDeath' && animation.curAnim.finished)

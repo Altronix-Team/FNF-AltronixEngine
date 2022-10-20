@@ -154,6 +154,7 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 		}
 	}
 
+	//TODO Redo to work with DialogueBox.hx
 	public function startDialogue(dialogueFile:String, music:String = null)
 	{
 		var path:String = Paths.formatToDialoguePath(PlayState.SONG.songId + '/' + dialogueFile);

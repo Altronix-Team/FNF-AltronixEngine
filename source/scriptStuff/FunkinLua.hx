@@ -1568,6 +1568,7 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "getRandomBool", function(chance:Float = 50) {
 			return FlxG.random.bool(chance);
 		});
+		//TODO Redo to work with DialogueBox.hx
 		Lua_helper.add_callback(lua, "startDialogue", function(dialogueFile:String, music:String = null) {
 			var path:String = Paths.formatToDialoguePath(PlayState.SONG.songId + '/' + dialogueFile);
 

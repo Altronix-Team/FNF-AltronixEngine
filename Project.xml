@@ -58,6 +58,7 @@
 	<classpath name="source" />
 	
 	<define name="CHECK_FOR_DEFAULT_CHARACTERS"/>
+	<define name="USE_SSCRIPT"/>
 	<define name="LUA_ALLOWED" if="desktop" />
 	<define name="VIDEOS_ALLOWED" if="web || windows" unless="32bits" />
 	
@@ -196,6 +197,7 @@
 	<haxelib name="flixel-addons" />
 	<haxelib name="hscript"/>
 	<!--haxelib name="hscript-ex"/-->
+	<haxelib name="SScript" if="USE_SSCRIPT"/>
 
 	<!--In case you want to use the ui package-->
 	<haxelib name="flixel-ui" />

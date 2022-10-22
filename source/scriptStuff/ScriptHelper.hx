@@ -29,7 +29,7 @@ class ScriptHelper
 	{
 		for (script in hscriptFiles)
 		{
-			script.set(name, value);
+			script.scriptHandler.set(name, value);
 		}
 	}
 
@@ -37,8 +37,9 @@ class ScriptHelper
 	{
 		for (script in hscriptFiles)
 		{
-			var scriptHelper = script.scriptHelper;
-			scriptHelper.call(functionToCall, params);
+			var scriptHelper = script.scriptHandler;
+			if (scriptHelper.exists(functionToCall))
+				scriptHelper.call(functionToCall, params);
 		}
 	}
 

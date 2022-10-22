@@ -62,9 +62,9 @@ class HealthIcon extends FlxSprite
 	private var iconOffsets:Array<Float> = [0, 0];
 	public function changeIcon(char:String, filename:String)
 	{
-		/*if (Paths.isAnimated('icons/$char'))
+		/*if (Paths.isAnimated('characters/$char/$filename'))
 		{
-			loadIcon(char);
+			loadIcon(char, filename);
 		}
 		else
 		{*/
@@ -72,20 +72,23 @@ class HealthIcon extends FlxSprite
 		//}
 	}
 
-	/*function loadIcon(char:String)
+	function loadIcon(char:String, filename:String)
 	{
-		if (!OpenFlAssets.exists(Paths.image('icons/' + char)))
+		if (!OpenFlAssets.exists(image(char != '' ? '/$char' : '', filename)))
 		{
-			loadIconLegacy('face');
+			Debug.logError('Error loading graphic for health icon ${char}');
+
+			loadIconLegacy('', 'face');
 			return;
 		}
 
-		var data:IconData = Json.parse(OpenFlAssets.getText('assets/images/icons/' + char + '.json').trim());
+		var data:IconData = Paths.loadJSON('characters${(char != '' ? '/$char' : '')}/$filename'); //Json.parse(OpenFlAssets.getText(Paths.json('characters/$char/$filename')).trim());
 
 		defaultAnim = data.defaultAnim;
 		nearToDieAnim = data.nearToDieAnim;
 
-		frames = FlxAtlasFrames.fromSparrow(FlxGraphic.fromBitmapData(OpenFlAssets.getBitmapData(OpenFlAssets.getPath('assets/images/icons/' + char + '.png'))), OpenFlAssets.getPath('assets/images/icons/' + char + '.xml'));
+		frames = FlxAtlasFrames.fromSparrow(FlxGraphic.fromBitmapData(OpenFlAssets.getBitmapData(image(char != '' ? '/$char' : '', filename))),
+			OpenFlAssets.getPath(Paths.file('characters${(char != '' ? '/$char' : '')}/$filename.xml')));
 	
 		for (i in data.animations)
 		{
@@ -93,7 +96,7 @@ class HealthIcon extends FlxSprite
 		}
 	
 		animation.play(data.defaultAnim);
-	}*/
+	}
 	
 	function loadIconLegacy(char:String, filename:String)
 	{

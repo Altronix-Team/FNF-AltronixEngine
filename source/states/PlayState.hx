@@ -424,8 +424,6 @@ class PlayState extends MusicBeatState
 	var offsetX = 100;
 	//Thorns shit end
 
-	var created = false;
-
 	public function addObject(object:FlxBasic)
 	{
 		add(object);
@@ -1708,8 +1706,6 @@ class PlayState extends MusicBeatState
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, releaseInput);
 
 		super.create();
-
-		created = true;
 	}
 
 	var video:MP4Handler;
@@ -6441,36 +6437,32 @@ class PlayState extends MusicBeatState
 
 	override function stepHit()
 	{
-		super.stepHit();
+		currentStep = curStep;
 
-		if (created)
-		{	
-			currentStep = curStep;
-
-			if (Math.abs(FlxG.sound.music.time - (Conductor.songPosition - Conductor.offset)) > 20
-				|| (SONG.needsVoices && Math.abs(vocals.time - (Conductor.songPosition - Conductor.offset)) > 20))
-			{
-				resyncVocals();
-			}
+		if (Math.abs(FlxG.sound.music.time - (Conductor.songPosition - Conductor.offset)) > 20
+			|| (SONG.needsVoices && Math.abs(vocals.time - (Conductor.songPosition - Conductor.offset)) > 20))
+		{
+			resyncVocals();
 		}
+
 		ScriptHelper.setOnScripts('curStep', curStep);
+
+		super.stepHit();
 	}
 
 	override function sectionHit()
 	{
-		super.sectionHit();
-
 		if (curSection != null)
 		{
-			ScriptHelper.setOnScripts('mustHitSection', curSection.mustHitSection);
-			ScriptHelper.setOnScripts('playerAltAnim', curSection.playerAltAnim);
-			ScriptHelper.setOnScripts('dadAltAnim', curSection.CPUAltAnim);
-			ScriptHelper.setOnScripts('gfAltAnim', curSection.gfAltAnim);
-			ScriptHelper.setOnScripts('gfSection', curSection.gfSection);
-
 			dadAltAnim = curSection.CPUAltAnim;
 			bfAltAnim = curSection.playerAltAnim;
 			gfAltAnim = curSection.gfAltAnim;
+
+			ScriptHelper.setOnScripts('mustHitSection', curSection.mustHitSection);
+			ScriptHelper.setOnScripts('playerAltAnim', bfAltAnim);
+			ScriptHelper.setOnScripts('dadAltAnim', dadAltAnim);
+			ScriptHelper.setOnScripts('gfAltAnim', gfAltAnim);
+			ScriptHelper.setOnScripts('gfSection', curSection.gfSection);
 
 			if (generatedMusic && !endingSong && !isCameraOnForcedPos)
 			{
@@ -6482,20 +6474,17 @@ class PlayState extends MusicBeatState
 
 		ScriptHelper.setOnScripts('curSection', curSection);
 
-		ScriptHelper.callOnScripts('onSectionHit', []);
+			super.sectionHit();
 	}
 
 	override function beatHit()
 	{
-		super.beatHit();
-
 		if (generatedMusic)
 		{
 			notes.sort(FlxSort.byY, (PlayStateChangeables.useDownscroll ? FlxSort.ASCENDING : FlxSort.DESCENDING));
 		}
 
-		if (created)
-			currentBeat = curBeat;
+		currentBeat = curBeat;
 
 		ScriptHelper.setOnScripts('curBpm', Conductor.bpm);
 		ScriptHelper.setOnScripts('crochet', Conductor.crochet);
@@ -6516,138 +6505,135 @@ class PlayState extends MusicBeatState
 				dad.dance(forcedToIdle, dadAltAnim);
 		}
 		// FlxG.log.add('change bpm' + SONG.notes[Std.int(curStep / 16)].changeBPM);
-		if (created)
-		{
-			wiggleShit.update(Conductor.crochet);
-
+		wiggleShit.update(Conductor.crochet);
 		
-			if (FlxG.save.data.camzoom && songMultiplier == 1)
+		if (FlxG.save.data.camzoom && songMultiplier == 1)
+		{
+			// HARDCODING FOR MILF ZOOMS!
+			if (PlayState.SONG.songId == 'milf' && curBeat >= 168 && curBeat < 200 && camZooming && FlxG.camera.zoom < 1.35)
 			{
-				// HARDCODING FOR MILF ZOOMS!
-				if (PlayState.SONG.songId == 'milf' && curBeat >= 168 && curBeat < 200 && camZooming && FlxG.camera.zoom < 1.35)
-				{
-					FlxG.camera.zoom += 0.015 / songMultiplier;
-					camHUD.zoom += 0.03 / songMultiplier;
-				}
-
-				if (camZooming && FlxG.camera.zoom < 1.35 && curBeat % 4 == 0)
-				{
-					FlxG.camera.zoom += 0.015 / songMultiplier;
-					camHUD.zoom += 0.03 / songMultiplier;
-				}
-			}
-			if (songMultiplier == 1)
-			{
-				iconP1.setGraphicSize(Std.int(iconP1.width + 30));
-				iconP2.setGraphicSize(Std.int(iconP2.width + 30));
-
-				iconP1.updateHitbox();
-				iconP2.updateHitbox();
-			}
-			else
-			{
-				iconP1.setGraphicSize(Std.int(iconP1.width + 4));
-				iconP2.setGraphicSize(Std.int(iconP2.width + 4));
-
-				iconP1.updateHitbox();
-				iconP2.updateHitbox();
+				FlxG.camera.zoom += 0.015 / songMultiplier;
+				camHUD.zoom += 0.03 / songMultiplier;
 			}
 
-			if (!endingSong && curSection != null)
+			if (camZooming && FlxG.camera.zoom < 1.35 && curBeat % 4 == 0)
 			{
-				gfAltAnim = curSection.gfAltAnim;
-				if (allowedToHeadbang && (!gf.animation.curAnim.name.startsWith("sing") || gf.animation.curAnim.finished) && (gf.animation.exists('danceRight') && gf.animation.exists('danceLeft')))
-					gf.dance(forcedToIdle, gfAltAnim);
+				FlxG.camera.zoom += 0.015 / songMultiplier;
+				camHUD.zoom += 0.03 / songMultiplier;
+			}
+		}
+		if (songMultiplier == 1)
+		{
+			iconP1.setGraphicSize(Std.int(iconP1.width + 30));
+			iconP2.setGraphicSize(Std.int(iconP2.width + 30));
 
-				if (curBeat % 8 == 7 && curSong == 'Bopeebo')
+			iconP1.updateHitbox();
+			iconP2.updateHitbox();
+		}
+		else
+		{
+			iconP1.setGraphicSize(Std.int(iconP1.width + 4));
+			iconP2.setGraphicSize(Std.int(iconP2.width + 4));
+
+			iconP1.updateHitbox();
+			iconP2.updateHitbox();
+		}
+
+		if (!endingSong && curSection != null)
+		{
+			gfAltAnim = curSection.gfAltAnim;
+			if (allowedToHeadbang && (!gf.animation.curAnim.name.startsWith("sing") || gf.animation.curAnim.finished) && (gf.animation.exists('danceRight') && gf.animation.exists('danceLeft')))
+				gf.dance(forcedToIdle, gfAltAnim);
+
+			if (curBeat % 8 == 7 && curSong == 'Bopeebo')
+			{
+				boyfriend.playAnim('hey', true);
+			}
+
+			if (curBeat % 16 == 15 && SONG.songId == 'tutorial' && dad.curCharacter == 'gf' && curBeat > 16 && curBeat < 48)
+			{
+				if (vocals.volume != 0)
 				{
 					boyfriend.playAnim('hey', true);
+					dad.playAnim('cheer', true);
 				}
-
-				if (curBeat % 16 == 15 && SONG.songId == 'tutorial' && dad.curCharacter == 'gf' && curBeat > 16 && curBeat < 48)
+				else
 				{
-					if (vocals.volume != 0)
-					{
-						boyfriend.playAnim('hey', true);
-						dad.playAnim('cheer', true);
-					}
-					else
-					{
-						dad.playAnim('sad', true);
-						FlxG.sound.play(Paths.soundRandom('GF_', 1, 4, 'shared'), 0.3);
-					}
+					dad.playAnim('sad', true);
+					FlxG.sound.play(Paths.soundRandom('GF_', 1, 4, 'shared'), 0.3);
 				}
-
-				if (PlayStateChangeables.Optimize)
-					if (vocals.volume == 0 && !curSection.mustHitSection)
-						vocals.volume = 1;
 			}
 
-			if (curSong == 'blammed')
+			if (PlayStateChangeables.Optimize)
+				if (vocals.volume == 0 && !curSection.mustHitSection)
+					vocals.volume = 1;
+		}
+
+		if (curSong == 'blammed')
+		{
+			if (!hscriptStageCheck)
 			{
-				if (!hscriptStageCheck)
-				{
-					if (curBeat % 4 == 0){
-						var windowColor:FlxColor = FlxColor.WHITE;
+				if (curBeat % 4 == 0){
+					var windowColor:FlxColor = FlxColor.WHITE;
 
-						switch (Stage.curLight)
-						{
-							case 4:
-								windowColor = FlxColor.fromRGB(251, 166, 51);
-							case 3:
-								windowColor = FlxColor.fromRGB(253, 69, 49);
-							case 2:
-								windowColor = FlxColor.fromRGB(251, 51, 245);
-							case 1:
-								windowColor = FlxColor.fromRGB(49, 253, 140);
-							case 0:
-								windowColor = FlxColor.fromRGB(49, 162, 253);
-						}
-						if ((curBeat >= 128 && curBeat <= 192) && !blammedeventplayed && FlxG.save.data.distractions)
-						{
-							var eventColor:FlxColor = FlxColor.WHITE;
-
-							eventColor = windowColor;
-							eventColor.alpha = 175;
-
-							camGame.flash(windowColor, 0.1);
-							camHUD.flash(windowColor, 0.1);
-							songOverlay(eventColor, 0.1);
-						}
-
-						var phillyCityLight:FlxSprite = Stage.swagBacks['light'];
-
-						phillyCityLight.color = windowColor;
+					switch (Stage.curLight)
+					{
+						case 4:
+							windowColor = FlxColor.fromRGB(251, 166, 51);
+						case 3:
+							windowColor = FlxColor.fromRGB(253, 69, 49);
+						case 2:
+							windowColor = FlxColor.fromRGB(251, 51, 245);
+						case 1:
+							windowColor = FlxColor.fromRGB(49, 253, 140);
+						case 0:
+							windowColor = FlxColor.fromRGB(49, 162, 253);
 					}
+					if ((curBeat >= 128 && curBeat <= 192) && !blammedeventplayed && FlxG.save.data.distractions)
+					{
+						var eventColor:FlxColor = FlxColor.WHITE;
+
+						eventColor = windowColor;
+						eventColor.alpha = 175;
+
+						camGame.flash(windowColor, 0.1);
+						camHUD.flash(windowColor, 0.1);
+						songOverlay(eventColor, 0.1);
+					}
+
+					var phillyCityLight:FlxSprite = Stage.swagBacks['light'];
+
+					phillyCityLight.color = windowColor;
+				}
 					
-					if (curBeat >= 192 && !blammedeventplayed && FlxG.save.data.distractions)
+				if (curBeat >= 192 && !blammedeventplayed && FlxG.save.data.distractions)
+				{
+					overlayColor = FlxColor.fromRGB(0, 0, 0, 0);
+					colorTween = FlxTween.color(overlay, 0.1, overlay.color, overlayColor, {
+					onComplete: function(twn:FlxTween)
 					{
-						overlayColor = FlxColor.fromRGB(0, 0, 0, 0);
-						colorTween = FlxTween.color(overlay, 0.1, overlay.color, overlayColor, {
-						onComplete: function(twn:FlxTween)
-						{
-							colorTween = null;
-						}
-						});
-						for (char in chars) {
-							char.colorTween = FlxTween.color(char, 0.1, char.color, FlxColor.WHITE, {onComplete: function(twn:FlxTween) {
-
-							}, ease: FlxEase.quadInOut});
-						}
-						blammedeventplayed = true;
+						colorTween = null;
 					}
+					});
+					for (char in chars) {
+						char.colorTween = FlxTween.color(char, 0.1, char.color, FlxColor.WHITE, {onComplete: function(twn:FlxTween) {
+						}, ease: FlxEase.quadInOut});
+					}
+					blammedeventplayed = true;
 				}
-			}
-
-			if (SONG.songId == 'thorns')
-			{
-				if ((WindowUtil.getWindowPosition('x') != windowX
-					|| WindowUtil.getWindowPosition('y') != windowY) /* && dad.animation.curAnim.name == 'idle'*/)
-					WindowUtil.repositionWindow(windowX, windowY);
 			}
 		}
 
+		if (SONG.songId == 'thorns')
+		{
+			if ((WindowUtil.getWindowPosition('x') != windowX
+				|| WindowUtil.getWindowPosition('y') != windowY) /* && dad.animation.curAnim.name == 'idle'*/)
+				WindowUtil.repositionWindow(windowX, windowY);
+		}
+
 		ScriptHelper.setOnScripts('curBeat', curBeat);
+
+		super.beatHit();
 
 		ScriptHelper.callOnScripts('onBeat', [curBeat]);
 	}

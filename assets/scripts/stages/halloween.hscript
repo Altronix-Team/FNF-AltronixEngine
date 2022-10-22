@@ -5,18 +5,18 @@ var lightningOffset:Int = 8;
 
 function onCreate()
 {
-	halloweenBG = newType('FlxSprite', [-200, -80]);
+	halloweenBG = new FlxSprite(-200, -80);
 	halloweenBG.frames = Paths.getSparrowAtlas('halloween_bg', 'week2');
 	halloweenBG.animation.addByPrefix('idle', 'halloweem bg0');
 	halloweenBG.animation.addByPrefix('lightning', 'halloweem bg lightning strike', 24, false);
 	halloweenBG.animation.play('idle');
 	halloweenBG.antialiasing = FlxG.save.data.antialiasing;
-	addObject(halloweenBG, 'halloweenBG');
+	add(halloweenBG);
 
-	halloweenWhite = newType('BGSprite',[null, -FlxG.width, -FlxG.height, 0, 0]);
+	halloweenWhite = newTypeBGSprite (null, -FlxG.width, -FlxG.height, 0, 0);
 	halloweenWhite.makeGraphic(Std.int(FlxG.width * 3), Std.int(FlxG.height * 3), 0xFFFFFFFF);
 	halloweenWhite.alpha = 0;
-	addObject(halloweenWhite, 'halloweenWhite');
+	add(halloweenWhite);
 
 }
 
@@ -26,7 +26,7 @@ function onBeat(beat:Int)
 	{
 		if (FlxG.save.data.distractions)
 		{
-			lazyPlaySound('thunder_' + (Std.random(2) + 1), 'shared');
+			FlxG.sound.play(Paths.soundRandom('thunder_', 1, 2));
 			halloweenBG.animation.play('lightning');
 
 			lightningStrikeBeat = beat;

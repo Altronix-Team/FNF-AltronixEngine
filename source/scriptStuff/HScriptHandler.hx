@@ -1,5 +1,26 @@
 package scriptStuff;
 
+import lime.app.Application;
+import flixel.util.FlxSort;
+import flixel.util.FlxStringUtil;
+import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
+import flixel.group.FlxSpriteGroup;
+import flixel.math.FlxPoint;
+import flixel.group.FlxGroup;
+import flixel.addons.effects.FlxTrail;
+import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.system.FlxAssets.FlxShader;
+import flixel.ui.FlxBar;
+import flixel.system.scaleModes.StageSizeScaleMode;
+import flixel.addons.display.FlxBackdrop;
+import flixel.ui.FlxBar.FlxBarFillDirection;
+import flixel.util.FlxAxes;
+import openfl.display.GraphicsShader;
+import openfl.filters.ShaderFilter;
+import flixel.FlxBasic;
+import gameplayStuff.Note;
+import gameplayStuff.Stage;
+import states.PlayState;
 import gameplayStuff.BackgroundGirls;
 import gameplayStuff.BackgroundDancer;
 import haxe.Constraints.Function;
@@ -54,6 +75,7 @@ class ScriptException extends Exception
 	}
 }
 
+#if !USE_SSCRIPT
 class HScriptHandler
 {
     public var expose:StringMap<Dynamic>;
@@ -525,3 +547,113 @@ class CustomInterp extends Interp
 		}));
 	}
 }
+#else
+//Original SScript repository https://github.com/TheWorldMachinima/SScript
+//SScript with polymod support https://github.com/AltronMaxX/SScript
+//Engine, that gave me main idea of redo engine hscript to SScript and some SScript handler code https://github.com/BeastlyGhost/Forever-Engine-Underscore
+class HScriptHandler extends SScript
+{
+	public function new(file:String, ?preset:Bool = true)
+	{
+		super(file, preset);
+	}
+
+	override public function preset():Void
+	{
+		super.preset();
+
+		set("trace", Reflect.makeVarArgs(function(el)
+		{
+			var inf = interp.posInfos();
+			var v = el.shift();
+			if (el.length > 0)
+				inf.customParams = el;
+			Debug.logTrace(Std.string(v));
+		}));
+		set("info", Reflect.makeVarArgs(function(el)
+		{
+			var inf = interp.posInfos();
+			var v = el.shift();
+			if (el.length > 0)
+				inf.customParams = el;
+			Debug.logInfo(Std.string(v));
+		}));
+		set("warn", Reflect.makeVarArgs(function(el)
+		{
+			var inf = interp.posInfos();
+			var v = el.shift();
+			if (el.length > 0)
+				inf.customParams = el;
+			Debug.logWarn(Std.string(v));
+		}));
+		set("error", Reflect.makeVarArgs(function(el)
+		{
+			var inf = interp.posInfos();
+			var v = el.shift();
+			if (el.length > 0)
+				inf.customParams = el;
+			Debug.logError(Std.string(v));
+		}));
+
+		set('FlxG', FlxG);
+		set('FlxBasic', FlxBasic);
+		set('FlxObject', FlxObject);
+		set('FlxCamera', FlxCamera);
+		set('FlxSprite', FlxSprite);
+		set('FlxText', FlxText);
+		set('FlxTextBorderStyle', FlxTextBorderStyle);
+		set('FlxRuntimeShader', flixel.addons.display.FlxRuntimeShader);
+		set('FlxSound', FlxSound);
+		set('FlxTimer', FlxTimer);
+		set('FlxTween', FlxTween);
+		set('FlxEase', FlxEase);
+		set('FlxMath', FlxMath);
+		set('FlxSound', FlxSound);
+		set('FlxGroup', FlxGroup);
+		set('FlxPoint', FlxPoint);
+		set('FlxTypedGroup', FlxTypedGroup);
+		set('FlxSpriteGroup', FlxSpriteGroup);
+		set('FlxTypedSpriteGroup', FlxTypedSpriteGroup);
+		set('FlxStringUtil', FlxStringUtil);
+		set('FlxAtlasFrames', FlxAtlasFrames);
+		set('FlxSort', FlxSort);
+		set('Application', Application);
+		set('FlxGraphic', FlxGraphic);
+		set('FlxAtlasFrames', FlxAtlasFrames);
+		set('File', File);
+		set('FlxTrail', FlxTrail);
+		set('FlxShader', FlxShader);
+		set('FlxBar', FlxBar);
+		set('FlxBackdrop', FlxBackdrop);
+		set('StageSizeScaleMode', StageSizeScaleMode);
+		set('FlxBarFillDirection', FlxBarFillDirection);
+		set('FlxAxes', FlxAxes);
+		set('GraphicsShader', GraphicsShader);
+		set('ShaderFilter', ShaderFilter);
+
+		set('Discord', utils.DiscordClient);
+
+		set('Alphabet', Alphabet);
+		set('Character', Character);
+		set('controls', Controls);
+		set('CoolUtil', CoolUtil);
+		set('Conductor', Conductor);
+		set('PlayState', PlayState);
+		set('Main', Main);
+		set('Note', Note);
+		set('Paths', Paths);
+		set('Stage', Stage);
+		set('WindowUtil', WindowUtil);
+		set('WindowShakeEvent', WindowUtil.WindowShakeEvent);
+		set('Debug', Debug);
+		set('WiggleEffect', WiggleEffect);
+
+		set('getRGBColor', getRGBColor);
+	}
+
+	function getRGBColor(r:Int, g:Int, b:Int, ?a:Int):FlxColor
+	{
+		return FlxColor.fromRGB(r, g, b, a);
+	}
+}
+#end

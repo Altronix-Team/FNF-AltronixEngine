@@ -1,5 +1,6 @@
 package scriptStuff;
 
+import states.MusicBeatState;
 import flixel.FlxSprite;
 import gameplayStuff.PlayStateChangeables;
 import gameplayStuff.DialogueBoxPsych;
@@ -14,10 +15,11 @@ import states.PlayState;
 import openfl.utils.Assets;
 import scriptStuff.FunkinLua;
 
+#if !USE_SSCRIPT
 @:access(states.PlayState)
 class HScriptModchart extends FlxTypedGroup<FlxBasic>
 {
-	public var scriptHelper:HScriptHandler;
+	public var scriptHandler:HScriptHandler;
 	var playState:PlayState;
 	
 	var cachedChars:Map<String, Character> = [];
@@ -29,58 +31,58 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 		
 		this.playState = state;
 
-		if (scriptHelper == null)
-			scriptHelper = new HScriptHandler();
+		if (scriptHandler == null)
+			scriptHandler = new HScriptHandler();
 
-		if (!scriptHelper.expose.exists("PlayState"))
-			scriptHelper.expose.set("PlayState", playState);
+		if (!scriptHandler.expose.exists("PlayState"))
+			scriptHandler.expose.set("PlayState", playState);
 		
 		if (playState.hscriptStage != null){
-			if (!scriptHelper.expose.exists("stage"))
-				scriptHelper.expose.set("stage", playState.hscriptStage);}
+			if (!scriptHandler.expose.exists("stage"))
+				scriptHandler.expose.set("stage", playState.hscriptStage);}
 		
-		if (!scriptHelper.expose.exists("gf") && playState.gf != null)
-			scriptHelper.expose.set("gf", playState.gf);
-		if (!scriptHelper.expose.exists("dad") && playState.dad != null)
-			scriptHelper.expose.set("dad", playState.dad);
-		if (!scriptHelper.expose.exists("boyfriend") && playState.boyfriend != null)
-			scriptHelper.expose.set("boyfriend", playState.boyfriend);
+		if (!scriptHandler.expose.exists("gf") && playState.gf != null)
+			scriptHandler.expose.set("gf", playState.gf);
+		if (!scriptHandler.expose.exists("dad") && playState.dad != null)
+			scriptHandler.expose.set("dad", playState.dad);
+		if (!scriptHandler.expose.exists("boyfriend") && playState.boyfriend != null)
+			scriptHandlerexpose.set("boyfriend", playState.boyfriend);
 
-		if (!scriptHelper.expose.exists("gfGroup") && playState.gfGroup != null)
-			scriptHelper.expose.set("gfGroup", playState.gfGroup);
-		if (!scriptHelper.expose.exists("dadGroup") && playState.dadGroup != null)
-			scriptHelper.expose.set("dadGroup", playState.dadGroup);
-		if (!scriptHelper.expose.exists("boyfriendGroup") && playState.boyfriendGroup != null)
-			scriptHelper.expose.set("boyfriendGroup", playState.boyfriendGroup);
+		if (!scriptHandler.expose.exists("gfGroup") && playState.gfGroup != null)
+			scriptHandler.expose.set("gfGroup", playState.gfGroup);
+		if (!scriptHandler.expose.exists("dadGroup") && playState.dadGroup != null)
+			scriptHandler.expose.set("dadGroup", playState.dadGroup);
+		if (!scriptHandler.expose.exists("boyfriendGroup") && playState.boyfriendGroup != null)
+			scriptHandler.expose.set("boyfriendGroup", playState.boyfriendGroup);
 
-		scriptHelper.expose.set("curBeat", 0);
-		scriptHelper.expose.set("curStep", 0);
-		scriptHelper.expose.set("curSectionNumber", 0);
+		scriptHandler.expose.set("curBeat", 0);
+		scriptHandler.expose.set("curStep", 0);
+		scriptHandler.expose.set("curSectionNumber", 0);
 
-		scriptHelper.expose.set("setOnScripts", ScriptHelper.setOnScripts);
-		scriptHelper.expose.set("callOnScripts", ScriptHelper.callOnScripts);
+		scriptHandler.expose.set("setOnScripts", ScriptHelper.setOnScripts);
+		scriptHandler.expose.set("callOnScripts", ScriptHelper.callOnScripts);
 
-		scriptHelper.expose.set("camGame", playState.camGame);
-		scriptHelper.expose.set("camHUD", playState.camHUD);
-		scriptHelper.expose.set("cacheCharacter", cacheCharacter);
-		scriptHelper.expose.set("changeCharacter", changeCharacter);
-		scriptHelper.expose.set("PlayStateChangeables", PlayStateChangeables);
+		scriptHandler.expose.set("camGame", playState.camGame);
+		scriptHandler.expose.set("camHUD", playState.camHUD);
+		scriptHandler.expose.set("cacheCharacter", cacheCharacter);
+		scriptHandler.expose.set("changeCharacter", changeCharacter);
+		scriptHandler.expose.set("PlayStateChangeables", PlayStateChangeables);
 
-		scriptHelper.expose.set("setObjectCam", setObjectCam);
+		scriptHandler.expose.set("setObjectCam", setObjectCam);
 
-		scriptHelper.expose.set("startDialogue", startDialogue);
+		scriptHandler.expose.set("startDialogue", startDialogue);
 
-		scriptHelper.expose.set('add', add);
-		scriptHelper.expose.set('remove', remove);
+		scriptHandler.expose.set('add', add);
+		scriptHandler.expose.set('remove', remove);
 
-		scriptHelper.loadScript(path);
+		scriptHandler.loadScript(path);
 
-		scriptHelper.call('onCreate', []);
+		scriptHandler.call('onCreate', []);
 	}
 
 	override public function update(elapsed:Float) {
 		super.update(elapsed);
-		scriptHelper.call('onUpdate', [elapsed]);
+		scriptHandler.call('onUpdate', [elapsed]);
 	}
 
 	override public function add(Object:FlxBasic):FlxBasic
@@ -202,8 +204,133 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 	}
 
 	public function get(field:String):Dynamic
-		return scriptHelper.get(field);
+		return scriptHandler.get(field);
 
 	public function set(field:String, value:Dynamic)
-		scriptHelper.set(field, value);
+		scriptHandler.set(field, value);
 }
+#else
+class HScriptModchart extends FlxTypedGroup<FlxBasic>
+{
+	public var scriptHandler:HScriptHandler;
+
+	var curState:PlayState;
+
+	public function new(path:String, state:PlayState)
+	{
+		super();
+
+		curState = state;
+
+		if (scriptHandler == null)
+			scriptHandler = new HScriptHandler(path);
+
+		if (!scriptHandler.exists("PlayState"))
+			scriptHandler.set("PlayState", curState);
+
+		if (curState.hscriptStage != null)
+		{
+			if (!scriptHandler.exists("stage"))
+				scriptHandler.set("stage", curState.hscriptStage);
+		}
+		
+
+		if (!scriptHandler.exists("gf") && curState.gf != null)
+			scriptHandler.set("gf", curState.gf);
+		if (!scriptHandler.exists("dad") && curState.dad != null)
+			scriptHandler.set("dad", curState.dad);
+		if (!scriptHandler.exists("boyfriend") && curState.boyfriend != null)
+			scriptHandler.set("boyfriend", curState.boyfriend);
+
+		if (!scriptHandler.exists("gfGroup") && curState.gfGroup != null)
+			scriptHandler.set("gfGroup", curState.gfGroup);
+		if (!scriptHandler.exists("dadGroup") && curState.dadGroup != null)
+			scriptHandler.set("dadGroup", curState.dadGroup);
+		if (!scriptHandler.exists("boyfriendGroup") && curState.boyfriendGroup != null)
+			scriptHandler.set("boyfriendGroup", curState.boyfriendGroup);
+
+		scriptHandler.set("curBeat", 0);
+		scriptHandler.set("curStep", 0);
+		scriptHandler.set("curSectionNumber", 0);
+
+		scriptHandler.set("setOnScripts", ScriptHelper.setOnScripts);
+		scriptHandler.set("callOnScripts", ScriptHelper.callOnScripts);
+
+		scriptHandler.set("camGame", curState.camGame);
+		scriptHandler.set("camHUD", curState.camHUD);
+		scriptHandler.set("PlayStateChangeables", PlayStateChangeables);
+
+		scriptHandler.set("setObjectCam", setObjectCam);
+
+		scriptHandler.set("startDialogue", startDialogue);
+
+		scriptHandler.set('add', add);
+		scriptHandler.set('remove', remove);
+
+
+		scriptHandler.call('onCreate', []);
+	}
+
+	public function setObjectCam(object:FlxBasic, camera:String)
+	{
+		if (object != null)
+		{
+			object.cameras = [getCameraFromString(camera)];
+		}
+	}
+
+	public function getCameraFromString(camera:String):FlxCamera
+	{
+		switch (camera.toLowerCase())
+		{
+			case 'camhud' | 'hud':
+				return PlayState.instance.camHUD;
+			case 'camsustains' | 'sustains':
+				return PlayState.instance.camSustains;
+			case 'camnotes' | 'notes':
+				return PlayState.instance.camNotes;
+		}
+		return PlayState.instance.camGame;
+	}
+
+	// TODO Redo to work with DialogueBox.hx
+	public function startDialogue(dialogueFile:String, music:String = null)
+	{
+		var path:String = Paths.formatToDialoguePath(PlayState.SONG.songId + '/' + dialogueFile);
+
+		if (path != null)
+		{
+			var shit:DialogueFile = DialogueBoxPsych.parseDialogue(path);
+			if (shit.dialogue.length > 0)
+			{
+				PlayState.instance.startDialogue(shit, music);
+			}
+		}
+		else
+		{
+			if (PlayState.instance.endingSong)
+			{
+				PlayState.instance.endSong();
+			}
+			else
+			{
+				PlayState.instance.startCountdown();
+			}
+		}
+	}
+
+	override public function update(elapsed:Float)
+	{
+		super.update(elapsed);
+		if (scriptHandler.exists('onUpdate'))
+			scriptHandler.call('onUpdate', [elapsed]);
+	}
+
+	override public function add(Object:FlxBasic):FlxBasic
+	{
+		if (!FlxG.save.data.antialiasing && Std.isOfType(Object, FlxSprite))
+			cast(Object, FlxSprite).antialiasing = false;
+		return super.add(Object);
+	}
+}
+#end

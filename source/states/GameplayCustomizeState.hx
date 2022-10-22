@@ -76,8 +76,6 @@ class GameplayCustomizeState extends MusicBeatState
 	public var GF_X:Float = 400;
 	public var GF_Y:Float = 130;
 
-	var created = false;
-
 	public override function create()
 	{
 		super.create();
@@ -376,8 +374,6 @@ class GameplayCustomizeState extends MusicBeatState
 		sick.y = FlxG.save.data.changedHitY;
 
 		FlxG.mouse.visible = true;
-
-		created = true;
 	}
 
 	override function update(elapsed:Float)
@@ -530,23 +526,20 @@ class GameplayCustomizeState extends MusicBeatState
 	{
 		super.beatHit();
 
-		if (created)
+		if (curBeat % 2 == 0)
 		{
-			if (curBeat % 2 == 0)
-			{
-				boyfriend.dance();
-				dad.dance();
-			}
-			else if (dad.curCharacter == 'spooky' || dad.curCharacter == 'gf')
-				dad.dance();
+			boyfriend.dance();
+			dad.dance();
+		}
+		else if (dad.curCharacter == 'spooky' || dad.curCharacter == 'gf')
+			dad.dance();
 
-			gf.dance();
+		gf.dance();
 
-			if (!FlxG.keys.pressed.SPACE)
-			{
-				FlxG.camera.zoom += 0.015;
-				camHUD.zoom += 0.010;
-			}
+		if (!FlxG.keys.pressed.SPACE)
+		{
+			FlxG.camera.zoom += 0.015;
+			camHUD.zoom += 0.010;
 		}
 	}
 

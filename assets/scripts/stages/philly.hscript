@@ -17,44 +17,44 @@ var eventColor = 0xFFFFFFFF;
 
 function onCreate()
 {
-    var bg:FlxSprite = newType('FlxSprite', [-100]).loadGraphic(getGraphic('philly/sky'));
+    var bg:FlxSprite = new FlxSprite (-100).loadGraphic(Paths.loadImage('philly/sky'));
 	bg.scrollFactor.set(0.1, 0.1);
 	bg.antialiasing = FlxG.save.data.antialiasing;
-	addObject(bg, 'bg');
+	add(bg);
 
-	var city:FlxSprite = newType('FlxSprite', [-10]).loadGraphic(getGraphic('philly/city'));
+	var city:FlxSprite = new FlxSprite (-10).loadGraphic(Paths.loadImage('philly/city'));
 	city.scrollFactor.set(0.3, 0.3);
 	city.setGraphicSize(Std.int(city.width * 0.85));
 	city.updateHitbox();
 	city.antialiasing = FlxG.save.data.antialiasing;
-	addObject(city, 'city');
+	add(city);
 
-	light = newType('FlxSprite', [city.x]).loadGraphic(getGraphic('philly/window'));
+	light = new FlxSprite (city.x).loadGraphic(Paths.loadImage('philly/window'));
 	light.scrollFactor.set(0.3, 0.3);
 	light.setGraphicSize(Std.int(light.width * 0.85));
 	light.updateHitbox();
 	light.antialiasing = FlxG.save.data.antialiasing;
 	randomColor();
 	light.color = windowColor;
-	addObject(light, 'light');
+	add(light);
 
-	var streetBehind:FlxSprite = newType('FlxSprite', [-40, 50]).loadGraphic(getGraphic('philly/behindTrain'));
+	var streetBehind:FlxSprite = new FlxSprite (-40, 50).loadGraphic(Paths.loadImage('philly/behindTrain'));
 	streetBehind.antialiasing = FlxG.save.data.antialiasing;
-	addObject(streetBehind, 'streetBehind');
+	add(streetBehind);
 
-	phillyTrain = newType('FlxSprite', [2000, 360]).loadGraphic(getGraphic('philly/train'));
+	phillyTrain = new FlxSprite (2000, 360).loadGraphic(Paths.loadImage('philly/train'));
 	phillyTrain.antialiasing = FlxG.save.data.antialiasing;
 	if (FlxG.save.data.distractions)
 	{
-		addObject(phillyTrain, 'phillyTrain');
+		add(phillyTrain);
 	}
 
-	trainSound = newType('FlxSound', []).loadEmbedded(Paths.sound('train_passes', 'shared'));
+	trainSound = new FlxSound ().loadEmbedded(Paths.sound('train_passes', 'shared'));
 	FlxG.sound.list.add(trainSound);
 
-	var street:FlxSprite = newType('FlxSprite', [-40, streetBehind.y]).loadGraphic(getGraphic('philly/street'));
+	var street:FlxSprite = new FlxSprite (-40, streetBehind.y).loadGraphic(Paths.loadImage('philly/street'));
 	street.antialiasing = FlxG.save.data.antialiasing;
-	addObject(street, 'street');   
+	add(street);   
 }
 
 function onUpdate(elapsed:Float)
@@ -108,9 +108,9 @@ function onBeat(beat:Int)
 			}
 		}
 
-		if (beat % 8 == 4 && random('bool', [Conductor.bpm > 320 ? 150 : 30]) && !trainMoving && trainCooldown > 8)
+		if (beat % 8 == 4 && FlxG.random.bool(Conductor.bpm > 320 ? 150 : 30) && !trainMoving && trainCooldown > 8)
 		{
-			trainCooldown = random('int', [-4, 0]);
+			trainCooldown = FlxG.random.int(-4, 0);
 			trainStart();
 		}
 	}
@@ -118,7 +118,7 @@ function onBeat(beat:Int)
 
 function randomColor()
 {
-	curLight = random('int', [0, 4, [oldLight]]);
+	curLight = FlxG.random.int(0, 4, [oldLight]);
 	oldLight = curLight;
 
 	switch(curLight)
@@ -159,7 +159,7 @@ function trainStart():Void
 	{
 		trainMoving = true;
 		trainSound.play(true);
-		newType('FlxTimer', []).start(4.7, function(tmr:FlxTimer){
+		new FlxTimer().start(4.7, function(tmr:FlxTimer){
 			startedMoving = true;
 			gf.playAnim("hairBlow", true);
 		});

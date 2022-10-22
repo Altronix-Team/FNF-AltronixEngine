@@ -35,7 +35,7 @@ class HscriptStage extends HScriptModchart
 
 	public function new(path:String, state:PlayState)
 	{
-		scriptHelper = new HScriptHandler();
+		super(path, state);
 
 		gf = state.gf;
 		dad = state.dad;
@@ -45,25 +45,37 @@ class HscriptStage extends HScriptModchart
 		dadGroup = state.gfGroup;
 		boyfriendGroup = state.boyfriendGroup;
 		
-		scriptHelper.expose.set("stage", this);
-		scriptHelper.expose.set("gf", gf);
-		scriptHelper.expose.set("dad", dad);
-		scriptHelper.expose.set("boyfriend", boyfriend);
-		scriptHelper.expose.set("addGf", addGf);
-		scriptHelper.expose.set("addDad", addDad);
-		scriptHelper.expose.set("addBoyfriend", addBoyfriend);
-		scriptHelper.expose.set("addGfGroup", addGfGroup);
-		scriptHelper.expose.set("addDadGroup", addDadGroup);
-		scriptHelper.expose.set("addBoyfriendGroup", addBoyfriendGroup);
-		scriptHelper.expose.set("addObject", addObject);
-		scriptHelper.expose.set("getObject", getObject);
-		scriptHelper.expose.set('BGSprite', BGSprite);
-		scriptHelper.expose.set('BackgroundGirls', BackgroundGirls);
-		scriptHelper.expose.set('BackgroundDancer', BackgroundDancer);
-		scriptHelper.expose.set('TankmenBG', TankmenBG);
+		#if !USE_SSCRIPT
+		scriptHandler.expose.set("stage", this);
+		scriptHandler.expose.set("addGf", addGf);
+		scriptHandler.expose.set("addDad", addDad);
+		scriptHandler.expose.set("addBoyfriend", addBoyfriend);
+		scriptHandler.expose.set("addGfGroup", addGfGroup);
+		scriptHandler.expose.set("addDadGroup", addDadGroup);
+		scriptHandler.expose.set("addBoyfriendGroup", addBoyfriendGroup);
+		scriptHandler.expose.set("addObject", addObject);
+		scriptHandler.expose.set("getObject", getObject);
+		scriptHandler.expose.set('BGSprite', BGSprite);
+		scriptHandler.expose.set('BackgroundGirls', BackgroundGirls);
+		scriptHandler.expose.set('BackgroundDancer', BackgroundDancer);
+		scriptHandler.expose.set('TankmenBG', TankmenBG);
+		#else
+		scriptHandler.set("stage", this);
+		scriptHandler.set("addGf", addGf);
+		scriptHandler.set("addDad", addDad);
+		scriptHandler.set("addBoyfriend", addBoyfriend);
+		scriptHandler.set("addGfGroup", addGfGroup);
+		scriptHandler.set("addDadGroup", addDadGroup);
+		scriptHandler.set("addBoyfriendGroup", addBoyfriendGroup);
+		scriptHandler.set("addObject", addObject);
+		scriptHandler.set("getObject", getObject);
+		scriptHandler.set('BGSprite', BGSprite);
+		scriptHandler.set('BackgroundGirls', BackgroundGirls);
+		scriptHandler.set('BackgroundDancer', BackgroundDancer);
+		scriptHandler.set('TankmenBG', TankmenBG);
+		#end
 
 		this.state = state;
-		super(path, state);
 	}
 
 	override public function add(object:FlxBasic):FlxBasic {

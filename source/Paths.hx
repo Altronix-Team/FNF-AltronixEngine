@@ -566,7 +566,7 @@ class Paths
 
 	public static function isAnimated(key:String, ?library:String)
 	{
-		return doesTextAssetExist(Paths.file('images/$key.xml', library));
+		return doesTextAssetExist(Paths.file('$key.xml', library));
 	}
 
 	static public function getSparrowAtlas(key:String, ?library:String)

@@ -4,6 +4,8 @@ import haxe.Constraints.Function;
 import gameplayStuff.Section.SwagSection;
 import gameplayStuff.Song.SongData;
 import flixel.FlxG;
+import openfl.events.Event;
+import openfl.Lib;
 
 typedef BPMChangeEvent =
 {
@@ -40,6 +42,14 @@ class Conductor
 	private static var curBeat:Int = 0;
 	private static var curDecimalBeat:Float = 0;
 	private static var curSection:SwagSection = null;
+
+	public static function setupUpdates()
+	{
+		Lib.current.addEventListener(Event.ENTER_FRAME, function(_)
+		{
+			updateSongPosition(FlxG.elapsed);
+		});
+	}
 
 	private static function listIntClasses():Array<Class<IMusicBeat>>
 	{
@@ -145,7 +155,8 @@ class Conductor
 				var startInMS = (data.startTime * 1000);
 
 				curDecimalBeat = data.startBeat + ((((songPosition / 1000)) - data.startTime) * (data.bpm / 60));
-				MusicBeatInterface.curDecimalBeat = curDecimalBeat;
+				if (MusicBeatInterface != null)
+					MusicBeatInterface.curDecimalBeat = curDecimalBeat;
 				//setOnMusicBeatInterfaces('curDecimalBeat', curDecimalBeat);
 				var ste:Int = Math.floor(data.startStep + ((songPosition) - startInMS) / step);
 				if (ste >= 0)
@@ -173,7 +184,8 @@ class Conductor
 			else
 			{
 				curDecimalBeat = (((songPosition / 1000))) * (bpm / 60);
-				MusicBeatInterface.curDecimalBeat = curDecimalBeat;
+				if (MusicBeatInterface != null)
+					MusicBeatInterface.curDecimalBeat = curDecimalBeat;
 				//setOnMusicBeatInterfaces('curDecimalBeat', curDecimalBeat);
 				var nextStep:Int = Math.floor((songPosition) / stepCrochet);
 				if (nextStep >= 0)
@@ -207,7 +219,8 @@ class Conductor
 		curSection = TimingStruct.getSectionByTime(songPosition);
 		if (lastSection != curSection)
 		{
-			MusicBeatInterface.curSection = curSection;
+			if (MusicBeatInterface != null)
+				MusicBeatInterface.curSection = curSection;
 			//setOnMusicBeatInterfaces('curSection', curSection);
 			sectionHit();
 		}
@@ -218,15 +231,17 @@ class Conductor
 		lastBeat = curBeat;
 		curBeat = Math.floor(curStep / 4);
 		//setOnMusicBeatInterfaces('curBeat', curBeat);
-		MusicBeatInterface.curBeat = curBeat;
+		if (MusicBeatInterface != null)
+			MusicBeatInterface.curBeat = curBeat;
 	}
 
 	public static function stepHit():Void
 	{
 		//setOnMusicBeatInterfaces('curStep', curStep);
 		//callOnMusicBeatInterfaces('stepHit');
+		if (MusicBeatInterface != null){
 		MusicBeatInterface.stepHit();
-		MusicBeatInterface.curStep = curStep;
+		MusicBeatInterface.curStep = curStep;}
 		if (curStep % 4 == 0)
 			beatHit();
 	}
@@ -234,13 +249,15 @@ class Conductor
 	public static function beatHit():Void
 	{
 		//callOnMusicBeatInterfaces('beatHit');
-		MusicBeatInterface.beatHit();
+		if (MusicBeatInterface != null)
+			MusicBeatInterface.beatHit();
 	}
 
 	public static function sectionHit():Void
 	{
 		//callOnMusicBeatInterfaces('sectionHit');
-		MusicBeatInterface.sectionHit();
+		if (MusicBeatInterface != null)
+			MusicBeatInterface.sectionHit();
 	}
 
 	//it works but without callOnMusicBeatInterfaces, it`s peace of shit

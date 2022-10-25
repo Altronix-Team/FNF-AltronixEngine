@@ -52,9 +52,6 @@ class MusicBeatSubstate extends FlxSubState implements IMusicBeat
 		else
 			KeyBinds.gamepad = false;
 
-		if (Conductor.MusicBeatInterface == this)
-			Conductor.updateSongPosition(elapsed);
-
 		super.update(elapsed);
 	}
 

@@ -10,8 +10,8 @@ import flixel.addons.transition.FlxTransitionableState;
 import openfl.Lib;
 import flixel.FlxG;
 import gameplayStuff.Section;
-import gameplayStuff.Conductor;
 import gameplayStuff.TimingStruct;
+import gameplayStuff.Conductor;
 
 class MusicBeatState extends BaseState implements gameplayStuff.Conductor.IMusicBeat
 {
@@ -30,6 +30,7 @@ class MusicBeatState extends BaseState implements gameplayStuff.Conductor.IMusic
 	public static var camBeat:FlxCamera;
 
 	private var assets:Array<FlxBasic> = [];
+
 
 	override function destroy()
 	{
@@ -97,9 +98,6 @@ class MusicBeatState extends BaseState implements gameplayStuff.Conductor.IMusic
 
 	override function update(elapsed:Float)
 	{
-		if (Conductor.MusicBeatInterface == this)
-			Conductor.updateSongPosition(elapsed);
-
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
 
 		super.update(elapsed);

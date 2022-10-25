@@ -134,6 +134,9 @@ class Main extends Sprite
 
 		// Finish up loading debug tools.
 		Debug.onGameStart();
+
+		//setup automatic beat, step and section updates
+		gameplayStuff.Conductor.setupUpdates();
 	}
 
 	static final ERROR_REPORT_URL = "https://github.com/AltronMaxX/FNF-AltronixEngine";

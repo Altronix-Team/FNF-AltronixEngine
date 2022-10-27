@@ -1,4 +1,5 @@
 {
 	"name": "Thorns",
-  "offset": 0
+	"composer": "Kawai Sprite",
+	"barColor": "0xFF3C6E"
 }

@@ -1,4 +1,5 @@
 {
 	"name": "Fresh",
-  "offset": 0
+	"composer": "Kawai Sprite",
+	"barColor": "0xAF66CE"
 }

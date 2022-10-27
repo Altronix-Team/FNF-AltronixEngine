@@ -1,4 +1,5 @@
 {
 	"name": "Roses",
-  "offset": -30
+	"composer": "Kawai Sprite",
+	"barColor": "0xFFAA6F"
 }

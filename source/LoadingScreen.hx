@@ -63,10 +63,7 @@ class LoadingScreen extends states.MusicBeatSubstate {
 		text = new FlxText(FlxG.width / 2, FlxG.height - 50, 0, "Loading");
 		text.size = 34;
 		text.alignment = FlxTextAlign.CENTER;
-		if (!FlxG.save.data.language)
-			text.font = 'Pixel Arial 11 Bold';
-		else
-			text.font = Paths.font("UbuntuBold.ttf");
+		text.font = 'Pixel Arial 11 Bold';
 		text.scrollFactor.set();
 
 		add(text);

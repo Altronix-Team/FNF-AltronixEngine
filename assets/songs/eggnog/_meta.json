@@ -1,4 +1,5 @@
 {
 	"name": "Eggnog",
-  "offset": 0
+	"composer": "Kawai Sprite",
+	"barColor": "0xAF66CE"
 }

@@ -1,12 +1,12 @@
 function onCreate()
 {
-    var bg:FlxSprite = new FlxSprite (-600, -200).loadGraphic(Paths.loadImage('stageback'));
+    var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.loadImage('stageback'));
 	bg.antialiasing = FlxG.save.data.antialiasing;
 	bg.scrollFactor.set(0.9, 0.9);
 	bg.active = false;
 	add(bg);
 
-	var stageFront:FlxSprite = new FlxSprite (-650, 600).loadGraphic(Paths.loadImage('stagefront'));
+	var stageFront:FlxSprite = new FlxSprite(-650, 600).loadGraphic(Paths.loadImage('stagefront'));
 	stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
 	stageFront.updateHitbox();
 	stageFront.antialiasing = FlxG.save.data.antialiasing;
@@ -14,14 +14,14 @@ function onCreate()
 	stageFront.active = false;
 	add(stageFront);
 
-	var stageLightLeft:FlxSprite = new FlxSprite (-125, -100).loadGraphic(Paths.loadImage('stage_light'));
+	var stageLightLeft:FlxSprite = new FlxSprite(-125, -100).loadGraphic(Paths.loadImage('stage_light'));
 	stageLightLeft.setGraphicSize(Std.int(stageLightLeft.width * 1.1));
 	stageLightLeft.updateHitbox();
     stageLightLeft.scrollFactor.set(0.9, 0.9);
     stageLightLeft.antialiasing = FlxG.save.data.antialiasing;
 	add(stageLightLeft);
 
-	var stageLightRight:FlxSprite = new FlxSprite (1225, -100).loadGraphic(Paths.loadImage('stage_light'));
+	var stageLightRight:FlxSprite = new FlxSprite(1225, -100).loadGraphic(Paths.loadImage('stage_light'));
 	stageLightRight.setGraphicSize(Std.int(stageLightRight.width * 1.1));
 	stageLightRight.updateHitbox();
 	stageLightRight.flipX = true;
@@ -29,7 +29,7 @@ function onCreate()
     stageLightRight.antialiasing = FlxG.save.data.antialiasing;
 	add(stageLightRight);
 
-	var stageCurtains:FlxSprite = new FlxSprite (-500, -300).loadGraphic(Paths.loadImage('stagecurtains'));
+	var stageCurtains:FlxSprite = new FlxSprite(-500, -300).loadGraphic(Paths.loadImage('stagecurtains'));
 	stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
 	stageCurtains.updateHitbox();
 	stageCurtains.antialiasing = FlxG.save.data.antialiasing;

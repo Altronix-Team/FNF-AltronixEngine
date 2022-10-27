@@ -147,7 +147,7 @@ class Note extends FlxSprite
 	}
 
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inCharter:Bool = false, ?isAlt:Bool = false,
-			?bet:Float = 0, ?noteStyle:String)
+			?bet:Float = 0, ?noteStyle:String = 'normal')
 	{
 		super();
 
@@ -165,7 +165,7 @@ class Note extends FlxSprite
 		texture = PlayState.SONG.specialSongNoteSkin != null ? PlayState.SONG.specialSongNoteSkin : FlxG.save.data.noteskin;
 
 		if (noteStyle == null)
-			this.noteStyle = noteTypeCheck;
+			this.noteStyle = PlayState.SONG.noteStyle;
 		else
 			this.noteStyle = noteStyle;
 

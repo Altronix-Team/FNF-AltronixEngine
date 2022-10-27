@@ -359,8 +359,6 @@ class PlayState extends MusicBeatState
 	private var isCameraOnForcedPos:Bool = false;
 	public var skipCountdown:Bool = false;
 
-	public var songPosBarColorRGB:Array<Int> = [0, 255, 128];
-
 	public var hideGF:Bool;
 
 	private var chartingState:FlxText;
@@ -768,6 +766,8 @@ class PlayState extends MusicBeatState
 
 		chars = [boyfriend, gf, dad];
 
+		Debug.logTrace('Generated all song characters');
+
 		if (!stageTesting)
 		{
 			#if FEATURE_FILESYSTEM
@@ -932,6 +932,8 @@ class PlayState extends MusicBeatState
 						}
 				}
 			}
+
+		Debug.logTrace('Generated stage');
 
 		switch (boyfriend.curCharacter)
 		{
@@ -1182,10 +1184,7 @@ class PlayState extends MusicBeatState
 			noteskinTexture = FlxG.save.data.noteskin;
 		}
 
-		strumLineNotes = new StrumLine();
-		add(strumLineNotes);
-		if (FlxG.save.data.notesplashes)
-			strumLineNotes.setupNoteSplashes();
+		strumLineNotes = new StrumLine();	
 		
 		for (i in 0...strumLineNotes.playerStrums.length) {
 			ScriptHelper.setOnScripts('defaultPlayerStrumX' + i, strumLineNotes.playerStrums.members[i].x);
@@ -2982,12 +2981,10 @@ class PlayState extends MusicBeatState
 				timeBarBG.yAdd = -4;
 				add(timeBarBG);
 
-				songPosBarColorRGB = [255, 255, 255];
-
 				timeBar = new FlxBar(timeBarBG.x + 4, timeBarBG.y + 4, LEFT_TO_RIGHT, Std.int(timeBarBG.width - 8), Std.int(timeBarBG.height - 8), this,
 					'songPositionBar', 0, songLength);
 				timeBar.scrollFactor.set();
-				timeBar.createFilledBar(0xFF000000, FlxColor.fromRGB(songPosBarColorRGB[0],songPosBarColorRGB[1],songPosBarColorRGB[2]));
+				timeBar.createFilledBar(0xFF000000, FlxColor.fromRGB(255, 255, 255));
 				timeBar.numDivisions = 800; //How much lag this causes?? Should i tone it down to idk, 400 or 200?
 				timeBar.alpha = 0;
 				timeBar.visible = showTime;
@@ -3011,12 +3008,10 @@ class PlayState extends MusicBeatState
 				songPosBar = new FlxBar(640 - (Std.int(songPosBG.width - 100) / 2), songPosBG.y + 4, LEFT_TO_RIGHT, Std.int(songPosBG.width - 100),
 					Std.int(songPosBG.height + 6), this, 'songPositionBar', 0, songLength);
 				songPosBar.scrollFactor.set();
-				songPosBar.createFilledBar(FlxColor.BLACK, FlxColor.fromRGB(songPosBarColorRGB[0],songPosBarColorRGB[1],songPosBarColorRGB[2]));
+				songPosBar.createFilledBar(FlxColor.BLACK, SONG.songPosBarColor);
 				add(songPosBar);
 
-
 				bar = new FlxSprite(songPosBar.x, songPosBar.y).makeGraphic(Math.floor(songPosBar.width), Math.floor(songPosBar.height), FlxColor.TRANSPARENT);
-
 				add(bar);
 
 				FlxSpriteUtil.drawRect(bar, 0, 0, songPosBar.width, songPosBar.height, FlxColor.TRANSPARENT, {thickness: 4, color: FlxColor.BLACK});
@@ -3100,7 +3095,11 @@ class PlayState extends MusicBeatState
 					|| ((section.altAnim || section.CPUAltAnim) && !gottaHitNote)
 					|| (section.playerAltAnim && gottaHitNote);
 
-				var swagNote:Note = new Note(daStrumTime, daNoteData, oldNote, false, false, altNote, songNotes[4], songNotes[6]);
+				var noteStyle = noteTypeCheck;
+				if (songNotes[6] != null)
+					noteStyle = songNotes[6];
+
+				var swagNote:Note = new Note(daStrumTime, daNoteData, oldNote, false, false, altNote, songNotes[4], noteStyle);
 
 				if (!gottaHitNote && PlayStateChangeables.Optimize)
 					continue;
@@ -3142,7 +3141,11 @@ class PlayState extends MusicBeatState
 
 					oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
 
-					var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, oldNote, true, false, altSusNote, 0, songNotes[6]);
+					var noteStyle = noteTypeCheck;
+					if (songNotes[6] != null)
+						noteStyle = songNotes[6];
+
+					var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, oldNote, true, false, altSusNote, 0, noteStyle);
 					sustainNote.scrollFactor.set();
 					unspawnNotes.push(sustainNote);
 					sustainNote.isAlt = altSusNote;
@@ -6447,6 +6450,9 @@ class PlayState extends MusicBeatState
 
 		ScriptHelper.setOnScripts('curStep', curStep);
 
+		if (Stage != null)
+			Stage.stepHit();
+
 		super.stepHit();
 	}
 
@@ -6474,7 +6480,10 @@ class PlayState extends MusicBeatState
 
 		ScriptHelper.setOnScripts('curSection', curSection);
 
-			super.sectionHit();
+		if (Stage != null)
+			Stage.sectionHit();
+
+		super.sectionHit();
 	}
 
 	override function beatHit()
@@ -6633,36 +6642,12 @@ class PlayState extends MusicBeatState
 
 		ScriptHelper.setOnScripts('curBeat', curBeat);
 
+		if (Stage != null)
+			Stage.beatHit();
+
 		super.beatHit();
 
 		ScriptHelper.callOnScripts('onBeat', [curBeat]);
-	}
-
-	public function updateBars()
-	{
-		if (FlxG.save.data.enablePsychInterface && FlxG.save.data.songPosition)
-		{
-			remove(timeBar);
-			timeBar = new FlxBar(timeBarBG.x + 4, timeBarBG.y + 4, LEFT_TO_RIGHT, Std.int(timeBarBG.width - 8), Std.int(timeBarBG.height - 8), this,
-				'songPositionBar', 0, songLength);
-			timeBar.scrollFactor.set();
-			timeBar.createFilledBar(0xFF000000, FlxColor.fromRGB(songPosBarColorRGB[0],songPosBarColorRGB[1],songPosBarColorRGB[2]));
-			timeBar.numDivisions = 800;
-			timeBar.alpha = 0;
-			add(timeBar);
-			timeBarBG.sprTracker = timeBar;
-			timeBar.cameras = [camHUD];
-		}
-		else if (FlxG.save.data.songPosition && !FlxG.save.data.enablePsychInterface)
-		{
-			remove(songPosBar);
-			songPosBar = new FlxBar(640 - (Std.int(songPosBG.width - 100) / 2), songPosBG.y + 4, LEFT_TO_RIGHT, Std.int(songPosBG.width - 100),
-				Std.int(songPosBG.height + 6), this, 'songPositionBar', 0, songLength);
-			songPosBar.scrollFactor.set();
-			songPosBar.createFilledBar(FlxColor.BLACK, FlxColor.fromRGB(songPosBarColorRGB[0],songPosBarColorRGB[1],songPosBarColorRGB[2]));
-			add(songPosBar);
-			songPosBar.cameras = [camHUD];
-		}
 	}
 
 	public function getLuaObject(tag:String, text:Bool=true):FlxSprite {

@@ -501,6 +501,8 @@ class DebugLogWriter
 		{
 			printDebug(msg);
 		}
+
+		EngineFPS.lastTrace = msg;
 	}
 
 	public static inline function getDateString():String

@@ -1,9 +1,11 @@
 package gameplayStuff;
 
+import flixel.util.FlxColor;
 import gameplayStuff.Section.SwagSection;
 import haxe.Json;
 import openfl.utils.Assets as OpenFlAssets;
 import flixel.util.FlxSort;
+import gameplayStuff.Section.SectionNoteData;
 
 using StringTools;
 class EventObject
@@ -41,6 +43,16 @@ typedef SongData =
 	* The internal name of the song, as used in the file system.
 	*/
 	var songId:String;
+
+	/**
+	 * Song composer nickname displayed in pause menu
+	 */
+	var songComposer:String;
+
+	/**
+	 * Song position bar color in play state
+	 */
+	var songPosBarColor:Int;
 
 	/**
 	* Used this to know on which version of the engine was the chart generated.
@@ -151,7 +163,19 @@ typedef SongMeta =
 	* Changes the displayed song name.
 	**/
 	var ?name:String;
+
+	/**
+	 * Song composer nickname displayed in pause menu
+	 */
+	var ?composer:String;
+
+	/**
+	 * Song position bar color
+	 */
+	var ?barColor:String;
 }
+
+typedef OldNoteStoringCheck = Array<SectionNoteData>;
 
 class Song
 {
@@ -467,45 +491,18 @@ class Song
 				else if (ii[1] < 4 && (!i.mustHitSection || i.gfSection))
 					gottaHitNote = false;
 
-				var altNote = ((i.altAnim || i.CPUAltAnim) && !gottaHitNote)
-					|| (i.playerAltAnim && gottaHitNote);
+				var altNote = ((i.altAnim || i.CPUAltAnim) && !gottaHitNote) || (i.playerAltAnim && gottaHitNote);
 
 				if (altNote != ii[3])
 				{
 					ii[3] = altNote;
 				}
 
-				//Stuff from beta testing
-				/*//converting old types to strings
-				if (Std.isOfType(ii[5], Int))
-				{
-					switch (ii[5])
-					{
-						case 4:
-							ii[5] = 'No Animation';
-						case 3:
-							ii[5] = 'GF Sing';
-						case 2:
-							ii[5] = 'Bullet Note';
-						case 1:
-							ii[5] = 'Hurt Note';
-						default:
-							ii[5] = 'Default Note';
-					}
-				}
-
-				//renaming the type names
-				if (ii[5] == 'GF Sing Note')
-					ii[5] = 'GF Sing';
-				
-				if (ii[5] == 'No Anim Note')
-					ii[5] = 'No Animation';
-
 				if (ii[5] == null)
 					ii[5] = 'Default Note';
 
-				if (ii[6] == null)
-					ii[6] = song.noteStyle;*/
+				if (ii[6] == null || ii[6] == 0 || ii[6] == '' || ii[6] == '0')
+					ii[6] = song.noteStyle;
 			}
 
 			index++;
@@ -684,10 +681,30 @@ class Song
 			{
 				songData.songName = songId.split('-').join(' ');
 			}
+			
+			if (songMetaData.composer != null)
+			{
+				songData.songComposer = songMetaData.composer;
+			}
+			else
+			{
+				songData.songComposer = '???';
+			}
+
+			if (songMetaData.barColor != null)
+			{
+				songData.songPosBarColor = FlxColor.fromString(songMetaData.barColor);
+			}
+			else
+			{
+				songData.songPosBarColor = 0x00ff80;
+			}
 		}
 		else
 		{
 			songData.songName = songId.split('-').join(' ');
+			songData.songComposer = '???';
+			songData.songPosBarColor = 0x00ff80;
 		}
 
 		if (jsonEvents != null)

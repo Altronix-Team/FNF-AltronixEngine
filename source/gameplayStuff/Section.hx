@@ -18,6 +18,11 @@ typedef SwagSection =
 	var sectionNotes:Array<Array<Dynamic>>;
 
 	/**
+	 * Information about notes in this section.
+	**/
+	var newSectionNotes:Array<SectionNoteData>;
+
+	/**
 	* Length of section in steps.
 	**/
 	var lengthInSteps:Int;
@@ -71,6 +76,31 @@ typedef SwagSection =
 	* Forces GF to perform the "left side" of the chart.
 	**/
 	var gfSection:Bool;
+}
+
+/**
+ * A more intuitive system for storing information about notes than Dynamic array 
+ */
+ //Will use this later
+class SectionNoteData {
+	var strumTime:Float;
+	var noteData:Int;
+	var sustainLength:Float;
+	var isAlt:Null<Bool>;
+	var beat:Null<Float>;
+	var noteType:Null<String>;
+	var noteStyle:Null<String>;
+
+	public function new(strumTime:Float, noteData:Int, sustainLength:Float, isAlt:Null<Bool>, beat:Null<Float>, noteType:Null<String>, noteStyle:Null<String>)
+	{
+		this.strumTime = strumTime;
+		this.noteData = noteData;
+		this.sustainLength = sustainLength;
+		this.isAlt = isAlt;
+		this.beat = beat;
+		this.noteType = noteType;
+		this.noteStyle = noteStyle;
+	}
 }
 
 @:deprecated

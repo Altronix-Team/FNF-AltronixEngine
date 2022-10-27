@@ -1,4 +1,5 @@
 {
 	"name": "Senpai",
-  "offset": -50
+	"composer": "Kawai Sprite",
+	"barColor": "0xFFAA6F"
 }

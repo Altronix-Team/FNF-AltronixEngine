@@ -64,29 +64,39 @@ class PauseSubState extends MusicBeatSubstate
 		bg.scrollFactor.set();
 		add(bg);
 
-		var levelInfo:FlxText = new FlxText(20, 15, 0, "", 32);
+		var levelInfo:FlxText = new FlxText(20, 15, 0, "Song name: ", 32);
 		levelInfo.text += PlayState.SONG.songName;
 		levelInfo.scrollFactor.set();
 		levelInfo.setFormat(Paths.font("vcr.ttf"), 32);
 		levelInfo.updateHitbox();
 		add(levelInfo);
 
-		var levelDifficulty:FlxText = new FlxText(20, 15 + 32, 0, "", 32);
+		var levelDifficulty:FlxText = new FlxText(20, 15 + 32, 0, "Song difficulty: ", 32);
 		levelDifficulty.text += CoolUtil.difficultyFromInt(PlayState.storyDifficulty).toUpperCase();
 		levelDifficulty.scrollFactor.set();
 		levelDifficulty.setFormat(Paths.font('vcr.ttf'), 32);
 		levelDifficulty.updateHitbox();
 		add(levelDifficulty);
 
+		var composerNick:FlxText = new FlxText(20, levelDifficulty.y + 32, 0, "Composer: ", 32);
+		composerNick.text += PlayState.SONG.songComposer;
+		composerNick.scrollFactor.set();
+		composerNick.setFormat(Paths.font('vcr.ttf'), 32);
+		composerNick.updateHitbox();
+		add(composerNick);
+
 		levelDifficulty.alpha = 0;
 		levelInfo.alpha = 0;
+		composerNick.alpha = 0;
 
 		levelInfo.x = FlxG.width - (levelInfo.width + 20);
 		levelDifficulty.x = FlxG.width - (levelDifficulty.width + 20);
+		composerNick.x = FlxG.width - (composerNick.width + 20);
 
 		FlxTween.tween(bg, {alpha: 0.6}, 0.4, {ease: FlxEase.quartInOut});
 		FlxTween.tween(levelInfo, {alpha: 1, y: 20}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.3});
 		FlxTween.tween(levelDifficulty, {alpha: 1, y: levelDifficulty.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.5});
+		FlxTween.tween(composerNick, {alpha: 1, y: composerNick.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.7});
 
 		grpMenuShit = new FlxTypedGroup<Alphabet>();
 		add(grpMenuShit);
@@ -94,6 +104,7 @@ class PauseSubState extends MusicBeatSubstate
 		perSongOffset.scrollFactor.set();
 		perSongOffset.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 
+		//TODO Redo to new language system
 		if (PlayState.isStoryMode){
 			if (!FlxG.save.data.language) detailsText = "Story Mode: Week " + PlayState.storyWeek + ":";
 			else detailsText = "Режим истории: Неделя " + PlayState.storyWeek + ":";}

@@ -278,7 +278,9 @@ class ChartingState extends MusicBeatState
 				stage: 'stage',
 				speed: 1,
 				validScore: false,
-				specialSongNoteSkin: NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin)
+				specialSongNoteSkin: NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin),
+				songComposer: '???',
+				songPosBarColor: 0x00ff80
 			});
 		}
 
@@ -1839,7 +1841,7 @@ class ChartingState extends MusicBeatState
 		writingNotesText = new FlxUIText(20, 100, 0, "");
 		writingNotesText.setFormat("Arial", 20, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 
-		stepperSusLength = new FlxUINumericStepper(10, 10, Conductor.stepCrochet / 2, 0, 0, Conductor.stepCrochet * 16 * 4);
+		stepperSusLength = new FlxUINumericStepper(10, 30, Conductor.stepCrochet / 2, 0, 0, Conductor.stepCrochet * 16 * 4);
 		stepperSusLength.value = 0;
 		stepperSusLength.name = 'note_susLength';
 
@@ -1921,12 +1923,12 @@ class ChartingState extends MusicBeatState
 			}
 		}
 
-		var stepperSusLengthLabel = new FlxText(74, 10, 'Note Sustain Length');
-
+		tab_group_note.add(new FlxText(stepperSusLength.x, stepperSusLength.y - 18, 'Note Sustain Length'));
 		tab_group_note.add(stepperSusLength);
-		tab_group_note.add(stepperSusLengthLabel);
 		tab_group_note.add(check_naltAnim);
+		tab_group_note.add(new FlxText(noteTypeDropDown.x, noteTypeDropDown.y - 18, 0, 'Note type'));
 		tab_group_note.add(noteTypeDropDown);
+		tab_group_note.add(new FlxText(noteStyleDropDown.x, noteStyleDropDown.y - 18, 0, 'Note style'));
 		tab_group_note.add(noteStyleDropDown);
 
 		UI_box.addGroup(tab_group_note);
@@ -3633,7 +3635,11 @@ class ChartingState extends MusicBeatState
 				else
 					daType = 'Default Note';
 
-				var note:Note = new Note(daStrumTime, daNoteInfo % 4, null, false, true, i[3], i[4], i[6]);
+				var noteStyle = _song.noteStyle;
+				if (i[6] != null)
+					noteStyle = i[6];
+
+				var note:Note = new Note(daStrumTime, daNoteInfo % 4, null, false, true, i[3], i[4], noteStyle);
 				note.isAlt = i[3];
 				note.beat = TimingStruct.getBeatFromTime(daStrumTime);
 				note.rawNoteData = daNoteInfo;
@@ -3744,7 +3750,8 @@ class ChartingState extends MusicBeatState
 			CPUAltAnim: false,
 			playerAltAnim: false,
 			gfSection: false,
-			gfAltAnim: false
+			gfAltAnim: false,
+			newSectionNotes: []
 		};
 
 		_song.notes.push(sec);
@@ -3884,7 +3891,8 @@ class ChartingState extends MusicBeatState
 			CPUAltAnim: CPUAltAnim,
 			playerAltAnim: playerAltAnim,
 			gfSection: gfSection,
-			gfAltAnim: gfAltAnim
+			gfAltAnim: gfAltAnim,
+			newSectionNotes: []
 		};
 
 		return sec;

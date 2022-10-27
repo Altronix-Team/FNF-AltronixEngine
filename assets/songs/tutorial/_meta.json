@@ -1,4 +1,5 @@
 {
 	"name": "Tutorial",
-  "offset": 0
+	"composer": "Kawai Sprite",
+	"barColor": "0xA5004D"
 }

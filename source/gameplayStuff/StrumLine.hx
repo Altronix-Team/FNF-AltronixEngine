@@ -22,6 +22,11 @@ class StrumLine extends FlxTypedGroup<StaticArrow>
 		opponentStrums = new FlxTypedGroup<StaticArrow>();    
               
 		generateStrumLineArrows();		
+
+		PlayState.instance.add(this);
+
+        if (FlxG.save.data.notesplashes)
+			setupNoteSplashes();
     }
 
     public function setupNoteSplashes()

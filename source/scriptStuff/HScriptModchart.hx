@@ -222,8 +222,7 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 
 		curState = state;
 
-		if (scriptHandler == null)
-			scriptHandler = new HScriptHandler(path);
+		scriptHandler = new HScriptHandler(path);
 
 		if (!scriptHandler.exists("PlayState"))
 			scriptHandler.set("PlayState", curState);

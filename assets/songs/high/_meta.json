@@ -1,4 +1,5 @@
 {
 	"name": "High",
-  "offset": 0
+	"composer": "Kawai Sprite",
+	"barColor": "0xD8558E"
 }

@@ -1,4 +1,5 @@
 {
 	"name": "Monster",
-  "offset": 0
+	"composer": "Kawai Sprite",
+	"barColor": "0xF3FF6E"
 }

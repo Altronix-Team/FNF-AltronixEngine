@@ -13,7 +13,7 @@ function onCreate()
 	halloweenBG.antialiasing = FlxG.save.data.antialiasing;
 	add(halloweenBG);
 
-	halloweenWhite = newTypeBGSprite (null, -FlxG.width, -FlxG.height, 0, 0);
+	halloweenWhite = new BGSprite(null, -FlxG.width, -FlxG.height, 0, 0);
 	halloweenWhite.makeGraphic(Std.int(FlxG.width * 3), Std.int(FlxG.height * 3), 0xFFFFFFFF);
 	halloweenWhite.alpha = 0;
 	add(halloweenWhite);

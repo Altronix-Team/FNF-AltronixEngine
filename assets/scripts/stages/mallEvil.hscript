@@ -1,6 +1,6 @@
 function onCreate()
 {
-    var bg:FlxSprite = newFlxSprite(-400, -500).loadGraphic(Paths.loadImage('christmas/evilBG', 'week5'));
+    var bg:FlxSprite = new FlxSprite(-400, -500).loadGraphic(Paths.loadImage('christmas/evilBG', 'week5'));
 	bg.antialiasing = FlxG.save.data.antialiasing;
 	bg.scrollFactor.set(0.2, 0.2);
 	bg.active = false;

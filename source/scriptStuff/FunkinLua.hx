@@ -917,25 +917,6 @@ class FunkinLua {
 			return PlayState.instance.health;
 		});
 
-		Lua_helper.add_callback(lua, "setSongBarColor", function(value:String) {
-			var strIndices:Array<String> = value.trim().split(',');
-			var die:Array<Int> = [];
-			for (i in 0...strIndices.length) {
-				die.push(Std.parseInt(strIndices[i]));
-			}
-			if (die.length > 0 && die.length == 3)
-			{
-				PlayState.instance.songPosBarColorRGB = die;
-				PlayState.instance.updateBars();
-			}
-			else
-				luaTrace("Warning: incorrect data on input", false, true);
-		});
-			
-		Lua_helper.add_callback(lua, "getSongBarColor", function() {
-			return PlayState.instance.songPosBarColorRGB;
-		});
-
 		Lua_helper.add_callback(lua, "getColorFromHex", function(color:String) {
 			if(!color.startsWith('0x')) color = '0xff' + color;
 			return Std.parseInt(color);

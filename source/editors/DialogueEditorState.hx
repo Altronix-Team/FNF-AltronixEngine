@@ -106,13 +106,7 @@ class DialogueEditorState extends MusicBeatState
 		add(animText);
 
 		daText = new FlxTypeText(240, 500, Std.int(FlxG.width * 0.6), '', 32);
-		if (!FlxG.save.data.language)
-			daText.font = 'Pixel Arial 11 Bold';
-		else
-		{
-			daText.font = Paths.font("UbuntuBold.ttf");
-			daText.size = 48;
-		}
+		daText.font = 'Pixel Arial 11 Bold';
 		daText.color = FlxColor.BLACK;
 		daText.scrollFactor.set();
 		add(daText);

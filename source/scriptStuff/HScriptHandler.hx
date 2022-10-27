@@ -377,14 +377,7 @@ class HScriptHandler
 
 	function getEngineFont():String
 	{
-		if (!FlxG.save.data.language)
-		{
-			return Paths.font("vcr.ttf");
-		}
-		else
-		{
-			return Paths.font("UbuntuBold.ttf");
-		}
+		return Paths.font("vcr.ttf");
 	}
 
 	function random(type:String, args:Array<Dynamic>):Dynamic
@@ -595,6 +588,7 @@ class HScriptHandler extends SScript
 			Debug.logError(Std.string(v));
 		}));
 
+		set('Reflect', Reflect);
 		set('FlxG', FlxG);
 		set('FlxBasic', FlxBasic);
 		set('FlxObject', FlxObject);

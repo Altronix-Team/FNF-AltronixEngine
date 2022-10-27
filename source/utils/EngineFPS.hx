@@ -43,6 +43,11 @@ class EngineFPS extends TextField
 	@:noCompletion private var currentTime:Float;
 	@:noCompletion private var times:Array<Float>;
 
+	#if !GITHUB_RELEASE
+	public static var showDebugInfo:Bool = false;
+	public static var lastTrace:String = 'null';
+	#end
+
 	public function new(x:Float = 10, y:Float = 10, color:Int = 0x000000)
 	{
 		super();
@@ -127,6 +132,21 @@ class EngineFPS extends TextField
 				+ (Main.memoryCount ? '\nMemory: ' + memoryMegas + " MB / " + memoryTotal + " MB" : '')
 			#end
 				+ (Main.watermarks ? "\nAE " + "v" + EngineConstants.engineVer : ''));
+
+			#if !GITHUB_RELEASE
+			if (showDebugInfo)
+			{
+				text += '\nState: ${Type.getClass(FlxG.state)}\n';
+				text += 'Objects: ${FlxG.state.members.length}\n';
+				text += 'Cameras: ${FlxG.cameras.list.length}\n';
+				text += 'Last Trace: $lastTrace\n';
+				/*text += 'Variables: \n'; //Funny :) and laggy
+				for (variable in Reflect.fields(FlxG.state))
+				{
+					text += '$variable: ${Reflect.field(FlxG.state, variable)}\n';
+				}*/
+			}
+			#end
 
 			#if (gl_stats && !disable_cffi && (!html5 || !canvas))
 			text += "\ntotalDC: " + Context3DStats.totalDrawCalls();

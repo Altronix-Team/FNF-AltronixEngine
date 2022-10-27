@@ -31,7 +31,6 @@ class MusicBeatState extends BaseState implements gameplayStuff.Conductor.IMusic
 
 	private var assets:Array<FlxBasic> = [];
 
-
 	override function destroy()
 	{
 		Application.current.window.onFocusOut.remove(onWindowFocusOut);
@@ -99,6 +98,13 @@ class MusicBeatState extends BaseState implements gameplayStuff.Conductor.IMusic
 	override function update(elapsed:Float)
 	{
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
+
+		#if !GITHUB_RELEASE
+		if (FlxG.keys.justPressed.F10)
+		{
+			EngineFPS.showDebugInfo = !EngineFPS.showDebugInfo;
+		}
+		#end
 
 		super.update(elapsed);
 	}

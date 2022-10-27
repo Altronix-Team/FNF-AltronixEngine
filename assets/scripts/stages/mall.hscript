@@ -2,7 +2,7 @@ var animatedBacks = [];
 
 function onCreate()
 {
-    var bg:FlxSprite = new FlxSprite (-1000, -500).loadGraphic(Paths.loadImage('christmas/bgWalls'));
+    var bg:FlxSprite = new FlxSprite(-1000, -500).loadGraphic(Paths.loadImage('christmas/bgWalls'));
 	bg.antialiasing = FlxG.save.data.antialiasing;
 	bg.scrollFactor.set(0.2, 0.2);
 	bg.active = false;
@@ -10,7 +10,7 @@ function onCreate()
 	bg.updateHitbox();
 	add(bg);
 
-	var upperBoppers = new FlxSprite (-240, -90);
+	var upperBoppers = new FlxSprite(-240, -90);
 	upperBoppers.frames = Paths.getSparrowAtlas('christmas/upperBop', 'week5');
 	upperBoppers.animation.addByPrefix('idle', "Upper Crowd Bob", 24, false);
 	upperBoppers.antialiasing = FlxG.save.data.antialiasing;
@@ -36,7 +36,7 @@ function onCreate()
 	tree.scrollFactor.set(0.40, 0.40);
 	add(tree);
 
-	var bottomBoppers = new FlxSprite (-300, 140);
+	var bottomBoppers = new FlxSprite(-300, 140);
 	bottomBoppers.frames = Paths.getSparrowAtlas('christmas/bottomBop', 'week5');
 	bottomBoppers.animation.addByPrefix('idle', 'Bottom Level Boppers', 24, false);
 	bottomBoppers.antialiasing = FlxG.save.data.antialiasing;
@@ -49,7 +49,7 @@ function onCreate()
 		animatedBacks.push(bottomBoppers);
 	}
 
-	var fgSnow:FlxSprite = newType FlxSprite (-600, 700).loadGraphic(Paths.loadImage('christmas/fgSnow'));
+	var fgSnow:FlxSprite = new FlxSprite(-600, 700).loadGraphic(Paths.loadImage('christmas/fgSnow'));
 	fgSnow.active = false;
 	fgSnow.antialiasing = FlxG.save.data.antialiasing;
 	add(fgSnow);

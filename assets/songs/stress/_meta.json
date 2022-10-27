@@ -1,4 +1,5 @@
 {
 	"name": "Stress",
-  "offset": 0
+	"composer": "Kawai Sprite",
+	"barColor": "0xE1E1E1"
 }

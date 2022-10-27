@@ -6,17 +6,17 @@ function onCreate()
     var posX = 400;
 	var posY = 200;
 					 
-	var bg:FlxSprite = new FlxSprite (posX + 10, posY + 165).loadGraphic(Paths.loadImage('weeb/evilSchoolBG'));
+	var bg:FlxSprite = new FlxSprite(posX + 10, posY + 165).loadGraphic(Paths.loadImage('weeb/evilSchoolBG'));
 	bg.scale.set(6, 6);
 	add(bg);	
 
-	var fg:FlxSprite = new FlxSprite (posX + 10, posY + 165).loadGraphic(Paths.loadImage('weeb/evilSchoolFG'));
+	var fg:FlxSprite = new FlxSprite(posX + 10, posY + 165).loadGraphic(Paths.loadImage('weeb/evilSchoolFG'));
 	fg.scale.set(6, 6);
 	add(fg);	
 
 	var effectType:Array<String> = ['DREAMY', 'WAVY', 'HEAT_WAVE_HORIZONTAL', 'HEAT_WAVE_VERTICAL', 'FLAG'];
 
-	wiggleShit = new WiggleEffect', (effectType[random('int', [0, effectType.length - 1])], 0.8, 60, 0.01);
+	wiggleShit = new WiggleEffect(effectType[FlxG.random.int(0, effectType.length - 1)], 0.8, 60, 0.01);
 
 	bgGhouls = new FlxSprite (-100, 190);
 	bgGhouls.frames = Paths.getSparrowAtlas('weeb/bgGhouls', 'week6');

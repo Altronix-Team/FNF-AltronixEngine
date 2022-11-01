@@ -6,21 +6,139 @@ import GameJolt.GameJoltAPI;
 #end
 import states.AchievementsState;
 
+//TODO Custom achievements
+typedef AchievementData = {
+	var displayedName:String;
+	var displayedDescription:String;
+	var saveId:String;
+	var ?GJId:Int; //Not usable for custom achievements
+	var isHidden:Bool;
+	var imageName:String;
+	var ?isCustom:Bool; //Need to know is achievement custom or not. Only for usage in source code
+}
+
 class Achievements
 {  
+	public static function getWeekSaveId(weekid:Int):String
+	{
+		switch (weekid)
+		{
+			case 1:
+				return 'week1_nomiss';
+			case 2:
+				return 'week2_nomiss';
+			case 3:
+				return 'week3_nomiss';
+			case 4:
+				return 'week4_nomiss';
+			case 5:
+				return 'week5_nomiss';
+			case 6:
+				return 'week6_nomiss';
+			case 7:
+				return 'week7_nomiss';
+			default:
+				return 'null';
+		}
+	}
+
+	public static function findDescById(id:Int):String
+	{
+		for (achievement in achievementsArray)
+		{
+			if (achievement.GJId == id)
+				return achievement.displayedDescription;
+			else
+				continue;
+		}
+		return 'Unidentified achievement';
+	}
+
+	public static function findNameById(id:Int):String
+	{
+		for (achievement in achievementsArray)
+		{
+			if (achievement.GJId == id)
+				return achievement.displayedName;
+			else
+				continue;
+		}
+		return 'Unidentified achievement';
+	}
+
+	public static function findSaveIdById(id:Int):String
+	{
+		for (achievement in achievementsArray)
+		{
+			if (achievement.GJId == id)
+				return achievement.saveId;
+			else
+				continue;
+		}
+		return 'null';
+	}
+
+	public static function findImageById(id:Int):String
+	{
+		for (achievement in achievementsArray)
+		{
+			if (achievement.GJId == id)
+				return achievement.imageName;
+			else
+				continue;
+		}
+		return 'pattern';
+	}
+
+	public static function getSaveTagByName(name:String):String
+	{
+		for (achievement in achievementsArray)
+		{
+			if (achievement.displayedName == name)
+				return achievement.saveId;
+			else
+				continue;
+		}
+		return 'null';
+	}
+
+	public static function getDescByName(name:String):String
+	{
+		for (achievement in achievementsArray)
+		{
+			if (achievement.displayedName == name)
+				return achievement.displayedDescription;
+			else
+				continue;
+		}
+		return 'Unidentified achievement';
+	}
+
+	public static function getImageByName(name:String):String
+	{
+		for (achievement in achievementsArray)
+		{
+			if (achievement.displayedName == name)
+				return achievement.imageName;
+			else
+				continue;
+		}
+		return 'Unidentified achievement';
+	}
+
     public static function getAchievement(id:Int, imagePath:String = null)
     {
 		var savedAchievements:Array<String> = FlxG.save.data.savedAchievements;
 
-		if (!savedAchievements.contains(AchievementsState.findSaveIdById(id)))
+		if (!savedAchievements.contains(findSaveIdById(id)))
         {
 			#if desktop
             if (imagePath == null)
-				GameJoltAPI.getTrophy(id, AchievementsState.findImageById(id));
+				GameJoltAPI.getTrophy(id, findImageById(id));
             else
 				GameJoltAPI.getTrophy(id, imagePath);
 			#end
-			savedAchievements.push(AchievementsState.findSaveIdById(id));
+			savedAchievements.push(findSaveIdById(id));
 			FlxG.save.data.savedAchievements = savedAchievements;
         }
     }
@@ -49,6 +167,25 @@ class Achievements
                 Debug.logTrace('Lol, we dont have achievement for this week');         
         }
     }
+
+	public static function listAllAchievements() {
+		achievementsArray = [];
+		Debug.logInfo('Loading engine achievements!');
+		achievementsArray = EngineConstants.defaultAchievementsArray.copy();
+
+		Debug.logInfo('Loading custom achievements!');
+		var customAchArray = Paths.listJsonInPath('assets/custom_achievements');
+
+		if (customAchArray.length > 0)
+			for (achievement in customAchArray)
+			{
+				var achievementInfo:AchievementData = cast Paths.loadJSON(achievement, 'custom_achievements');
+				achievementInfo.isCustom = true;
+				achievementsArray.push(achievementInfo);
+			}
+	}
+
+	public static var achievementsArray:Array<AchievementData> = [];
 }
 
 class AchievementSprite extends FlxSprite{

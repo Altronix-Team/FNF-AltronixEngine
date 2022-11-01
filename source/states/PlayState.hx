@@ -422,6 +422,8 @@ class PlayState extends MusicBeatState
 	var offsetX = 100;
 	//Thorns shit end
 
+	var useDownscroll(default, set):Bool = false;
+
 	public function addObject(object:FlxBasic)
 	{
 		add(object);
@@ -502,6 +504,8 @@ class PlayState extends MusicBeatState
 
 		if (PlayStateChangeables.twoPlayersMode)
 			PlayStateChangeables.botPlay = false;
+
+		useDownscroll = PlayStateChangeables.useDownscroll;
 
 		removedVideo = false;
 
@@ -1147,7 +1151,7 @@ class PlayState extends MusicBeatState
 		strumLine = new FlxSprite(PlayStateChangeables.useMiddlescroll ? STRUM_X_MIDDLESCROLL : STRUM_X, 50).makeGraphic(FlxG.width, 10);
 		strumLine.scrollFactor.set();
 
-		if (PlayStateChangeables.useDownscroll)
+		if (useDownscroll)
 			strumLine.y = FlxG.height - 150;
 
 		laneunderlayOpponent = new FlxSprite(0, 0).makeGraphic(110 * 4 + 50, FlxG.height * 2);
@@ -1363,7 +1367,7 @@ class PlayState extends MusicBeatState
 		moveCameraSection();
 
 		healthBarBG = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(Paths.loadImage('healthBar'));
-		if (PlayStateChangeables.useDownscroll)
+		if (useDownscroll)
 			healthBarBG.y = 50;
 		healthBarBG.screenCenter(X);
 		healthBarBG.scrollFactor.set();
@@ -1399,7 +1403,7 @@ class PlayState extends MusicBeatState
 			funnyStartObjects.push(engineWatermark);
 		}
 
-		if (PlayStateChangeables.useDownscroll)
+		if (useDownscroll)
 			engineWatermark.y = FlxG.height * 0.9 + 45;
 
 		scoreTxt = new FlxText(FlxG.width / 2 - 235, healthBarBG.y + 50, 0, "", 20);
@@ -1462,7 +1466,7 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		botPlayState = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 75, healthBarBG.y + (PlayStateChangeables.useDownscroll ? 100 : -100), 0,
+		botPlayState = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 75, healthBarBG.y + (useDownscroll ? 100 : -100), 0,
 			LanguageStuff.getPlayState("$BOTPLAY"), 20);
 		botPlayState.setFormat(Paths.font(LanguageStuff.fontName), 42, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		botPlayState.scrollFactor.set();
@@ -1480,7 +1484,7 @@ class PlayState extends MusicBeatState
 
 		addedBotplay = PlayStateChangeables.botPlay;
 
-		chartingState = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 75, healthBarBG.y + (PlayStateChangeables.useDownscroll ? 100 : -100), 0,
+		chartingState = new FlxText(healthBarBG.x + healthBarBG.width / 2 - 75, healthBarBG.y + (useDownscroll ? 100 : -100), 0,
 			LanguageStuff.getPlayState("$CHARTING"), 20);
 		chartingState.setFormat(Paths.font(LanguageStuff.fontName), 42, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		chartingState.scrollFactor.set();
@@ -2968,7 +2972,7 @@ class PlayState extends MusicBeatState
 				timeTxt.alpha = 0;
 				timeTxt.borderSize = 2;
 				timeTxt.visible = showTime;
-				if(PlayStateChangeables.useDownscroll) timeTxt.y = FlxG.height - 44;
+				if(useDownscroll) timeTxt.y = FlxG.height - 44;
 
 				timeBarBG = new AttachedSprite('timeBar');
 				timeBarBG.x = timeTxt.x;
@@ -3000,7 +3004,7 @@ class PlayState extends MusicBeatState
 			else
 			{
 				songPosBG = new FlxSprite(0, 10).loadGraphic(Paths.loadImage('healthBar'));
-				if (PlayStateChangeables.useDownscroll)
+				if (useDownscroll)
 					songPosBG.y = FlxG.height * 0.9 + 35;
 				songPosBG.screenCenter(X);
 				songPosBG.scrollFactor.set();
@@ -3465,6 +3469,18 @@ class PlayState extends MusicBeatState
 			}
 		}
 
+		if (FlxG.save.data.downscroll != useDownscroll)
+		{
+			useDownscroll = FlxG.save.data.downscroll;
+		}
+
+		if (FlxG.save.data.middleScroll != PlayStateChangeables.useMiddlescroll)
+		{
+			PlayStateChangeables.useMiddlescroll = FlxG.save.data.middleScroll;
+			strumLineNotes.useMiddlescroll = PlayStateChangeables.useMiddlescroll;
+			strumLine.y = PlayStateChangeables.useMiddlescroll ? STRUM_X_MIDDLESCROLL : STRUM_X;
+		}
+
 		if (unspawnNotes[0] != null)
 		{
 			if (unspawnNotes[0].strumTime - Conductor.songPosition < 14000 * songMultiplier)
@@ -3479,25 +3495,6 @@ class PlayState extends MusicBeatState
 				currentLuaIndex++;
 			}
 		}
-
-		/*if (generatedMusic) Kade engine stuff :)
-		{
-			if (songStarted && !endingSong)
-			{
-				// Song ends abruptly on slow rate even with second condition being deleted,
-				// and if it's deleted on songs like cocoa then it would end without finishing instrumental fully,
-				// so no reason to delete it at all
-				if ((FlxG.sound.music.length / songMultiplier) - Conductor.songPosition <= 0)
-				{
-					Debug.logTrace("we're fuckin ending the song ");
-					endingSong = true;
-					new FlxTimer().start(2, function(timer)
-						{
-							endSong();
-						});
-				}
-			}
-		}*/
 
 		if (updateFrame == 4)
 		{
@@ -4169,7 +4166,7 @@ class PlayState extends MusicBeatState
 
 				if (!daNote.modifiedByLua)
 				{
-					if (PlayStateChangeables.useDownscroll)
+					if (useDownscroll)
 					{
 						if (daNote.mustPress)
 							daNote.y = (strumLineNotes.playerStrums.members[Math.floor(Math.abs(daNote.noteData))].y
@@ -4361,7 +4358,7 @@ class PlayState extends MusicBeatState
 				}
 				else if (daNote.strumTime / songMultiplier - Conductor.songPosition / songMultiplier < -(166 * Conductor.timeScale) && songStarted)
 				{
-					if ((daNote.mustPress && !PlayStateChangeables.useDownscroll || daNote.mustPress && PlayStateChangeables.useDownscroll)
+					if ((daNote.mustPress && !useDownscroll || daNote.mustPress && useDownscroll)
 						&& daNote.mustPress
 						&& !PlayStateChangeables.twoPlayersMode)
 					{
@@ -4431,7 +4428,7 @@ class PlayState extends MusicBeatState
 						notes.remove(daNote, true);
 						daNote.destroy();
 					}
-					else if ((!daNote.mustPress && !PlayStateChangeables.useDownscroll || !daNote.mustPress && PlayStateChangeables.useDownscroll) && !daNote.mustPress && PlayStateChangeables.twoPlayersMode)
+					else if ((!daNote.mustPress && !useDownscroll || !daNote.mustPress && useDownscroll) && !daNote.mustPress && PlayStateChangeables.twoPlayersMode)
 					{
 						if (daNote.isSustainNote && daNote.wasGoodHit)
 						{
@@ -5288,7 +5285,7 @@ class PlayState extends MusicBeatState
 						if (ModCore.loadedModsLength == 0
 							&& (storyDifficulty == 2 || storyDifficulty == 3)
 							&& campaignMisses == 0
-							&& !savedAchievements.contains(AchievementsState.getWeekSaveId(storyWeek))
+							&& !savedAchievements.contains(Achievements.getWeekSaveId(storyWeek))
 							&& !PlayStateChangeables.botPlay
 							&& !addedBotplayOnce)
 							Achievements.checkWeekAchievement(storyWeek);
@@ -6490,7 +6487,7 @@ class PlayState extends MusicBeatState
 	{
 		if (generatedMusic)
 		{
-			notes.sort(FlxSort.byY, (PlayStateChangeables.useDownscroll ? FlxSort.ASCENDING : FlxSort.DESCENDING));
+			notes.sort(FlxSort.byY, (useDownscroll ? FlxSort.ASCENDING : FlxSort.DESCENDING));
 		}
 
 		currentBeat = curBeat;
@@ -6850,5 +6847,49 @@ class PlayState extends MusicBeatState
 		Debug.logTrace("IM BACK!!!");
 		//super.onWindowFocusIn();
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
+	}
+
+	function set_useDownscroll(value:Bool):Bool {
+		useDownscroll = value;
+		if (songStarted)
+		{
+			if (value)
+			{
+				if (songPosBG != null) {FlxTween.tween(songPosBG, {y: FlxG.height * 0.9 + 35}, 0.5); 
+				FlxTween.tween(songPosBar, {y: FlxG.height * 0.9 + 39}, 0.5);
+				FlxTween.tween(songName, {y: FlxG.height * 0.9 + 35 + (songPosBG.height / 3)}, 0.5);
+				FlxTween.tween(bar, {y: FlxG.height * 0.9 + 39}, 0.5);}
+				if (timeTxt != null) FlxTween.tween(timeTxt, {y: FlxG.height - 44}, 0.5);
+				FlxTween.tween(healthBarBG, {y: 50}, 0.5);
+				FlxTween.tween(scoreTxt, {y: 100}, 0.5);
+				FlxTween.tween(chartingState, {y: 150}, 0.5);
+				FlxTween.tween(botPlayState, {y: 150}, 0.5);
+				FlxTween.tween(engineWatermark, {y: FlxG.height * 0.9 + 45}, 0.5);
+				FlxTween.tween(strumLine, {y: FlxG.height - 150}, 0.5);
+				FlxTween.tween(healthBar, {y:  54}, 0.5);
+				FlxTween.tween(iconP1, {y: 54 - (iconP1.height / 2)}, 0.5);
+				FlxTween.tween(iconP2, {y: 54 - (iconP2.height / 2)}, 0.5);
+				strumLineNotes.tweenArrowsY(FlxG.height - 150);
+			}
+			else
+			{
+				if (songPosBG != null) {FlxTween.tween(songPosBG, {y: 10}, 0.5);
+				FlxTween.tween(songPosBar, {y: 14}, 0.5);
+				FlxTween.tween(songName, {y: 10 + (songPosBG.height / 3)}, 0.5);
+				FlxTween.tween(bar, {y: 14}, 0.5);}
+				if (timeTxt != null) FlxTween.tween(timeTxt, {y: 19}, 0.5);
+				FlxTween.tween(healthBarBG, {y: FlxG.height * 0.9}, 0.5);
+				FlxTween.tween(scoreTxt, {y: FlxG.height * 0.9 + 50}, 0.5);
+				FlxTween.tween(chartingState, {y: FlxG.height * 0.9 - 100}, 0.5);
+				FlxTween.tween(botPlayState, {y: FlxG.height * 0.9 - 100}, 0.5);
+				FlxTween.tween(engineWatermark, {y: FlxG.height * 0.9 + 50}, 0.5);
+				FlxTween.tween(strumLine, {y: 50}, 0.5);
+				FlxTween.tween(healthBar, {y:  FlxG.height * 0.9 + 4}, 0.5);
+				FlxTween.tween(iconP1, {y: FlxG.height * 0.9 + 4 - (iconP1.height / 2)}, 0.5);
+				FlxTween.tween(iconP2, {y:FlxG.height * 0.9 + 4 - (iconP2.height / 2)}, 0.5);
+				strumLineNotes.tweenArrowsY(50);
+			}
+		}
+		return value;
 	}
 }

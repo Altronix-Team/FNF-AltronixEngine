@@ -1,5 +1,6 @@
 package flixel;
 
+import utils.EngineSave;
 import flash.Lib;
 import flash.display.DisplayObject;
 import flash.display.Stage;
@@ -194,7 +195,7 @@ class FlxG
 	 * Alias for Main.save;
 	 * Altronix Engine special :3
 	 */
-	public static var save(default, null):utils.EngineSave = Main.save;
+	public static var save(default, set):utils.EngineSave = Main.save;
 
 	/**
 	 * A `FlxRandom` object which can be used to generate random numbers.
@@ -776,6 +777,11 @@ class FlxG
 		#else
 			false
 		#end;
+	}
+
+	static function set_save(value:EngineSave):EngineSave {
+		if (value != null) save = value;
+		return value;
 	}
 }
 

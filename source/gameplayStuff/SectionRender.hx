@@ -1,5 +1,6 @@
 package gameplayStuff;
 
+import editors.ChartingState;
 import lime.media.AudioBuffer;
 import lime.utils.Bytes;
 import flixel.math.FlxMath;
@@ -37,16 +38,17 @@ class SectionRender extends FlxTypedGroup<FlxSprite>
 		sectionSprite = new FlxSprite(x, y);
 		sectionSprite.makeGraphic(GRID_SIZE * 8, GRID_SIZE * Height, 0xffe7e6e6);
 
-		var h = GRID_SIZE;
-		if (Math.floor(h) != h)
-			h = GRID_SIZE;
-
 		this.GRID_SIZE = GRID_SIZE;
 		this.vocals = vocals;
 		this.section = section;
 
+		var h = GRID_SIZE;
+		if (Math.floor(h) != h)
+			h = GRID_SIZE;
+
 		if (FlxG.save.data.editorBG)
-			FlxGridOverlay.overlay(sectionSprite, GRID_SIZE, Std.int(h), GRID_SIZE * 8, GRID_SIZE * Height, true, sectionColors[0], sectionColors[1]);
+			FlxGridOverlay.overlay(sectionSprite, GRID_SIZE, Std.int(h), GRID_SIZE * 8, Std.int(GRID_SIZE * Height), true, sectionColors[0],
+				sectionColors[1]);
 
 		add(sectionSprite);
 

@@ -8,6 +8,7 @@ import flixel.FlxG;
 import openfl.events.Event;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
+import lime.app.Application as LimeApplication;
 #if gl_stats
 import openfl.display._internal.stats.Context3DStats;
 import openfl.display._internal.stats.DrawCallContext;
@@ -45,7 +46,9 @@ class EngineFPS extends TextField
 
 	#if !GITHUB_RELEASE
 	public static var showDebugInfo:Bool = false;
-	public static var lastTrace:String = 'null';
+	public static var curStep:Int = 0;
+	public static var curBeat:Int = 0;
+	public static var curDecimalBeat:Float = 0;
 	#end
 
 	public function new(x:Float = 10, y:Float = 10, color:Int = 0x000000)
@@ -61,6 +64,7 @@ class EngineFPS extends TextField
 		defaultTextFormat = new TextFormat(openfl.utils.Assets.getFont("assets/fonts/vcr.ttf").fontName, 14, color);
 		text = "FPS: ";
 		width += 200;
+		height += 30;
 
 		cacheCount = 0;
 		currentTime = 0;
@@ -136,15 +140,11 @@ class EngineFPS extends TextField
 			#if !GITHUB_RELEASE
 			if (showDebugInfo)
 			{
-				text += '\nState: ${Type.getClass(FlxG.state)}\n';
-				text += 'Objects: ${FlxG.state.members.length}\n';
+				text += '\nObjects: ${FlxG.state.members.length}\n';
 				text += 'Cameras: ${FlxG.cameras.list.length}\n';
-				text += 'Last Trace: $lastTrace\n';
-				/*text += 'Variables: \n'; //Funny :) and laggy
-				for (variable in Reflect.fields(FlxG.state))
-				{
-					text += '$variable: ${Reflect.field(FlxG.state, variable)}\n';
-				}*/
+				text += 'CurStep: ${curStep}\n';
+				text += 'CurBeat: ${curBeat}\n';
+				text += 'CurDecimalBeat: ${curDecimalBeat}\n';
 			}
 			#end
 

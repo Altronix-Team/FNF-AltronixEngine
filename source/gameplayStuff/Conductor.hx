@@ -38,10 +38,10 @@ class Conductor
 	private static var lastStep:Float = 0;
 	private static var lastSection:SwagSection = null;
 
-	private static var curStep:Int = 0;
-	private static var curBeat:Int = 0;
-	private static var curDecimalBeat:Float = 0;
-	private static var curSection:SwagSection = null;
+	public static var curStep:Int = 0;
+	public static var curBeat:Int = 0;
+	public static var curDecimalBeat:Float = 0;
+	public static var curSection:SwagSection = null;
 
 	public static function setupUpdates()
 	{
@@ -212,6 +212,12 @@ class Conductor
 				crochet = ((60 / bpm) * 1000);
 			}
 		}
+
+		#if !GITHUB_RELEASE
+		EngineFPS.curStep = curStep;
+		EngineFPS.curBeat = curBeat;
+		EngineFPS.curDecimalBeat = curDecimalBeat;
+		#end
 	}
 
 	private static function updateSection():Void

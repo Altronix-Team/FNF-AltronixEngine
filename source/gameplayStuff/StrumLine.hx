@@ -14,6 +14,8 @@ class StrumLine extends FlxTypedGroup<StaticArrow>
     public var playerStrums:FlxTypedGroup<StaticArrow> = null;
 	public var opponentStrums:FlxTypedGroup<StaticArrow> = null;
 
+    public var useMiddlescroll(default, set):Bool = false;
+
     public function new()
     {
 		super();
@@ -112,6 +114,48 @@ class StrumLine extends FlxTypedGroup<StaticArrow>
         }
     }
 
+    public function tweenArrowsY(yPos:Int)
+    {
+		forEach(function(note:StaticArrow)
+		{
+			FlxTween.tween(note, {y: yPos}, 0.5);
+		});
+    }
+
+	public function toggleMiddlescroll()
+	{
+        if (useMiddlescroll)
+        {
+			playerStrums.forEach(function(note:StaticArrow)
+			{
+				FlxTween.tween(note, {x: note.x - 320}, 0.5);
+			});
+            for (index in 0...opponentStrums.members.length)
+            {
+				if (opponentStrums.members[index] != null)
+                {
+					if (index < 2)
+						FlxTween.tween(opponentStrums.members[index], {x: opponentStrums.members[index].x - 75}, 0.5);
+                    else
+						FlxTween.tween(opponentStrums.members[index], {x: opponentStrums.members[index].x + FlxG.width / 2 + 25}, 0.5);
+					FlxTween.tween(opponentStrums.members[index], {alpha: 0.5}, 0.5);
+                }
+            }
+        }
+        else
+        {
+			playerStrums.forEach(function(note:StaticArrow)
+			{
+				FlxTween.tween(note, {x: -10 + 110 + ((FlxG.width / 2) * 1) + Note.swagWidth * note.noteData}, 0.5);
+			});
+			opponentStrums.forEach(function(note:StaticArrow)
+			{
+				FlxTween.tween(note, {x: -10 + 20 + 110 + Note.swagWidth * note.noteData}, 0.5);
+				FlxTween.tween(note, {alpha: 1}, 0.5);
+			});
+        }
+	}
+
     public function spawnNoteSplashOnNote(note:Note) {
 		if(FlxG.save.data.notesplashes && note != null) {
 			if (note.sprTracker != null) {
@@ -123,6 +167,12 @@ class StrumLine extends FlxTypedGroup<StaticArrow>
             Debug.logTrace('Trying to spawn note splash, but they`re disabled in engine settings');
             return;
         }
+	}
+
+	function set_useMiddlescroll(value:Bool):Bool {
+		useMiddlescroll = value;
+        toggleMiddlescroll();
+        return value;
 	}
 }
 

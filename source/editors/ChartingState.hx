@@ -141,6 +141,7 @@ class ChartingState extends MusicBeatState
 	var bpmTxt:FlxText;
 
 	var strumLine:FlxSprite;
+	var bg:FlxSprite;
 	var curSong:String = 'Dad Battle';
 	var amountSteps:Int = 0;
 	var bullshitUI:FlxGroup;
@@ -322,6 +323,13 @@ class ChartingState extends MusicBeatState
 		rightIcon = new HealthIcon(_song.player2, Character.getCharacterIcon(_song.player2));
 
 		var index = 0;
+
+		bg = new FlxSprite().loadGraphic(Paths.loadImage('menuDesat'));
+		bg.x = 0 - bg.width / 2;
+		bg.antialiasing = FlxG.save.data.antialiasing;
+		bg.color = 0x7CA867;
+		bg.setGraphicSize(Std.int(bg.width * 1.5));
+		add(bg);
 
 		if (_song.eventsArray == null)
 		{	
@@ -636,14 +644,18 @@ class ChartingState extends MusicBeatState
 			}
 		}
 
-		for (i in sectionRenderes)
+		for (i in 0...sectionRenderes.members.length)
 		{
-			var pos = getYfromStrum(i.section.startTime) * zoomFactor;
-			i.icon.y = pos - 75;
+			if (sectionRenderes.members[i] != null)
+			{
+				var pos = getYfromStrum(sectionRenderes.members[i].section.startTime) * zoomFactor;
+				sectionRenderes.members[i].icon.y = pos - 75;
 
-			var line = new FlxSprite(0, pos).makeGraphic(Std.int(GRID_SIZE * 8), 4, FlxColor.BLACK);
-			line.alpha = 0.4;
-			lines.add(line);
+				//someday i will fix grid and section lines positions
+				var line = new FlxSprite(0, pos).makeGraphic(Std.int(GRID_SIZE * 8), 4, FlxColor.BLACK);
+				line.alpha = 0.4;
+				lines.add(line);
+			}	
 		}
 	}
 
@@ -2998,6 +3010,7 @@ class ChartingState extends MusicBeatState
 
 			strumLine.y = getYfromStrum(start) * zoomFactor;
 			camFollow.y = strumLine.y;
+			bg.y = strumLine.y - (bg.height / 2);
 
 			bpmTxt.text = Std.string(FlxMath.roundDecimal(Conductor.songPosition / 1000, 2))
 				+ " / "

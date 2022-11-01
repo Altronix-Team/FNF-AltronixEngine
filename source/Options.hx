@@ -844,19 +844,19 @@ class DownscrollOption extends Option
 	public function new(desc:String)
 	{
 		super();
-		if (OptionsMenu.isInPause)
+		/*if (OptionsMenu.isInPause)
 			if (!FlxG.save.data.language)
 				description = "This option cannot be toggled in the pause menu.";
 			else
 				description = "Эта опция не может быть переключена во время паузы";
-		else
+		else*/
 			description = desc;
 	}
 
 	public override function left():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
+		//if (OptionsMenu.isInPause)
+			//return false;
 		FlxG.save.data.downscroll = !FlxG.save.data.downscroll;
 		display = updateDisplay();
 		return true;
@@ -2153,19 +2153,19 @@ class MiddleScrollOption extends Option
 	public function new(desc:String)
 	{
 		super();
-		if (OptionsMenu.isInPause)
+		/*if (OptionsMenu.isInPause)
 			if (!FlxG.save.data.language)
 				description = "This option cannot be toggled in the pause menu.";
 			else
 				description = "Эта опция не может быть переключена во время паузы";
-		else
+		else*/
 			description = desc;
 	}
 
 	public override function left():Bool
 	{
-		if (OptionsMenu.isInPause)
-			return false;
+		//if (OptionsMenu.isInPause)
+			//return false;
 		FlxG.save.data.middleScroll = !FlxG.save.data.middleScroll;
 		display = updateDisplay();
 		return true;

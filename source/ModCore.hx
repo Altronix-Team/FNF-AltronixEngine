@@ -124,6 +124,10 @@ class ModCore
 		MenuMusicStuff.updateMusic();
 
 		Character.initCharacterList();
+
+		Achievements.listAllAchievements();
+
+		LanguageStuff.initLanguages();
 	}
 	#end
 
@@ -247,6 +251,10 @@ class ModCore
 		MenuMusicStuff.updateMusic();
 
 		Character.initCharacterList();
+
+		Achievements.listAllAchievements();
+
+		LanguageStuff.initLanguages();
 	}
 
 	public static function getAllMods():Array<ModMetadata>
@@ -299,6 +307,7 @@ class ModCore
 				"custom_events" => "./custom_events",
 				"custom_notetypes" => "./custom_notetypes",
 				"custom_difficulties" => "./custom_difficulties",
+				"custom_achievements" => "./custom_achievements",
 				"art" => "./art",
 				'core' => './_core'
 			]

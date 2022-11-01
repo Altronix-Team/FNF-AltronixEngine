@@ -236,7 +236,7 @@ class GameJoltAPI // Connects to tentools.api.FlxGameJolt
 				if (bool == false)
 				{
 					Main.gjToastManager.createToast(Paths.getPreloadPath('images/achievements/normal/$imagePath.png'), 'Unlocked new Trophy!',
-						states.AchievementsState.findNameById(trophyID), true);
+						Achievements.findNameById(trophyID), true);
 				}
 				else
 				{

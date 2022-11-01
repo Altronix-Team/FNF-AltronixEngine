@@ -697,14 +697,14 @@ class Song
 			}
 			else
 			{
-				songData.songPosBarColor = 0x00ff80;
+				songData.songPosBarColor = FlxColor.fromString('0x00ff80');
 			}
 		}
 		else
 		{
 			songData.songName = songId.split('-').join(' ');
 			songData.songComposer = '???';
-			songData.songPosBarColor = 0x00ff80;
+			songData.songPosBarColor = FlxColor.fromString('0x00ff80');
 		}
 
 		if (jsonEvents != null)

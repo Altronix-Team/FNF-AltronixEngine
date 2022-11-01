@@ -48,6 +48,7 @@ class Note extends FlxSprite
 	public var modifiedByLua:Bool = false;
 	public var sustainLength:Float = 0;
 	public var isSustainNote:Bool = false;
+	public var isEnd:Bool = false;
 	public var noteSection:Int = 0;
 
 	public var luaID:Int = 0;
@@ -226,9 +227,6 @@ class Note extends FlxSprite
 
 		animation.play(dataColor[noteData] + 'Scroll');
 
-		if (FlxG.save.data.downscroll && sustainNote)
-			flipY = true;
-
 		stepHeight = (((0.45 * Conductor.stepCrochet)) * FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? PlayState.SONG.speed : PlayStateChangeables.scrollSpeed,
 			2)) / PlayState.songMultiplier;
 
@@ -306,6 +304,11 @@ class Note extends FlxSprite
 					prevNote.scale.y *= 1.0 + (1.0 / prevNote.frameHeight);
 			}
 		}
+
+		if (animation.curAnim.name.endsWith('holdend'))
+			isEnd = true;
+		else
+			isEnd = false;
 	}
 
 	override function update(elapsed:Float)
@@ -323,6 +326,9 @@ class Note extends FlxSprite
 				alpha = 0.3;
 			}
 		}
+		
+		if (FlxG.save.data.downscroll != flipY && isSustainNote)
+			flipY = FlxG.save.data.downscroll;
 
 		if (lasttexture != texture)
 		{

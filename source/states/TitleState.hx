@@ -131,6 +131,8 @@ class TitleState extends MusicBeatState
 
 			LanguageStuff.initLanguages();
 
+			Achievements.listAllAchievements();
+
 			#if desktop
 			GameJoltAPI.leaderboardToggle = FlxG.save.data.toggleLeaderboard;
 

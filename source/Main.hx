@@ -28,13 +28,15 @@ class Main extends Sprite
 	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	var gameHeight:Int = 720; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	var initialState:Class<FlxState> = states.TitleState; // The FlxState the game starts with.
+
+	#if (flixel < "5.0.0")
 	var zoom:Float = -1; // If -1, zoom is automatically calculated to fit the window dimensions.
+	#end
+
 	var framerate:Int = 120; // How many frames per second the game should run at.
 	var skipSplash:Bool = true; // Whether to skip the flixel splash screen that appears in release mode.
 	var startFullscreen:Bool = false; // Whether to start the game in fullscreen on desktop targets
 	public static var isHidden:Bool = false;
-
-	public static var bitmapFPS:Bitmap;
 
 	public static var instance:Main;
 
@@ -63,6 +65,8 @@ class Main extends Sprite
 
 		super();
 
+		lime.utils.Log.throwErrors = false;
+
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtError);
 
 		if (stage != null)
@@ -87,14 +91,15 @@ class Main extends Sprite
 
 	private function setupGame():Void
 	{
-		var stageWidth:Int = 1280;
-		var stageHeight:Int = 720;
-
 		save.bind('funkin', 'ninjamuffin99');
 
 		EngineData.initSave();
 
 		KeyBinds.keyCheck();
+
+		#if (flixel < "5.0.0")
+		var stageWidth:Int = Lib.current.stage.stageWidth;
+		var stageHeight:Int = Lib.current.stage.stageHeight;
 
 		if (zoom == -1)
 		{
@@ -104,6 +109,9 @@ class Main extends Sprite
 			gameWidth = Math.ceil(stageWidth / zoom);
 			gameHeight = Math.ceil(stageHeight / zoom);
 		}
+		#end
+
+		framerate = save.data.fpsCap;
 
 		#if !cpp
 		framerate = 60;
@@ -114,18 +122,19 @@ class Main extends Sprite
 
 		#if !mobile
 		fpsCounter = new EngineFPS(10, 3, 0xFFFFFF);
-		bitmapFPS = ImageOutline.renderImage(fpsCounter, 1, 0x000000, true);
-		bitmapFPS.smoothing = true;
 		#end		
 
 		if (save.data.fullscreenOnStart == null)
 			save.data.fullscreenOnStart = false;
 
-		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, save.data.fullscreenOnStart);
+		game = new FlxGame(gameWidth, gameHeight, initialState,
+			#if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash, save.data.fullscreenOnStart);
 		addChild(game);
 
+		FlxG.save = save;
+
 		#if !mobile
-		addChild(fpsCounter);
+		//addChild(fpsCounter);
 		toggleFPS(FlxG.save.data.fps);
 		#end
 
@@ -235,7 +244,6 @@ class Main extends Sprite
 	// thank you shubs :)
 	public static function dumpCache()
 	{
-		///* SPECIAL THANKS TO HAYA
 		@:privateAccess
 		for (key in FlxG.bitmap._cache.keys())
 		{
@@ -248,11 +256,27 @@ class Main extends Sprite
 			}
 		}
 		Assets.cache.clear("songs");
-		// */
 	}
 
 	public function toggleFPS(fpsEnabled:Bool):Void
 	{
+		if (fpsEnabled && !contains(fpsCounter))
+		{
+			if (fpsCounter == null)
+				fpsCounter = new EngineFPS(10, 3, 0xFFFFFF);
+
+			addChild(fpsCounter);
+		}
+		else if (!fpsEnabled && contains(fpsCounter))
+		{
+			removeChild(fpsCounter);
+			if (contains(fpsCounter.bitmap))
+				removeChild(fpsCounter.bitmap);
+
+			fpsCounter = null;
+		}
+		else
+			return;
 	}
 
 	public function changeFPSColor(color:FlxColor)

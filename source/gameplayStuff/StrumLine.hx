@@ -27,7 +27,7 @@ class StrumLine extends FlxTypedGroup<StaticArrow>
 
 		PlayState.instance.add(this);
 
-        if (FlxG.save.data.notesplashes)
+        if (Main.save.data.notesplashes)
 			setupNoteSplashes();
     }
 
@@ -157,7 +157,7 @@ class StrumLine extends FlxTypedGroup<StaticArrow>
 	}
 
     public function spawnNoteSplashOnNote(note:Note) {
-		if(FlxG.save.data.notesplashes && note != null) {
+		if(Main.save.data.notesplashes && note != null) {
 			if (note.sprTracker != null) {
 				grpNoteSplashes.spawnNoteSplash(note.sprTracker.x, note.sprTracker.y, note.noteData, note);
 			}

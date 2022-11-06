@@ -195,12 +195,12 @@ class ModMenuState extends XMLLayoutState
 		var loadedModIds:Array<String> = loadedModsUI.listCurrentMods().map(function(mod:ModMetadata) return mod.id);
 		var modConfigStr = loadedModIds.join('~');
 		//if (modConfigStr != '' && modConfigStr != null){
-			FlxG.save.data.modConfig = modConfigStr;
-			FlxG.save.flush();//}
+			Main.save.data.modConfig = modConfigStr;
+			Main.save.flush();//}
 		/*else{
 			var empty:Array<String> = [];
-			FlxG.save.data.modConfig = empty;
-			FlxG.save.flush();}*/
+			Main.save.data.modConfig = empty;
+			Main.save.flush();}*/
 	}
 
 	function loadMainGame()
@@ -211,7 +211,7 @@ class ModMenuState extends XMLLayoutState
 
 		ModCore.loadConfiguredMods();
 
-		FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)), 0);
+		FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)), 0);
 
 		FlxG.switchState(new TitleState());
 	}
@@ -220,7 +220,7 @@ class ModMenuState extends XMLLayoutState
 	{
 		ModCore.reloadLoadedMods();
 
-		FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)), 0);
+		FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)), 0);
 
 		FlxG.switchState(new TitleState());
 	}

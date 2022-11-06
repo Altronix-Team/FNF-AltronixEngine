@@ -248,9 +248,9 @@ class StageDebugState extends FlxState
 			saveBoyPos();
 
     if (FlxG.keys.justPressed.F1)
-			FlxG.save.data.showHelp = !FlxG.save.data.showHelp;
+			Main.save.data.showHelp = !Main.save.data.showHelp;
 
-    helpText.visible = FlxG.save.data.showHelp;
+    helpText.visible = Main.save.data.showHelp;
 
 		super.update(elapsed);
 	}

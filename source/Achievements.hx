@@ -128,7 +128,7 @@ class Achievements
 
     public static function getAchievement(id:Int, imagePath:String = null)
     {
-		var savedAchievements:Array<String> = FlxG.save.data.savedAchievements;
+		var savedAchievements:Array<String> = Main.save.data.savedAchievements;
 
 		if (!savedAchievements.contains(findSaveIdById(id)))
         {
@@ -139,7 +139,7 @@ class Achievements
 				GameJoltAPI.getTrophy(id, imagePath);
 			#end
 			savedAchievements.push(findSaveIdById(id));
-			FlxG.save.data.savedAchievements = savedAchievements;
+			Main.save.data.savedAchievements = savedAchievements;
         }
     }
 
@@ -202,12 +202,12 @@ class AchievementSprite extends FlxSprite{
         this.image = image;
 
 		reloadAchievementImage();
-		antialiasing = FlxG.save.data.antialiasing;
+		antialiasing = Main.save.data.antialiasing;
 	}
 
 	public function reloadAchievementImage()
 	{
-		var savedAchievements:Array<String> = FlxG.save.data.savedAchievements;
+		var savedAchievements:Array<String> = Main.save.data.savedAchievements;
 
 		if (savedAchievements.contains(tag))
 		{

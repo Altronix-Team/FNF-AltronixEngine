@@ -43,10 +43,10 @@
 	USAGE:
 	To start up the API, the two commands you want to use will be:
 	GameJoltAPI.connect();
-	GameJoltAPI.authDaUser(FlxG.save.data.gjUser, FlxG.save.data.gjToken);
+	GameJoltAPI.authDaUser(Main.save.data.gjUser, Main.save.data.gjToken);
 	*You can't use the API until this step is done!*
 
-	FlxG.save.data.gjUser & gjToken are the save values for the username and token, used for logging in once someone already logs in.
+	Main.save.data.gjUser & gjToken are the save values for the username and token, used for logging in once someone already logs in.
 	Save values (gjUser & gjToken) are deleted when the player signs out with GameJoltAPI.deAuthDaUser(); and are replaced with "".
 
 	To open up the login menu, switch the state to GameJoltLogin.
@@ -171,12 +171,12 @@ class GameJoltAPI // Connects to tentools.api.FlxGameJolt
 						+ (GameJoltAPI.leaderboardToggle ? "Enabled" : "Disabled"),
 						false);
 					Debug.logTrace("User authenticated!");
-					FlxG.save.data.userLoged = true;
-					FlxG.save.data.toggleLeaderboard = GameJoltAPI.leaderboardToggle;
-					FlxG.save.data.gjUser = in1;
-					FlxG.save.data.gjToken = in2;
-					Debug.logTrace(FlxG.save.data.gjUser + '\n' + FlxG.save.data.gjToken);
-					FlxG.save.flush();
+					Main.save.data.userLoged = true;
+					Main.save.data.toggleLeaderboard = GameJoltAPI.leaderboardToggle;
+					Main.save.data.gjUser = in1;
+					Main.save.data.gjToken = in2;
+					Debug.logTrace(Main.save.data.gjUser + '\n' + Main.save.data.gjToken);
+					Main.save.flush();
 					userLogin = true;
 					startSession();
 					if (loginArg)
@@ -209,11 +209,11 @@ class GameJoltAPI // Connects to tentools.api.FlxGameJolt
 	{
 		closeSession();
 		userLogin = false;
-		trace(FlxG.save.data.gjUser + FlxG.save.data.gjToken);
-		FlxG.save.data.gjUser = "";
-		FlxG.save.data.gjToken = "";
-		FlxG.save.flush();
-		trace(FlxG.save.data.gjUser + FlxG.save.data.gjToken);
+		trace(Main.save.data.gjUser + Main.save.data.gjToken);
+		Main.save.data.gjUser = "";
+		Main.save.data.gjToken = "";
+		Main.save.flush();
+		trace(Main.save.data.gjUser + Main.save.data.gjToken);
 		trace("Logged out!");
 		System.exit(0);
 	}
@@ -476,7 +476,7 @@ class GameJoltLogin extends states.MusicBeatSubstate
 
 		if (!login)
 		{
-			FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)), 0);
+			FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)), 0);
 			FlxG.sound.music.fadeIn(2, 0, 0.85);
 		}
 
@@ -576,7 +576,7 @@ class GameJoltLogin extends states.MusicBeatSubstate
 			{
 				GameJoltAPI.leaderboardToggle = !GameJoltAPI.leaderboardToggle;
 				trace(GameJoltAPI.leaderboardToggle);
-				FlxG.save.data.lbToggle = GameJoltAPI.leaderboardToggle;
+				Main.save.data.lbToggle = GameJoltAPI.leaderboardToggle;
 				Main.gjToastManager.createToast(GameJoltInfo.imagePath, "Score Submitting",
 					"Score submitting is now " + (GameJoltAPI.leaderboardToggle ? "Enabled" : "Disabled"), false);
 			}
@@ -591,10 +591,10 @@ class GameJoltLogin extends states.MusicBeatSubstate
 
 		cancelBox = new FlxButton(0, 625, "Not Right Now", function()
 		{
-			FlxG.save.flush();
+			Main.save.flush();
 			FlxG.sound.play(Paths.sound('confirmMenu'), 0.7, false, null, true, function()
 			{
-				FlxG.save.flush();
+				Main.save.flush();
 				FlxG.sound.music.stop();
 				FlxG.switchState(GameJoltInfo.changeState);
 			});
@@ -659,10 +659,10 @@ class GameJoltLogin extends states.MusicBeatSubstate
 	{
 		gamejoltText2.text = Date.now().toString();
 
-		if (FlxG.save.data.lbToggle == null)
+		if (Main.save.data.lbToggle == null)
 		{
-			FlxG.save.data.lbToggle = false;
-			FlxG.save.flush();
+			Main.save.data.lbToggle = false;
+			Main.save.flush();
 		}
 
 		if (GameJoltAPI.getStatus())
@@ -676,12 +676,12 @@ class GameJoltLogin extends states.MusicBeatSubstate
 
 		if (!FlxG.sound.music.playing)
 		{
-			FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)));
+			FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)));
 		}
 
 		if (FlxG.keys.justPressed.ESCAPE)
 		{
-			FlxG.save.flush();
+			Main.save.flush();
 			FlxG.mouse.visible = false;
 			FlxG.switchState(GameJoltInfo.changeState);
 		}

@@ -367,7 +367,7 @@ class Song
 			song.diffSoundAssets = false;
 
 		if (song.specialSongNoteSkin == null)
-			song.specialSongNoteSkin = FlxG.save.data.noteskin;
+			song.specialSongNoteSkin = Main.save.data.noteskin;
 
 		if (song.showbgdancers == null)
 			{
@@ -697,14 +697,14 @@ class Song
 			}
 			else
 			{
-				songData.songPosBarColor = FlxColor.fromString('0x00ff80');
+				songData.songPosBarColor = FlxColor.fromString('0xffffff');
 			}
 		}
 		else
 		{
 			songData.songName = songId.split('-').join(' ');
 			songData.songComposer = '???';
-			songData.songPosBarColor = FlxColor.fromString('0x00ff80');
+			songData.songPosBarColor = FlxColor.fromString('0xffffff');
 		}
 
 		if (jsonEvents != null)

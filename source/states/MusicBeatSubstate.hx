@@ -93,6 +93,6 @@ class MusicBeatSubstate extends FlxSubState implements IMusicBeat
 	function onWindowFocusIn():Void
 	{
 		Debug.logTrace("IM BACK!!!");
-		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
+		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(Main.save.data.fpsCap);
 	}
 }

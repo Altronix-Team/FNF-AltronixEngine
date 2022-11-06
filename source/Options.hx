@@ -81,7 +81,7 @@ class DFJKOption extends Option
 	public function new()
 	{
 		super();
-		if (!FlxG.save.data.language)
+		if (!Main.save.data.language)
 			description = "Edit your keybindings";
 		else
 			description = "Изменить настройки управления";
@@ -96,7 +96,7 @@ class DFJKOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
+		if (!Main.save.data.language)
 			return "Edit Keybindings";
 		else
 			return "Изменить настройки управления";
@@ -116,7 +116,7 @@ class UpKeybind extends Option
 	{
 		if (waitingType)
 		{
-			FlxG.save.data.upBind = text;
+			Main.save.data.upBind = text;
 			waitingType = false;
 		}
 	}
@@ -131,10 +131,10 @@ class UpKeybind extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "UP: " + (waitingType ? "> " + FlxG.save.data.upBind + " <" : FlxG.save.data.upBind) + "";
+		if (!Main.save.data.language)
+			return "UP: " + (waitingType ? "> " + Main.save.data.upBind + " <" : Main.save.data.upBind) + "";
 		else
-			return "Вверх: " + (waitingType ? "> " + FlxG.save.data.upBind + " <" : FlxG.save.data.upBind) + "";
+			return "Вверх: " + (waitingType ? "> " + Main.save.data.upBind + " <" : Main.save.data.upBind) + "";
 	}
 }
 
@@ -151,7 +151,7 @@ class DownKeybind extends Option
 	{
 		if (waitingType)
 		{
-			FlxG.save.data.downBind = text;
+			Main.save.data.downBind = text;
 			waitingType = false;
 		}
 	}
@@ -166,10 +166,10 @@ class DownKeybind extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "DOWN: " + (waitingType ? "> " + FlxG.save.data.downBind + " <" : FlxG.save.data.downBind) + "";
+		if (!Main.save.data.language)
+			return "DOWN: " + (waitingType ? "> " + Main.save.data.downBind + " <" : Main.save.data.downBind) + "";
 		else
-			return "Вниз: " + (waitingType ? "> " + FlxG.save.data.downBind + " <" : FlxG.save.data.downBind) + "";
+			return "Вниз: " + (waitingType ? "> " + Main.save.data.downBind + " <" : Main.save.data.downBind) + "";
 	}
 }
 
@@ -186,7 +186,7 @@ class RightKeybind extends Option
 	{
 		if (waitingType)
 		{
-			FlxG.save.data.rightBind = text;
+			Main.save.data.rightBind = text;
 			waitingType = false;
 		}
 	}
@@ -201,10 +201,10 @@ class RightKeybind extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "RIGHT: " + (waitingType ? "> " + FlxG.save.data.rightBind + " <" : FlxG.save.data.rightBind) + "";
+		if (!Main.save.data.language)
+			return "RIGHT: " + (waitingType ? "> " + Main.save.data.rightBind + " <" : Main.save.data.rightBind) + "";
 		else
-			return "Вправо: " + (waitingType ? "> " + FlxG.save.data.rightBind + " <" : FlxG.save.data.rightBind) + "";
+			return "Вправо: " + (waitingType ? "> " + Main.save.data.rightBind + " <" : Main.save.data.rightBind) + "";
 	}
 }
 
@@ -221,7 +221,7 @@ class LeftKeybind extends Option
 	{
 		if (waitingType)
 		{
-			FlxG.save.data.leftBind = text;
+			Main.save.data.leftBind = text;
 			waitingType = false;
 		}
 	}
@@ -236,10 +236,10 @@ class LeftKeybind extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "LEFT: " + (waitingType ? "> " + FlxG.save.data.leftBind + " <" : FlxG.save.data.leftBind) + "";
+		if (!Main.save.data.language)
+			return "LEFT: " + (waitingType ? "> " + Main.save.data.leftBind + " <" : Main.save.data.leftBind) + "";
 		else
-			return "Влево: " + (waitingType ? "> " + FlxG.save.data.leftBind + " <" : FlxG.save.data.leftBind) + "";
+			return "Влево: " + (waitingType ? "> " + Main.save.data.leftBind + " <" : Main.save.data.leftBind) + "";
 	}
 }
 
@@ -256,7 +256,7 @@ class AttackKeybind extends Option
 	{
 		if (waitingType)
 		{
-			FlxG.save.data.attackBind = text;
+			Main.save.data.attackBind = text;
 			waitingType = false;
 		}
 	}
@@ -271,10 +271,10 @@ class AttackKeybind extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "ATTACK: " + (waitingType ? "> " + FlxG.save.data.attackBind + " <" : FlxG.save.data.attackBind) + "";
+		if (!Main.save.data.language)
+			return "ATTACK: " + (waitingType ? "> " + Main.save.data.attackBind + " <" : Main.save.data.attackBind) + "";
 		else
-			return "Атака: " + (waitingType ? "> " + FlxG.save.data.attackBind + " <" : FlxG.save.data.attackBind) + "";
+			return "Атака: " + (waitingType ? "> " + Main.save.data.attackBind + " <" : Main.save.data.attackBind) + "";
 	}
 }
 class PauseKeybind extends Option
@@ -290,7 +290,7 @@ class PauseKeybind extends Option
 	{
 		if (waitingType)
 		{
-			FlxG.save.data.pauseBind = text;
+			Main.save.data.pauseBind = text;
 			waitingType = false;
 		}
 	}
@@ -305,10 +305,10 @@ class PauseKeybind extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "PAUSE: " + (waitingType ? "> " + FlxG.save.data.pauseBind + " <" : FlxG.save.data.pauseBind) + "";
+		if (!Main.save.data.language)
+			return "PAUSE: " + (waitingType ? "> " + Main.save.data.pauseBind + " <" : Main.save.data.pauseBind) + "";
 		else
-			return "Пауза: " + (waitingType ? "> " + FlxG.save.data.pauseBind + " <" : FlxG.save.data.pauseBind) + "";
+			return "Пауза: " + (waitingType ? "> " + Main.save.data.pauseBind + " <" : Main.save.data.pauseBind) + "";
 	}
 }
 
@@ -325,7 +325,7 @@ class ResetBind extends Option
 	{
 		if (waitingType)
 		{
-			FlxG.save.data.resetBind = text;
+			Main.save.data.resetBind = text;
 			waitingType = false;
 		}
 	}
@@ -340,10 +340,10 @@ class ResetBind extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "RESET: " + (waitingType ? "> " + FlxG.save.data.resetBind + " <" : FlxG.save.data.resetBind) + "";
+		if (!Main.save.data.language)
+			return "RESET: " + (waitingType ? "> " + Main.save.data.resetBind + " <" : Main.save.data.resetBind) + "";
 		else
-			return "Сбросить: " + (waitingType ? "> " + FlxG.save.data.resetBind + " <" : FlxG.save.data.resetBind) + "";
+			return "Сбросить: " + (waitingType ? "> " + Main.save.data.resetBind + " <" : Main.save.data.resetBind) + "";
 	}
 }
 
@@ -360,7 +360,7 @@ class MuteBind extends Option
 	{
 		if (waitingType)
 		{
-			FlxG.save.data.muteBind = text;
+			Main.save.data.muteBind = text;
 			waitingType = false;
 		}
 	}
@@ -375,10 +375,10 @@ class MuteBind extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "VOLUME MUTE: " + (waitingType ? "> " + FlxG.save.data.muteBind + " <" : FlxG.save.data.muteBind) + "";
+		if (!Main.save.data.language)
+			return "VOLUME MUTE: " + (waitingType ? "> " + Main.save.data.muteBind + " <" : Main.save.data.muteBind) + "";
 		else
-			return "Заглушить звук: " + (waitingType ? "> " + FlxG.save.data.muteBind + " <" : FlxG.save.data.muteBind) + "";
+			return "Заглушить звук: " + (waitingType ? "> " + Main.save.data.muteBind + " <" : Main.save.data.muteBind) + "";
 	}
 }
 
@@ -395,7 +395,7 @@ class VolUpBind extends Option
 	{
 		if (waitingType)
 		{
-			FlxG.save.data.volUpBind = text;
+			Main.save.data.volUpBind = text;
 			waitingType = false;
 		}
 	}
@@ -410,10 +410,10 @@ class VolUpBind extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "VOLUME UP: " + (waitingType ? "> " + FlxG.save.data.volUpBind + " <" : FlxG.save.data.volUpBind) + "";
+		if (!Main.save.data.language)
+			return "VOLUME UP: " + (waitingType ? "> " + Main.save.data.volUpBind + " <" : Main.save.data.volUpBind) + "";
 		else
-			return "Повысить громкость: " + (waitingType ? "> " + FlxG.save.data.volUpBind + " <" : FlxG.save.data.volUpBind) + "";
+			return "Повысить громкость: " + (waitingType ? "> " + Main.save.data.volUpBind + " <" : Main.save.data.volUpBind) + "";
 	}
 }
 
@@ -430,7 +430,7 @@ class VolDownBind extends Option
 	{
 		if (waitingType)
 		{
-			FlxG.save.data.volDownBind = text;
+			Main.save.data.volDownBind = text;
 			waitingType = false;
 		}
 	}
@@ -445,10 +445,10 @@ class VolDownBind extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "VOLUME DOWN: " + (waitingType ? "> " + FlxG.save.data.volDownBind + " <" : FlxG.save.data.volDownBind) + "";
+		if (!Main.save.data.language)
+			return "VOLUME DOWN: " + (waitingType ? "> " + Main.save.data.volDownBind + " <" : Main.save.data.volDownBind) + "";
 		else
-			return "Понизить громкость: " + (waitingType ? "> " + FlxG.save.data.volDownBind + " <" : FlxG.save.data.volDownBind) + "";
+			return "Понизить громкость: " + (waitingType ? "> " + Main.save.data.volDownBind + " <" : Main.save.data.volDownBind) + "";
 	}
 }
 
@@ -465,7 +465,7 @@ class FullscreenBind extends Option
 	{
 		if (waitingType)
 		{
-			FlxG.save.data.fullscreenBind = text;
+			Main.save.data.fullscreenBind = text;
 			waitingType = false;
 		}
 	}
@@ -480,10 +480,10 @@ class FullscreenBind extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "FULLSCREEN:  " + (waitingType ? "> " + FlxG.save.data.fullscreenBind + " <" : FlxG.save.data.fullscreenBind) + "";
+		if (!Main.save.data.language)
+			return "FULLSCREEN:  " + (waitingType ? "> " + Main.save.data.fullscreenBind + " <" : Main.save.data.fullscreenBind) + "";
 		else
-			return "Полный экран:  " + (waitingType ? "> " + FlxG.save.data.fullscreenBind + " <" : FlxG.save.data.fullscreenBind) + "";
+			return "Полный экран:  " + (waitingType ? "> " + Main.save.data.fullscreenBind + " <" : Main.save.data.fullscreenBind) + "";
 	}
 }
 
@@ -500,7 +500,7 @@ class UpP2Keybind extends Option
 	{
 		if (waitingType)
 		{
-			FlxG.save.data.upBindP2 = text;
+			Main.save.data.upBindP2 = text;
 			waitingType = false;
 		}
 	}
@@ -515,10 +515,10 @@ class UpP2Keybind extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "UP (P2): " + (waitingType ? "> " + FlxG.save.data.upBindP2 + " <" : FlxG.save.data.upBindP2) + "";
+		if (!Main.save.data.language)
+			return "UP (P2): " + (waitingType ? "> " + Main.save.data.upBindP2 + " <" : Main.save.data.upBindP2) + "";
 		else
-			return "Вверх (игрок 2): " + (waitingType ? "> " + FlxG.save.data.upBindP2 + " <" : FlxG.save.data.upBindP2) + "";
+			return "Вверх (игрок 2): " + (waitingType ? "> " + Main.save.data.upBindP2 + " <" : Main.save.data.upBindP2) + "";
 	}
 }
 
@@ -535,7 +535,7 @@ class DownP2Keybind extends Option
 	{
 		if (waitingType)
 		{
-			FlxG.save.data.downBindP2 = text;
+			Main.save.data.downBindP2 = text;
 			waitingType = false;
 		}
 	}
@@ -550,10 +550,10 @@ class DownP2Keybind extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "DOWN (P2): " + (waitingType ? "> " + FlxG.save.data.downBindP2 + " <" : FlxG.save.data.downBindP2) + "";
+		if (!Main.save.data.language)
+			return "DOWN (P2): " + (waitingType ? "> " + Main.save.data.downBindP2 + " <" : Main.save.data.downBindP2) + "";
 		else
-			return "Вниз (игрок 2): " + (waitingType ? "> " + FlxG.save.data.downBindP2 + " <" : FlxG.save.data.downBindP2) + "";
+			return "Вниз (игрок 2): " + (waitingType ? "> " + Main.save.data.downBindP2 + " <" : Main.save.data.downBindP2) + "";
 	}
 }
 
@@ -570,7 +570,7 @@ class RightP2Keybind extends Option
 	{
 		if (waitingType)
 		{
-			FlxG.save.data.rightBindP2 = text;
+			Main.save.data.rightBindP2 = text;
 			waitingType = false;
 		}
 	}
@@ -585,10 +585,10 @@ class RightP2Keybind extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "RIGHT (P2): " + (waitingType ? "> " + FlxG.save.data.rightBindP2 + " <" : FlxG.save.data.rightBindP2) + "";
+		if (!Main.save.data.language)
+			return "RIGHT (P2): " + (waitingType ? "> " + Main.save.data.rightBindP2 + " <" : Main.save.data.rightBindP2) + "";
 		else
-			return "Вправо (игрок 2): " + (waitingType ? "> " + FlxG.save.data.rightBindP2 + " <" : FlxG.save.data.rightBindP2) + "";
+			return "Вправо (игрок 2): " + (waitingType ? "> " + Main.save.data.rightBindP2 + " <" : Main.save.data.rightBindP2) + "";
 	}
 }
 
@@ -605,7 +605,7 @@ class LeftP2Keybind extends Option
 	{
 		if (waitingType)
 		{
-			FlxG.save.data.leftBindP2 = text;
+			Main.save.data.leftBindP2 = text;
 			waitingType = false;
 		}
 	}
@@ -620,10 +620,10 @@ class LeftP2Keybind extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "LEFT (P2): " + (waitingType ? "> " + FlxG.save.data.leftBindP2 + " <" : FlxG.save.data.leftBindP2) + "";
+		if (!Main.save.data.language)
+			return "LEFT (P2): " + (waitingType ? "> " + Main.save.data.leftBindP2 + " <" : Main.save.data.leftBindP2) + "";
 		else
-			return "Влево (игрок 2): " + (waitingType ? "> " + FlxG.save.data.leftBindP2 + " <" : FlxG.save.data.leftBindP2) + "";
+			return "Влево (игрок 2): " + (waitingType ? "> " + Main.save.data.leftBindP2 + " <" : Main.save.data.leftBindP2) + "";
 	}
 }
 
@@ -632,7 +632,7 @@ class SickMSOption extends Option
 	public function new(desc:String)
 	{
 		super();
-		if (!FlxG.save.data.language)
+		if (!Main.save.data.language)
 			description = desc + " (Press R to reset)";
 		else
 			description = desc + " (Нажмите R для сброса)";
@@ -641,16 +641,16 @@ class SickMSOption extends Option
 
 	public override function left():Bool
 	{
-		FlxG.save.data.sickMs--;
-		if (FlxG.save.data.sickMs < 0)
-			FlxG.save.data.sickMs = 0;
+		Main.save.data.sickMs--;
+		if (Main.save.data.sickMs < 0)
+			Main.save.data.sickMs = 0;
 		display = updateDisplay();
 		return true;
 	}
 
 	public override function right():Bool
 	{
-		FlxG.save.data.sickMs++;
+		Main.save.data.sickMs++;
 		display = updateDisplay();
 		return true;
 	}
@@ -658,12 +658,12 @@ class SickMSOption extends Option
 	public override function onType(char:String)
 	{
 		if (char.toLowerCase() == "r")
-			FlxG.save.data.sickMs = 45;
+			Main.save.data.sickMs = 45;
 	}
 
 	private override function updateDisplay():String
 	{
-		return "SICK: < " + FlxG.save.data.sickMs + " ms >";
+		return "SICK: < " + Main.save.data.sickMs + " ms >";
 	}
 }
 
@@ -672,7 +672,7 @@ class GoodMsOption extends Option
 	public function new(desc:String)
 	{
 		super();
-		if (!FlxG.save.data.language)
+		if (!Main.save.data.language)
 			description = desc + " (Press R to reset)";
 		else
 			description = desc + " (Нажмите R для сброса)";
@@ -681,16 +681,16 @@ class GoodMsOption extends Option
 
 	public override function left():Bool
 	{
-		FlxG.save.data.goodMs--;
-		if (FlxG.save.data.goodMs < 0)
-			FlxG.save.data.goodMs = 0;
+		Main.save.data.goodMs--;
+		if (Main.save.data.goodMs < 0)
+			Main.save.data.goodMs = 0;
 		display = updateDisplay();
 		return true;
 	}
 
 	public override function right():Bool
 	{
-		FlxG.save.data.goodMs++;
+		Main.save.data.goodMs++;
 		display = updateDisplay();
 		return true;
 	}
@@ -698,12 +698,12 @@ class GoodMsOption extends Option
 	public override function onType(char:String)
 	{
 		if (char.toLowerCase() == "r")
-			FlxG.save.data.goodMs = 90;
+			Main.save.data.goodMs = 90;
 	}
 
 	private override function updateDisplay():String
 	{
-		return "GOOD: < " + FlxG.save.data.goodMs + " ms >";
+		return "GOOD: < " + Main.save.data.goodMs + " ms >";
 	}
 }
 
@@ -712,7 +712,7 @@ class BadMsOption extends Option
 	public function new(desc:String)
 	{
 		super();
-		if (!FlxG.save.data.language)
+		if (!Main.save.data.language)
 			description = desc + " (Press R to reset)";
 		else
 			description = desc + " (Нажмите R для сброса)";
@@ -721,16 +721,16 @@ class BadMsOption extends Option
 
 	public override function left():Bool
 	{
-		FlxG.save.data.badMs--;
-		if (FlxG.save.data.badMs < 0)
-			FlxG.save.data.badMs = 0;
+		Main.save.data.badMs--;
+		if (Main.save.data.badMs < 0)
+			Main.save.data.badMs = 0;
 		display = updateDisplay();
 		return true;
 	}
 
 	public override function right():Bool
 	{
-		FlxG.save.data.badMs++;
+		Main.save.data.badMs++;
 		display = updateDisplay();
 		return true;
 	}
@@ -738,12 +738,12 @@ class BadMsOption extends Option
 	public override function onType(char:String)
 	{
 		if (char.toLowerCase() == "r")
-			FlxG.save.data.badMs = 135;
+			Main.save.data.badMs = 135;
 	}
 
 	private override function updateDisplay():String
 	{
-		return "BAD: < " + FlxG.save.data.badMs + " ms >";
+		return "BAD: < " + Main.save.data.badMs + " ms >";
 	}
 }
 
@@ -752,7 +752,7 @@ class ShitMsOption extends Option
 	public function new(desc:String)
 	{
 		super();
-		if (!FlxG.save.data.language)
+		if (!Main.save.data.language)
 			description = desc + " (Press R to reset)";
 		else
 			description = desc + " (Нажмите R для сброса)";
@@ -761,9 +761,9 @@ class ShitMsOption extends Option
 
 	public override function left():Bool
 	{
-		FlxG.save.data.shitMs--;
-		if (FlxG.save.data.shitMs < 0)
-			FlxG.save.data.shitMs = 0;
+		Main.save.data.shitMs--;
+		if (Main.save.data.shitMs < 0)
+			Main.save.data.shitMs = 0;
 		display = updateDisplay();
 		return true;
 	}
@@ -771,19 +771,19 @@ class ShitMsOption extends Option
 	public override function onType(char:String)
 	{
 		if (char.toLowerCase() == "r")
-			FlxG.save.data.shitMs = 160;
+			Main.save.data.shitMs = 160;
 	}
 
 	public override function right():Bool
 	{
-		FlxG.save.data.shitMs++;
+		Main.save.data.shitMs++;
 		display = updateDisplay();
 		return true;
 	}
 
 	private override function updateDisplay():String
 	{
-		return "SHIT: < " + FlxG.save.data.shitMs + " ms >";
+		return "SHIT: < " + Main.save.data.shitMs + " ms >";
 	}
 }
 class GraphicLoading extends Option
@@ -796,7 +796,7 @@ class GraphicLoading extends Option
 
 	public override function press():Bool
 	{
-		FlxG.save.data.cacheImages = !FlxG.save.data.cacheImages;
+		Main.save.data.cacheImages = !Main.save.data.cacheImages;
 
 		display = updateDisplay();
 		return true;
@@ -818,7 +818,7 @@ class EditorRes extends Option
 
 	public override function left():Bool
 	{
-		FlxG.save.data.editorBG = !FlxG.save.data.editorBG;
+		Main.save.data.editorBG = !Main.save.data.editorBG;
 
 		display = updateDisplay();
 		return true;
@@ -832,10 +832,10 @@ class EditorRes extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "Editor Grid: < " + (FlxG.save.data.editorBG ? "Shown" : "Hidden") + " >";
+		if (!Main.save.data.language)
+			return "Editor Grid: < " + (Main.save.data.editorBG ? "Shown" : "Hidden") + " >";
 		else
-			return "Сетка редактора: < " + (FlxG.save.data.editorBG ? "Показывается" : "Скрытая") + " >";
+			return "Сетка редактора: < " + (Main.save.data.editorBG ? "Показывается" : "Скрытая") + " >";
 	}
 }
 
@@ -845,7 +845,7 @@ class DownscrollOption extends Option
 	{
 		super();
 		/*if (OptionsMenu.isInPause)
-			if (!FlxG.save.data.language)
+			if (!Main.save.data.language)
 				description = "This option cannot be toggled in the pause menu.";
 			else
 				description = "Эта опция не может быть переключена во время паузы";
@@ -857,7 +857,7 @@ class DownscrollOption extends Option
 	{
 		//if (OptionsMenu.isInPause)
 			//return false;
-		FlxG.save.data.downscroll = !FlxG.save.data.downscroll;
+		Main.save.data.downscroll = !Main.save.data.downscroll;
 		display = updateDisplay();
 		return true;
 	}
@@ -870,10 +870,10 @@ class DownscrollOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "Scroll: < " + (FlxG.save.data.downscroll ? "Downscroll" : "Upscroll") + " >";
+		if (!Main.save.data.language)
+			return "Scroll: < " + (Main.save.data.downscroll ? "Downscroll" : "Upscroll") + " >";
 		else
-			return "Прокручивание: < " + (FlxG.save.data.downscroll ? "Сверху-вниз" : "Снизу-вверх") + " >";
+			return "Прокручивание: < " + (Main.save.data.downscroll ? "Сверху-вниз" : "Снизу-вверх") + " >";
 	}
 }
 
@@ -887,7 +887,7 @@ class GhostTapOption extends Option
 
 	public override function left():Bool
 	{
-		FlxG.save.data.ghost = !FlxG.save.data.ghost;
+		Main.save.data.ghost = !Main.save.data.ghost;
 		display = updateDisplay();
 		return true;
 	}
@@ -900,48 +900,10 @@ class GhostTapOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "Ghost Tapping: < " + (FlxG.save.data.ghost ? "Enabled" : "Disabled") + " >";
+		if (!Main.save.data.language)
+			return "Ghost Tapping: < " + (Main.save.data.ghost ? "Enabled" : "Disabled") + " >";
 		else
-			return "Призрачные нажатия: < " + (FlxG.save.data.ghost ? "Включено" : "Выключено") + " >";
-	}
-}
-
-class PsychInterfaceOption extends Option
-{
-	public function new(desc:String)
-	{
-		super();
-		if (OptionsMenu.isInPause)
-			if (!FlxG.save.data.language)
-				description = "This option cannot be toggled in the pause menu.";
-			else
-				description = "Эта опция не может быть переключена во время паузы";
-		else
-			description = desc;
-	}
-
-	public override function left():Bool
-	{
-		if (OptionsMenu.isInPause)
-			return false;
-		FlxG.save.data.enablePsychInterface = !FlxG.save.data.enablePsychInterface;
-		display = updateDisplay();
-		return true;
-	}
-
-	public override function right():Bool
-	{
-		left();
-		return true;
-	}
-
-	private override function updateDisplay():String
-	{
-		if (!FlxG.save.data.language)
-			return "Interface type < " + (!FlxG.save.data.enablePsychInterface ? "Kade" : "Psych") + " >";
-		else
-			return "Тип интерфейса < " + (!FlxG.save.data.enablePsychInterface ? "Kade" : "Psych") + " >";
+			return "Призрачные нажатия: < " + (Main.save.data.ghost ? "Включено" : "Выключено") + " >";
 	}
 }
 
@@ -951,7 +913,7 @@ class AccuracyOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!FlxG.save.data.language)
+			if (!Main.save.data.language)
 				description = "This option cannot be toggled in the pause menu.";
 			else
 				description = "Эта опция не может быть переключена во время паузы";
@@ -963,7 +925,7 @@ class AccuracyOption extends Option
 	{
 		if (OptionsMenu.isInPause)
 			return false;
-		FlxG.save.data.accuracyDisplay = !FlxG.save.data.accuracyDisplay;
+		Main.save.data.accuracyDisplay = !Main.save.data.accuracyDisplay;
 		display = updateDisplay();
 		return true;
 	}
@@ -976,10 +938,10 @@ class AccuracyOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "Accuracy Display < " + (!FlxG.save.data.accuracyDisplay ? "off" : "on") + " >";
+		if (!Main.save.data.language)
+			return "Accuracy Display < " + (!Main.save.data.accuracyDisplay ? "off" : "on") + " >";
 		else
-			return "Отображение точности < " + (!FlxG.save.data.accuracyDisplay ? "выключено" : "включено") + " >";
+			return "Отображение точности < " + (!Main.save.data.accuracyDisplay ? "выключено" : "включено") + " >";
 	}
 }
 
@@ -989,7 +951,7 @@ class SongPositionOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!FlxG.save.data.language)
+			if (!Main.save.data.language)
 				description = "This option cannot be toggled in the pause menu.";
 			else
 				description = "Эта опция не может быть переключена во время паузы";
@@ -1001,7 +963,7 @@ class SongPositionOption extends Option
 	{
 		if (OptionsMenu.isInPause)
 			return false;
-		FlxG.save.data.songPosition = !FlxG.save.data.songPosition;
+		Main.save.data.songPosition = !Main.save.data.songPosition;
 		display = updateDisplay();
 		return true;
 	}
@@ -1014,10 +976,10 @@ class SongPositionOption extends Option
 
 	public override function getValue():String
 	{
-		if (!FlxG.save.data.language)
-			return "Song Position Bar: < " + (!FlxG.save.data.songPosition ? "off" : "on") + " >";
+		if (!Main.save.data.language)
+			return "Song Position Bar: < " + (!Main.save.data.songPosition ? "off" : "on") + " >";
 		else
-			return "Полоса позиции песни: < " + (!FlxG.save.data.songPosition ? "выключено" : "включено") + " >";
+			return "Полоса позиции песни: < " + (!Main.save.data.songPosition ? "выключено" : "включено") + " >";
 	}
 }
 
@@ -1027,7 +989,7 @@ class DistractionsAndEffectsOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!FlxG.save.data.language)
+			if (!Main.save.data.language)
 				description = "This option cannot be toggled in the pause menu.";
 			else
 				description = "Эта опция не может быть переключена во время паузы";
@@ -1039,7 +1001,7 @@ class DistractionsAndEffectsOption extends Option
 	{
 		if (OptionsMenu.isInPause)
 			return false;
-		FlxG.save.data.distractions = !FlxG.save.data.distractions;
+		Main.save.data.distractions = !Main.save.data.distractions;
 		display = updateDisplay();
 		return true;
 	}
@@ -1052,10 +1014,10 @@ class DistractionsAndEffectsOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "Distractions: < " + (!FlxG.save.data.distractions ? "off" : "on") + " >";
+		if (!Main.save.data.language)
+			return "Distractions: < " + (!Main.save.data.distractions ? "off" : "on") + " >";
 		else
-			return "Раздражители: < " + (!FlxG.save.data.distractions ? "выключены" : "включены") + " >";
+			return "Раздражители: < " + (!Main.save.data.distractions ? "выключены" : "включены") + " >";
 	}
 }
 
@@ -1065,7 +1027,7 @@ class Colour extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!FlxG.save.data.language)
+			if (!Main.save.data.language)
 				description = "This option cannot be toggled in the pause menu.";
 			else
 				description = "Эта опция не может быть переключена во время паузы";
@@ -1077,7 +1039,7 @@ class Colour extends Option
 	{
 		if (OptionsMenu.isInPause)
 			return false;
-		FlxG.save.data.colour = !FlxG.save.data.colour;
+		Main.save.data.colour = !Main.save.data.colour;
 		display = updateDisplay();
 		return true;
 	}
@@ -1090,10 +1052,10 @@ class Colour extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "Colored HP Bars: < " + (FlxG.save.data.colour ? "Enabled" : "Disabled") + " >";
+		if (!Main.save.data.language)
+			return "Colored HP Bars: < " + (Main.save.data.colour ? "Enabled" : "Disabled") + " >";
 		else
-			return "Цветные полосы здоровья: < " + (FlxG.save.data.colour ? "Включены" : "Выключены") + " >";
+			return "Цветные полосы здоровья: < " + (Main.save.data.colour ? "Включены" : "Выключены") + " >";
 	}
 }
 class ResetButtonOption extends Option
@@ -1106,17 +1068,17 @@ class ResetButtonOption extends Option
 
 	public override function press():Bool
 	{
-		FlxG.save.data.resetButton = !FlxG.save.data.resetButton;
+		Main.save.data.resetButton = !Main.save.data.resetButton;
 		display = updateDisplay();
 		return true;
 	}
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "Reset Button: < " + (!FlxG.save.data.resetButton ? "off" : "on") + " >";
+		if (!Main.save.data.language)
+			return "Reset Button: < " + (!Main.save.data.resetButton ? "off" : "on") + " >";
 		else
-			return "Кнопка сброса: < " + (!FlxG.save.data.resetButton ? "выключено" : "включено") + " >";
+			return "Кнопка сброса: < " + (!Main.save.data.resetButton ? "выключено" : "включено") + " >";
 	}
 }
 
@@ -1130,17 +1092,17 @@ class InstantRespawn extends Option
 
 	public override function press():Bool
 	{
-		FlxG.save.data.InstantRespawn = !FlxG.save.data.InstantRespawn;
+		Main.save.data.InstantRespawn = !Main.save.data.InstantRespawn;
 		display = updateDisplay();
 		return true;
 	}
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "Instant Respawn: < " + (!FlxG.save.data.InstantRespawn ? "off" : "on") + " >";
+		if (!Main.save.data.language)
+			return "Instant Respawn: < " + (!Main.save.data.InstantRespawn ? "off" : "on") + " >";
 		else
-			return "Мгновенное возрождение: < " + (!FlxG.save.data.InstantRespawn ? "выключено" : "включено") + " >";
+			return "Мгновенное возрождение: < " + (!Main.save.data.InstantRespawn ? "выключено" : "включено") + " >";
 	}
 }
 
@@ -1150,7 +1112,7 @@ class FlashingLightsOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!FlxG.save.data.language)
+			if (!Main.save.data.language)
 				description = "This option cannot be toggled in the pause menu.";
 			else
 				description = "Эта опция не может быть переключена во время паузы";
@@ -1162,7 +1124,7 @@ class FlashingLightsOption extends Option
 	{
 		if (OptionsMenu.isInPause)
 			return false;
-		FlxG.save.data.flashing = !FlxG.save.data.flashing;
+		Main.save.data.flashing = !Main.save.data.flashing;
 		display = updateDisplay();
 		return true;
 	}
@@ -1175,10 +1137,10 @@ class FlashingLightsOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "Flashing Lights: < " + (!FlxG.save.data.flashing ? "off" : "on") + " >";
+		if (!Main.save.data.language)
+			return "Flashing Lights: < " + (!Main.save.data.flashing ? "off" : "on") + " >";
 		else
-			return "Мигающие огни: < " + (!FlxG.save.data.flashing ? "выключены" : "включены") + " >";
+			return "Мигающие огни: < " + (!Main.save.data.flashing ? "выключены" : "включены") + " >";
 	}
 }
 
@@ -1188,7 +1150,7 @@ class AntialiasingOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!FlxG.save.data.language)
+			if (!Main.save.data.language)
 				description = "This option cannot be toggled in the pause menu.";
 			else
 				description = "Эта опция не может быть переключена во время паузы";
@@ -1200,7 +1162,7 @@ class AntialiasingOption extends Option
 	{
 		if (OptionsMenu.isInPause)
 			return false;
-		FlxG.save.data.antialiasing = !FlxG.save.data.antialiasing;
+		Main.save.data.antialiasing = !Main.save.data.antialiasing;
 		display = updateDisplay();
 		return true;
 	}
@@ -1213,10 +1175,10 @@ class AntialiasingOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "Antialiasing: < " + (!FlxG.save.data.antialiasing ? "off" : "on") + " >";
+		if (!Main.save.data.language)
+			return "Antialiasing: < " + (!Main.save.data.antialiasing ? "off" : "on") + " >";
 		else
-			return "Сглаживание: < " + (!FlxG.save.data.antialiasing ? "выключено" : "включено") + " >";
+			return "Сглаживание: < " + (!Main.save.data.antialiasing ? "выключено" : "включено") + " >";
 	}
 }
 
@@ -1226,7 +1188,7 @@ class MissSoundsOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!FlxG.save.data.language)
+			if (!Main.save.data.language)
 				description = "This option cannot be toggled in the pause menu.";
 			else
 				description = "Эта опция не может быть переключена во время паузы";
@@ -1238,7 +1200,7 @@ class MissSoundsOption extends Option
 	{
 		if (OptionsMenu.isInPause)
 			return false;
-		FlxG.save.data.missSounds = !FlxG.save.data.missSounds;
+		Main.save.data.missSounds = !Main.save.data.missSounds;
 		display = updateDisplay();
 		return true;
 	}
@@ -1251,10 +1213,10 @@ class MissSoundsOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "Miss Sounds: < " + (!FlxG.save.data.missSounds ? "off" : "on") + " >";
+		if (!Main.save.data.language)
+			return "Miss Sounds: < " + (!Main.save.data.missSounds ? "off" : "on") + " >";
 		else
-			return "Звуки пропуска стрелок: < " + (!FlxG.save.data.missSounds ? "выключены" : "включены") + " >";
+			return "Звуки пропуска стрелок: < " + (!Main.save.data.missSounds ? "выключены" : "включены") + " >";
 	}
 }
 
@@ -1268,7 +1230,7 @@ class ShowInput extends Option
 
 	public override function left():Bool
 	{
-		FlxG.save.data.inputShow = !FlxG.save.data.inputShow;
+		Main.save.data.inputShow = !Main.save.data.inputShow;
 		display = updateDisplay();
 		return true;
 	}
@@ -1281,10 +1243,10 @@ class ShowInput extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "Score Screen Debug: < " + (FlxG.save.data.inputShow ? "Enabled" : "Disabled") + " >";
+		if (!Main.save.data.language)
+			return "Score Screen Debug: < " + (Main.save.data.inputShow ? "Enabled" : "Disabled") + " >";
 		else
-			return "Отладка экрана счёта: < " + (FlxG.save.data.inputShow ? "Включена" : "Выключена") + " >";
+			return "Отладка экрана счёта: < " + (Main.save.data.inputShow ? "Включена" : "Выключена") + " >";
 	}
 }
 
@@ -1294,7 +1256,7 @@ class Judgement extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!FlxG.save.data.language)
+			if (!Main.save.data.language)
 				description = "This option cannot be toggled in the pause menu.";
 			else
 				description = "Эта опция не может быть переключена во время паузы";
@@ -1314,7 +1276,7 @@ class Judgement extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
+		if (!Main.save.data.language)
 			return "Edit Judgements";
 		else
 			return "Редактировать оценку нажатий";
@@ -1331,8 +1293,8 @@ class FPSOption extends Option
 
 	public override function left():Bool
 	{
-		FlxG.save.data.fps = !FlxG.save.data.fps;
-		(cast(Lib.current.getChildAt(0), Main)).toggleFPS(FlxG.save.data.fps);
+		Main.save.data.fps = !Main.save.data.fps;
+		(cast(Lib.current.getChildAt(0), Main)).toggleFPS(Main.save.data.fps);
 		display = updateDisplay();
 		return true;
 	}
@@ -1345,10 +1307,10 @@ class FPSOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "FPS Counter: < " + (!FlxG.save.data.fps ? "off" : "on") + " >";
+		if (!Main.save.data.language)
+			return "FPS Counter: < " + (!Main.save.data.fps ? "off" : "on") + " >";
 		else
-			return "Счётчик ФПС: < " + (!FlxG.save.data.fps ? "выключено" : "включено") + " >";
+			return "Счётчик ФПС: < " + (!Main.save.data.fps ? "выключено" : "включено") + " >";
 	}
 }
 
@@ -1358,7 +1320,7 @@ class NoteSplashOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!FlxG.save.data.language)
+			if (!Main.save.data.language)
 				description = "This option cannot be toggled in the pause menu.";
 			else
 				description = "Эта опция не может быть переключена во время паузы";
@@ -1370,7 +1332,7 @@ class NoteSplashOption extends Option
 	{
 		if (OptionsMenu.isInPause)
 			return false;
-		FlxG.save.data.notesplashes = !FlxG.save.data.notesplashes;
+		Main.save.data.notesplashes = !Main.save.data.notesplashes;
 		display = updateDisplay();
 		return true;
 	}
@@ -1383,10 +1345,10 @@ class NoteSplashOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "Note Splashes: < " + (!FlxG.save.data.notesplashes ? "Disabled" : "Enabled") + " >";
+		if (!Main.save.data.language)
+			return "Note Splashes: < " + (!Main.save.data.notesplashes ? "Disabled" : "Enabled") + " >";
 		else
-			return "Брызги нот: < " + (!FlxG.save.data.notesplashes ? "Выключены" : "Включены") + " >";
+			return "Брызги нот: < " + (!Main.save.data.notesplashes ? "Выключены" : "Включены") + " >";
 	}
 }
 
@@ -1400,14 +1362,14 @@ class LanguageOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!FlxG.save.data.language)
+			if (!Main.save.data.language)
 				description = "This option cannot be toggled in the pause menu.";
 			else
 				description = "Эта опция не может быть переключена во время паузы";
 		else
 			description = desc;
 
-		curLocale = FlxG.save.data.localeStr;
+		curLocale = Main.save.data.localeStr;
 		selectedId = LanguageStuff.locales.indexOf(curLocale);
 	}
 
@@ -1423,12 +1385,12 @@ class LanguageOption extends Option
 		if (OptionsMenu.isInPause)
 			return false;
 		
-		FlxG.save.data.localeStr = LanguageStuff.locales[selectedId];
-		curLocale = FlxG.save.data.localeStr;
+		Main.save.data.localeStr = LanguageStuff.locales[selectedId];
+		curLocale = Main.save.data.localeStr;
 		if (curLocale == null)
 		{
 			curLocale = LanguageStuff.locales[0];
-			FlxG.save.data.localeStr = curLocale;
+			Main.save.data.localeStr = curLocale;
 		}
 		display = updateDisplay();
 		return true;
@@ -1446,12 +1408,12 @@ class LanguageOption extends Option
 		if (OptionsMenu.isInPause)
 			return false;
 
-		FlxG.save.data.localeStr = LanguageStuff.locales[selectedId];
-		curLocale = FlxG.save.data.localeStr;
+		Main.save.data.localeStr = LanguageStuff.locales[selectedId];
+		curLocale = Main.save.data.localeStr;
 		if (curLocale == null)
 		{	
 			curLocale = LanguageStuff.locales[0];
-			FlxG.save.data.localeStr = curLocale;
+			Main.save.data.localeStr = curLocale;
 		}
 		display = updateDisplay();
 		return true;
@@ -1459,7 +1421,7 @@ class LanguageOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
+		if (!Main.save.data.language)
 			return "Language: < " + curLocale + " >";
 		else
 			return "Язык: < " + curLocale + " >";
@@ -1475,17 +1437,17 @@ class ScoreScreen extends Option
 
 	public override function press():Bool
 	{
-		FlxG.save.data.scoreScreen = !FlxG.save.data.scoreScreen;
+		Main.save.data.scoreScreen = !Main.save.data.scoreScreen;
 		display = updateDisplay();
 		return true;
 	}
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "Score Screen: < " + (FlxG.save.data.scoreScreen ? "Enabled" : "Disabled") + " >";
+		if (!Main.save.data.language)
+			return "Score Screen: < " + (Main.save.data.scoreScreen ? "Enabled" : "Disabled") + " >";
 		else
-			return "Экран счёта: < " + (FlxG.save.data.scoreScreen ? "Включен" : "Выключен") + " >";
+			return "Экран счёта: < " + (Main.save.data.scoreScreen ? "Включен" : "Выключен") + " >";
 	}
 }
 
@@ -1505,35 +1467,35 @@ class FPSCapOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "FPS Cap: < " + FlxG.save.data.fpsCap + " >";
+		if (!Main.save.data.language)
+			return "FPS Cap: < " + Main.save.data.fpsCap + " >";
 		else
-			return "Ограничение ФПС: < " + FlxG.save.data.fpsCap + " >";
+			return "Ограничение ФПС: < " + Main.save.data.fpsCap + " >";
 	}
 
 	override function right():Bool
 	{
-		if (FlxG.save.data.fpsCap >= 290)
+		if (Main.save.data.fpsCap >= 290)
 		{
-			FlxG.save.data.fpsCap = 290;
+			Main.save.data.fpsCap = 290;
 			(cast(Lib.current.getChildAt(0), Main)).setFPSCap(290);
 		}
 		else
-			FlxG.save.data.fpsCap = FlxG.save.data.fpsCap + 10;
-		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
+			Main.save.data.fpsCap = Main.save.data.fpsCap + 10;
+		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(Main.save.data.fpsCap);
 
 		return true;
 	}
 
 	override function left():Bool
 	{
-		if (FlxG.save.data.fpsCap > 290)
-			FlxG.save.data.fpsCap = 290;
-		else if (FlxG.save.data.fpsCap < 60)
-			FlxG.save.data.fpsCap = Application.current.window.displayMode.refreshRate;
+		if (Main.save.data.fpsCap > 290)
+			Main.save.data.fpsCap = 290;
+		else if (Main.save.data.fpsCap < 60)
+			Main.save.data.fpsCap = Application.current.window.displayMode.refreshRate;
 		else
-			FlxG.save.data.fpsCap = FlxG.save.data.fpsCap - 10;
-				(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
+			Main.save.data.fpsCap = Main.save.data.fpsCap - 10;
+				(cast(Lib.current.getChildAt(0), Main)).setFPSCap(Main.save.data.fpsCap);
 		return true;
 	}
 
@@ -1559,21 +1521,21 @@ class ScrollSpeedOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "Scroll Speed: < " + CoolUtil.truncateFloat(FlxG.save.data.scrollSpeed, 1) + " >";
+		if (!Main.save.data.language)
+			return "Scroll Speed: < " + CoolUtil.truncateFloat(Main.save.data.scrollSpeed, 1) + " >";
 		else
-			return "Скорость прокручивания: < " + CoolUtil.truncateFloat(FlxG.save.data.scrollSpeed, 1) + " >";
+			return "Скорость прокручивания: < " + CoolUtil.truncateFloat(Main.save.data.scrollSpeed, 1) + " >";
 	}
 
 	override function right():Bool
 	{
-		FlxG.save.data.scrollSpeed += 0.1;
+		Main.save.data.scrollSpeed += 0.1;
 
-		if (FlxG.save.data.scrollSpeed < 1)
-			FlxG.save.data.scrollSpeed = 1;
+		if (Main.save.data.scrollSpeed < 1)
+			Main.save.data.scrollSpeed = 1;
 
-		if (FlxG.save.data.scrollSpeed > 4)
-			FlxG.save.data.scrollSpeed = 4;
+		if (Main.save.data.scrollSpeed > 4)
+			Main.save.data.scrollSpeed = 4;
 		return true;
 	}
 
@@ -1584,13 +1546,13 @@ class ScrollSpeedOption extends Option
 
 	override function left():Bool
 	{
-		FlxG.save.data.scrollSpeed -= 0.1;
+		Main.save.data.scrollSpeed -= 0.1;
 
-		if (FlxG.save.data.scrollSpeed < 1)
-			FlxG.save.data.scrollSpeed = 1;
+		if (Main.save.data.scrollSpeed < 1)
+			Main.save.data.scrollSpeed = 1;
 
-		if (FlxG.save.data.scrollSpeed > 4)
-			FlxG.save.data.scrollSpeed = 4;
+		if (Main.save.data.scrollSpeed > 4)
+			Main.save.data.scrollSpeed = 4;
 
 		return true;
 	}
@@ -1606,7 +1568,7 @@ class RainbowFPSOption extends Option
 
 	public override function left():Bool
 	{
-		FlxG.save.data.fpsRain = !FlxG.save.data.fpsRain;
+		Main.save.data.fpsRain = !Main.save.data.fpsRain;
 		(cast(Lib.current.getChildAt(0), Main)).changeFPSColor(FlxColor.WHITE);
 		return true;
 	}
@@ -1619,10 +1581,10 @@ class RainbowFPSOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "FPS Rainbow: < " + (!FlxG.save.data.fpsRain ? "off" : "on") + " >";
+		if (!Main.save.data.language)
+			return "FPS Rainbow: < " + (!Main.save.data.fpsRain ? "off" : "on") + " >";
 		else
-			return "Радужное переливание ФПС: < " + (!FlxG.save.data.fpsRain ? "выключено" : "включено") + " >";
+			return "Радужное переливание ФПС: < " + (!Main.save.data.fpsRain ? "выключено" : "включено") + " >";
 	}
 }
 
@@ -1684,67 +1646,13 @@ class ScreenResolutionOption extends Option
 	}
 }
 
-class NPSDisplayOption extends Option
-{
-	public function new(desc:String)
-	{
-		super();
-		description = desc;
-	}
-
-	public override function left():Bool
-	{
-		FlxG.save.data.npsDisplay = !FlxG.save.data.npsDisplay;
-		display = updateDisplay();
-		return true;
-	}
-
-	public override function right():Bool
-	{
-		left();
-		return true;
-	}
-
-	private override function updateDisplay():String
-	{
-		if (!FlxG.save.data.language)
-			return "NPS Display: < " + (!FlxG.save.data.npsDisplay ? "off" : "on") + " >";
-		else
-			return "Отображение стрелок в секунду: < " + (!FlxG.save.data.npsDisplay ? "выключено" : "включено") + " >";
-	}
-}
-
-/*class ReplayOption extends Option
-{
-	public function new(desc:String)
-	{
-		super();
-		description = desc;
-	}
-
-	public override function press():Bool
-	{
-		trace("switch");
-		FlxG.switchState(new LoadReplayState());
-		return false;
-	}
-
-	private override function updateDisplay():String
-	{
-		if (!FlxG.save.data.language)
-			return "Load replays";
-		else
-			return "Загрузить реплей";
-	}
-}*/
-
 class AccuracyDOption extends Option
 {
 	public function new(desc:String)
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!FlxG.save.data.language)
+			if (!Main.save.data.language)
 				description = "This option cannot be toggled in the pause menu.";
 			else
 				description = "Эта опция не может быть переключена во время паузы";
@@ -1756,7 +1664,7 @@ class AccuracyDOption extends Option
 	{
 		if (OptionsMenu.isInPause)
 			return false;
-		FlxG.save.data.accuracyMod = FlxG.save.data.accuracyMod == 1 ? 0 : 1;
+		Main.save.data.accuracyMod = Main.save.data.accuracyMod == 1 ? 0 : 1;
 		display = updateDisplay();
 		return true;
 	}
@@ -1769,10 +1677,10 @@ class AccuracyDOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "Accuracy Mode: < " + (FlxG.save.data.accuracyMod == 0 ? "Accurate" : "Complex") + " >";
+		if (!Main.save.data.language)
+			return "Accuracy Mode: < " + (Main.save.data.accuracyMod == 0 ? "Accurate" : "Complex") + " >";
 		else
-			return "Режим точности: < " + (FlxG.save.data.accuracyMod == 0 ? "Точная" : "Сложная") + " >";
+			return "Режим точности: < " + (Main.save.data.accuracyMod == 0 ? "Точная" : "Сложная") + " >";
 	}
 }
 
@@ -1782,7 +1690,7 @@ class CustomizeGameplay extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!FlxG.save.data.language)
+			if (!Main.save.data.language)
 				description = "This option cannot be toggled in the pause menu.";
 			else
 				description = "Эта опция не может быть переключена во время паузы";
@@ -1801,7 +1709,7 @@ class CustomizeGameplay extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
+		if (!Main.save.data.language)
 			return "Customize Gameplay";
 		else
 			return "Кастомизировать геймплей";
@@ -1814,7 +1722,7 @@ class MemoryCountOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!FlxG.save.data.language)
+			if (!Main.save.data.language)
 				description = "This option cannot be toggled in the pause menu.";
 			else
 				description = "Эта опция не может быть переключена во время паузы";
@@ -1827,7 +1735,7 @@ class MemoryCountOption extends Option
 		if (OptionsMenu.isInPause)
 			return false;
 		Main.memoryCount = !Main.memoryCount;
-		FlxG.save.data.memoryCount = Main.memoryCount;
+		Main.save.data.memoryCount = Main.memoryCount;
 		display = updateDisplay();
 		return true;
 	}
@@ -1840,7 +1748,7 @@ class MemoryCountOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
+		if (!Main.save.data.language)
 			return "Using memory counter: < " + (Main.memoryCount ? "on" : "off") + " >";
 		else
 			return "Счётчик используемой памяти: < " + (Main.memoryCount ? "включено" : "выключено") + " >";
@@ -1853,7 +1761,7 @@ class WatermarkOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!FlxG.save.data.language)
+			if (!Main.save.data.language)
 				description = "This option cannot be toggled in the pause menu.";
 			else
 				description = "Эта опция не может быть переключена во время паузы";
@@ -1866,7 +1774,7 @@ class WatermarkOption extends Option
 		if (OptionsMenu.isInPause)
 			return false;
 		Main.watermarks = !Main.watermarks;
-		FlxG.save.data.watermark = Main.watermarks;
+		Main.save.data.watermark = Main.watermarks;
 		display = updateDisplay();
 		return true;
 	}
@@ -1879,7 +1787,7 @@ class WatermarkOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
+		if (!Main.save.data.language)
 			return "Watermarks: < " + (Main.watermarks ? "on" : "off") + " >";
 		else
 			return "Водяные знаки: < " + (Main.watermarks ? "включено" : "выключено") + " >";
@@ -1910,7 +1818,7 @@ class OffsetMenu extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
+		if (!Main.save.data.language)
 			return "Time your offset";
 		else
 			return "Время вашего смещения";
@@ -1923,7 +1831,7 @@ class OffsetThing extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!FlxG.save.data.language)
+			if (!Main.save.data.language)
 				description = "This option cannot be toggled in the pause menu.";
 			else
 				description = "Эта опция не может быть переключена во время паузы";
@@ -1935,7 +1843,7 @@ class OffsetThing extends Option
 	{
 		if (OptionsMenu.isInPause)
 			return false;
-		FlxG.save.data.offset--;
+		Main.save.data.offset--;
 		display = updateDisplay();
 		return true;
 	}
@@ -1944,17 +1852,17 @@ class OffsetThing extends Option
 	{
 		if (OptionsMenu.isInPause)
 			return false;
-		FlxG.save.data.offset++;
+		Main.save.data.offset++;
 		display = updateDisplay();
 		return true;
 	}
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "Note offset: < " + CoolUtil.truncateFloat(FlxG.save.data.offset, 0) + " >";
+		if (!Main.save.data.language)
+			return "Note offset: < " + CoolUtil.truncateFloat(Main.save.data.offset, 0) + " >";
 		else
-			return "Смещение стрелок: < " + CoolUtil.truncateFloat(FlxG.save.data.offset, 0) + " >";
+			return "Смещение стрелок: < " + CoolUtil.truncateFloat(Main.save.data.offset, 0) + " >";
 	}
 
 	public override function getValue():String
@@ -1970,7 +1878,7 @@ class BotPlay extends Option
 		super();
 
 		if (gameplayStuff.PlayStateChangeables.twoPlayersMode)
-			if (!FlxG.save.data.language)
+			if (!Main.save.data.language)
 				description = "This option cannot be toggled while you playing two players mode.";
 			else
 				description = "Эта опция не может быть переключена в режиме двух игроков";
@@ -1983,8 +1891,8 @@ class BotPlay extends Option
 		if (gameplayStuff.PlayStateChangeables.twoPlayersMode)
 			return false;
 		
-		FlxG.save.data.botplay = !FlxG.save.data.botplay;
-		trace('BotPlay : ' + FlxG.save.data.botplay);
+		Main.save.data.botplay = !Main.save.data.botplay;
+		trace('BotPlay : ' + Main.save.data.botplay);
 		display = updateDisplay();
 		return true;
 	}
@@ -1997,10 +1905,10 @@ class BotPlay extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "BotPlay: < " + (FlxG.save.data.botplay ? "on" : "off") + " >";
+		if (!Main.save.data.language)
+			return "BotPlay: < " + (Main.save.data.botplay ? "on" : "off") + " >";
 		else
-			return "Бот: < " + (FlxG.save.data.botplay ? "включено" : "выключено") + " >";
+			return "Бот: < " + (Main.save.data.botplay ? "включено" : "выключено") + " >";
 	}
 }
 
@@ -2014,7 +1922,7 @@ class LogWriter extends Option
 
 	public override function left():Bool
 	{
-		FlxG.save.data.logWriter = !FlxG.save.data.logWriter;
+		Main.save.data.logWriter = !Main.save.data.logWriter;
 		display = updateDisplay();
 		return true;
 	}
@@ -2027,10 +1935,10 @@ class LogWriter extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "Log Writer: < " + (FlxG.save.data.logWriter ? "off" : "on") + " >";
+		if (!Main.save.data.language)
+			return "Log Writer: < " + (Main.save.data.logWriter ? "off" : "on") + " >";
 		else
-			return "Логирование: < " + (FlxG.save.data.logWriter ? "выключено" : "включено") + " >";
+			return "Логирование: < " + (Main.save.data.logWriter ? "выключено" : "включено") + " >";
 	}
 }
 
@@ -2040,7 +1948,7 @@ class FullscreenOnStartOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!FlxG.save.data.language)
+			if (!Main.save.data.language)
 				description = "This option cannot be toggled in the pause menu.";
 			else
 				description = "Эта опция не может быть переключена во время паузы";
@@ -2052,7 +1960,7 @@ class FullscreenOnStartOption extends Option
 	{
 		if (OptionsMenu.isInPause)
 			return false;
-		FlxG.save.data.fullscreenOnStart = !FlxG.save.data.fullscreenOnStart;
+		Main.save.data.fullscreenOnStart = !Main.save.data.fullscreenOnStart;
 		display = updateDisplay();
 		return true;
 	}
@@ -2065,10 +1973,10 @@ class FullscreenOnStartOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "Full screen when starting the game: < " + (!FlxG.save.data.fullscreenOnStart ? "off" : "on") + " >";
+		if (!Main.save.data.language)
+			return "Full screen when starting the game: < " + (!Main.save.data.fullscreenOnStart ? "off" : "on") + " >";
 		else
-			return "Полный экран при запуске игры: < " + (!FlxG.save.data.fullscreenOnStart ? "выключено" : "включено") + " >";
+			return "Полный экран при запуске игры: < " + (!Main.save.data.fullscreenOnStart ? "выключено" : "включено") + " >";
 	}
 }
 
@@ -2078,7 +1986,7 @@ class CamZoomOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!FlxG.save.data.language)
+			if (!Main.save.data.language)
 				description = "This option cannot be toggled in the pause menu.";
 			else
 				description = "Эта опция не может быть переключена во время паузы";
@@ -2090,7 +1998,7 @@ class CamZoomOption extends Option
 	{
 		if (OptionsMenu.isInPause)
 			return false;
-		FlxG.save.data.camzoom = !FlxG.save.data.camzoom;
+		Main.save.data.camzoom = !Main.save.data.camzoom;
 		display = updateDisplay();
 		return true;
 	}
@@ -2103,10 +2011,10 @@ class CamZoomOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "Camera Zoom: < " + (!FlxG.save.data.camzoom ? "off" : "on") + " >";
+		if (!Main.save.data.language)
+			return "Camera Zoom: < " + (!Main.save.data.camzoom ? "off" : "on") + " >";
 		else
-			return "Приближение камеры: < " + (!FlxG.save.data.camzoom ? "выключено" : "включено") + " >";
+			return "Приближение камеры: < " + (!Main.save.data.camzoom ? "выключено" : "включено") + " >";
 	}
 }
 
@@ -2116,7 +2024,7 @@ class JudgementCounter extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!FlxG.save.data.language)
+			if (!Main.save.data.language)
 				description = "This option cannot be toggled in the pause menu.";
 			else
 				description = "Эта опция не может быть переключена во время паузы";
@@ -2128,7 +2036,7 @@ class JudgementCounter extends Option
 	{
 		if (OptionsMenu.isInPause)
 			return false;
-		FlxG.save.data.judgementCounter = !FlxG.save.data.judgementCounter;
+		Main.save.data.judgementCounter = !Main.save.data.judgementCounter;
 		display = updateDisplay();
 		return true;
 	}
@@ -2141,10 +2049,10 @@ class JudgementCounter extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "Judgement Counter: < " + (FlxG.save.data.judgementCounter ? "Enabled" : "Disabled") + " >";
+		if (!Main.save.data.language)
+			return "Judgement Counter: < " + (Main.save.data.judgementCounter ? "Enabled" : "Disabled") + " >";
 		else
-			return "Счётчик оценок: < " + (FlxG.save.data.judgementCounter ? "Включено" : "Выключено") + " >";
+			return "Счётчик оценок: < " + (Main.save.data.judgementCounter ? "Включено" : "Выключено") + " >";
 	}
 }
 
@@ -2154,7 +2062,7 @@ class MiddleScrollOption extends Option
 	{
 		super();
 		/*if (OptionsMenu.isInPause)
-			if (!FlxG.save.data.language)
+			if (!Main.save.data.language)
 				description = "This option cannot be toggled in the pause menu.";
 			else
 				description = "Эта опция не может быть переключена во время паузы";
@@ -2166,7 +2074,7 @@ class MiddleScrollOption extends Option
 	{
 		//if (OptionsMenu.isInPause)
 			//return false;
-		FlxG.save.data.middleScroll = !FlxG.save.data.middleScroll;
+		Main.save.data.middleScroll = !Main.save.data.middleScroll;
 		display = updateDisplay();
 		return true;
 	}
@@ -2179,10 +2087,10 @@ class MiddleScrollOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "Middle Scroll: < " + (FlxG.save.data.middleScroll ? "Enabled" : "Disabled") + " >";
+		if (!Main.save.data.language)
+			return "Middle Scroll: < " + (Main.save.data.middleScroll ? "Enabled" : "Disabled") + " >";
 		else
-			return "Прокручивание в центре: < " + (FlxG.save.data.middleScroll ? "Включено" : "Выключено") + " >";
+			return "Прокручивание в центре: < " + (Main.save.data.middleScroll ? "Включено" : "Выключено") + " >";
 	}
 }
 
@@ -2195,17 +2103,17 @@ class NoteskinOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!FlxG.save.data.language)
+			if (!Main.save.data.language)
 				description = "This option cannot be toggled in the pause menu.";
 			else
 				description = "Эта опция не может быть переключена во время паузы";
 		else
 			description = desc;
 
-		if (Std.isOfType(FlxG.save.data.noteskin, String))
-			curSkin = FlxG.save.data.noteskin;
-		else if (Std.isOfType(FlxG.save.data.noteskin, Int))
-			curSkin = NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin);
+		if (Std.isOfType(Main.save.data.noteskin, String))
+			curSkin = Main.save.data.noteskin;
+		else if (Std.isOfType(Main.save.data.noteskin, Int))
+			curSkin = NoteskinHelpers.getNoteskinByID(Main.save.data.noteskin);
 
 		if (NoteskinHelpers.noteskinArray.contains(curSkin))
 			curSelectedId = NoteskinHelpers.noteskinArray.indexOf(curSkin);
@@ -2220,7 +2128,7 @@ class NoteskinOption extends Option
 			curSelectedId = NoteskinHelpers.getNoteskins().length - 1;
 
 		curSkin = NoteskinHelpers.getNoteskinByID(curSelectedId);
-		FlxG.save.data.noteskin = curSkin;
+		Main.save.data.noteskin = curSkin;
 
 		display = updateDisplay();
 		return true;
@@ -2235,7 +2143,7 @@ class NoteskinOption extends Option
 			curSelectedId = 0;
 
 		curSkin = NoteskinHelpers.getNoteskinByID(curSelectedId);
-		FlxG.save.data.noteskin = curSkin;
+		Main.save.data.noteskin = curSkin;
 
 		display = updateDisplay();
 		return true;
@@ -2243,7 +2151,7 @@ class NoteskinOption extends Option
 
 	public override function getValue():String
 	{
-		if (!FlxG.save.data.language)
+		if (!Main.save.data.language)
 			return "Current Noteskin: < " + curSkin + " >";
 		else
 			return "Выбранный вид стрелок: < " + curSkin + " >";
@@ -2256,7 +2164,7 @@ class MenuMusicOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!FlxG.save.data.language)
+			if (!Main.save.data.language)
 				description = "This option cannot be toggled in the pause menu.";
 			else
 				description = "Эта опция не может быть переключена во время паузы";
@@ -2268,9 +2176,9 @@ class MenuMusicOption extends Option
 	{
 		if (OptionsMenu.isInPause)
 			return false;
-		FlxG.save.data.menuMusic--;
-		if (FlxG.save.data.menuMusic < 0)
-			FlxG.save.data.menuMusic = MenuMusicStuff.getMusic().length - 1;
+		Main.save.data.menuMusic--;
+		if (Main.save.data.menuMusic < 0)
+			Main.save.data.menuMusic = MenuMusicStuff.getMusic().length - 1;
 		display = updateDisplay();
 		return true;
 	}
@@ -2279,9 +2187,9 @@ class MenuMusicOption extends Option
 	{
 		if (OptionsMenu.isInPause)
 			return false;
-		FlxG.save.data.menuMusic++;
-		if (FlxG.save.data.menuMusic > MenuMusicStuff.getMusic().length - 1)
-			FlxG.save.data.menuMusic = 0;
+		Main.save.data.menuMusic++;
+		if (Main.save.data.menuMusic > MenuMusicStuff.getMusic().length - 1)
+			Main.save.data.menuMusic = 0;
 		display = updateDisplay();
 		return true;
 	}
@@ -2291,21 +2199,21 @@ class MenuMusicOption extends Option
 		if (!FlxG.sound.music.playing)
 		{
 			if (!OptionsMenu.isInPause)
-				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)));
+				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)));
 		}
 		else
 		{
 			if (!OptionsMenu.isInPause)
 			{
 				FlxG.sound.music.stop();
-				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)));
+				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)));
 			}
 		}
 		
-		if (!FlxG.save.data.language)
-			return "Current Menu Music: < " + MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic) + " >";
+		if (!Main.save.data.language)
+			return "Current Menu Music: < " + MenuMusicStuff.getMusicByID(Main.save.data.menuMusic) + " >";
 		else
-			return "Выбранная музыка меню: < " + MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic) + " >";
+			return "Выбранная музыка меню: < " + MenuMusicStuff.getMusicByID(Main.save.data.menuMusic) + " >";
 	}
 }
 
@@ -2315,7 +2223,7 @@ class HealthBarOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!FlxG.save.data.language)
+			if (!Main.save.data.language)
 				description = "This option cannot be toggled in the pause menu.";
 			else
 				description = "Эта опция не может быть переключена во время паузы";
@@ -2327,7 +2235,7 @@ class HealthBarOption extends Option
 	{
 		if (OptionsMenu.isInPause)
 			return false;
-		FlxG.save.data.healthBar = !FlxG.save.data.healthBar;
+		Main.save.data.healthBar = !Main.save.data.healthBar;
 		display = updateDisplay();
 		return true;
 	}
@@ -2340,10 +2248,10 @@ class HealthBarOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "Health Bar: < " + (FlxG.save.data.healthBar ? "Enabled" : "Disabled") + " >";
+		if (!Main.save.data.language)
+			return "Health Bar: < " + (Main.save.data.healthBar ? "Enabled" : "Disabled") + " >";
 		else
-			return "Полоса здоровья: < " + (FlxG.save.data.healthBar ? "Включено" : "Выключено") + " >";
+			return "Полоса здоровья: < " + (Main.save.data.healthBar ? "Включено" : "Выключено") + " >";
 	}
 }
 
@@ -2353,7 +2261,7 @@ class LaneUnderlayOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!FlxG.save.data.language)
+			if (!Main.save.data.language)
 				description = "This option cannot be toggled in the pause menu.";
 			else
 				description = "Эта опция не может быть переключена во время паузы";
@@ -2364,20 +2272,20 @@ class LaneUnderlayOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
-			return "Lane Transparceny: < " + CoolUtil.truncateFloat(FlxG.save.data.laneTransparency, 1) + " >";
+		if (!Main.save.data.language)
+			return "Lane Transparceny: < " + CoolUtil.truncateFloat(Main.save.data.laneTransparency, 1) + " >";
 		else
-			return "Прозрачность полосы здоровья: < " + CoolUtil.truncateFloat(FlxG.save.data.laneTransparency, 1) + " >";
+			return "Прозрачность полосы здоровья: < " + CoolUtil.truncateFloat(Main.save.data.laneTransparency, 1) + " >";
 	}
 
 	override function right():Bool
 	{
 		if (OptionsMenu.isInPause)
 			return false;
-		FlxG.save.data.laneTransparency += 0.1;
+		Main.save.data.laneTransparency += 0.1;
 
-		if (FlxG.save.data.laneTransparency > 1)
-			FlxG.save.data.laneTransparency = 1;
+		if (Main.save.data.laneTransparency > 1)
+			Main.save.data.laneTransparency = 1;
 		return true;
 	}
 
@@ -2385,10 +2293,10 @@ class LaneUnderlayOption extends Option
 	{
 		if (OptionsMenu.isInPause)
 			return false;
-		FlxG.save.data.laneTransparency -= 0.1;
+		Main.save.data.laneTransparency -= 0.1;
 
-		if (FlxG.save.data.laneTransparency < 0)
-			FlxG.save.data.laneTransparency = 0;
+		if (Main.save.data.laneTransparency < 0)
+			Main.save.data.laneTransparency = 0;
 
 		return true;
 	}
@@ -2410,7 +2318,7 @@ class DebugMode extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
+		if (!Main.save.data.language)
 			return "Animation Debug";
 		else
 			return "Отладка анимаций";
@@ -2425,7 +2333,7 @@ class LockWeeksOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!FlxG.save.data.language)
+			if (!Main.save.data.language)
 				description = "This option cannot be toggled in the pause menu.";
 			else
 				description = "Эта опция не может быть переключена во время паузы";
@@ -2443,7 +2351,7 @@ class LockWeeksOption extends Option
 			display = updateDisplay();
 			return true;
 		}
-		FlxG.save.data.weekUnlocked = 1;
+		Main.save.data.weekUnlocked = 1;
 		StoryMenuState.weekUnlocked = [true, true];
 		confirm = false;
 		trace('Weeks Locked');
@@ -2453,7 +2361,7 @@ class LockWeeksOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
+		if (!Main.save.data.language)
 			return confirm ? "Confirm Story Reset" : "Reset Story Progress";
 		else
 			return confirm ? "Подтвердить сброс недель" : "Сброс прогресса недель";
@@ -2468,7 +2376,7 @@ class ResetScoreOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!FlxG.save.data.language)
+			if (!Main.save.data.language)
 				description = "This option cannot be toggled in the pause menu.";
 			else
 				description = "Эта опция не может быть переключена во время паузы";
@@ -2486,12 +2394,12 @@ class ResetScoreOption extends Option
 			display = updateDisplay();
 			return true;
 		}
-		FlxG.save.data.songScores = null;
+		Main.save.data.songScores = null;
 		for (key in Highscore.songScores.keys())
 		{
 			Highscore.songScores[key] = 0;
 		}
-		FlxG.save.data.songCombos = null;
+		Main.save.data.songCombos = null;
 		for (key in Highscore.songCombos.keys())
 		{
 			Highscore.songCombos[key] = '';
@@ -2504,7 +2412,7 @@ class ResetScoreOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
+		if (!Main.save.data.language)
 			return confirm ? "Confirm Score Reset" : "Reset Score";
 		else
 			return confirm ? "Подтвердить сброс очков" : "Сбросить очки";
@@ -2519,7 +2427,7 @@ class ResetSettings extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!FlxG.save.data.language)
+			if (!Main.save.data.language)
 				description = "This option cannot be toggled in the pause menu.";
 			else
 				description = "Эта опция не может быть переключена во время паузы";
@@ -2537,48 +2445,46 @@ class ResetSettings extends Option
 			display = updateDisplay();
 			return true;
 		}
-		FlxG.save.data.weekUnlocked = null;
-		FlxG.save.data.newInput = null;
-		FlxG.save.data.downscroll = null;
-		FlxG.save.data.antialiasing = null;
-		FlxG.save.data.missSounds = null;
-		FlxG.save.data.dfjk = null;
-		FlxG.save.data.accuracyDisplay = null;
-		FlxG.save.data.offset = null;
-		FlxG.save.data.songPosition = null;
-		FlxG.save.data.fps = null;
-		FlxG.save.data.changedHit = null;
-		FlxG.save.data.fpsRain = null;
-		FlxG.save.data.fpsCap = null;
-		FlxG.save.data.scrollSpeed = null;
-		FlxG.save.data.npsDisplay = null;
-		FlxG.save.data.frames = null;
-		FlxG.save.data.accuracyMod = null;
-		FlxG.save.data.watermark = null;
-		FlxG.save.data.ghost = null;
-		FlxG.save.data.distractions = null;
-		FlxG.save.data.colour = null;
-		FlxG.save.data.flashing = null;
-		FlxG.save.data.resetButton = null;
-		FlxG.save.data.botplay = null;
-		FlxG.save.data.cpuStrums = null;
-		FlxG.save.data.strumline = null;
-		FlxG.save.data.customStrumLine = null;
-		FlxG.save.data.camzoom = null;
-		FlxG.save.data.scoreScreen = null;
-		FlxG.save.data.inputShow = null;
-		FlxG.save.data.optimize = null;
-		FlxG.save.data.cacheImages = null;
-		FlxG.save.data.editor = null;
-		FlxG.save.data.laneTransparency = 0;
-		FlxG.save.data.menuMusic = null;
-		FlxG.save.data.noteskin = null;
-		FlxG.save.data.modConfig = null;
-		FlxG.save.data.weekCompleted = null;
-		FlxG.save.data.logWriter = null;
-		FlxG.save.data.enablePsychInterface = null;
-		FlxG.save.data.notesplashes = null;
-		FlxG.save.data.fullscreenOnStart = null;
+		Main.save.data.weekUnlocked = null;
+		Main.save.data.newInput = null;
+		Main.save.data.downscroll = null;
+		Main.save.data.antialiasing = null;
+		Main.save.data.missSounds = null;
+		Main.save.data.dfjk = null;
+		Main.save.data.accuracyDisplay = null;
+		Main.save.data.offset = null;
+		Main.save.data.songPosition = null;
+		Main.save.data.fps = null;
+		Main.save.data.changedHit = null;
+		Main.save.data.fpsRain = null;
+		Main.save.data.fpsCap = null;
+		Main.save.data.scrollSpeed = null;
+		Main.save.data.frames = null;
+		Main.save.data.accuracyMod = null;
+		Main.save.data.watermark = null;
+		Main.save.data.ghost = null;
+		Main.save.data.distractions = null;
+		Main.save.data.colour = null;
+		Main.save.data.flashing = null;
+		Main.save.data.resetButton = null;
+		Main.save.data.botplay = null;
+		Main.save.data.cpuStrums = null;
+		Main.save.data.strumline = null;
+		Main.save.data.customStrumLine = null;
+		Main.save.data.camzoom = null;
+		Main.save.data.scoreScreen = null;
+		Main.save.data.inputShow = null;
+		Main.save.data.optimize = null;
+		Main.save.data.cacheImages = null;
+		Main.save.data.editor = null;
+		Main.save.data.laneTransparency = 0;
+		Main.save.data.menuMusic = null;
+		Main.save.data.noteskin = null;
+		Main.save.data.modConfig = null;
+		Main.save.data.weekCompleted = null;
+		Main.save.data.logWriter = null;
+		Main.save.data.notesplashes = null;
+		Main.save.data.fullscreenOnStart = null;
 
 		EngineData.initSave();
 		confirm = false;
@@ -2589,7 +2495,7 @@ class ResetSettings extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!FlxG.save.data.language)
+		if (!Main.save.data.language)
 			return confirm ? "Confirm Settings Reset" : "Reset Settings";
 		else
 			return confirm ? "Подтвердить сброс настроек" : "Сбросить настройки";

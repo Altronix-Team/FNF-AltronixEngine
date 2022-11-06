@@ -1,3 +1,5 @@
+package gameplayStuff;
+
 import flixel.FlxG;
 import states.PlayState;
 import gameplayStuff.PlayStateChangeables;
@@ -8,7 +10,7 @@ class Ratings
 	public static function GenerateLetterRank(accuracy:Float) // generate a letter ranking
 	{
 		var ranking:String = "N/A";
-		if (FlxG.save.data.botplay)
+		if (Main.save.data.botplay)
 		{
 			ranking = "BotPlay";
 		}
@@ -101,7 +103,7 @@ class Ratings
 		{
 			ranking = LanguageStuff.getPlayState("$NA");
 		}
-		else if (FlxG.save.data.botplay)
+		else if (Main.save.data.botplay)
 		{
 			ranking = LanguageStuff.getPlayState("$BOTPLAY_TEXT");
 		}
@@ -138,8 +140,8 @@ class Ratings
 
 	public static function CalculateRanking(score:Int, scoreDef:Int, nps:Int, maxNPS:Int, accuracy:Float):String
 	{
-		if (FlxG.save.data.accuracyDisplay){
-			if (FlxG.save.data.npsDisplay)
+		if (Main.save.data.accuracyDisplay){
+			if (Main.save.data.npsDisplay)
 			{
 				return LanguageStuff.replaceFlagsAndReturn("$KADE_RATING_WITH_AC_WITH_NPC", "playState",
 					["<nps>", "<maxnps>", "<score>", "<misses>", "<accuracyPers>", "<accuracyStr>"],
@@ -165,7 +167,7 @@ class Ratings
 			}
 		}
 		else{
-			if (FlxG.save.data.npsDisplay)
+			if (Main.save.data.npsDisplay)
 			{
 				return LanguageStuff.replaceFlagsAndReturn("$KADE_RATING_WITHOUT_AC_WITH_NPC", "playState",
 					["<nps>", "<maxnps>", "<score>"], 

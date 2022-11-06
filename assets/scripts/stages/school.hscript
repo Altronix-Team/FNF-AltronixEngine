@@ -51,7 +51,7 @@ function onCreate()
 
 	bgGirls.setGraphicSize(Std.int(bgGirls.width * 6));
 	bgGirls.updateHitbox();
-	if (FlxG.save.data.distractions)
+	if (Main.save.data.distractions)
 	{
 		add(bgGirls);
 	}
@@ -86,7 +86,7 @@ var danceDir = false;
 
 function onBeat(beat:Int)
 {
-	if (FlxG.save.data.distractions)
+	if (Main.save.data.distractions)
 	{
 		danceDir = !danceDir;
 

@@ -30,7 +30,7 @@ class HitGraph extends Sprite
 	/*public var minValue:Float = -(Math.floor((PlayState.rep.replay.sf / 60) * 1000) + 95);
 	public var maxValue:Float = Math.floor((PlayState.rep.replay.sf / 60) * 1000) + 95;*/
 
-	public var showInput:Bool = FlxG.save.data.inputShow;
+	public var showInput:Bool = Main.save.data.inputShow;
 
 	public var graphColor:FlxColor;
 

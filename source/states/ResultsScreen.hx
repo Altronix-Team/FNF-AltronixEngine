@@ -1,5 +1,6 @@
 package states;
 
+import gameplayStuff.Ratings;
 import haxe.Exception;
 #if FEATURE_STEPMANIA
 import smTools.SMFile;
@@ -162,23 +163,23 @@ class ResultsScreen extends FlxSubState
 
 			if (PlayState.isStoryMode)
 			{
-				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)));
+				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)));
 				Conductor.changeBPM(102);
 				MusicBeatState.switchState(new StoryMenuState());
 			}
 			/*else if (PlayState.isExtras)
 			{
-				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)));
+				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)));
 				MusicBeatState.switchState(new SecretState());
 			}
 			else if (PlayState.fromPasswordMenu)
 			{
-				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)));
+				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)));
 				MusicBeatState.switchState(new MainMenuState());
 			}*/
 			else
 			{
-				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)));
+				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)));
 				MusicBeatState.switchState(new FreeplayState());
 			}
 			PlayState.isStoryMode = false;

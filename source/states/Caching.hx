@@ -55,7 +55,7 @@ class Caching extends MusicBeatState
 
 	override function create()
 	{
-		FlxG.save.bind('funkin', 'ninjamuffin99');
+		Main.save.bind('funkin', 'ninjamuffin99');
 
 		@:privateAccess
 		{
@@ -73,16 +73,16 @@ class Caching extends MusicBeatState
 
 		NoteskinHelpers.updateNoteskins();
 
-		if (FlxG.save.data.volDownBind == null)
-			FlxG.save.data.volDownBind = "MINUS";
-		if (FlxG.save.data.volUpBind == null)
-			FlxG.save.data.volUpBind = "PLUS";
+		if (Main.save.data.volDownBind == null)
+			Main.save.data.volDownBind = "MINUS";
+		if (Main.save.data.volUpBind == null)
+			Main.save.data.volUpBind = "PLUS";
 
 		FlxG.mouse.visible = false;
 
 		FlxG.worldBounds.set(0, 0);
 
-		FlxGraphic.defaultPersist = FlxG.save.data.cacheImages;
+		FlxGraphic.defaultPersist = Main.save.data.cacheImages;
 
 		MusicBeatState.initSave = true;
 
@@ -100,17 +100,17 @@ class Caching extends MusicBeatState
 		text.y -= gameLogo.height / 2 - 125;
 		text.x -= 170;
 		gameLogo.setGraphicSize(Std.int(gameLogo.width * 0.6));
-		if (FlxG.save.data.antialiasing != null)
-			gameLogo.antialiasing = FlxG.save.data.antialiasing;
+		if (Main.save.data.antialiasing != null)
+			gameLogo.antialiasing = Main.save.data.antialiasing;
 		else
 			gameLogo.antialiasing = true;
 
 		gameLogo.alpha = 0;
 
-		FlxGraphic.defaultPersist = FlxG.save.data.cacheImages;
+		FlxGraphic.defaultPersist = Main.save.data.cacheImages;
 
 		#if FEATURE_FILESYSTEM
-		if (FlxG.save.data.cacheImages)
+		if (Main.save.data.cacheImages)
 		{
 			Debug.logTrace("caching images...");
 

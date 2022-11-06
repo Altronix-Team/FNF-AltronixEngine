@@ -109,7 +109,7 @@ class DiffOverview extends FlxSubState
 		offset = new FlxText(10, FlxG.height
 			- 40, 0,
 			"Offset: "
-			+ CoolUtil.truncateFloat(FlxG.save.data.offset, 0)
+			+ CoolUtil.truncateFloat(Main.save.data.offset, 0)
 			+ " (LEFT/RIGHT to decrease/increase)", 16);
 		offset.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 4, 1);
 		offset.color = FlxColor.WHITE;
@@ -131,7 +131,7 @@ class DiffOverview extends FlxSubState
 		{
 			// FlxG.log.add(i);
 			var babyArrow:StaticArrow = new StaticArrow(-10, strumLine.y);
-			babyArrow.frames = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin);
+			babyArrow.frames = NoteskinHelpers.generateNoteskinSprite(Main.save.data.noteskin);
 
 			var lowerDir:String = dataSuffix[i].toLowerCase();
 
@@ -141,7 +141,7 @@ class DiffOverview extends FlxSubState
 
 			babyArrow.x += Note.swagWidth * i;
 
-			babyArrow.antialiasing = FlxG.save.data.antialiasing;
+			babyArrow.antialiasing = Main.save.data.antialiasing;
 			babyArrow.setGraphicSize(Std.int(babyArrow.width * 0.7));
 
 			babyArrow.updateHitbox();
@@ -210,9 +210,9 @@ class DiffOverview extends FlxSubState
 	function offsetChange()
 	{
 		for (i in unspawnNotes)
-			i.strumTime = i.baseStrum + FlxG.save.data.offset;
+			i.strumTime = i.baseStrum + Main.save.data.offset;
 		for (i in notes)
-			i.strumTime = i.baseStrum + FlxG.save.data.offset;
+			i.strumTime = i.baseStrum + Main.save.data.offset;
 	}
 
 	var frames = 0;
@@ -256,7 +256,7 @@ class DiffOverview extends FlxSubState
 			{
 				if (FlxG.keys.pressed.SHIFT)
 				{
-					FlxG.save.data.offset++;
+					Main.save.data.offset++;
 					offsetChange();
 				}
 			}
@@ -264,24 +264,24 @@ class DiffOverview extends FlxSubState
 			{
 				if (FlxG.keys.pressed.SHIFT)
 				{
-					FlxG.save.data.offset--;
+					Main.save.data.offset--;
 					offsetChange();
 				}
 			}
 
 			if (FlxG.keys.justPressed.RIGHT)
 			{
-				FlxG.save.data.offset++;
+				Main.save.data.offset++;
 				offsetChange();
 			}
 			if (FlxG.keys.justPressed.LEFT)
 			{
-				FlxG.save.data.offset--;
+				Main.save.data.offset--;
 				offsetChange();
 			}
 
 
-			offset.text = "Offset: " + CoolUtil.truncateFloat(FlxG.save.data.offset,0) + " (LEFT/RIGHT to decrease/increase, SHIFT to go faster) - Time: " + CoolUtil.truncateFloat(Conductor.songPosition / 1000,0) + "s - Step: " + currentStep;
+			offset.text = "Offset: " + CoolUtil.truncateFloat(Main.save.data.offset,0) + " (LEFT/RIGHT to decrease/increase, SHIFT to go faster) - Time: " + CoolUtil.truncateFloat(Conductor.songPosition / 1000,0) + "s - Step: " + currentStep;
 		 */
 
 		if (vocals != null)
@@ -407,7 +407,7 @@ class DiffOverview extends FlxSubState
 
 			for (songNotes in section.sectionNotes)
 			{
-				var daStrumTime:Float = songNotes[0] + FlxG.save.data.offset;
+				var daStrumTime:Float = songNotes[0] + Main.save.data.offset;
 				if (daStrumTime < 0)
 					daStrumTime = 0;
 				var daNoteData:Int = Std.int(songNotes[1] % 4);

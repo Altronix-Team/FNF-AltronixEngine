@@ -51,7 +51,6 @@ class PauseSubState extends MusicBeatSubstate
 	{
 		super();
 
-
 		pauseMusic = new FlxSound().loadEmbedded(Paths.music('breakfast'), true, true);
 		pauseMusic.volume = 0;
 		pauseMusic.play(false, FlxG.random.int(0, Std.int(pauseMusic.length / 2)));
@@ -106,20 +105,20 @@ class PauseSubState extends MusicBeatSubstate
 
 		//TODO Redo to new language system
 		if (PlayState.isStoryMode){
-			if (!FlxG.save.data.language) detailsText = "Story Mode: Week " + PlayState.storyWeek + ":";
+			if (!Main.save.data.language) detailsText = "Story Mode: Week " + PlayState.storyWeek + ":";
 			else detailsText = "Режим истории: Неделя " + PlayState.storyWeek + ":";}
 		if (PlayState.isFreeplay){
-			if (!FlxG.save.data.language)
+			if (!Main.save.data.language)
 				detailsText = "Freeplay";
 			else
 				detailsText = "Свободная игра";}
 		if (PlayState.isExtras){
-			if (!FlxG.save.data.language)
+			if (!Main.save.data.language)
 				detailsText = 'Extras';
 			else
 				detailsText = 'Дополнительно';}
 		if (PlayState.fromPasswordMenu){
-			if (!FlxG.save.data.language)
+			if (!Main.save.data.language)
 				detailsText = 'Extras';
 			else
 				detailsText = 'Дополнительно';}
@@ -138,10 +137,10 @@ class PauseSubState extends MusicBeatSubstate
 
 		#if desktop
 			if (PlayStateChangeables.botPlay){
-				if (!FlxG.save.data.language) DiscordClient.changePresence("Paused on " + PlayState.SONG.songName + " (" + storyDifficultyText + ") " + 'Botplay',null, iconRPC);
+				if (!Main.save.data.language) DiscordClient.changePresence("Paused on " + PlayState.SONG.songName + " (" + storyDifficultyText + ") " + 'Botplay',null, iconRPC);
 				else DiscordClient.changePresence("Стоит на паузе " + PlayState.SONG.songName + " (" + storyDifficultyText + ") " + 'Бот-плей',null, iconRPC);}
 			else if (!PlayStateChangeables.botPlay){
-				if (!FlxG.save.data.language){DiscordClient.changePresence("PAUSED on "+ PlayState.SONG.songId+ " ("+ storyDifficultyText+ ") ",null, iconRPC);}
+				if (!Main.save.data.language){DiscordClient.changePresence("PAUSED on "+ PlayState.SONG.songId+ " ("+ storyDifficultyText+ ") ",null, iconRPC);}
 				else{DiscordClient.changePresence("Стоит на паузе "+ PlayState.SONG.songId+ " ("+ storyDifficultyText+ ") ",null, iconRPC);}}
 			#end
 
@@ -282,7 +281,7 @@ class PauseSubState extends MusicBeatSubstate
 				case "Exit to menu":
 					PlayState.startTime = 0;
 					PlayState.stageTesting = false;
-					if (FlxG.save.data.fpsCap > 340)
+					if (Main.save.data.fpsCap > 340)
 						(cast(Lib.current.getChildAt(0), Main)).setFPSCap(120);
 
 					PlayState.instance.clean();
@@ -320,12 +319,6 @@ class PauseSubState extends MusicBeatSubstate
 							WindowUtil.setFullscreen(true);
 					}
 			}
-		}
-
-		if (FlxG.keys.justPressed.J)
-		{
-			// for reference later!
-			// PlayerSettings.player1.controls.replaceBinding(Control.LEFT, Keys, FlxKey.J, null);
 		}
 	}
 
@@ -369,7 +362,9 @@ class PauseSubState extends MusicBeatSubstate
 		if (!goToOptions)
 		{
 			Debug.logTrace("destroying music for pauseeta");
+			pauseMusic.stop();
 			pauseMusic.destroy();
+			pauseMusic = null;
 		}
 
 		super.destroy();

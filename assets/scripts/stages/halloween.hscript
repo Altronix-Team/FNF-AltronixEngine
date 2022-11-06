@@ -10,7 +10,7 @@ function onCreate()
 	halloweenBG.animation.addByPrefix('idle', 'halloweem bg0');
 	halloweenBG.animation.addByPrefix('lightning', 'halloweem bg lightning strike', 24, false);
 	halloweenBG.animation.play('idle');
-	halloweenBG.antialiasing = FlxG.save.data.antialiasing;
+	halloweenBG.antialiasing = Main.save.data.antialiasing;
 	add(halloweenBG);
 
 	halloweenWhite = new BGSprite(null, -FlxG.width, -FlxG.height, 0, 0);
@@ -24,7 +24,7 @@ function onBeat(beat:Int)
 {
 	if (Std.random(101) > 90 && beat > lightningStrikeBeat + lightningOffset)
 	{
-		if (FlxG.save.data.distractions)
+		if (Main.save.data.distractions)
 		{
 			FlxG.sound.play(Paths.soundRandom('thunder_', 1, 2));
 			halloweenBG.animation.play('lightning');
@@ -32,7 +32,7 @@ function onBeat(beat:Int)
 			lightningStrikeBeat = beat;
 			lightningOffset = Std.random(24);
 
-			if (FlxG.save.data.camzoom)
+			if (Main.save.data.camzoom)
 			{
 				FlxG.camera.zoom += 0.015;
 				camHUD.zoom += 0.03;
@@ -44,7 +44,7 @@ function onBeat(beat:Int)
 			boyfriend.playAnim('scared', true);
 			gf.playAnim('scared', true);
 
-			if(FlxG.save.data.flashing) {
+			if(Main.save.data.flashing) {
 				halloweenWhite.alpha = 0.4;
 				FlxTween.tween(halloweenWhite, {alpha: 0.5}, 0.075);
 				FlxTween.tween(halloweenWhite, {alpha: 0}, 0.25, {startDelay: 0.15});

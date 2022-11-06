@@ -386,7 +386,7 @@ class DialogueCharacter extends FlxSprite
 		super();
 		
 		reloadCharacter(jsonFile);
-		antialiasing = FlxG.save.data.antialiasing;
+		antialiasing = Main.save.data.antialiasing;
 		antialiasing = jsonFile.antialiasing;
 	}
 

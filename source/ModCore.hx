@@ -33,7 +33,7 @@ class ModCore
 	{
 		#if FEATURE_MODCORE
 			Debug.logInfo("Initializing ModCore (using user config)...");
-			Debug.logTrace('  User mod config: ${FlxG.save.data.modConfig}');
+			Debug.logTrace('  User mod config: ${Main.save.data.modConfig}');
 			var userModConfig = getConfiguredMods();
 			loadModsById(userModConfig);
 		#else
@@ -48,7 +48,7 @@ class ModCore
 	*/
 	public static function getConfiguredMods():Array<String>
 	{
-		var rawSaveData = FlxG.save.data.modConfig;
+		var rawSaveData = Main.save.data.modConfig;
 	
 		if (rawSaveData != null)
 		{
@@ -76,8 +76,8 @@ class ModCore
 		Debug.logInfo('Saving mod configuration...');
 		var rawSaveData = loadedMods.join('~');
 		Debug.logTrace(rawSaveData);
-		FlxG.save.data.modConfig = rawSaveData;
-		var result = FlxG.save.flush();
+		Main.save.data.modConfig = rawSaveData;
+		var result = Main.save.flush();
 		if (result)
 			Debug.logInfo('Mod configuration saved successfully.');
 		else

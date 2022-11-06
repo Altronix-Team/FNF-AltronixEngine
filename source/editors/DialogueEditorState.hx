@@ -77,7 +77,7 @@ class DialogueEditorState extends MusicBeatState
 		box = new FlxSprite(70, 370);
 		box.frames = Paths.getSparrowAtlas('speech_bubble');
 		box.scrollFactor.set();
-		box.antialiasing = FlxG.save.data.antialiasing;
+		box.antialiasing = Main.save.data.antialiasing;
 		box.animation.addByPrefix('normal', 'speech bubble normal', 24);
 		box.animation.addByPrefix('angry', 'AHH speech bubble', 24);
 		box.animation.addByPrefix('center', 'speech bubble middle', 24);
@@ -357,15 +357,15 @@ class DialogueEditorState extends MusicBeatState
 		}
 
 		if(!blockInput) {
-			FlxG.sound.muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
-	    	FlxG.sound.volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];
-		    FlxG.sound.volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
+			FlxG.sound.muteKeys = [FlxKey.fromString(Main.save.data.muteBind)];
+	    	FlxG.sound.volumeDownKeys = [FlxKey.fromString(Main.save.data.volDownBind)];
+		    FlxG.sound.volumeUpKeys = [FlxKey.fromString(Main.save.data.volUpBind)];
 			if(FlxG.keys.justPressed.SPACE) {
 				reloadText(speedStepper.value);
 			}
 			if(FlxG.keys.justPressed.ESCAPE) {
 				MusicBeatState.switchState(new MasterEditorMenu());
-				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)), 1);
+				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)), 1);
 				transitioning = true;
 			}
 			var negaMult:Array<Int> = [1, -1];

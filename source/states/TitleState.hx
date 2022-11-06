@@ -91,24 +91,24 @@ class TitleState extends MusicBeatState
 
 			EngineData.initAfterGame();
 
-			if (FlxG.save.data.volDownBind == null)
-				FlxG.save.data.volDownBind = "MINUS";
-			if (FlxG.save.data.volUpBind == null)
-				FlxG.save.data.volUpBind = "PLUS";
+			if (Main.save.data.volDownBind == null)
+				Main.save.data.volDownBind = "MINUS";
+			if (Main.save.data.volUpBind == null)
+				Main.save.data.volUpBind = "PLUS";
 
-			FlxG.sound.muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
-			FlxG.sound.volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];
-			FlxG.sound.volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
+			FlxG.sound.muteKeys = [FlxKey.fromString(Main.save.data.muteBind)];
+			FlxG.sound.volumeDownKeys = [FlxKey.fromString(Main.save.data.volDownBind)];
+			FlxG.sound.volumeUpKeys = [FlxKey.fromString(Main.save.data.volUpBind)];
 
-			muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
-			volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];
-			volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
+			muteKeys = [FlxKey.fromString(Main.save.data.muteBind)];
+			volumeDownKeys = [FlxKey.fromString(Main.save.data.volDownBind)];
+			volumeUpKeys = [FlxKey.fromString(Main.save.data.volUpBind)];
 
 			FlxG.mouse.visible = false;
 
 			FlxG.worldBounds.set(0, 0);
 
-			FlxGraphic.defaultPersist = FlxG.save.data.cacheImages;
+			FlxGraphic.defaultPersist = Main.save.data.cacheImages;
 
 			MusicBeatState.initSave = true;
 
@@ -134,20 +134,20 @@ class TitleState extends MusicBeatState
 			Achievements.listAllAchievements();
 
 			#if desktop
-			GameJoltAPI.leaderboardToggle = FlxG.save.data.toggleLeaderboard;
+			GameJoltAPI.leaderboardToggle = Main.save.data.toggleLeaderboard;
 
 			GameJoltAPI.connect();
-			GameJoltAPI.authDaUser(FlxG.save.data.gjUser, FlxG.save.data.gjToken);
+			GameJoltAPI.authDaUser(Main.save.data.gjUser, Main.save.data.gjToken);
 			#end
 
 			//cacheSongs();
 
-			if (FlxG.save.data.volume != null)
-				FlxG.sound.volume = FlxG.save.data.volume;
+			if (Main.save.data.volume != null)
+				FlxG.sound.volume = Main.save.data.volume;
 
-			if (FlxG.save.data.weekCompleted != null)
+			if (Main.save.data.weekCompleted != null)
 			{
-				StoryMenuState.weekCompleted = FlxG.save.data.weekCompleted;
+				StoryMenuState.weekCompleted = Main.save.data.weekCompleted;
 			}
 
 		}
@@ -196,7 +196,7 @@ class TitleState extends MusicBeatState
 		persistentUpdate = true;
 
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-		// bg.antialiasing = FlxG.save.data.antialiasing;
+		// bg.antialiasing = Main.save.data.antialiasing;
 		// bg.setGraphicSize(Std.int(bg.width * 0.6));
 		// bg.updateHitbox();
 		add(bg);
@@ -211,7 +211,7 @@ class TitleState extends MusicBeatState
 			logoBl = new FlxSprite(-150, -100);
 			logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
 		}
-		logoBl.antialiasing = FlxG.save.data.antialiasing;
+		logoBl.antialiasing = Main.save.data.antialiasing;
 		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24, false);
 		logoBl.updateHitbox();
 		// logoBl.screenCenter();
@@ -221,7 +221,7 @@ class TitleState extends MusicBeatState
 		gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle');
 		gfDance.animation.addByIndices('danceLeft', 'gfDance', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
 		gfDance.animation.addByIndices('danceRight', 'gfDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
-		gfDance.antialiasing = FlxG.save.data.antialiasing;
+		gfDance.antialiasing = Main.save.data.antialiasing;
 		add(gfDance);
 		add(logoBl);
 
@@ -229,7 +229,7 @@ class TitleState extends MusicBeatState
 		titleText.frames = Paths.getSparrowAtlas('titleEnter');
 		titleText.animation.addByPrefix('idle', "ENTER IDLE", 24);
 		titleText.animation.addByPrefix('press', "ENTER PRESSED", 24);
-		titleText.antialiasing = FlxG.save.data.antialiasing;
+		titleText.antialiasing = Main.save.data.antialiasing;
 		titleText.animation.play('idle');
 		titleText.updateHitbox();
 		// titleText.screenCenter(X);
@@ -237,7 +237,7 @@ class TitleState extends MusicBeatState
 
 		var logo:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage('logo'));
 		logo.screenCenter();
-		logo.antialiasing = FlxG.save.data.antialiasing;
+		logo.antialiasing = Main.save.data.antialiasing;
 		// add(logo);
 
 		// FlxTween.tween(logoBl, {y: logoBl.y + 50}, 0.6, {ease: FlxEase.quadInOut, type: PINGPONG});
@@ -263,7 +263,7 @@ class TitleState extends MusicBeatState
 		ngSpr.setGraphicSize(Std.int(ngSpr.width * 0.8));
 		ngSpr.updateHitbox();
 		ngSpr.screenCenter(X);
-		ngSpr.antialiasing = FlxG.save.data.antialiasing;
+		ngSpr.antialiasing = Main.save.data.antialiasing;
 
 		FlxTween.tween(credTextShit, {y: credTextShit.y + 20}, 2.9, {ease: FlxEase.quadInOut, type: PINGPONG});
 
@@ -272,7 +272,7 @@ class TitleState extends MusicBeatState
 		if (initialized)
 		{
 			if (!FlxG.sound.music.playing)
-				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)), 0);
+				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)), 0);
 			skipIntro();
 		}
 		else
@@ -293,7 +293,7 @@ class TitleState extends MusicBeatState
 			// IF THIS PR IS HERE IF ITS ACCEPTED UR GOOD TO GO
 			// https://github.com/HaxeFlixel/flixel-addons/pull/348
 
-			FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)), 0);
+			FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)), 0);
 
 			FlxG.sound.music.fadeIn(4, 0, 0.7);
 			Conductor.changeBPM(102);

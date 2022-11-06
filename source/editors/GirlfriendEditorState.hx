@@ -440,7 +440,7 @@ class GirlfriendEditorState extends MusicBeatState
 		noAntialiasingCheckBox.checked = char.charAntialiasing;
 		noAntialiasingCheckBox.callback = function() {
 			char.charAntialiasing = true;
-			if(!noAntialiasingCheckBox.checked && FlxG.save.data.antialiasing) {
+			if(!noAntialiasingCheckBox.checked && Main.save.data.antialiasing) {
 				char.charAntialiasing = false;
 			}
 			char.charAntialiasing = noAntialiasingCheckBox.checked;
@@ -1009,9 +1009,9 @@ class GirlfriendEditorState extends MusicBeatState
 				return;
 			}
 		}
-		FlxG.sound.muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
-		FlxG.sound.volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];
-		FlxG.sound.volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
+		FlxG.sound.muteKeys = [FlxKey.fromString(Main.save.data.muteBind)];
+		FlxG.sound.volumeDownKeys = [FlxKey.fromString(Main.save.data.volDownBind)];
+		FlxG.sound.volumeUpKeys = [FlxKey.fromString(Main.save.data.volUpBind)];
 
 		if(!charDropDown.dropPanel.visible) {
 			if (FlxG.keys.justPressed.ESCAPE) {
@@ -1019,7 +1019,7 @@ class GirlfriendEditorState extends MusicBeatState
 					MusicBeatState.switchState(new states.PlayState());
 				} else {
 					MusicBeatState.switchState(new MasterEditorMenu());
-					FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)));
+					FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)));
 				}
 				FlxG.mouse.visible = false;
 				return;

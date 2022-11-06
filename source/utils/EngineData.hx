@@ -1,5 +1,6 @@
 package utils;
 
+import gameplayStuff.Ratings;
 import gameplayStuff.PlayStateChangeables;
 import flixel.input.gamepad.FlxGamepad;
 import openfl.Lib;
@@ -73,9 +74,6 @@ class EngineData
 
 		if (Main.save.data.scrollSpeed == null)
 			Main.save.data.scrollSpeed = 1;
-
-		if (Main.save.data.npsDisplay == null)
-			Main.save.data.npsDisplay = false;
 
 		if (Main.save.data.frames == null)
 			Main.save.data.frames = 10;
@@ -172,9 +170,6 @@ class EngineData
 		if (Main.save.data.notesplashes == null)
 			Main.save.data.notesplashes = true;
 
-		if (Main.save.data.enablePsychInterface == null)
-			Main.save.data.enablePsychInterface = false;
-
 		if (Main.save.data.enableLoadingScreens == null)
 			Main.save.data.enableLoadingScreens = true;
 
@@ -228,13 +223,13 @@ class EngineData
 
 		Main.save.data.language = false;
 
-		PlayStateChangeables.useMiddlescroll = FlxG.save.data.middleScroll;
-		PlayStateChangeables.useDownscroll = FlxG.save.data.downscroll;
-		PlayStateChangeables.safeFrames = FlxG.save.data.frames;
-		PlayStateChangeables.scrollSpeed = FlxG.save.data.scrollSpeed;
-		PlayStateChangeables.botPlay = FlxG.save.data.botplay;
-		PlayStateChangeables.Optimize = FlxG.save.data.optimize;
-		PlayStateChangeables.zoom = FlxG.save.data.zoom;
+		PlayStateChangeables.useMiddlescroll = Main.save.data.middleScroll;
+		PlayStateChangeables.useDownscroll = Main.save.data.downscroll;
+		PlayStateChangeables.safeFrames = Main.save.data.frames;
+		PlayStateChangeables.scrollSpeed = Main.save.data.scrollSpeed;
+		PlayStateChangeables.botPlay = Main.save.data.botplay;
+		PlayStateChangeables.Optimize = Main.save.data.optimize;
+		PlayStateChangeables.zoom = Main.save.data.zoom;
 
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(Main.save.data.fpsCap);
 	}

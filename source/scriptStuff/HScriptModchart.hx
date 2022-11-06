@@ -87,7 +87,7 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 
 	override public function add(Object:FlxBasic):FlxBasic
 	{
-		if (!FlxG.save.data.antialiasing && Std.isOfType(Object, FlxSprite))
+		if (!Main.save.data.antialiasing && Std.isOfType(Object, FlxSprite))
 			cast(Object, FlxSprite).antialiasing = false;
 		return super.add(Object);
 	}
@@ -327,8 +327,8 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 
 	override public function add(Object:FlxBasic):FlxBasic
 	{
-		if (!FlxG.save.data.antialiasing && Std.isOfType(Object, FlxSprite))
-			cast(Object, FlxSprite).antialiasing = false;
+		try{if (!Main.save.data.antialiasing && Reflect.field(Object, 'antialiasing') != null)
+			Reflect.setField(Object, 'antialiasing', false);} catch(e) Debug.logError(e.details());
 		return super.add(Object);
 	}
 }

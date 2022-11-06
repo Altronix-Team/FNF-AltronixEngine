@@ -75,9 +75,9 @@ class AnimationDebug extends states.MusicBeatState
 		background = new FlxSprite(-600, -525).loadGraphic(Paths.loadImage('stageback', 'shared'));
 		front = new FlxSprite(-650, 325).loadGraphic(Paths.loadImage('stagefront', 'shared'));
 		curt = new FlxSprite(-500, -625).loadGraphic(Paths.loadImage('stagecurtains', 'shared'));
-		background.antialiasing = FlxG.save.data.antialiasing;
-		front.antialiasing = FlxG.save.data.antialiasing;
-		curt.antialiasing = FlxG.save.data.antialiasing;
+		background.antialiasing = Main.save.data.antialiasing;
+		front.antialiasing = Main.save.data.antialiasing;
+		curt.antialiasing = Main.save.data.antialiasing;
 
 		background.screenCenter(X);
 		background.scale.set(0.7, 0.7);
@@ -451,9 +451,9 @@ class AnimationDebug extends states.MusicBeatState
 			saveBoyOffsets();
 
 		if (FlxG.keys.justPressed.F1)
-			FlxG.save.data.showHelp = !FlxG.save.data.showHelp;
+			Main.save.data.showHelp = !Main.save.data.showHelp;
 
-		helpText.visible = FlxG.save.data.showHelp;
+		helpText.visible = Main.save.data.showHelp;
 
 		super.update(elapsed);
 	}

@@ -657,7 +657,7 @@ class Controls extends FlxActionSet
 
 	public function loadKeyBindsP2()
 	{
-		// trace(FlxKey.fromString(FlxG.save.data.upBind));
+		// trace(FlxKey.fromString(Main.save.data.upBind));
 
 		removeKeyboard();
 		if (gamepadsAdded.length != 0)
@@ -668,23 +668,23 @@ class Controls extends FlxActionSet
 
 		if (KeyBinds.gamepad)
 		{
-			buttons.set(Control.UPP2, [FlxGamepadInputID.fromString(FlxG.save.data.upBindP2)]);
-			buttons.set(Control.LEFTP2, [FlxGamepadInputID.fromString(FlxG.save.data.leftBindP2)]);
-			buttons.set(Control.DOWNP2, [FlxGamepadInputID.fromString(FlxG.save.data.downBindP2)]);
-			buttons.set(Control.RIGHTP2, [FlxGamepadInputID.fromString(FlxG.save.data.rightBindP2)]);
+			buttons.set(Control.UPP2, [FlxGamepadInputID.fromString(Main.save.data.upBindP2)]);
+			buttons.set(Control.LEFTP2, [FlxGamepadInputID.fromString(Main.save.data.leftBindP2)]);
+			buttons.set(Control.DOWNP2, [FlxGamepadInputID.fromString(Main.save.data.downBindP2)]);
+			buttons.set(Control.RIGHTP2, [FlxGamepadInputID.fromString(Main.save.data.rightBindP2)]);
 
 			addGamepad(0, buttons);
 		}
 
-		inline bindKeys(Control.UPP2, [FlxKey.fromString(FlxG.save.data.upBindP2), FlxKey.W]);
-		inline bindKeys(Control.DOWNP2, [FlxKey.fromString(FlxG.save.data.downBindP2), FlxKey.S]);
-		inline bindKeys(Control.LEFTP2, [FlxKey.fromString(FlxG.save.data.leftBindP2), FlxKey.A]);
-		inline bindKeys(Control.RIGHTP2, [FlxKey.fromString(FlxG.save.data.rightBindP2), FlxKey.D]);
+		inline bindKeys(Control.UPP2, [FlxKey.fromString(Main.save.data.upBindP2), FlxKey.W]);
+		inline bindKeys(Control.DOWNP2, [FlxKey.fromString(Main.save.data.downBindP2), FlxKey.S]);
+		inline bindKeys(Control.LEFTP2, [FlxKey.fromString(Main.save.data.leftBindP2), FlxKey.A]);
+		inline bindKeys(Control.RIGHTP2, [FlxKey.fromString(Main.save.data.rightBindP2), FlxKey.D]);
 	}
 
 	public function loadKeyBinds()
 	{
-		// trace(FlxKey.fromString(FlxG.save.data.upBind));
+		// trace(FlxKey.fromString(Main.save.data.upBind));
 
 		removeKeyboard();
 		if (gamepadsAdded.length != 0)
@@ -695,30 +695,30 @@ class Controls extends FlxActionSet
 
 		if (KeyBinds.gamepad)
 		{
-			buttons.set(Control.UP, [FlxGamepadInputID.fromString(FlxG.save.data.upBind)]);
-			buttons.set(Control.LEFT, [FlxGamepadInputID.fromString(FlxG.save.data.leftBind)]);
-			buttons.set(Control.DOWN, [FlxGamepadInputID.fromString(FlxG.save.data.downBind)]);
-			buttons.set(Control.RIGHT, [FlxGamepadInputID.fromString(FlxG.save.data.rightBind)]);
+			buttons.set(Control.UP, [FlxGamepadInputID.fromString(Main.save.data.upBind)]);
+			buttons.set(Control.LEFT, [FlxGamepadInputID.fromString(Main.save.data.leftBind)]);
+			buttons.set(Control.DOWN, [FlxGamepadInputID.fromString(Main.save.data.downBind)]);
+			buttons.set(Control.RIGHT, [FlxGamepadInputID.fromString(Main.save.data.rightBind)]);
 			buttons.set(Control.ACCEPT, [FlxGamepadInputID.A]);
 			buttons.set(Control.BACK, [FlxGamepadInputID.B]);
-			buttons.set(Control.PAUSE, [FlxGamepadInputID.fromString(FlxG.save.data.pauseBind)]);
+			buttons.set(Control.PAUSE, [FlxGamepadInputID.fromString(Main.save.data.pauseBind)]);
 
 			addGamepad(0, buttons);
 		}
 
-		inline bindKeys(Control.UP, [FlxKey.fromString(FlxG.save.data.upBind), FlxKey.UP]);
-		inline bindKeys(Control.DOWN, [FlxKey.fromString(FlxG.save.data.downBind), FlxKey.DOWN]);
-		inline bindKeys(Control.LEFT, [FlxKey.fromString(FlxG.save.data.leftBind), FlxKey.LEFT]);
-		inline bindKeys(Control.RIGHT, [FlxKey.fromString(FlxG.save.data.rightBind), FlxKey.RIGHT]);
+		inline bindKeys(Control.UP, [FlxKey.fromString(Main.save.data.upBind), FlxKey.UP]);
+		inline bindKeys(Control.DOWN, [FlxKey.fromString(Main.save.data.downBind), FlxKey.DOWN]);
+		inline bindKeys(Control.LEFT, [FlxKey.fromString(Main.save.data.leftBind), FlxKey.LEFT]);
+		inline bindKeys(Control.RIGHT, [FlxKey.fromString(Main.save.data.rightBind), FlxKey.RIGHT]);
 		inline bindKeys(Control.ACCEPT, [ENTER]);
 		inline bindKeys(Control.BACK, [ESCAPE]);
-		inline bindKeys(Control.PAUSE, [FlxKey.fromString(FlxG.save.data.pauseBind)]);
-		inline bindKeys(Control.RESET, [FlxKey.fromString(FlxG.save.data.resetBind)]);
-		inline bindKeys(Control.ATTACK, [FlxKey.fromString(FlxG.save.data.attackBind), FlxKey.SHIFT]);
+		inline bindKeys(Control.PAUSE, [FlxKey.fromString(Main.save.data.pauseBind)]);
+		inline bindKeys(Control.RESET, [FlxKey.fromString(Main.save.data.resetBind)]);
+		inline bindKeys(Control.ATTACK, [FlxKey.fromString(Main.save.data.attackBind), FlxKey.SHIFT]);
 
-		FlxG.sound.muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
-		FlxG.sound.volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];
-		FlxG.sound.volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
+		FlxG.sound.muteKeys = [FlxKey.fromString(Main.save.data.muteBind)];
+		FlxG.sound.volumeDownKeys = [FlxKey.fromString(Main.save.data.volDownBind)];
+		FlxG.sound.volumeUpKeys = [FlxKey.fromString(Main.save.data.volUpBind)];
 	}
 
 	function removeKeyboard()

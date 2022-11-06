@@ -74,7 +74,7 @@ class Conductor
 
 	public static function recalculateTimings()
 	{
-		Conductor.safeFrames = FlxG.save.data.frames;
+		Conductor.safeFrames = Main.save.data.frames;
 		Conductor.safeZoneOffset = Math.floor((Conductor.safeFrames / 60) * 1000);
 		Conductor.timeScale = Conductor.safeZoneOffset / 166;
 	}

@@ -19,32 +19,32 @@ function onCreate()
 {
     var bg:FlxSprite = new FlxSprite(-100).loadGraphic(Paths.loadImage('philly/sky'));
 	bg.scrollFactor.set(0.1, 0.1);
-	bg.antialiasing = FlxG.save.data.antialiasing;
+	bg.antialiasing = Main.save.data.antialiasing;
 	add(bg);
 
 	var city:FlxSprite = new FlxSprite(-10).loadGraphic(Paths.loadImage('philly/city'));
 	city.scrollFactor.set(0.3, 0.3);
 	city.setGraphicSize(Std.int(city.width * 0.85));
 	city.updateHitbox();
-	city.antialiasing = FlxG.save.data.antialiasing;
+	city.antialiasing = Main.save.data.antialiasing;
 	add(city);
 
 	light = new FlxSprite(city.x).loadGraphic(Paths.loadImage('philly/window'));
 	light.scrollFactor.set(0.3, 0.3);
 	light.setGraphicSize(Std.int(light.width * 0.85));
 	light.updateHitbox();
-	light.antialiasing = FlxG.save.data.antialiasing;
+	light.antialiasing = Main.save.data.antialiasing;
 	randomColor();
 	light.color = windowColor;
 	add(light);
 
 	var streetBehind:FlxSprite = new FlxSprite(-40, 50).loadGraphic(Paths.loadImage('philly/behindTrain'));
-	streetBehind.antialiasing = FlxG.save.data.antialiasing;
+	streetBehind.antialiasing = Main.save.data.antialiasing;
 	add(streetBehind);
 
 	phillyTrain = new FlxSprite(2000, 360).loadGraphic(Paths.loadImage('philly/train'));
-	phillyTrain.antialiasing = FlxG.save.data.antialiasing;
-	if (FlxG.save.data.distractions)
+	phillyTrain.antialiasing = Main.save.data.antialiasing;
+	if (Main.save.data.distractions)
 	{
 		add(phillyTrain);
 	}
@@ -53,7 +53,7 @@ function onCreate()
 	FlxG.sound.list.add(trainSound);
 
 	var street:FlxSprite = new FlxSprite (-40, streetBehind.y).loadGraphic(Paths.loadImage('philly/street'));
-	street.antialiasing = FlxG.save.data.antialiasing;
+	street.antialiasing = Main.save.data.antialiasing;
 	add(street);   
 }
 
@@ -75,7 +75,7 @@ var blammedeventplayed = false;
 
 function onBeat(beat:Int)
 {
-	if (FlxG.save.data.distractions)
+	if (Main.save.data.distractions)
 	{
 		if (!trainMoving)
 			trainCooldown += 1;
@@ -155,7 +155,7 @@ var startedMoving:Bool = false;
 
 function trainStart():Void
 {
-	if (FlxG.save.data.distractions)
+	if (Main.save.data.distractions)
 	{
 		trainMoving = true;
 		trainSound.play(true);
@@ -168,7 +168,7 @@ function trainStart():Void
 
 function updateTrainPos():Void
 {
-	if (FlxG.save.data.distractions)
+	if (Main.save.data.distractions)
 	{
 		if (trainSound.time >= 4700)
 		{
@@ -198,7 +198,7 @@ function updateTrainPos():Void
 
 function trainReset():Void
 {
-	if (FlxG.save.data.distractions)
+	if (Main.save.data.distractions)
 	{
 		gf.playAnim('hairFall', true);
 

@@ -127,6 +127,9 @@ class Character extends FlxSprite
 						playAnim('danceLeft'); // overridden by dance correctly later
 					dance(false, wasAltIdle);
 					holdTimer = 0;
+
+					if (color != FlxColor.WHITE)
+						color = FlxColor.WHITE;
 				}
 			}
 		}
@@ -250,6 +253,8 @@ class Character extends FlxSprite
 			#if debug
 			FlxG.log.warn(['Such animation doesnt exist: ' + AnimName]);
 			#end
+			if (AnimName.contains('miss'))
+				color = 0xFF7069FF;
 			return;
 		}
 
@@ -550,10 +555,9 @@ class Character extends FlxSprite
 		setGraphicSize(Std.int(width * jsonScale));
 		updateHitbox();
 
-		if (json.no_antialiasing || !FlxG.save.data.antialiasing)
-		{
-			antialiasing = false;
-		}
+		charAntialiasing = !json.no_antialiasing;
+
+		antialiasing = !json.no_antialiasing;
 
 		if (json.healthbar_colors != null && json.healthbar_colors.length > 2)
 			healthColorArray = json.healthbar_colors;

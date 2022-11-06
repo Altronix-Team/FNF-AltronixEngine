@@ -37,10 +37,10 @@ class AchievementsState extends MusicBeatState
 	{
 		clean();
 
-		var savedAchievements:Array<String> = FlxG.save.data.savedAchievements;
+		var savedAchievements:Array<String> = Main.save.data.savedAchievements;
 
 		if (!FlxG.sound.music.playing)
-			FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)), 0);
+			FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)), 0);
 
 		#if desktop
 		// Updating Discord Rich Presence
@@ -57,7 +57,7 @@ class AchievementsState extends MusicBeatState
 
 		bg = new FlxSprite().loadGraphic(Paths.loadImage('menuDesat'));
         bg.color = 0x33ff00;
-		bg.antialiasing = FlxG.save.data.antialiasing;
+		bg.antialiasing = Main.save.data.antialiasing;
 		add(bg);
 
 		grpAchievements = new FlxTypedGroup<Alphabet>();

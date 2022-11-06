@@ -163,7 +163,7 @@ class Note extends FlxSprite
 		this.prevNote = prevNote;
 		isSustainNote = sustainNote;
 
-		texture = PlayState.SONG.specialSongNoteSkin != null ? PlayState.SONG.specialSongNoteSkin : FlxG.save.data.noteskin;
+		texture = PlayState.SONG.specialSongNoteSkin != null ? PlayState.SONG.specialSongNoteSkin : Main.save.data.noteskin;
 
 		if (noteStyle == null)
 			this.noteStyle = PlayState.SONG.noteStyle;
@@ -213,7 +213,7 @@ class Note extends FlxSprite
 			this.strumTime = 0;
 
 		if (!inCharter)
-			y += FlxG.save.data.offset + PlayState.songOffset;
+			y += Main.save.data.offset + PlayState.songOffset;
 
 		this.noteData = noteData;
 
@@ -263,7 +263,7 @@ class Note extends FlxSprite
 
 			updateHitbox();
 
-			antialiasing = FlxG.save.data.antialiasing;
+			antialiasing = Main.save.data.antialiasing;
 		}
 
 		if (created)
@@ -327,8 +327,8 @@ class Note extends FlxSprite
 			}
 		}
 		
-		if (FlxG.save.data.downscroll != flipY && isSustainNote)
-			flipY = FlxG.save.data.downscroll;
+		if (Main.save.data.downscroll != flipY && isSustainNote)
+			flipY = Main.save.data.downscroll;
 
 		if (lasttexture != texture)
 		{

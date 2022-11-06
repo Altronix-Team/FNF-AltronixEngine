@@ -76,7 +76,7 @@ class MainMenuState extends MusicBeatState
 
 		if (!FlxG.sound.music.playing)
 		{
-			FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)));
+			FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)));
 		}
 
 		persistentUpdate = persistentDraw = true;
@@ -87,7 +87,7 @@ class MainMenuState extends MusicBeatState
 		bg.setGraphicSize(Std.int(bg.width * 1.5));
 		bg.updateHitbox();
 		bg.screenCenter();
-		bg.antialiasing = FlxG.save.data.antialiasing;
+		bg.antialiasing = Main.save.data.antialiasing;
 		add(bg);
 
 		camFollow = new FlxObject(0, 0, 1, 1);
@@ -102,7 +102,7 @@ class MainMenuState extends MusicBeatState
 		magenta.updateHitbox();
 		magenta.screenCenter();
 		magenta.visible = false;
-		magenta.antialiasing = FlxG.save.data.antialiasing;
+		magenta.antialiasing = Main.save.data.antialiasing;
 		magenta.color = 0xFFfd719b;
 		add(magenta);
 		// magenta.scrollFactor.set();
@@ -134,7 +134,7 @@ class MainMenuState extends MusicBeatState
 			if (optionShit.length < 3)
 				scr = 0;
 			menuItem.scrollFactor.set(0, scr);
-			menuItem.antialiasing = FlxG.save.data.antialiasing;
+			menuItem.antialiasing = Main.save.data.antialiasing;
 			if (firstStart)
 				FlxTween.tween(menuItem, {y: 60 + (i * 160)}, 1 + (i * 0.25), {
 					ease: FlxEase.expoInOut,
@@ -175,7 +175,7 @@ class MainMenuState extends MusicBeatState
 		add(gjButton);
 
 
-		/*if (FlxG.save.data.dfjk)
+		/*if (Main.save.data.dfjk)
 			controls.setKeyboardScheme(KeyboardScheme.Solo, true);
 		else
 			controls.setKeyboardScheme(KeyboardScheme.Duo(true), true);*/
@@ -251,7 +251,7 @@ class MainMenuState extends MusicBeatState
 					selectedSomethin = true;
 					FlxG.sound.play(Paths.sound('confirmMenu'));
 
-					if (FlxG.save.data.flashing)
+					if (Main.save.data.flashing)
 						FlxFlicker.flicker(magenta, 1.1, 0.15, false);
 
 					menuItems.forEach(function(spr:MenuItem)
@@ -268,7 +268,7 @@ class MainMenuState extends MusicBeatState
 						}
 						else
 						{
-							if (FlxG.save.data.flashing)
+							if (Main.save.data.flashing)
 							{
 								FlxFlicker.flicker(spr, 1, 0.06, false, false, function(flick:FlxFlicker)
 								{
@@ -295,12 +295,12 @@ class MainMenuState extends MusicBeatState
 		selectedSomethin = true;
 		FlxG.sound.play(Paths.sound('confirmMenu'));
 
-		if (FlxG.save.data.flashing)
+		if (Main.save.data.flashing)
 			FlxFlicker.flicker(magenta, 1.1, 0.15, false);
 
 		menuItems.forEach(function(spr:MenuItem)
 		{
-			if (FlxG.save.data.flashing)
+			if (Main.save.data.flashing)
 			{
 				FlxFlicker.flicker(spr, 1, 0.06, false, false, function(flick:FlxFlicker)
 				{
@@ -391,7 +391,7 @@ class MainMenuState extends MusicBeatState
 			}
 
 			if (spr.animation.curAnim != null)
-				spr.animation.curAnim.frameRate = 24 * (60 / FlxG.save.data.fpsCap);
+				spr.animation.curAnim.frameRate = 24 * (60 / Main.save.data.fpsCap);
 
 			spr.updateHitbox();
 		});

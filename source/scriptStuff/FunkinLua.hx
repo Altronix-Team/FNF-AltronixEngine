@@ -183,16 +183,16 @@ class FunkinLua {
 
 		// Some settings, no jokes
 		set('downscroll', PlayStateChangeables.useDownscroll);
-		set('middlescroll', FlxG.save.data.middleScroll);
-		set('framerate', FlxG.save.data.fpsCap);
-		set('ghostTapping', FlxG.save.data.ghost);
-		set('toggledTimeBar', FlxG.save.data.songPosition);
-		set('cameraZoomOnBeat', FlxG.save.data.camzoom);
-		set('flashingLights', FlxG.save.data.flashing);
-		set('noteOffset', FlxG.save.data.offset);
-		set('healthBarAlpha', FlxG.save.data.laneTransparency);
-		set('noResetButton', FlxG.save.data.resetButton);
-		set('antialiasing', FlxG.save.data.antialiasing);
+		set('middlescroll', Main.save.data.middleScroll);
+		set('framerate', Main.save.data.fpsCap);
+		set('ghostTapping', Main.save.data.ghost);
+		set('toggledTimeBar', Main.save.data.songPosition);
+		set('cameraZoomOnBeat', Main.save.data.camzoom);
+		set('flashingLights', Main.save.data.flashing);
+		set('noteOffset', Main.save.data.offset);
+		set('healthBarAlpha', Main.save.data.laneTransparency);
+		set('noResetButton', Main.save.data.resetButton);
+		set('antialiasing', Main.save.data.antialiasing);
 		set("scriptName", scriptName);
 
 		#if windows
@@ -1073,15 +1073,6 @@ class FunkinLua {
 			if(!color.startsWith('0x')) colorNum = Std.parseInt('0xff' + color);
 			cameraFromString(camera).fade(colorNum, duration,false,null,forced);
 		});
-		Lua_helper.add_callback(lua, "setRatingPercent", function(value:Float) {
-			PlayState.instance.ratingPercent = value;
-		});
-		Lua_helper.add_callback(lua, "setRatingName", function(value:String) {
-			PlayState.instance.ratingName = value;
-		});
-		Lua_helper.add_callback(lua, "setRatingFC", function(value:String) {
-			PlayState.instance.ratingFC = value;
-		});
 		Lua_helper.add_callback(lua, "getMouseX", function(camera:String) {
 			var cam:FlxCamera = cameraFromString(camera);
 			return FlxG.mouse.getScreenPosition(cam).x;
@@ -1180,7 +1171,7 @@ class FunkinLua {
 			{
 				leSprite.loadGraphic(Paths.image(image));
 			}
-			leSprite.antialiasing = FlxG.save.data.antialiasing;
+			leSprite.antialiasing = Main.save.data.antialiasing;
 			PlayState.instance.modchartSprites.set(tag, leSprite);
 			leSprite.active = true;
 		});
@@ -1190,7 +1181,7 @@ class FunkinLua {
 			var leSprite:ModchartSprite = new ModchartSprite(x, y);
 
 			loadFrames(leSprite, image, spriteType);
-			leSprite.antialiasing = FlxG.save.data.antialiasing;
+			leSprite.antialiasing = Main.save.data.antialiasing;
 			PlayState.instance.modchartSprites.set(tag, leSprite);
 		});
 
@@ -2406,7 +2397,7 @@ class ModchartSprite extends FlxSprite
 	public function new(?x:Float = 0, ?y:Float = 0)
 	{
 		super(x, y);
-		antialiasing = FlxG.save.data.antialiasing;
+		antialiasing = Main.save.data.antialiasing;
 	}
 }
 

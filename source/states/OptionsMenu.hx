@@ -1,5 +1,6 @@
 package states;
 
+import gameplayStuff.Ratings;
 import flixel.FlxCamera;
 import flixel.FlxSubState;
 import flixel.input.gamepad.FlxGamepad;
@@ -132,7 +133,6 @@ class OptionsMenu extends FlxSubState
 				new InstantRespawn(LanguageStuff.getOptionDesc("$INSTANTRESPAWN_OPTION")),
 				new CamZoomOption(LanguageStuff.getOptionDesc("$CAMZOOM_OPTION")),
 				new NoteSplashOption(LanguageStuff.getOptionDesc("$NOTESPLASH_OPTION")),
-				new PsychInterfaceOption(LanguageStuff.getOptionDesc("$PSYCHINTERFACE_OPTION")),
 				new DFJKOption(),
 				new Judgement(LanguageStuff.getOptionDesc("$JUDGEMENT")),
 				new CustomizeGameplay(LanguageStuff.getOptionDesc("$CUSTOMIZE_GAMEPLAY"))
@@ -148,7 +148,6 @@ class OptionsMenu extends FlxSubState
 				new AccuracyOption(LanguageStuff.getOptionDesc("$ACCURACY_OPTION")),
 				new SongPositionOption(LanguageStuff.getOptionDesc("$SONGPOS_OPTION")),
 				new Colour(LanguageStuff.getOptionDesc("$COLOUR_OPTION")),
-				new NPSDisplayOption(LanguageStuff.getOptionDesc("$NPSDISPLAY_OPTION")),
 				new RainbowFPSOption(LanguageStuff.getOptionDesc("$RAINBOWFPS_OPTION")),
 			]),
 			new OptionCata(640, 40, LanguageStuff.getOptionDesc("$MISC_CATA"), [
@@ -444,7 +443,7 @@ class OptionsMenu extends FlxSubState
 					else
 					{
 						PauseSubState.goBack = true;
-						PlayStateChangeables.scrollSpeed = FlxG.save.data.scrollSpeed * PlayState.songMultiplier;
+						PlayStateChangeables.scrollSpeed = Main.save.data.scrollSpeed * PlayState.songMultiplier;
 						close();
 					}
 				}
@@ -481,7 +480,7 @@ class OptionsMenu extends FlxSubState
 
 						if (selectedOptionIndex == prev)
 						{
-							FlxG.save.flush();
+							Main.save.flush();
 
 							object.text = "> " + selectedOption.getValue();
 						}
@@ -568,13 +567,13 @@ class OptionsMenu extends FlxSubState
 						var object = selectedCat.optionObjects.members[selectedOptionIndex];
 						selectedOption.right();
 
-						FlxG.save.flush();
+						Main.save.flush();
 
 						object.text = "> " + selectedOption.getValue();
 						Debug.logTrace("New text: " + object.text);
 						if (selectedOptionIndex == 8 && selectedCatIndex == 2)
 						{
-							var lang = FlxG.save.data.localeStr;
+							var lang = Main.save.data.localeStr;
 							LanguageStuff.loadLanguage(lang);
 							FlxG.resetState();
 						}
@@ -585,13 +584,13 @@ class OptionsMenu extends FlxSubState
 						var object = selectedCat.optionObjects.members[selectedOptionIndex];
 						selectedOption.left();
 
-						FlxG.save.flush();
+						Main.save.flush();
 
 						object.text = "> " + selectedOption.getValue();
 						Debug.logTrace("New text: " + object.text);
 						if (selectedOptionIndex == 8 && selectedCatIndex == 2)
 						{
-							var lang = FlxG.save.data.localeStr;
+							var lang = Main.save.data.localeStr;
 							LanguageStuff.loadLanguage(lang);
 							FlxG.resetState();
 						}
@@ -607,10 +606,10 @@ class OptionsMenu extends FlxSubState
 						PlayerSettings.player1.controls.loadKeyBinds();
 
 						Ratings.timingWindows = [
-							FlxG.save.data.shitMs,
-							FlxG.save.data.badMs,
-							FlxG.save.data.goodMs,
-							FlxG.save.data.sickMs
+							Main.save.data.shitMs,
+							Main.save.data.badMs,
+							Main.save.data.goodMs,
+							Main.save.data.sickMs
 						];
 
 						for (i in 0...selectedCat.options.length)

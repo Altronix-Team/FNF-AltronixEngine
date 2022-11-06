@@ -17,8 +17,8 @@ class LanguageStuff{
 	public static var locale:String = "en-US";
 
     public static function initLanguages(){
-		if (FlxG.save.data.localeStr != null)
-			locale = FlxG.save.data.localeStr;
+		if (Main.save.data.localeStr != null)
+			locale = Main.save.data.localeStr;
 
 		tongue.initialize({
 			locale: locale,

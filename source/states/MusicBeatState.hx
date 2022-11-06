@@ -40,7 +40,7 @@ class MusicBeatState extends BaseState implements gameplayStuff.Conductor.IMusic
 
 	override function add(Object:flixel.FlxBasic):flixel.FlxBasic
 	{
-		if (FlxG.save.data.optimize)
+		if (Main.save.data.optimize)
 			assets.push(Object);
 		var result = super.add(Object);
 		return result;
@@ -56,7 +56,7 @@ class MusicBeatState extends BaseState implements gameplayStuff.Conductor.IMusic
 
 	public function clean()
 	{
-		if (FlxG.save.data.optimize)
+		if (Main.save.data.optimize)
 		{
 			for (i in assets)
 			{
@@ -67,14 +67,14 @@ class MusicBeatState extends BaseState implements gameplayStuff.Conductor.IMusic
 
 	override function create()
 	{
-		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
+		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(Main.save.data.fpsCap);
 		if (initSave)
 		{
-			if (FlxG.save.data.laneTransparency < 0)
-				FlxG.save.data.laneTransparency = 0;
+			if (Main.save.data.laneTransparency < 0)
+				Main.save.data.laneTransparency = 0;
 
-			if (FlxG.save.data.laneTransparency > 1)
-				FlxG.save.data.laneTransparency = 1;
+			if (Main.save.data.laneTransparency > 1)
+				Main.save.data.laneTransparency = 1;
 		}
 
 		Application.current.window.onFocusIn.add(onWindowFocusIn);
@@ -97,7 +97,7 @@ class MusicBeatState extends BaseState implements gameplayStuff.Conductor.IMusic
 
 	override function update(elapsed:Float)
 	{
-		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
+		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(Main.save.data.fpsCap);
 
 		#if !GITHUB_RELEASE
 		if (FlxG.keys.justPressed.F10)
@@ -157,7 +157,7 @@ class MusicBeatState extends BaseState implements gameplayStuff.Conductor.IMusic
 
 	function volumeHandler(volume:Float)
 	{
-		FlxG.save.data.volume = volume;
+		Main.save.data.volume = volume;
 	}
 
 	function onWindowFocusOut():Void
@@ -173,7 +173,7 @@ class MusicBeatState extends BaseState implements gameplayStuff.Conductor.IMusic
 
 	function onWindowFocusIn():Void
 	{
-		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
+		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(Main.save.data.fpsCap);
 		/*soundList.forEach(function(sound:FlxSound)
 		{
 			sound.resume();

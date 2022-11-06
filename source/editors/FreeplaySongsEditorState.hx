@@ -65,7 +65,7 @@ class FreeplaySongsEditorState extends MusicBeatState
 	override function create() {
 		FlxG.mouse.visible = true;
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-		bg.antialiasing = FlxG.save.data.antialiasing;
+		bg.antialiasing = Main.save.data.antialiasing;
 
 		bg.color = FlxColor.WHITE;
 		add(bg);
@@ -658,13 +658,13 @@ class FreeplaySongsEditorState extends MusicBeatState
 		} 
 		else 
 		{
-			FlxG.sound.muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
-			FlxG.sound.volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];
-			FlxG.sound.volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
+			FlxG.sound.muteKeys = [FlxKey.fromString(Main.save.data.muteBind)];
+			FlxG.sound.volumeDownKeys = [FlxKey.fromString(Main.save.data.volDownBind)];
+			FlxG.sound.volumeUpKeys = [FlxKey.fromString(Main.save.data.volUpBind)];
 			if(FlxG.keys.justPressed.ESCAPE) {
 				FlxG.mouse.visible = false;
 				MusicBeatState.switchState(new MasterEditorMenu());
-				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)));
+				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)));
 			}
 
 			if (!blockInput)

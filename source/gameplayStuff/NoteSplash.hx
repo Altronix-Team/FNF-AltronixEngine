@@ -18,8 +18,8 @@ class NoteSplash extends FlxSprite
     {
 		super(x, y);
 
-		if (OpenFlAssets.exists(Paths.image("notesplashes/" + NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin))))
-			curNoteskinSprite = NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin);
+		if (OpenFlAssets.exists(Paths.image("notesplashes/" + NoteskinHelpers.getNoteskinByID(Main.save.data.noteskin))))
+			curNoteskinSprite = NoteskinHelpers.getNoteskinByID(Main.save.data.noteskin);
 		else if (OpenFlAssets.exists(Paths.image("notesplashes/" + noteType)))
 			curNoteskinSprite = noteType;
 		else
@@ -28,7 +28,7 @@ class NoteSplash extends FlxSprite
 		loadAnims(curNoteskinSprite);
 		
 		setupNoteSplash(x, y, note, noteType);
-		antialiasing = FlxG.save.data.antialiasing;
+		antialiasing = Main.save.data.antialiasing;
     }
 
     public function setupNoteSplash(x:Float, y:Float, note:Int= 0, noteType:String = 'Default Note')

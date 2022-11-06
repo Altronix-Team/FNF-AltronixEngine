@@ -108,7 +108,7 @@ class StaticArrow extends FlxSprite
 
 					x += Note.swagWidth * noteData;
 
-					antialiasing = FlxG.save.data.antialiasing;
+					antialiasing = Main.save.data.antialiasing;
 					setGraphicSize(Std.int(width * 0.7));	
 				}
 				else
@@ -123,7 +123,7 @@ class StaticArrow extends FlxSprite
 
 					x += Note.swagWidth * noteData;
 
-					antialiasing = FlxG.save.data.antialiasing;
+					antialiasing = Main.save.data.antialiasing;
 					setGraphicSize(Std.int(width * 0.7));	
 				}						
 		}

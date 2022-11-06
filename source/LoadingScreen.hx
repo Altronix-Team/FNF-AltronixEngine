@@ -32,7 +32,7 @@ class LoadingScreen extends states.MusicBeatSubstate {
 		loadingart = new FlxSprite(0, 0).loadGraphic(Paths.loadImage('limo/limoSunset', 'week4'));
 		loadingart.screenCenter();
 		loadingart.scrollFactor.set();
-		loadingart.antialiasing = FlxG.save.data.antialiasing;
+		loadingart.antialiasing = Main.save.data.antialiasing;
 
 		add(loadingart);
 
@@ -46,7 +46,7 @@ class LoadingScreen extends states.MusicBeatSubstate {
 				logoBl = new FlxSprite(-150, 0);
 				logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
 			}
-			logoBl.antialiasing = FlxG.save.data.antialiasing;
+			logoBl.antialiasing = Main.save.data.antialiasing;
 			logoBl.scrollFactor.set();
 			logoBl.animation.addByPrefix('bump', 'logo bumpin', 24, false);
 			logoBl.updateHitbox();

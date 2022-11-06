@@ -36,7 +36,7 @@ class WaveformRender extends FlxSprite
 		/*if (waveformUseInstrumental.checked)
 			checkForVoices = 0;*/
 
-		if (!FlxG.save.data.chart_waveform.checked || audioBuffers[checkForVoices] == null)
+		if (!Main.save.data.chart_waveform.checked || audioBuffers[checkForVoices] == null)
 		{
 			return;
 		}

@@ -7,3 +7,4 @@
  - Moved all songs stuff in one folder
  - Custom achievements (wip)
  - Toggle downscroll and middlescroll while playing song
+ - Song score text rewrite (now it's multiple text, not one)

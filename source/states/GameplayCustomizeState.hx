@@ -97,7 +97,7 @@ class GameplayCustomizeState extends MusicBeatState
 		//FlxCamera.defaultCameras = [camGame];
 		FlxG.cameras.setDefaultDrawTarget(camGame, true);
 
-		camHUD.zoom = FlxG.save.data.zoom;
+		camHUD.zoom = Main.save.data.zoom;
 
 		persistentUpdate = persistentDraw = true;
 
@@ -244,7 +244,7 @@ class GameplayCustomizeState extends MusicBeatState
 				dad.setPosition(gf.x, gf.y);
 				gf.visible = false;
 			case 'spirit':
-				if (FlxG.save.data.distractions)
+				if (Main.save.data.distractions)
 				{
 					var evilTrail = new FlxTrail(dad, null, 4, 24, 0.3, 0.069);
 					add(evilTrail);
@@ -274,30 +274,30 @@ class GameplayCustomizeState extends MusicBeatState
 
 		FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);
 
-		strumLine = new FlxSprite(0, FlxG.save.data.strumline).makeGraphic(FlxG.width, 14);
+		strumLine = new FlxSprite(0, Main.save.data.strumline).makeGraphic(FlxG.width, 14);
 		strumLine.scrollFactor.set();
 		strumLine.alpha = 0.4;
 
 		add(strumLine);
 
-		if (FlxG.save.data.downscroll)
+		if (Main.save.data.downscroll)
 			strumLine.y = FlxG.height - 165;
 
 		laneunderlayOpponent = new FlxSprite(0, 0).makeGraphic(110 * 4 + 50, FlxG.height * 2);
-		laneunderlayOpponent.alpha = 1 - FlxG.save.data.laneTransparency;
+		laneunderlayOpponent.alpha = 1 - Main.save.data.laneTransparency;
 		laneunderlayOpponent.color = FlxColor.BLACK;
 		laneunderlayOpponent.scrollFactor.set();
 		laneunderlayOpponent.cameras = [camHUD];
 
 		laneunderlay = new FlxSprite(0, 0).makeGraphic(110 * 4 + 50, FlxG.height * 2);
-		laneunderlay.alpha = 1 - FlxG.save.data.laneTransparency;
+		laneunderlay.alpha = 1 - Main.save.data.laneTransparency;
 		laneunderlay.color = FlxColor.BLACK;
 		laneunderlay.scrollFactor.set();
 		laneunderlay.cameras = [camHUD];
 
-		if (FlxG.save.data.laneUnderlay)
+		if (Main.save.data.laneUnderlay)
 		{
-			if (!FlxG.save.data.middleScroll)
+			if (!Main.save.data.middleScroll)
 			{
 				add(laneunderlayOpponent);
 			}
@@ -325,7 +325,7 @@ class GameplayCustomizeState extends MusicBeatState
 		if (freeplayNoteStyle != 'pixel')
 		{
 			sick.setGraphicSize(Std.int(sick.width * 0.7));
-			sick.antialiasing = FlxG.save.data.antialiasing;
+			sick.antialiasing = Main.save.data.antialiasing;
 		}
 		else
 			sick.setGraphicSize(Std.int(sick.width * CoolUtil.daPixelZoom * 0.7));
@@ -364,14 +364,14 @@ class GameplayCustomizeState extends MusicBeatState
 		FlxTween.tween(text, {y: FlxG.height - 18}, 2, {ease: FlxEase.elasticInOut});
 		FlxTween.tween(blackBorder, {y: FlxG.height - 18}, 2, {ease: FlxEase.elasticInOut});
 
-		if (!FlxG.save.data.changedHit)
+		if (!Main.save.data.changedHit)
 		{
-			FlxG.save.data.changedHitX = defaultX;
-			FlxG.save.data.changedHitY = defaultY;
+			Main.save.data.changedHitX = defaultX;
+			Main.save.data.changedHitY = defaultY;
 		}
 
-		sick.x = FlxG.save.data.changedHitX;
-		sick.y = FlxG.save.data.changedHitY;
+		sick.x = Main.save.data.changedHitX;
+		sick.y = Main.save.data.changedHitY;
 
 		FlxG.mouse.visible = true;
 	}
@@ -385,14 +385,14 @@ class GameplayCustomizeState extends MusicBeatState
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
 
-		if (FlxG.save.data.zoom < 0.8)
-			FlxG.save.data.zoom = 0.8;
+		if (Main.save.data.zoom < 0.8)
+			Main.save.data.zoom = 0.8;
 
-		if (FlxG.save.data.zoom > 1.2)
-			FlxG.save.data.zoom = 1.2;
+		if (Main.save.data.zoom > 1.2)
+			Main.save.data.zoom = 1.2;
 
 		FlxG.camera.zoom = FlxMath.lerp(Stage.camZoom, FlxG.camera.zoom, 0.95);
-		camHUD.zoom = FlxMath.lerp(FlxG.save.data.zoom, camHUD.zoom, 0.95);
+		camHUD.zoom = FlxMath.lerp(Main.save.data.zoom, camHUD.zoom, 0.95);
 
 		if (FlxG.mouse.overlaps(sick) && FlxG.mouse.pressed)
 		{
@@ -407,21 +407,21 @@ class GameplayCustomizeState extends MusicBeatState
 
 		if (FlxG.keys.justPressed.Q)
 		{
-			FlxG.save.data.zoom += 0.02;
-			camHUD.zoom = FlxG.save.data.zoom;
+			Main.save.data.zoom += 0.02;
+			camHUD.zoom = Main.save.data.zoom;
 		}
 
 		if (FlxG.keys.justPressed.E)
 		{
-			FlxG.save.data.zoom -= 0.02;
-			camHUD.zoom = FlxG.save.data.zoom;
+			Main.save.data.zoom -= 0.02;
+			camHUD.zoom = Main.save.data.zoom;
 		}
 
 		if (FlxG.mouse.overlaps(sick) && FlxG.mouse.justReleased)
 		{
-			FlxG.save.data.changedHitX = sick.x;
-			FlxG.save.data.changedHitY = sick.y;
-			FlxG.save.data.changedHit = true;
+			Main.save.data.changedHitX = sick.x;
+			Main.save.data.changedHitY = sick.y;
+			Main.save.data.changedHit = true;
 		}
 
 		if (FlxG.keys.justPressed.C)
@@ -458,7 +458,7 @@ class GameplayCustomizeState extends MusicBeatState
 
 				if (freeplayNoteStyle != 'pixel')
 				{
-					numScore.antialiasing = FlxG.save.data.antialiasing;
+					numScore.antialiasing = Main.save.data.antialiasing;
 					numScore.setGraphicSize(Std.int(numScore.width * 0.5));
 				}
 				else
@@ -507,11 +507,11 @@ class GameplayCustomizeState extends MusicBeatState
 		{
 			sick.x = defaultX;
 			sick.y = defaultY;
-			FlxG.save.data.zoom = 1;
-			camHUD.zoom = FlxG.save.data.zoom;
-			FlxG.save.data.changedHitX = sick.x;
-			FlxG.save.data.changedHitY = sick.y;
-			FlxG.save.data.changedHit = false;
+			Main.save.data.zoom = 1;
+			camHUD.zoom = Main.save.data.zoom;
+			Main.save.data.changedHitX = sick.x;
+			Main.save.data.changedHitY = sick.y;
+			Main.save.data.changedHit = false;
 		}
 
 		if (controls.BACK)
@@ -553,7 +553,7 @@ class GameplayCustomizeState extends MusicBeatState
 			// defaults if no noteStyle was found in chart
 			var noteTypeCheck:String = 'normal';
 
-			if (freeplayNoteStyle == null && FlxG.save.data.overrideNoteskins)
+			if (freeplayNoteStyle == null && Main.save.data.overrideNoteskins)
 			{
 				switch (freeplayWeek)
 				{
@@ -588,7 +588,7 @@ class GameplayCustomizeState extends MusicBeatState
 					}
 
 				default:
-					babyArrow.frames = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin);
+					babyArrow.frames = NoteskinHelpers.generateNoteskinSprite(Main.save.data.noteskin);
 
 					var lowerDir:String = dataSuffix[i].toLowerCase();
 
@@ -598,7 +598,7 @@ class GameplayCustomizeState extends MusicBeatState
 
 					babyArrow.x += Note.swagWidth * i;
 
-					babyArrow.antialiasing = FlxG.save.data.antialiasing;
+					babyArrow.antialiasing = Main.save.data.antialiasing;
 					babyArrow.setGraphicSize(Std.int(babyArrow.width * 0.7));
 			}
 
@@ -610,7 +610,7 @@ class GameplayCustomizeState extends MusicBeatState
 			switch (player)
 			{
 				case 0:
-					babyArrow.visible = !FlxG.save.data.middleScroll;
+					babyArrow.visible = !Main.save.data.middleScroll;
 					babyArrow.x += 20;
 					cpuStrums.add(babyArrow);
 				case 1:
@@ -621,7 +621,7 @@ class GameplayCustomizeState extends MusicBeatState
 			babyArrow.x += 110;
 			babyArrow.x += ((FlxG.width / 2) * player);
 
-			if (FlxG.save.data.middleScroll)
+			if (Main.save.data.middleScroll)
 				babyArrow.x -= 320;
 
 			cpuStrums.forEach(function(spr:FlxSprite)

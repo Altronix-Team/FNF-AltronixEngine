@@ -135,7 +135,7 @@ class Main extends Sprite
 
 		#if !mobile
 		//addChild(fpsCounter);
-		toggleFPS(FlxG.save.data.fps);
+		toggleFPS(Main.save.data.fps);
 		#end
 
 		gjToastManager = new GJToastManager();

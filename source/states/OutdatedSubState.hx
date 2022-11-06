@@ -27,7 +27,7 @@ class OutdatedSubState extends MusicBeatState
 		bg.scale.x *= 1.55;
 		bg.scale.y *= 1.55;
 		bg.screenCenter();
-		bg.antialiasing = FlxG.save.data.antialiasing;
+		bg.antialiasing = Main.save.data.antialiasing;
 		add(bg);
 
 		var engineLogo:FlxSprite = new FlxSprite(FlxG.width, 0).loadGraphic(Paths.loadImage('enginelogo'));
@@ -36,7 +36,7 @@ class OutdatedSubState extends MusicBeatState
 		engineLogo.x -= engineLogo.frameHeight;
 		engineLogo.y -= 180;
 		engineLogo.alpha = 0.8;
-		engineLogo.antialiasing = FlxG.save.data.antialiasing;
+		engineLogo.antialiasing = Main.save.data.antialiasing;
 		add(engineLogo);
 
 		var txt:FlxText = new FlxText(0, 0, FlxG.width,

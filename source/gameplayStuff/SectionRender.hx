@@ -46,7 +46,7 @@ class SectionRender extends FlxTypedGroup<FlxSprite>
 		if (Math.floor(h) != h)
 			h = GRID_SIZE;
 
-		if (FlxG.save.data.editorBG)
+		if (Main.save.data.editorBG)
 			FlxGridOverlay.overlay(sectionSprite, GRID_SIZE, Std.int(h), GRID_SIZE * 8, Std.int(GRID_SIZE * Height), true, sectionColors[0],
 				sectionColors[1]);
 
@@ -54,13 +54,13 @@ class SectionRender extends FlxTypedGroup<FlxSprite>
 
 		//generateWaveformSprite();
 
-		//if (FlxG.save.data.chart_waveform && vocals != null)
+		//if (Main.save.data.chart_waveform && vocals != null)
 			//updateWaveform();
 	}
 
 	override function update(elapsed)
 	{
-		//if (waveformPrinted != FlxG.save.data.chart_waveform && vocals != null)
+		//if (waveformPrinted != Main.save.data.chart_waveform && vocals != null)
 			//updateWaveform();
 	}
 
@@ -84,12 +84,12 @@ class SectionRender extends FlxTypedGroup<FlxSprite>
 		}
 		waveformPrinted = false;
 
-		/*if (!FlxG.save.data.chart_waveformInst && !FlxG.save.data.chart_waveformVoices)
+		/*if (!Main.save.data.chart_waveformInst && !Main.save.data.chart_waveformVoices)
 		{
 			return;
 		}*/
 
-		if (!FlxG.save.data.chart_waveform || vocals == null)
+		if (!Main.save.data.chart_waveform || vocals == null)
 			return;
 
 		wavData[0][0] = [];
@@ -101,7 +101,7 @@ class SectionRender extends FlxTypedGroup<FlxSprite>
 		var st:Float = section.startTime;
 		var et:Float = section.endTime;
 
-		/*if (FlxG.save.data.chart_waveformInst)
+		/*if (Main.save.data.chart_waveformInst)
 		{
 			var sound:FlxSound = FlxG.sound.music;
 			if (sound._sound != null && sound._sound.__buffer != null)
@@ -112,7 +112,7 @@ class SectionRender extends FlxTypedGroup<FlxSprite>
 			}
 		}*/
 
-		if (/*FlxG.save.data.chart_waveformVoices*/ FlxG.save.data.chart_waveform)
+		if (/*Main.save.data.chart_waveformVoices*/ Main.save.data.chart_waveform)
 		{
 			var sound:FlxSound = vocals;
 			if (sound._sound != null && sound._sound.__buffer != null)

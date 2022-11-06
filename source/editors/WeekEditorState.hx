@@ -63,11 +63,11 @@ class WeekEditorState extends MusicBeatState
 		var ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
 		var bgYellow:FlxSprite = new FlxSprite(0, 56).makeGraphic(FlxG.width, 386, 0xFFF9CF51);
 		bgSprite = new FlxSprite(0, 56);
-		bgSprite.antialiasing = FlxG.save.data.antialiasing;
+		bgSprite.antialiasing = Main.save.data.antialiasing;
 
 		weekThing = new MenuItem(0, bgSprite.y + 396, weekFileName);
 		weekThing.y += weekThing.height + 20;
-		weekThing.antialiasing = FlxG.save.data.antialiasing;
+		weekThing.antialiasing = Main.save.data.antialiasing;
 		add(weekThing);
 
 		var blackBarThingie:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, 56, FlxColor.BLACK);
@@ -79,7 +79,7 @@ class WeekEditorState extends MusicBeatState
 		lock.frames = ui_tex;
 		lock.animation.addByPrefix('lock', 'lock');
 		lock.animation.play('lock');
-		lock.antialiasing = FlxG.save.data.antialiasing;
+		lock.antialiasing = Main.save.data.antialiasing;
 		//add(lock);
 		
 		missingFileText = new FlxText(0, 0, FlxG.width, "");
@@ -394,9 +394,9 @@ class WeekEditorState extends MusicBeatState
 		}
 
 		if(!blockInput) {
-			FlxG.sound.muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
-			FlxG.sound.volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];
-			FlxG.sound.volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
+			FlxG.sound.muteKeys = [FlxKey.fromString(Main.save.data.muteBind)];
+			FlxG.sound.volumeDownKeys = [FlxKey.fromString(Main.save.data.volDownBind)];
+			FlxG.sound.volumeUpKeys = [FlxKey.fromString(Main.save.data.volUpBind)];
 			if(FlxG.keys.justPressed.ESCAPE) {
 				MusicBeatState.switchState(new MasterEditorMenu());
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));

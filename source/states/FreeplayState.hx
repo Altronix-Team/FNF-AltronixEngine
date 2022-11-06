@@ -112,7 +112,7 @@ class FreeplayState extends MusicBeatState
 		clean();
 
 		if (!FlxG.sound.music.playing)
-			FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)), 0);
+			FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)), 0);
 
 		cached = false;
 
@@ -122,7 +122,7 @@ class FreeplayState extends MusicBeatState
 
 		#if desktop
 		// Updating Discord Rich Presence
-		if (!FlxG.save.data.language)
+		if (!Main.save.data.language)
 			DiscordClient.changePresence("In the Freeplay Menu", null);
 		else
 			DiscordClient.changePresence("В меню свободной игры", null);
@@ -141,7 +141,7 @@ class FreeplayState extends MusicBeatState
 		// LOAD CHARACTERS
 
 		bg = new FlxSprite().loadGraphic(Paths.loadImage('menuDesat'));
-		bg.antialiasing = FlxG.save.data.antialiasing;
+		bg.antialiasing = Main.save.data.antialiasing;
 		add(bg);
 
 		if (!SongMetadata.preloaded)
@@ -444,7 +444,7 @@ class FreeplayState extends MusicBeatState
 				else
 				{
 					destroyFreeplayVocals();
-					FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)), 0);
+					FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)), 0);
 					FlxG.sound.music.fadeIn(4, 0, 0.7);
 					songListen = false;
 				}
@@ -781,7 +781,7 @@ class FreeplayState extends MusicBeatState
 	override function onWindowFocusIn():Void
 	{
 		Debug.logTrace("IM BACK!!!");
-		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
+		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(Main.save.data.fpsCap);
 		FlxG.sound.music.resume();
 		if (songListen)
 			vocals.resume();

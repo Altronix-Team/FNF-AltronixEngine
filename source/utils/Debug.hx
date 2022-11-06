@@ -263,10 +263,10 @@ class Debug
 		defineConsoleCommands();
 
 		// Now we can remember the log level.
-		if (FlxG.save.data.debugLogLevel == null)
-			FlxG.save.data.debugLogLevel = "TRACE";
+		if (Main.save.data.debugLogLevel == null)
+			Main.save.data.debugLogLevel = "TRACE";
 
-		logFileWriter.setLogLevel(FlxG.save.data.debugLogLevel);
+		logFileWriter.setLogLevel(Main.save.data.debugLogLevel);
 	}
 
 	static function writeToFlxGLog(data:Array<Dynamic>, logStyle:LogStyle)
@@ -473,7 +473,7 @@ class DebugLogWriter
 			return;
 
 		logLevel = levelIndex;
-		FlxG.save.data.debugLogLevel = logLevel;
+		Main.save.data.debugLogLevel = logLevel;
 	}
 
 	/**

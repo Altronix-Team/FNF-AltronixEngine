@@ -231,8 +231,8 @@ class ChartingState extends MusicBeatState
 		deezNuts.set(32, 8);
 		deezNuts.set(64, 16);
 
-		if (FlxG.save.data.showHelp == null)
-			FlxG.save.data.showHelp = true;
+		if (Main.save.data.showHelp == null)
+			Main.save.data.showHelp = true;
 
 		sectionRenderes = new FlxTypedGroup<SectionRender>();
 		lines = new FlxTypedGroup<FlxSprite>();
@@ -279,16 +279,16 @@ class ChartingState extends MusicBeatState
 				stage: 'stage',
 				speed: 1,
 				validScore: false,
-				specialSongNoteSkin: NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin),
+				specialSongNoteSkin: NoteskinHelpers.getNoteskinByID(Main.save.data.noteskin),
 				songComposer: '???',
 				songPosBarColor: 0x00ff80
 			});
 		}
 
-		if (_song.specialSongNoteSkin != FlxG.save.data.noteskin)
+		if (_song.specialSongNoteSkin != Main.save.data.noteskin)
 			PlayState.noteskinSprite = NoteskinHelpers.generateNoteskinSprite(_song.specialSongNoteSkin);
 		else
-			PlayState.noteskinSprite = NoteskinHelpers.generateNoteskinSprite(FlxG.save.data.noteskin);
+			PlayState.noteskinSprite = NoteskinHelpers.generateNoteskinSprite(Main.save.data.noteskin);
 
 		addGrid(1);
 
@@ -326,7 +326,7 @@ class ChartingState extends MusicBeatState
 
 		bg = new FlxSprite().loadGraphic(Paths.loadImage('menuDesat'));
 		bg.x = 0 - bg.width / 2;
-		bg.antialiasing = FlxG.save.data.antialiasing;
+		bg.antialiasing = Main.save.data.antialiasing;
 		bg.color = 0x7CA867;
 		bg.setGraphicSize(Std.int(bg.width * 1.5));
 		add(bg);
@@ -1289,16 +1289,16 @@ class ChartingState extends MusicBeatState
 
 		#if desktop
 		waveformEnabled = new FlxUICheckBox(10, 90, null, null, "Visible Waveform", 100);
-		if (FlxG.save.data.chart_waveform == null) FlxG.save.data.chart_waveform = false;
-		waveformEnabled.checked = FlxG.save.data.chart_waveform;
+		if (Main.save.data.chart_waveform == null) Main.save.data.chart_waveform = false;
+		waveformEnabled.checked = Main.save.data.chart_waveform;
 		waveformEnabled.callback = function()
 		{
-			FlxG.save.data.chart_waveform = waveformEnabled.checked;
+			Main.save.data.chart_waveform = waveformEnabled.checked;
 		};
 		#end
 
 		var skin = PlayState.SONG.specialSongNoteSkin;
-		if(skin == null) skin = FlxG.save.data.noteskin;
+		if(skin == null) skin = Main.save.data.noteskin;
 		noteSkinInputText = new FlxUIInputText(10, 280, 150, skin, 8);
 		blockPressWhileTypingOn.push(noteSkinInputText);
 
@@ -2567,7 +2567,7 @@ class ChartingState extends MusicBeatState
 			if (controls.BACK && !blockInput)
 				{
 					autosaveSong();
-					FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)), 0);
+					FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)), 0);
 					PlayState.chartingMode = false;
 					/*if (PlayState.isExtras)
 						MusicBeatState.switchState(new states.SecretState());
@@ -3035,7 +3035,7 @@ class ChartingState extends MusicBeatState
 				+ "\n"
 				+ (doSnapShit ? "Snap enabled" : "Snap disabled")
 				+
-				(FlxG.save.data.showHelp ? "\n\nHelp:\nCtrl-MWheel : Zoom in/out\nShift-Left/Right :\nChange playback speed\nCtrl-Drag Click : Select notes\nCtrl-A : Select all notes\nCtrl-C : Copy notes\nCtrl-V : Paste notes\nCtrl-Z : Undo\nDelete : Delete selection\nCTRL-Left/Right :\n  Change Snap\nHold Shift : Disable Snap\nClick or 1/2/3/4/5/6/7/8 :\n  Place notes\nUp/Down :\n  Move selected notes 1 step\nShift-Up/Down :\n  Move selected notes 1 beat\nSpace: Play Music\nEnter : Preview\nPress F1 to hide/show this!" : "");
+				(Main.save.data.showHelp ? "\n\nHelp:\nCtrl-MWheel : Zoom in/out\nShift-Left/Right :\nChange playback speed\nCtrl-Drag Click : Select notes\nCtrl-A : Select all notes\nCtrl-C : Copy notes\nCtrl-V : Paste notes\nCtrl-Z : Undo\nDelete : Delete selection\nCTRL-Left/Right :\n  Change Snap\nHold Shift : Disable Snap\nClick or 1/2/3/4/5/6/7/8 :\n  Place notes\nUp/Down :\n  Move selected notes 1 step\nShift-Up/Down :\n  Move selected notes 1 beat\nSpace: Play Music\nEnter : Preview\nPress F1 to hide/show this!" : "");
 
 			var left = FlxG.keys.justPressed.ONE;
 			var down = FlxG.keys.justPressed.TWO;
@@ -3047,7 +3047,7 @@ class ChartingState extends MusicBeatState
 			var rightO = FlxG.keys.justPressed.EIGHT;
 
 			if (FlxG.keys.justPressed.F1)
-				FlxG.save.data.showHelp = !FlxG.save.data.showHelp;
+				Main.save.data.showHelp = !Main.save.data.showHelp;
 
 			var pressArray = [left, down, up, right, leftO, downO, upO, rightO];
 			var delete = false;
@@ -4206,21 +4206,21 @@ class ChartingState extends MusicBeatState
 
 	function loadAutosave():Void
 	{
-		PlayState.SONG = Song.parseAutosaveshit(FlxG.save.data.autosave);
+		PlayState.SONG = Song.parseAutosaveshit(Main.save.data.autosave);
 
 		MusicBeatState.resetState();
 	}
 
 	function autosaveSong():Void
 	{
-		FlxG.save.data.autosave = Json.stringify({
+		Main.save.data.autosave = Json.stringify({
 			"song": _song,
 			"songMeta": {
 				"name": _song.songId,
 				"offset": 0,
 			}
 		});
-		FlxG.save.flush();
+		Main.save.flush();
 	}
 
 	private function saveEvents()

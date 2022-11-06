@@ -107,7 +107,7 @@ class HealthIcon extends FlxSprite
 
 			loadGraphic(loadImage('', 'face'), true, 150, 150);
 
-			antialiasing = FlxG.save.data.antialiasing;
+			antialiasing = Main.save.data.antialiasing;
 			animation.add('face', [0, 1], 0, false, isPlayer);
 			animation.play('face');
 			return;
@@ -126,7 +126,7 @@ class HealthIcon extends FlxSprite
 		if (char.contains('pixel') || char.startsWith('senpai') || char.startsWith('spirit'))
 			antialiasing = false
 		else
-			antialiasing = FlxG.save.data.antialiasing;
+			antialiasing = Main.save.data.antialiasing;
 	
 		animation.add(char, [0, 1], 0, false, isPlayer);
 		animation.play(char);

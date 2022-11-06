@@ -16,6 +16,7 @@ import Debug;
 import openfl.system.Capabilities;
 import haxe.CallStack;
 import utils.EngineSave;
+import sys.io.Process;
 
 #if FEATURE_MODCORE
 import ModCore;
@@ -158,7 +159,6 @@ class Main extends Sprite
 	public static function onUncaughtError(error:UncaughtErrorEvent)
 	{
 		#if FEATURE_FILESYSTEM
-
 		var errorMsg:String = '';
 
 		var funnyTitle:Array<String> = 
@@ -215,7 +215,7 @@ class Main extends Sprite
 
 		var logFolderPath = CoolUtil.createDirectoryIfNotExists('crashes');
 
-		var path:String = '${logFolderPath}/Altronix Engine - ${DebugLogWriter.getDateString()}.crash';
+		var path:String = '${logFolderPath}/Altronix Engine - ${DebugLogWriter.getDateString()}.txt';
 
 		sys.io.File.saveContent(path, errorMsg + "\n");
 
@@ -225,6 +225,10 @@ class Main extends Sprite
 		Application.current.window.alert('An error has occurred and the game is forced to close.\nPlease access the "crash" folder and send the .crash file to the developers:\n' + ERROR_REPORT_URL, funnyTitle[FlxG.random.int(0, funnyTitle.length - 1)]);
 
 		Sys.println(errorMsg);
+
+		try{
+			new Process(path);
+		}
 
 		#if sys
 		Sys.exit(1);

@@ -1,5 +1,8 @@
 package gameplayStuff;
 
+import states.FreeplayState;
+import gameplayStuff.DiffOverview;
+import gameplayStuff.Song;
 import hx.strings.String8;
 import openfl.display.Preloader.DefaultPreloader;
 import flixel.addons.effects.FlxSkewedSprite;
@@ -87,7 +90,7 @@ class Note extends FlxSprite
 
 	public var children:Array<Note> = [];
 
-	var noteTypeCheck:String = PlayState.SONG.noteStyle;
+	var noteTypeCheck:String = 'normal';
 	public var noteStyle:String;
 
 	public var texture:String = null;
@@ -114,6 +117,12 @@ class Note extends FlxSprite
 	var stepHeight:Float = 0;
 
 	var created:Bool = false;
+
+	public var fromDiffOverviev:Bool = true;
+
+	var SONG:SongData = null;
+
+	var songMultiplier:Float = 1.0;
 
 	var noteMetaData:NoteMeta = {
 		imageFile: '',
@@ -148,7 +157,7 @@ class Note extends FlxSprite
 	}
 
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inCharter:Bool = false, ?isAlt:Bool = false,
-			?bet:Float = 0, ?noteStyle:String = 'normal')
+			?bet:Float = 0, ?noteStyle:String = 'normal', ?fromPreview:Bool = false)
 	{
 		super();
 
@@ -163,10 +172,23 @@ class Note extends FlxSprite
 		this.prevNote = prevNote;
 		isSustainNote = sustainNote;
 
-		texture = PlayState.SONG.specialSongNoteSkin != null ? PlayState.SONG.specialSongNoteSkin : Main.save.data.noteskin;
+		this.fromDiffOverviev = fromPreview;
+
+		if (fromPreview)
+		{
+			SONG = DiffOverview.instance.SONG;
+			songMultiplier = FreeplayState.rate;
+		}
+		else
+		{
+			SONG = PlayState.SONG;
+			songMultiplier = PlayState.songMultiplier;
+		}
+
+		texture = SONG.specialSongNoteSkin != null ? SONG.specialSongNoteSkin : Main.save.data.noteskin;
 
 		if (noteStyle == null)
-			this.noteStyle = PlayState.SONG.noteStyle;
+			this.noteStyle = SONG.noteStyle;
 		else
 			this.noteStyle = noteStyle;
 
@@ -213,7 +235,7 @@ class Note extends FlxSprite
 			this.strumTime = 0;
 
 		if (!inCharter)
-			y += Main.save.data.offset + PlayState.songOffset;
+			y += Main.save.data.offset/* + PlayState.songOffset*/;
 
 		this.noteData = noteData;
 
@@ -227,8 +249,8 @@ class Note extends FlxSprite
 
 		animation.play(dataColor[noteData] + 'Scroll');
 
-		stepHeight = (((0.45 * Conductor.stepCrochet)) * FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? PlayState.SONG.speed : PlayStateChangeables.scrollSpeed,
-			2)) / PlayState.songMultiplier;
+		stepHeight = (((0.45 * Conductor.stepCrochet)) * FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed,
+			2)) / songMultiplier;
 
 		startAnim();
 
@@ -374,22 +396,22 @@ class Note extends FlxSprite
 		{
 			if (isSustainNote)
 			{
-				if (strumTime - Conductor.songPosition <= (((166 * Conductor.timeScale) / (PlayState.songMultiplier < 1 ? PlayState.songMultiplier : 1) * 0.5))
-					&& strumTime - Conductor.songPosition >= (((-166 * Conductor.timeScale) / (PlayState.songMultiplier < 1 ? PlayState.songMultiplier : 1))))
+				if (strumTime - Conductor.songPosition <= (((166 * Conductor.timeScale) / (songMultiplier < 1 ? songMultiplier : 1) * 0.5))
+					&& strumTime - Conductor.songPosition >= (((-166 * Conductor.timeScale) / (songMultiplier < 1 ? songMultiplier : 1))))
 					canBeHit = true;
 				else
 					canBeHit = false;
 			}
 			else
 			{
-				if (strumTime - Conductor.songPosition <= (((166 * Conductor.timeScale) / (PlayState.songMultiplier < 1 ? PlayState.songMultiplier : 1)))
-					&& strumTime - Conductor.songPosition >= (((-166 * Conductor.timeScale) / (PlayState.songMultiplier < 1 ? PlayState.songMultiplier : 1))))
+				if (strumTime - Conductor.songPosition <= (((166 * Conductor.timeScale) / (songMultiplier < 1 ?songMultiplier : 1)))
+					&& strumTime - Conductor.songPosition >= (((-166 * Conductor.timeScale) / (songMultiplier < 1 ? songMultiplier : 1))))
 					canBeHit = true;
 				else
 					canBeHit = false;
 			}
 
-			if (strumTime - Conductor.songPosition < (((-166 * Conductor.timeScale) / (PlayState.songMultiplier < 1 ? PlayState.songMultiplier : 1))) && !wasGoodHit)
+			if (strumTime - Conductor.songPosition < (((-166 * Conductor.timeScale) / (songMultiplier < 1 ? songMultiplier : 1))) && !wasGoodHit)
 				tooLate = true;
 		}
 		else

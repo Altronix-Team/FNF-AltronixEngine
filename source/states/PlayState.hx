@@ -340,9 +340,6 @@ class PlayState extends MusicBeatState
 	public var DAD_Y:Float = 100;
 	public var GF_X:Float = 400;
 	public var GF_Y:Float = 130;
-	private var timeBarBG:AttachedSprite;
-	var timeTxt:FlxText;
-	public var timeBar:FlxBar;
 	public static var STRUM_X = 42;
 	public static var STRUM_X_MIDDLESCROLL = -278;
 	#if (haxe >= "4.0.0")
@@ -368,9 +365,6 @@ class PlayState extends MusicBeatState
 
 	// BotPlay text
 	private var botPlayState:FlxText;
-	// Replay shit
-	private var saveNotes:Array<Dynamic> = [];
-	private var saveJudge:Array<String> = [];
 
 	public static var highestCombo:Int = 0;
 
@@ -842,8 +836,6 @@ class PlayState extends MusicBeatState
 		DAD_X = stageData.dad[0];
 		DAD_Y = stageData.dad[1];
 		dadGroup.setPosition(DAD_X, DAD_Y);
-
-		this.hideGF = stageData.hideGF;
 	
 		defaultCamZoom = stageData.defaultZoom;
 	
@@ -886,44 +878,48 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		if (!PlayStateChangeables.Optimize && (!luaStage && !hscriptStageCheck))
-			for (index => array in Stage.layInFront)
+	this.hideGF = stageData.hideGF || SONG.hideGF;
+
+	if (!PlayStateChangeables.Optimize && (!luaStage && !hscriptStageCheck))
+		for (index => array in Stage.layInFront)
+		{
+			switch (index)
 			{
-				switch (index)
-				{
-					case 0:
-						add(gfGroup);
-						gfGroup.scrollFactor.set(0.95, 0.95);
-						if (!luaStage && !hscriptStageCheck)
+				case 0:
+					add(gfGroup);
+					gfGroup.scrollFactor.set(0.95, 0.95);
+					if (!luaStage && !hscriptStageCheck)
+					{
+						for (bg in array)
 						{
-							for (bg in array)
-							{
-								add(bg);
-								stageGroup.add(bg);
-							}
+							add(bg);
+							stageGroup.add(bg);
 						}
-					case 1:
-						add(dadGroup);
-						if (!luaStage && !hscriptStageCheck)
+					}
+				case 1:
+					add(dadGroup);
+					if (!luaStage && !hscriptStageCheck)
+					{
+						for (bg in array)
 						{
-							for (bg in array)
-							{
-								add(bg);
-								stageGroup.add(bg);
-							}
+							add(bg);
+							stageGroup.add(bg);
 						}
-					case 2:
-						add(boyfriendGroup);
-						if (!luaStage && !hscriptStageCheck)
+					}
+				case 2:
+					add(boyfriendGroup);
+					if (!luaStage && !hscriptStageCheck)
+					{
+						for (bg in array)
 						{
-							for (bg in array)
-							{
-								add(bg);
-								stageGroup.add(bg);
-							}
+							add(bg);
+							stageGroup.add(bg);
 						}
-				}
+					}
 			}
+		}
+
+
 
 		Debug.logTrace('Generated stage');
 
@@ -1028,8 +1024,12 @@ class PlayState extends MusicBeatState
 		boyfriend.x += boyfriend.positionArray[0];
 		boyfriend.y += boyfriend.positionArray[1];}
 
-		camPos = new FlxPoint(girlfriendCameraOffset[0], girlfriendCameraOffset[1]);
-		if(gf != null)
+		if (!hideGF)
+			camPos = new FlxPoint(girlfriendCameraOffset[0], girlfriendCameraOffset[1]);
+		else
+			camPos = new FlxPoint(boyfriendCameraOffset[0], boyfriendCameraOffset[1]);
+
+		if(gf != null && !hideGF)
 		{
 			if (gf.camPos != null){
 				camPos.x += gf.getGraphicMidpoint().x + gf.camPos[0];
@@ -1037,6 +1037,16 @@ class PlayState extends MusicBeatState
 			else{
 				camPos.x += gf.getGraphicMidpoint().x;
 				camPos.y += gf.getGraphicMidpoint().y;
+			}
+		}
+		else 
+		{
+			if (boyfriend.camPos != null){
+				camPos.x += boyfriend.getGraphicMidpoint().x + boyfriend.camPos[0];
+				camPos.y += boyfriend.getGraphicMidpoint().y + boyfriend.camPos[1];}
+			else{
+				camPos.x += boyfriend.getGraphicMidpoint().x;
+				camPos.y += boyfriend.getGraphicMidpoint().y;
 			}
 		}
 
@@ -1076,7 +1086,7 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		if (SONG.hideGF || hideGF)
+		if (hideGF)
 			gf.visible = false;
 		else
 		{
@@ -4560,7 +4570,10 @@ class PlayState extends MusicBeatState
 									add(dadGroup);for (bg in array){add(bg);stageGroup.add(bg);}
 									case 2:
 									add(boyfriendGroup);for (bg in array){add(bg);stageGroup.add(bg);}}}
-							camFollow.setPosition(gf.getGraphicMidpoint().x, gf.getGraphicMidpoint().y);}
+							if (hideGF)
+								camFollow.setPosition(boyfriend.getGraphicMidpoint().x, boyfriend.getGraphicMidpoint().y);
+							else
+								camFollow.setPosition(gf.getGraphicMidpoint().x, gf.getGraphicMidpoint().y);}
 						else
 							addTextToDebug('Change Stage event don`t work with lua stages. Please change stage in lua file');
 
@@ -5950,7 +5963,7 @@ class PlayState extends MusicBeatState
 						boyfriend.dance();
 				}
 				else if (dad.holdTimer > Conductor.stepCrochet * 4 * 0.001
-					&& (!holdArray.contains(true) || PlayStateChangeables.botPlay) && PlayStateChangeables.twoPlayersMode)
+					&& (!holdArrayP2.contains(true) || PlayStateChangeables.botPlay) && PlayStateChangeables.twoPlayersMode)
 				{
 					if (dad.animation.curAnim.name.startsWith('sing') && !dad.animation.curAnim.name.endsWith('miss'))
 						dad.dance();
@@ -6351,14 +6364,14 @@ class PlayState extends MusicBeatState
 		{
 			if (curBeat % idleBeat == 0)
 			{
-				if (allowedToHeadbang && (!gf.animation.curAnim.name.startsWith("sing") || gf.animation.curAnim.finished) && (!gf.animation.exists('danceRight') && !gf.animation.exists('danceLeft')))
+				if (allowedToHeadbang && (!gf.animation.curAnim.name.startsWith("sing") || gf.animation.curAnim.finished) && (!gf.animation.exists('danceRight') && !gf.animation.exists('danceLeft')) && !gf.stunned)
 					gf.dance(forcedToIdle, gfAltAnim);
-				if (idleToBeat && (!dad.animation.curAnim.name.startsWith('sing') || dad.animation.curAnim.finished))
+				if (idleToBeat && (!dad.animation.curAnim.name.startsWith('sing') || dad.animation.curAnim.finished) && !boyfriend.stunned)
 					dad.dance(forcedToIdle, dadAltAnim);
-				if (idleToBeat && (!boyfriend.animation.curAnim.name.startsWith('sing') || boyfriend.animation.curAnim.finished))
+				if (idleToBeat && (!boyfriend.animation.curAnim.name.startsWith('sing') || boyfriend.animation.curAnim.finished) && !dad.stunned)
 					boyfriend.dance(forcedToIdle, bfAltAnim);
 			}
-			else if ((dad.animation.exists('danceRight') && dad.animation.exists('danceLeft')) && (!dad.animation.curAnim.name.startsWith('sing') || dad.animation.curAnim.finished))
+			else if ((dad.animation.exists('danceRight') && dad.animation.exists('danceLeft')) && (!dad.animation.curAnim.name.startsWith('sing') || dad.animation.curAnim.finished) && !dad.stunned)
 				dad.dance(forcedToIdle, dadAltAnim);
 		}
 		// FlxG.log.add('change bpm' + SONG.notes[Std.int(curStep / 16)].changeBPM);
@@ -6702,6 +6715,12 @@ class PlayState extends MusicBeatState
 
 	function set_useDownscroll(value:Bool):Bool {
 		useDownscroll = value;
+		toggleDownscroll(value);
+		return value;
+	}
+
+	public function toggleDownscroll(value:Bool)
+	{
 		if (songStarted)
 		{
 			if (value)
@@ -6710,7 +6729,6 @@ class PlayState extends MusicBeatState
 				FlxTween.tween(songPosBar, {y: FlxG.height * 0.9 + 39}, 0.5);
 				FlxTween.tween(songName, {y: FlxG.height * 0.9 + 35 + (songPosBG.height / 3)}, 0.5);
 				FlxTween.tween(bar, {y: FlxG.height * 0.9 + 39}, 0.5);}
-				if (timeTxt != null) FlxTween.tween(timeTxt, {y: FlxG.height - 44}, 0.5);
 				FlxTween.tween(healthBarBG, {y: 50}, 0.5);
 				FlxTween.tween(scoreTxt, {y: 100}, 0.5);
 				FlxTween.tween(chartingState, {y: 150}, 0.5);
@@ -6728,7 +6746,6 @@ class PlayState extends MusicBeatState
 				FlxTween.tween(songPosBar, {y: 14}, 0.5);
 				FlxTween.tween(songName, {y: 10 + (songPosBG.height / 3)}, 0.5);
 				FlxTween.tween(bar, {y: 14}, 0.5);}
-				if (timeTxt != null) FlxTween.tween(timeTxt, {y: 19}, 0.5);
 				FlxTween.tween(healthBarBG, {y: FlxG.height * 0.9}, 0.5);
 				FlxTween.tween(scoreTxt, {y: FlxG.height * 0.9 + 50}, 0.5);
 				FlxTween.tween(chartingState, {y: FlxG.height * 0.9 - 100}, 0.5);
@@ -6741,6 +6758,5 @@ class PlayState extends MusicBeatState
 				strumLineNotes.tweenArrowsY(50);
 			}
 		}
-		return value;
 	}
 }

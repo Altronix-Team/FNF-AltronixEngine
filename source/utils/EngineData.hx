@@ -10,14 +10,6 @@ import gameplayStuff.Conductor;
 
 class EngineData
 {
-	public var Antialiasing:Bool = false;
-
-	public var Distractions:Bool = false;
-
-	public var Flashing:Bool = false;
-
-	public var Botplay:Bool = false;
-
 	public static function initSave()
 	{
 		if (Main.save.data.weekUnlocked == null)

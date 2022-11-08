@@ -50,6 +50,8 @@ class Main extends Sprite
 
 	public static var memoryCount = true;
 
+	public static var game:FlxGame;
+
 	// You can pretty much ignore everything from here on - your code should go in your states.
 	// Ho-ho-ho, no
 
@@ -240,8 +242,6 @@ class Main extends Sprite
 		#end
 	}
 
-	var game:FlxGame;
-
 	var fpsCounter:EngineFPS;
 
 	// taken from forever engine, cuz optimization very pog.
@@ -301,5 +301,24 @@ class Main extends Sprite
 	public function getFPS():Float
 	{
 		return fpsCounter.currentFPS;
+	}
+
+	public static function getSaveByString(str:String):Dynamic
+	{
+		if (Reflect.field(save.data, str) != null)
+			return Reflect.field(save.data, str);
+		else
+			return null;
+	}
+
+	public static function setSaveByString(str:String, value:Dynamic):Bool
+	{
+		try {
+			Reflect.setField(save.data, str, value);
+			save.flush();
+			return true;}
+		catch(e){
+			Debug.logError('Failed to set save ' + e.details());
+			return false;}
 	}
 }

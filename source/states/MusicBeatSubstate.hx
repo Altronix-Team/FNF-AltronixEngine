@@ -1,5 +1,6 @@
 package states;
 
+import flixel.FlxBasic;
 import gameplayStuff.Section.SwagSection;
 import lime.app.Application;
 import openfl.Lib;
@@ -18,9 +19,30 @@ class MusicBeatSubstate extends FlxSubState implements IMusicBeat
 	public var curDecimalBeat:Float = 0;
 	public var curSection:SwagSection = null;
 
+	private var assets:Array<FlxBasic> = [];
+
 	public function new()
 	{
 		super();
+	}
+
+	override function add(Object:flixel.FlxBasic):flixel.FlxBasic
+	{
+		if (Main.save.data.optimize)
+			assets.push(Object);
+		var result = super.add(Object);
+		return result;
+	}
+
+	public function clean()
+	{
+		if (Main.save.data.optimize)
+		{
+			for (i in assets)
+			{
+				remove(i);
+			}
+		}
 	}
 
 	override function destroy()
@@ -32,11 +54,12 @@ class MusicBeatSubstate extends FlxSubState implements IMusicBeat
 
 	override function create()
 	{
-		super.create();
+		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(Main.save.data.fpsCap);
 		Application.current.window.onFocusIn.add(onWindowFocusIn);
 		Application.current.window.onFocusOut.add(onWindowFocusOut);
 
 		Conductor.MusicBeatInterface = this;
+		super.create();
 	}
 
 	private var controls(get, never):Controls;

@@ -492,13 +492,14 @@ class GameJoltLogin extends states.MusicBeatSubstate
 		bg.screenCenter();
 		bg.scrollFactor.set();
 		bg.alpha = 0.25;
+		bg.color = 0x25D801;
 		add(bg);
 
 		charBop = new FlxSprite(FlxG.width - 400, 250);
 		charBop.frames = Paths.getCharacterFrames('bf', 'BOYFRIEND');
 		charBop.animation.addByPrefix('idle', 'BF idle dance', 24, false);
 		charBop.animation.addByPrefix('loggedin', 'BF HEY', 24, false);
-		charBop.setGraphicSize(Std.int(charBop.width * 1.4));
+		charBop.setGraphicSize(Std.int(charBop.width * 1.2));
 		charBop.antialiasing = true;
 		charBop.flipX = false;
 		add(charBop);

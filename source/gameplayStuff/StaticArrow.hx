@@ -1,5 +1,6 @@
 package gameplayStuff;
 
+import gameplayStuff.Song.SongData;
 import states.PlayState;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -20,6 +21,9 @@ class StaticArrow extends FlxSprite
 	private var dataColor:Array<String> = ['purple', 'blue', 'green', 'red'];
 
 	public var texture(default, set):String = null;
+
+	var noteTypeCheck = 'normal';
+
 	private function set_texture(value:String):String
 	{
 		if (texture != value)
@@ -30,12 +34,18 @@ class StaticArrow extends FlxSprite
 		return value;
 	}
 
-	public function new(xx:Float, yy:Float)
+	public function new(xx:Float, yy:Float, ?_song:SongData = null)
 	{
 		x = xx;
 		y = yy;
 		super(x, y);
 		updateHitbox();
+
+		if (PlayState.SONG != null)
+			noteTypeCheck = PlayState.SONG.noteStyle;
+
+		if (_song != null)
+			noteTypeCheck = _song.noteStyle;
 	}
 
 	override function update(elapsed:Float)
@@ -78,7 +88,7 @@ class StaticArrow extends FlxSprite
 
 	function loadNote()
 	{
-		switch (PlayState.instance.noteTypeCheck)
+		switch (noteTypeCheck)
 		{
 			case 'pixel':
 				loadGraphic(NoteskinHelpers.generatePixelSprite(texture), true, 17, 17);
@@ -96,7 +106,7 @@ class StaticArrow extends FlxSprite
 				animation.add('pressed', [4 + noteData, 8 + noteData], 12, false);
 				animation.add('confirm', [12 + noteData, 16 + noteData], 12, false);
 			default:
-				if (PlayState.instance.noteTypeCheck == 'normal')
+				if (noteTypeCheck == 'normal')
 				{
 					frames = NoteskinHelpers.generateNoteskinSprite(texture);
 
@@ -113,7 +123,7 @@ class StaticArrow extends FlxSprite
 				}
 				else
 				{
-					frames = NoteskinHelpers.generateNoteskinSprite(PlayState.instance.noteTypeCheck);
+					frames = NoteskinHelpers.generateNoteskinSprite(noteTypeCheck);
 
 					var lowerDir:String = dataSuffix[noteData].toLowerCase();
 

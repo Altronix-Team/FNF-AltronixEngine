@@ -1,5 +1,6 @@
 package states;
 
+import gameplayStuff.Conductor;
 #if desktop
 import DiscordClient;
 #end

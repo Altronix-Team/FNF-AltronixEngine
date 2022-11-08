@@ -20,6 +20,7 @@ class Character extends FlxSprite
 	public var animNext:Map<String, String>;
 	public var animDanced:Map<String, Bool>;
 	public var debugMode:Bool = false;
+	public var stunned:Bool = false;
 
 	public var isPlayer:Bool = false;
 	public var curCharacter:String = 'bf';
@@ -582,7 +583,6 @@ class Character extends FlxSprite
 
 				animOffsets[animAnim] = anim.offsets == null ? [0, 0] : anim.offsets;
 				animInterrupt[animAnim] = true;
-
 				animNext[animAnim] = 'idle';
 			}
 		}

@@ -68,7 +68,7 @@ class FreeplayState extends MusicBeatState
 	public var intendedColor:FlxColor;
 	var colorTween:FlxTween;
 
-	public static var openedPreview = false;
+	public static var openedPreview:Bool = false;
 
 	public static var songData:Map<String, Array<SongData>> = [];
 
@@ -202,9 +202,10 @@ class FreeplayState extends MusicBeatState
 		textBG.alpha = 0.6;
 		add(textBG);
 
+		//TODO localization
 		#if PRELOAD_ALL
-		var leText:String = "Press SPACE to listen to the Song / Press 7 to go to the Charting Menu";
-		var size:Int = 16;
+		var leText:String = "Press SPACE to display the Song / Press 7 to go to the Charting Menu / Hold CTRL + Left/Right to toggle two players mode / Hold SHIFT + Left/Right to change the song rate";
+		var size:Int = 12;
 		#else
 		var leText:String = "Press 7 to go to the Charting Menu.";
 		var size:Int = 18;
@@ -385,147 +386,131 @@ class FreeplayState extends MusicBeatState
 
 		if (!blockInput)
 		{
-			if (gamepad != null)
+			if (!openedPreview)
 			{
-				if (gamepad.justPressed.DPAD_UP)
+				if (gamepad != null)
+				{
+					if (gamepad.justPressed.DPAD_UP)
+					{
+						if (songs.length > 1)
+							changeSelection(-1);
+					}
+					if (gamepad.justPressed.DPAD_DOWN)
+					{
+						if (songs.length > 1)
+							changeSelection(1);
+					}
+					if (gamepad.justPressed.DPAD_LEFT)
+					{
+						if (songs[curSelected].diffs.length > 1)
+							changeDiff(-1);
+					}
+					if (gamepad.justPressed.DPAD_RIGHT)
+					{
+						if (songs[curSelected].diffs.length > 1)
+							changeDiff(1);
+					}
+				}
+
+				if (upP)
 				{
 					if (songs.length > 1)
 						changeSelection(-1);
 				}
-				if (gamepad.justPressed.DPAD_DOWN)
+				if (downP)
 				{
 					if (songs.length > 1)
 						changeSelection(1);
 				}
-				if (gamepad.justPressed.DPAD_LEFT)
+			
+
+				if (FlxG.keys.justPressed.SPACE)
 				{
-					if (songs[curSelected].diffs.length > 1)
-						changeDiff(-1);
+					openedPreview = !openedPreview;
+					if (openedPreview)
+					{
+						closeSubState();
+						openSubState(new DiffOverview(songData.get(songs[curSelected].songName)[getShitSongID(diffTextStr)]));
+					}
 				}
-				if (gamepad.justPressed.DPAD_RIGHT)
+
+				if (FlxG.keys.pressed.SHIFT)
 				{
-					if (songs[curSelected].diffs.length > 1)
-						changeDiff(1);
+					if (FlxG.keys.justPressed.LEFT)
+					{
+						rate -= 0.05;
+						diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[getShitSongID(diffTextStr)])}';
+					}
+					if (FlxG.keys.justPressed.RIGHT)
+					{
+						rate += 0.05;
+						diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[getShitSongID(diffTextStr)])}';
+					}
+
+					if (FlxG.keys.justPressed.R)
+					{
+						rate = 1;
+						diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[getShitSongID(diffTextStr)])}';
+					}
+
+					if (rate > 3)
+					{
+						rate = 3;
+						diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[getShitSongID(diffTextStr)])}';
+					}
+					else if (rate < 0.5)
+					{
+						rate = 0.5;
+						diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[getShitSongID(diffTextStr)])}';
+					}
+
+					previewtext.text = "Speed: " + FlxMath.roundDecimal(rate, 2) + "x";
 				}
-			}
-
-			if (upP)
-			{
-				if (songs.length > 1)
-					changeSelection(-1);
-			}
-			if (downP)
-			{
-				if (songs.length > 1)
-					changeSelection(1);
-			}
-		
-
-			if (FlxG.keys.justPressed.SPACE)
-			{
-				if (!songListen)
-				{	
-					#if PRELOAD_ALL
-					destroyFreeplayVocals();
-					FlxG.sound.music.volume = 0;
-					var currentSongData = songData.get(songs[curSelected].songName)[getShitSongID(diffTextStr)];
-					PlayState.SONG = currentSongData;
-					vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.songId, PlayState.SONG.diffSoundAssets));
-
-					FlxG.sound.list.add(vocals);
-					FlxG.sound.playMusic(Paths.inst(PlayState.SONG.songId, PlayState.SONG.diffSoundAssets), 0.7);
-					vocals.play();
-					vocals.persist = true;
-					vocals.looped = true;
-					vocals.volume = 0.7;
-					songListen = true;
-					#end
+				else if (FlxG.keys.pressed.CONTROL)
+				{
+					if (FlxG.keys.justPressed.LEFT)
+					{
+						PlayStateChangeables.twoPlayersMode = !PlayStateChangeables.twoPlayersMode;
+						twoPlayersMode.text = "Two Players Mode: " + Std.string(PlayStateChangeables.twoPlayersMode);
+					}
+					if (FlxG.keys.justPressed.RIGHT)
+					{
+						PlayStateChangeables.twoPlayersMode = !PlayStateChangeables.twoPlayersMode;
+						twoPlayersMode.text = "Two Players Mode: " + Std.string(PlayStateChangeables.twoPlayersMode);
+					}
 				}
 				else
 				{
+					if (FlxG.keys.justPressed.LEFT)
+					{
+						if (songs[curSelected].diffs.length > 1)
+							changeDiff(-1);
+					}
+					if (FlxG.keys.justPressed.RIGHT)
+					{
+						if (songs[curSelected].diffs.length > 1)
+							changeDiff(1);
+					}
+				}
+
+				if (controls.BACK)
+				{
+					PlayState.isFreeplay = false;
+					FlxG.switchState(new MainMenuState());
+				}
+
+				if (accepted)
+				{
 					destroyFreeplayVocals();
-					FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)), 0);
-					FlxG.sound.music.fadeIn(4, 0, 0.7);
-					songListen = false;
+					loadSong();
+				}
+				else if (charting)
+				{
+					destroyFreeplayVocals();	
+					loadSong(true);
 				}
 			}
-
-			if (FlxG.keys.pressed.SHIFT)
-			{
-				if (FlxG.keys.justPressed.LEFT)
-				{
-					rate -= 0.05;
-					diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[getShitSongID(diffTextStr)])}';
-				}
-				if (FlxG.keys.justPressed.RIGHT)
-				{
-					rate += 0.05;
-					diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[getShitSongID(diffTextStr)])}';
-				}
-
-				if (FlxG.keys.justPressed.R)
-				{
-					rate = 1;
-					diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[getShitSongID(diffTextStr)])}';
-				}
-
-				if (rate > 3)
-				{
-					rate = 3;
-					diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[getShitSongID(diffTextStr)])}';
-				}
-				else if (rate < 0.5)
-				{
-					rate = 0.5;
-					diffCalcText.text = 'RATING: ${DiffCalc.CalculateDiff(songData.get(songs[curSelected].songName)[getShitSongID(diffTextStr)])}';
-				}
-
-				previewtext.text = "Speed: " + FlxMath.roundDecimal(rate, 2) + "x";
-			}
-			else if (FlxG.keys.pressed.CONTROL)
-			{
-				if (FlxG.keys.justPressed.LEFT)
-				{
-					PlayStateChangeables.twoPlayersMode = !PlayStateChangeables.twoPlayersMode;
-					twoPlayersMode.text = "Two Players Mode: " + Std.string(PlayStateChangeables.twoPlayersMode);
-				}
-				if (FlxG.keys.justPressed.RIGHT)
-				{
-					PlayStateChangeables.twoPlayersMode = !PlayStateChangeables.twoPlayersMode;
-					twoPlayersMode.text = "Two Players Mode: " + Std.string(PlayStateChangeables.twoPlayersMode);
-				}
-			}
-			else
-			{
-				if (FlxG.keys.justPressed.LEFT)
-				{
-					if (songs[curSelected].diffs.length > 1)
-						changeDiff(-1);
-				}
-				if (FlxG.keys.justPressed.RIGHT)
-				{
-					if (songs[curSelected].diffs.length > 1)
-						changeDiff(1);
-				}
-			}
-
-			if (controls.BACK)
-			{
-				PlayState.isFreeplay = false;
-				FlxG.switchState(new MainMenuState());
-			}
-
-			if (accepted)
-			{
-				destroyFreeplayVocals();
-				loadSong();
-			}
-			else if (charting)
-			{
-				destroyFreeplayVocals();	
-				loadSong(true);
-			}
-		}
+		}	
 	}
 
 	function loadAnimDebug(dad:Bool = true)
@@ -706,6 +691,10 @@ class FreeplayState extends MusicBeatState
 
 		diffText.text = CoolUtil.difficultyFromInt(CoolUtil.difficultyArray.indexOf(songs[curSelected].diffs[curDifficulty])).toUpperCase();
 
+		/*try
+		{Debug.logTrace('Max score: ' + DiffCalc.getMaxScore(songData.get(songs[curSelected].songName)[getShitSongID(diffTextStr)]));}
+		catch(e)Debug.logError(e.details());*/
+
 		var hmm;
 		try
 		{
@@ -729,7 +718,7 @@ class FreeplayState extends MusicBeatState
 		if (openedPreview)
 		{
 			closeSubState();
-			openSubState(new DiffOverview());
+			openSubState(new DiffOverview(songData.get(songs[curSelected].songName)[getShitSongID(diffTextStr)]));
 		}
 
 		var bullShit:Int = 0;
@@ -773,18 +762,22 @@ class FreeplayState extends MusicBeatState
 
 	override function onWindowFocusOut():Void
 	{
-		FlxG.sound.music.pause();
-		if (songListen)
-			vocals.pause();
+		if (!openedPreview)
+			FlxG.sound.music.pause();
 	}
 
 	override function onWindowFocusIn():Void
 	{
 		Debug.logTrace("IM BACK!!!");
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(Main.save.data.fpsCap);
-		FlxG.sound.music.resume();
-		if (songListen)
-			vocals.resume();
+		if (!openedPreview)
+			FlxG.sound.music.resume();
+	}
+
+	override function closeSubState()
+	{
+		Conductor.MusicBeatInterface = this;
+		super.closeSubState();
 	}
 } 
 typedef FreeplaySonglist =

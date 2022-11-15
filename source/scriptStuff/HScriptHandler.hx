@@ -1,5 +1,7 @@
 package scriptStuff;
 
+import Shaders.VCRDistortionEffect;
+import animateatlas.AtlasFrameMaker;
 import lime.app.Application;
 import flixel.util.FlxSort;
 import flixel.util.FlxStringUtil;
@@ -624,6 +626,7 @@ class HScriptHandler extends SScript
 		set('FlxAxes', FlxAxes);
 		set('GraphicsShader', GraphicsShader);
 		set('ShaderFilter', ShaderFilter);
+		set('Capabilities', flash.system.Capabilities);
 
 		set('Discord', utils.DiscordClient);
 
@@ -641,6 +644,9 @@ class HScriptHandler extends SScript
 		set('WindowShakeEvent', WindowUtil.WindowShakeEvent);
 		set('Debug', Debug);
 		set('WiggleEffect', WiggleEffect);
+		set('AtlasFrameMaker', AtlasFrameMaker);
+		set('Achievements', Achievements);
+		set('VCRDistortionEffect', VCRDistortionEffect);
 
 		set('getRGBColor', getRGBColor);
 	}

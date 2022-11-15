@@ -1,3 +1,5 @@
+import gameplayStuff.Conductor;
+import states.PlayState;
 import flixel.FlxG;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
@@ -16,6 +18,7 @@ import flixel.util.FlxDestroyUtil;
 /**
  * stolen from https://github.com/HaxeFlixel/flixel/blob/master/flixel/system/debug/stats/StatsGraph.hx
  */
+ //Now without replay stuff!
 class HitGraph extends Sprite
 {
 	static inline var AXIS_COLOR:FlxColor = 0xffffff;
@@ -27,8 +30,8 @@ class HitGraph extends Sprite
 	public var maxLabel:TextField;
 	public var avgLabel:TextField;
 
-	/*public var minValue:Float = -(Math.floor((PlayState.rep.replay.sf / 60) * 1000) + 95);
-	public var maxValue:Float = Math.floor((PlayState.rep.replay.sf / 60) * 1000) + 95;*/
+	public var minValue:Float = -(Math.floor((Conductor.safeFrames / 60) * 1000) + 95);
+	public var maxValue:Float = Math.floor((Conductor.safeFrames / 60) * 1000) + 95;
 
 	public var showInput:Bool = Main.save.data.inputShow;
 
@@ -62,13 +65,13 @@ class HitGraph extends Sprite
 		_axis = new Shape();
 		_axis.x = _labelWidth + 10;
 
-		//ts = Math.floor((PlayState.rep.replay.sf / 60) * 1000) / 166;
+		ts = Math.floor((Conductor.safeFrames / 60) * 1000) / 166;
 
 		var early = createTextField(10, 10, FlxColor.WHITE, 12);
 		var late = createTextField(10, _height - 20, FlxColor.WHITE, 12);
 
-		//early.text = "Early (" + -166 * ts + "ms)";
-		//late.text = "Late (" + 166 * ts + "ms)";
+		early.text = "Early (" + -166 * ts + "ms)";
+		late.text = "Late (" + 166 * ts + "ms)";
 
 		addChild(early);
 		addChild(late);
@@ -128,10 +131,10 @@ class HitGraph extends Sprite
 
 		gfx.lineStyle(1, graphColor, 0.3);
 
-		//var ts = Math.floor((PlayState.rep.replay.sf / 60) * 1000) / 166;
-		//var range:Float = Math.max(maxValue - minValue, maxValue * 0.1);
+		var ts = Math.floor((Conductor.safeFrames / 60) * 1000) / 166;
+		var range:Float = Math.max(maxValue - minValue, maxValue * 0.1);
 
-		var value = /*(*/(ms/* * ts*/)/* - minValue) / range*/;
+		var value = ((ms * ts) - minValue) / range;
 
 		var pointY = _axis.y + ((-value * _height - 1) + _height);
 
@@ -188,14 +191,14 @@ class HitGraph extends Sprite
 		drawJudgementLine(-166);
 		gfx.endFill();
 
-		var range:Float = 1 /*Math.max(maxValue - minValue, maxValue * 0.1)*/;
+		var range:Float = Math.max(maxValue - minValue, maxValue * 0.1);
 		var graphX = _axis.x + 1;
 
 		if (showInput)
 		{
-			/*for (i in 0...PlayState.rep.replay.ana.anaArray.length)
+			for (i in 0...PlayState.songStats.anaArray.length)
 			{
-				var ana = PlayState.rep.replay.ana.anaArray[i];
+				var ana = PlayState.songStats.anaArray[i];
 
 				var value = (ana.key * 25 - minValue) / range;
 
@@ -210,12 +213,12 @@ class HitGraph extends Sprite
 				var pointY = (-value * _height - 1) + _height;
 				gfx.drawRect(graphX + fitX(ana.hitTime), pointY, 2, 2);
 				gfx.endFill();
-			}*/
+			}
 		}
 
 		for (i in 0...history.length)
 		{
-			var value = (history[i][0]/* - minValue*/) / range;
+			var value = (history[i][0] - minValue) / range;
 			var judge = history[i][1];
 
 			switch (judge)

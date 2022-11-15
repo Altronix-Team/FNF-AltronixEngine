@@ -1,5 +1,6 @@
 package gameplayStuff;
 
+import flixel.tweens.FlxTween;
 import flixel.FlxG;
 import flixel.FlxBasic;
 import flixel.FlxSprite;
@@ -17,6 +18,7 @@ class CutsceneHandler extends FlxBasic
 	public var objects:Array<FlxSprite> = [];
 	public var music:String = null;
 	public var sounds:Array<FlxSound> = [];
+	public var tweens:Array<FlxTween> = [];
 	public function new()
 	{
 		super();
@@ -79,6 +81,12 @@ class CutsceneHandler extends FlxBasic
 			{
 				if (sound.playing)
 					sound.stop();
+			}
+
+			for (twn in tweens)
+			{
+				if (twn.active)
+					twn.cancel();
 			}
 			
 			kill();

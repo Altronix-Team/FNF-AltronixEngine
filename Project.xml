@@ -95,9 +95,8 @@
 		<library name="custom_difficulties"    preload="true" />
 		<library name="custom_achievements"    preload="true" />
 		<library name="art"    preload="true" />
+		<library name="scripts" preload="true" />
 	</section>
-	
-	
 	
 	<section if="NO_PRELOAD_ALL">
 		<library name="core"	preload="false"/>
@@ -117,8 +116,6 @@
 		<library name="custom_achievements"    preload="false" />
 		<library name="art"    preload="false" />
 	</section>
-	
-	<library name="scripts" preload="true" />
 	
 	<assets path="assets/songs"    library="songs"    exclude="*.ogg" if="web"/>
 	<assets path="assets/songs"    library="songs"    exclude="*.mp3" unless="web"/>

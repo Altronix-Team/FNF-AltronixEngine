@@ -82,27 +82,12 @@ class GameOverSubstate extends MusicBeatSubstate
 				GameplayCustomizeState.freeplayWeek = 1;
 				MusicBeatState.switchState(new StoryMenuState());
 			}
-			/*else if (PlayState.isExtras)
-				MusicBeatState.switchState(new SecretState());
-			else if (PlayState.fromPasswordMenu)
-				MusicBeatState.switchState(new MainMenuState());*/
 			else
 				MusicBeatState.switchState(new FreeplayState());
-			//PlayState.loadRep = false;
 			PlayState.stageTesting = false;
 			PlayState.isStoryMode = false;
-			PlayState.isExtras = false;
-			PlayState.fromPasswordMenu = false;
 			PlayState.isFreeplay = false;
 			ScriptHelper.clearAllScripts();
-
-			if (PlayState.SONG.songId == 'thorns')
-			{
-				//WindowUtil.resizeWindow(FlxG.initialWidth, FlxG.initialHeight);
-				//WindowUtil.setBorderlessWindowed(false);
-				if (PlayState.fullscree)
-					WindowUtil.setFullscreen(true);
-			}
 		}
 
 		if (boyfriend.animation.curAnim.name == 'firstDeath' && boyfriend.animation.curAnim.curFrame == 12)

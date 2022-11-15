@@ -5,3 +5,6 @@ import haxe.macro.Context;
 import flixel.FlxG;
 import Debug;
 #end
+
+using StringTools;
+using hx.strings.Strings;

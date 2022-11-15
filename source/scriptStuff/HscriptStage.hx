@@ -165,4 +165,12 @@ class HscriptStage extends HScriptModchart
 		}
 		return null;
 	}
+
+	override public function update(elapsed:Float)
+	{
+		super.update(elapsed);
+		if (scriptHandler.exists('onUpdate'))
+			scriptHandler.call('onUpdate', [elapsed]);
+	}
+
 }

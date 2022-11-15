@@ -177,10 +177,12 @@ class DiffOverview extends MusicBeatSubstate
 
 		if (unspawnNotes[0] != null)
 		{
-			if (unspawnNotes[0].strumTime - Conductor.songPosition < 3500)
+			if (unspawnNotes[0].strumTime - Conductor.songPosition < 14000 * FreeplayState.rate)
 			{
 				var dunceNote:Note = unspawnNotes[0];
 				notes.add(dunceNote);
+
+				dunceNote.cameras = [camHUD];
 
 				var index:Int = unspawnNotes.indexOf(dunceNote);
 				unspawnNotes.splice(index, 1);

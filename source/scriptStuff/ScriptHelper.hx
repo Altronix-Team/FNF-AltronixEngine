@@ -33,14 +33,19 @@ class ScriptHelper
 		}
 	}
 
-	public static function callOnHscript(functionToCall:String, ?params:Array<Any>)
+	public static function callOnHscript(functionToCall:String, ?params:Array<Any>):Dynamic
 	{
+		var retVal = false;
 		for (script in hscriptFiles)
 		{
 			var scriptHelper = script.scriptHandler;
 			if (scriptHelper.exists(functionToCall))
-				scriptHelper.call(functionToCall, params);
+			{
+				if (scriptHelper.call(functionToCall, params) != null)
+					retVal = true;
+			}
 		}
+		return retVal;
 	}
 
 	private static var preventLuaRemove:Bool = false;

@@ -1,5 +1,6 @@
 package scriptStuff;
 
+import gameplayStuff.CutsceneHandler;
 import states.MusicBeatState;
 import flixel.FlxSprite;
 import gameplayStuff.PlayStateChangeables;
@@ -232,7 +233,6 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 			if (!scriptHandler.exists("stage"))
 				scriptHandler.set("stage", curState.hscriptStage);
 		}
-		
 
 		if (!scriptHandler.exists("gf") && curState.gf != null)
 			scriptHandler.set("gf", curState.gf);
@@ -258,6 +258,7 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 		scriptHandler.set("camGame", curState.camGame);
 		scriptHandler.set("camHUD", curState.camHUD);
 		scriptHandler.set("PlayStateChangeables", PlayStateChangeables);
+		scriptHandler.set('CutsceneHandler', CutsceneHandler);
 
 		scriptHandler.set("setObjectCam", setObjectCam);
 
@@ -266,8 +267,16 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 		scriptHandler.set('add', add);
 		scriptHandler.set('remove', remove);
 
+		scriptHandler.set('destroyScript', destroyScript);
 
 		scriptHandler.call('onCreate', []);
+
+		Debug.logInfo('Successfully loaded new hscript file: ' + path.removeBefore('/'));
+	}
+
+	private function destroyScript() {
+		if (ScriptHelper.hscriptFiles.contains(this))
+			ScriptHelper.hscriptFiles.remove(this);
 	}
 
 	public function setObjectCam(object:FlxBasic, camera:String)
@@ -284,10 +293,10 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 		{
 			case 'camhud' | 'hud':
 				return PlayState.instance.camHUD;
-			case 'camsustains' | 'sustains':
+			/*case 'camsustains' | 'sustains':
 				return PlayState.instance.camSustains;
 			case 'camnotes' | 'notes':
-				return PlayState.instance.camNotes;
+				return PlayState.instance.camNotes;*/
 		}
 		return PlayState.instance.camGame;
 	}
@@ -316,13 +325,6 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 				PlayState.instance.startCountdown();
 			}
 		}
-	}
-
-	override public function update(elapsed:Float)
-	{
-		super.update(elapsed);
-		if (scriptHandler.exists('onUpdate'))
-			scriptHandler.call('onUpdate', [elapsed]);
 	}
 
 	override public function add(Object:FlxBasic):FlxBasic

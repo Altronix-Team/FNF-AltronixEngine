@@ -334,12 +334,15 @@ class DialogueBox extends FlxSpriteGroup
 	{
 		if (value != null && value != '' && dialogueSound != value)
 		{
-			if (sound.playing)
+			if (sound != null)
 			{
-				sound.stop();
-				FlxG.sound.list.remove(sound);
+				if (sound.playing)
+				{
+					sound.stop();
+					FlxG.sound.list.remove(sound);
+				}
+				sound = null;
 			}
-			sound = null;
 
 			sound = new FlxSound().loadEmbedded(Paths.music(value), true);
 			sound.volume = 0;

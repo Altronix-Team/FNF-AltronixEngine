@@ -155,7 +155,7 @@ class Paths
 
 	inline static public function xml(key:String, ?library:String)
 	{
-		return getPath('data/$key.xml', TEXT, library);
+		return getPath('$key.xml', TEXT, library);
 	}
 
 	inline static public function json(key:String, ?library:String)
@@ -450,6 +450,58 @@ class Paths
 	
 			return results;
 		}
+
+	/**
+	 * List all the files under a given subdirectory.
+	 * @param path The path to look under.
+	 * @return The list of files under that path.
+	 */
+	public static function listFilesInPath(path:String, fileType:AssetType = TEXT, fileEnd:String = '.txt')
+	{
+		var dataAssets = OpenFlAssets.list(fileType);
+
+		var queryPath = '${path}';
+
+		var results:Array<String> = [];
+
+		for (data in dataAssets)
+		{
+			if (data.indexOf(queryPath) != -1
+				&& data.endsWith(fileEnd)
+				&& !results.contains(data.substr(data.indexOf(queryPath) + queryPath.length).replaceAll(fileEnd, '')))
+			{
+				var suffixPos = data.indexOf(queryPath) + queryPath.length;
+				results.push(data.substr(suffixPos).replaceAll(fileEnd, ''));
+			}
+		}
+
+		return results;
+	}
+
+	/**
+	 * List all the folders under a given subdirectory.
+	 * @param path The path to look under.
+	 * @return The list of folders under that path.
+	 */
+	public static function listFoldersInPath(path:String)
+	{
+		var dataAssets = OpenFlAssets.list();
+
+		var queryPath = '${path}';
+
+		var results:Array<String> = [];
+
+		for (data in dataAssets)
+		{
+			if (data.indexOf(queryPath) != -1
+				&& !results.contains(data.substr(data.indexOf(queryPath) + queryPath.length).replace(queryPath, '').removeAfter('/')))
+			{
+				var suffixPos = data.indexOf(queryPath) + queryPath.length;
+				results.push(data.substr(suffixPos).replace(queryPath, '').removeAfter('/'));
+			}
+		}
+		return results;
+	}
 
 	/**
 	 * List all the data JSON files under a given subdirectory.

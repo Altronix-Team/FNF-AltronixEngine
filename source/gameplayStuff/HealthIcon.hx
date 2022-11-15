@@ -36,8 +36,8 @@ class HealthIcon extends FlxSprite
 
 	public var sprTracker:FlxSprite;
 
-	public var defaultAnim:String;
-	public var nearToDieAnim:String;
+	public var defaultAnim:String = null;
+	public var nearToDieAnim:String = null;
 
 	public function new(character:String, filename:String, ?isPlayer:Bool = false)
 	{
@@ -62,7 +62,7 @@ class HealthIcon extends FlxSprite
 	private var iconOffsets:Array<Float> = [0, 0];
 	public function changeIcon(char:String, filename:String)
 	{
-		/*if (Paths.isAnimated('characters/$char/$filename'))
+		/*if (OpenFlAssets.exists(Paths.xml('characters/$char/$filename')))
 		{
 			loadIcon(char, filename);
 		}
@@ -82,13 +82,13 @@ class HealthIcon extends FlxSprite
 			return;
 		}
 
-		var data:IconData = Paths.loadJSON('characters${(char != '' ? '/$char' : '')}/$filename'); //Json.parse(OpenFlAssets.getText(Paths.json('characters/$char/$filename')).trim());
+		var data:IconData = Paths.loadJSON('characters${(char != '' ? '/$char' : '')}/$filename');
 
 		defaultAnim = data.defaultAnim;
 		nearToDieAnim = data.nearToDieAnim;
 
 		frames = FlxAtlasFrames.fromSparrow(FlxGraphic.fromBitmapData(OpenFlAssets.getBitmapData(image(char != '' ? '/$char' : '', filename))),
-			OpenFlAssets.getPath(Paths.file('characters${(char != '' ? '/$char' : '')}/$filename.xml')));
+			OpenFlAssets.getPath(Paths.xml('characters${(char != '' ? '/$char' : '')}/$filename')));
 	
 		for (i in data.animations)
 		{

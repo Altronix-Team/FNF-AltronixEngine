@@ -34,6 +34,7 @@ class NoteskinHelpers
 
 			if (!i.endsWith(".png"))
 				continue;
+			
 			noteskinArray.push(i.replace(".png", ""));	
 		}
 
@@ -62,13 +63,20 @@ class NoteskinHelpers
 
 	static public function generatePixelSprite(id:String, ends:Bool = false)
 	{
-		var path = "assets/shared/images/noteskins/" + id + "-pixel" + (ends ? "-ends" : "");
+		var path = "noteskins/" + id + "-pixel" + (ends ? "-ends" : "");
 
-		if (!OpenFlAssets.exists(Paths.image(path)))
+		var defaultBitmap = BitmapData.fromFile("assets/shared/images/noteskins/Arrows-pixel" + (ends ? "-ends" : "") + ".png");
+
+		if (!OpenFlAssets.exists(Paths.image(path, 'shared')))
 		{
-			//Debug.logTrace("getting default pixel skin");
-			return BitmapData.fromFile("assets/shared/images/noteskins/Arrows-pixel" + (ends ? "-ends" : "") + ".png");
+			return defaultBitmap;
 		}
-		return BitmapData.fromFile(Paths.image(path));
+		else
+		{
+			if (BitmapData.fromFile(Paths.image(path, 'shared')) != null) //It can return null, lol
+				return BitmapData.fromFile(Paths.image(path, 'shared'));
+			else
+				return defaultBitmap;
+		}
 	}
 }	

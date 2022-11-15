@@ -91,7 +91,6 @@ class ChartingState extends MusicBeatState
 		"Scroll Speed Change",
 		"Start Countdown",
 		"Change Character",
-		"Change Stage",
 		"Song Overlay",
 		'Character play animation',
 		"Camera zoom",
@@ -2569,9 +2568,7 @@ class ChartingState extends MusicBeatState
 					autosaveSong();
 					FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)), 0);
 					PlayState.chartingMode = false;
-					/*if (PlayState.isExtras)
-						MusicBeatState.switchState(new states.SecretState());
-					else*/ if (PlayState.isFreeplay)
+					if (PlayState.isFreeplay)
 						MusicBeatState.switchState(new states.FreeplayState());
 					else if (PlayState.isStoryMode)
 						MusicBeatState.switchState(new states.StoryMenuState());
@@ -3356,10 +3353,6 @@ class ChartingState extends MusicBeatState
 
 					case "Change GF Character":
 						eventDescriptionText = 'Type in Event Value name of new gf character';
-						eventDescription.text = eventDescriptionText;
-
-					case "Change Stage":
-						eventDescriptionText = 'Type in Event Value name of new stage';
 						eventDescription.text = eventDescriptionText;
 
 					case "Song Overlay":

@@ -1,0 +1,26 @@
+var triggeredAlready = false;
+
+function onUpdate(elapsed)
+{
+	if (gf.animation.curAnim.name == 'danceLeft'
+		|| gf.animation.curAnim.name == 'danceRight'
+		|| gf.animation.curAnim.name == 'idle')
+	{
+		if (curBeat > 30 && curBeat < 190)
+		{
+			if (curBeat < 90 || curBeat > 128)
+			{
+				if (curBeat % 4 == 2)
+				{
+					if (!triggeredAlready)
+					{
+						gf.playAnim('cheer');
+						triggeredAlready = true;
+					}
+				}
+				else
+					triggeredAlready = false;
+			}
+		}
+	}
+}

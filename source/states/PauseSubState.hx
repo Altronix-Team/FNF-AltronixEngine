@@ -112,16 +112,6 @@ class PauseSubState extends MusicBeatSubstate
 				detailsText = "Freeplay";
 			else
 				detailsText = "Свободная игра";}
-		if (PlayState.isExtras){
-			if (!Main.save.data.language)
-				detailsText = 'Extras';
-			else
-				detailsText = 'Дополнительно';}
-		if (PlayState.fromPasswordMenu){
-			if (!Main.save.data.language)
-				detailsText = 'Extras';
-			else
-				detailsText = 'Дополнительно';}
 
 		iconRPC = PlayState.SONG.player2;
 
@@ -299,25 +289,12 @@ class PauseSubState extends MusicBeatSubstate
 					}
 					else if (PlayState.isFreeplay)
 						MusicBeatState.switchState(new FreeplayState());
-					/*else if (PlayState.isExtras)
-						MusicBeatState.switchState(new SecretState());
-					else if (PlayState.fromPasswordMenu)
-						MusicBeatState.switchState(new MainMenuState());*/
 					PlayState.isStoryMode = false;
-					PlayState.isExtras = false;
-					PlayState.fromPasswordMenu = false;
 					PlayState.isFreeplay = false;
 					PlayState.chartingMode = false;
 					PlayStateChangeables.twoPlayersMode = false;
 					ScriptHelper.clearAllScripts();
 
-					if (PlayState.SONG.songId == 'thorns')
-					{
-						//WindowUtil.resizeWindow(FlxG.initialWidth, FlxG.initialHeight);
-						//WindowUtil.setBorderlessWindowed(false);
-						if (PlayState.fullscree)
-							WindowUtil.setFullscreen(true);
-					}
 			}
 		}
 	}

@@ -93,7 +93,7 @@ class Note extends FlxSprite
 	var noteTypeCheck:String = 'normal';
 	public var noteStyle:String;
 
-	public var texture:String = null;
+	public var texture(default, set):String = null;
 
 	public var noAnimation:Bool = false;
 	public var noMissAnimation:Bool = false;
@@ -327,10 +327,13 @@ class Note extends FlxSprite
 			}
 		}
 
-		if (animation.curAnim.name.endsWith('holdend'))
-			isEnd = true;
-		else
-			isEnd = false;
+		if (animation.curAnim != null)
+		{
+			if (animation.curAnim.name.endsWith('holdend'))
+				isEnd = true;
+			else
+				isEnd = false;
+		}
 	}
 
 	override function update(elapsed:Float)
@@ -351,30 +354,6 @@ class Note extends FlxSprite
 		
 		if (Main.save.data.downscroll != flipY && isSustainNote)
 			flipY = Main.save.data.downscroll;
-
-		if (lasttexture != texture)
-		{
-			lasttexture = texture;
-			if (OpenFlAssets.exists(Paths.json('images/noteskins/$texture')))
-			{
-				noteMetaData = cast Paths.loadJSON('images/noteskins/$texture');
-				texture = noteMetaData.imageFile;
-			}
-			else if (OpenFlAssets.exists(Paths.json('images/noteskins/$noteStyle')))
-			{
-				noteMetaData = cast Paths.loadJSON('images/noteskins/$noteStyle');
-					texture = noteMetaData.imageFile;
-			}
-			else
-			{
-				noteMetaData = {
-					imageFile: texture,
-					size: 0.7,
-					listInSettings: true
-				}
-			}
-			reloadNote(noteMetaData);
-		}
 
 		if (sprTracker != null)
 		{
@@ -456,6 +435,37 @@ class Note extends FlxSprite
 			animation.add(dataColor[i] + 'hold', [i]);
 			animation.add(dataColor[i] + 'holdend', [i + 4]);
 		}
+	}
+
+	function set_texture(value:String):String {
+		if (value != null)
+		{
+			texture = value;
+
+			if (created)
+			{
+				if (OpenFlAssets.exists(Paths.json('images/noteskins/$texture')))
+				{
+					noteMetaData = cast Paths.loadJSON('images/noteskins/$texture');
+					texture = noteMetaData.imageFile;
+				}
+				else if (OpenFlAssets.exists(Paths.json('images/noteskins/$noteStyle')))
+				{
+					noteMetaData = cast Paths.loadJSON('images/noteskins/$noteStyle');
+					texture = noteMetaData.imageFile;
+				}
+				else
+				{
+					noteMetaData = {
+						imageFile: texture,
+						size: 0.7,
+						listInSettings: true
+					}
+				}
+				reloadNote(noteMetaData);
+			}	
+		}
+		return value;
 	}
 }
 

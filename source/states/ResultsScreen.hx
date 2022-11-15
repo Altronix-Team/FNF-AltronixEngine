@@ -34,6 +34,7 @@ import flixel.input.FlxKeyManager;
 import states.LoadingState.LoadingsState;
 import gameplayStuff.Highscore;
 import gameplayStuff.Conductor;
+import gameplayStuff.Section;
 
 using StringTools;
 
@@ -42,12 +43,16 @@ class ResultsScreen extends FlxSubState
 	public var background:FlxSprite;
 	public var text:FlxText;
 
+	public var anotherBackground:FlxSprite;
+	public var graph:HitGraph;
+	public var graphSprite:OFLSprite;
+	public var graphData:BitmapData;
+
 	public var comboText:FlxText;
 	public var contText:FlxText;
 	public var settingsText:FlxText;
 
 	public var music:FlxSound;
-
 
 	public var ranking:String;
 	public var accuracy:String;
@@ -103,6 +108,21 @@ class ResultsScreen extends FlxSubState
 		contText.scrollFactor.set();
 		add(contText);
 
+		anotherBackground = new FlxSprite(FlxG.width - 500, 45).makeGraphic(450, 240, FlxColor.BLACK);
+		anotherBackground.scrollFactor.set();
+		anotherBackground.alpha = 0;
+		add(anotherBackground);
+
+		graph = new HitGraph(FlxG.width - 500, 45, 495, 240);
+		graph.alpha = 0;
+
+		graphSprite = new OFLSprite(FlxG.width - 510, 45, 460, 240, graph);
+
+		graphSprite.scrollFactor.set();
+		graphSprite.alpha = 0;
+
+		add(graphSprite);
+
 		var sicks = CoolUtil.truncateFloat(PlayState.sicks / PlayState.goods, 1);
 		var goods = CoolUtil.truncateFloat(PlayState.goods / PlayState.bads, 1);
 
@@ -113,12 +133,40 @@ class ResultsScreen extends FlxSubState
 
 		var mean:Float = 0;
 
+		var curNote:Int = 0;
+		for (sect in PlayState.SONG.notes)
+		{
+			for (note in sect.sectionNotes)
+			{
+				// 0 = time
+				// 1 = length
+				// 2 = type
+				// 3 = diff
+				var obj = note;
+				// judgement
+				var obj2 = PlayState.songJudgements[curNote];
+
+				var obj3 = obj[0];
+
+				var diff = obj[3];
+				var judge = obj2;
+				if (diff != (166 * Math.floor((Conductor.safeFrames / 60) * 1000) / 166))
+					mean += diff;
+				if (obj[1] != -1)
+					graph.addToHistory(diff / PlayState.songMultiplier, judge, obj3 / PlayState.songMultiplier);
+
+				curNote++;
+			}
+		}
+
 		if (sicks == Math.POSITIVE_INFINITY || sicks == Math.NaN)
 			sicks = 0;
 		if (goods == Math.POSITIVE_INFINITY || goods == Math.NaN)
 			goods = 0;
 
-		mean = CoolUtil.truncateFloat(mean, 2);
+		graph.update();
+
+		mean = CoolUtil.truncateFloat(mean / PlayState.songStats.anaArray.length, 2);
 
 		settingsText = new FlxText(20, FlxG.height + 50, 0,
 			'Mean: ${mean}ms (SICK:${Ratings.timingWindows[3]}ms,GOOD:${Ratings.timingWindows[2]}ms,BAD:${Ratings.timingWindows[1]}ms,SHIT:${Ratings.timingWindows[0]}ms)');
@@ -133,6 +181,13 @@ class ResultsScreen extends FlxSubState
 		FlxTween.tween(comboText, {y: 145}, 0.5, {ease: FlxEase.expoInOut});
 		FlxTween.tween(contText, {y: FlxG.height - 45}, 0.5, {ease: FlxEase.expoInOut});
 		FlxTween.tween(settingsText, {y: FlxG.height - 35}, 0.5, {ease: FlxEase.expoInOut});
+		FlxTween.tween(anotherBackground, {alpha: 0.6}, 0.5, {
+			onUpdate: function(tween:FlxTween)
+			{
+				graph.alpha = FlxMath.lerp(0, 1, tween.percent);
+				graphSprite.alpha = FlxMath.lerp(0, 1, tween.percent);
+			}
+		});
 
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 
@@ -167,24 +222,12 @@ class ResultsScreen extends FlxSubState
 				Conductor.changeBPM(102);
 				MusicBeatState.switchState(new StoryMenuState());
 			}
-			/*else if (PlayState.isExtras)
-			{
-				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)));
-				MusicBeatState.switchState(new SecretState());
-			}
-			else if (PlayState.fromPasswordMenu)
-			{
-				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)));
-				MusicBeatState.switchState(new MainMenuState());
-			}*/
 			else
 			{
 				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)));
 				MusicBeatState.switchState(new FreeplayState());
 			}
 			PlayState.isStoryMode = false;
-			PlayState.isExtras = false;
-			PlayState.fromPasswordMenu = false;
 			PlayState.isFreeplay = false;
 			PlayState.instance.clean();
 		}

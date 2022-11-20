@@ -17,9 +17,6 @@ import openfl.display.BitmapData;
 import haxe.Json;
 import states.PlayState;
 
-using StringTools;
-using hx.strings.Strings;
-
 class Paths
 {
 	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;

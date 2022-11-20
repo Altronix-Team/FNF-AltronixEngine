@@ -21,7 +21,6 @@ import sys.io.File;
 #end
 import openfl.utils.Assets;
 
-using StringTools;
 
 //TODO Remove and add support for dialog files and characters from psych engine to DialogueBox.hx
 typedef DialogueCharacterFile = {

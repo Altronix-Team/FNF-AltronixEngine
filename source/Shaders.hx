@@ -8,7 +8,6 @@ import openfl.utils.Assets;
 import flixel.FlxG;
 import openfl.Lib;
 
-using StringTools;
 
 typedef ShaderEffect =
 {

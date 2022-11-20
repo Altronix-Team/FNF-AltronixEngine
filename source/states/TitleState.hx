@@ -46,8 +46,6 @@ import ModCore;
 import DiscordClient;
 #end
 
-using StringTools;
-using hx.strings.Strings;
 
 class TitleState extends MusicBeatState
 {
@@ -272,7 +270,7 @@ class TitleState extends MusicBeatState
 		if (initialized)
 		{
 			if (!FlxG.sound.music.playing)
-				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)), 0);
+				FlxG.sound.playMusic(Paths.music(Main.save.data.menuMusic), 0);
 			skipIntro();
 		}
 		else
@@ -293,7 +291,9 @@ class TitleState extends MusicBeatState
 			// IF THIS PR IS HERE IF ITS ACCEPTED UR GOOD TO GO
 			// https://github.com/HaxeFlixel/flixel-addons/pull/348
 
-			FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)), 0);
+			FlxG.sound.playMusic(Paths.music(Main.save.data.menuMusic), 0);
+
+			//if (Application.current.window.f)
 
 			FlxG.sound.music.fadeIn(4, 0, 0.7);
 			Conductor.changeBPM(102);

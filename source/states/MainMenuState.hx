@@ -25,7 +25,6 @@ import DiscordClient;
 #end
 import flixel.math.FlxMath;
 
-using StringTools;
 
 class MainMenuState extends MusicBeatState
 {
@@ -76,7 +75,7 @@ class MainMenuState extends MusicBeatState
 
 		if (!FlxG.sound.music.playing)
 		{
-			FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)));
+			FlxG.sound.playMusic(Paths.music(Main.save.data.menuMusic));
 		}
 
 		persistentUpdate = persistentDraw = true;

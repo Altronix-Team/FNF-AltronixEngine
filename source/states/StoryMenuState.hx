@@ -27,7 +27,6 @@ import gameplayStuff.Conductor;
 import gameplayStuff.Song;
 import gameplayStuff.Highscore;
 
-using StringTools;
 
 class StoryMenuState extends MusicBeatState
 {
@@ -113,7 +112,7 @@ class StoryMenuState extends MusicBeatState
 		{
 			if (!FlxG.sound.music.playing)
 			{
-				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)));
+				FlxG.sound.playMusic(Paths.music(Main.save.data.menuMusic));
 				Conductor.changeBPM(102);
 			}
 		}

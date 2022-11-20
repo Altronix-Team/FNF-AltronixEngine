@@ -44,9 +44,6 @@ import gameplayStuff.HealthIcon;
 import sys.FileSystem;
 #end
 
-using StringTools;
-using hx.strings.Strings;
-
 class CharacterEditorState extends MusicBeatState
 {
 	var Stage:Stage;
@@ -1164,7 +1161,7 @@ class CharacterEditorState extends MusicBeatState
 					MusicBeatState.switchState(new states.PlayState());
 				} else {
 					MusicBeatState.switchState(new MasterEditorMenu());
-					FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)));
+					FlxG.sound.playMusic(Paths.music(Main.save.data.menuMusic));
 				}
 				FlxG.mouse.visible = false;
 				return;

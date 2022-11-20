@@ -14,7 +14,6 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import states.PlayState;
 
-using StringTools;
 
 class DialogueBox extends FlxSpriteGroup
 {

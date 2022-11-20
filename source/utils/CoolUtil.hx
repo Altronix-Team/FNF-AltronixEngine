@@ -11,10 +11,6 @@ import flixel.math.FlxMath;
 
 import openfl.utils.Assets as OpenFlAssets;
 
-using StringTools;
-using hx.strings.Strings;
-
-
 class CoolUtil
 {
 	public static var difficultyArray:Array<String> = ['Easy', "Normal", "Hard", "Hard P"];

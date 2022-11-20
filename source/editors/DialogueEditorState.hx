@@ -34,8 +34,6 @@ import states.MusicBeatState;
 import sys.io.File;
 #end
 
-using StringTools;
-
 //TODO Test this
 class DialogueEditorState extends MusicBeatState
 {
@@ -365,7 +363,7 @@ class DialogueEditorState extends MusicBeatState
 			}
 			if(FlxG.keys.justPressed.ESCAPE) {
 				MusicBeatState.switchState(new MasterEditorMenu());
-				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)), 1);
+				FlxG.sound.playMusic(Paths.music(Main.save.data.menuMusic), 1);
 				transitioning = true;
 			}
 			var negaMult:Array<Int> = [1, -1];

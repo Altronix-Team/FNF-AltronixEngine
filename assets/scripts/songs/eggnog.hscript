@@ -21,3 +21,21 @@ function onUpdate(elapsed)
 		}
 	}
 }
+
+function onEndSong()
+{
+	PlayState.instance.blockSongEnd = true;
+	if (isStoryMode)
+	{
+		var blackShit:FlxSprite = new FlxSprite(-FlxG.width * FlxG.camera.zoom,
+			-FlxG.height * FlxG.camera.zoom).makeGraphic(FlxG.width * 3, FlxG.height * 3, 0xFF000000);
+		blackShit.scrollFactor.set();
+		PlayState.instance.add(blackShit);
+		camHUD.visible = false;
+
+		FlxG.sound.play(Paths.sound('Lights_Shut_off'), 1, false, null, true, onComplete: function(){
+			PlayState.instance.blockSongEnd = false;
+			PlayState.instance.endSong();
+		});
+	}
+}

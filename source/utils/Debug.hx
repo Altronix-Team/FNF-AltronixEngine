@@ -12,7 +12,6 @@ import haxe.PosInfos;
 import openfl.system.Capabilities;
 import openfl.events.UncaughtErrorEvent;
 
-using hx.strings.Strings;
 
 /**
  * Hey you, developer!

@@ -55,7 +55,6 @@ import states.FreeplayState;
 import DiscordClient;
 #end
 
-using StringTools;
 
 class FunkinLua {
 	public static var Function_Stop:Dynamic = 1;

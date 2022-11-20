@@ -7,8 +7,7 @@ import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.FlxG;
 import openfl.utils.Assets as OpenFlAssets;
 import gameplayStuff.Note;
-
-using StringTools;
+import haxe.xml.Access;
 
 class NoteskinHelpers
 {
@@ -19,15 +18,12 @@ class NoteskinHelpers
 		noteskinArray = [];
 		for (i in Paths.listImagesInPath('noteskins/'))
 		{
-			var noteMetaData:NoteMeta = null;
-			if (OpenFlAssets.exists(Paths.json('images/noteskins/$i')))
+			if (OpenFlAssets.exists(Paths.json('images/noteskins/${i.replace(".png", "")}', 'shared')))
 			{
-				if (OpenFlAssets.exists(Paths.json('images/noteskins/$i')))
-					noteMetaData = cast Paths.loadJSON('images/noteskins/$i');
-			}
-			if (noteMetaData != null)
+				var noteMetaData:NoteMeta = cast Paths.loadJSON('images/noteskins/${i.replace(".png", "")}', 'shared');
 				if (!noteMetaData.listInSettings)
 					continue;
+			}			
 
 			if (i.contains("-pixel"))
 				continue;
@@ -61,20 +57,40 @@ class NoteskinHelpers
 		return Paths.getSparrowAtlas('noteskins/' + id, "shared");	
 	}
 
+	public static function getPrefixesList(id:String):Array<String>
+	{
+		var retValue:Array<String> = [];
+
+		var path = Paths.xml('images/noteskins/' + id, "shared");
+
+		if (OpenFlAssets.exists(path))
+		{
+			var data:Access = new Access(Xml.parse(OpenFlAssets.getText(path)).firstElement());
+
+			for (texture in data.nodes.SubTexture)
+			{
+				var name = texture.att.name.removeAfter('0').replaceAll('0', '');
+				if (!retValue.contains(name))
+					retValue.push(name);
+			}
+		}
+		return retValue;
+	}
+
 	static public function generatePixelSprite(id:String, ends:Bool = false)
 	{
-		var path = "noteskins/" + id + "-pixel" + (ends ? "-ends" : "");
+		var path = Paths.image("noteskins/" + id + "-pixel" + (ends ? "-ends" : ""), 'shared');
 
-		var defaultBitmap = BitmapData.fromFile("assets/shared/images/noteskins/Arrows-pixel" + (ends ? "-ends" : "") + ".png");
+		var defaultBitmap = OpenFlAssets.getBitmapData("assets/shared/images/noteskins/Arrows-pixel" + (ends ? "-ends" : "") + ".png");
 
-		if (!OpenFlAssets.exists(Paths.image(path, 'shared')))
+		if (!OpenFlAssets.exists(path))
 		{
 			return defaultBitmap;
 		}
 		else
 		{
-			if (BitmapData.fromFile(Paths.image(path, 'shared')) != null) //It can return null, lol
-				return BitmapData.fromFile(Paths.image(path, 'shared'));
+			if (OpenFlAssets.getBitmapData(path) != null) //It can return null, lol
+				return OpenFlAssets.getBitmapData(path);
 			else
 				return defaultBitmap;
 		}

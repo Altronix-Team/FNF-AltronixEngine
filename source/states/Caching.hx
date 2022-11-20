@@ -32,7 +32,6 @@ import flixel.text.FlxText;
 import flixel.input.keyboard.FlxKey;
 import gameplayStuff.Highscore;
 
-using hx.strings.Strings;
 
 class Caching extends MusicBeatState
 {

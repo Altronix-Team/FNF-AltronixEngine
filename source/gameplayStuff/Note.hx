@@ -19,7 +19,6 @@ import openfl.display.BitmapData;
 import openfl.utils.Assets as OpenFlAssets;
 import flixel.text.FlxText;
 
-using StringTools;
 
 typedef NoteMeta = {
 	var imageFile:String;
@@ -124,6 +123,8 @@ class Note extends FlxSprite
 
 	var songMultiplier:Float = 1.0;
 
+	var noteColor:String = '';
+
 	var noteMetaData:NoteMeta = {
 		imageFile: '',
 		size: 0.7,
@@ -168,11 +169,14 @@ class Note extends FlxSprite
 
 		this.isAlt = isAlt;
 		this.chartNote = inCharter;
+		this.noteData = noteData;
 
 		this.prevNote = prevNote;
 		isSustainNote = sustainNote;
 
 		this.fromDiffOverviev = fromPreview;
+
+		noteColor = dataColor[this.noteData];
 
 		if (fromPreview)
 		{
@@ -198,12 +202,10 @@ class Note extends FlxSprite
 		if (OpenFlAssets.exists(Paths.json('images/noteskins/$texture')))
 		{
 			noteMetaData = cast Paths.loadJSON('images/noteskins/$texture');
-			texture = noteMetaData.imageFile;
 		}
 		else if (OpenFlAssets.exists(Paths.json('images/noteskins/$noteStyle')))
 		{
 			noteMetaData = cast Paths.loadJSON('images/noteskins/$noteStyle');
-			texture = noteMetaData.imageFile;
 		}
 		else
 		{
@@ -235,9 +237,7 @@ class Note extends FlxSprite
 			this.strumTime = 0;
 
 		if (!inCharter)
-			y += Main.save.data.offset/* + PlayState.songOffset*/;
-
-		this.noteData = noteData;
+			y += Main.save.data.offset;
 
 		if (noteStyle == 'pixel')
 			sustainNoteOffset = 30;
@@ -247,7 +247,7 @@ class Note extends FlxSprite
 		else
 			x += swagWidth * noteData;	
 
-		animation.play(dataColor[noteData] + 'Scroll');
+		animation.play(noteColor + 'Scroll');
 
 		stepHeight = (((0.45 * Conductor.stepCrochet)) * FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed,
 			2)) / songMultiplier;
@@ -255,6 +255,9 @@ class Note extends FlxSprite
 		startAnim();
 
 		created = true;
+
+		if (isSustainNote)
+			alpha = 0.5;
 	}
 
 	function reloadNote(meta:NoteMeta) {
@@ -293,7 +296,7 @@ class Note extends FlxSprite
 	}
 
 	function startAnim(){
-		animation.play(dataColor[noteData] + 'Scroll', true);
+		animation.play(noteColor + 'Scroll', true);
 
 		if (isSustainNote && prevNote != null)
 		{
@@ -306,7 +309,7 @@ class Note extends FlxSprite
 
 			originAngle = prevNote.originAngle;
 
-			animation.play(dataColor[noteData] + 'holdend');
+			animation.play(noteColor + 'holdend');
 			updateHitbox();
 
 			x -= width / 2;
@@ -357,17 +360,23 @@ class Note extends FlxSprite
 
 		if (sprTracker != null)
 		{
+			visible = sprTracker.visible;
+			x = sprTracker.x;
 			if (!isSustainNote)
+				modAngle = cast(sprTracker, StaticArrow).modAngle;
+			if (sustainActive)
 			{
-				if (x != sprTracker.x)
-					x = sprTracker.x;
+				#if (!cpp && FEATURE_LUAMODCHART)
+					alpha = sprTracker.alpha;
+				#end
 			}
-			else
+			modAngle = cast(sprTracker, StaticArrow).modAngle;
+
+			if (isSustainNote)
 			{
-				if (parent != null && x != parent.x + sustainNoteOffset)
-				{
-					x = parent.x + sustainNoteOffset;
-				}
+				x += width / 2 + 20;
+				if (noteTypeCheck == 'pixel')
+					x -= 11;
 			}
 		}
 
@@ -396,8 +405,6 @@ class Note extends FlxSprite
 		else
 		{
 			canBeHit = false;
-			// if (strumTime <= Conductor.songPosition)
-			//	wasGoodHit = true;
 		}
 
 		if (tooLate && !wasGoodHit)
@@ -419,22 +426,45 @@ class Note extends FlxSprite
 
 	function loadDefaultAnims()
 	{
-		for (i in 0...4)
+		var allPrefixes = NoteskinHelpers.getPrefixesList(noteMetaData.imageFile);
+		if (!isSustainNote)
 		{
-			animation.addByPrefix(dataColor[i] + 'Scroll', dataColor[i] + ' alone'); // Normal notes
-			animation.addByPrefix(dataColor[i] + 'hold', dataColor[i] + ' hold'); // Hold
-			animation.addByPrefix(dataColor[i] + 'holdend', dataColor[i] + ' tail'); // Tails
+			// Normal notes
+			if (allPrefixes.contains(noteColor))
+				animation.addByPrefix(noteColor + 'Scroll', noteColor + '0');
+			else
+				animation.addByPrefix(noteColor + 'Scroll', noteColor + ' alone');
 		}
+		else
+		{
+			// Hold
+			if (allPrefixes.contains(noteColor + ' hold piece'))
+				animation.addByPrefix(noteColor + 'hold', noteColor + ' hold piece');
+			else
+				animation.addByPrefix(noteColor + 'hold', noteColor + ' hold');
+
+			// Tails
+			if (allPrefixes.contains(noteColor + ' hold end'))
+				animation.addByPrefix(noteColor + 'holdend', noteColor + ' hold end');
+			else if (allPrefixes.contains('pruple end hold') && noteColor == 'purple') //Funny
+				animation.addByPrefix(noteColor + 'holdend', 'pruple end hold');
+			else
+				animation.addByPrefix(noteColor + 'holdend', noteColor + ' tail');
+		}
+		
 	}
 
 	function loadPixelAnims()
 	{
-		for (i in 0...4)
+		if (!isSustainNote)
 		{
-			animation.add(dataColor[i] + 'Scroll', [i + 4]);
-			animation.add(dataColor[i] + 'hold', [i]);
-			animation.add(dataColor[i] + 'holdend', [i + 4]);
+			animation.add(noteColor + 'Scroll', [noteData + 4]);
 		}
+		else
+		{
+			animation.add(noteColor + 'hold', [noteData]);
+			animation.add(noteColor + 'holdend', [noteData + 4]);
+		}	
 	}
 
 	function set_texture(value:String):String {
@@ -447,12 +477,10 @@ class Note extends FlxSprite
 				if (OpenFlAssets.exists(Paths.json('images/noteskins/$texture')))
 				{
 					noteMetaData = cast Paths.loadJSON('images/noteskins/$texture');
-					texture = noteMetaData.imageFile;
 				}
 				else if (OpenFlAssets.exists(Paths.json('images/noteskins/$noteStyle')))
 				{
 					noteMetaData = cast Paths.loadJSON('images/noteskins/$noteStyle');
-					texture = noteMetaData.imageFile;
 				}
 				else
 				{

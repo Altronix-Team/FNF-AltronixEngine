@@ -2160,25 +2160,34 @@ class NoteskinOption extends Option
 
 class MenuMusicOption extends Option
 {
+	var curSelectedId:Int = 0;
+	var curMusic:String = 'freakyMenu';
+
 	public function new(desc:String)
 	{
 		super();
-		if (OptionsMenu.isInPause)
-			if (!Main.save.data.language)
-				description = "This option cannot be toggled in the pause menu.";
-			else
-				description = "Эта опция не может быть переключена во время паузы";
-		else
-			description = desc;
+		description = desc;
+
+		if (Std.isOfType(Main.save.data.menuMusic, String))
+			curMusic = Main.save.data.menuMusic;
+		else if (Std.isOfType(Main.save.data.menuMusic, Int))
+			curMusic = Main.save.data.menuMusic;
+
+		if (MenuMusicStuff.musicArray.contains(curMusic))
+			curSelectedId = MenuMusicStuff.musicArray.indexOf(curMusic);
 	}
 
 	public override function left():Bool
 	{
 		if (OptionsMenu.isInPause)
 			return false;
-		Main.save.data.menuMusic--;
-		if (Main.save.data.menuMusic < 0)
-			Main.save.data.menuMusic = MenuMusicStuff.getMusic().length - 1;
+		curSelectedId--;
+		if (curSelectedId < 0)
+			curSelectedId = MenuMusicStuff.getMusic().length - 1;
+
+		curMusic = MenuMusicStuff.getMusicByID(curSelectedId);
+		Main.save.data.menuMusic = curMusic;
+
 		display = updateDisplay();
 		return true;
 	}
@@ -2187,9 +2196,13 @@ class MenuMusicOption extends Option
 	{
 		if (OptionsMenu.isInPause)
 			return false;
-		Main.save.data.menuMusic++;
-		if (Main.save.data.menuMusic > MenuMusicStuff.getMusic().length - 1)
-			Main.save.data.menuMusic = 0;
+		curSelectedId++;
+		if (curSelectedId > MenuMusicStuff.getMusic().length - 1)
+			curSelectedId = 0;
+
+		curMusic = MenuMusicStuff.getMusicByID(curSelectedId);
+		Main.save.data.menuMusic = curMusic;
+
 		display = updateDisplay();
 		return true;
 	}
@@ -2199,21 +2212,21 @@ class MenuMusicOption extends Option
 		if (!FlxG.sound.music.playing)
 		{
 			if (!OptionsMenu.isInPause)
-				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)));
+				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(curSelectedId)));
 		}
 		else
 		{
 			if (!OptionsMenu.isInPause)
 			{
 				FlxG.sound.music.stop();
-				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)));
+				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(curSelectedId)));
 			}
 		}
 		
 		if (!Main.save.data.language)
-			return "Current Menu Music: < " + MenuMusicStuff.getMusicByID(Main.save.data.menuMusic) + " >";
+			return "Current Menu Music: < " + curMusic + " >";
 		else
-			return "Выбранная музыка меню: < " + MenuMusicStuff.getMusicByID(Main.save.data.menuMusic) + " >";
+			return "Выбранная музыка меню: < " + curMusic + " >";
 	}
 }
 

@@ -21,7 +21,6 @@ import flixel.util.FlxColor;
 import gameplayStuff.PlayStateChangeables;
 import gameplayStuff.Song;
 
-using hx.strings.Strings;
 class PauseSubState extends MusicBeatSubstate
 {
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
@@ -189,11 +188,6 @@ class PauseSubState extends MusicBeatSubstate
 		}
 
 		var songPath = 'assets/data/songs/${PlayState.SONG.songId}/';
-
-		#if FEATURE_STEPMANIA
-		if (PlayState.isSM && !PlayState.isStoryMode)
-			songPath = PlayState.pathToSm;
-		#end
 
 		if (controls.UP_P || upPcontroller)
 		{

@@ -7,7 +7,6 @@ import polymod.format.ParseRules.TextFileFormat;
 import polymod.Polymod;
 #end
 
-using hx.strings.Strings;
 /**
  * Okay now this is epic.
  */

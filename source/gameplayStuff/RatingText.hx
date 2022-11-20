@@ -7,8 +7,6 @@ import flixel.text.FlxText;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxColor;
 
-using StringTools;
-using hx.strings.Strings;
 
 @:access(states.PlayState)
 class RatingText extends FlxTypedGroup<FlxText>
@@ -90,10 +88,15 @@ class RatingText extends FlxTypedGroup<FlxText>
     public function onMiss()
     {
 		missColorTween = FlxTween.tween(missesText, {color: FlxColor.RED}, 0.1, {
-			onComplete:function(twn:FlxTween)
-			{
-				missColorTween = FlxTween.tween(missesText, {color: textColor}, 0.1);
-			}});
+		onComplete:function(twn:FlxTween)
+		{
+			missColorTween = FlxTween.tween(missesText, {color: textColor}, 0.1, {
+				onComplete: function(twn:FlxTween)
+				{
+					missColorTween = null;
+				}
+			});
+		}});
     }
 
 	private function getTextColor(accuracy:Float):FlxColor
@@ -163,12 +166,7 @@ class RatingText extends FlxTypedGroup<FlxText>
 	}
 
 	function get_height():Float {
-		var returnVal:Float = 0;
-		forEach(function(text:FlxText)
-		{
-			returnVal += text.height;
-		});
-		return returnVal;
+		return members[0].height; //all texts has same height lol
 	}
 
 	function set_x(value:Float):Float {

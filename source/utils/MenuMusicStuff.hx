@@ -1,6 +1,5 @@
 package utils;
 
-using hx.strings.Strings;
 
 class MenuMusicStuff
 {
@@ -9,18 +8,13 @@ class MenuMusicStuff
 	public static function updateMusic()
 	{
 		musicArray = [];
-		var count:Int = 0;
-		musicArray.push('freakyMenu');
 		for (i in Paths.listMusicInPath('assets/music/'))
 		{
-			if (i.endsWith('.ogg'))
-				musicArray.push(i.replaceAll('.ogg', ''));	
-
-			if (i == 'freakyMenu')
-				continue;
-
-			if (i.endsWith('.mp3'))
-				musicArray.push(i.replaceAll('.mp3', ''));
+			var str = i.replaceAll('.ogg', '').replaceAll('.mp3', '');
+			if (!musicArray.contains(str))
+			{
+				musicArray.push(str);
+			}
 		}
 
 		return musicArray;

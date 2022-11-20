@@ -92,8 +92,6 @@ import flixel.FlxG;
 import openfl.display.Sprite;
 import gameplayStuff.Conductor;
 
-using StringTools;
-
 class GameJoltAPI // Connects to tentools.api.FlxGameJolt
 {
 	/**
@@ -476,7 +474,7 @@ class GameJoltLogin extends states.MusicBeatSubstate
 
 		if (!login)
 		{
-			FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)), 0);
+			FlxG.sound.playMusic(Paths.music(Main.save.data.menuMusic), 0);
 			FlxG.sound.music.fadeIn(2, 0, 0.85);
 		}
 
@@ -677,7 +675,7 @@ class GameJoltLogin extends states.MusicBeatSubstate
 
 		if (!FlxG.sound.music.playing)
 		{
-			FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)));
+			FlxG.sound.playMusic(Paths.music(Main.save.data.menuMusic));
 		}
 
 		if (FlxG.keys.justPressed.ESCAPE)

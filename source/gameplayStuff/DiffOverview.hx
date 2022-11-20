@@ -18,7 +18,6 @@ import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import states.FreeplayState;
 
-using StringTools;
 
 @:access(states.FreeplayState)
 class DiffOverview extends MusicBeatSubstate
@@ -191,19 +190,6 @@ class DiffOverview extends MusicBeatSubstate
 
 		notes.forEachAlive(function(daNote:Note)
 		{
-			// instead of doing stupid y > FlxG.height
-			// we be men and actually calculate the time :)
-			if (daNote.tooLate)
-			{
-				daNote.active = false;
-				daNote.visible = false;
-			}
-			else
-			{
-				daNote.visible = true;
-				daNote.active = true;
-			}
-
 			daNote.y = (daNote.sprTracker.y
 				- 0.45 * ((Conductor.songPosition - daNote.strumTime) / FreeplayState.rate) * (FlxMath.roundDecimal(PlayStateChangeables.scrollSpeed == 1 ? SONG.speed : PlayStateChangeables.scrollSpeed,
 					2)))
@@ -260,6 +246,13 @@ class DiffOverview extends MusicBeatSubstate
 				daNote.kill();
 				notes.remove(daNote, true);
 				daNote.destroy();
+			}
+
+			if (daNote.isSustainNote)
+			{
+				daNote.x += daNote.width / 2 + 20;
+				if (SONG.noteStyle == 'pixel')
+					daNote.x -= 11;
 			}
 
 		});
@@ -350,13 +343,10 @@ class DiffOverview extends MusicBeatSubstate
 		// NEW SHIT
 		noteData = SONG.notes;
 
-		var playerCounter:Int = 0;
-
 		trace('loading notes');
 		var daBeats:Int = 0; // Not exactly representative of 'daBeats' lol, just how much it has looped
 		for (section in noteData)
 		{
-			var coolSection:Int = Std.int(section.lengthInSteps / 4);
 			for (songNotes in section.sectionNotes)
 			{
 				var daStrumTime:Float = songNotes[0] / FreeplayState.rate;
@@ -410,7 +400,6 @@ class DiffOverview extends MusicBeatSubstate
 				var susLength:Float = swagNote.sustainLength;
 
 				susLength = susLength / Conductor.stepCrochet;
-				unspawnNotes.push(swagNote);
 
 				swagNote.isAlt = altNote;
 
@@ -420,9 +409,11 @@ class DiffOverview extends MusicBeatSubstate
 				if (susLength > 0)
 					swagNote.isParent = true;
 
+				unspawnNotes.push(swagNote);
+
 				var type = 0;
 
-				/*for (susNote in 0...Math.floor(susLength))
+				for (susNote in 0...Math.floor(susLength))
 				{
 					var altSusNote = songNotes[3]
 						|| ((section.altAnim || section.CPUAltAnim) && !gottaHitNote)
@@ -437,7 +428,6 @@ class DiffOverview extends MusicBeatSubstate
 					var sustainNote:Note = new Note(daStrumTime + (Conductor.stepCrochet * susNote) + Conductor.stepCrochet, daNoteData, oldNote, true, false,
 						altSusNote, 0, noteStyle, true);
 					sustainNote.scrollFactor.set();
-					unspawnNotes.push(sustainNote);
 					sustainNote.isAlt = altSusNote;
 					sustainNote.parent = swagNote;
 
@@ -457,10 +447,11 @@ class DiffOverview extends MusicBeatSubstate
 						sustainNote.x += FlxG.width / 2; // general offset
 					}
 
+					unspawnNotes.push(sustainNote);
 					swagNote.children.push(sustainNote);
 					sustainNote.spotInLine = type;
 					type++;
-				}*/
+				}
 
 				swagNote.mustPress = gottaHitNote;
 

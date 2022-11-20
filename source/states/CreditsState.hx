@@ -20,7 +20,6 @@ import sys.io.File;
 import lime.utils.Assets;
 import openfl.Assets;
 
-using StringTools;
 
 typedef Credit = {
 	var nickname:String;

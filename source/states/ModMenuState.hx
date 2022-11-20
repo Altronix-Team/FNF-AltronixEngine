@@ -211,7 +211,7 @@ class ModMenuState extends XMLLayoutState
 
 		ModCore.loadConfiguredMods();
 
-		FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)), 0);
+		FlxG.sound.playMusic(Paths.music(Main.save.data.menuMusic), 0);
 
 		FlxG.switchState(new TitleState());
 	}
@@ -220,7 +220,7 @@ class ModMenuState extends XMLLayoutState
 	{
 		ModCore.reloadLoadedMods();
 
-		FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)), 0);
+		FlxG.sound.playMusic(Paths.music(Main.save.data.menuMusic), 0);
 
 		FlxG.switchState(new TitleState());
 	}

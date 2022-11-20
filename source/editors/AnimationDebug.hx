@@ -26,10 +26,6 @@ import flixel.addons.ui.FlxUITooltip.FlxUITooltipStyle;
 import gameplayStuff.Character;
 import gameplayStuff.Boyfriend;
 
-/**
-	*DEBUG MODE
- */
-using StringTools;
 
 class AnimationDebug extends states.MusicBeatState
 {

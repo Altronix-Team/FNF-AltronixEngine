@@ -109,8 +109,6 @@ import gameplayStuff.Ratings;
 import vlc.MP4Handler;
 #end
 
-using StringTools;
-using hx.strings.Strings;
 
 class PlayState extends MusicBeatState
 {
@@ -198,7 +196,7 @@ class PlayState extends MusicBeatState
 	public var stageGroup:FlxTypedGroup<FlxSprite>;
 	public var ratingsGroup:FlxTypedGroup<FlxSprite>;
 
-	private var camZooming:Bool = false;
+	public var camZooming:Bool = false;
 	private var curSong:String = "";
 
 	public static var isFreeplay:Bool = false;
@@ -3909,7 +3907,7 @@ class PlayState extends MusicBeatState
 					ScriptHelper.callOnScripts('opponentNoteHit', [notes.members.indexOf(daNote), Math.abs(daNote.noteData), daNote.noteType, daNote.isSustainNote]);
 				}
 
-				if (daNote.mustPress && !daNote.modifiedByLua)
+				/*if (daNote.mustPress && !daNote.modifiedByLua)
 				{
 					daNote.visible = strumLineNotes.playerStrums.members[Math.floor(Math.abs(daNote.noteData))].visible;
 					daNote.x = strumLineNotes.playerStrums.members[Math.floor(Math.abs(daNote.noteData))].x;
@@ -3934,7 +3932,7 @@ class PlayState extends MusicBeatState
 							daNote.alpha = strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].alpha;
 					}
 					daNote.modAngle = strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].modAngle;
-				}
+				}*/
 
 				if (!daNote.mustPress
 					&& PlayStateChangeables.useMiddlescroll
@@ -3946,12 +3944,12 @@ class PlayState extends MusicBeatState
 				if (storyDifficulty == 3 && !daNote.mustPress && !PlayStateChangeables.twoPlayersMode)
 					daNote.alpha = 0;
 
-				if (daNote.isSustainNote)
+				/*if (daNote.isSustainNote)
 				{
 					daNote.x += daNote.width / 2 + 20;
 					if (SONG.noteStyle == 'pixel')
 						daNote.x -= 11;
-				}
+				}*/
 
 				// trace(daNote.y);
 				// WIP interpolation shit? Need to fix the pause issue
@@ -4777,7 +4775,7 @@ class PlayState extends MusicBeatState
 
 			if (offsetTesting)
 			{
-				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)));
+				FlxG.sound.playMusic(Paths.music(Main.save.data.menuMusic));
 				offsetTesting = false;
 				LoadingState.loadAndSwitchState(new OptionsMenu());
 				clean();
@@ -4862,7 +4860,7 @@ class PlayState extends MusicBeatState
 							GameplayCustomizeState.freeplayStage = 'stage';
 							GameplayCustomizeState.freeplaySong = 'bopeebo';
 							GameplayCustomizeState.freeplayWeek = 1;
-							FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)));
+							FlxG.sound.playMusic(Paths.music(Main.save.data.menuMusic));
 							Conductor.changeBPM(102);
 							MusicBeatState.switchState(new StoryMenuState());
 							clean();
@@ -4901,17 +4899,6 @@ class PlayState extends MusicBeatState
 
 						Debug.logInfo('PlayState: Loading next story song ${PlayState.storyPlaylist[0]}${diff}');
 
-						if (StringTools.replace(PlayState.storyPlaylist[0], " ", "-").toLowerCase() == 'eggnog')
-						{
-							var blackShit:FlxSprite = new FlxSprite(-FlxG.width * FlxG.camera.zoom,
-								-FlxG.height * FlxG.camera.zoom).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
-							blackShit.scrollFactor.set();
-							add(blackShit);
-							camHUD.visible = false;
-
-							FlxG.sound.play(Paths.sound('Lights_Shut_off'));
-						}
-
 						FlxTransitionableState.skipNextTransIn = true;
 						FlxTransitionableState.skipNextTransOut = true;
 						prevCamFollow = camFollow;
@@ -4926,7 +4913,8 @@ class PlayState extends MusicBeatState
 				}
 				else if (chartingMode){
 					openChartEditor();
-					return;}
+					return;
+				}
 				else{
 					paused = true;
 
@@ -4939,7 +4927,7 @@ class PlayState extends MusicBeatState
 							inResults = true;});}
 					else{
 						MusicBeatState.switchState(new FreeplayState());
-						FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)), 0);
+						FlxG.sound.playMusic(Paths.music(Main.save.data.menuMusic), 0);
 						clean();}}
 			}
 		}
@@ -4973,7 +4961,7 @@ class PlayState extends MusicBeatState
 
 	var finishTimer:FlxTimer = null;
 
-	public var songEndCallback:Void->Void = endSong;
+	public var songEndCallback:Void->Void = null;
 
 	public function finishSong():Void
 	{
@@ -4981,6 +4969,9 @@ class PlayState extends MusicBeatState
 	
 		FlxG.sound.music.volume = 0;
 		vocals.volume = 0;
+
+		if (songEndCallback == null)
+			songEndCallback = endSong;
 
 		#if desktop
 		if (!chartingMode && !PlayStateChangeables.twoPlayersMode)

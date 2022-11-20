@@ -4,8 +4,6 @@ import flixel.FlxSprite;
 import flixel.FlxG;
 import openfl.utils.Assets as OpenFlAssets;
 
-using StringTools;
-
 class AttachedSprite extends FlxSprite
 {
 	public var sprTracker:FlxSprite;

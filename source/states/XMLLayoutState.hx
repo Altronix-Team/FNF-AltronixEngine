@@ -10,7 +10,6 @@ import flixel.addons.ui.FlxUI;
 import flixel.addons.ui.FlxUIState;
 import flixel.addons.ui.FlxUITypedButton;
 
-using hx.strings.Strings;
 
 typedef ClickEventHandlerFn = Void->Void;
 

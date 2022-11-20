@@ -38,8 +38,6 @@ import states.MusicBeatState;
 import gameplayStuff.Character;
 import gameplayStuff.HealthIcon;
 
-using StringTools;
-
 class FreeplaySongsEditorState extends MusicBeatState
 {
 	var weekFile:FreeplaySonglist = null;
@@ -664,7 +662,7 @@ class FreeplaySongsEditorState extends MusicBeatState
 			if(FlxG.keys.justPressed.ESCAPE) {
 				FlxG.mouse.visible = false;
 				MusicBeatState.switchState(new MasterEditorMenu());
-				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)));
+				FlxG.sound.playMusic(Paths.music(Main.save.data.menuMusic));
 			}
 
 			if (!blockInput)

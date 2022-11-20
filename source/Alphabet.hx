@@ -13,8 +13,6 @@ import flixel.system.FlxSound;
 import flash.media.Sound;
 import openfl.Lib;
 
-using StringTools;
-
 /**
  * Loosley based on FlxTypeText lolol
  */

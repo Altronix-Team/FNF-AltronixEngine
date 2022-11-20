@@ -9,9 +9,6 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxSort;
 import states.PlayState;
 
-using StringTools;
-using hx.strings.Strings;
-
 class Character extends FlxSprite
 {
 	public static var DEFAULT_CHARACTER:String = 'bf';

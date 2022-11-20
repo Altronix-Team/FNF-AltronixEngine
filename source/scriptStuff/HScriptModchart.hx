@@ -264,6 +264,8 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 
 		scriptHandler.set("startDialogue", startDialogue);
 
+		scriptHandler.set('isStoryMode', PlayState.isStoryMode);
+
 		scriptHandler.set('add', add);
 		scriptHandler.set('remove', remove);
 
@@ -293,10 +295,6 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 		{
 			case 'camhud' | 'hud':
 				return PlayState.instance.camHUD;
-			/*case 'camsustains' | 'sustains':
-				return PlayState.instance.camSustains;
-			case 'camnotes' | 'notes':
-				return PlayState.instance.camNotes;*/
 		}
 		return PlayState.instance.camGame;
 	}

@@ -2,7 +2,6 @@ package gameplayStuff;
 
 import flixel.FlxG;
 
-using StringTools;
 
 class Highscore
 {

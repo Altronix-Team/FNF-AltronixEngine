@@ -2,9 +2,6 @@ package states;
 
 import gameplayStuff.Ratings;
 import haxe.Exception;
-#if FEATURE_STEPMANIA
-import smTools.SMFile;
-#end
 #if FEATURE_FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
@@ -36,7 +33,6 @@ import gameplayStuff.Highscore;
 import gameplayStuff.Conductor;
 import gameplayStuff.Section;
 
-using StringTools;
 
 class ResultsScreen extends FlxSubState
 {
@@ -218,13 +214,13 @@ class ResultsScreen extends FlxSubState
 
 			if (PlayState.isStoryMode)
 			{
-				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)));
+				FlxG.sound.playMusic(Paths.music(Main.save.data.menuMusic));
 				Conductor.changeBPM(102);
 				MusicBeatState.switchState(new StoryMenuState());
 			}
 			else
 			{
-				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)));
+				FlxG.sound.playMusic(Paths.music(Main.save.data.menuMusic));
 				MusicBeatState.switchState(new FreeplayState());
 			}
 			PlayState.isStoryMode = false;

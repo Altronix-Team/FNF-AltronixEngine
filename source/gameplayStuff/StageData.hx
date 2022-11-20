@@ -3,14 +3,7 @@ package gameplayStuff;
 
 import openfl.utils.Assets;
 import haxe.Json;
-import haxe.format.JsonParser;
-import gameplayStuff.Song;
-#if sys
-import sys.io.File;
-import sys.FileSystem;
-#end
 
-using StringTools;
 
 typedef StageFile = {
 	var defaultZoom:Float;
@@ -28,8 +21,6 @@ typedef StageFile = {
 }
 
 class StageData {
-	public static var forceNextDirectory:String = null;
-
 	public static function getStageFile(stage:String):StageFile {
 		var rawJson:String = null;
 		var path:String = Paths.getPreloadPath('stages/' + stage + '.json');

@@ -17,8 +17,6 @@ import gameplayStuff.Character;
 import gameplayStuff.Boyfriend;
 import gameplayStuff.Stage;
 
-using StringTools;
-
 class StageDebugState extends FlxState
 {
 	public var daStage:String;

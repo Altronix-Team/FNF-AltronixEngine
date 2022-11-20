@@ -199,7 +199,7 @@ class EngineData
 			Main.save.data.noteskin = 'Arrows';
 
 		if (Main.save.data.menuMusic == null)
-			Main.save.data.menuMusic = 0;
+			Main.save.data.menuMusic = 'freakyMenu';
 
 		if (Main.save.data.memoryCount == null)
 			Main.save.data.memoryCount = true;

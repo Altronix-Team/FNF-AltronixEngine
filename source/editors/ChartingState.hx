@@ -68,9 +68,6 @@ import gameplayStuff.Note.AttachedFlxText;
 import DiscordClient;
 #end
 
-using StringTools;
-using hx.strings.Strings;
-
 @:access(flixel.system.FlxSound._sound)
 @:access(openfl.media.Sound.__buffer)
 
@@ -2566,7 +2563,7 @@ class ChartingState extends MusicBeatState
 			if (controls.BACK && !blockInput)
 				{
 					autosaveSong();
-					FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)), 0);
+					FlxG.sound.playMusic(Paths.music(Main.save.data.menuMusic), 0);
 					PlayState.chartingMode = false;
 					if (PlayState.isFreeplay)
 						MusicBeatState.switchState(new states.FreeplayState());

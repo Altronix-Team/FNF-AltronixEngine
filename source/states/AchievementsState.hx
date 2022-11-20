@@ -40,7 +40,7 @@ class AchievementsState extends MusicBeatState
 		var savedAchievements:Array<String> = Main.save.data.savedAchievements;
 
 		if (!FlxG.sound.music.playing)
-			FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)), 0);
+			FlxG.sound.playMusic(Paths.music(Main.save.data.menuMusic), 0);
 
 		#if desktop
 		// Updating Discord Rich Presence

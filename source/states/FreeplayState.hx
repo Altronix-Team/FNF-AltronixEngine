@@ -33,7 +33,6 @@ import gameplayStuff.Conductor;
 import DiscordClient;
 #end
 
-using StringTools;
 
 class FreeplayState extends MusicBeatState
 {
@@ -112,7 +111,7 @@ class FreeplayState extends MusicBeatState
 		clean();
 
 		if (!FlxG.sound.music.playing)
-			FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)), 0);
+			FlxG.sound.playMusic(Paths.music(Main.save.data.menuMusic), 0);
 
 		cached = false;
 

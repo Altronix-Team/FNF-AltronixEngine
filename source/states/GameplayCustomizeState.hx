@@ -25,7 +25,6 @@ import gameplayStuff.PlayStateChangeables;
 import gameplayStuff.Note;
 import gameplayStuff.Conductor;
 
-using StringTools;
 
 class GameplayCustomizeState extends MusicBeatState
 {

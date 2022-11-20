@@ -44,8 +44,6 @@ import gameplayStuff.HealthIcon;
 import sys.FileSystem;
 #end
 
-using StringTools;
-using hx.strings.Strings;
 
 /**
 	*DEBUG MODE
@@ -1019,7 +1017,7 @@ class GirlfriendEditorState extends MusicBeatState
 					MusicBeatState.switchState(new states.PlayState());
 				} else {
 					MusicBeatState.switchState(new MasterEditorMenu());
-					FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(Main.save.data.menuMusic)));
+					FlxG.sound.playMusic(Paths.music(Main.save.data.menuMusic));
 				}
 				FlxG.mouse.visible = false;
 				return;

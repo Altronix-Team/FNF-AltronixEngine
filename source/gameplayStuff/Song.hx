@@ -7,7 +7,6 @@ import openfl.utils.Assets as OpenFlAssets;
 import flixel.util.FlxSort;
 import gameplayStuff.Section.SectionNoteData;
 
-using StringTools;
 class EventObject
 {
 	public var name:String;
@@ -198,10 +197,6 @@ class Song
 		if (OpenFlAssets.exists(Paths.songMeta(songId)))
 		{
 			rawMetaJson = Paths.loadJSON('$songId/_meta', 'songs');
-		}
-		else
-		{
-			Debug.logInfo('Hey, you didn\'t include a _meta.json with your song files (id ${songId}).Won\'t break anything but you should probably add one anyway.');
 		}
 		if (rawMetaJson == null)
 		{
@@ -667,6 +662,15 @@ class Song
 		// Enforce default values for optional fields.
 		if (songData.validScore == null)
 			songData.validScore = true;
+
+		if (jsonMetaData == null)
+		{
+			if (!OpenFlAssets.exists(Paths.songMeta(songId)))
+			{
+				if (songData.songName == null && songData.songComposer == null && songData.songPosBarColor == null) //Do not trace this if it all exists in song chart file
+					Debug.logInfo('Hey, you didn\'t include a _meta.json with your song files (id ${songId}).Won\'t break anything but you should probably add one anyway.');
+			}
+		}
 
 		// Inject info from _meta.json.
 		var songMetaData:SongMeta = cast jsonMetaData;

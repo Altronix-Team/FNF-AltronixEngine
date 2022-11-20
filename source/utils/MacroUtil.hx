@@ -12,7 +12,6 @@ import yaml.Renderer;
 import yaml.util.ObjectMap;
 #end
 
-using StringTools;
 using Lambda;
 
 class MacroUtil

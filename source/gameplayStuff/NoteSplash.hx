@@ -5,7 +5,6 @@ import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.utils.Assets as OpenFlAssets;
 
-using StringTools;
 
 class NoteSplash extends FlxSprite
 {

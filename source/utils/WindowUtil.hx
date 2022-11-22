@@ -261,6 +261,8 @@ class WindowShakeEvent
 					offset.x = FlxG.random.float(-intensity, intensity);
 				case Y:
 					offset.y = FlxG.random.float(-intensity, intensity);
+				default:
+					//Do nothing
 			}
 		}
 		else

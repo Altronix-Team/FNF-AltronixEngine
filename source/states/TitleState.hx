@@ -42,9 +42,6 @@ import gameplayStuff.Song;
 import ModCore;
 #end
 
-#if desktop
-import DiscordClient;
-#end
 
 
 class TitleState extends MusicBeatState

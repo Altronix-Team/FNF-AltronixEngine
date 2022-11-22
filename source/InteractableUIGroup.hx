@@ -3,7 +3,7 @@ package;
 import IRelative;
 import flixel.addons.ui.FlxUIGroup;
 import flixel.math.FlxPoint;
-import GestureUtil;
+import utils.GestureUtil;
 
 class InteractableUIGroup extends FlxUIGroup implements IInteractable implements IRelative
 {

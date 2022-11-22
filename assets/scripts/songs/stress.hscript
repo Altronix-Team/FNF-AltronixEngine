@@ -60,6 +60,7 @@ function startCutscene()
 	
 	cutsceneHandler.finishCallback = function()
 	{
+		PlayState.seenCutscene = true;
 		var timeForStuff:Float = Conductor.crochet / 1000 * 4.5;
 		FlxG.sound.music.fadeOut(timeForStuff);
 		FlxTween.tween(FlxG.camera, {zoom: PlayState.instance.defaultCamZoom}, timeForStuff, {ease: FlxEase.quadInOut});

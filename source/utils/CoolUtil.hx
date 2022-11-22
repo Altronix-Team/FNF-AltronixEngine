@@ -1,13 +1,14 @@
 package utils;
 
-import flixel.FlxCamera;
 #if sys
 import sys.io.File;
 import sys.FileSystem;
 #end
 
 import Type;
+
 import flixel.math.FlxMath;
+
 
 import openfl.utils.Assets as OpenFlAssets;
 

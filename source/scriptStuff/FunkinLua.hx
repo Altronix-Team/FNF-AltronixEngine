@@ -51,9 +51,6 @@ import states.MusicBeatState;
 import states.StoryMenuState;
 import states.FreeplayState;
 
-#if desktop
-import DiscordClient;
-#end
 
 
 class FunkinLua {

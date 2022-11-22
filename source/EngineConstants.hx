@@ -46,14 +46,14 @@ class EngineConstants
 			isHidden: true,
 			imageName: 'dead'
 		},
-		{
+		/*{ //I dont want to port this on hscript
 			displayedName: 'Oh, it doesn`t hurt them?',
 			displayedDescription: 'Watch the Henchmen die over 100 times.',
 			saveId: 'henchmen_dies',
 			GJId: 167274,
 			isHidden: true,
 			imageName: 'fuck_you'
-		},
+		},*/
 		{
 			displayedName: 'Biginning of corruption mod',
 			displayedDescription: 'Die on Winter Horrorland',

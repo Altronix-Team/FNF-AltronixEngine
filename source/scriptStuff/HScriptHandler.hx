@@ -1,5 +1,6 @@
 package scriptStuff;
 
+import gameplayStuff.Song;
 import Shaders.VCRDistortionEffect;
 import animateatlas.AtlasFrameMaker;
 import lime.app.Application;
@@ -606,7 +607,10 @@ class HScriptHandler extends SScript
 		set('FlxMath', FlxMath);
 		set('FlxSound', FlxSound);
 		set('FlxGroup', FlxGroup);
+		#if (flixel < "5.0.0")
 		set('FlxPoint', FlxPoint);
+		set('FlxAxes', FlxAxes);
+		#end
 		set('FlxTypedGroup', FlxTypedGroup);
 		set('FlxSpriteGroup', FlxSpriteGroup);
 		set('FlxTypedSpriteGroup', FlxTypedSpriteGroup);
@@ -623,7 +627,6 @@ class HScriptHandler extends SScript
 		set('FlxBackdrop', FlxBackdrop);
 		set('StageSizeScaleMode', StageSizeScaleMode);
 		set('FlxBarFillDirection', FlxBarFillDirection);
-		set('FlxAxes', FlxAxes);
 		set('GraphicsShader', GraphicsShader);
 		set('ShaderFilter', ShaderFilter);
 		set('Capabilities', flash.system.Capabilities);
@@ -631,6 +634,7 @@ class HScriptHandler extends SScript
 		set('Discord', utils.DiscordClient);
 
 		set('Alphabet', Alphabet);
+		set('Song', Song);
 		set('Character', Character);
 		set('controls', Controls);
 		set('CoolUtil', CoolUtil);
@@ -654,6 +658,11 @@ class HScriptHandler extends SScript
 	function getRGBColor(r:Int, g:Int, b:Int, ?a:Int):FlxColor
 	{
 		return FlxColor.fromRGB(r, g, b, a);
+	}
+
+	function createTypedGroup():FlxTypedGroup<Dynamic>
+	{
+		return new FlxTypedGroup<Dynamic>();
 	}
 }
 #end

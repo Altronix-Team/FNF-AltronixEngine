@@ -4,9 +4,6 @@ import gameplayStuff.Song;
 #if FEATURE_FILESYSTEM
 
 import lime.app.Application;
-#if FEATURE_DISCORD
-import DiscordClient;
-#end
 import openfl.display.BitmapData;
 import openfl.utils.Assets as OpenFlAssets;
 import flixel.ui.FlxBar;

@@ -20,9 +20,6 @@ import flixel.util.FlxColor;
 import flixel.tweens.FlxTween;
 import openfl.utils.Assets as OpenFlAssets;
 import Achievements;
-#if desktop
-import DiscordClient;
-#end
 
 class AchievementsState extends MusicBeatState
 {

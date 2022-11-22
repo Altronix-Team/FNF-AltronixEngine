@@ -14,9 +14,6 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import lime.net.curl.CURLCode;
 import flixel.graphics.FlxGraphic;
-#if desktop
-import DiscordClient;
-#end
 #if sys
 import sys.io.File;
 import sys.FileSystem;

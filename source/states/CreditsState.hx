@@ -1,9 +1,6 @@
 package states;
 
 import gameplayStuff.Conductor;
-#if desktop
-import DiscordClient;
-#end
 import flash.text.TextField;
 import flixel.FlxG;
 import flixel.FlxSprite;

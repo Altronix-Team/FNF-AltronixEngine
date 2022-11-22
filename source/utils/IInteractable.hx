@@ -1,7 +1,7 @@
 package utils;
 
 import flixel.math.FlxPoint;
-import GestureUtil.SwipeDirection;
+import utils.GestureUtil.SwipeDirection;
 
 interface IInteractable
 {

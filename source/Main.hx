@@ -1,6 +1,5 @@
 package;
 
-import openfl.display.Bitmap;
 import lime.app.Application;
 import flixel.util.FlxColor;
 import flixel.FlxG;
@@ -12,15 +11,12 @@ import openfl.display.Sprite;
 import openfl.events.Event;
 import GameJolt.GJToastManager;
 import openfl.events.UncaughtErrorEvent;
-import Debug;
+import utils.EngineFPS;
+import utils.Debug.DebugLogWriter;
 import openfl.system.Capabilities;
 import haxe.CallStack;
 import utils.EngineSave;
 import sys.io.Process;
-
-#if FEATURE_MODCORE
-import ModCore;
-#end
 
 //TODO Altronix Engine start splash
 class Main extends Sprite
@@ -130,11 +126,8 @@ class Main extends Sprite
 		if (save.data.fullscreenOnStart == null)
 			save.data.fullscreenOnStart = false;
 
-		game = new FlxGame(gameWidth, gameHeight, initialState,
-			#if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash, save.data.fullscreenOnStart);
-		addChild(game);
-
-		FlxG.save = save;
+		game = new FlxGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash, save.data.fullscreenOnStart);
+		addChild(game);	
 
 		#if !mobile
 		//addChild(fpsCounter);

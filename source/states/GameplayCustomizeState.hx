@@ -8,9 +8,6 @@ import flixel.math.FlxMath;
 import flixel.FlxCamera;
 import flixel.math.FlxPoint;
 import flixel.FlxObject;
-#if desktop
-import DiscordClient;
-#end
 import flixel.addons.effects.FlxTrail;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import openfl.ui.Keyboard;

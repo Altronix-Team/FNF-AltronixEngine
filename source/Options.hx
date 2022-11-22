@@ -1598,9 +1598,9 @@ class ScreenResolutionOption extends Option
 	{
 		super();
 
-		for (res in EngineConstants.screenResolution169)
+		if (Main.save.data.gameWidth != null && Main.save.data.gameHeight != null)
 		{
-			if (Main.save.data.gameWidth != null && Main.save.data.gameHeight != null)
+			for (res in EngineConstants.screenResolution169)
 			{
 				if (res[0] == Main.save.data.gameWidth && res[1] == Main.save.data.gameHeight)
 					curRes = res;
@@ -1641,7 +1641,8 @@ class ScreenResolutionOption extends Option
 
 	private override function updateDisplay():String
 	{
-		WindowUtil.resizeWindow(curRes[0], curRes[1]);
+		FlxG.resizeGame(curRes[0], curRes[1]);
+		FlxG.resizeWindow(curRes[0], curRes[1]);
 		return 'Placeholder: < ${curRes[0]}x${curRes[1]} >';
 	}
 }

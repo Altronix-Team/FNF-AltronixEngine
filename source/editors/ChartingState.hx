@@ -64,9 +64,6 @@ import gameplayStuff.TimingStruct;
 import gameplayStuff.Song;
 import gameplayStuff.Conductor;
 import gameplayStuff.Note.AttachedFlxText;
-#if desktop
-import DiscordClient;
-#end
 
 @:access(flixel.system.FlxSound._sound)
 @:access(openfl.media.Sound.__buffer)

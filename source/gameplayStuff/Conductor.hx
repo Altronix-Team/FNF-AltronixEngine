@@ -6,6 +6,7 @@ import gameplayStuff.Song.SongData;
 import flixel.FlxG;
 import openfl.events.Event;
 import openfl.Lib;
+import utils.EngineFPS;
 
 typedef BPMChangeEvent =
 {

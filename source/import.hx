@@ -3,7 +3,7 @@ import haxe.macro.Expr;
 import haxe.macro.Context;
 #else
 import flixel.FlxG;
-import Debug;
+import utils.*;
 #end
 
 using StringTools;

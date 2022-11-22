@@ -15,6 +15,10 @@ import scriptStuff.HScriptHandler;
 import states.PlayState;
 import openfl.utils.Assets;
 import scriptStuff.FunkinLua;
+import gameplayStuff.TankmenBG;
+import gameplayStuff.BackgroundDancer;
+import gameplayStuff.BackgroundGirls;
+import gameplayStuff.BGSprite;
 
 #if !USE_SSCRIPT
 @:access(states.PlayState)
@@ -259,6 +263,10 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 		scriptHandler.set("camHUD", curState.camHUD);
 		scriptHandler.set("PlayStateChangeables", PlayStateChangeables);
 		scriptHandler.set('CutsceneHandler', CutsceneHandler);
+		scriptHandler.set('BGSprite', BGSprite);
+		scriptHandler.set('BackgroundGirls', BackgroundGirls);
+		scriptHandler.set('BackgroundDancer', BackgroundDancer);
+		scriptHandler.set('TankmenBG', TankmenBG);
 
 		scriptHandler.set("setObjectCam", setObjectCam);
 

@@ -192,17 +192,17 @@ class DialogueBox extends FlxSpriteGroup
 
 		box.flipX = false;
 
-		box.boxState = box.returnBoxState(curLine.boxState);
+		box.boxState = /*box.returnBoxState(*/curLine.boxState/*)*/;
 
 		switch (curDialogueCharacter.position)
 		{
 			case LEFT:
 				box.flipX = true;
-				box.playAnim(box.returnStateAnim());
+				box.playAnim(box.boxState/*box.returnStateAnim()*/);
 			case MIDDLE:
-				box.playAnim(box.returnStateAnim());
+				box.playAnim(box.boxState/*box.returnStateAnim()*/);
 			default:
-				box.playAnim(box.returnStateAnim());
+				box.playAnim(box.boxState/*box.returnStateAnim()*/);
 		}	
 
 		if (nextLineThing != null) nextLineThing();
@@ -258,7 +258,7 @@ class DialogueBox extends FlxSpriteGroup
 				box.animation.addByPrefix(anim.animName, anim.animPrefix, anim.animFramerate, anim.isLooped);
 			}
 		}
-		box.boxState = box.returnBoxState(dialogueBoxStates[0]);
+		box.boxState = /*box.returnBoxState(*/dialogueBoxStates[0]/*)*/;
 		switch (box.boxState)
 		{
 			case ANGRY:
@@ -532,7 +532,7 @@ class DialogueBoxSprite extends FlxSprite
 
 	var curAnim:String = null;
 
-	public function returnBoxState(str:String):DialogueBoxStates
+	/*public function returnBoxState(str:String):DialogueBoxStates
 	{
 		if (str != null)
 		{
@@ -563,7 +563,7 @@ class DialogueBoxSprite extends FlxSprite
 			default:
 				return 'normal';
 		}
-	}
+	}*/
 
 	public function closeBox(){
 		switch (boxState)
@@ -619,7 +619,7 @@ class DialogueBoxSprite extends FlxSprite
 	}
 }
 
-enum CharacterPositions {
+/*enum CharacterPositions {
 	RIGHT;
 	LEFT;
 	MIDDLE;
@@ -630,6 +630,21 @@ enum DialogueBoxStates {
 	ANGRY;
 	MIDDLE;
 	ANGRY_MIDDLE;
+}*/
+
+@:enum abstract CharacterPositions(String) from (String) to (String)
+{
+	var RIGHT = 'right';
+	var LEFT = 'left';
+	var MIDDLE = 'middle';
+}
+
+@:enum abstract DialogueBoxStates(String) from (String) to (String)
+{
+	var NORMAL = 'normal';
+	var ANGRY = 'angry';
+	var MIDDLE = 'middle';
+	var ANGRY_MIDDLE = 'angry_middle';
 }
 
 typedef DialogueJson = {

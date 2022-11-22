@@ -20,9 +20,6 @@ import flash.text.TextField;
 import flixel.addons.ui.FlxInputText;
 import states.LoadingState.LoadingsState;
 import GameJolt.GameJoltLogin;
-#if desktop
-import DiscordClient;
-#end
 import flixel.math.FlxMath;
 
 

@@ -29,7 +29,6 @@ import sys.FileSystem;
 class Stage extends states.MusicBeatState
 {
 	public var stageData:StageFile = null;
-	public var luaStage:Bool = false;
 	public var curStage:String = '';
 	public var camZoom:Float; // The zoom of the camera to have at the start of the game
 	public var hideLastBG:Bool = false; // True = hide last BGs and show ones from slowBacks on certain step, False = Toggle visibility of BGs from SlowBacks on certain step
@@ -48,35 +47,18 @@ class Stage extends states.MusicBeatState
 	// BGs still must be added by using toAdd Array for them to show in game after slowBacks take effect!!
 	// BGs still must be added by using toAdd Array for them to show in game after slowBacks take effect!!
 	// All of the above must be set or used in your stage case code block!!
-	public var positions:Map<String, Map<String, Array<Int>>> = [
-		// Assign your characters positions on stage here!
-		// Unused Kade Shit
-		'halloween' => ['spooky' => [100, 300], 'monster' => [100, 200]],
-		'philly' => ['pico' => [100, 400]],
-		'limo' => ['bf-car' => [1030, 230]],
-		'mall' => ['bf-christmas' => [970, 450], 'parents-christmas' => [-400, 100]],
-		'mallEvil' => ['bf-christmas' => [1090, 450], 'monster-christmas' => [100, 150]],
-		'school' => [
-			'gf-pixel' => [580, 430],
-			'bf-pixel' => [970, 670],
-			'senpai' => [250, 460],
-			'senpai-angry' => [250, 460]
-		],
-		'schoolEvil' => ['gf-pixel' => [580, 430], 'bf-pixel' => [970, 670], 'spirit' => [-50, 200]]
-	];
 
 	public var started:Bool = false;
 	public var startedidle:Bool = false;
 
 	var steve:FlxSprite;
 	public var foregroundSprites:FlxTypedGroup<FlxSprite>;
-	public static var animationNotes:Array<Dynamic> = [];
-	var limoMetalPole:BGSprite;
+	/*var limoMetalPole:BGSprite;
 	var limoLight:BGSprite;
 	var limoCorpse:BGSprite;
 	var limoCorpseTwo:BGSprite;
 	var grpLimoParticles:FlxTypedGroup<BGSprite>;
-	var limoKillingState:Int = 0;
+	var limoKillingState:Int = 0;*/
 	var grpLimoDancers:FlxTypedGroup<BackgroundDancer>;
 
 	var wiggleShit:WiggleEffect;
@@ -217,7 +199,7 @@ class Stage extends states.MusicBeatState
 
 					if (Main.save.data.distractions)
 					{
-						limoMetalPole = new BGSprite('gore/metalPole', -500, 220, 0.4, 0.4);
+						/*limoMetalPole = new BGSprite('gore/metalPole', -500, 220, 0.4, 0.4);
 						swagBacks['limoMetalPole'] = limoMetalPole;
 						toAdd.push(limoMetalPole);
 
@@ -227,7 +209,7 @@ class Stage extends states.MusicBeatState
 
 						limoCorpseTwo = new BGSprite('gore/noooooo', -500, limoMetalPole.y, 0.4, 0.4, ['henchmen death'], true);
 						swagBacks['limoCorpseTwo'] = limoCorpseTwo;
-						toAdd.push(limoCorpseTwo);
+						toAdd.push(limoCorpseTwo);*/
 
 						grpLimoDancers = new FlxTypedGroup<BackgroundDancer>();
 						swagGroup['grpLimoDancers'] = grpLimoDancers;
@@ -241,7 +223,7 @@ class Stage extends states.MusicBeatState
 							swagBacks['dancer' + i] = dancer;
 						}
 
-						limoLight = new BGSprite('gore/coldHeartKiller', limoMetalPole.x - 180, limoMetalPole.y - 80, 0.4, 0.4);
+						/*limoLight = new BGSprite('gore/coldHeartKiller', limoMetalPole.x - 180, limoMetalPole.y - 80, 0.4, 0.4);
 						swagBacks['limoLight'] = limoLight;
 						toAdd.push(limoLight);
 
@@ -252,12 +234,12 @@ class Stage extends states.MusicBeatState
 						var particle:BGSprite = new BGSprite('gore/stupidBlood', -400, -400, 0.4, 0.4, ['blood'], false);
 						particle.alpha = 0.01;
 						grpLimoParticles.add(particle);
-						resetLimoKill();
+						resetLimoKill();*/
 
 						swagBacks['fastCar'] = fastCar;
 						layInFront[2].push(fastCar);
 						resetFastCar();
-						limoKillingState = 0;
+						//limoKillingState = 0;
 					}
 
 					var overlayShit:FlxSprite = new FlxSprite(-500, -600).loadGraphic(Paths.loadImage('limo/limoOverlay', 'week4'));
@@ -795,8 +777,8 @@ class Stage extends states.MusicBeatState
 				case 'warzone':
 					moveTank(elapsed);
 
-				case 'limo':
-					killShit(elapsed);
+				/*case 'limo':
+					killShit(elapsed);*/
 			}
 		}
 	}
@@ -890,12 +872,12 @@ class Stage extends states.MusicBeatState
 							dancer.dance();
 						});
 
-						if (PlayState.SONG.songId == 'satin-panties' && (curBeat == 40 || curBeat == 103))
+						/*if (PlayState.SONG.songId == 'satin-panties' && (curBeat == 40 || curBeat == 103))
 							killHenchmen();
 						else if (PlayState.SONG.songId == 'high' && (curBeat == 8 || curBeat == 40 || curBeat == 135 || curBeat == 168 || curBeat == 200))
 							killHenchmen();
 						else if (PlayState.SONG.songId == 'milf' && (curBeat == 232 || curBeat == 296))
-							killHenchmen();
+							killHenchmen();*/
 
 						if (FlxG.random.bool(10) && fastCarCanDrive)
 							fastCarDrive();
@@ -945,7 +927,7 @@ class Stage extends states.MusicBeatState
 
 	var blammedeventplayed:Bool = false;
 
-	function killHenchmen():Void
+	/*function killHenchmen():Void
 	{
 		if(Main.save.data.distractions && curStage == 'limo') {
 			var savedAchievements:Array<String> = Main.save.data.savedAchievements;
@@ -972,7 +954,7 @@ class Stage extends states.MusicBeatState
 				&& !states.PlayState.instance.addedBotplayOnce)
 				Achievements.getAchievement(167274);
 		}
-	}
+	}*/
 
 	function randomColor() {
 		curLight = FlxG.random.int(0, 4, [oldLight]);
@@ -993,7 +975,7 @@ class Stage extends states.MusicBeatState
 		}
 	}
 		
-	var limoSpeed:Float = 0;
+	/*var limoSpeed:Float = 0;
 	function killShit(elapsed:Float)
 	{
 		if (Main.save.data.distractions) {
@@ -1079,7 +1061,7 @@ class Stage extends states.MusicBeatState
 				}
 			}
 		}
-	}
+	}*/
 
 	function ghoulDance()
 	{
@@ -1094,7 +1076,7 @@ class Stage extends states.MusicBeatState
 		};
 	}
 
-	function resetLimoKill():Void
+	/*function resetLimoKill():Void
 		{
 			if(curStage == 'limo') {
 				limoMetalPole.x = -500;
@@ -1106,7 +1088,7 @@ class Stage extends states.MusicBeatState
 				limoCorpseTwo.x = -500;
 				limoCorpseTwo.visible = false;
 			}
-		}
+		}*/
 
 	// Variables and Functions for Stages
 	var lightningStrikeBeat:Int = 0;

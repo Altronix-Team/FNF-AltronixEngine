@@ -7,8 +7,8 @@ import flixel.input.touch.FlxTouchManager;
 import flixel.math.FlxPoint;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import RelativeSprite;
-import GestureUtil;
-import GestureUtil.SwipeDirection;
+import utils.GestureUtil;
+import utils.GestureUtil.SwipeDirection;
 
 /**
  * This extension of FlxSprite calls corresponding events when clicked or tapped.

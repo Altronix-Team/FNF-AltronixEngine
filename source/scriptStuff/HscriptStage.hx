@@ -1,9 +1,5 @@
 package scriptStuff;
 
-import gameplayStuff.TankmenBG;
-import gameplayStuff.BackgroundDancer;
-import gameplayStuff.BackgroundGirls;
-import gameplayStuff.BGSprite;
 import flixel.addons.display.FlxBackdrop;
 import flixel.group.FlxSpriteGroup;
 import flixel.FlxBasic;
@@ -69,12 +65,7 @@ class HscriptStage extends HScriptModchart
 		scriptHandler.set("addBoyfriendGroup", addBoyfriendGroup);
 		scriptHandler.set("addObject", addObject);
 		scriptHandler.set("getObject", getObject);
-		scriptHandler.set('BGSprite', BGSprite);
-		scriptHandler.set('BackgroundGirls', BackgroundGirls);
-		scriptHandler.set('BackgroundDancer', BackgroundDancer);
-		scriptHandler.set('TankmenBG', TankmenBG);
 		#end
-
 		this.state = state;
 	}
 

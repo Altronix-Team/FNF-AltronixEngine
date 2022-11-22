@@ -29,9 +29,6 @@ import gameplayStuff.DiffCalc;
 import gameplayStuff.Highscore;
 import gameplayStuff.DiffOverview;
 import gameplayStuff.Conductor;
-#if desktop
-import DiscordClient;
-#end
 
 
 class FreeplayState extends MusicBeatState

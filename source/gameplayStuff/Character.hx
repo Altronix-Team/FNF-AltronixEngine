@@ -43,7 +43,7 @@ class Character extends FlxSprite
 	public var interruptAnim:Bool = true;
 	public var colorTween:FlxTween;
 	public var characterIcon:String = 'face';
-	public var animationNotes:Array<Dynamic> = [];
+	//public var animationNotes:Array<Dynamic> = [];
 	public var specialAnim:Bool = false;
 	public var psychChar:Bool = false;
 
@@ -69,10 +69,10 @@ class Character extends FlxSprite
 
 		parseDataFile();
 
-		if (curCharacter == 'picospeaker') 
+		/*if (curCharacter == 'picospeaker') 
 		{
 			loadMappedAnims();
-		}
+		}*/
 
 		if (isPlayer && frames != null)
 		{
@@ -132,7 +132,7 @@ class Character extends FlxSprite
 			}
 		}
 
-		if (PlayState.SONG != null)
+		/*if (PlayState.SONG != null)
 		{
 			if (curCharacter == 'picospeaker') 
 				{
@@ -147,7 +147,7 @@ class Character extends FlxSprite
 						}
 					if(animation.curAnim.finished) playAnim(animation.curAnim.name, false, false, animation.curAnim.frames.length - 3);
 				}
-		}
+		}*/
 
 		if (!debugMode)
 		{
@@ -174,7 +174,7 @@ class Character extends FlxSprite
 		super.update(elapsed);
 	}
 
-	public function loadMappedAnims() {
+	/*public function loadMappedAnims() {
 		var picoAnims = Song.picospeakerLoad(curCharacter, "stress").notes;
 		for (anim in picoAnims) {
 			for (note in anim.sectionNotes) {
@@ -183,7 +183,7 @@ class Character extends FlxSprite
 		}
 		TankmenBG.animationNotes = animationNotes;
 		animationNotes.sort(sortAnims);
-	}
+	}*/
 
 	function sortAnims(Obj1:Array<Dynamic>, Obj2:Array<Dynamic>):Int
 	{

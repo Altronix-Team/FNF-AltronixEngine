@@ -1,9 +1,6 @@
 package editors;
 
 import hx.strings.String8;
-#if desktop
-import DiscordClient;
-#end
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxGridOverlay;

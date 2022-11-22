@@ -100,9 +100,6 @@ import scriptStuff.HScriptHandler.ScriptException;
 import scriptStuff.ScriptHelper;
 import openfl.filters.ShaderFilter;
 import Shaders;
-#if desktop
-import DiscordClient;
-#end
 import gameplayStuff.Ratings;
 
 #if VIDEOS_ALLOWED
@@ -203,7 +200,7 @@ class PlayState extends MusicBeatState
 
 	private var gfSpeed:Int = 1;
 
-	public var health:Float = 1;
+	public var health(default, set):Float = 1;
 
 	private var combo:Int = 0;
 
@@ -1139,16 +1136,24 @@ class PlayState extends MusicBeatState
 
 		if (SONG.specialSongNoteSkin != Main.save.data.noteskin && SONG.specialSongNoteSkin != null)
 		{
-			noteskinPixelSprite = NoteskinHelpers.generatePixelSprite(SONG.specialSongNoteSkin);
-			noteskinPixelSpriteEnds = NoteskinHelpers.generatePixelSprite(SONG.specialSongNoteSkin, true);
-			noteskinSprite = NoteskinHelpers.generateNoteskinSprite(SONG.specialSongNoteSkin);
+			if (isPixel)
+			{
+				noteskinPixelSprite = NoteskinHelpers.generatePixelSprite(SONG.specialSongNoteSkin);
+				noteskinPixelSpriteEnds = NoteskinHelpers.generatePixelSprite(SONG.specialSongNoteSkin, true);
+			}
+			else
+				noteskinSprite = NoteskinHelpers.generateNoteskinSprite(SONG.specialSongNoteSkin);
 			noteskinTexture = SONG.specialSongNoteSkin;
 		}
 		else
 		{
-			noteskinPixelSprite = NoteskinHelpers.generatePixelSprite(Main.save.data.noteskin);
-			noteskinSprite = NoteskinHelpers.generateNoteskinSprite(Main.save.data.noteskin);
-			noteskinPixelSpriteEnds = NoteskinHelpers.generatePixelSprite(Main.save.data.noteskin, true);
+			if (isPixel)
+			{
+				noteskinPixelSprite = NoteskinHelpers.generatePixelSprite(Main.save.data.noteskin);
+				noteskinPixelSpriteEnds = NoteskinHelpers.generatePixelSprite(Main.save.data.noteskin, true);			
+			}
+			else
+				noteskinSprite = NoteskinHelpers.generateNoteskinSprite(Main.save.data.noteskin);
 			noteskinTexture = Main.save.data.noteskin;
 		}
 
@@ -1540,15 +1545,20 @@ class PlayState extends MusicBeatState
 
 	public static function songCutscene()
 	{
-		if (!ScriptHelper.callOnHscript('startCutscene', [])) //Cutscenes for scripts Hmmm. Hscript exclusive
+		if (!ScriptHelper.isFunctionExists('startCutscene')) //Cutscenes for scripts Hmmm. Hscript exclusive
 		{
-			new FlxTimer().start(1, function(timer)
+			if (!inCutscene)
 			{
-				instance.startCountdown();
-			});	
+				new FlxTimer().start(1, function(timer)
+				{
+					instance.startCountdown();
+				});	
 
-			seenCutscene = true;
+				seenCutscene = true;
+			}
 		}
+		else
+			ScriptHelper.callOnHscript('startCutscene', []);
 	}
 
 	var video:MP4Handler;
@@ -3394,8 +3404,6 @@ class PlayState extends MusicBeatState
 		iconP1.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01) - iconOffset);
 		iconP2.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (iconP2.width - iconOffset);
 
-		if (health > 2)
-			health = 2;
 		if (healthBar.percent < 20)
 		{
 			/*if (iconP1.nearToDieAnim != null)
@@ -4706,34 +4714,6 @@ class PlayState extends MusicBeatState
 		#end
 	}
 
-	var cameraTwn:FlxTween;
-	public function moveCamera(isDad:Bool)
-	{
-		if(isDad)
-		{
-			camFollow.setPosition(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
-			camFollow.x += dad.camPos[0] + opponentCameraOffset[0];
-			camFollow.y += dad.camPos[1] + opponentCameraOffset[1];
-			tweenCamIn();
-		}
-		else
-		{
-			camFollow.setPosition(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
-			camFollow.x -= boyfriend.camPos[0] - boyfriendCameraOffset[0];
-			camFollow.y += boyfriend.camPos[1] + boyfriendCameraOffset[1];
-
-			if (SONG.songId == 'tutorial' && cameraTwn == null && FlxG.camera.zoom != 1)
-			{
-				cameraTwn = FlxTween.tween(FlxG.camera, {zoom: 1}, (Conductor.stepCrochet * 4 / 1000), {ease: FlxEase.elasticInOut, onComplete:
-					function (twn:FlxTween)
-					{
-						cameraTwn = null;
-					}
-				});
-			}
-		}
-	}
-
 	public var transitioning = false;
 	public var blockSongEnd:Bool = false;
 	public function endSong():Void
@@ -5816,6 +5796,37 @@ class PlayState extends MusicBeatState
 		}
 	}
 
+	var cameraTwn:FlxTween;
+	public var blockCameraMoves:Bool = false;
+	public function moveCamera(isDad:Bool)
+	{
+		if (blockCameraMoves) return;
+
+		if(isDad)
+		{
+			camFollow.setPosition(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
+			camFollow.x += dad.camPos[0] + opponentCameraOffset[0];
+			camFollow.y += dad.camPos[1] + opponentCameraOffset[1];
+			tweenCamIn();
+		}
+		else
+		{
+			camFollow.setPosition(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
+			camFollow.x -= boyfriend.camPos[0] - boyfriendCameraOffset[0];
+			camFollow.y += boyfriend.camPos[1] + boyfriendCameraOffset[1];
+
+			if (SONG.songId == 'tutorial' && cameraTwn == null && FlxG.camera.zoom != 1)
+			{
+				cameraTwn = FlxTween.tween(FlxG.camera, {zoom: 1}, (Conductor.stepCrochet * 4 / 1000), {ease: FlxEase.elasticInOut, onComplete:
+					function (twn:FlxTween)
+					{
+						cameraTwn = null;
+					}
+				});
+			}
+		}
+	}
+
 	var mashing:Int = 0;
 	var mashViolations:Int = 0;
 
@@ -6267,5 +6278,19 @@ class PlayState extends MusicBeatState
 				strumLineNotes.tweenArrowsY(50);
 			}
 		}
+	}
+
+	//Well, how about to not check health max value every update?
+	function set_health(value:Float):Float {
+		if (value > 2)
+			health = 2;
+		//else if (value < 0)
+			//health = 0;
+		else
+			health = value;
+
+		ScriptHelper.callOnScripts('onHealthChange', [health]);
+
+		return value;
 	}
 }

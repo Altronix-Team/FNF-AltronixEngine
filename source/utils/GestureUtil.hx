@@ -1,10 +1,11 @@
 package utils;
 
-import IInteractable;
+import utils.IInteractable;
 import InteractableSprite;
 import flixel.math.FlxPoint;
 import flixel.FlxG;
 import flixel.input.mouse.FlxMouseEventManager;
+import flixel.input.mouse.FlxMouseButton;
 
 class GestureUtil
 {
@@ -64,9 +65,44 @@ class GestureUtil
 			t.onJustReleasedMiddle(FlxG.mouse.getScreenPosition(), pressTime);
 		}
 
-		FlxMouseEventManager.add(target, mouseDownEvent, mouseUpEvent, mouseOverEvent, mouseOutEvent, false, true, true, [LEFT]);
+		Reflect.callMethod(FlxMouseEventManager, Reflect.field(FlxMouseEventManager, 'add'), [
+			target,
+			mouseDownEvent,
+			mouseUpEvent,
+			mouseOverEvent,
+			mouseOutEvent,
+			false,
+			true,
+			true,
+			[LEFT]
+		]);
+
+		Reflect.callMethod(FlxMouseEventManager, Reflect.field(FlxMouseEventManager, 'add'), [
+			target,
+			rightMouseDownEvent,
+			rightMouseUpEvent,
+			null,
+			null,
+			false,
+			true,
+			true,
+			[RIGHT]
+		]);
+
+		Reflect.callMethod(FlxMouseEventManager, Reflect.field(FlxMouseEventManager, 'add'), [
+			target,
+			middleMouseDownEvent,
+			middleMouseUpEvent,
+			null,
+			null,
+			false,
+			true,
+			true,
+			[MIDDLE]
+		]);
+		/*FlxMouseEventManager.add(target, mouseDownEvent, mouseUpEvent, mouseOverEvent, mouseOutEvent, false, true, true, [LEFT]);
 		FlxMouseEventManager.add(target, rightMouseDownEvent, rightMouseUpEvent, null, null, false, true, true, [RIGHT]);
-		FlxMouseEventManager.add(target, middleMouseDownEvent, middleMouseUpEvent, null, null, false, true, true, [MIDDLE]);
+		FlxMouseEventManager.add(target, middleMouseDownEvent, middleMouseUpEvent, null, null, false, true, true, [MIDDLE]);*/
 	}
 
 	public static function handleGestureState(target:IInteractable, inputData:GestureStateData):GestureStateData
@@ -143,7 +179,7 @@ class GestureUtil
 
 	public static function getSwipeDirection(start:FlxPoint, end:FlxPoint)
 	{
-		var swipeAngle = start.angleBetween(end);
+		var swipeAngle = #if (flixel < "5.0.0") start.angleBetween(end) #else start.degreesTo(end) #end;
 		if (SWIPE_THRESHOLD_N_NW < swipeAngle && swipeAngle < SWIPE_THRESHOLD_N_NE)
 		{
 			return NORTH;

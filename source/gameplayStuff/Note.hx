@@ -3,7 +3,6 @@ package gameplayStuff;
 import states.FreeplayState;
 import gameplayStuff.DiffOverview;
 import gameplayStuff.Song;
-import hx.strings.String8;
 import openfl.display.Preloader.DefaultPreloader;
 import flixel.addons.effects.FlxSkewedSprite;
 import flixel.FlxG;

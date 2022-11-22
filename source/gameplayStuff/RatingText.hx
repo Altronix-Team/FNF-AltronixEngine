@@ -147,6 +147,7 @@ class RatingText extends FlxTypedGroup<FlxText>
 
 	public inline function screenCenter(axes:FlxAxes = XY):RatingText
 	{
+		#if (flixel < "5.0.0")
 		if (axes.match(X | XY))
 			x = (FlxG.width - width) / 2;
 
@@ -154,6 +155,15 @@ class RatingText extends FlxTypedGroup<FlxText>
 			y = (FlxG.height - height) / 2;
 
 		return this;
+		#else
+		if (axes.x)
+			x = (FlxG.width - width) / 2;
+
+		if (axes.y)
+			y = (FlxG.height - height) / 2;
+
+		return this;
+		#end
 	}
 
 	function get_width():Float {

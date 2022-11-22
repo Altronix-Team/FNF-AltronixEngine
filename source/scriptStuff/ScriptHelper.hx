@@ -4,7 +4,7 @@ import scriptStuff.FunkinLua;
 @:allow(states.PlayState)
 class ScriptHelper
 {
-	public static var hscriptFiles:Array<HScriptModchart> = [];
+	public static var hscriptFiles:Array<Dynamic> = [];
 	public static var luaArray:Array<FunkinLua> = [];
 
 	public static function clearAllScripts()
@@ -44,6 +44,18 @@ class ScriptHelper
 				if (scriptHelper.call(functionToCall, params) != null)
 					retVal = true;
 			}
+		}
+		return retVal;
+	}
+
+	public static function isFunctionExists(funcName:String):Bool
+	{
+		var retVal = false;
+		for (script in hscriptFiles)
+		{
+			var scriptHelper = script.scriptHandler;
+			if (scriptHelper.exists(funcName))
+				retVal = true;
 		}
 		return retVal;
 	}

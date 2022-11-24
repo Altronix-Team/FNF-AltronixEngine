@@ -818,17 +818,17 @@ class PlayState extends MusicBeatState
 	
 		if (!luaStage && hscriptStageCheck)
 		{
-			if (!hscriptStage.addedCharacterGroups.contains(gfGroup))
+			if (!hscriptStage.members.contains(gfGroup))
 				add(gfGroup);
 			else
 				gfGroup = hscriptStage.gfGroup;
 
-			if (!hscriptStage.addedCharacterGroups.contains(dadGroup))
+			if (!hscriptStage.members.contains(dadGroup))
 				add(dadGroup);
 			else
 				dadGroup = hscriptStage.dadGroup;
 			
-			if (!hscriptStage.addedCharacterGroups.contains(boyfriendGroup))
+			if (!hscriptStage.members.contains(boyfriendGroup))
 				add(boyfriendGroup);
 			else
 				boyfriendGroup = hscriptStage.boyfriendGroup;

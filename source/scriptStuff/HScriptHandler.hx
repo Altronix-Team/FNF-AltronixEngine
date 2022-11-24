@@ -1,5 +1,6 @@
 package scriptStuff;
 
+import gameplayStuff.StaticArrow;
 import gameplayStuff.Song;
 import Shaders.VCRDistortionEffect;
 import animateatlas.AtlasFrameMaker;
@@ -651,6 +652,7 @@ class HScriptHandler extends SScript
 		set('AtlasFrameMaker', AtlasFrameMaker);
 		set('Achievements', Achievements);
 		set('VCRDistortionEffect', VCRDistortionEffect);
+		set('StaticArrow', StaticArrow);
 
 		set('getRGBColor', getRGBColor);
 	}

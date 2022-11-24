@@ -13,24 +13,24 @@ class NoteSplash extends FlxSprite
 	private var idleAnim:String;
 	private var textureLoaded:String = null;
 
-    override public function new(x:Float = 0, y:Float = 0, ?note:Int = 0, ?noteType:String = null)
+    override public function new(x:Float = 0, y:Float = 0)
     {
 		super(x, y);
 
 		if (OpenFlAssets.exists(Paths.image("notesplashes/" + NoteskinHelpers.getNoteskinByID(Main.save.data.noteskin), 'shared')))
 			curNoteskinSprite = NoteskinHelpers.getNoteskinByID(Main.save.data.noteskin);
-		else if (noteType != null && OpenFlAssets.exists(Paths.image("notesplashes/" + noteType, 'shared')))
-			curNoteskinSprite = noteType;
+		/*else if (noteType != null && OpenFlAssets.exists(Paths.image("notesplashes/" + noteType, 'shared')))
+			curNoteskinSprite = noteType;*/
 		else
 			curNoteskinSprite = 'Default';
 
 		loadAnims(curNoteskinSprite);
 		
-		setupNoteSplash(x, y, note, noteType);
+		setupNoteSplash(x, y, null);
 		antialiasing = Main.save.data.antialiasing;
     }
 
-    public function setupNoteSplash(x:Float, y:Float, note:Int= 0, noteType:String = 'Default Note')
+    public function setupNoteSplash(x:Float, y:Float, note:Note)
     {
 		var texture:String;
 		if (states.PlayState.isPixel)
@@ -39,28 +39,27 @@ class NoteSplash extends FlxSprite
 			setPosition(x - Note.swagWidth * 0.95, y - Note.swagWidth);
     	alpha = 0.6;
 
-		switch (noteType)
+		var noteType = 'Default Note';
+		var data = 0;
+		texture = curNoteskinSprite;
+
+		if (note != null)
 		{
-			case 'Bullet Note':
-				texture = 'BulletNoteSplashes';
-
-			case 'Hurt Note':
-				texture = 'HURTnoteSplashes';
-
-			default:
-				if (OpenFlAssets.exists(Paths.image("notesplashes/" + noteType, 'shared')))
-					texture = noteType;
-				else
-					texture = curNoteskinSprite;
+			noteType = note.noteType;
+			data = note.noteData;
+			texture = note.noteSplashTexture;
 		}
 
-		if(textureLoaded != texture) {
+		if (!OpenFlAssets.exists(Paths.image("notesplashes/" + texture, 'shared')))
+			texture = curNoteskinSprite;
+
+		if(textureLoaded != texture)
 			loadAnims(texture);
-		}
+
 		offset.set(10, 10);
 
 		var animNum:Int = FlxG.random.int(1, 2);
-		animation.play('note' + note + '-' + animNum, true);
+		animation.play('note' + data + '-' + animNum, true);
 		if(animation.curAnim != null)animation.curAnim.frameRate = 24 + FlxG.random.int(-2, 2);
     }
 

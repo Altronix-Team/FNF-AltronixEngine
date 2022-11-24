@@ -10,9 +10,6 @@ import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.math.FlxMath;
 import flixel.util.FlxColor;
-#if polymod
-import polymod.format.ParseRules.TargetSignatureElement;
-#end
 import states.PlayState;
 import openfl.display.BitmapData;
 import openfl.utils.Assets as OpenFlAssets;
@@ -21,6 +18,7 @@ import flixel.text.FlxText;
 
 typedef NoteMeta = {
 	var imageFile:String;
+	var ?noteSplashFile:String;
 	var size:Float;
 	var listInSettings:Bool;
 } 
@@ -92,6 +90,8 @@ class Note extends FlxSprite
 	public var noteStyle:String;
 
 	public var texture(default, set):String = null;
+
+	public var noteSplashTexture:String = null;
 
 	public var noAnimation:Bool = false;
 	public var noMissAnimation:Bool = false;
@@ -214,6 +214,11 @@ class Note extends FlxSprite
 				listInSettings: true
 			}
 		}
+
+		if (noteMetaData.noteSplashFile != null)
+			noteSplashTexture = noteMetaData.noteSplashFile;
+		else
+			noteSplashTexture = noteMetaData.imageFile;
 
 		reloadNote(noteMetaData);
 		

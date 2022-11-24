@@ -159,14 +159,9 @@ class StrumLine extends FlxTypedGroup<StaticArrow>
     public function spawnNoteSplashOnNote(note:Note) {
 		if(Main.save.data.notesplashes && note != null) {
 			if (note.sprTracker != null) {
-				grpNoteSplashes.spawnNoteSplash(note.sprTracker.x, note.sprTracker.y, note.noteData, note);
+				grpNoteSplashes.spawnNoteSplash(note.sprTracker.x, note.sprTracker.y, note);
 			}
 		}
-        else
-        {
-            Debug.logTrace('Trying to spawn note splash, but they`re disabled in engine settings');
-            return;
-        }
 	}
 
 	function set_useMiddlescroll(value:Bool):Bool {
@@ -182,16 +177,14 @@ class SplashGroup extends FlxTypedGroup<NoteSplash>
     {
         super();
 
-		var splash:NoteSplash = new NoteSplash(100, 100, 0);
+		var splash:NoteSplash = new NoteSplash(100, 100);
 		splash.scrollFactor.set();
 		add(splash);
     }
 
-    public function spawnNoteSplash(x:Float, y:Float, data:Int, note:Note) {
-		var type:String = note.noteType;
-
+    public function spawnNoteSplash(x:Float, y:Float, note:Note) {
 		var splash:NoteSplash = recycle(NoteSplash);
-		splash.setupNoteSplash(x, y, data, type);
+		splash.setupNoteSplash(x, y, note);
 		add(splash);
 	}
 }

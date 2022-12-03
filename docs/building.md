@@ -13,7 +13,7 @@
 	 - Windows: install from the [git-scm](https://git-scm.com/downloads) website.
 	 - Linux: install the `git` package: `sudo apt install git` (ubuntu), `sudo pacman -S git` (arch), etc... (you probably already have it)
  4. Install and set up the necessary libraries:
-	 - `haxelib install lime 7.9.0`
+	 - `haxelib install lime`
 	 - `haxelib install openfl`
 	 - `haxelib install flixel`
 	 - `haxelib install flixel-tools`
@@ -24,7 +24,6 @@
 	 - `haxelib run lime setup flixel`
 	 - `haxelib run flixel-tools setup`
 	 - `haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit`
-	 - `haxelib git faxe https://github.com/uhrobots/faxe`
 	 - `haxelib install polymod`
 	 - `haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc`
 	 - `haxelib git tentools https://github.com/TentaRJ/tentools.git`
@@ -34,7 +33,7 @@
 	 - `haxelib install hscript-ex 0.0.0`
 	 - `haxelib install hxCodec`
 	 - `haxelib git SScript https://github.com/AltronMaxX/SScript`
-	 - `haxelib git firetongue https://github.com/larsiusprime/firetongue`
+	 - `haxelib git firetongue https://github.com/larsiusprime/firetongue dev`
 	      - Note: for Linux, you need to install the `g++-multilib` and `gcc-multilib` packages respectively. (use apt to install them.)
 
 ### Windows-only dependencies (only for building *to* Windows. Building html5 on Windows does not require this)

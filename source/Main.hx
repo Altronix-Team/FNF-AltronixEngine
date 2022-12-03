@@ -64,8 +64,6 @@ class Main extends Sprite
 
 		super();
 
-		lime.utils.Log.throwErrors = false;
-
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtError);
 
 		if (stage != null)
@@ -90,6 +88,8 @@ class Main extends Sprite
 
 	private function setupGame():Void
 	{
+		lime.utils.Log.throwErrors = false;
+		
 		save.bind('funkin', 'ninjamuffin99');
 
 		EngineData.initSave();

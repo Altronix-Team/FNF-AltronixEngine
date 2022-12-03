@@ -98,11 +98,6 @@ class WindowUtil
 	 */
 	public static function resizeWindow(width:Int = 1280, height:Int = 720)
 	{
-		Lib.application.window.resizable = !Lib.application.window.resizable;
-		if (FlxG.scaleMode is RatioScaleMode)
-			FlxG.scaleMode = new StageSizeScaleMode();
-		else
-			FlxG.scaleMode = new RatioScaleMode(false);
 		FlxG.resizeGame(width, height);
 		FlxG.resizeWindow(width, height);
 	}

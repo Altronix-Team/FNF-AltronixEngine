@@ -424,15 +424,20 @@ class ChartingState extends MusicBeatState
 
 		var sections = Math.floor(((lengthInSteps + 16)) / 16);
 
+		if (_song.notes.length != sections)
+			for (sectId in 0...sections)
+			{
+				if (_song.notes[sectId] == null)
+					_song.notes.push(newSection(16, true, false, false));
+			}
+
 		var targetY = getYfromStrum(FlxG.sound.music.length);
 
 		//Debug.logTrace("TARGET " + targetY);
 
 		for (awfgaw in 0..._song.notes.length) // grids/steps
 		{
-			var renderer = new SectionRender(0, 640 * awfgaw, GRID_SIZE, vocals, _song.notes[awfgaw], _song.notes[awfgaw].lengthInSteps);
-			if (_song.notes[awfgaw] == null)
-				_song.notes.push(newSection(16, true, false, false));
+			var renderer = new SectionRender(0, 640 * awfgaw, GRID_SIZE, _song.needsVoices ? vocals : FlxG.sound.music, _song.notes[awfgaw], _song.notes[awfgaw].lengthInSteps);
 
 			sectionRenderes.add(renderer);
 
@@ -454,9 +459,10 @@ class ChartingState extends MusicBeatState
 			renderer.lastUpdated = _song.notes[awfgaw].mustHitSection;
 
 			sectionIcons.add(sectionicon);
-			add(sectionicon);
 			height = Math.floor(renderer.sectionSprite.y);
 		}
+
+		add(sectionIcons);
 
 		gridBlackLine = new FlxSprite(gridBG.width / 2).makeGraphic(2, height, FlxColor.BLACK);
 
@@ -1253,7 +1259,6 @@ class ChartingState extends MusicBeatState
 
 		var check_voices = new FlxUICheckBox(10, 25, null, null, "Has voice track", 100);
 		check_voices.checked = _song.needsVoices;
-		// _song.needsVoices = check_voices.checked;
 		check_voices.callback = function()
 		{
 			_song.needsVoices = check_voices.checked;
@@ -1556,7 +1561,6 @@ class ChartingState extends MusicBeatState
 				{
 					var cachedY = i.icon.y;
 					sectionIcons.remove(i.icon);
-					remove(i.icon);
 					var sectionicon = null;
 					if (sect.gfSection)
 						sectionicon = new HealthIcon(_song.gfVersion, Character.getCharacterIcon(_song.gfVersion)).clone();
@@ -1571,7 +1575,6 @@ class ChartingState extends MusicBeatState
 					i.icon = sectionicon;
 					i.lastUpdated = sect.mustHitSection;
 
-					add(sectionicon);
 					sectionIcons.add(sectionicon);
 				}
 			}
@@ -1604,7 +1607,6 @@ class ChartingState extends MusicBeatState
 				{
 					var cachedY = i.icon.y;
 					sectionIcons.remove(i.icon);
-					remove(i.icon);
 					var sectionicon = null;
 					if (sect.gfSection)
 						sectionicon = new HealthIcon(_song.gfVersion, Character.getCharacterIcon(_song.gfVersion)).clone();
@@ -1619,7 +1621,6 @@ class ChartingState extends MusicBeatState
 					i.icon = sectionicon;
 					i.lastUpdated = sect.mustHitSection;
 
-					add(sectionicon);
 					sectionIcons.add(sectionicon);
 				}
 			}
@@ -3212,7 +3213,6 @@ class ChartingState extends MusicBeatState
 					i.icon = sectionicon;
 					i.lastUpdated = sect.mustHitSection;
 
-					add(sectionicon);
 					sectionIcons.add(sectionicon);
 					Debug.logTrace("must hit " + sect.mustHitSection);
 				}
@@ -3556,7 +3556,6 @@ class ChartingState extends MusicBeatState
 			i.icon = sectionicon;
 			i.lastUpdated = sect.mustHitSection;
 		
-			add(sectionicon);
 			sectionIcons.add(sectionicon);
 
 			sectionNumber += 1;

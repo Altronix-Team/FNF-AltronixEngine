@@ -170,7 +170,6 @@ class MainMenuState extends MusicBeatState
 		gjButton.scrollFactor.set();
 		add(gjButton);
 
-
 		/*if (Main.save.data.dfjk)
 			controls.setKeyboardScheme(KeyboardScheme.Solo, true);
 		else

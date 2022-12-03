@@ -2866,6 +2866,9 @@ class PlayState extends MusicBeatState
 			var coolSection:Int = Std.int(section.lengthInSteps / 4);
 			for (songNotes in section.sectionNotes)
 			{
+				if (songNotes[1] == -1) //Skip psych engine event notes
+					continue;
+
 				var daStrumTime:Float = songNotes[0] / songMultiplier;
 				if (daStrumTime < 0)
 					daStrumTime = 0;

@@ -450,6 +450,85 @@ class Song
 
 			for (ii in i.sectionNotes)
 			{
+				//First of all, check is it psych engine event note
+				if (ii[1] == -1)
+				{
+					var eventBeat:Float = CoolUtil.truncateFloat(TimingStruct.getBeatFromTime(ii[0]), 3);
+
+					if (checkedPositions.contains(eventBeat))
+					{
+						for (i in song.eventsArray)
+						{
+							if (i.position == eventBeat)
+							{
+								var eventType:String;
+
+								switch (ii[2])
+								{
+									case 'Add Camera Zoom':
+										eventType = 'Camera zoom';
+									case 'Change Scroll Speed':
+										eventType = 'Scroll Speed Change';
+									case 'Alt Idle Animation':
+										eventType = 'Toggle Alt Idle';
+									case 'Play Animation':
+										eventType = 'Character play animation';
+									default:
+										eventType = ii[2];
+								}
+
+								var eventValue:Dynamic = '';
+
+								if (ii[3] != '')
+								{
+									eventValue = ii[3];
+									if (ii[4] != '')
+										eventValue += ', ' + ii[4];
+								}
+
+								i.events.push(new Song.EventObject('Psych Event ' + eventBeat, eventValue, eventType));
+							}
+						}
+					}
+					else
+					{
+						var eventAtPos:Song.EventsAtPos = {
+							position: eventBeat,
+							events: []
+						};
+						var eventType:String;
+
+						switch (ii[2])
+						{
+							case 'Add Camera Zoom':
+								eventType = 'Camera zoom';
+							case 'Change Scroll Speed':
+								eventType = 'Scroll Speed Change';
+							case 'Alt Idle Animation':
+								eventType = 'Toggle Alt Idle';
+							case 'Play Animation':
+								eventType = 'Character play animation';
+							default:
+								eventType = ii[2];
+						}
+
+						var eventValue:Dynamic = '';
+
+						if (ii[3] != '')
+						{
+							eventValue = ii[3];
+							if (ii[4] != '')
+								eventValue += ', ' + ii[4];
+						}
+
+						checkedPositions.push(eventBeat);
+
+						eventAtPos.events.push(new Song.EventObject('Psych Event ' + eventBeat, eventValue, eventType));
+						song.eventsArray.push(eventAtPos);
+					}
+					i.sectionNotes.remove(ii);
+				}
+
 				if (Std.isOfType(ii[3], String))
 				{
 					if (ii[3] == 'Alt Animation')

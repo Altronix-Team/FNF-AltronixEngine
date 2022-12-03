@@ -66,17 +66,18 @@ class Paths
 	 */
 	static public function loadImage(key:String, ?library:String):FlxGraphic
 	{
+		var retVal:BitmapData;
 		var path = image(key, library);
-
 		if (OpenFlAssets.exists(path, IMAGE))
 		{
-			return FlxGraphic.fromBitmapData(OpenFlAssets.getBitmapData(path));
+			retVal = OpenFlAssets.getBitmapData(path);
 		}
 		else
 		{
 			Debug.logWarn('Could not find image at path $path');
-			return null;
+			retVal = flixel.addons.display.FlxGridOverlay.createGrid(50, 50, 100, 100, true, 0xFFFF00FF, 0xFF000000);
 		}
+		return FlxGraphic.fromBitmapData(retVal);
 	}
 
 	static public function isFileReplaced(path:String):Bool //Check for replaced files by polymod

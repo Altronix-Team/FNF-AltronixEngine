@@ -1,5 +1,6 @@
 package gameplayStuff;
 
+import states.PlayState;
 import flixel.FlxG;
 
 
@@ -19,7 +20,7 @@ class Highscore
 	{
 		var daSong:String = formatSong(song, diff);
 
-		if (!Main.save.data.botplay)
+		if (!PlayState.instance.addedBotplayOnce)
 		{
 			if (songScores.exists(daSong))
 			{
@@ -38,7 +39,7 @@ class Highscore
 		var daSong:String = formatSong(song, diff);
 		var finalCombo:String = combo.split(')')[0].replace('(', '');
 
-		if (!Main.save.data.botplay)
+		if (!PlayState.instance.addedBotplayOnce)
 		{
 			if (songCombos.exists(daSong))
 			{
@@ -52,7 +53,7 @@ class Highscore
 
 	public static function saveWeekScore(week:Int = 1, score:Int = 0, ?diff:Int = 0):Void
 	{
-		if (!Main.save.data.botplay)
+		if (!PlayState.instance.addedBotplayOnce)
 		{
 			var daWeek:String = formatSong('week' + week, diff);
 

@@ -48,6 +48,8 @@ class Main extends Sprite
 
 	public static var game:FlxGame;
 
+	public static final defaultWindowTitle:String = 'Friday Night Funkin\': Altronix Engine';
+
 	// You can pretty much ignore everything from here on - your code should go in your states.
 	// Ho-ho-ho, no
 

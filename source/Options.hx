@@ -30,6 +30,21 @@ class Option
 
 	public var waitingType:Bool = false;
 
+	private var onText:String = LanguageStuff.getOption("$On_Text");
+	private var offText:String = LanguageStuff.getOption("$Off_Text");
+	private var pauseBlock:String = LanguageStuff.getOption("$Pause_Block_Text");
+
+	public function getOnOff(value:Dynamic, invert:Bool = false):String
+	{
+		if (Std.isOfType(value, Bool))
+		{
+			var val = cast(value, Bool);
+			if (val) return invert ? offText : onText;
+			else return invert ? onText : offText;
+		}
+		return invert ? onText : offText;
+	}
+
 	public final function getDisplay():String
 	{
 		return display;
@@ -81,10 +96,7 @@ class DFJKOption extends Option
 	public function new()
 	{
 		super();
-		if (!Main.save.data.language)
-			description = "Edit your keybindings";
-		else
-			description = "Изменить настройки управления";
+		description = LanguageStuff.getOption("$DFJKOption");
 	}
 
 	public override function press():Bool
@@ -96,10 +108,7 @@ class DFJKOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Edit Keybindings";
-		else
-			return "Изменить настройки управления";
+		return LanguageStuff.getOption("$DFJKOption");
 	}
 }
 
@@ -131,10 +140,7 @@ class UpKeybind extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "UP: " + (waitingType ? "> " + Main.save.data.upBind + " <" : Main.save.data.upBind) + "";
-		else
-			return "Вверх: " + (waitingType ? "> " + Main.save.data.upBind + " <" : Main.save.data.upBind) + "";
+		return LanguageStuff.replaceFlagsAndReturn("$UpKeybind", 'option', ['<bind>'], [(waitingType ? "> " + Main.save.data.upBind + " <" : Main.save.data.upBind)]);
 	}
 }
 
@@ -166,10 +172,8 @@ class DownKeybind extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "DOWN: " + (waitingType ? "> " + Main.save.data.downBind + " <" : Main.save.data.downBind) + "";
-		else
-			return "Вниз: " + (waitingType ? "> " + Main.save.data.downBind + " <" : Main.save.data.downBind) + "";
+		return LanguageStuff.replaceFlagsAndReturn("$DownKeybind", 'option', ['<bind>'],
+			[(waitingType ? "> " + Main.save.data.downBind + " <" : Main.save.data.downBind)]);
 	}
 }
 
@@ -201,10 +205,8 @@ class RightKeybind extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "RIGHT: " + (waitingType ? "> " + Main.save.data.rightBind + " <" : Main.save.data.rightBind) + "";
-		else
-			return "Вправо: " + (waitingType ? "> " + Main.save.data.rightBind + " <" : Main.save.data.rightBind) + "";
+		return LanguageStuff.replaceFlagsAndReturn("$RightKeybind", 'option', ['<bind>'],
+			[(waitingType ? "> " + Main.save.data.rightBind + " <" : Main.save.data.rightBind)]);
 	}
 }
 
@@ -236,10 +238,7 @@ class LeftKeybind extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "LEFT: " + (waitingType ? "> " + Main.save.data.leftBind + " <" : Main.save.data.leftBind) + "";
-		else
-			return "Влево: " + (waitingType ? "> " + Main.save.data.leftBind + " <" : Main.save.data.leftBind) + "";
+		return LanguageStuff.replaceFlagsAndReturn("$LeftKeybind", 'option', ['<bind>'], [(waitingType ? "> " + Main.save.data.leftBind + " <" : Main.save.data.leftBind)]);
 	}
 }
 
@@ -271,10 +270,8 @@ class AttackKeybind extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "ATTACK: " + (waitingType ? "> " + Main.save.data.attackBind + " <" : Main.save.data.attackBind) + "";
-		else
-			return "Атака: " + (waitingType ? "> " + Main.save.data.attackBind + " <" : Main.save.data.attackBind) + "";
+		return LanguageStuff.replaceFlagsAndReturn("$AttackKeybind", 'option', ['<bind>'],
+			[(waitingType ? "> " + Main.save.data.attackBind + " <" : Main.save.data.attackBind)]);
 	}
 }
 class PauseKeybind extends Option
@@ -305,10 +302,8 @@ class PauseKeybind extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "PAUSE: " + (waitingType ? "> " + Main.save.data.pauseBind + " <" : Main.save.data.pauseBind) + "";
-		else
-			return "Пауза: " + (waitingType ? "> " + Main.save.data.pauseBind + " <" : Main.save.data.pauseBind) + "";
+		return LanguageStuff.replaceFlagsAndReturn("$PauseKeybind", 'option', ['<bind>'],
+			[(waitingType ? "> " + Main.save.data.pauseBind + " <" : Main.save.data.pauseBind)]);
 	}
 }
 
@@ -340,10 +335,7 @@ class ResetBind extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "RESET: " + (waitingType ? "> " + Main.save.data.resetBind + " <" : Main.save.data.resetBind) + "";
-		else
-			return "Сбросить: " + (waitingType ? "> " + Main.save.data.resetBind + " <" : Main.save.data.resetBind) + "";
+		return LanguageStuff.replaceFlagsAndReturn("$ResetBind", 'option', ['<bind>'], [(waitingType ? "> " + Main.save.data.resetBind + " <" : Main.save.data.resetBind)]);
 	}
 }
 
@@ -375,10 +367,8 @@ class MuteBind extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "VOLUME MUTE: " + (waitingType ? "> " + Main.save.data.muteBind + " <" : Main.save.data.muteBind) + "";
-		else
-			return "Заглушить звук: " + (waitingType ? "> " + Main.save.data.muteBind + " <" : Main.save.data.muteBind) + "";
+		return LanguageStuff.replaceFlagsAndReturn("$MuteBind", 'option', ['<bind>'],
+			[(waitingType ? "> " + Main.save.data.muteBind + " <" : Main.save.data.muteBind)]);
 	}
 }
 
@@ -410,10 +400,8 @@ class VolUpBind extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "VOLUME UP: " + (waitingType ? "> " + Main.save.data.volUpBind + " <" : Main.save.data.volUpBind) + "";
-		else
-			return "Повысить громкость: " + (waitingType ? "> " + Main.save.data.volUpBind + " <" : Main.save.data.volUpBind) + "";
+		return LanguageStuff.replaceFlagsAndReturn("$VolUpBind", 'option', ['<bind>'],
+			[(waitingType ? "> " + Main.save.data.volUpBind + " <" : Main.save.data.volUpBind)]);
 	}
 }
 
@@ -445,10 +433,8 @@ class VolDownBind extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "VOLUME DOWN: " + (waitingType ? "> " + Main.save.data.volDownBind + " <" : Main.save.data.volDownBind) + "";
-		else
-			return "Понизить громкость: " + (waitingType ? "> " + Main.save.data.volDownBind + " <" : Main.save.data.volDownBind) + "";
+		return LanguageStuff.replaceFlagsAndReturn("$VolDownBind", 'option', ['<bind>'],
+			[(waitingType ? "> " + Main.save.data.volDownBind + " <" : Main.save.data.volDownBind)]);
 	}
 }
 
@@ -480,10 +466,8 @@ class FullscreenBind extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "FULLSCREEN:  " + (waitingType ? "> " + Main.save.data.fullscreenBind + " <" : Main.save.data.fullscreenBind) + "";
-		else
-			return "Полный экран:  " + (waitingType ? "> " + Main.save.data.fullscreenBind + " <" : Main.save.data.fullscreenBind) + "";
+		return LanguageStuff.replaceFlagsAndReturn("$FullscreenBind", 'option', ['<bind>'],
+			[(waitingType ? "> " + Main.save.data.fullscreenBind + " <" : Main.save.data.fullscreenBind)]);
 	}
 }
 
@@ -515,10 +499,8 @@ class UpP2Keybind extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "UP (P2): " + (waitingType ? "> " + Main.save.data.upBindP2 + " <" : Main.save.data.upBindP2) + "";
-		else
-			return "Вверх (игрок 2): " + (waitingType ? "> " + Main.save.data.upBindP2 + " <" : Main.save.data.upBindP2) + "";
+		return LanguageStuff.replaceFlagsAndReturn("$UpP2Keybind", 'option', ['<bind>'],
+			[(waitingType ? "> " + Main.save.data.upBindP2 + " <" : Main.save.data.upBindP2)]);
 	}
 }
 
@@ -550,10 +532,8 @@ class DownP2Keybind extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "DOWN (P2): " + (waitingType ? "> " + Main.save.data.downBindP2 + " <" : Main.save.data.downBindP2) + "";
-		else
-			return "Вниз (игрок 2): " + (waitingType ? "> " + Main.save.data.downBindP2 + " <" : Main.save.data.downBindP2) + "";
+		return LanguageStuff.replaceFlagsAndReturn("$DownP2Keybind", 'option', ['<bind>'],
+			[(waitingType ? "> " + Main.save.data.downBindP2 + " <" : Main.save.data.downBindP2)]);
 	}
 }
 
@@ -585,10 +565,8 @@ class RightP2Keybind extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "RIGHT (P2): " + (waitingType ? "> " + Main.save.data.rightBindP2 + " <" : Main.save.data.rightBindP2) + "";
-		else
-			return "Вправо (игрок 2): " + (waitingType ? "> " + Main.save.data.rightBindP2 + " <" : Main.save.data.rightBindP2) + "";
+		return LanguageStuff.replaceFlagsAndReturn("$RightP2Keybind", 'option', ['<bind>'],
+			[(waitingType ? "> " + Main.save.data.rightBindP2 + " <" : Main.save.data.rightBindP2)]);
 	}
 }
 
@@ -620,10 +598,8 @@ class LeftP2Keybind extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "LEFT (P2): " + (waitingType ? "> " + Main.save.data.leftBindP2 + " <" : Main.save.data.leftBindP2) + "";
-		else
-			return "Влево (игрок 2): " + (waitingType ? "> " + Main.save.data.leftBindP2 + " <" : Main.save.data.leftBindP2) + "";
+		return LanguageStuff.replaceFlagsAndReturn("$LeftP2Keybind", 'option', ['<bind>'],
+			[(waitingType ? "> " + Main.save.data.leftBindP2 + " <" : Main.save.data.leftBindP2)]);
 	}
 }
 
@@ -632,10 +608,7 @@ class SickMSOption extends Option
 	public function new(desc:String)
 	{
 		super();
-		if (!Main.save.data.language)
-			description = desc + " (Press R to reset)";
-		else
-			description = desc + " (Нажмите R для сброса)";
+		description = desc + ' ${LanguageStuff.getOption("$ResetText")}';
 		acceptType = true;
 	}
 
@@ -672,10 +645,7 @@ class GoodMsOption extends Option
 	public function new(desc:String)
 	{
 		super();
-		if (!Main.save.data.language)
-			description = desc + " (Press R to reset)";
-		else
-			description = desc + " (Нажмите R для сброса)";
+		description = desc + ' ${LanguageStuff.getOption("$ResetText")}';
 		acceptType = true;
 	}
 
@@ -712,10 +682,7 @@ class BadMsOption extends Option
 	public function new(desc:String)
 	{
 		super();
-		if (!Main.save.data.language)
-			description = desc + " (Press R to reset)";
-		else
-			description = desc + " (Нажмите R для сброса)";
+		description = desc + ' ${LanguageStuff.getOption("$ResetText")}';
 		acceptType = true;
 	}
 
@@ -752,10 +719,7 @@ class ShitMsOption extends Option
 	public function new(desc:String)
 	{
 		super();
-		if (!Main.save.data.language)
-			description = desc + " (Press R to reset)";
-		else
-			description = desc + " (Нажмите R для сброса)";
+		description = desc + ' ${LanguageStuff.getOption("$ResetText")}';
 		acceptType = true;
 	}
 
@@ -832,10 +796,8 @@ class EditorRes extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Editor Grid: < " + (Main.save.data.editorBG ? "Shown" : "Hidden") + " >";
-		else
-			return "Сетка редактора: < " + (Main.save.data.editorBG ? "Показывается" : "Скрытая") + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
+		[(Main.save.data.editorBG ? LanguageStuff.getOption("$Show_Text") : LanguageStuff.getOption("$Hidden_Text"))]);
 	}
 }
 
@@ -844,19 +806,11 @@ class DownscrollOption extends Option
 	public function new(desc:String)
 	{
 		super();
-		/*if (OptionsMenu.isInPause)
-			if (!Main.save.data.language)
-				description = "This option cannot be toggled in the pause menu.";
-			else
-				description = "Эта опция не может быть переключена во время паузы";
-		else*/
-			description = desc;
+		description = desc;
 	}
 
 	public override function left():Bool
 	{
-		//if (OptionsMenu.isInPause)
-			//return false;
 		Main.save.data.downscroll = !Main.save.data.downscroll;
 		display = updateDisplay();
 		return true;
@@ -870,10 +824,8 @@ class DownscrollOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Scroll: < " + (Main.save.data.downscroll ? "Downscroll" : "Upscroll") + " >";
-		else
-			return "Прокручивание: < " + (Main.save.data.downscroll ? "Сверху-вниз" : "Снизу-вверх") + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [
+			(Main.save.data.downscroll ? LanguageStuff.getOption("$Downscroll_Text") : LanguageStuff.getOption("$Upscroll_Text"))]);
 	}
 }
 
@@ -900,10 +852,8 @@ class GhostTapOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Ghost Tapping: < " + (Main.save.data.ghost ? "Enabled" : "Disabled") + " >";
-		else
-			return "Призрачные нажатия: < " + (Main.save.data.ghost ? "Включено" : "Выключено") + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [
+			getOnOff(Main.save.data.ghost)]);
 	}
 }
 
@@ -913,10 +863,7 @@ class AccuracyOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!Main.save.data.language)
-				description = "This option cannot be toggled in the pause menu.";
-			else
-				description = "Эта опция не может быть переключена во время паузы";
+			description = pauseBlock;
 		else
 			description = desc;
 	}
@@ -938,10 +885,8 @@ class AccuracyOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Accuracy Display < " + (!Main.save.data.accuracyDisplay ? "off" : "on") + " >";
-		else
-			return "Отображение точности < " + (!Main.save.data.accuracyDisplay ? "выключено" : "включено") + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
+			[getOnOff(Main.save.data.accuracyDisplay)]);
 	}
 }
 
@@ -951,10 +896,7 @@ class SongPositionOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!Main.save.data.language)
-				description = "This option cannot be toggled in the pause menu.";
-			else
-				description = "Эта опция не может быть переключена во время паузы";
+			description = pauseBlock;
 		else
 			description = desc;
 	}
@@ -976,10 +918,8 @@ class SongPositionOption extends Option
 
 	public override function getValue():String
 	{
-		if (!Main.save.data.language)
-			return "Song Position Bar: < " + (!Main.save.data.songPosition ? "off" : "on") + " >";
-		else
-			return "Полоса позиции песни: < " + (!Main.save.data.songPosition ? "выключено" : "включено") + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
+			[getOnOff(Main.save.data.songPosition)]);
 	}
 }
 
@@ -989,10 +929,7 @@ class DistractionsAndEffectsOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!Main.save.data.language)
-				description = "This option cannot be toggled in the pause menu.";
-			else
-				description = "Эта опция не может быть переключена во время паузы";
+			description = pauseBlock;
 		else
 			description = desc;
 	}
@@ -1014,10 +951,8 @@ class DistractionsAndEffectsOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Distractions: < " + (!Main.save.data.distractions ? "off" : "on") + " >";
-		else
-			return "Раздражители: < " + (!Main.save.data.distractions ? "выключены" : "включены") + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
+			[getOnOff(Main.save.data.distractions)]);
 	}
 }
 
@@ -1027,10 +962,7 @@ class Colour extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!Main.save.data.language)
-				description = "This option cannot be toggled in the pause menu.";
-			else
-				description = "Эта опция не может быть переключена во время паузы";
+			description = pauseBlock;
 		else
 			description = desc;
 	}
@@ -1052,10 +984,8 @@ class Colour extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Colored HP Bars: < " + (Main.save.data.colour ? "Enabled" : "Disabled") + " >";
-		else
-			return "Цветные полосы здоровья: < " + (Main.save.data.colour ? "Включены" : "Выключены") + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
+		[getOnOff(Main.save.data.colour)]);
 	}
 }
 class ResetButtonOption extends Option
@@ -1075,10 +1005,8 @@ class ResetButtonOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Reset Button: < " + (!Main.save.data.resetButton ? "off" : "on") + " >";
-		else
-			return "Кнопка сброса: < " + (!Main.save.data.resetButton ? "выключено" : "включено") + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
+			[getOnOff(Main.save.data.resetButton)]);
 	}
 }
 
@@ -1099,10 +1027,8 @@ class InstantRespawn extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Instant Respawn: < " + (!Main.save.data.InstantRespawn ? "off" : "on") + " >";
-		else
-			return "Мгновенное возрождение: < " + (!Main.save.data.InstantRespawn ? "выключено" : "включено") + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
+			[getOnOff(Main.save.data.InstantRespawn)]);
 	}
 }
 
@@ -1112,10 +1038,7 @@ class FlashingLightsOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!Main.save.data.language)
-				description = "This option cannot be toggled in the pause menu.";
-			else
-				description = "Эта опция не может быть переключена во время паузы";
+			description = pauseBlock;
 		else
 			description = desc;
 	}
@@ -1137,10 +1060,8 @@ class FlashingLightsOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Flashing Lights: < " + (!Main.save.data.flashing ? "off" : "on") + " >";
-		else
-			return "Мигающие огни: < " + (!Main.save.data.flashing ? "выключены" : "включены") + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
+		[getOnOff(Main.save.data.flashing)]);
 	}
 }
 
@@ -1150,10 +1071,7 @@ class AntialiasingOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!Main.save.data.language)
-				description = "This option cannot be toggled in the pause menu.";
-			else
-				description = "Эта опция не может быть переключена во время паузы";
+			description = pauseBlock;
 		else
 			description = desc;
 	}
@@ -1175,10 +1093,8 @@ class AntialiasingOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Antialiasing: < " + (!Main.save.data.antialiasing ? "off" : "on") + " >";
-		else
-			return "Сглаживание: < " + (!Main.save.data.antialiasing ? "выключено" : "включено") + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
+			[getOnOff(Main.save.data.antialiasing)]);
 	}
 }
 
@@ -1188,10 +1104,7 @@ class MissSoundsOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!Main.save.data.language)
-				description = "This option cannot be toggled in the pause menu.";
-			else
-				description = "Эта опция не может быть переключена во время паузы";
+			description = pauseBlock;
 		else
 			description = desc;
 	}
@@ -1213,10 +1126,8 @@ class MissSoundsOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Miss Sounds: < " + (!Main.save.data.missSounds ? "off" : "on") + " >";
-		else
-			return "Звуки пропуска стрелок: < " + (!Main.save.data.missSounds ? "выключены" : "включены") + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
+		[getOnOff(Main.save.data.missSounds)]);
 	}
 }
 
@@ -1243,10 +1154,7 @@ class ShowInput extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Score Screen Debug: < " + (Main.save.data.inputShow ? "Enabled" : "Disabled") + " >";
-		else
-			return "Отладка экрана счёта: < " + (Main.save.data.inputShow ? "Включена" : "Выключена") + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [getOnOff(Main.save.data.inputShow)]);
 	}
 }
 
@@ -1256,10 +1164,7 @@ class Judgement extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!Main.save.data.language)
-				description = "This option cannot be toggled in the pause menu.";
-			else
-				description = "Эта опция не может быть переключена во время паузы";
+			description = pauseBlock;
 		else
 			description = desc;
 		acceptValues = true;
@@ -1276,10 +1181,7 @@ class Judgement extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Edit Judgements";
-		else
-			return "Редактировать оценку нажатий";
+		return LanguageStuff.getOption("$Judgement");
 	}
 }
 
@@ -1307,10 +1209,7 @@ class FPSOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "FPS Counter: < " + (!Main.save.data.fps ? "off" : "on") + " >";
-		else
-			return "Счётчик ФПС: < " + (!Main.save.data.fps ? "выключено" : "включено") + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [getOnOff(Main.save.data.fps)]);
 	}
 }
 
@@ -1320,10 +1219,7 @@ class NoteSplashOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!Main.save.data.language)
-				description = "This option cannot be toggled in the pause menu.";
-			else
-				description = "Эта опция не может быть переключена во время паузы";
+			description = pauseBlock;
 		else
 			description = desc;
 	}
@@ -1345,10 +1241,8 @@ class NoteSplashOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Note Splashes: < " + (!Main.save.data.notesplashes ? "Disabled" : "Enabled") + " >";
-		else
-			return "Брызги нот: < " + (!Main.save.data.notesplashes ? "Выключены" : "Включены") + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
+			[getOnOff(Main.save.data.notesplashes)]);
 	}
 }
 
@@ -1362,10 +1256,7 @@ class LanguageOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!Main.save.data.language)
-				description = "This option cannot be toggled in the pause menu.";
-			else
-				description = "Эта опция не может быть переключена во время паузы";
+			description = pauseBlock;
 		else
 			description = desc;
 
@@ -1421,10 +1312,8 @@ class LanguageOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Language: < " + curLocale + " >";
-		else
-			return "Язык: < " + curLocale + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
+			[curLocale]);
 	}
 }
 class ScoreScreen extends Option
@@ -1444,10 +1333,8 @@ class ScoreScreen extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Score Screen: < " + (Main.save.data.scoreScreen ? "Enabled" : "Disabled") + " >";
-		else
-			return "Экран счёта: < " + (Main.save.data.scoreScreen ? "Включен" : "Выключен") + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
+			[getOnOff(Main.save.data.scoreScreen)]);
 	}
 }
 
@@ -1467,10 +1354,8 @@ class FPSCapOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "FPS Cap: < " + Main.save.data.fpsCap + " >";
-		else
-			return "Ограничение ФПС: < " + Main.save.data.fpsCap + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
+		[Main.save.data.fpsCap]);
 	}
 
 	override function right():Bool
@@ -1521,10 +1406,8 @@ class ScrollSpeedOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Scroll Speed: < " + CoolUtil.truncateFloat(Main.save.data.scrollSpeed, 1) + " >";
-		else
-			return "Скорость прокручивания: < " + CoolUtil.truncateFloat(Main.save.data.scrollSpeed, 1) + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
+			[CoolUtil.truncateFloat(Main.save.data.scrollSpeed, 1)]);
 	}
 
 	override function right():Bool
@@ -1581,10 +1464,8 @@ class RainbowFPSOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "FPS Rainbow: < " + (!Main.save.data.fpsRain ? "off" : "on") + " >";
-		else
-			return "Радужное переливание ФПС: < " + (!Main.save.data.fpsRain ? "выключено" : "включено") + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
+		[getOnOff(Main.save.data.fpsRain)]);
 	}
 }
 
@@ -1653,10 +1534,7 @@ class AccuracyDOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!Main.save.data.language)
-				description = "This option cannot be toggled in the pause menu.";
-			else
-				description = "Эта опция не может быть переключена во время паузы";
+			description = pauseBlock;
 		else
 			description = desc;
 	}
@@ -1678,10 +1556,8 @@ class AccuracyDOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Accuracy Mode: < " + (Main.save.data.accuracyMod == 0 ? "Accurate" : "Complex") + " >";
-		else
-			return "Режим точности: < " + (Main.save.data.accuracyMod == 0 ? "Точная" : "Сложная") + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
+		[(Main.save.data.accuracyMod == 0 ? LanguageStuff.getOption("$AccuracyDOption_Accurate_Text") : LanguageStuff.getOption("$AccuracyDOption_Complex_Text"))]);
 	}
 }
 
@@ -1691,10 +1567,7 @@ class CustomizeGameplay extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!Main.save.data.language)
-				description = "This option cannot be toggled in the pause menu.";
-			else
-				description = "Эта опция не может быть переключена во время паузы";
+			description = pauseBlock;
 		else
 			description = desc;
 	}
@@ -1710,10 +1583,7 @@ class CustomizeGameplay extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Customize Gameplay";
-		else
-			return "Кастомизировать геймплей";
+		return LanguageStuff.getOption("$CustomizeGameplay");
 	}
 }
 
@@ -1723,10 +1593,7 @@ class MemoryCountOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!Main.save.data.language)
-				description = "This option cannot be toggled in the pause menu.";
-			else
-				description = "Эта опция не может быть переключена во время паузы";
+			description = pauseBlock;
 		else
 			description = desc;
 	}
@@ -1749,10 +1616,7 @@ class MemoryCountOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Using memory counter: < " + (Main.memoryCount ? "on" : "off") + " >";
-		else
-			return "Счётчик используемой памяти: < " + (Main.memoryCount ? "включено" : "выключено") + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [getOnOff(Main.memoryCount)]);
 	}
 }
 
@@ -1762,10 +1626,7 @@ class WatermarkOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!Main.save.data.language)
-				description = "This option cannot be toggled in the pause menu.";
-			else
-				description = "Эта опция не может быть переключена во время паузы";
+			description = pauseBlock;
 		else
 			description = desc;
 	}
@@ -1788,10 +1649,7 @@ class WatermarkOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Watermarks: < " + (Main.watermarks ? "on" : "off") + " >";
-		else
-			return "Водяные знаки: < " + (Main.watermarks ? "включено" : "выключено") + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [getOnOff(Main.watermarks)]);
 	}
 }
 
@@ -1819,10 +1677,7 @@ class OffsetMenu extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Time your offset";
-		else
-			return "Время вашего смещения";
+		return LanguageStuff.getOption("$OffsetMenu");
 	}
 }
 
@@ -1832,10 +1687,7 @@ class OffsetThing extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!Main.save.data.language)
-				description = "This option cannot be toggled in the pause menu.";
-			else
-				description = "Эта опция не может быть переключена во время паузы";
+			description = pauseBlock;
 		else
 			description = desc;
 	}
@@ -1860,10 +1712,8 @@ class OffsetThing extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Note offset: < " + CoolUtil.truncateFloat(Main.save.data.offset, 0) + " >";
-		else
-			return "Смещение стрелок: < " + CoolUtil.truncateFloat(Main.save.data.offset, 0) + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
+			[CoolUtil.truncateFloat(Main.save.data.offset, 0)]);
 	}
 
 	public override function getValue():String
@@ -1906,10 +1756,7 @@ class BotPlay extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "BotPlay: < " + (Main.save.data.botplay ? "on" : "off") + " >";
-		else
-			return "Бот: < " + (Main.save.data.botplay ? "включено" : "выключено") + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [getOnOff(Main.save.data.botplay)]);
 	}
 }
 
@@ -1949,10 +1796,7 @@ class FullscreenOnStartOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!Main.save.data.language)
-				description = "This option cannot be toggled in the pause menu.";
-			else
-				description = "Эта опция не может быть переключена во время паузы";
+			description = pauseBlock;
 		else
 			description = desc;
 	}
@@ -1974,10 +1818,8 @@ class FullscreenOnStartOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Full screen when starting the game: < " + (!Main.save.data.fullscreenOnStart ? "off" : "on") + " >";
-		else
-			return "Полный экран при запуске игры: < " + (!Main.save.data.fullscreenOnStart ? "выключено" : "включено") + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
+			[getOnOff(Main.save.data.fullscreenOnStart)]);
 	}
 }
 
@@ -1987,10 +1829,7 @@ class CamZoomOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!Main.save.data.language)
-				description = "This option cannot be toggled in the pause menu.";
-			else
-				description = "Эта опция не может быть переключена во время паузы";
+			description = pauseBlock;
 		else
 			description = desc;
 	}
@@ -2012,10 +1851,8 @@ class CamZoomOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Camera Zoom: < " + (!Main.save.data.camzoom ? "off" : "on") + " >";
-		else
-			return "Приближение камеры: < " + (!Main.save.data.camzoom ? "выключено" : "включено") + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
+		[getOnOff(Main.save.data.camzoom)]);
 	}
 }
 
@@ -2025,10 +1862,7 @@ class JudgementCounter extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!Main.save.data.language)
-				description = "This option cannot be toggled in the pause menu.";
-			else
-				description = "Эта опция не может быть переключена во время паузы";
+			description = pauseBlock;
 		else
 			description = desc;
 	}
@@ -2050,10 +1884,8 @@ class JudgementCounter extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Judgement Counter: < " + (Main.save.data.judgementCounter ? "Enabled" : "Disabled") + " >";
-		else
-			return "Счётчик оценок: < " + (Main.save.data.judgementCounter ? "Включено" : "Выключено") + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
+			[getOnOff(Main.save.data.judgementCounter)]);
 	}
 }
 
@@ -2062,19 +1894,11 @@ class MiddleScrollOption extends Option
 	public function new(desc:String)
 	{
 		super();
-		/*if (OptionsMenu.isInPause)
-			if (!Main.save.data.language)
-				description = "This option cannot be toggled in the pause menu.";
-			else
-				description = "Эта опция не может быть переключена во время паузы";
-		else*/
-			description = desc;
+		description = desc;
 	}
 
 	public override function left():Bool
 	{
-		//if (OptionsMenu.isInPause)
-			//return false;
 		Main.save.data.middleScroll = !Main.save.data.middleScroll;
 		display = updateDisplay();
 		return true;
@@ -2088,10 +1912,8 @@ class MiddleScrollOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Middle Scroll: < " + (Main.save.data.middleScroll ? "Enabled" : "Disabled") + " >";
-		else
-			return "Прокручивание в центре: < " + (Main.save.data.middleScroll ? "Включено" : "Выключено") + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
+			[getOnOff(Main.save.data.middleScroll)]);
 	}
 }
 
@@ -2104,10 +1926,7 @@ class NoteskinOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!Main.save.data.language)
-				description = "This option cannot be toggled in the pause menu.";
-			else
-				description = "Эта опция не может быть переключена во время паузы";
+			description = pauseBlock;
 		else
 			description = desc;
 
@@ -2152,10 +1971,8 @@ class NoteskinOption extends Option
 
 	public override function getValue():String
 	{
-		if (!Main.save.data.language)
-			return "Current Noteskin: < " + curSkin + " >";
-		else
-			return "Выбранный вид стрелок: < " + curSkin + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
+			[curSkin]);
 	}
 }
 
@@ -2224,10 +2041,7 @@ class MenuMusicOption extends Option
 			}
 		}
 		
-		if (!Main.save.data.language)
-			return "Current Menu Music: < " + curMusic + " >";
-		else
-			return "Выбранная музыка меню: < " + curMusic + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [curMusic]);
 	}
 }
 
@@ -2237,10 +2051,7 @@ class HealthBarOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!Main.save.data.language)
-				description = "This option cannot be toggled in the pause menu.";
-			else
-				description = "Эта опция не может быть переключена во время паузы";
+			description = pauseBlock;
 		else
 			description = desc;
 	}
@@ -2262,10 +2073,8 @@ class HealthBarOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Health Bar: < " + (Main.save.data.healthBar ? "Enabled" : "Disabled") + " >";
-		else
-			return "Полоса здоровья: < " + (Main.save.data.healthBar ? "Включено" : "Выключено") + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
+		[getOnOff(Main.save.data.healthBar)]);
 	}
 }
 
@@ -2275,10 +2084,7 @@ class LaneUnderlayOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!Main.save.data.language)
-				description = "This option cannot be toggled in the pause menu.";
-			else
-				description = "Эта опция не может быть переключена во время паузы";
+			description = pauseBlock;
 		else
 			description = desc;
 		acceptValues = true;
@@ -2286,10 +2092,8 @@ class LaneUnderlayOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Lane Transparceny: < " + CoolUtil.truncateFloat(Main.save.data.laneTransparency, 1) + " >";
-		else
-			return "Прозрачность полосы здоровья: < " + CoolUtil.truncateFloat(Main.save.data.laneTransparency, 1) + " >";
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
+			[CoolUtil.truncateFloat(Main.save.data.laneTransparency, 1)]);
 	}
 
 	override function right():Bool
@@ -2332,10 +2136,7 @@ class DebugMode extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Animation Debug";
-		else
-			return "Отладка анимаций";
+		return LanguageStuff.getOption("$DebugMode");
 	}
 }
 
@@ -2347,10 +2148,7 @@ class LockWeeksOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!Main.save.data.language)
-				description = "This option cannot be toggled in the pause menu.";
-			else
-				description = "Эта опция не может быть переключена во время паузы";
+			description = pauseBlock;
 		else
 			description = desc;
 	}
@@ -2375,10 +2173,7 @@ class LockWeeksOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return confirm ? "Confirm Story Reset" : "Reset Story Progress";
-		else
-			return confirm ? "Подтвердить сброс недель" : "Сброс прогресса недель";
+		return confirm ? LanguageStuff.getOption("$LockWeeksOption_Confirm") : LanguageStuff.getOption("$LockWeeksOption_Text");
 	}
 }
 
@@ -2390,10 +2185,7 @@ class ResetScoreOption extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!Main.save.data.language)
-				description = "This option cannot be toggled in the pause menu.";
-			else
-				description = "Эта опция не может быть переключена во время паузы";
+			description = pauseBlock;
 		else
 			description = desc;
 	}
@@ -2426,10 +2218,7 @@ class ResetScoreOption extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return confirm ? "Confirm Score Reset" : "Reset Score";
-		else
-			return confirm ? "Подтвердить сброс очков" : "Сбросить очки";
+		return confirm ? LanguageStuff.getOption("$ResetScoreOption_Confirm") : LanguageStuff.getOption("$ResetScoreOption_Text");
 	}
 }
 
@@ -2441,10 +2230,7 @@ class ResetSettings extends Option
 	{
 		super();
 		if (OptionsMenu.isInPause)
-			if (!Main.save.data.language)
-				description = "This option cannot be toggled in the pause menu.";
-			else
-				description = "Эта опция не может быть переключена во время паузы";
+			description = pauseBlock;
 		else
 			description = desc;
 	}
@@ -2509,9 +2295,6 @@ class ResetSettings extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return confirm ? "Confirm Settings Reset" : "Reset Settings";
-		else
-			return confirm ? "Подтвердить сброс настроек" : "Сбросить настройки";
+		return confirm ? LanguageStuff.getOption("$ResetSettings_Confirm") : LanguageStuff.getOption("$ResetSettings_Text");
 	}
 }

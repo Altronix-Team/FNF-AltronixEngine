@@ -287,9 +287,6 @@
   <!-- Defines whether the file system can be read/written directly. Does not work in browser. -->
   <haxedef name="FEATURE_FILESYSTEM" if="desktop" />
 
-  <!-- Defines whether Lua Modcharts should be enabled. Only works on Windows. -->
-  <haxedef name="FEATURE_LUAMODCHART" if="windows" />
-
   <!-- Defines whether the Thread class can be used. -->
   <haxedef name="FEATURE_MULTITHREADING" if="cpp" />
 

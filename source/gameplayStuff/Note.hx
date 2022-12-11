@@ -370,7 +370,7 @@ class Note extends FlxSprite
 				modAngle = cast(sprTracker, StaticArrow).modAngle;
 			if (sustainActive)
 			{
-				#if (!cpp && FEATURE_LUAMODCHART)
+				#if (!cpp && LUA_ALLOWED)
 					alpha = sprTracker.alpha;
 				#end
 			}

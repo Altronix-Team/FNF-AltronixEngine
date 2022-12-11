@@ -27,6 +27,8 @@ class RatingText extends FlxTypedGroup<FlxText>
 	@:isVar
 	public var height(get, null):Float;
 
+	public var text(get, null):String;
+
     private var textColor(default, set):FlxColor = FlxColor.WHITE;
 
 	private var missColorTween:FlxTween;
@@ -38,9 +40,9 @@ class RatingText extends FlxTypedGroup<FlxText>
         this.x = x;
         this.y = y;
 
-		add(accuracyText);
-		add(missesText);
 		add(scoreText);
+		add(missesText);
+		add(accuracyText);
 
         forEach(function(text:FlxText)
         {
@@ -54,14 +56,13 @@ class RatingText extends FlxTypedGroup<FlxText>
 		updateTextsYPos(y);
     }
 
-	//TODO localization
     public function updateTexts()
     {	
-        scoreText.text = 'Score: ${PlayState.instance.songScore} | ';     
+		scoreText.text = '${LanguageStuff.replaceFlagsAndReturn("$Score_Text", "playState", ['<text>'], [PlayState.instance.songScore])} | ';     
 
-		missesText.text = 'Misses: ${PlayState.misses} | ';     
+		missesText.text = '${LanguageStuff.replaceFlagsAndReturn("$Misses_Text", "playState", ['<text>'], [PlayState.misses])} | ';     
 
-		accuracyText.text = 'Accuracy: ${CoolUtil.truncateFloat(PlayState.instance.accuracy, 2)}'
+		accuracyText.text = '${LanguageStuff.replaceFlagsAndReturn("$Accuracy_Text", "playState", ['<text>'], [CoolUtil.truncateFloat(PlayState.instance.accuracy, 2)])}'
 			+ (PlayState.instance.accuracy > 0 ? ' | ${Ratings.GenerateLetterRank(PlayState.instance.accuracy)}' : '');
 
 		updateTextsXPos(x);
@@ -164,6 +165,15 @@ class RatingText extends FlxTypedGroup<FlxText>
 
 		return this;
 		#end
+	}
+
+	function get_text():String {
+		var retVal:String = '';
+		forEach(function(text:FlxText)
+		{
+			retVal += text.text;
+		});
+		return retVal;
 	}
 
 	function get_width():Float {

@@ -1,10 +1,20 @@
 { 
     "version": "0.2.0",
     "configurations": [
-        {
-            "name": "Lime",
-            "type": "lime",
-            "request": "launch"
-        }
-    ]
+		{
+			"name": "Build + Debug",
+			"type": "lime",
+			"request": "launch"
+		},
+		{
+			"name": "Debug",
+			"type": "lime",
+			"request": "launch"
+		},
+		{
+			"name": "Macro",
+			"type": "haxe-eval",
+			"request": "launch"
+		}
+	]
 }

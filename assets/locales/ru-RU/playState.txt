@@ -1,12 +1,6 @@
 flag	content
-$PSYCH_RATING_WITH_AC	Счёт: <score> | Пропуски: <misses> | Рейтинг: <ratingName>  (<ratingPercent>%) - <ratingFC>
-$KADE_RATING_WITHOUT_AC_WITH_NPC	Стрелок в секунду: <nps>  (Максимум <maxnps>) | Счёт: <score>
 $BOTPLAY	БОТПЛЕЙ
 $CHARTING	ЧАРТИНГ
-$PSYCH_RATING_WITHOUT_AC	Счёт: <score> | Пропуски: <misses> | Рейтинг: <ratingName>
-$KADE_RATING_WITH_AC_WITH_NPC	Стрелок в секунду: <nps>  (Максимум <maxnps>) | Счёт: <score> |Пропуски: <misses> | Точность: <accuracyPers> % | <accuracyStr> 
-$KADE_RATING_WITHOUT_AC_WITHOUT_NPC	Счет: <score>
-$KADE_RATING_WITH_AC_WITHOUT_NPC	Счёт: <score> | Пропуски: <misses> | Точность: <accuracyPers> % | <accuracyStr> 
 $BOTPLAY_TEXT	Ботплей
 $NA	Недоступно
 $PRESSTOSKIP	Нажмите пробел для пропуска начала
@@ -19,3 +13,6 @@ $DISCORD_RPC_TWO	Точность: <accuracy>% | Счёт:  <songScore>  | Пр�
 $TIME_LEFT_TEXT	Осталось времени: 
 $CHART_EDITOR_TEXT	Редактирует чартинг: 
 $GAME_OVER	Проиграл -- 
+$Score_Text	Счёт: <text>
+$Misses_Text	Пропуски: <text>
+$Accuracy_Text	Точность: <text>

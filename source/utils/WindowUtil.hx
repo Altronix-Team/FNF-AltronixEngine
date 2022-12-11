@@ -31,6 +31,11 @@ class WindowUtil
 		LimeApplication.current.window.title = value;
 	}
 
+	public static function getWindowTitle():String
+	{
+		return LimeApplication.current.window.title;
+	}
+
 	/**
 	 * Sets whether the window should encompass the full screen.
 	 * Works on desktop and HTML5.

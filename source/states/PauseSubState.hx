@@ -3,7 +3,7 @@ package states;
 import scriptStuff.ScriptHelper;
 import flixel.input.gamepad.FlxGamepad;
 import openfl.Lib;
-#if FEATURE_LUAMODCHART
+#if LUA_ALLOWED
 import llua.Lua;
 #end
 import Controls.Control;
@@ -102,36 +102,39 @@ class PauseSubState extends MusicBeatSubstate
 		perSongOffset.scrollFactor.set();
 		perSongOffset.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 
-		//TODO Redo to new language system
-		if (PlayState.isStoryMode){
-			if (!Main.save.data.language) detailsText = "Story Mode: Week " + PlayState.storyWeek + ":";
-			else detailsText = "Режим истории: Неделя " + PlayState.storyWeek + ":";}
-		if (PlayState.isFreeplay){
-			if (!Main.save.data.language)
-				detailsText = "Freeplay";
-			else
-				detailsText = "Свободная игра";}
+		if (PlayState.isStoryMode)
+		{
+			detailsText = LanguageStuff.replaceFlagsAndReturn("$STORY_MODE", "playState", ["<storyWeek>"], [Std.string(PlayState.storyWeek)]);
+		}
+		if (PlayState.isFreeplay)
+		{
+			detailsText = LanguageStuff.getPlayState("$FREEPLAY");
+		}
 
 		iconRPC = PlayState.SONG.player2;
 
-		switch (iconRPC){
+		switch (iconRPC)
+		{
 			case 'senpai-angry':
 				iconRPC = 'senpai';
 			case 'monster-christmas':
 				iconRPC = 'monster';
 			case 'mom-car':
-				iconRPC = 'mom';}
+				iconRPC = 'mom';
+		}
 
 		storyDifficultyText = CoolUtil.difficultyFromInt(PlayState.storyDifficulty);
 
 		#if desktop
-			if (PlayStateChangeables.botPlay){
-				if (!Main.save.data.language) DiscordClient.changePresence("Paused on " + PlayState.SONG.songName + " (" + storyDifficultyText + ") " + 'Botplay',null, iconRPC);
-				else DiscordClient.changePresence("Стоит на паузе " + PlayState.SONG.songName + " (" + storyDifficultyText + ") " + 'Бот-плей',null, iconRPC);}
-			else if (!PlayStateChangeables.botPlay){
-				if (!Main.save.data.language){DiscordClient.changePresence("PAUSED on "+ PlayState.SONG.songId+ " ("+ storyDifficultyText+ ") ",null, iconRPC);}
-				else{DiscordClient.changePresence("Стоит на паузе "+ PlayState.SONG.songId+ " ("+ storyDifficultyText+ ") ",null, iconRPC);}}
-			#end
+		DiscordClient.changePresence(LanguageStuff.replaceFlagsAndReturn("$PAUSED", "playState", ["<detailsText>"], [
+			detailsText
+			+ ' | '
+			+ PlayState.SONG.songName
+			+ " ("
+			+ storyDifficultyText
+			+ ") "
+			+ (PlayStateChangeables.botPlay ? LanguageStuff.getPlayState("$BOTPLAY_TEXT") : '')]), null, iconRPC);
+		#end
 
 		#if FEATURE_FILESYSTEM
 		add(perSongOffset);

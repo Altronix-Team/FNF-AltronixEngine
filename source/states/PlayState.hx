@@ -161,7 +161,6 @@ class PlayState extends MusicBeatState
 	var storyDifficultyText:String = "";
 	var iconRPC:String = "";
 	var detailsText:String = "";
-	var detailsPausedText:String = "";
 	#end
 
 	public var vocals:FlxSound;
@@ -464,7 +463,7 @@ class PlayState extends MusicBeatState
 
 		removedVideo = false;
 
-		#if FEATURE_LUAMODCHART
+		#if LUA_ALLOWED
 		executeModchart = true;
 		#end
 		#if !cpp
@@ -500,9 +499,6 @@ class PlayState extends MusicBeatState
 		{
 			detailsText = LanguageStuff.getPlayState("$FREEPLAY");
 		}
-
-		// String for when the game is paused
-		detailsPausedText = LanguageStuff.replaceFlagsAndReturn("$PAUSED", "playState", ["<detailsText>"], [Std.string(detailsText)]);
 
 		// Updating Discord Rich Presence.
 		if (PlayStateChangeables.botPlay)
@@ -2658,6 +2654,8 @@ class PlayState extends MusicBeatState
 	{
 		songStats = new Analysis();
 
+		WindowUtil.setWindowTitle(Main.defaultWindowTitle + ' | ${SONG.songName}');
+
 		startingSong = false;
 		songStarted = true;
 		previousFrameTime = FlxG.game.ticks;
@@ -3074,19 +3072,6 @@ class PlayState extends MusicBeatState
 				if (vocals != null)
 					vocals.pause();
 			}
-
-			if (startTimer != null && !startTimer.finished)
-				startTimer.active = false;
-
-			if (finishTimer != null && !finishTimer.finished)
-				finishTimer.active = false;
-
-			for (tween in modchartTweens) {
-				tween.active = false;
-			}
-			for (timer in modchartTimers) {
-				timer.active = false;
-			}
 		}
 
 		super.openSubState(SubState);
@@ -3114,10 +3099,12 @@ class PlayState extends MusicBeatState
 				resyncVocals();
 			}
 
-			if (startTimer != null && !startTimer.finished)
-				startTimer.active = true;
-			if (finishTimer != null && !finishTimer.finished)
-				finishTimer.active = true;
+			FlxTimer.globalManager.forEach(function(tmr:FlxTimer)
+			{
+				if (!tmr.finished)
+					tmr.active = true;
+			});
+
 			paused = false;
 
 			ScriptHelper.callOnScripts('onResume', []);
@@ -3131,14 +3118,12 @@ class PlayState extends MusicBeatState
 						"<storyDifficultyText>",
 						"<timeLeft>",
 						"<accuracy>"
-					],
-						[
-							Std.string(detailsText),
-							SONG.songName,
-							storyDifficultyText,
-							'',
-							Ratings.GenerateLetterRank(accuracy)
-						]),
+					],[
+						Std.string(detailsText),
+						SONG.songName,
+						storyDifficultyText,
+						'',
+						Ratings.GenerateLetterRank(accuracy)]),
 						LanguageStuff.replaceFlagsAndReturn("$DISCORD_RPC_TWO", "playState", ["<accuracy>", "<songScore>", "<misses>"],
 							[CoolUtil.truncateFloat(accuracy, 2), songScore, misses]),
 						iconRPC, true,songLength- Conductor.songPosition);}
@@ -3146,12 +3131,12 @@ class PlayState extends MusicBeatState
 				["<detailsText>", "<songName>", "<storyDifficultyText>", "<timeLeft>", "<accuracy>"],
 				[Std.string(detailsText), SONG.songName, storyDifficultyText, '', Ratings.GenerateLetterRank(accuracy)]), iconRPC);}}
 			#end
-			for (tween in modchartTweens) {
-				tween.active = true;
-			}
-			for (timer in modchartTimers) {
-				timer.active = true;
-			}
+
+			FlxTween.globalManager.forEach(function(twn:FlxTween)
+			{
+				if (!twn.finished)
+					twn.active = true;
+			});
 
 			Conductor.MusicBeatInterface = this;
 		}
@@ -3383,6 +3368,17 @@ class PlayState extends MusicBeatState
 					if (vocals != null)
 						vocals.pause();
 				}
+				FlxTimer.globalManager.forEach(function(tmr:FlxTimer)
+				{
+					if (!tmr.finished)
+						tmr.active = false;
+				});
+
+				FlxTween.globalManager.forEach(function(twn:FlxTween)
+				{
+					if (!twn.finished)
+						twn.active = false;
+				});
 					openSubState(new PauseSubState());
 			}
 		}
@@ -4755,6 +4751,7 @@ class PlayState extends MusicBeatState
 			}
 
 			ScriptHelper.clearAllScripts();
+			WindowUtil.setWindowTitle(Main.defaultWindowTitle);
 
 			if (offsetTesting)
 			{
@@ -5765,8 +5762,12 @@ class PlayState extends MusicBeatState
 		accuracy = Math.max(0, totalNotesHit / totalPlayed * 100);
 		accuracyDefault = Math.max(0, totalNotesHitDefault / totalPlayed * 100);
 		if (!PlayStateChangeables.twoPlayersMode)
+		{
 			scoreTxt.updateTexts();
-		else{
+			WindowUtil.setWindowTitle(Main.defaultWindowTitle + ' | Song: ${SONG.songName} | ${scoreTxt.text}');
+		}
+		else
+		{
 			scoreP1.text = 'Player 1 score: ' + Std.string(intScoreP1);
 			scoreP2.text = 'Player 2 score: ' + Std.string(intScoreP2);
 		}

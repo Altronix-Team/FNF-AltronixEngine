@@ -687,9 +687,6 @@ class FreeplayState extends MusicBeatState
 
 		diffText.text = CoolUtil.difficultyFromInt(CoolUtil.difficultyArray.indexOf(songs[curSelected].diffs[curDifficulty])).toUpperCase();
 
-		/*try
-		{Debug.logTrace('Max score: ' + DiffCalc.getMaxScore(songData.get(songs[curSelected].songName)[getShitSongID(diffTextStr)]));}
-		catch(e)Debug.logError(e.details());*/
 
 		var hmm;
 		try

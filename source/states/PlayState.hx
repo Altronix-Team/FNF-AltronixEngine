@@ -5764,7 +5764,7 @@ class PlayState extends MusicBeatState
 		if (!PlayStateChangeables.twoPlayersMode)
 		{
 			scoreTxt.updateTexts();
-			WindowUtil.setWindowTitle(Main.defaultWindowTitle + ' | Song: ${SONG.songName} | ${scoreTxt.text}');
+			WindowUtil.setWindowTitle(Main.defaultWindowTitle + ' | Song: ${SONG.songName} | Score: ${Std.string(instance.songScore)} | Misses: ${Std.string(misses)} | Accuracy: ${Std.string(CoolUtil.truncateFloat(PlayState.instance.accuracy, 2))}' + (PlayState.instance.accuracy > 0 ? ' | ${Ratings.GenerateLetterRank(PlayState.instance.accuracy)}' : ''));
 		}
 		else
 		{

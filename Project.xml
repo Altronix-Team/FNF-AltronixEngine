@@ -208,9 +208,9 @@
 	<haxelib name="hxCodec" if="VIDEOS_ALLOWED"/>
 	<!--Waiting for extension-ffmpeg to replace hxCodec :3-->
 
-	<haxelib name="systools" if="cpp"/>
-	<ndll name="systools" haxelib="systools" if="cpp"/>
-	<haxelib name="tentools" if="desktop"/>
+	<!--haxelib name="systools" if="cpp"/-->
+	<!--ndll name="systools" haxelib="systools" if="cpp"/-->
+	<!--haxelib name="tentools" if="desktop"/-->
 
 	<haxelib name="haxe-strings" />
 	<haxelib name="firetongue" />

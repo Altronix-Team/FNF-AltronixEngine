@@ -68,7 +68,7 @@ package;
 // GameJolt things
 import flixel.addons.ui.FlxUIState;
 import haxe.iterators.StringIterator;
-import tentools.api.FlxGameJolt as GJApi;
+import flixel.addons.api.FlxGameJolt as GJApi;
 // Login things
 import flixel.ui.FlxButton;
 import flixel.text.FlxText;
@@ -92,7 +92,7 @@ import flixel.FlxG;
 import openfl.display.Sprite;
 import gameplayStuff.Conductor;
 
-class GameJoltAPI // Connects to tentools.api.FlxGameJolt
+class GameJoltAPI // Connects to flixel.addons.api.FlxGameJolt
 {
 	/**
 	 * Inline variable to see if the user has logged in.

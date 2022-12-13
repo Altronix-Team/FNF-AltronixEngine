@@ -16,6 +16,27 @@ Links: **[itch.io page](https://ninja-muffin24.itch.io/funkin) ⋅ [Newgrounds](
 
 ![Repository size](https://img.shields.io/github/repo-size/altronmaxx/FNF-AltronixEngine?color=brightgreen&label=Repository%20size)
 
+# How to build?
+
+1. Install Haxe
+2. Open Command Prompt, PowerShell or the terminal of your choice and type: 
+```
+ haxelib --global install hmm
+ haxelib --global run hmm setup
+```
+3. Go to the engine folder and open Command Prompt, PowerShell or the terminal of your choice in this folder and type: 
+```
+haxelib run hmm install
+``` 
+to install all all libraries, which needed to compiling the engine.
+
+4. To compile game, type:
+```
+lime build [target platform (wondows, linux, html5, etc)]
+```
+
+## If you want to edit the engine source code, you should better to install all from this [file](https://github.com/AltronMaxX/FNF-AltronixEngine/blob/main/docs/building.md) and remove ``hmm.json`` file and ``.haxelib`` folder, if it exists
+
 # Features
  I will add it sometime XD
 

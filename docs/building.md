@@ -26,9 +26,6 @@
 	 - `haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit`
 	 - `haxelib install polymod`
 	 - `haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc`
-	 - `haxelib git tentools https://github.com/TentaRJ/tentools.git`
-	 - `haxelib git systools https://github.com/haya3218/systools`
-	 - `haxelib run lime rebuild systools [windows, mac, linux]`
 	 - `haxelib install haxe-strings 7.0.2`
 	 - `haxelib install hscript-ex 0.0.0`
 	 - `haxelib install hxCodec`

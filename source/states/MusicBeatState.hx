@@ -81,6 +81,9 @@ class MusicBeatState extends BaseState implements gameplayStuff.Conductor.IMusic
 		Application.current.window.onFocusOut.add(onWindowFocusOut);
 		TimingStruct.clearTimings();
 
+		if (WindowUtil.getWindowTitle() != Main.defaultWindowTitle)
+			WindowUtil.setWindowTitle(Main.defaultWindowTitle);
+
 		camBeat = FlxG.camera;
 
 		FlxG.watch.addMouse();

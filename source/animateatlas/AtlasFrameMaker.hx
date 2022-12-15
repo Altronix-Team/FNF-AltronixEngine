@@ -45,16 +45,16 @@ class AtlasFrameMaker extends FlxFramesCollection
 		var frameCollection:FlxFramesCollection;
 		var frameArray:Array<Array<FlxFrame>> = [];
 
-		if (Paths.fileExists('images/$key/spritemap1.json', TEXT))
+		if (openfl.Assets.exists(Paths.getPath('images/$key/spritemap1.json', TEXT)))
 		{
 			Debug.displayAlert('Error with $key spritemap', "Only Spritemaps made with Adobe Animate 2018 are supported");
 			return null;
 		}
 
-		var animationData:AnimationData = Json.parse(Paths.getTextFromFile('images/$key/Animation.json'));
-		var atlasData:AtlasData = Json.parse(Paths.getTextFromFile('images/$key/spritemap.json').replace("\uFEFF", ""));
+		var animationData:AnimationData = Json.parse(AssetsUtil.loadAsset('images/$key/Animation.json', TEXT));
+		var atlasData:AtlasData = Json.parse(AssetsUtil.loadAsset('images/$key/spritemap.json', TEXT).replace("\uFEFF", ""));
 
-		var graphic:FlxGraphic = Paths.loadImage('$key/spritemap');
+		var graphic:FlxGraphic = AssetsUtil.loadAsset('$key/spritemap', IMAGE);
 		var ss:SpriteAnimationLibrary = new SpriteAnimationLibrary(animationData, atlasData, graphic.bitmap);
 		var t:SpriteMovieClip = ss.createAnimation(noAntialiasing);
 		if (_excludeArray == null)

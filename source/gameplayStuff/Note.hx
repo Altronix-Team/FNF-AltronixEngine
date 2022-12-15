@@ -1,5 +1,6 @@
 package gameplayStuff;
 
+import flixel.group.FlxSpriteGroup;
 import states.FreeplayState;
 import gameplayStuff.DiffOverview;
 import gameplayStuff.Song;

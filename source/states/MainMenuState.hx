@@ -206,25 +206,25 @@ class MainMenuState extends MusicBeatState
 
 			if (gamepad != null)
 			{
-				if (gamepad.justPressed.DPAD_UP)
+				if (gamepad.justPressed.DPAD_UP && finishedFunnyMove)
 				{
 					FlxG.sound.play(Paths.sound('scrollMenu'));
 					changeItem(-1);
 				}
-				if (gamepad.justPressed.DPAD_DOWN)
+				if (gamepad.justPressed.DPAD_DOWN && finishedFunnyMove)
 				{
 					FlxG.sound.play(Paths.sound('scrollMenu'));
 					changeItem(1);
 				}
 			}
 
-			if (FlxG.keys.justPressed.UP)
+			if (FlxG.keys.justPressed.UP && finishedFunnyMove)
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				changeItem(-1);
 			}
 
-			if (FlxG.keys.justPressed.DOWN)
+			if (FlxG.keys.justPressed.DOWN && finishedFunnyMove)
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				changeItem(1);

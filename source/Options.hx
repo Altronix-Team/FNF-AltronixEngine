@@ -1783,10 +1783,7 @@ class LogWriter extends Option
 
 	private override function updateDisplay():String
 	{
-		if (!Main.save.data.language)
-			return "Log Writer: < " + (Main.save.data.logWriter ? "off" : "on") + " >";
-		else
-			return "Логирование: < " + (Main.save.data.logWriter ? "выключено" : "включено") + " >";
+		return "Log Writer: < " + (Main.save.data.logWriter ? "off" : "on") + " >";
 	}
 }
 

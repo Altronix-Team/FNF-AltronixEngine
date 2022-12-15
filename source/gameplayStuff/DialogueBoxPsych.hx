@@ -496,7 +496,6 @@ class DialogueBoxPsych extends FlxSpriteGroup
 		lastBoxType = boxType;
 
 		textToType = curDialogue.text;
-		Alphabet.setDialogueSound(curDialogue.sound);
 
 		if(daText != null) {
 			daText.resetText(textToType);

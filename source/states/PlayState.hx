@@ -893,7 +893,7 @@ class PlayState extends MusicBeatState
 
 		// launch song lua and hscript
 		#if LUA_ALLOWED
-		var filesToCheck:Array<String> = Paths.listLuaInPath('songs:assets/songs/' + SONG.songId + '/');
+		var filesToCheck:Array<String> = AssetsUtil.listAssetsInPath('songs:assets/songs/' + SONG.songId + '/', LUA);
 		var filesPushed:Array<String> = [];
 		for (file in filesToCheck)
 		{
@@ -930,7 +930,7 @@ class PlayState extends MusicBeatState
 
 		// launch global lua
 		#if LUA_ALLOWED
-		var filesToCheck:Array<String> = Paths.listLuaInPath('assets/scripts/');
+		var filesToCheck:Array<String> = AssetsUtil.listAssetsInPath('assets/scripts/', LUA);
 		var filesPushed:Array<String> = [];
 		for (file in filesToCheck)
 		{
@@ -1192,7 +1192,7 @@ class PlayState extends MusicBeatState
 
 		// launch custom events
 		#if desktop
-		var filesToCheck:Array<String> = Paths.listLuaInPath('assets/custom_events/').concat(Paths.listHscriptInPath('assets/custom_events/'));
+		var filesToCheck:Array<String> = AssetsUtil.listAssetsInPath('assets/custom_events/', LUA).concat(AssetsUtil.listAssetsInPath('assets/custom_events/', HSCRIPT));
 		var filesPushed:Array<String> = [];
 		for (file in filesToCheck)
 		{
@@ -1225,7 +1225,7 @@ class PlayState extends MusicBeatState
 
 		// launch custom notetypes
 		#if desktop
-		var filesToCheck:Array<String> = Paths.listLuaInPath('assets/custom_notetypes/').concat(Paths.listHscriptInPath('assets/custom_notetypes/'));
+		var filesToCheck:Array<String> = AssetsUtil.listAssetsInPath('assets/custom_notetypes/', LUA).concat(AssetsUtil.listAssetsInPath('assets/custom_notetypes/', HSCRIPT));
 		var filesPushed:Array<String> = [];
 		for (file in filesToCheck)
 		{
@@ -1258,7 +1258,7 @@ class PlayState extends MusicBeatState
 
 		// launch custom diffs scripts
 		#if desktop
-		var filesToCheck:Array<String> = Paths.listLuaInPath('assets/custom_difficulties/').concat(Paths.listHscriptInPath('assets/custom_difficulties/'));
+		var filesToCheck:Array<String> = AssetsUtil.listAssetsInPath('assets/custom_difficulties/', LUA).concat(AssetsUtil.listAssetsInPath('assets/custom_difficulties/', HSCRIPT));
 		var filesPushed:Array<String> = [];
 		for (file in filesToCheck)
 		{
@@ -2750,6 +2750,8 @@ class PlayState extends MusicBeatState
 		ScriptHelper.setOnScripts('songLength', songLength);
 
 		ScriptHelper.callOnScripts('onSongStart', []);
+
+		sectionHit();
 	}
 
 	var debugNum:Int = 0;
@@ -4317,7 +4319,7 @@ class PlayState extends MusicBeatState
 						strumLineNotes.generateStrumLineArrows();
 
 					case 'Screen Shake':
-						var valuesArray:Array<String> = [eventValue];
+						var valuesArray:Array<String> = [eventValue, eventValue];
 						var targetsArray:Array<FlxCamera> = [camGame, camHUD];
 						for (i in 0...targetsArray.length) {
 							var split:Array<String> = valuesArray[i].split(',');

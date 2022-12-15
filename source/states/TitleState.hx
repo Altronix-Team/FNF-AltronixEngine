@@ -135,8 +135,6 @@ class TitleState extends MusicBeatState
 			GameJoltAPI.authDaUser(Main.save.data.gjUser, Main.save.data.gjToken);
 			#end
 
-			//cacheSongs();
-
 			if (Main.save.data.volume != null)
 				FlxG.sound.volume = Main.save.data.volume;
 
@@ -537,42 +535,6 @@ class TitleState extends MusicBeatState
 			FlxG.sound.music.volume = 0.7;
 
 			skippedIntro = true;
-		}
-	}
-
-	function cacheSongs()
-	{
-		Debug.logInfo('Starting to cache songs');
-
-		var songList:Array<String> = Paths.listSongsToCache();
-		
-		for (i in songList)
-		{
-			var songJsons:Array<SongData> = [];
-			var list = Paths.listJsonInPath('assets/data/songs/' + i + '/');
-			for (j in list)
-			{
-				if (j == '_meta')
-					continue;
-				if (j == 'events')
-					continue;
-
-				var diffName = '';
-
-				if (j != i)
-				{
-					diffName = j.replaceAll(i + '-', '');
-				}
-
-				if (Song.loadFromJson(i, diffName) != null)
-				{
-					songJsons.push(Song.conversionChecks(Song.loadFromJson(i, diffName)));
-				}
-			}
-			if (songJsons.length > 0)
-			{
-				Caching.songJsons.set(i, songJsons);
-			}
 		}
 	}
 }

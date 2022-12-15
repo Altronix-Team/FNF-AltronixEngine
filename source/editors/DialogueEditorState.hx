@@ -251,8 +251,6 @@ class DialogueEditorState extends MusicBeatState
 		}
 
 		if(Math.isNaN(speed) || speed < 0.001) speed = 0.0;
-	
-		Alphabet.setDialogueSound(soundInputText.text);
 
 		if(speed > 0) {
 			if(character.jsonFile.animations.length > curAnim && character.jsonFile.animations[curAnim] != null) {

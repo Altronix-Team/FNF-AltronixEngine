@@ -96,10 +96,7 @@ class StoryMenuState extends MusicBeatState
 		PlayState.inDaPlay = false;
 		#if desktop
 		// Updating Discord Rich Presence
-		if (!Main.save.data.language)
-			DiscordClient.changePresence("In the Story Mode Menu", null);
-		else
-			DiscordClient.changePresence("В сюжетном меню", null);
+		DiscordClient.changePresence("In the Story Mode Menu", null);
 		#end
 
 		transIn = FlxTransitionableState.defaultTransIn;

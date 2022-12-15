@@ -71,7 +71,6 @@ class DialogueCharacterEditorState extends MusicBeatState
 	var curAnim:Int = 0;
 
 	override function create() {
-		Alphabet.setDialogueSound();
 
 		persistentUpdate = persistentDraw = true;
 		camGame = new FlxCamera();

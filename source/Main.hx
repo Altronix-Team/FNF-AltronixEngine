@@ -50,6 +50,9 @@ class Main extends Sprite
 
 	public static final defaultWindowTitle:String = 'Friday Night Funkin\': Altronix Engine';
 
+	public static var compileTime:String = #if macro utils.MacroUtil.buildDate().toString() #else '' #end;
+	public static var gitCommitSha:String = #if macro utils.MacroUtil.buildGitCommitSha()#else '' #end;
+
 	// You can pretty much ignore everything from here on - your code should go in your states.
 	// Ho-ho-ho, no
 

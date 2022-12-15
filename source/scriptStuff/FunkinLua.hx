@@ -1879,7 +1879,7 @@ class FunkinLua {
 		});
 
 		Lua_helper.add_callback(lua, "getTextFromFile", function(path:String) {
-			return Paths.getTextFromFile(path);
+			return AssetsUtil.loadAsset(path, TEXT);
 		});
 
 		Lua_helper.add_callback(lua, "logTrace", function(message:String) {

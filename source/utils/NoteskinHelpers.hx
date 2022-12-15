@@ -16,7 +16,7 @@ class NoteskinHelpers
 	public static function updateNoteskins()
 	{
 		noteskinArray = [];
-		for (i in Paths.listImagesInPath('noteskins/'))
+		for (i in AssetsUtil.listAssetsInPath('noteskins/', IMAGE))
 		{
 			if (OpenFlAssets.exists(Paths.json('images/noteskins/${i.replace(".png", "")}', 'shared')))
 			{

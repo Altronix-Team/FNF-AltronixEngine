@@ -335,9 +335,9 @@ class GameJoltAPI // Connects to flixel.addons.api.FlxGameJolt
 			if (data != null)
 				return data;
 			else
-				return Paths.loadImage('cross', 'shared').bitmap;
+				return AssetsUtil.loadAsset('cross', IMAGE, 'shared').bitmap;
 		});
-		return Paths.loadImage('cross', 'shared').bitmap;
+		return AssetsUtil.loadAsset('cross', IMAGE, 'shared').bitmap;
 	}
 
 	/**

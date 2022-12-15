@@ -30,7 +30,8 @@ import flixel.input.keyboard.FlxKey;
 import gameplayStuff.Highscore;
 
 
-class Caching extends MusicBeatState
+//Just comment everything
+/*class Caching extends MusicBeatState
 {
 	var toBeDone = 0;
 	var done = 0;
@@ -244,5 +245,5 @@ class Caching extends MusicBeatState
 		});
 		#end
 	}
-}
+}*/
 #end

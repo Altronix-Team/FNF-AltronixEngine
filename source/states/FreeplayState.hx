@@ -72,13 +72,13 @@ class FreeplayState extends MusicBeatState
 
 	public static function loadDiff(diff:Int, songId:String, array:Array<SongData>, ?diffStr:String)
 	{
-		if (Caching.songJsons.get(songId) != null)
+		/*if (Caching.songJsons.get(songId) != null)
 		{
 			Debug.logInfo('Found cached song $songId');
 			array = Caching.songJsons.get(songId).copy();
 		}
 		else
-		{
+		{*/
 			var diffName:String = "";
 
 			switch (diff)
@@ -100,7 +100,7 @@ class FreeplayState extends MusicBeatState
 				Debug.displayAlert('ERROR', 'ERROR in Freeplay trying to load song data: ${songId} : ${diffName}');
 			else
 				array.push(Song.conversionChecks(Song.loadFromJson(songId, diffName)));
-		}
+		//}
 	}
 
 	override function create()
@@ -118,10 +118,7 @@ class FreeplayState extends MusicBeatState
 
 		#if desktop
 		// Updating Discord Rich Presence
-		if (!Main.save.data.language)
-			DiscordClient.changePresence("In the Freeplay Menu", null);
-		else
-			DiscordClient.changePresence("В меню свободной игры", null);
+		DiscordClient.changePresence("In the Freeplay Menu", null);
 		#end
 
 		var isDebug:Bool = false;

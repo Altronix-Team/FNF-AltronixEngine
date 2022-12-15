@@ -48,79 +48,9 @@ class Paths
 		return getPreloadPath(file);
 	}
 
-	static public function getTextFromFile(key:String):String
-	{
-		return Assets.getText(getPath(key, TEXT));
-	}
-
 	public static inline function songMeta(key:String)
 	{
 		return getPath('$key/_meta.json', TEXT, 'songs');
-	}
-
-	/**
-	 * For a given key and library for an image, returns the corresponding BitmapData.
-	 * @param key 
-	 * @param library 
-	 * @return BitmapData
-	 */
-	static public function loadImage(key:String, ?library:String):FlxGraphic
-	{
-		var retVal:BitmapData;
-		var path = image(key, library);
-		if (OpenFlAssets.exists(path, IMAGE))
-		{
-			retVal = OpenFlAssets.getBitmapData(path);
-		}
-		else
-		{
-			Debug.logWarn('Could not find image at path $path');
-			retVal = flixel.addons.display.FlxGridOverlay.createGrid(50, 50, 100, 100, true, 0xFFFF00FF, 0xFF000000);
-		}
-		return FlxGraphic.fromBitmapData(retVal);
-	}
-
-	static public function isFileReplaced(path:String):Bool //Check for replaced files by polymod
-	{
-		if (ModCore.replacedFiles.contains(path))
-		{
-			return true;
-		}
-		return false;
-	}
-
-	static public function loadJSON(key:String, ?library:String):Dynamic
-	{
-		var rawJson = OpenFlAssets.getText(Paths.json(key, library)).trim();
-
-		// Perform cleanup on files that have bad data at the end.
-		while (!rawJson.endsWith("}"))
-		{
-			rawJson = rawJson.substr(0, rawJson.length - 1);
-		}
-
-		try
-		{
-			// Attempt to parse and return the JSON data.
-			return Json.parse(rawJson);
-		}
-		catch (e)
-		{
-			Debug.logError("AN ERROR OCCURRED parsing a JSON file.");
-			Debug.logError(e.message);
-			Debug.logError(e.stack);
-
-			// Return null.
-			return null;
-		}
-	}
-
-	inline static public function fileExists(key:String, type:AssetType, ?library:String)
-	{		
-		if(OpenFlAssets.exists(getPath(key, type, library))) {
-			return true;
-		}
-		return false;
 	}
 
 	static public function getLibraryPath(file:String, library = "preload")
@@ -166,8 +96,27 @@ class Paths
 		return getPath('sounds/$key.$SOUND_EXT', SOUND, library);
 	}
 
-	inline static public function formatToSongPath(path:String) {
-		return path.toLowerCase().replace(' ', '-');
+	inline static public function music(key:String, ?library:String)
+	{
+		return getPath('music/$key.$SOUND_EXT', MUSIC, library);
+	}
+
+	inline static public function image(key:String, ?library:String)
+	{
+		if (LanguageStuff.getImagePath(key) != null)
+			return LanguageStuff.getImagePath(key);
+		else
+			return getPath('images/$key.png', IMAGE, library);
+	}
+
+	inline static public function font(key:String)
+	{
+		return 'assets/fonts/$key';
+	}
+
+	inline static public function video(key:String, ?library:String)
+	{
+		return getPath('videos/$key.mp4', BINARY, library);
 	}
 
 	static public function formatToDialoguePath(file:String):Dynamic {
@@ -222,20 +171,9 @@ class Paths
 		}
 	}
 
-	static public function dialogueSound(key:String, ?library:String):Sound
-	{
-		var sound:Sound = OpenFlAssets.getSound(sound(key, library));
-		return sound;
-	}
-
 	inline static public function soundRandom(key:String, min:Int, max:Int, ?library:String)
 	{
 		return sound(key + FlxG.random.int(min, max), library);
-	}
-
-	inline static public function music(key:String, ?library:String)
-	{
-		return getPath('music/$key.$SOUND_EXT', MUSIC, library);
 	}
 
 	inline static public function voices(song:String, useDiffSongAssets:Bool = false)
@@ -265,7 +203,7 @@ class Paths
 		else
 			result = 'songs:assets/songs/${songLowercase}/Voices.$SOUND_EXT';
 
-		return doesSoundAssetExist(result) ? result : null;
+		return AssetsUtil.doesAssetExists(result, SOUND) ? result : null;
 	}
 
 	inline static public function inst(song:String, useDiffSongAssets:Bool = false)
@@ -293,292 +231,6 @@ class Paths
 		else
 			return 'songs:assets/songs/${songLowercase}/Inst.$SOUND_EXT';
 	}
-
-	static public function listSongsToCache()
-	{
-		// We need to query OpenFlAssets, not the file system, because of Polymod.
-		var soundAssets = OpenFlAssets.list(AssetType.MUSIC).concat(OpenFlAssets.list(AssetType.SOUND));
-
-		// TODO: Maybe rework this to pull from a text file rather than scan the list of assets.
-		var songNames = [];
-
-		for (sound in soundAssets)
-		{
-			// Parse end-to-beginning to support mods.
-			var path = sound.split('/');
-			path.reverse();
-
-			var fileName = path[0];
-			var songName = path[1];
-
-			if (path[2] != 'songs')
-				continue;
-
-			// Remove duplicates.
-			if (songNames.indexOf(songName) != -1)
-				continue;
-
-			songNames.push(songName);
-		}
-
-		return songNames;
-	}
-
-	static public function doesSoundAssetExist(path:String)
-	{
-		if (path == null || path == "")
-			return false;
-		return OpenFlAssets.exists(path, AssetType.SOUND) || OpenFlAssets.exists(path, AssetType.MUSIC) 
-		|| OpenFlAssets.exists(OpenFlAssets.getPath(path), AssetType.SOUND) || OpenFlAssets.exists(OpenFlAssets.getPath(path), AssetType.MUSIC);
-	}
-
-	inline static public function doesTextAssetExist(path:String)
-	{
-		if (OpenFlAssets.exists(path, TEXT))
-			return OpenFlAssets.exists(path, TEXT);
-		else
-			return false;
-	}
-
-	inline static public function image(key:String, ?library:String)
-	{
-		if (LanguageStuff.getImagePath(key) != null)
-			return LanguageStuff.getImagePath(key);
-		else
-			return getPath('images/$key.png', IMAGE, library);
-	}
-
-	inline static public function getPathOpenFL(key:String, ?library:String):Null<String>
-	{
-		return OpenFlAssets.getPath(key);
-	}
-
-	inline static public function font(key:String)
-	{
-		return 'assets/fonts/$key';
-	}
-
-	inline static public function video(key:String, ?library:String)
-	{
-		trace('assets/videos/$key.mp4');
-		return getPath('videos/$key.mp4', BINARY, library);
-	}
-
-
-	/**
-	 * List all the data hscript files under a given subdirectory.
-	 * @param path The path to look under.
-	 * @return The list of hscript files under that path.
-	 */
-	public static function listHscriptInPath(path:String)
-	{
-		var dataAssets = OpenFlAssets.list(TEXT);
-
-		var queryPath = '${path}';
-
-		var results:Array<String> = [];
-
-		var ends:Array<String> = ['.hscript', '.hx'];
-
-		for (data in dataAssets)
-		{
-			for (end in ends)
-			{
-				if (data.indexOf(queryPath) != -1
-					&& data.endsWith(end)
-					&& (!results.contains(data.substr(data.indexOf(queryPath) + queryPath.length))))
-				{
-					var suffixPos = data.indexOf(queryPath) + queryPath.length;
-					results.push(data.substr(suffixPos));
-				}
-			}			
-		}
-
-		return results;
-	}
-
-	/**
-	 * List all the data lua files under a given subdirectory.
-	 * @param path The path to look under.
-	 * @return The list of lua files under that path.
-	 */
-	 public static function listLuaInPath(path:String)
-		{
-			var dataAssets = OpenFlAssets.list(TEXT);
-	
-			var queryPath = '${path}';
-	
-			var results:Array<String> = [];
-	
-			for (data in dataAssets)
-			{
-				if (data.indexOf(queryPath) != -1 && data.endsWith('.lua') && 
-					(!results.contains(data.substr(data.indexOf(queryPath) + queryPath.length).replaceAll('.lua', ''))))
-				{
-					var suffixPos = data.indexOf(queryPath) + queryPath.length;
-					results.push(data.substr(suffixPos).replaceAll('.lua', ''));
-				}
-			}
-	
-			return results;
-		}
-
-	/**
-	 * List all the data txt files under a given subdirectory.
-	 * @param path The path to look under.
-	 * @return The list of txt files under that path.
-	 */
-	 public static function listTxtInPath(path:String)
-		{
-			var dataAssets = OpenFlAssets.list(TEXT);
-	
-			var queryPath = '${path}';
-	
-			var results:Array<String> = [];
-	
-			for (data in dataAssets)
-			{
-				if (data.indexOf(queryPath) != -1 && data.endsWith('.txt') && 
-					(!results.contains(data.substr(data.indexOf(queryPath) + queryPath.length).replaceAll('.txt', ''))))
-				{
-					var suffixPos = data.indexOf(queryPath) + queryPath.length;
-					results.push(data.substr(suffixPos).replaceAll('.txt', ''));
-				}
-			}
-	
-			return results;
-		}
-
-	/**
-	 * List all the files under a given subdirectory.
-	 * @param path The path to look under.
-	 * @return The list of files under that path.
-	 */
-	public static function listFilesInPath(path:String, fileType:AssetType = TEXT, fileEnd:String = '.txt')
-	{
-		var dataAssets = OpenFlAssets.list(fileType);
-
-		var queryPath = '${path}';
-
-		var results:Array<String> = [];
-
-		for (data in dataAssets)
-		{
-			if (data.indexOf(queryPath) != -1
-				&& data.endsWith(fileEnd)
-				&& !results.contains(data.substr(data.indexOf(queryPath) + queryPath.length).replaceAll(fileEnd, '')))
-			{
-				var suffixPos = data.indexOf(queryPath) + queryPath.length;
-				results.push(data.substr(suffixPos).replaceAll(fileEnd, ''));
-			}
-		}
-
-		return results;
-	}
-
-	/**
-	 * List all the folders under a given subdirectory.
-	 * @param path The path to look under.
-	 * @return The list of folders under that path.
-	 */
-	public static function listFoldersInPath(path:String)
-	{
-		var dataAssets = OpenFlAssets.list();
-
-		var queryPath = '${path}';
-
-		var results:Array<String> = [];
-
-		for (data in dataAssets)
-		{
-			if (data.indexOf(queryPath) != -1
-				&& !results.contains(data.substr(data.indexOf(queryPath) + queryPath.length).replace(queryPath, '').removeAfter('/')))
-			{
-				var suffixPos = data.indexOf(queryPath) + queryPath.length;
-				results.push(data.substr(suffixPos).replace(queryPath, '').removeAfter('/'));
-			}
-		}
-		return results;
-	}
-
-	/**
-	 * List all the data JSON files under a given subdirectory.
-	 * @param path The path to look under.
-	 * @return The list of JSON files under that path.
-	 */
-	public static function listJsonInPath(path:String)
-	{
-		var dataAssets = OpenFlAssets.list(TEXT);
-	
-		var queryPath = '${path}';
-	
-		var results:Array<String> = [];
-	
-		for (data in dataAssets)
-		{
-			if (data.indexOf(queryPath) != -1 && data.endsWith('.json')
-				&& !results.contains(data.substr(data.indexOf(queryPath) + queryPath.length).replaceAll('.json', '')))
-			{
-				var suffixPos = data.indexOf(queryPath) + queryPath.length;
-				results.push(data.substr(suffixPos).replaceAll('.json', ''));
-			}
-		}
-	
-		return results;
-	}
-
-	/**
-	 * List all the image files under a given subdirectory.
-	 * @param path The path to look under.
-	 * @return The list of image files under that path.
-	 */
-	 public static function listImagesInPath(path:String)
-		{
-			// We need to query OpenFlAssets, not the file system, because of Polymod.
-			var imageAssets = OpenFlAssets.list(IMAGE);
-	
-			var queryPath = 'images/${path}';
-	
-			var results:Array<String> = [];
-	
-			for (image in imageAssets)
-			{
-				// Parse end-to-beginning to support mods.
-				var path = image.split('/');
-				if (image.indexOf(queryPath) != -1)
-				{
-					var suffixPos = image.indexOf(queryPath) + queryPath.length;
-					results.push(image.substr(suffixPos).replaceAll('.json', ''));
-				}
-			}
-	
-			return results;
-		}
-
-	/**
-	 * List all the data Music files under a given subdirectory.
-	 * @param path The path to look under.
-	 * @return The list of Music files under that path.
-	 */
-	public static function listMusicInPath(path:String)
-		{
-			var dataAssets = OpenFlAssets.list(MUSIC).concat(OpenFlAssets.list(SOUND));
-	
-			var queryPath = '${path}';
-	
-			var results:Array<String> = [];
-	
-			for (data in dataAssets)
-			{
-				if (data.indexOf(queryPath) != -1)
-				{
-					var suffixPos = data.indexOf(queryPath) + queryPath.length;
-					results.push(data.substr(suffixPos));
-				}
-			}
-	
-			return results;
-		}
 
 	public inline static function getHscriptPath(script:String, folder:String = '', isCharScript:Bool = false, ?library:String):String
 	{
@@ -614,86 +266,28 @@ class Paths
 		}
 	}
 
-	public static function isAnimated(key:String, ?library:String)
-	{
-		return doesTextAssetExist(Paths.file('$key.xml', library));
-	}
-
 	static public function getSparrowAtlas(key:String, ?library:String)
 	{
-		if (LanguageStuff.getSparrowAtlas(key) != null)
-		{
-			return LanguageStuff.getSparrowAtlas(key);
-		}
-		else
-		{
-			return FlxAtlasFrames.fromSparrow(loadImage(key, library), file('images/$key.xml', library));
-		}
+		return AssetsUtil.getSparrowAtlas(key, library);
 	}
 
 	inline static public function getCharacterFrames(charName:String, key:String):FlxFramesCollection
 	{
-		var filePath = 'characters/$charName/$key';
-		if (OpenFlAssets.exists('assets/characters/$charName/$key.txt'))
-			return FlxAtlasFrames.fromSpriteSheetPacker(loadCharactersImage(charName, key), file('$filePath.txt'));
-		else
-		{
-			if (OpenFlAssets.exists('assets/characters/$charName/$key.xml'))
-			{
-				return FlxAtlasFrames.fromSparrow(loadCharactersImage(charName, key), file('$filePath.xml'));
-			}
-			else return null;
-		}	
-	}
-
-	inline static public function characterImage(charName:String, key:String, ?library:String)
-	{
-		return getPath('characters/$charName/$key.png', IMAGE, library);
-	}
-
-	static public function loadCharactersImage(charName:String, key:String, ?library:String):FlxGraphic
-	{
-		var path = characterImage(charName, key, library);
-
-		if (OpenFlAssets.exists(path, IMAGE))
-		{
-			var bitmap = OpenFlAssets.getBitmapData(path);
-			return FlxGraphic.fromBitmapData(bitmap);
-		}
-		else
-		{
-			Debug.logWarn('Could not find image at path $path');
-			return null;
-		}
-	}
-
-	/**
-	 * Function which wants to help find you this file all around the engine!
-	 * - and mods ;)
-	 * @param fileName name of file to find with extension
-	 * @return File path
-	 */
-	static public function findMatchingFiles(fileName:String):String
-	{
-		var files = OpenFlAssets.list();
-
-		for (file in files)
-		{
-			if (file.endsWith(fileName))
-				return file.replaceAll('assets/', '');
-		}
-		return null;
+		return AssetsUtil.getCharacterFrames(charName, key);	
 	}
 
 	inline static public function getPackerAtlas(key:String, ?library:String)
 	{
-		if (LanguageStuff.getPackerAtlas(key) != null)
-		{
-			return LanguageStuff.getPackerAtlas(key);
-		}
-		else
-		{
-			return FlxAtlasFrames.fromSpriteSheetPacker(loadImage(key, library), file('images/$key.txt', library));
-		}		
+		return AssetsUtil.getPackerAtlas(key, library);		
+	}
+
+	static public function loadImage(key:String, ?library:String)
+	{
+		return AssetsUtil.loadAsset(key, IMAGE, library);
+	}
+
+	static public function loadJSON(key:String, ?library:String)
+	{
+		return AssetsUtil.loadAsset(key, JSON, library);
 	}
 }

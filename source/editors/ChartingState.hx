@@ -508,7 +508,7 @@ class ChartingState extends MusicBeatState
 		add(UI_box);
 
 		#if desktop
-		var diffList:Array<String> = Paths.listTxtInPath('assets/custom_events/');
+		var diffList:Array<String> = AssetsUtil.listAssetsInPath('assets/custom_events/', TEXT);
 		for (i in 0...diffList.length)
 		{
 			if (diffList[i] == 'readme')
@@ -521,7 +521,8 @@ class ChartingState extends MusicBeatState
 		#end
 
 		#if desktop
-		var noteList:Array<String> = Paths.listLuaInPath('assets/custom_notetypes/').concat(Paths.listHscriptInPath('assets/custom_notetypes/'));
+		var noteList:Array<String> = AssetsUtil.listAssetsInPath('assets/custom_notetypes/', LUA)
+			.concat(AssetsUtil.listAssetsInPath('assets/custom_notetypes/', HSCRIPT));
 		for (i in 0...noteList.length)
 		{
 			if (!noteTypeList.contains(noteList[i])) {
@@ -1365,7 +1366,7 @@ class ChartingState extends MusicBeatState
 			tempMap.set(characters[i], true);
 		}
 		var gfVersions:Array<String> = Character.characterList;
-		var stages:Array<String> = Paths.listJsonInPath('assets/stages/');
+		var stages:Array<String> = AssetsUtil.listAssetsInPath('assets/stages/', JSON);
 		noteStyles = CoolUtil.coolTextFile(Paths.txt('data/noteStyleList'));
 
 		var player1DropDown = new FlxUIDropDownMenuCustom(150, 108, FlxUIDropDownMenuCustom.makeStrIdLabelArray(characters, true), function(character:String)
@@ -3394,9 +3395,9 @@ class ChartingState extends MusicBeatState
 						eventDescription.text = eventDescriptionText;
 
 					default:
-						if (Paths.doesTextAssetExist('assets/custom_events/' + eventType.selectedLabel))
+						if (AssetsUtil.doesAssetExists('assets/custom_events/' + eventType.selectedLabel, TEXT))
 						{
-							eventDescriptionText = Paths.getTextFromFile('custom_events/' + eventType.selectedLabel + '.txt');
+							eventDescriptionText = AssetsUtil.loadAsset('custom_events/' + eventType.selectedLabel + '.txt', TEXT);
 							eventDescription.text = eventDescriptionText;
 						}
 						else

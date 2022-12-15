@@ -29,7 +29,7 @@ class LoadingScreen extends states.MusicBeatSubstate {
 		super();
 		this.toBeDone = toBeDone;
 		FlxG.camera.zoom = 0;
-		loadingart = new FlxSprite(0, 0).loadGraphic(Paths.loadImage('limo/limoSunset', 'week4'));
+		loadingart = new FlxSprite(0, 0).loadGraphic(AssetsUtil.loadAsset('limo/limoSunset', IMAGE, 'week4'));
 		loadingart.screenCenter();
 		loadingart.scrollFactor.set();
 		loadingart.antialiasing = Main.save.data.antialiasing;

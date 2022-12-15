@@ -174,12 +174,12 @@ class Achievements
 		achievementsArray = EngineConstants.defaultAchievementsArray.copy();
 
 		Debug.logInfo('Loading custom achievements!');
-		var customAchArray = Paths.listJsonInPath('assets/custom_achievements');
+		var customAchArray = AssetsUtil.listAssetsInPath('assets/custom_achievements', JSON);
 
 		if (customAchArray.length > 0)
 			for (achievement in customAchArray)
 			{
-				var achievementInfo:AchievementData = cast Paths.loadJSON(achievement, 'custom_achievements');
+				var achievementInfo:AchievementData = cast AssetsUtil.loadAsset(achievement, JSON, 'custom_achievements');
 				achievementInfo.isCustom = true;
 				achievementsArray.push(achievementInfo);
 			}
@@ -211,11 +211,11 @@ class AchievementSprite extends FlxSprite{
 
 		if (savedAchievements.contains(tag))
 		{
-			loadGraphic(Paths.loadImage('achievements/normal/' + image));
+			loadGraphic(AssetsUtil.loadAsset('achievements/normal/' + image, IMAGE));
 		}
 		else
 		{
-			loadGraphic(Paths.loadImage('achievements/normal/locked'));
+			loadGraphic(AssetsUtil.loadAsset('achievements/normal/locked', IMAGE));
 		}
 		scale.set(0.7, 0.7);
 		updateHitbox();

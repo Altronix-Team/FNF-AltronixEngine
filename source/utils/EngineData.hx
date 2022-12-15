@@ -213,8 +213,6 @@ class EngineData
 		Main.memoryCount = Main.save.data.memoryCount;
 		Main.watermarks = Main.save.data.watermark;
 
-		Main.save.data.language = false;
-
 		PlayStateChangeables.useMiddlescroll = Main.save.data.middleScroll;
 		PlayStateChangeables.useDownscroll = Main.save.data.downscroll;
 		PlayStateChangeables.safeFrames = Main.save.data.frames;

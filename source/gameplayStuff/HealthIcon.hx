@@ -71,7 +71,7 @@ class HealthIcon extends FlxSprite
 		//}
 	}
 
-	function loadIcon(char:String, filename:String)
+	/*function loadIcon(char:String, filename:String)
 	{
 		if (!OpenFlAssets.exists(image(char != '' ? '/$char' : '', filename)))
 		{
@@ -95,7 +95,7 @@ class HealthIcon extends FlxSprite
 		}
 	
 		animation.play(data.defaultAnim);
-	}
+	}*/
 	
 	function loadIconLegacy(char:String, filename:String)
 	{

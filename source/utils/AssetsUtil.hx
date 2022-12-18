@@ -1,5 +1,10 @@
 package utils;
 
+import lime.tools.AssetType;
+import openfl.net.FileFilter;
+import openfl.events.Event;
+import openfl.events.IOErrorEvent;
+import openfl.net.FileReference;
 import flixel.system.FlxSound;
 import flixel.graphics.frames.FlxFramesCollection;
 import flixel.graphics.frames.FlxAtlasFrames;
@@ -11,35 +16,32 @@ import openfl.Assets as OpenFlAssets;
 
 class AssetsUtil 
 {
+	public var _file:FileReference;
+	
     public static function listAssetsInPath(path:String, type:AssetTypes = UNKNOWN):Array<String>
     {
+		if (type == DIRECTORY) return listFoldersInPath(path);
+		var dataAssets = if (type == SOUND || type == MUSIC) OpenFlAssets.list(SOUND).concat(OpenFlAssets.list(MUSIC)) else OpenFlAssets.list(AssetTypes.toOpenFlType(type));
+
+		var queryPath = '${path}';
+
 		var results:Array<String> = [];
 
-        switch (type)
-        {
-            case SOUND | MUSIC:
-                results = listMusicInPath(path);
-            case TEXT:
-                results = listTxtInPath(path);
-            case IMAGE:
-                results = listImagesInPath(path);
-            case JSON:
-                results = listJsonInPath(path);
-            case HSCRIPT:
-                results = listHscriptInPath(path);
-            case LUA:
-                results = listLuaInPath(path);
-            case FONT:
-                results = listFontsInPath(path);
-            case DIRECTORY:
-                results = listFoldersInPath(path);
-            case XML:
-				results = listXmlInPath(path);
-            case VIDEOS:
-				results = listVideosInPath(path);
-            default: //UNKNOWN type
-                results = listFilesInPath(path, BINARY, ''); //List everything, lol
-        }
+		var ends:Array<String> = AssetTypes.returnEnds(type);
+
+		for (data in dataAssets)
+		{
+			for (end in ends)
+			{
+				if (data.indexOf(queryPath) != -1
+					&& data.endsWith('.$end')
+					&& (!results.contains(data.substr(data.indexOf(queryPath) + queryPath.length).replaceAll('.$end', ''))))
+				{
+					var suffixPos = data.indexOf(queryPath) + queryPath.length;
+					results.push(data.substr(suffixPos).replaceAll('.$end', ''));
+				}
+			}
+		}
         return results;
     }
 
@@ -152,6 +154,125 @@ class AssetsUtil
         }
     }
 
+	public function saveFile(fileContent:Dynamic = '', type:AssetTypes = UNKNOWN, fileName:String = 'file')
+	{
+		if (type == IMAGE || type == DIRECTORY || type == UNKNOWN || type == FONT || type == SOUND || type == MUSIC || type == VIDEOS) return;
+
+		var data:Dynamic = '';
+		switch (type)
+		{
+			case JSON:
+				data = Json.stringify(fileContent, null, ' ');
+			case XML:
+				data = Xml.parse(fileContent);
+			default:
+				data = fileContent;
+		}
+
+		if ((data != null) && (data.length > 0))
+		{
+			_file = new FileReference();
+			_file.addEventListener(openfl.events.Event.COMPLETE, onSaveComplete);
+			_file.addEventListener(openfl.events.Event.CANCEL, onSaveCancel);
+			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+			_file.save(data.trim(), fileName + '.${AssetTypes.returnEnds(type)}');
+		}
+	}
+
+	/*public function loadFile(type:AssetTypes = UNKNOWN)
+	{
+		if (type == IMAGE || type == DIRECTORY || type == UNKNOWN || type == FONT || type == SOUND || type == MUSIC || type == VIDEOS) return;
+
+		var ext = '';
+
+		for (i in AssetTypes.returnEnds(type))
+			ext += i;
+
+		var fileFilter:FileFilter = new FileFilter(type, ext);
+		_file = new FileReference();
+		_file.addEventListener(Event.SELECT, onLoadComplete);
+		_file.addEventListener(Event.CANCEL, onLoadCancel);
+		_file.addEventListener(IOErrorEvent.IO_ERROR, onLoadError);
+		_file.browse([fileFilter]);
+	}*/
+
+	/*private function onLoadComplete(_):Void
+	{
+		_file.removeEventListener(Event.SELECT, onLoadComplete);
+		_file.removeEventListener(Event.CANCEL, onLoadCancel);
+		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
+
+		#if sys
+		var fullPath:String = null;
+		@:privateAccess
+		if (_file.__path != null)
+			fullPath = _file.__path;
+
+		if (fullPath != null)
+		{
+			
+		}
+		#else
+		Debug.logError("File couldn't be loaded! You aren't on Desktop, are you?");
+		#end
+	}*/
+
+	/**
+	 * Called when the save file dialog is cancelled.
+	 */
+	/*private function onLoadCancel(_):Void
+	{
+		_file.removeEventListener(Event.SELECT, onLoadComplete);
+		_file.removeEventListener(Event.CANCEL, onLoadCancel);
+		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
+		_file = null;
+		trace("Cancelled file loading.");
+	}*/
+
+	/**
+	 * Called if there is an error while saving the gameplay recording.
+	 */
+	/*private function onLoadError(_):Void
+	{
+		_file.removeEventListener(Event.SELECT, onLoadComplete);
+		_file.removeEventListener(Event.CANCEL, onLoadCancel);
+		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
+		_file = null;
+		trace("Problem loading file");
+	}*/
+	
+	private function onSaveComplete(_):Void
+	{
+		_file.removeEventListener(openfl.events.Event.COMPLETE, onSaveComplete);
+		_file.removeEventListener(openfl.events.Event.CANCEL, onSaveCancel);
+		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+		_file = null;
+		FlxG.log.notice("Successfully saved LEVEL DATA.");
+	}
+
+	/**
+	 * Called when the save file dialog is cancelled.
+	 */
+	private function onSaveCancel(_):Void
+	{
+		_file.removeEventListener(openfl.events.Event.COMPLETE, onSaveComplete);
+		_file.removeEventListener(openfl.events.Event.CANCEL, onSaveCancel);
+		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+		_file = null;
+	}
+
+	/**
+	 * Called if there is an error while saving the gameplay recording.
+	 */
+	private function onSaveError(_):Void
+	{
+		_file.removeEventListener(openfl.events.Event.COMPLETE, onSaveComplete);
+		_file.removeEventListener(openfl.events.Event.CANCEL, onSaveCancel);
+		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+		_file = null;
+		FlxG.log.error("Problem saving Level data");
+	}
+
     private static function loadSoundAsset(key:String, type:AssetTypes = SOUND, ?library:String)
     {
         var retSound:FlxSound = null;
@@ -228,170 +349,6 @@ class AssetsUtil
 		}
 	}
 
-	private static function listFontsInPath(path:String)
-	{
-		var dataAssets = OpenFlAssets.list(BINARY);
-
-		var queryPath = '${path}';
-
-		var results:Array<String> = [];
-
-		var ends:Array<String> = ['.otf', '.ttf'];
-
-		for (data in dataAssets)
-		{
-			for (end in ends)
-			{
-				if (data.indexOf(queryPath) != -1
-					&& data.endsWith(end)
-					&& (!results.contains(data.substr(data.indexOf(queryPath) + queryPath.length))))
-				{
-					var suffixPos = data.indexOf(queryPath) + queryPath.length;
-					results.push(data.substr(suffixPos));
-				}
-			}
-		}
-
-		return results;
-	}
-
-	private static function listHscriptInPath(path:String)
-	{
-		var dataAssets = OpenFlAssets.list(TEXT);
-
-		var queryPath = '${path}';
-
-		var results:Array<String> = [];
-
-		var ends:Array<String> = ['.hscript', '.hx'];
-
-		for (data in dataAssets)
-		{
-			for (end in ends)
-			{
-				if (data.indexOf(queryPath) != -1
-					&& data.endsWith(end)
-					&& (!results.contains(data.substr(data.indexOf(queryPath) + queryPath.length))))
-				{
-					var suffixPos = data.indexOf(queryPath) + queryPath.length;
-					results.push(data.substr(suffixPos));
-				}
-			}
-		}
-
-		return results;
-	}
-
-	private static function listLuaInPath(path:String)
-	{
-		var dataAssets = OpenFlAssets.list(TEXT);
-
-		var queryPath = '${path}';
-
-		var results:Array<String> = [];
-
-		for (data in dataAssets)
-		{
-			if (data.indexOf(queryPath) != -1
-				&& data.endsWith('.lua')
-				&& (!results.contains(data.substr(data.indexOf(queryPath) + queryPath.length).replaceAll('.lua', ''))))
-			{
-				var suffixPos = data.indexOf(queryPath) + queryPath.length;
-				results.push(data.substr(suffixPos).replaceAll('.lua', ''));
-			}
-		}
-
-		return results;
-	}
-
-	private static function listVideosInPath(path:String)
-	{
-		var dataAssets = OpenFlAssets.list(BINARY);
-
-		var queryPath = '${path}';
-
-		var results:Array<String> = [];
-
-		for (data in dataAssets)
-		{
-			if (data.indexOf(queryPath) != -1
-				&& data.endsWith('.mp4')
-				&& (!results.contains(data.substr(data.indexOf(queryPath) + queryPath.length).replaceAll('.mp4', ''))))
-			{
-				var suffixPos = data.indexOf(queryPath) + queryPath.length;
-				results.push(data.substr(suffixPos).replaceAll('.mp4', ''));
-			}
-		}
-
-		return results;
-	}
-
-	private static function listTxtInPath(path:String)
-	{
-		var dataAssets = OpenFlAssets.list(TEXT);
-
-		var queryPath = '${path}';
-
-		var results:Array<String> = [];
-
-		for (data in dataAssets)
-		{
-			if (data.indexOf(queryPath) != -1
-				&& data.endsWith('.txt')
-				&& (!results.contains(data.substr(data.indexOf(queryPath) + queryPath.length).replaceAll('.txt', ''))))
-			{
-				var suffixPos = data.indexOf(queryPath) + queryPath.length;
-				results.push(data.substr(suffixPos).replaceAll('.txt', ''));
-			}
-		}
-
-		return results;
-	}
-
-	private static function listXmlInPath(path:String)
-	{
-		var dataAssets = OpenFlAssets.list(TEXT);
-
-		var queryPath = '${path}';
-
-		var results:Array<String> = [];
-
-		for (data in dataAssets)
-		{
-			if (data.indexOf(queryPath) != -1
-				&& data.endsWith('.xml')
-				&& (!results.contains(data.substr(data.indexOf(queryPath) + queryPath.length).replaceAll('.xml', ''))))
-			{
-				var suffixPos = data.indexOf(queryPath) + queryPath.length;
-				results.push(data.substr(suffixPos).replaceAll('.xml', ''));
-			}
-		}
-
-		return results;
-	}
-
-	private static function listFilesInPath(path:String, fileType:AssetType = TEXT, fileEnd:String = '.txt')
-	{
-		var dataAssets = OpenFlAssets.list(fileType);
-
-		var queryPath = '${path}';
-
-		var results:Array<String> = [];
-
-		for (data in dataAssets)
-		{
-			if (data.indexOf(queryPath) != -1
-				&& data.endsWith(fileEnd)
-				&& !results.contains(data.substr(data.indexOf(queryPath) + queryPath.length).replaceAll(fileEnd, '')))
-			{
-				var suffixPos = data.indexOf(queryPath) + queryPath.length;
-				results.push(data.substr(suffixPos).replaceAll(fileEnd, ''));
-			}
-		}
-
-		return results;
-	}
-
 	private static function listFoldersInPath(path:String)
 	{
 		var dataAssets = OpenFlAssets.list();
@@ -411,76 +368,11 @@ class AssetsUtil
 		}
 		return results;
 	}
-
-	private static function listJsonInPath(path:String)
-	{
-		var dataAssets = OpenFlAssets.list(TEXT);
-
-		var queryPath = '${path}';
-
-		var results:Array<String> = [];
-
-		for (data in dataAssets)
-		{
-			if (data.indexOf(queryPath) != -1
-				&& data.endsWith('.json')
-				&& !results.contains(data.substr(data.indexOf(queryPath) + queryPath.length).replaceAll('.json', '')))
-			{
-				var suffixPos = data.indexOf(queryPath) + queryPath.length;
-				results.push(data.substr(suffixPos).replaceAll('.json', ''));
-			}
-		}
-
-		return results;
-	}
-
-	private static function listImagesInPath(path:String)
-	{
-		// We need to query OpenFlAssets, not the file system, because of Polymod.
-		var imageAssets = OpenFlAssets.list(IMAGE);
-
-		var queryPath = 'images/${path}';
-
-		var results:Array<String> = [];
-
-		for (image in imageAssets)
-		{
-			// Parse end-to-beginning to support mods.
-			var path = image.split('/');
-			if (image.indexOf(queryPath) != -1)
-			{
-				var suffixPos = image.indexOf(queryPath) + queryPath.length;
-				results.push(image.substr(suffixPos).replaceAll('.json', ''));
-			}
-		}
-
-		return results;
-	}
-
-	private static function listMusicInPath(path:String)
-	{
-		var dataAssets = OpenFlAssets.list(MUSIC).concat(OpenFlAssets.list(SOUND));
-
-		var queryPath = '${path}';
-
-		var results:Array<String> = [];
-
-		for (data in dataAssets)
-		{
-			if (data.indexOf(queryPath) != -1)
-			{
-				var suffixPos = data.indexOf(queryPath) + queryPath.length;
-				results.push(data.substr(suffixPos));
-			}
-		}
-
-		return results;
-	}
 }
 
-@:enum abstract AssetTypes(String) from (String) to (String)
+enum abstract AssetTypes(String) from (String) to (String)
 {
-    var SOUND:AssetTypes = 'sound';
+	var SOUND:AssetTypes = 'sound';
     var MUSIC:AssetTypes = 'music';
     var IMAGE:AssetTypes = 'image';
     var TEXT:AssetTypes = 'text';
@@ -492,4 +384,50 @@ class AssetsUtil
     var DIRECTORY:AssetTypes = 'directory';
 	var FONT:AssetTypes = "font";
     var UNKNOWN:AssetTypes = 'unknown';
+
+	public static function toOpenFlType(type:AssetTypes):AssetType
+	{
+		switch (type)
+		{
+			case FONT:
+				return AssetType.FONT;
+			case IMAGE:
+				return AssetType.IMAGE;
+			case MUSIC:
+				return AssetType.MUSIC;
+			case SOUND:
+				return AssetType.SOUND;
+			case XML | HSCRIPT | JSON | LUA | TEXT:
+				return AssetType.TEXT;
+			default:
+				return AssetType.BINARY;		
+		}
+	}
+
+	public static function returnEnds(type:AssetTypes):Array<String>
+	{
+		switch (type)
+		{
+			case SOUND | MUSIC:
+				return [#if web "mp3" #else "ogg" #end];
+			case IMAGE:
+				return ['png'];
+			case TEXT:
+				return ['txt'];
+			case JSON:
+				return ['json'];
+			case XML:
+				return ['xml'];
+			case HSCRIPT:
+				return ['hscript', 'hx'];
+			case LUA:
+				return ['lua'];
+			case VIDEOS:
+				return ['mp4'];
+			case FONT:
+				return ['.otf', '.ttf'];
+			default:
+				return [''];
+		}
+	}
 }

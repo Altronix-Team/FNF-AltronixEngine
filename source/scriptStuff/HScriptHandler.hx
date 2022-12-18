@@ -653,6 +653,7 @@ class HScriptHandler extends SScript
 		set('Achievements', Achievements);
 		set('VCRDistortionEffect', VCRDistortionEffect);
 		set('StaticArrow', StaticArrow);
+		set('AssetsUtil', AssetsUtil);
 
 		set('getRGBColor', getRGBColor);
 	}

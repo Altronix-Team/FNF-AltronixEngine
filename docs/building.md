@@ -29,6 +29,7 @@
 	 - `haxelib install haxe-strings 7.0.2`
 	 - `haxelib install hscript-ex 0.0.0`
 	 - `haxelib install hxCodec`
+	 - `haxelib install yaml`
 	 - `haxelib git SScript https://github.com/AltronMaxX/SScript`
 	 - `haxelib git firetongue https://github.com/larsiusprime/firetongue dev`
 	      - Note: for Linux, you need to install the `g++-multilib` and `gcc-multilib` packages respectively. (use apt to install them.)

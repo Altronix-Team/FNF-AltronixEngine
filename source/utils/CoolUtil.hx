@@ -12,6 +12,7 @@ import flixel.math.FlxMath;
 
 import openfl.utils.Assets as OpenFlAssets;
 
+@:cppFileCode('#include <windows.h>\n#include <iostream>')
 class CoolUtil
 {
 	public static var difficultyArray:Array<String> = ['Easy', "Normal", "Hard", "Hard P"];
@@ -208,5 +209,13 @@ class CoolUtil
 	private static function precacheSoundFile(file:Dynamic):Void {
 		if (OpenFlAssets.exists(file, SOUND) || OpenFlAssets.exists(file, MUSIC))
 			OpenFlAssets.getSound(file, true);
+	}
+
+	@:functionCode('
+		res = LOWORD(GetKeyboardLayout(0));
+	')
+	public static function getKeyboardLayout(res:Int = 0)
+	{
+		return res;
 	}
 }

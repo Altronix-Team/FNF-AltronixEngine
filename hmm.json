@@ -89,6 +89,11 @@
       "name": "polymod",
       "type": "haxelib",
       "version": null
+    },
+    {
+      "name": "yaml",
+      "type": "haxelib",
+      "version": null
     }
   ]
 }

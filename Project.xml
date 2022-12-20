@@ -206,6 +206,7 @@
 	<haxelib name="discord_rpc" if="desktop"/>
 	<haxelib name="linc_luajit" if="LUA_ALLOWED"/>
 	<haxelib name="hxCodec" if="VIDEOS_ALLOWED"/>
+	<haxelib name="yaml" />
 	<!--Waiting for extension-ffmpeg to replace hxCodec :3-->
 
 	<!--haxelib name="systools" if="cpp"/-->

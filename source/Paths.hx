@@ -91,6 +91,11 @@ class Paths
 		return getPath('$key.json', TEXT, library);
 	}
 
+	inline static public function yaml(key:String, ?library:String)
+	{
+		return getPath('$key.yaml', TEXT, library);
+	}
+
 	static public function sound(key:String, ?library:String)
 	{
 		return getPath('sounds/$key.$SOUND_EXT', SOUND, library);

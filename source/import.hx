@@ -5,6 +5,7 @@ import haxe.macro.Context;
 import flixel.FlxG;
 import utils.*;
 #end
+import yaml.Yaml;
 
 using StringTools;
 using hx.strings.Strings;

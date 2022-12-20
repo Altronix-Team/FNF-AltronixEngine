@@ -27,7 +27,7 @@ class AssetsUtil
 
 		var results:Array<String> = [];
 
-		var ends:Array<String> = AssetTypes.returnEnds(type);
+		var ends:Array<String> = AssetTypes.returnExts(type);
 
 		for (data in dataAssets)
 		{
@@ -55,6 +55,8 @@ class AssetsUtil
                 return loadJSON(key, library);
             case TEXT:
 				return OpenFlAssets.getText(Paths.getPath(key, TEXT, library));
+			case YAML:
+				return loadYAML(key, library);
             case SOUND | MUSIC:
 				return loadSoundAsset(key, type, library);
             default:
@@ -147,12 +149,26 @@ class AssetsUtil
         {
             case SOUND | MUSIC:
                 return doesSoundAssetExist(path);
-            case TEXT | XML | LUA | JSON | HSCRIPT:
+            case TEXT | XML | LUA | JSON | HSCRIPT | YAML:
                 return doesTextAssetExist(path);
             default:
                 return OpenFlAssets.exists(path, BINARY);
         }
     }
+
+	public static function returnAssetType(path:String, fileName:String):Array<AssetTypes>
+	{
+		var checkExts = AssetTypes.returnAllExts();
+		
+		for (ext in checkExts)
+		{
+			if (OpenFlAssets.exists('$path/$fileName.$ext'))
+			{
+				return AssetTypes.returnTypeByExt(ext);
+			}
+		}
+		return [UNKNOWN];
+	}
 
 	public function saveFile(fileContent:Dynamic = '', type:AssetTypes = UNKNOWN, fileName:String = 'file')
 	{
@@ -175,7 +191,7 @@ class AssetsUtil
 			_file.addEventListener(openfl.events.Event.COMPLETE, onSaveComplete);
 			_file.addEventListener(openfl.events.Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-			_file.save(data.trim(), fileName + '.${AssetTypes.returnEnds(type)}');
+			_file.save(data.trim(), fileName + '.${AssetTypes.returnExts(type)}');
 		}
 	}
 
@@ -349,6 +365,25 @@ class AssetsUtil
 		}
 	}
 
+	static private function loadYAML(key:String, ?library:String):Dynamic
+	{
+		var rawYaml = OpenFlAssets.getText(Paths.yaml(key, library)).trim();
+
+		try
+		{
+			return Yaml.parse(rawYaml);
+		}
+		catch (e)
+		{
+			Debug.logError("AN ERROR OCCURRED parsing a Yaml file.");
+			Debug.logError(e.message);
+			Debug.logError(e.stack);
+
+			// Return null.
+			return null;
+		}
+	}
+
 	private static function listFoldersInPath(path:String)
 	{
 		var dataAssets = OpenFlAssets.list();
@@ -384,6 +419,7 @@ enum abstract AssetTypes(String) from (String) to (String)
     var DIRECTORY:AssetTypes = 'directory';
 	var FONT:AssetTypes = "font";
     var UNKNOWN:AssetTypes = 'unknown';
+	var YAML:AssetTypes = 'yaml';
 
 	public static function toOpenFlType(type:AssetTypes):AssetType
 	{
@@ -397,14 +433,14 @@ enum abstract AssetTypes(String) from (String) to (String)
 				return AssetType.MUSIC;
 			case SOUND:
 				return AssetType.SOUND;
-			case XML | HSCRIPT | JSON | LUA | TEXT:
+			case XML | HSCRIPT | JSON | LUA | TEXT | YAML:
 				return AssetType.TEXT;
 			default:
 				return AssetType.BINARY;		
 		}
 	}
 
-	public static function returnEnds(type:AssetTypes):Array<String>
+	public static function returnExts(type:AssetTypes):Array<String>
 	{
 		switch (type)
 		{
@@ -425,9 +461,56 @@ enum abstract AssetTypes(String) from (String) to (String)
 			case VIDEOS:
 				return ['mp4'];
 			case FONT:
-				return ['.otf', '.ttf'];
+				return ['otf', 'ttf'];
+			case YAML:
+				return ['yaml'];
 			default:
 				return [''];
 		}
+	}
+
+	public static function returnTypeByExt(ext:String):Array<AssetTypes>
+	{
+		switch (ext)
+		{
+			case #if web "mp3" #else "ogg" #end:
+				return [SOUND, MUSIC];
+			case 'png':
+				return [IMAGE];
+			case 'json':
+				return [JSON];
+			case 'txt':
+				return [TEXT];
+			case 'xml':
+				return [XML];
+			case 'hscript' | 'hx':
+				return [HSCRIPT];
+			case 'lua':
+				return [LUA];
+			case 'mp4':
+				return [VIDEOS];
+			case 'otf' | 'ttf':
+				return [FONT];
+			case 'yaml':
+				return [YAML];
+			default:
+				return [UNKNOWN];
+		}
+	}
+
+	public static function returnAllExts():Array<String>
+	{
+		return [
+			#if web "mp3" #else "ogg" #end,
+			'png',
+			'txt',
+			'json',
+			'xml',
+			'hscript',
+			'hx',
+			'lua',
+			'mp4',
+			'otf',
+			'ttf'];
 	}
 }

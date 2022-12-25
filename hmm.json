@@ -42,6 +42,11 @@
       "version": null
     },
     {
+      "name": "thx.semver",
+      "type": "haxelib",
+      "version": null
+    },
+    {
       "name": "haxe-strings",
       "type": "haxelib",
       "version": "7.0.2"

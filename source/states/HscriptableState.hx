@@ -2,6 +2,11 @@ package states;
 
 import scriptStuff.ScriptHelper;
 import flixel.FlxG;
+import polymod.hscript.HScriptedClass;
+
+@:hscriptClass
+class PolymodHscriptState extends flixel.FlxState implements HScriptedClass
+{}
 
 class ScriptedSubstate extends MusicBeatSubstate
 {

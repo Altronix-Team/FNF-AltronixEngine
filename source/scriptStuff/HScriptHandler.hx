@@ -1,5 +1,6 @@
 package scriptStuff;
 
+import Shaders.ColorSwap;
 import gameplayStuff.StaticArrow;
 import gameplayStuff.Song;
 import Shaders.VCRDistortionEffect;
@@ -652,10 +653,22 @@ class HScriptHandler extends SScript
 		set('AtlasFrameMaker', AtlasFrameMaker);
 		set('Achievements', Achievements);
 		set('VCRDistortionEffect', VCRDistortionEffect);
+		set('ColorSwap', ColorSwap);
 		set('StaticArrow', StaticArrow);
 		set('AssetsUtil', AssetsUtil);
+		set('PolymodHscriptState', states.HscriptableState.PolymodHscriptState);
 
 		set('getRGBColor', getRGBColor);
+		set('openPolymodState', openPolymodState);
+	}
+
+	function openPolymodState(scriptFileName:String)
+	{
+		try{
+			var state = states.HscriptableState.PolymodHscriptState.init(scriptFileName);
+			FlxG.switchState(state);
+		}
+		catch(e) {Debug.logTrace(e.details());}
 	}
 
 	function getRGBColor(r:Int, g:Int, b:Int, ?a:Int):FlxColor

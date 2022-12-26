@@ -1,5 +1,7 @@
 package utils;
 
+import flixel.util.FlxColor;
+import flixel.addons.ui.FlxUIBar.FlxBarStyle;
 #if sys
 import sys.io.File;
 import sys.FileSystem;
@@ -196,6 +198,24 @@ class CoolUtil
 		#else
 		return localFolder;
 		#end
+	}
+
+	//Function to easy work with FlxUIBar
+	public static function createFlxUIBarstyle(filledColors:Array<FlxColor>, emptyColors:Array<FlxColor>, chunkSize:Null<Int>, gradRotation:Null<Int>,
+		filledColor:Null<FlxColor>, emptyColor:Null<FlxColor>, borderColor:Null<FlxColor>, filledImgSrc:String, emptyImgSrc:String):FlxBarStyle {
+		var retVal:FlxBarStyle = {
+			filledColors: filledColors,
+			emptyColors: emptyColors,
+
+			chunkSize: chunkSize,
+			gradRotation: gradRotation,
+			filledColor: filledColor,
+			emptyColor: emptyColor,
+			borderColor: borderColor,
+			filledImgSrc: filledImgSrc,
+			emptyImgSrc: emptyImgSrc
+		};
+		return retVal;
 	}
 
 	public static function precacheSound(sound:String, ?library:String = null):Void {

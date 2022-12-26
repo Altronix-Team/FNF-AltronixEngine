@@ -58,7 +58,7 @@ import flixel.system.FlxSound;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
-import flixel.ui.FlxBar;
+import flixel.addons.ui.FlxUIBar;
 import flixel.util.FlxCollision;
 import flixel.util.FlxColor;
 import flixel.util.FlxSort;
@@ -138,7 +138,7 @@ class PlayState extends MusicBeatState
 
 	public var visibleNotes:Array<Note> = [];
 
-	public static var songPosBar:FlxBar;
+	public static var songPosBar:FlxUIBar;
 
 	public var noteType:Dynamic = 0;
 
@@ -219,7 +219,7 @@ class PlayState extends MusicBeatState
 	private var ss:Bool = false;
 
 	private var healthBarBG:FlxSprite;
-	private var healthBar:FlxBar;
+	private var healthBar:FlxUIBar;
 	private var songPositionBar:Float = 0;
 
 	private var generatedMusic:Bool = false;
@@ -1343,7 +1343,7 @@ class PlayState extends MusicBeatState
 			funnyStartObjects.push(healthBarBG);
 		}
 
-		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
+		healthBar = new FlxUIBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
 			'health', 0, 2);
 		healthBar.scrollFactor.set();
 		if (isStoryMode)
@@ -2806,7 +2806,7 @@ class PlayState extends MusicBeatState
 			songPosBG.screenCenter(X);
 			songPosBG.scrollFactor.set();
 
-			songPosBar = new FlxBar(640 - (Std.int(songPosBG.width - 100) / 2), songPosBG.y + 4, LEFT_TO_RIGHT, Std.int(songPosBG.width - 100),
+			songPosBar = new FlxUIBar(640 - (Std.int(songPosBG.width - 100) / 2), songPosBG.y + 4, LEFT_TO_RIGHT, Std.int(songPosBG.width - 100),
 				Std.int(songPosBG.height + 6), this, 'songPositionBar', 0, songLength);
 			songPosBar.scrollFactor.set();
 			songPosBar.createFilledBar(FlxColor.BLACK, SONG.songPosBarColor);

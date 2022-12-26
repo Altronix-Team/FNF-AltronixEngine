@@ -1,5 +1,7 @@
 package states;
 
+import flixel.FlxBasic;
+import scriptStuff.HScriptHandler;
 import flixel.input.gamepad.FlxGamepad;
 import Controls.KeyboardScheme;
 import flixel.FlxG;
@@ -54,8 +56,15 @@ class MainMenuState extends MusicBeatState
 	public static var finishedFunnyMove:Bool = false;
 	var dance:gameplayStuff.Character;
 
+	var scriptFile:ScriptedMainMenu;
+
 	override function create()
 	{
+		if (Paths.getHscriptPath('MainMenuState', 'states') != null)
+		{
+			scriptFile = new ScriptedMainMenu(Paths.getHscriptPath('MainMenuState', 'states'), this);
+		}
+
 		Achievements.getAchievement(160503, 'engine');
 		camGame = new FlxCamera();
 		clean();
@@ -179,12 +188,17 @@ class MainMenuState extends MusicBeatState
 			changeItem();
 
 		super.create();
+
+		if (scriptFile != null)
+			scriptFile.call('OnCreatePost', []);
 	}
 
 	var selectedSomethin:Bool = false;
 
 	override function update(elapsed:Float)
 	{
+		if (scriptFile != null)
+			scriptFile.call('OnUpdate', [elapsed]);
 		//dance.dance();
 		if (FlxG.sound.music.volume < 0.8)
 		{
@@ -284,6 +298,9 @@ class MainMenuState extends MusicBeatState
 		}
 
 		super.update(elapsed);
+
+		if (scriptFile != null)
+			scriptFile.call('OnUpdatePost', [elapsed]);
 	}
 
 	function goToGJ() {
@@ -344,11 +361,18 @@ class MainMenuState extends MusicBeatState
 			case 'credits':
 				FlxG.switchState(new CreditsState());
 				FlxG.mouse.visible = false;
+
+			default:
+				if (scriptFile != null)
+					scriptFile.call('OnGoToState', [daChoice]);
 		}
 	}
 
 	function changeItem(huh:Int = 0)
 	{
+		if (scriptFile != null)
+			scriptFile.call('OnChangeItem', [huh]);
+
 		if (finishedFunnyMove)
 		{
 			curSelected += huh;
@@ -390,6 +414,9 @@ class MainMenuState extends MusicBeatState
 
 			spr.updateHitbox();
 		});
+
+		if (scriptFile != null)
+			scriptFile.call('OnChangeItemPost', [huh]);
 	}
 }
 
@@ -406,5 +433,49 @@ class MenuItem extends FlxSprite
 		defaultY = y;
 
 		super(x, y);	
+	}
+}
+
+@:access(states.MainMenuState)
+class ScriptedMainMenu extends FlxTypedGroup<FlxBasic>
+{
+	public var scriptHandler:HScriptHandler;
+
+	var curState:MainMenuState;
+
+	public function new(path:String, state:MainMenuState)
+	{
+		super();
+
+		curState = state;
+
+		scriptHandler = new HScriptHandler(path);
+
+		if (!scriptHandler.exists("MainMenuState"))
+			scriptHandler.set("MainMenuState", curState);
+
+		scriptHandler.set('add', add);
+		scriptHandler.set('remove', remove);
+
+		scriptHandler.call('onCreate', []);
+
+		Debug.logInfo('Successfully loaded new hscript file: ' + path.removeBefore('/'));
+	}
+
+	public function call(func:String, args:Array<Dynamic>)
+	{
+		return scriptHandler.call(func, args);
+	}
+
+	override public function add(Object:FlxBasic):FlxBasic
+	{
+		try
+		{
+			if (!Main.save.data.antialiasing && Reflect.field(Object, 'antialiasing') != null)
+				Reflect.setField(Object, 'antialiasing', false);
+		}
+		catch (e)
+			Debug.logError(e.details());
+		return super.add(Object);
 	}
 }

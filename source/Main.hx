@@ -1,5 +1,6 @@
 package;
 
+import states.HscriptableState.PolymodHscriptState;
 import lime.app.Application;
 import flixel.util.FlxColor;
 import flixel.FlxG;
@@ -17,6 +18,10 @@ import openfl.system.Capabilities;
 import haxe.CallStack;
 import utils.EngineSave;
 import sys.io.Process;
+
+#if FEATURE_MODCORE
+import ModCore;
+#end
 
 //TODO Altronix Engine start splash
 class Main extends Sprite
@@ -55,6 +60,10 @@ class Main extends Sprite
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
 	// Ho-ho-ho, no
+
+	var modsToLoad = [];
+	public static var configFound = false;
+	public static var hscriptClasses:Array<String> = [];
 
 	public static function main():Void
 	{
@@ -130,6 +139,17 @@ class Main extends Sprite
 
 		if (save.data.fullscreenOnStart == null)
 			save.data.fullscreenOnStart = false;
+
+		#if FEATURE_MODCORE
+		modsToLoad = ModCore.getConfiguredMods();
+		configFound = (modsToLoad != null && modsToLoad.length > 0);
+		if (configFound)
+			ModCore.loadConfiguredMods();
+		#else
+		configFound = false;
+		#end
+
+		hscriptClasses = PolymodHscriptState.listScriptClasses();
 
 		game = new FlxGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash, save.data.fullscreenOnStart);
 		addChild(game);	

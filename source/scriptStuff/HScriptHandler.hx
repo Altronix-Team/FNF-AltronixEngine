@@ -666,7 +666,7 @@ class HScriptHandler extends SScript
 	{
 		try{
 			var state = states.HscriptableState.PolymodHscriptState.init(scriptFileName);
-			FlxG.switchState(state);
+			MusicBeatState.switchState(state);
 		}
 		catch(e) {Debug.logTrace(e.details());}
 	}

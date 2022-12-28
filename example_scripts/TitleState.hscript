@@ -1,4 +1,4 @@
-package states;
+//TitleState state recreation using Polymod Hscript class
 
 import states.HscriptableState.PolymodHscriptState;
 import scriptStuff.HscriptStage;
@@ -9,21 +9,21 @@ import flixel.FlxState;
 import sys.thread.Mutex;
 #end
 import flixel.addons.display.FlxGridOverlay;
-import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
+import flixel.addons.transition.GraphicTransTileDiamond;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.transition.TransitionData;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
-import flixel.group.FlxGroup;
+import flixel.group.FlxTypedGroup;
 import flixel.input.gamepad.FlxGamepad;
-import flixel.math.FlxPoint;
+import flixel.math.FlxBasePoint;
+import flixel.FlxBasic;
 import flixel.math.FlxRect;
 import flixel.system.FlxSound;
 import flixel.system.ui.FlxSoundTray;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
-import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import lime.app.Application;
 import openfl.Assets;
@@ -31,7 +31,6 @@ import flixel.input.keyboard.FlxKey;
 #if desktop
 import GameJolt.GameJoltAPI;
 #end
-import openfl.utils.Assets as OpenFlAssets;
 import flash.net.URLRequest;
 import flixel.graphics.frames.FlxFrame;
 import flixel.math.FlxMath;
@@ -39,6 +38,14 @@ import gameplayStuff.Character;
 import gameplayStuff.Conductor;
 import gameplayStuff.Highscore;
 import gameplayStuff.Song;
+import states.MusicBeatState;
+import Paths;
+import utils.Debug;
+import utils.CoolUtil;
+import Main;
+import states.MainMenuState;
+import utils.AssetsUtil;
+import states.TitleState;
 
 class TitleState extends MusicBeatState
 {
@@ -46,12 +53,12 @@ class TitleState extends MusicBeatState
 	static var initialized:Bool = false;
 
 	var blackScreen:FlxSprite;
-	var credGroup:FlxGroup;
+	var credGroup:FlxTypedGroup<FlxBasic>;
 	var credTextShit:Alphabet;
-	var textGroup:FlxGroup;
+	var textGroup:FlxTypedGroup<FlxBasic>;
 	var ngSpr:FlxSprite;
 
-	var titleTextColors:Array<FlxColor> = [0xFF33FFFF, 0xFF3333CC];
+	var titleTextColors:Array<Int> = [0xFF33FFFF, 0xFF3333CC];
 	var titleTextAlphas:Array<Float> = [1, .64];
 
 	public var muteKeys:Array<FlxKey>;
@@ -64,101 +71,67 @@ class TitleState extends MusicBeatState
 
 	var checkVer:Bool = true;
 
+    public function new()
+    {
+        super();
+    }
+
+	var titleTextArray:Array<Array<String>> = [
+		['shoutouts to tom fulp','lmao'],
+		['Ludum dare','extraordinaire'],
+		['cyberzone','coming soon'],
+		['love to thriftman','swag'],
+		['ultimate rhythm gaming','probably'],
+		['dope ass game','playstation magazine'],
+		['in loving memory of','henryeyes'],
+		['dancin','forever'],
+		['funkin','forever'],
+		['ritz dx','rest in peace lol'],
+		['rate five','pls no blam'],
+		['rhythm gaming','ultimate'],
+		['game of the year','forever'],
+		['you already know','we really out here'],
+		['rise and grind','love to luis'],
+		['like parappa','but cooler'],
+		['album of the year','chuckie finster'],
+		['free gitaroo man','with love to wandaboy'],
+		['better than geometry dash','fight me robtop'],
+		['kiddbrute for president','vote now'],
+		['play dead estate','on newgrounds'],
+		['this is a god damn prototype','we workin on it okay'],
+		['women are real','this is official'],
+		['too over exposed','newgrounds cant handle us'],
+		['Hatsune Miku','biggest inspiration'],
+		['too many people','my head hurts'],
+		['newgrounds','forever'],
+		['refined taste in music','if i say so myself'],
+		['his name isnt keith','dumb eggy lol'],
+		['his name isnt evan','silly tiktok'],
+		['never forget to','pray to god'],
+		['stream chuckie finster','on spotify'],
+		['dont play rust','we only funkin'],
+		['good bye','my penis'],
+		['dababy','biggest inspiration'],
+		['fashionably late','but here it is'],
+		['yooooooooooo','yooooooooo'],
+		['pico funny','pico funny'],
+		['updates each friday','on time every time'],
+		['shoutouts to mason','for da homies'],
+		['bonk','get in the discord call'],
+		['I have week 8 leak','but not for you'],
+		['prey','fight or flight']];
+
 	override public function create():Void
 	{
-		/*@:privateAccess
-		{
-			Debug.logTrace("We loaded " + openfl.Assets.getLibrary("default").assetsLoaded + " assets into the default library");
-		}*/
-
-		if (!initialized)
-		{
-			FlxG.autoPause = false;
-
-			PlayerSettings.init();	
-
-			EngineData.initAfterGame();
-
-			if (Main.save.data.volDownBind == null)
-				Main.save.data.volDownBind = "MINUS";
-			if (Main.save.data.volUpBind == null)
-				Main.save.data.volUpBind = "PLUS";
-
-			FlxG.sound.muteKeys = [FlxKey.fromString(Main.save.data.muteBind)];
-			FlxG.sound.volumeDownKeys = [FlxKey.fromString(Main.save.data.volDownBind)];
-			FlxG.sound.volumeUpKeys = [FlxKey.fromString(Main.save.data.volUpBind)];
-
-			muteKeys = [FlxKey.fromString(Main.save.data.muteBind)];
-			volumeDownKeys = [FlxKey.fromString(Main.save.data.volDownBind)];
-			volumeUpKeys = [FlxKey.fromString(Main.save.data.volUpBind)];
-
-			FlxG.mouse.visible = false;
-
-			FlxG.worldBounds.set(0, 0);
-
-			FlxGraphic.defaultPersist = Main.save.data.cacheImages;
-
-			MusicBeatState.initSave = true;
-
-			Highscore.load();
-
-			NoteskinHelpers.updateNoteskins();
-
-			MenuMusicStuff.updateMusic();
-
-			Character.initCharacterList();
-
-			LanguageStuff.initLanguages();
-
-			Achievements.listAllAchievements();
-
-			#if desktop
-			GameJoltAPI.leaderboardToggle = Main.save.data.toggleLeaderboard;
-
-			GameJoltAPI.connect();
-			GameJoltAPI.authDaUser(Main.save.data.gjUser, Main.save.data.gjToken);
-			#end
-
-			if (Main.save.data.volume != null)
-				FlxG.sound.volume = Main.save.data.volume;
-
-			if (Main.save.data.weekCompleted != null)
-			{
-				StoryMenuState.weekCompleted = Main.save.data.weekCompleted;
-			}
-		}
-		
-		curWacky = FlxG.random.getObject(getIntroTextShit());
-
-		// DEBUG BULLSHIT
-
 		super.create();
 
-		#if FREEPLAY
-		FlxG.switchState(new FreeplayState());
-		clean();
-		#elseif CHARTING
-		FlxG.switchState(new ChartingState());
-		clean();
-		#else
-		#if !cpp
-		new FlxTimer().start(1, function(tmr:FlxTimer)
-		{
-			startIntro();
-		});
-		#else
-		#if (!debug && desktop)
-		if (!DiscordClient.isInitialized)
-		{
-			DiscordClient.initialize();
-			Application.current.onExit.add (function (exitCode) {
-				DiscordClient.shutdown();
-			});
-		}
-		#end
+		curWacky = titleTextArray[FlxG.random.int(0, titleTextArray.length - 1)];
+
+		if (curWacky == null)
+			curWacky = titleTextArray[0];
+
 		startIntro();
-		#end
-		#end
+
 		Debug.logTrace('oh fuck, Altronix Engine is working!');
 	}
 
@@ -171,17 +144,7 @@ class TitleState extends MusicBeatState
 	{
 		persistentUpdate = true;
 
-		var scriptedStatesList = PolymodHscriptState.listScriptClasses();
-		for (state in scriptedStatesList)
-		{
-			if (state.contains('TitleState'))
-			{
-				var hscriptState = PolymodHscriptState.init(state);
-				FlxG.switchState(hscriptState); // Automatically switches states to hscript variant
-			}
-		}
-
-		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, 0xFF000000);
 		// bg.antialiasing = Main.save.data.antialiasing;
 		// bg.setGraphicSize(Std.int(bg.width * 0.6));
 		// bg.updateHitbox();
@@ -201,7 +164,7 @@ class TitleState extends MusicBeatState
 		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24, false);
 		logoBl.updateHitbox();
 		// logoBl.screenCenter();
-		// logoBl.color = FlxColor.BLACK;
+		// logoBl.color = 0xFF000000;
 
 		gfDance = new FlxSprite(FlxG.width * 0.4, FlxG.height * 0.07);
 		gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle');
@@ -218,7 +181,7 @@ class TitleState extends MusicBeatState
 		titleText.antialiasing = Main.getSaveByString('antialiasing');
 		titleText.animation.play('idle');
 		titleText.updateHitbox();
-		// titleText.screenCenter(X);
+		// titleText.screenCenter(0x01);
 		add(titleText);
 
 		var logo:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage('logo'));
@@ -226,11 +189,11 @@ class TitleState extends MusicBeatState
 		logo.antialiasing = Main.getSaveByString('antialiasing');
 		// add(logo);
 
-		credGroup = new FlxGroup();
+		credGroup = new FlxTypedGroup();
 		add(credGroup);
-		textGroup = new FlxGroup();
+		textGroup = new FlxTypedGroup();
 
-		blackScreen = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		blackScreen = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, 0xFF000000);
 		credGroup.add(blackScreen);
 
 		credTextShit = new Alphabet(0, 0, "ninjamuffin99\nPhantomArcade\nkawaisprite\nevilsk8er", true);
@@ -245,10 +208,10 @@ class TitleState extends MusicBeatState
 		ngSpr.visible = false;
 		ngSpr.setGraphicSize(Std.int(ngSpr.width * 0.8));
 		ngSpr.updateHitbox();
-		ngSpr.screenCenter(X);
+		ngSpr.screenCenter(0x01);
 		ngSpr.antialiasing = Main.getSaveByString('antialiasing');
 
-		FlxTween.tween(credTextShit, {y: credTextShit.y + 20}, 2.9, {ease: FlxEase.quadInOut, type: PINGPONG});
+		FlxTween.tween(credTextShit, {y: credTextShit.y + 20}, 2.9, {ease: FlxEase.quadInOut, type: 4});
 
 		FlxG.mouse.visible = false;
 
@@ -264,9 +227,9 @@ class TitleState extends MusicBeatState
 			diamond.persist = true;
 			diamond.destroyOnNoUse = false;
 
-			FlxTransitionableState.defaultTransIn = new TransitionData(FADE, FlxColor.BLACK, 1, new FlxPoint(0, -1), {asset: diamond, width: 32, height: 32},
+			FlxTransitionableState.defaultTransIn = new TransitionData("fade", 0xFF000000, 1, new FlxBasePoint(0, -1), {asset: diamond, width: 32, height: 32},
 				new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4));
-			FlxTransitionableState.defaultTransOut = new TransitionData(FADE, FlxColor.BLACK, 0.7, new FlxPoint(0, 1),
+			FlxTransitionableState.defaultTransOut = new TransitionData("fade", 0xFF000000, 0.7, new FlxBasePoint(0, 1),
 				{asset: diamond, width: 32, height: 32}, new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4));
 
 			transIn = FlxTransitionableState.defaultTransIn;
@@ -284,7 +247,10 @@ class TitleState extends MusicBeatState
 
 	function getIntroTextShit():Array<Array<String>>
 	{
-		var fullText:IntroTextFile = cast AssetsUtil.loadAsset('data/introText', JSON);
+		var retVal = TitleState.getIntroTextShit();
+		return retVal;
+		/*var rawJson = AssetsUtil.loadAsset('data/introText', 'json');
+		var fullText:IntroTextFile = rawJson;
 
 		var firstArray:Array<IntroText> = fullText.funnyTexts;
 		var swagGoodArray:Array<Array<String>> = [];
@@ -294,7 +260,7 @@ class TitleState extends MusicBeatState
 			swagGoodArray.push([i.firstText, i.secondText]);
 		}
 
-		return swagGoodArray;
+		return swagGoodArray;*/
 	}
 
 	var transitioning:Bool = false;
@@ -329,17 +295,17 @@ class TitleState extends MusicBeatState
 
 			timer = FlxEase.quadInOut(timer);
 
-			titleText.color = FlxColor.interpolate(titleTextColors[0], titleTextColors[1], timer);
+			//titleText.color = FlxColor.interpolate(titleTextColors[0], titleTextColors[1], timer);
 			titleText.alpha = FlxMath.lerp(titleTextAlphas[0], titleTextAlphas[1], timer);
 		}
 
 		if (pressedEnter && !transitioning && skippedIntro)
 		{
-			titleText.color = FlxColor.WHITE;
+			titleText.color = 0xFFFFFFFF;
 			titleText.alpha = 1;
 			titleText.animation.play('press');
 
-			FlxG.camera.flash(FlxColor.WHITE, 1);
+			FlxG.camera.flash(0xFFFFFFFF, 1);
 			FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
 
 			transitioning = true;
@@ -407,17 +373,17 @@ class TitleState extends MusicBeatState
 		for (i in 0...textArray.length)
 		{
 			var money:Alphabet = new Alphabet(0, 0, textArray[i], true, false);
-			money.screenCenter(X);
+			money.screenCenter(0x01);
 			money.y += (i * 60) + 200;
 			credGroup.add(money);
 			textGroup.add(money);
 		}
 	}
 
-	function addMoreText(text:String)
+	function addMoreText(text:String = '')
 	{
 		var coolText:Alphabet = new Alphabet(0, 0, text, true, false);
-		coolText.screenCenter(X);
+		coolText.screenCenter(0x01);
 		coolText.y += (textGroup.length * 60) + 200;
 		credGroup.add(coolText);
 		textGroup.add(coolText);
@@ -436,54 +402,57 @@ class TitleState extends MusicBeatState
 	{
 		super.beatHit();
 
-		logoBl.animation.play('bump', true);
-		danceLeft = !danceLeft;
-
-		if (danceLeft)
-			gfDance.animation.play('danceRight');
-		else
-			gfDance.animation.play('danceLeft');
-
-		switch (curBeat)
+		if (initialized)
 		{
-			case 0:
-				deleteCoolText();
-			case 1:
-				createCoolText(['ninjamuffin99', 'phantomArcade', 'kawaisprite', 'evilsk8er']);
-			case 3:
-				addMoreText('present');
-			case 4:
-				deleteCoolText();
-			case 5:
-				if (Main.watermarks)
-					createCoolText(['Altronix Engine', 'by']);
-				else
-					createCoolText(['In Partnership', 'with']);
-			case 7:
-				if (Main.watermarks)
-					addMoreText('AltronMaxX');
-				else
-				{
-					addMoreText('Newgrounds');
-					ngSpr.visible = true;
-				}
-			case 8:
-				deleteCoolText();
-				ngSpr.visible = false;
-			case 9:
-				createCoolText([curWacky[0]]);
-			case 11:
-				addMoreText(curWacky[1]);
-			case 12:
-				deleteCoolText();
-			case 13:
-				addMoreText('Friday');
-			case 14:
-				addMoreText('Night');
-			case 15:
-				addMoreText('Funkin');
-			case 16:
-				skipIntro();
+			logoBl.animation.play('bump', true);
+			danceLeft = !danceLeft;
+
+			if (danceLeft)
+				gfDance.animation.play('danceRight');
+			else
+				gfDance.animation.play('danceLeft');
+			
+			switch (curBeat)
+			{
+				case 0:
+					deleteCoolText();
+				case 1:
+					createCoolText(['ninjamuffin99', 'phantomArcade', 'kawaisprite', 'evilsk8er']);
+				case 3:
+					addMoreText('present');
+				case 4:
+					deleteCoolText();
+				case 5:
+					if (Main.watermarks)
+						createCoolText(['Altronix Engine', 'by']);
+					else
+						createCoolText(['In Partnership', 'with']);
+				case 7:
+					if (Main.watermarks)
+						addMoreText('AltronMaxX');
+					else
+					{
+						addMoreText('Newgrounds');
+						ngSpr.visible = true;
+					}
+				case 8:
+					deleteCoolText();
+					ngSpr.visible = false;
+				case 9:
+					createCoolText([curWacky[0]]);
+				case 11:
+					addMoreText(curWacky[1]);
+				case 12:
+					deleteCoolText();
+				case 13:
+					addMoreText('Friday');
+				case 14:
+					addMoreText('Night');
+				case 15:
+					addMoreText('Funkin');
+				case 16:
+					skipIntro();
+			}
 		}
 	}
 
@@ -497,7 +466,7 @@ class TitleState extends MusicBeatState
 
 			remove(ngSpr);
 
-			FlxG.camera.flash(FlxColor.WHITE, 4);
+			FlxG.camera.flash(0xFFFFFFFF, 4);
 			remove(credGroup);
 
 			if (!Main.watermarks)

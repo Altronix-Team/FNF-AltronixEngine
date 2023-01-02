@@ -80,6 +80,10 @@ class Main extends Sprite
 
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtError);
 
+		#if cpp
+		untyped __global__.__hxcpp_set_critical_error_handler(onCriticalErrorEvent);
+		#end
+
 		if (stage != null)
 		{
 			init();
@@ -261,6 +265,11 @@ class Main extends Sprite
 			+ ERROR_REPORT_URL,
 			funnyTitle[FlxG.random.int(0, funnyTitle.length - 1)]);
 		#end
+	}
+	private function onCriticalErrorEvent(message:String):Void
+	{
+		Debug.logError(message);
+		throw message;
 	}
 
 	var fpsCounter:EngineFPS;

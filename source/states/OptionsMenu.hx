@@ -206,6 +206,8 @@ class OptionsMenu extends FlxSubState
 		descBack.scrollFactor.set();
 		menu.add(descBack);
 
+		FlxG.mouse.visible = true;
+
 		if (isInPause)
 		{
 			var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
@@ -372,6 +374,21 @@ class OptionsMenu extends FlxSubState
 		any = FlxG.keys.justPressed.ANY || (gamepad != null ? gamepad.justPressed.ANY : false);
 		escape = FlxG.keys.justPressed.ESCAPE || (gamepad != null ? gamepad.justPressed.B : false);
 
+		for (cata in options)
+		{
+			if (FlxG.mouse.overlaps(cata))
+			{
+				if (FlxG.mouse.justPressed)
+				{
+					FlxG.sound.play(Paths.sound('scrollMenu'));
+					selectedCat.optionObjects.members[selectedOptionIndex].text = selectedOption.getValue();
+					selectedCatIndex = options.indexOf(cata);
+
+					switchCat(cata);
+				}
+			}
+		}
+
 		if (selectedCat != null && !isInCat)
 		{
 			for (i in selectedCat.optionObjects.members)
@@ -438,6 +455,7 @@ class OptionsMenu extends FlxSubState
 
 				if (escape)
 				{
+					FlxG.mouse.visible = false;
 					if (!isInPause)
 						FlxG.switchState(new MainMenuState());
 					else

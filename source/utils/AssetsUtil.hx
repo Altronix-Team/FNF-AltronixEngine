@@ -334,7 +334,7 @@ class AssetsUtil
 		else
 		{
 			Debug.logWarn('Could not find image at path $path');
-			retVal = flixel.addons.display.FlxGridOverlay.createGrid(50, 50, 100, 100, true, 0xFFFF00FF, 0xFF000000);
+			retVal = new BitmapData(100, 100, true, 0xFFEA00FF);
 		}
 		return FlxGraphic.fromBitmapData(retVal);
 	}

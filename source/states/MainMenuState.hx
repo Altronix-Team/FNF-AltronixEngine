@@ -146,7 +146,8 @@ class MainMenuState extends MusicBeatState
 					onComplete: function(flxTween:FlxTween)
 					{
 						menuItem.defaultY = 60 + (i * 160);
-						finishedFunnyMove = true;
+						if (i == optionShit.length - 1)
+							finishedFunnyMove = true;
 						//changeItem();
 					}
 				});

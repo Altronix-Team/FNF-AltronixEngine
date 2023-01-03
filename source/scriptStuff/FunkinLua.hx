@@ -94,7 +94,7 @@ class FunkinLua {
 			trace(e);
 			return;
 		}
-		scriptName = script;
+		scriptName = script.removeBefore('/').removeAll('/');
 		Debug.logTrace('lua file loaded succesfully:' + script);
 
 		#if (haxe >= "4.0.0")
@@ -575,6 +575,12 @@ class FunkinLua {
 		});
 		Lua_helper.add_callback(lua, "getPropertyFromGroup", function(obj:String, index:Int, variable:Dynamic) {
 			var shitMyPants:Array<String> = obj.split('.');
+			if (!Type.getClassFields(Type.getClass(getInstance())).contains(obj))
+			{
+				Debug.displayAlert('Error with lua $scriptName', 'Object #$index from group: $obj doesn\'t exist!');
+				return null;
+			}
+
 			var realObject:Dynamic = Reflect.getProperty(getInstance(), obj);
 			if(shitMyPants.length>1)
 				realObject = getPropertyLoopThingWhatever(shitMyPants, true, false);
@@ -596,6 +602,11 @@ class FunkinLua {
 		});
 		Lua_helper.add_callback(lua, "setPropertyFromGroup", function(obj:String, index:Int, variable:Dynamic, value:Dynamic) {
 			var shitMyPants:Array<String> = obj.split('.');
+			if (!Type.getClassFields(Type.getClass(getInstance())).contains(obj))
+			{
+				Debug.displayAlert('Error with lua $scriptName', 'Object #$index from group: $obj doesn\'t exist!');
+				return null;
+			}
 			var realObject:Dynamic = Reflect.getProperty(getInstance(), obj);
 			if(shitMyPants.length>1)
 				realObject = getPropertyLoopThingWhatever(shitMyPants, true, false);
@@ -615,6 +626,11 @@ class FunkinLua {
 			}
 		});
 		Lua_helper.add_callback(lua, "removeFromGroup", function(obj:String, index:Int, dontDestroy:Bool = false) {
+			if (Reflect.getProperty(getInstance(), obj) == null)
+			{
+				Debug.displayAlert('Error with lua $scriptName', 'Object #$index from group: $obj doesn\'t exist!');
+				return null;
+			}
 			if(Std.isOfType(Reflect.getProperty(getInstance(), obj), FlxTypedGroup)) {
 				var sex = Reflect.getProperty(getInstance(), obj).members[index];
 				if(!dontDestroy)
@@ -1368,6 +1384,11 @@ class FunkinLua {
 			luaTrace('Couldnt find object: ' + obj);
 		});
 		Lua_helper.add_callback(lua, "updateHitboxFromGroup", function(group:String, index:Int) {
+			if (Reflect.getProperty(getInstance(), group))
+			{
+				Debug.displayAlert('Error with lua $scriptName', 'Object #$index from group: $group doesn\'t exist!');
+				return null;
+			}
 			if(Std.isOfType(Reflect.getProperty(getInstance(), group), FlxTypedGroup)) {
 				Reflect.getProperty(getInstance(), group).members[index].updateHitbox();
 				return;
@@ -2009,6 +2030,11 @@ class FunkinLua {
 		if(shit.length > 1)
 		{
 			var blah:Dynamic = Reflect.getProperty(instance, shit[0]);
+			if (blah == null)
+			{
+				Debug.displayAlert('Error with lua', 'Object #$blah doesn\'t exist!');
+				return null;
+			}
 			for (i in 1...shit.length)
 			{
 				var leNum:Dynamic = shit[i].substr(0, shit[i].length - 1);
@@ -2018,6 +2044,11 @@ class FunkinLua {
 					blah = blah[leNum];
 			}
 			return blah;
+		}
+		if (!Reflect.hasField(instance, variable))
+		{
+			Debug.displayAlert('Error with lua', 'Object #$variable doesn\'t exist!');
+			return null;
 		}
 		/*if(Std.isOfType(instance, Map))
 			instance.set(variable,value);
@@ -2038,12 +2069,22 @@ class FunkinLua {
 		if(shit.length > 1)
 		{
 			var blah:Dynamic = Reflect.getProperty(instance, shit[0]);
+			if (blah == null)
+			{
+				Debug.displayAlert('Error with lua', 'Object #$blah doesn\'t exist!');
+				return null;
+			}
 			for (i in 1...shit.length)
 			{
 				var leNum:Dynamic = shit[i].substr(0, shit[i].length - 1);
 				blah = blah[leNum];
 			}
 			return blah;
+		}
+		if (!Reflect.hasField(instance, variable))
+		{
+			Debug.displayAlert('Error with lua', 'Object #$variable doesn\'t exist!');
+			return null;
 		}
 		switch(Type.typeof(instance)){
 			case ValueType.TClass(haxe.ds.StringMap) | ValueType.TClass(haxe.ds.ObjectMap) | ValueType.TClass(haxe.ds.IntMap) | ValueType.TClass(haxe.ds.EnumValueMap):

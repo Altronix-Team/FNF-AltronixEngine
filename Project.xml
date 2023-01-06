@@ -298,10 +298,10 @@
   <haxedef name="HXCPP_STACK_LINE" if="FEATURE_FILESYSTEM" />
 	
   <!-- Use defines to configure the behavior of Polymod. -->
-	<haxedef name="POLYMOD_SCRIPT_EXT"
-					 value=".hscript" />
+	<!--haxedef name="POLYMOD_SCRIPT_EXT"
+					 value=".hscript" /-->
 	<haxedef name="POLYMOD_SCRIPT_CLASS_EXT"
-					 value=".hscript" />
+					 value=".hsc" />  <!--Will use this ext for classes-->
 	<haxedef name="POLYMOD_SCRIPT_LIBRARY"
 					 value="scripts" />
 	<haxedef name="POLYMOD_USE_NAMESPACE"

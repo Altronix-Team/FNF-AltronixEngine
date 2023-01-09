@@ -261,8 +261,10 @@
 	<haxedef name="hscriptPos" />
 	
 	<haxedef name="no-deprecation-warnings" unless="debug"/>
-	
 
+	<!--That should be epic, but I have to many errors-->
+	<!--haxeflag name="macro" value="utils.MusicBeatMacro.init()" /-->
+	
 	<!-- _________________________________ Custom _______________________________ -->
 
 	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->

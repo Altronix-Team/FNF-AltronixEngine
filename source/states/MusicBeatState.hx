@@ -130,21 +130,24 @@ class MusicBeatState extends BaseState implements gameplayStuff.Conductor.IMusic
 		MusicBeatState.switchState(FlxG.state);
 	}
 
-	public function stepHit():Void
+	/*override*/ public function stepHit():Void
 	{
+		//super.stepHit();
 		/*if (curStep % 4 == 0)
 			beatHit();*/
 		ScriptHelper.stepHit();
 	}
 
-	public function beatHit():Void
+	/*override*/ public function beatHit():Void
 	{
+		//super.beatHit();
 		//beatHit
 		ScriptHelper.beatHit();
 	}
 
-	public function sectionHit():Void
+	/*override*/ public function sectionHit():Void
 	{
+		//super.sectionHit();
 		//Section Hit
 		ScriptHelper.sectionHit();
 	}

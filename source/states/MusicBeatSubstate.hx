@@ -78,18 +78,21 @@ class MusicBeatSubstate extends FlxSubState implements IMusicBeat
 		super.update(elapsed);
 	}
 
-	public function stepHit():Void
+	/*override*/ public function stepHit():Void
 	{
+		//super.stepHit();
 		//Step Hit
 	}
 
-	public function beatHit():Void
+	/*override*/ public function beatHit():Void
 	{
+		//super.beatHit();
 		//Beat Hit
 	}
 
-	public function sectionHit():Void
+	/*override*/ public function sectionHit():Void
 	{
+		//super.sectionHit();
 		//Section Hit
 	}
 

@@ -94,8 +94,8 @@
       "name": "polymod",
       "type": "git",
       "dir": null,
-      "ref": "develop",
-      "url": "https://github.com/larsiusprime/polymod"
+      "ref": "feature/blacklist",
+      "url": "https://github.com/AltronMaxX/polymod"
     },
     {
       "name": "yaml",

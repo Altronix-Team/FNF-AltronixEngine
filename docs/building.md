@@ -24,7 +24,7 @@
 	 - `haxelib run lime setup flixel`
 	 - `haxelib run flixel-tools setup`
 	 - `haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit`
-	 - `haxelib git polymod https://github.com/larsiusprime/polymod feature/blacklist`
+	 - `haxelib git polymod https://github.com/AltronMaxX/polymod feature/blacklist`
 	 - `haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc`
 	 - `haxelib install haxe-strings 7.0.2`
 	 - `haxelib install hscript-ex 0.0.0`

@@ -6,7 +6,7 @@
   <definition id="vcr16" font="vcr" size="16" color="0xffffff" outline="0x000000" align="center"/>
   
   <!-- App background. -->
-  <background src="menubg" core="true" color="#ffffff" x="0" y="0" w="1280" h="720" />
+  <background src="menuDesat" core="true" color="#ffffff" x="0" y="0" w="1280" h="720" />
 
   <!-- App layout. Make sure to specify x/y/w/h. -->
   <text text="Disabled" use_def="vcr32" x="0" y="16" width="480"/>

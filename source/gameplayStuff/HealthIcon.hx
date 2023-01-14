@@ -100,7 +100,7 @@ class HealthIcon extends FlxSprite
 	function loadIconLegacy(char:String, filename:String)
 	{
 		var image = image(char != '' ? '/$char' : '', filename);
-		if (image == null)
+		if (!OpenFlAssets.exists(image))
 		{
 			Debug.logError('Error loading graphic for health icon ${char}');
 
@@ -146,15 +146,14 @@ class HealthIcon extends FlxSprite
 			setPosition(sprTracker.x + sprTracker.width + 10, sprTracker.y - 30);
 	}
 
-	inline static public function image(character:String = '', key:String, ?library:String)
+	inline static public function image(character:String = '', key:String)
 	{
-		return Paths.getPath('characters$character/$key.png', IMAGE, library);
+		return Paths.getPath('characters$character/$key.png', IMAGE, "gameplay");
 	}
 
-	static public function loadImage(character:String = '', key:String, ?library:String):FlxGraphic
+	static public function loadImage(character:String = '', key:String):FlxGraphic
 	{
-		var path = image(character != '' ? '/$character': '', key, library);
-
+		var path = image(character != '' ? '/$character': '', key);
 		if (OpenFlAssets.exists(path, IMAGE))
 		{
 			var bitmap = OpenFlAssets.getBitmapData(path);

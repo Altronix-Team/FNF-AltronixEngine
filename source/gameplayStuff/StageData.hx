@@ -23,7 +23,7 @@ typedef StageFile = {
 class StageData {
 	public static function getStageFile(stage:String):StageFile {
 		var rawJson:String = null;
-		var path:String = Paths.getPreloadPath('stages/' + stage + '.json');
+		var path:String = Paths.json('stages/$stage');
 		
 		if (Assets.exists(path)){
 			rawJson = Assets.getText(path);

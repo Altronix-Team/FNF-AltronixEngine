@@ -399,7 +399,7 @@ class GameJoltInfo extends FlxSubState
 	 * 
 	 * Don't make it a NULL variable. Worst mistake of my life.
 	 */
-	public static var fontPath:String = "assets/fonts/vcr.ttf";
+	public static var fontPath:String = "assets/core/fonts/vcr.ttf";
 
 	/**
 	 * Image to show for notifications. Leave NULL for no image, it's all good :)

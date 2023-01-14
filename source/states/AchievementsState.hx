@@ -46,6 +46,7 @@ class AchievementsState extends MusicBeatState
 
 		var isDebug:Bool = false;
 
+
 		#if debug
 		isDebug = true;
 		#end

@@ -196,7 +196,7 @@ class Song
 		var rawMetaJson = null;
 		if (OpenFlAssets.exists(Paths.songMeta(songId)))
 		{
-			rawMetaJson = Paths.loadJSON('$songId/_meta', 'songs');
+			rawMetaJson = Paths.loadJSON('songs/$songId/_meta', 'gameplay');
 		}
 		if (rawMetaJson == null)
 		{
@@ -210,31 +210,31 @@ class Song
 
 	public static function loadFromJson(songId:String, difficulty:String):SongData
 	{
-		var songFile = '$songId/$songId$difficulty';
+		var songFile = 'songs/$songId/$songId$difficulty';
 
-		if (OpenFlAssets.exists(Paths.json('$songFile', 'songs')))
+		if (OpenFlAssets.exists(Paths.json('$songFile', 'gameplay')))
 		{
-			var rawJson = Paths.loadJSON('$songFile', 'songs');
+			var rawJson = Paths.loadJSON('$songFile', 'gameplay');
 
 			var metaData:SongMeta = loadMetadata(songId);
 
-			if (OpenFlAssets.exists(Paths.json('$songId/events', 'songs')))
+			if (OpenFlAssets.exists(Paths.json('songs/$songId/events', 'gameplay')))
 			{
-				var rawEvents = Paths.loadJSON('$songId/events', 'songs');
+				var rawEvents = Paths.loadJSON('songs/$songId/events', 'gameplay');
 				return parseJSONshit(songId, rawJson, metaData, rawEvents);
 			}	
 			else
 				return parseJSONshit(songId, rawJson, metaData);	
 		}
-		else if (OpenFlAssets.exists(OpenFlAssets.getPath(Paths.json('$songFile', 'songs'))))
+		else if (OpenFlAssets.exists(OpenFlAssets.getPath(Paths.json('$songFile', 'gameplay'))))
 		{	
-			var rawJson = Paths.loadJSON('$songFile', 'songs');
+			var rawJson = Paths.loadJSON('$songFile', 'gameplay');
 	
 			var metaData:SongMeta = loadMetadata(songId);
 	
-			if (OpenFlAssets.exists(Paths.json('$songId/events', 'songs')))
+			if (OpenFlAssets.exists(Paths.json('songs/$songId/events', 'gameplay')))
 			{
-				var rawEvents = Paths.loadJSON('$songId/events', 'songs');
+				var rawEvents = Paths.loadJSON('songs/$songId/events', 'gameplay');
 				return parseJSONshit(songId, rawJson, metaData, rawEvents);
 			}	
 			else
@@ -718,7 +718,7 @@ class Song
 	{
 		var folderLowercase = StringTools.replace(folder, " ", "-").toLowerCase();
 	
-		var rawJson = OpenFlAssets.getText(Paths.json(folderLowercase + '/' + jsonInput.toLowerCase(), 'songs')).trim();
+		var rawJson = OpenFlAssets.getText(Paths.json('songs/' + folderLowercase + '/' + jsonInput.toLowerCase(), 'gameplay')).trim();
 	
 		while (!rawJson.endsWith("}"))
 		{

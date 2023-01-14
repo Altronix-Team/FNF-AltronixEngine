@@ -72,35 +72,27 @@ class FreeplayState extends MusicBeatState
 
 	public static function loadDiff(diff:Int, songId:String, array:Array<SongData>, ?diffStr:String)
 	{
-		/*if (Caching.songJsons.get(songId) != null)
+		var diffName:String = "";
+
+		switch (diff)
 		{
-			Debug.logInfo('Found cached song $songId');
-			array = Caching.songJsons.get(songId).copy();
+			case 1:
+				diffName = "";
+			case 2:
+				diffName = "-hard";
+			case 3:
+				diffName = "-hardplus";
+			case 0:
+				diffName = "-easy";
+			default:
+				diffName = "-" + diffStr.toLowerCase();
 		}
+
+		var curSongData = Song.loadFromJson(songId, diffName);
+		if (curSongData == null)
+			Debug.displayAlert('ERROR', 'ERROR in Freeplay trying to load song data: ${songId} : ${diffName}');
 		else
-		{*/
-			var diffName:String = "";
-
-			switch (diff)
-			{
-				case 1:
-					diffName = "";
-				case 2:
-					diffName = "-hard";
-				case 3:
-					diffName = "-hardplus";
-				case 0:
-					diffName = "-easy";
-				default:
-					diffName = "-" + diffStr.toLowerCase();
-			}
-
-			var curSongData = Song.loadFromJson(songId, diffName);
-			if (curSongData == null)
-				Debug.displayAlert('ERROR', 'ERROR in Freeplay trying to load song data: ${songId} : ${diffName}');
-			else
-				array.push(Song.conversionChecks(Song.loadFromJson(songId, diffName)));
-		//}
+			array.push(Song.conversionChecks(Song.loadFromJson(songId, diffName)));
 	}
 
 	override function create()
@@ -234,7 +226,7 @@ class FreeplayState extends MusicBeatState
 	public static function populateSongData()
 	{
 		cached = false;
-		var freeplaySonglist = Paths.loadJSON('data/freeplaySonglist');
+		var freeplaySonglist = Paths.loadJSON('data/freeplaySonglist', "core");
 
 		songData = [];
 		songs = [];

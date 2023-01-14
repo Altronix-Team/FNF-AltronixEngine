@@ -69,10 +69,6 @@ class Character extends FlxSprite
 
 		parseDataFile();
 
-		/*if (curCharacter == 'picospeaker') 
-		{
-			loadMappedAnims();
-		}*/
 
 		if (isPlayer && frames != null)
 		{
@@ -87,14 +83,14 @@ class Character extends FlxSprite
 
 		// Load the data from JSON and cast it to a struct we can easily read.
 		var jsonData;
-		if (OpenFlAssets.exists(Paths.json('characters/${curCharacter}/${curCharacter}')))
+		if (OpenFlAssets.exists(Paths.json('characters/${curCharacter}/${curCharacter}', "gameplay")))
 		{
-			jsonData = Paths.loadJSON('characters/${curCharacter}/${curCharacter}');
+			jsonData = Paths.loadJSON('characters/${curCharacter}/${curCharacter}', "gameplay");
 		}
 		else
 		{
 			Debug.logError('There is no character with this name!');
-			jsonData = Paths.loadJSON('characters/dad/dad');
+			jsonData = Paths.loadJSON('characters/dad/dad', "gameplay");
 		}
 		if (jsonData == null)
 		{
@@ -132,23 +128,6 @@ class Character extends FlxSprite
 			}
 		}
 
-		/*if (PlayState.SONG != null)
-		{
-			if (curCharacter == 'picospeaker') 
-				{
-					if(animationNotes.length > 0 && Conductor.songPosition > animationNotes[0][0])
-						{
-							var noteData:Int = 1;
-							if(animationNotes[0][1] > 2) noteData = 3;
-		
-							noteData += FlxG.random.int(0, 1);
-							playAnim('shoot' + noteData, true);
-							animationNotes.shift();
-						}
-					if(animation.curAnim.finished) playAnim(animation.curAnim.name, false, false, animation.curAnim.frames.length - 3);
-				}
-		}*/
-
 		if (!debugMode)
 		{
 			var nextAnim = animNext.get(animation.curAnim.name);
@@ -173,18 +152,6 @@ class Character extends FlxSprite
 
 		super.update(elapsed);
 	}
-
-	/*public function loadMappedAnims() {
-		var picoAnims = Song.picospeakerLoad(curCharacter, "stress").notes;
-		for (anim in picoAnims) {
-			for (note in anim.sectionNotes) {
-				animationNotes.push(note);
-			}
-		}
-		TankmenBG.animationNotes = animationNotes;
-		animationNotes.sort(sortAnims);
-	}*/
-
 	function sortAnims(Obj1:Array<Dynamic>, Obj2:Array<Dynamic>):Int
 	{
 		return FlxSort.byValues(FlxSort.ASCENDING, Obj1[0], Obj2[0]);
@@ -311,7 +278,7 @@ class Character extends FlxSprite
 		#if CHECK_FOR_DEFAULT_CHARACTERS
 		for (char in EngineConstants.defaultCharacters)
 		{
-			if (OpenFlAssets.exists(Paths.json('characters/${char}/${char}')))
+			if (OpenFlAssets.exists(Paths.json('characters/${char}/${char}', "gameplay")))
 				characterList.push(char);
 			else
 				missingChars.push(char);
@@ -344,7 +311,7 @@ class Character extends FlxSprite
 				else{
 					characterList.push(charId);
 
-					var charData:CharacterData = Paths.loadJSON('characters/${charId}/${charId}');
+					var charData:CharacterData = Paths.loadJSON('characters/${charId}/${charId}', "gameplay");
 					if (charData == null)
 					{
 						Debug.logError('Character $charId failed to load.');
@@ -379,7 +346,7 @@ class Character extends FlxSprite
 				else{
 					characterList.push(charId);
 
-					var charData:CharacterData = Paths.loadJSON('characters/${charId}/${charId}');
+					var charData:CharacterData = Paths.loadJSON('characters/${charId}/${charId}', "gameplay");
 					if (charData == null)
 					{
 						Debug.logError('Character $charId failed to load.');
@@ -394,9 +361,9 @@ class Character extends FlxSprite
 	public static function getCharacterIcon(char:String):String
 	{
 		var jsonData;
-		if (OpenFlAssets.exists(Paths.json('characters/${char}/${char}')))
+		if (OpenFlAssets.exists(Paths.json('characters/${char}/${char}', "gameplay")))
 		{
-			jsonData = Paths.loadJSON('characters/${char}/${char}');
+			jsonData = Paths.loadJSON('characters/${char}/${char}', "gameplay");
 		}
 		else
 		{
@@ -426,9 +393,9 @@ class Character extends FlxSprite
 	public static function getCharacterColor(char:String):Array<Int>
 	{
 		var jsonData;
-		if (OpenFlAssets.exists(Paths.json('characters/${char}/${char}')))
+		if (OpenFlAssets.exists(Paths.json('characters/${char}/${char}', "gameplay")))
 		{
-			jsonData = Paths.loadJSON('characters/${char}/${char}');
+			jsonData = Paths.loadJSON('characters/${char}/${char}', "gameplay");
 		}
 		else
 		{
@@ -597,7 +564,7 @@ class Character extends FlxSprite
 	{
 		var dataAssets = OpenFlAssets.list(TEXT);
 
-		var queryPath = 'assets/characters/';
+		var queryPath = 'assets/gameplay/characters/';
 
 		var results:Array<String> = [];
 

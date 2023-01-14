@@ -45,7 +45,7 @@ class AssetsUtil
         return results;
     }
 
-    public static function loadAsset(key:String, type:AssetTypes = UNKNOWN, ?library:String):Dynamic
+	public static function loadAsset(key:String, type:AssetTypes = UNKNOWN, ?library:String = "core"):Dynamic
     {
         switch (type)
         {
@@ -64,7 +64,7 @@ class AssetsUtil
         }
     }
 
-	static public function getSparrowAtlas(key:String, ?library:String)
+	static public function getSparrowAtlas(key:String, ?library:String = "core")
 	{
 		if (LanguageStuff.getSparrowAtlas(key) != null)
 		{
@@ -72,34 +72,34 @@ class AssetsUtil
 		}
 		else
 		{
-			return FlxAtlasFrames.fromSparrow(loadImage(key, library), Paths.file('images/$key.xml', library));
+			return FlxAtlasFrames.fromSparrow(loadImage(key, library), Paths.file((key.contains('images/') ? '' : 'images/') + '$key.xml', library));
 		}
 	}
 
 	inline static public function getCharacterFrames(charName:String, key:String):FlxFramesCollection
 	{
 		var filePath = 'characters/$charName/$key';
-		if (OpenFlAssets.exists('assets/characters/$charName/$key.txt'))
-			return FlxAtlasFrames.fromSpriteSheetPacker(loadCharacterImage(charName, key), Paths.file('$filePath.txt'));
+		if (OpenFlAssets.exists(Paths.txt('characters/$charName/$key', "gameplay")))
+			return FlxAtlasFrames.fromSpriteSheetPacker(loadCharacterImage(charName, key), Paths.file('$filePath.txt', "gameplay"));
 		else
 		{
-			if (OpenFlAssets.exists('assets/characters/$charName/$key.xml'))
+			if (OpenFlAssets.exists(Paths.xml('characters/$charName/$key', "gameplay")))
 			{
-				return FlxAtlasFrames.fromSparrow(loadCharacterImage(charName, key), Paths.file('$filePath.xml'));
+				return FlxAtlasFrames.fromSparrow(loadCharacterImage(charName, key), Paths.file('$filePath.xml', "gameplay"));
 			}
 			else
 				return null;
 		}
 	}
 
-	inline static public function characterImage(charName:String, key:String, ?library:String)
+	inline static public function characterImage(charName:String, key:String)
 	{
-		return Paths.getPath('characters/$charName/$key.png', IMAGE, library);
+		return Paths.getPath('characters/$charName/$key.png', IMAGE, "gameplay");
 	}
 
-	static public function loadCharacterImage(charName:String, key:String, ?library:String):FlxGraphic
+	static public function loadCharacterImage(charName:String, key:String):FlxGraphic
 	{
-		var path = characterImage(charName, key, library);
+		var path = characterImage(charName, key);
 
 		if (OpenFlAssets.exists(path, IMAGE))
 		{
@@ -131,7 +131,7 @@ class AssetsUtil
 		return null;
 	}
 
-	inline static public function getPackerAtlas(key:String, ?library:String)
+	inline static public function getPackerAtlas(key:String, ?library:String = "core")
 	{
 		if (LanguageStuff.getPackerAtlas(key) != null)
 		{
@@ -139,7 +139,7 @@ class AssetsUtil
 		}
 		else
 		{
-			return FlxAtlasFrames.fromSpriteSheetPacker(loadImage(key, library), Paths.file('images/$key.txt', library));
+			return FlxAtlasFrames.fromSpriteSheetPacker(loadImage(key, library), Paths.file((key.contains('images/') ? '' : 'images/') + '$key.txt', library));
 		}
 	}
 
@@ -195,68 +195,6 @@ class AssetsUtil
 		}
 	}
 
-	/*public function loadFile(type:AssetTypes = UNKNOWN)
-	{
-		if (type == IMAGE || type == DIRECTORY || type == UNKNOWN || type == FONT || type == SOUND || type == MUSIC || type == VIDEOS) return;
-
-		var ext = '';
-
-		for (i in AssetTypes.returnEnds(type))
-			ext += i;
-
-		var fileFilter:FileFilter = new FileFilter(type, ext);
-		_file = new FileReference();
-		_file.addEventListener(Event.SELECT, onLoadComplete);
-		_file.addEventListener(Event.CANCEL, onLoadCancel);
-		_file.addEventListener(IOErrorEvent.IO_ERROR, onLoadError);
-		_file.browse([fileFilter]);
-	}*/
-
-	/*private function onLoadComplete(_):Void
-	{
-		_file.removeEventListener(Event.SELECT, onLoadComplete);
-		_file.removeEventListener(Event.CANCEL, onLoadCancel);
-		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
-
-		#if sys
-		var fullPath:String = null;
-		@:privateAccess
-		if (_file.__path != null)
-			fullPath = _file.__path;
-
-		if (fullPath != null)
-		{
-			
-		}
-		#else
-		Debug.logError("File couldn't be loaded! You aren't on Desktop, are you?");
-		#end
-	}*/
-
-	/**
-	 * Called when the save file dialog is cancelled.
-	 */
-	/*private function onLoadCancel(_):Void
-	{
-		_file.removeEventListener(Event.SELECT, onLoadComplete);
-		_file.removeEventListener(Event.CANCEL, onLoadCancel);
-		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
-		_file = null;
-		trace("Cancelled file loading.");
-	}*/
-
-	/**
-	 * Called if there is an error while saving the gameplay recording.
-	 */
-	/*private function onLoadError(_):Void
-	{
-		_file.removeEventListener(Event.SELECT, onLoadComplete);
-		_file.removeEventListener(Event.CANCEL, onLoadCancel);
-		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
-		_file = null;
-		trace("Problem loading file");
-	}*/
-	
 	private function onSaveComplete(_):Void
 	{
 		_file.removeEventListener(openfl.events.Event.COMPLETE, onSaveComplete);
@@ -327,6 +265,10 @@ class AssetsUtil
 	{
 		var retVal:BitmapData;
 		var path = Paths.image(key, library);
+		if(key.contains("images/"))
+		{
+			path = path.removeFirst("images/");
+		}
 		if (OpenFlAssets.exists(path, IMAGE))
 		{
 			retVal = OpenFlAssets.getBitmapData(path);

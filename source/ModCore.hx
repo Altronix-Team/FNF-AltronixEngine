@@ -245,6 +245,8 @@ class ModCore
 		if (!polymodLoaded)
 			polymodLoaded = true;
 
+		loadDefaultImports();
+
 		NoteskinHelpers.updateNoteskins();
 
 		MenuMusicStuff.updateMusic();
@@ -282,31 +284,39 @@ class ModCore
 		return output;
 	}
 
+	static function loadDefaultImports()
+	{
+		@:privateAccess()
+		if (Polymod.prevParams.useScriptedClasses)
+		{
+			Debug.logInfo('Loading default imports');
+
+			var classList:Array<Class<Dynamic>> = [
+				utils.Debug,
+				AssetsUtil,
+				utils.CoolUtil,
+				WindowUtil,
+				Paths,
+				Main,
+				states.MusicBeatState,
+				states.MusicBeatSubstate
+			];
+
+			for (cls in classList)
+			{
+				Polymod.addDefaultImport(cls);
+			}
+		}
+	}
+
 	static inline function buildFrameworkParams():polymod.FrameworkParams
 	{
 		return {
 			assetLibraryPaths: [
-				"default" => "./preload",
-				"sm" => "./sm",
-				"songs" => "./songs",
-				"shared" => "./",
-				"tutorial" => "./tutorial",
-				"scripts" => "./scripts",
-				"stages" => "./stages",
-				"week1" => "./week1",
-				"week2" => "./week2",
-				"week3" => "./week3",
-				"week4" => "./week4",
-				"week5" => "./week5",
-				"week6" => "./week6",
-				"week7" => "./week7",
-				"weeks" => "./weeks",
-				"custom_events" => "./custom_events",
-				"custom_notetypes" => "./custom_notetypes",
-				"custom_difficulties" => "./custom_difficulties",
-				"custom_achievements" => "./custom_achievements",
-				"art" => "./art",
-				'core' => './_core'
+				"default" => "./gameplay",
+				"gameplay" => "./gameplay",
+				"scripts" => "./gameplay/scripts",
+				'core' => './core'
 			]
 		}
 	}

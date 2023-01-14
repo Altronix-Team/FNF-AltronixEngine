@@ -54,14 +54,14 @@ class NoteskinHelpers
 
 	static public function generateNoteskinSprite(id:String)
 	{
-		return Paths.getSparrowAtlas('noteskins/' + id, "shared");	
+		return Paths.getSparrowAtlas('noteskins/' + id);	
 	}
 
 	public static function getPrefixesList(id:String):Array<String>
 	{
 		var retValue:Array<String> = [];
 
-		var path = Paths.xml('images/noteskins/' + id, "shared");
+		var path = Paths.xml('images/noteskins/' + id);
 
 		if (OpenFlAssets.exists(path))
 		{
@@ -79,9 +79,9 @@ class NoteskinHelpers
 
 	static public function generatePixelSprite(id:String, ends:Bool = false)
 	{
-		var path = Paths.image("noteskins/" + id + "-pixel" + (ends ? "-ends" : ""), 'shared');
+		var path = Paths.image("noteskins/" + id + "-pixel" + (ends ? "-ends" : ""));
 
-		var defaultBitmap = OpenFlAssets.getBitmapData("assets/shared/images/noteskins/Arrows-pixel" + (ends ? "-ends" : "") + ".png");
+		var defaultBitmap = OpenFlAssets.getBitmapData(Paths.image('noteskins/Arrows-pixel' + (ends ? "-ends" : ""), 'core'));
 
 		if (!OpenFlAssets.exists(path))
 		{

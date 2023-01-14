@@ -282,7 +282,7 @@ class StoryMenuState extends MusicBeatState
 	function weekbackgroundgenerate(imageName:String = 'Tutorial'):Void
 	{
 		if (imageName != '')
-			weekbackground.loadGraphic(Paths.image('weekbackgrounds/' + imageName));
+			weekbackground.loadGraphic(Paths.image('weekbackgrounds/' + imageName, "core"));
 		else
 			weekbackground.makeGraphic(FlxG.width, 400, 0xFFF9CF51);
 	}

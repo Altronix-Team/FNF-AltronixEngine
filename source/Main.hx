@@ -168,9 +168,9 @@ class Main extends Sprite
 
 		// Finish up loading debug tools.
 		Debug.onGameStart();
-		#if debug
+		/*#if debug
 		flixel.addons.studio.FlxStudio.create();
-		#end
+		#end*/
 
 		//setup automatic beat, step and section updates
 		gameplayStuff.Conductor.setupUpdates();

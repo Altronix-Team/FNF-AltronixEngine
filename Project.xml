@@ -62,112 +62,41 @@
 	<define name="LUA_ALLOWED" if="desktop" />
 	<define name="VIDEOS_ALLOWED" if="web || windows" unless="32bits" />
 	
-	<assets path="assets/preload/videos" rename="assets/videos" include="*mp4" embed='false' />
-
-	<assets path="assets/videos" exclude="*.mp3" if="web"/>
-	<assets path="assets/videos" exclude="*.ogg" unless="web"/>
-	
-	<assets path="assets/preload/stages" rename="assets/stages" include="*lua" embed='false' />
-	
-	<assets path="assets/preload/weeks" rename="assets/weeks" include="*json" embed='false' />
-
-	<assets path="assets/preload" rename="assets" exclude="*.ogg" if="web"/>
-	<assets path="assets/preload" rename="assets" exclude="*.mp3" unless="web"/>
-	
 	<!-- <define name="PRELOAD_ALL" /> -->
 	<define name="PRELOAD_ALL" unless="web" />
 	<define name="NO_PRELOAD_ALL" unless="PRELOAD_ALL"/>
 	
 	<section if="PRELOAD_ALL">
+		<library name="gameplay"	preload="true"/>
 		<library name="core"	preload="true"/>
-		<library name="songs"    preload="true" />
-		<library name="shared"   preload="true" />
-		<library name="tutorial" preload="true" />
-		<library name="week1"    preload="true" />
-		<library name="week2"    preload="true" />
-		<library name="week3"    preload="true" />
-		<library name="week4"    preload="true" />
-		<library name="week5"    preload="true" />
-		<library name="week6"    preload="true" />
-		<library name="week7"    preload="true" />
-		<library name="custom_events"    preload="true" />
-		<library name="custom_notetypes"    preload="true" />
-		<library name="custom_difficulties"    preload="true" />
-		<library name="custom_achievements"    preload="true" />
-		<library name="art"    preload="true" />
-		<library name="scripts" preload="true" />
 	</section>
 	
 	<section if="NO_PRELOAD_ALL">
+		<library name="gameplay"	preload="false"/>
 		<library name="core"	preload="false"/>
-		<library name="songs"    preload="false" />
-		<library name="shared"   preload="false" />
-		<library name="tutorial" preload="false" />
-		<library name="week1"    preload="false" />
-		<library name="week2"    preload="false" />
-		<library name="week3"    preload="false" />
-		<library name="week4"    preload="false" />
-		<library name="week5"    preload="false" />
-		<library name="week6"    preload="false" />
-		<library name="week7"    preload="false" />
-		<library name="custom_events"    preload="false" />
-		<library name="custom_notetypes"    preload="false" />
-		<library name="custom_difficulties"    preload="false" />
-		<library name="custom_achievements"    preload="false" />
-		<library name="art"    preload="false" />
 	</section>
 	
-	<assets path="assets/songs"    library="songs"    exclude="*.ogg" if="web"/>
-	<assets path="assets/songs"    library="songs"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/shared"   library="shared"   exclude="*.ogg" if="web"/>
-	<assets path="assets/shared"   library="shared"   exclude="*.mp3" unless="web"/>
-	<assets path="assets/tutorial" library="tutorial" exclude="*.ogg" if="web"/>
-	<assets path="assets/tutorial" library="tutorial" exclude="*.mp3" unless="web"/>
-	<assets path="assets/week1"    library="week1"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week1"    library="week1"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/week2"    library="week2"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week2"    library="week2"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/week3"    library="week3"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week3"    library="week3"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/week4"    library="week4"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week4"    library="week4"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/week5"    library="week5"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week5"    library="week5"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/week6"    library="week6"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week6"    library="week6"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/week7"    library="week7"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week7"    library="week7"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/stages"   library="stages"   exclude="*.ogg" if="web"/>
-	<assets path="assets/stages"   library="stages"   exclude="*.mp3" unless="web"/>
-	<assets path="assets/custom_events"   library="custom_events"   exclude="*.ogg" if="web"/>
-	<assets path="assets/custom_events"   library="custom_events"   exclude="*.mp3" unless="web"/>
-	<assets path="assets/custom_notetypes"   library="custom_notetypes"   exclude="*.ogg" if="web"/>
-	<assets path="assets/custom_notetypes"   library="custom_notetypes"   exclude="*.mp3" unless="web"/>
-	<assets path="assets/custom_difficulties"   library="custom_difficulties"   exclude="*.ogg" if="web"/>
-	<assets path="assets/custom_difficulties"   library="custom_difficulties"   exclude="*.mp3" unless="web"/>
-	<assets path="assets/custom_achievements"   library="custom_achievements"   exclude="*.ogg" if="web"/>
-	<assets path="assets/custom_achievements"   library="custom_achievements"   exclude="*.mp3" unless="web"/>
-	<assets path="assets/art"   library="art"   exclude="*.ogg" if="web"/>
-	<assets path="assets/art"   library="art"   exclude="*.mp3" unless="web"/>
+	<assets path="assets/gameplay"    library="gameplay"    exclude="*.ogg" if="web"/>
+	<assets path="assets/gameplay"    library="gameplay"    exclude="*.mp3" unless="web"/>
 	
-	<assets path="assets/locales" rename="locales" />
+	<assets path="assets/core/locales" rename="locales" />
 	<assets path='example_mods' rename='mods' embed='false'/>
 	<assets path='art/readme.txt' rename='do NOT readme.txt' />
 	<assets path='LICENSE' rename='LICENSE.txt' />
-	<assets path="assets/fonts" embed='true'/>
+	<assets path="assets/core/fonts" embed='true'/>
 	
 	<section if="embedAssets">
 		<assets path="assets/core"
 						library="core"
 						embed="true" />
 						
-		<assets path="assets/scripts"
+		<assets path="assets/gameplay/scripts"
 						library="scripts"
 						embed="true"
 						exclude="*.md|*.ogg"
 						if="web" />
 						
-		<assets path="assets/scripts"
+		<assets path="assets/gameplay/scripts"
 						library="scripts"
 						embed="true"
 						exclude="*.md|*.mp3"
@@ -178,12 +107,12 @@
 		<assets path="assets/core"
 						library="core"
 						embed="false" />
-		<assets path="assets/scripts"
+		<assets path="assets/gameplay/scripts"
 						library="scripts"
 						embed="false"
 						exclude="*.md|*.ogg"
 						if="web" />
-		<assets path="assets/scripts"
+		<assets path="assets/gameplay/scripts"
 						library="scripts"
 						embed="false"
 						exclude="*.md|*.mp3"
@@ -307,7 +236,7 @@
 	<haxedef name="POLYMOD_USE_NAMESPACE"
 					 value="false" />
 	<haxedef name="POLYMOD_ROOT_PATH"
-					 value="assets/scripts/" />
+					 value="assets/gameplay/scripts/" />
 
 	<!-- Remove this to use standart Polymod file names. -->				 
 	<haxedef name="POLYMOD_MOD_PACK_FILE"

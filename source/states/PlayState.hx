@@ -662,7 +662,6 @@ class PlayState extends MusicBeatState
 		if (!stageTesting)
 		{
 			gf = new Character(400, 130, gfCheck);
-
 			if (gf.frames == null)
 			{
 				#if debug
@@ -725,9 +724,9 @@ class PlayState extends MusicBeatState
 				ScriptHelper.hscriptFiles.push(hscriptStage);
 				hscriptStageCheck = true;
 			}
-			else if (FileSystem.exists('assets/stages/' + SONG.stage + '.lua'))
+			else if (FileSystem.exists('assets/gameplay/stages/' + SONG.stage + '.lua'))
 			{
-				ScriptHelper.luaArray.push(new FunkinLua('assets/stages/' + SONG.stage + '.lua'));
+				ScriptHelper.luaArray.push(new FunkinLua('assets/gameplay/stages/' + SONG.stage + '.lua'));
 			}
 			#if FEATURE_FILESYSTEM else #end if (Paths.getHscriptPath(SONG.stage, 'stages') != null)
 			{
@@ -750,9 +749,9 @@ class PlayState extends MusicBeatState
 				}
 			}
 			#if LUA_ALLOWED
-			else if (OpenFlAssets.exists('assets/stages/' + SONG.stage + '.lua'))
+			else if (OpenFlAssets.exists('assets/gameplay/stages/' + SONG.stage + '.lua'))
 			{
-				ScriptHelper.luaArray.push(new FunkinLua(OpenFlAssets.getPath('assets/stages/' + SONG.stage + '.lua')));
+				ScriptHelper.luaArray.push(new FunkinLua(OpenFlAssets.getPath('assets/gameplay/stages/' + SONG.stage + '.lua')));
 			}
 			#end
 			else
@@ -893,15 +892,15 @@ class PlayState extends MusicBeatState
 
 		// launch song lua and hscript
 		#if LUA_ALLOWED
-		var filesToCheck:Array<String> = AssetsUtil.listAssetsInPath('songs:assets/songs/' + SONG.songId + '/', LUA);
+		var filesToCheck:Array<String> = AssetsUtil.listAssetsInPath('songs:assets/gameplay/songs/' + SONG.songId + '/', LUA);
 		var filesPushed:Array<String> = [];
 		for (file in filesToCheck)
 		{
 			if(!filesPushed.contains(file))
 			{
-				if (OpenFlAssets.exists('songs:assets/songs/' + SONG.songId + '/' + file + '.lua'))
+				if (OpenFlAssets.exists('songs:assets/gameplay/songs/' + SONG.songId + '/' + file + '.lua'))
 				{
-					ScriptHelper.luaArray.push(new FunkinLua(OpenFlAssets.getPath('songs:assets/songs/' + SONG.songId + '/' + file + '.lua')));
+					ScriptHelper.luaArray.push(new FunkinLua(OpenFlAssets.getPath('songs:assets/gameplay/songs/' + SONG.songId + '/' + file + '.lua')));
 					filesPushed.push(file);
 				}
 			}
@@ -930,15 +929,15 @@ class PlayState extends MusicBeatState
 
 		// launch global lua
 		#if LUA_ALLOWED
-		var filesToCheck:Array<String> = AssetsUtil.listAssetsInPath('assets/scripts/', LUA);
+		var filesToCheck:Array<String> = AssetsUtil.listAssetsInPath('assets/gameplay/scripts/', LUA);
 		var filesPushed:Array<String> = [];
 		for (file in filesToCheck)
 		{
 			if(!filesPushed.contains(file))
 			{
-				if (OpenFlAssets.exists('assets/scripts/' + file + '.lua'))
+				if (OpenFlAssets.exists('assets/gameplay/scripts/' + file + '.lua'))
 				{
-					ScriptHelper.luaArray.push(new FunkinLua(OpenFlAssets.getPath('assets/scripts/' + file + '.lua')));
+					ScriptHelper.luaArray.push(new FunkinLua(OpenFlAssets.getPath('assets/gameplay/scripts/' + file + '.lua')));
 					filesPushed.push(file);
 				}		
 			}
@@ -1192,7 +1191,7 @@ class PlayState extends MusicBeatState
 
 		// launch custom events
 		#if desktop
-		var filesToCheck:Array<String> = AssetsUtil.listAssetsInPath('assets/custom_events/', LUA).concat(AssetsUtil.listAssetsInPath('assets/custom_events/', HSCRIPT));
+		var filesToCheck:Array<String> = AssetsUtil.listAssetsInPath('assets/gameplay/scripts/custom_events/', LUA).concat(AssetsUtil.listAssetsInPath('assets/gameplay/scripts/custom_events/', HSCRIPT));
 		var filesPushed:Array<String> = [];
 		for (file in filesToCheck)
 		{
@@ -1200,17 +1199,17 @@ class PlayState extends MusicBeatState
 			{
 				if (file.endsWith('.hscript') || file.endsWith('.hx'))
 				{
-					if (OpenFlAssets.exists('assets/custom_events/' + file))
+					if (OpenFlAssets.exists('assets/gameplay/scripts/custom_events/' + file))
 					{
-						ScriptHelper.hscriptFiles.push(new ModchartHelper('assets/custom_events/' + file, this));
+						ScriptHelper.hscriptFiles.push(new ModchartHelper('assets/gameplay/scripts/custom_events/' + file, this));
 						filesPushed.push(file);
 					}
 				}
 				else
 				{
-					if (OpenFlAssets.exists('assets/custom_events/' + file + '.lua'))
+					if (OpenFlAssets.exists('assets/gameplay/scripts/custom_events/' + file + '.lua'))
 					{
-						ScriptHelper.luaArray.push(new FunkinLua(OpenFlAssets.getPath('assets/custom_events/' + file + '.lua')));
+						ScriptHelper.luaArray.push(new FunkinLua(OpenFlAssets.getPath('assets/gameplay/scripts/custom_events/' + file + '.lua')));
 						filesPushed.push(file);		
 					}
 					else
@@ -1225,7 +1224,7 @@ class PlayState extends MusicBeatState
 
 		// launch custom notetypes
 		#if desktop
-		var filesToCheck:Array<String> = AssetsUtil.listAssetsInPath('assets/custom_notetypes/', LUA).concat(AssetsUtil.listAssetsInPath('assets/custom_notetypes/', HSCRIPT));
+		var filesToCheck:Array<String> = AssetsUtil.listAssetsInPath('assets/gameplay/scripts/custom_notetypes/', LUA).concat(AssetsUtil.listAssetsInPath('assets/gameplay/scripts/custom_notetypes/', HSCRIPT));
 		var filesPushed:Array<String> = [];
 		for (file in filesToCheck)
 		{
@@ -1233,17 +1232,17 @@ class PlayState extends MusicBeatState
 			{
 				if (file.endsWith('.hscript') || file.endsWith('.hx'))
 				{
-					if (OpenFlAssets.exists('assets/custom_notetypes/' + file))
+					if (OpenFlAssets.exists('assets/gameplay/scripts/custom_notetypes/' + file))
 					{
-						ScriptHelper.hscriptFiles.push(new ModchartHelper('assets/custom_notetypes/' + file, this));
+						ScriptHelper.hscriptFiles.push(new ModchartHelper('assets/gameplay/scripts/custom_notetypes/' + file, this));
 						filesPushed.push(file);
 					}
 				}
 				else
 				{
-					if (OpenFlAssets.exists('assets/custom_notetypes/' + file + '.lua'))
+					if (OpenFlAssets.exists('assets/gameplay/scripts/custom_notetypes/' + file + '.lua'))
 					{
-						ScriptHelper.luaArray.push(new FunkinLua(OpenFlAssets.getPath('assets/custom_notetypes/' + file + '.lua')));
+						ScriptHelper.luaArray.push(new FunkinLua(OpenFlAssets.getPath('assets/gameplay/scripts/custom_notetypes/' + file + '.lua')));
 						filesPushed.push(file);
 					}
 					else
@@ -1258,7 +1257,7 @@ class PlayState extends MusicBeatState
 
 		// launch custom diffs scripts
 		#if desktop
-		var filesToCheck:Array<String> = AssetsUtil.listAssetsInPath('assets/custom_difficulties/', LUA).concat(AssetsUtil.listAssetsInPath('assets/custom_difficulties/', HSCRIPT));
+		var filesToCheck:Array<String> = AssetsUtil.listAssetsInPath('assets/gameplay/scripts/custom_difficulties/', LUA).concat(AssetsUtil.listAssetsInPath('assets/gameplay/scripts/custom_difficulties/', HSCRIPT));
 		var filesPushed:Array<String> = [];
 		for (file in filesToCheck)
 		{
@@ -1266,17 +1265,17 @@ class PlayState extends MusicBeatState
 			{
 				if (file.endsWith('.hscript') || file.endsWith('.hx'))
 				{
-					if (OpenFlAssets.exists('assets/custom_difficulties/' + file))
+					if (OpenFlAssets.exists('assets/gameplay/scripts/custom_difficulties/' + file))
 					{
-						ScriptHelper.hscriptFiles.push(new ModchartHelper('assets/custom_difficulties/' + file, this));
+						ScriptHelper.hscriptFiles.push(new ModchartHelper('assets/gameplay/scripts/custom_difficulties/' + file, this));
 						filesPushed.push(file);
 					}
 				}
 				else
 				{
-					if (OpenFlAssets.exists('assets/custom_difficulties/' + file + '.lua'))
+					if (OpenFlAssets.exists('assets/gameplay/scripts/custom_difficulties/' + file + '.lua'))
 					{
-						ScriptHelper.luaArray.push(new FunkinLua(OpenFlAssets.getPath('assets/custom_difficulties/' + file + '.lua')));
+						ScriptHelper.luaArray.push(new FunkinLua(OpenFlAssets.getPath('assets/gameplay/scripts/custom_difficulties/' + file + '.lua')));
 						filesPushed.push(file);
 					}
 					else
@@ -2256,8 +2255,8 @@ class PlayState extends MusicBeatState
 					dad.dance();
 
 				var introAssets:Map<String, Array<String>> = new Map<String, Array<String>>();
-				introAssets.set('default', ['ready', "set", "go"]);
-				introAssets.set('pixel', ['weeb/pixelUI/ready-pixel', 'weeb/pixelUI/set-pixel', 'weeb/pixelUI/date-pixel']);
+				introAssets.set('default', [Paths.getUIImagePath('ready', false), Paths.getUIImagePath('set', false),Paths.getUIImagePath('go', false)]);
+				introAssets.set('pixel', [Paths.getUIImagePath('ready', true), Paths.getUIImagePath('set', true),Paths.getUIImagePath('date', true)]);
 
 				var introAlts:Array<String> = introAssets.get('default');
 				var week6Bullshit:String = null;
@@ -2275,7 +2274,7 @@ class PlayState extends MusicBeatState
 					case 0:
 						FlxG.sound.play(Paths.sound('intro3' + altSuffix), 0.6);
 					case 1:
-						var ready:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage(introAlts[0], week6Bullshit));
+						var ready:FlxSprite = new FlxSprite().loadGraphic(FlxGraphic.fromBitmapData(OpenFlAssets.getBitmapData(introAlts[0])));
 						ready.scrollFactor.set();
 						ready.updateHitbox();
 
@@ -2293,7 +2292,7 @@ class PlayState extends MusicBeatState
 						});
 						FlxG.sound.play(Paths.sound('intro2' + altSuffix), 0.6);
 					case 2:
-						var set:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage(introAlts[1], week6Bullshit));
+						var set:FlxSprite = new FlxSprite().loadGraphic(FlxGraphic.fromBitmapData(OpenFlAssets.getBitmapData(introAlts[1])));
 						set.scrollFactor.set();
 
 						if (SONG.noteStyle == 'pixel')
@@ -2310,7 +2309,7 @@ class PlayState extends MusicBeatState
 						});
 						FlxG.sound.play(Paths.sound('intro1' + altSuffix), 0.6);
 					case 3:
-						var go:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage(introAlts[2], week6Bullshit));
+						var go:FlxSprite = new FlxSprite().loadGraphic(FlxGraphic.fromBitmapData(OpenFlAssets.getBitmapData(introAlts[2])));
 						go.scrollFactor.set();
 
 						if (SONG.noteStyle == 'pixel')
@@ -5131,7 +5130,7 @@ class PlayState extends MusicBeatState
 				pixelShitPart3 = 'week6';
 			}
 
-			rating.loadGraphic(Paths.loadImage(pixelShitPart1 + daRating + pixelShitPart2, pixelShitPart3));
+			rating.loadGraphic(FlxGraphic.fromBitmapData(OpenFlAssets.getBitmapData(Paths.getUIImagePath(daRating, SONG.noteStyle == 'pixel'))));
 			rating.screenCenter();
 			rating.y -= 50;
 			rating.x = coolText.x - 125;
@@ -5192,7 +5191,8 @@ class PlayState extends MusicBeatState
 			/*if (currentTimingShown.alpha != 1)
 				currentTimingShown.alpha = 1;*/
 
-			var comboSpr:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage(pixelShitPart1 + 'combo' + pixelShitPart2, pixelShitPart3));
+			var comboSpr:FlxSprite = new FlxSprite().loadGraphic(FlxGraphic.fromBitmapData(OpenFlAssets.getBitmapData(Paths.getUIImagePath("combo",
+				SONG.noteStyle == 'pixel'))));
 			comboSpr.screenCenter();
 			comboSpr.x = rating.x;
 			comboSpr.y = rating.y + 100;
@@ -5255,7 +5255,7 @@ class PlayState extends MusicBeatState
 			var daLoop:Int = 0;
 			for (i in seperatedScore)
 			{
-				var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage(pixelShitPart1 + 'num' + Std.int(i) + pixelShitPart2, pixelShitPart3));
+				var numScore:FlxSprite = new FlxSprite().loadGraphic(FlxGraphic.fromBitmapData(OpenFlAssets.getBitmapData(Paths.getUIImagePath('num' + Std.int(i), SONG.noteStyle == 'pixel'))));
 				numScore.screenCenter();
 				numScore.x = rating.x + (43 * daLoop) - 50;
 				numScore.y = rating.y + 100;
@@ -6186,7 +6186,7 @@ class PlayState extends MusicBeatState
 		var doPush:Bool = false;
 		var luaFile:String = 'assets/characters/' + name + '.lua';	
 
-		if(OpenFlAssets.exists(luaFile)) {
+		if(OpenFlAssets.exists(Paths.getPath('characters/$name.lua', "gameplay"))) {
 			for (script in ScriptHelper.luaArray)
 			{
 				if(script.scriptName == luaFile) return;

@@ -35,7 +35,7 @@ class ModMenuState extends XMLLayoutState
 
 	override function getXMLId()
 	{
-		return 'assets/ui/mod_menu';
+		return Paths.getPath('xmlStates/mod_menu', 'core');
 	}
 
 	override function create()

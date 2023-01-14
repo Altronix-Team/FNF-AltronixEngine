@@ -40,7 +40,7 @@ class Paths
 			if (OpenFlAssets.exists(levelPath, type))
 				return levelPath;
 
-			levelPath = getLibraryPathForce(file, "shared");
+			levelPath = getLibraryPathForce(file, "gameplay");
 			if (OpenFlAssets.exists(levelPath, type))
 				return levelPath;
 		}
@@ -50,10 +50,10 @@ class Paths
 
 	public static inline function songMeta(key:String)
 	{
-		return getPath('$key/_meta.json', TEXT, 'songs');
+		return getPath('songs/$key/_meta.json', TEXT, 'gameplay');
 	}
 
-	static public function getLibraryPath(file:String, library = "preload")
+	static public function getLibraryPath(file:String, library = "core")
 	{
 		return if (library == "preload" || library == "default") getPreloadPath(file); else getLibraryPathForce(file, library);
 	}
@@ -66,6 +66,11 @@ class Paths
 	public static function getPreloadPath(file:String = '')
 	{
 		return 'assets/$file';
+	}
+
+	inline public static function getUIImagePath(key:String, isPixel:Bool = false)
+	{
+		return getPath("ui/" + (isPixel ? "pixel/" : "normal/") + '$key.png', 'core');
 	}
 
 	inline static public function file(file:String, ?library:String, type:AssetType = TEXT)
@@ -96,12 +101,12 @@ class Paths
 		return getPath('$key.yaml', TEXT, library);
 	}
 
-	static public function sound(key:String, ?library:String)
+	static public function sound(key:String, ?library:String = "core")
 	{
 		return getPath('sounds/$key.$SOUND_EXT', SOUND, library);
 	}
 
-	inline static public function music(key:String, ?library:String)
+	inline static public function music(key:String, ?library:String = "core")
 	{
 		return getPath('music/$key.$SOUND_EXT', MUSIC, library);
 	}
@@ -116,7 +121,7 @@ class Paths
 
 	inline static public function font(key:String)
 	{
-		return 'assets/fonts/$key';
+		return 'assets/core/fonts/$key';
 	}
 
 	inline static public function video(key:String, ?library:String)
@@ -130,7 +135,7 @@ class Paths
 		if (LanguageStuff.locale != 'en-US')
 			lang = LanguageStuff.locale;
 
-		retPath = Paths.json(file + '-' + lang, 'songs');
+		retPath = Paths.json("songs/" + file + '-' + lang, 'gameplay');
 			
 		if (OpenFlAssets.exists(retPath))
 		{
@@ -139,7 +144,7 @@ class Paths
 		else{
 			Debug.logInfo('Failed found dialogue file with engine language. Trying to load dialogue with default language');
 
-			retPath = Paths.json(file, 'songs');
+			retPath = Paths.json("songs/" + file, 'gameplay');
 
 			if (OpenFlAssets.exists(retPath))
 			{ 
@@ -203,10 +208,10 @@ class Paths
 				default:
 					diff = '-' + CoolUtil.difficultyArray[PlayState.storyDifficulty].toLowerCase();
 			}
-			result = 'songs:assets/songs/${songLowercase}/Voices$diff.$SOUND_EXT';
+			result = Paths.getPath('songs/${songLowercase}/Voices$diff.$SOUND_EXT', null, "gameplay");
 		}
 		else
-			result = 'songs:assets/songs/${songLowercase}/Voices.$SOUND_EXT';
+			result = Paths.getPath('songs/${songLowercase}/Voices.$SOUND_EXT', null, "gameplay");
 
 		return AssetsUtil.doesAssetExists(result, SOUND) ? result : null;
 	}
@@ -231,40 +236,40 @@ class Paths
 				default:
 					diff = '-' + CoolUtil.difficultyArray[PlayState.storyDifficulty].toLowerCase();
 			}
-			return 'songs:assets/songs/${songLowercase}/Inst$diff.$SOUND_EXT';
+			return Paths.getPath('songs/${songLowercase}/Inst$diff.$SOUND_EXT', null, "gameplay");
 		}
 		else
-			return 'songs:assets/songs/${songLowercase}/Inst.$SOUND_EXT';
+			return Paths.getPath('songs/${songLowercase}/Inst.$SOUND_EXT', null, "gameplay");
 	}
 
 	public inline static function getHscriptPath(script:String, folder:String = '', isCharScript:Bool = false, ?library:String):String
 	{
 		if (isCharScript)
 		{
-			if (OpenFlAssets.exists(getPath('characters/$folder/$script.hscript', BINARY, library)))
-				return getPath('characters/$folder/$script.hscript', BINARY, library);
-			else if (OpenFlAssets.exists(getPath('scripts/$folder/$script.hx', BINARY, library)))
-				return getPath('characters/$folder/$script.hx', BINARY, library);
+			if (OpenFlAssets.exists(getPath('gameplay/characters/$folder/$script.hscript', BINARY, library)))
+				return getPath('gameplay/characters/$folder/$script.hscript', BINARY, library);
+			else if (OpenFlAssets.exists(getPath('gameplay/scripts/$folder/$script.hx', BINARY, library)))
+				return getPath('gameplay/characters/$folder/$script.hx', BINARY, library);
 			#if FEATURE_FILESYSTEM
-			else if (FileSystem.exists(getPath('characters/$folder/$script.hscript', BINARY, library)))
-				return getPath('characters/$folder/$script.hscript', BINARY, library);
-			else if (FileSystem.exists(getPath('characters/$folder/$script.hx', BINARY, library)))
-				return getPath('characters/$folder/$script.hx', BINARY, library);
+			else if (FileSystem.exists(getPath('gameplay/characters/$folder/$script.hscript', BINARY, library)))
+				return getPath('gameplay/characters/$folder/$script.hscript', BINARY, library);
+			else if (FileSystem.exists(getPath('gameplay/characters/$folder/$script.hx', BINARY, library)))
+				return getPath('gameplay/characters/$folder/$script.hx', BINARY, library);
 			#end
 			else
 				return null;
 		}
 		else
 		{
-			if (OpenFlAssets.exists(getPath('scripts/$folder/$script.hscript', BINARY, library)))
-				return getPath('scripts/$folder/$script.hscript', BINARY, library);
-			else if (OpenFlAssets.exists(getPath('scripts/$folder/$script.hx', BINARY, library)))
-				return getPath('scripts/$folder/$script.hx', BINARY, library);
+			if (OpenFlAssets.exists(getPath('gameplay/scripts/$folder/$script.hscript', BINARY, library)))
+				return getPath('gameplay/scripts/$folder/$script.hscript', BINARY, library);
+			else if (OpenFlAssets.exists(getPath('gameplay/scripts/$folder/$script.hx', BINARY, library)))
+				return getPath('gameplay/scripts/$folder/$script.hx', BINARY, library);
 			#if FEATURE_FILESYSTEM
-			else if (FileSystem.exists(getPath('scripts/$folder/$script.hscript', BINARY, library)))
-				return getPath('scripts/$folder/$script.hscript', BINARY, library);
-			else if (FileSystem.exists(getPath('scripts/$folder/$script.hx', BINARY, library)))
-				return getPath('scripts/$folder/$script.hx', BINARY, library);
+			else if (FileSystem.exists(getPath('gameplay/scripts/$folder/$script.hscript', BINARY, library)))
+				return getPath('gameplay/scripts/$folder/$script.hscript', BINARY, library);
+			else if (FileSystem.exists(getPath('gameplay/scripts/$folder/$script.hx', BINARY, library)))
+				return getPath('gameplay/scripts/$folder/$script.hx', BINARY, library);
 			#end
 			else
 				return null;

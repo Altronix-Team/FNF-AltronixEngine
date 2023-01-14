@@ -17,10 +17,8 @@ class NoteSplash extends FlxSprite
     {
 		super(x, y);
 
-		if (OpenFlAssets.exists(Paths.image("notesplashes/" + NoteskinHelpers.getNoteskinByID(Main.save.data.noteskin), 'shared')))
+		if (OpenFlAssets.exists(Paths.image("notesplashes/" + NoteskinHelpers.getNoteskinByID(Main.save.data.noteskin))))
 			curNoteskinSprite = NoteskinHelpers.getNoteskinByID(Main.save.data.noteskin);
-		/*else if (noteType != null && OpenFlAssets.exists(Paths.image("notesplashes/" + noteType, 'shared')))
-			curNoteskinSprite = noteType;*/
 		else
 			curNoteskinSprite = 'Default';
 
@@ -50,7 +48,7 @@ class NoteSplash extends FlxSprite
 			texture = note.noteSplashTexture;
 		}
 
-		if (!OpenFlAssets.exists(Paths.image("notesplashes/" + texture, 'shared')))
+		if (!OpenFlAssets.exists(Paths.image("notesplashes/" + texture)))
 			texture = curNoteskinSprite;
 
 		if(textureLoaded != texture)
@@ -67,12 +65,12 @@ class NoteSplash extends FlxSprite
 	{
 		if (states.PlayState.isPixel)
 		{
-			if (OpenFlAssets.exists(Paths.image('notesplashes/' + skin + '-pixel', 'shared')))
+			if (OpenFlAssets.exists(Paths.image('notesplashes/' + skin + '-pixel')))
 			{
-				loadGraphic(Paths.loadImage('notesplashes/' + skin + '-pixel', 'shared'));
+				loadGraphic(Paths.loadImage('notesplashes/' + skin + '-pixel'));
 				width = width / 8;
 				height = height / 4;
-				loadGraphic(Paths.loadImage('notesplashes/' + skin + '-pixel', 'shared'), true, Math.floor(width), Math.floor(height));
+				loadGraphic(Paths.loadImage('notesplashes/' + skin + '-pixel'), true, Math.floor(width), Math.floor(height));
 
 				antialiasing = false;
 				setGraphicSize(Std.int(width * CoolUtil.daPixelZoom));
@@ -88,10 +86,10 @@ class NoteSplash extends FlxSprite
 			}
 			else
 			{
-				loadGraphic(Paths.loadImage('notesplashes/Default-pixel', 'shared'));
+				loadGraphic(Paths.loadImage('notesplashes/Default-pixel'));
 				width = width / 8;
 				height = height / 4;
-				loadGraphic(Paths.loadImage('notesplashes/Default-pixel', 'shared'), true, Math.floor(width), Math.floor(height));
+				loadGraphic(Paths.loadImage('notesplashes/Default-pixel'), true, Math.floor(width), Math.floor(height));
 
 				antialiasing = false;
 				setGraphicSize(Std.int(width * CoolUtil.daPixelZoom));
@@ -108,7 +106,7 @@ class NoteSplash extends FlxSprite
 		}
 		else
 		{
-			frames = Paths.getSparrowAtlas("notesplashes/" + skin, 'shared');
+			frames = Paths.getSparrowAtlas("notesplashes/" + skin);
 			for (i in 1...3) {
 				animation.addByPrefix("note1-" + i, "note splash blue " + i, 24, false);
 				animation.addByPrefix("note2-" + i, "note splash green " + i, 24, false);

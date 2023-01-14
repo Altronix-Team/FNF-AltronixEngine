@@ -70,7 +70,7 @@ class WeekData {
 
 		var sexList:Array<String> = listWeeks();
 		for (i in 0...sexList.length) {
-			var fileToCheck:String = 'assets/weeks/' + sexList[i] + '.json';
+			var fileToCheck:String = Paths.json('weeks/${sexList[i]}', 'gameplay');
 			if(!weeksLoaded.exists(sexList[i])) {
 				var week:WeekFile = getWeekFile(fileToCheck);
 				if(week != null) {
@@ -106,7 +106,8 @@ class WeekData {
 	 */
 	static function listWeeksInPath(path:String)
 		{
-			var dataAssets = OpenFlAssets.list(TEXT);
+			var library = OpenFlAssets.getLibrary("gameplay");
+			var dataAssets = library.list(null);
 	
 			var queryPath = '${path}';
 	
@@ -114,6 +115,8 @@ class WeekData {
 	
 			for (data in dataAssets)
 			{
+				if (data.contains("/assets/")) continue;
+
 				if (data.indexOf(queryPath) != -1 && data.endsWith('.json')
 					 && !results.contains(data.substr(data.indexOf(queryPath) + queryPath.length).replaceAll('.json', '')))
 				{
@@ -122,7 +125,6 @@ class WeekData {
 						results.push(data.substr(suffixPos).replaceAll('.json', ''));
 				}
 			}
-	
 			return results;
 		}
 

@@ -10,7 +10,7 @@ function startCutscene()
 	PlayState.inCutscene = true;
 	
 	var tankman:FlxSprite = new FlxSprite(dad.x, dad.y);
-	tankman.frames = Paths.getSparrowAtlas('cutscenes/' + songName);
+	tankman.frames = Paths.getSparrowAtlas('weeks/assets/week7/images/cutscenes/' + songName,"gameplay");
 	tankman.antialiasing = Main.save.data.antialiasing;
 	cutsceneHandler.push(tankman);
 	PlayState.instance.insert(PlayState.instance.members.indexOf(dadGroup) + 1, tankman);
@@ -42,11 +42,12 @@ function startCutscene()
     PlayState.instance.camFollow.setPosition(dad.x + 280, dad.y + 170);
 
     cutsceneHandler.endTime = 11.5;
-	cutsceneHandler.music = 'DISTORTO';
+	cutsceneHandler.music = 'weeks/assets/week7/music/DISTORTO';
+	cutsceneHandler.assetLibrary = 'gameplay';
 	tankman.x += 40;
 	tankman.y += 10;
 	
-	var tightBars:FlxSound = new FlxSound().loadEmbedded(Paths.sound('tankSong2'));
+	var tightBars:FlxSound = new FlxSound().loadEmbedded(Paths.getPath('weeks/assets/week7/sounds/tankSong2.' + Paths.SOUND_EXT, "SOUND", "gameplay"));
 	FlxG.sound.list.add(tightBars);
 	cutsceneHandler.sounds.push(tightBars);
 

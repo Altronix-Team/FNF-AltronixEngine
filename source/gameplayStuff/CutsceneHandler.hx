@@ -17,6 +17,7 @@ class CutsceneHandler extends FlxBasic
 	public var endTime:Float = 0;
 	public var objects:Array<FlxSprite> = [];
 	public var music:String = null;
+	public var assetLibrary:String = "gameplay";
 	public var sounds:Array<FlxSound> = [];
 	public var tweens:Array<FlxTween> = [];
 	public function new()
@@ -27,7 +28,7 @@ class CutsceneHandler extends FlxBasic
 		{
 			if(music != null)
 			{
-				FlxG.sound.playMusic(Paths.music(music), 0, false);
+				FlxG.sound.playMusic(Paths.getPath(music + '.${Paths.SOUND_EXT}', MUSIC, assetLibrary), 0, false);
 				FlxG.sound.music.fadeIn();
 			}
 			if(onStart != null) onStart();

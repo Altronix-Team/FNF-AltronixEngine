@@ -283,7 +283,7 @@ class AssetsUtil
 
 	static private function loadJSON(key:String, ?library:String):Dynamic
 	{
-		var rawJson = OpenFlAssets.getText(Paths.json(key, library)).trim();
+		var rawJson = OpenFlAssets.getText(Paths.json(key, library)).trim().replace("\uFEFF", "");
 
 		// Perform cleanup on files that have bad data at the end.
 		while (!rawJson.endsWith("}"))
@@ -299,8 +299,7 @@ class AssetsUtil
 		catch (e)
 		{
 			Debug.logError("AN ERROR OCCURRED parsing a JSON file.");
-			Debug.logError(e.message);
-			Debug.logError(e.stack);
+			Debug.logError(e.details());
 
 			// Return null.
 			return null;

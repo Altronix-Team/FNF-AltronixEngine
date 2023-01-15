@@ -19,8 +19,17 @@ import states.PlayState;
 
 class Paths
 {
-	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
+	public static var SOUND_EXT(get, null):String = #if web "mp3" #else "ogg" #end;
 	inline public static var VIDEO_EXT = "mp4";
+
+	static function get_SOUND_EXT():String
+	{
+		#if web 
+		return "mp3"; 
+		#else 
+		return "ogg"; 
+		#end
+	}
 
 	static var currentLevel:String;
 

@@ -37,7 +37,7 @@ class AtlasFrameMaker extends FlxFramesCollection
 		* @param   _excludeArray       Use this to only create selected animations. Keep null to create all of them.
 		*
 	 */
-	public static function construct(key:String, ?_excludeArray:Array<String> = null, ?noAntialiasing:Bool = false):FlxFramesCollection
+	public static function construct(key:String, ?library:String = "core", ?_excludeArray:Array<String> = null, ?noAntialiasing:Bool = false):FlxFramesCollection
 	{
 		// widthoffset = _widthoffset;
 		// heightoffset = _heightoffset;
@@ -45,16 +45,16 @@ class AtlasFrameMaker extends FlxFramesCollection
 		var frameCollection:FlxFramesCollection;
 		var frameArray:Array<Array<FlxFrame>> = [];
 
-		if (openfl.Assets.exists(Paths.getPath('images/$key/spritemap1.json', TEXT)))
+		if (openfl.Assets.exists(Paths.getPath('images/$key/spritemap1.json', TEXT, library)))
 		{
 			Debug.displayAlert('Error with $key spritemap', "Only Spritemaps made with Adobe Animate 2018 are supported");
 			return null;
 		}
 
-		var animationData:AnimationData = Json.parse(AssetsUtil.loadAsset('images/$key/Animation.json', TEXT));
-		var atlasData:AtlasData = Json.parse(AssetsUtil.loadAsset('images/$key/spritemap.json', TEXT).replace("\uFEFF", ""));
+		var animationData:AnimationData = AssetsUtil.loadAsset((key.contains('images/') ? '' : 'images/') + '$key/Animation', JSON, library);
+		var atlasData:AtlasData = AssetsUtil.loadAsset((key.contains('images/') ? '' : 'images/') + '$key/spritemap', JSON, library);
 
-		var graphic:FlxGraphic = AssetsUtil.loadAsset('$key/spritemap', IMAGE);
+		var graphic:FlxGraphic = AssetsUtil.loadAsset('$key/spritemap', IMAGE, library);
 		var ss:SpriteAnimationLibrary = new SpriteAnimationLibrary(animationData, atlasData, graphic.bitmap);
 		var t:SpriteMovieClip = ss.createAnimation(noAntialiasing);
 		if (_excludeArray == null)

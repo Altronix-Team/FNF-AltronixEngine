@@ -714,18 +714,11 @@ class Song
 		return FlxSort.byValues(FlxSort.ASCENDING, CoolUtil.truncateFloat(Obj1.position, 3), CoolUtil.truncateFloat(Obj2.position, 3));
 	}
 
-	public static function picospeakerLoad(jsonInput:String, ?folder:String):SongData
+	public static function picospeakerLoad():SongData
 	{
-		var folderLowercase = StringTools.replace(folder, " ", "-").toLowerCase();
+		var rawJson = Paths.loadJSON('songs/stress/picospeaker', 'gameplay');
 	
-		var rawJson = OpenFlAssets.getText(Paths.json('songs/' + folderLowercase + '/' + jsonInput.toLowerCase(), 'gameplay')).trim();
-	
-		while (!rawJson.endsWith("}"))
-		{
-			rawJson = rawJson.substr(0, rawJson.length - 1);
-		}
-	
-		var swagShit:SongData = cast Json.parse(rawJson).song;
+		var swagShit:SongData = (cast rawJson).song;
 		swagShit.validScore = true;
 		return swagShit;
 	}

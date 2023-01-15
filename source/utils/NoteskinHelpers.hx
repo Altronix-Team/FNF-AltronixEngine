@@ -18,9 +18,9 @@ class NoteskinHelpers
 		noteskinArray = [];
 		for (i in AssetsUtil.listAssetsInPath('noteskins/', IMAGE))
 		{
-			if (OpenFlAssets.exists(Paths.json('images/noteskins/${i.replace(".png", "")}', 'shared')))
+			if (OpenFlAssets.exists(Paths.json('images/noteskins/${i.replace(".png", "")}', 'core')))
 			{
-				var noteMetaData:NoteMeta = cast Paths.loadJSON('images/noteskins/${i.replace(".png", "")}', 'shared');
+				var noteMetaData:NoteMeta = cast Paths.loadJSON('images/noteskins/${i.replace(".png", "")}', 'core');
 				if (!noteMetaData.listInSettings)
 					continue;
 			}			

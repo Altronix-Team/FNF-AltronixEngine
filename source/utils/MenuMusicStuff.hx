@@ -8,7 +8,7 @@ class MenuMusicStuff
 	public static function updateMusic()
 	{
 		musicArray = [];
-		for (i in AssetsUtil.listAssetsInPath('assets/music/', MUSIC))
+		for (i in AssetsUtil.listAssetsInPath('core/music/', MUSIC))
 		{
 			var str = i.replaceAll('.ogg', '').replaceAll('.mp3', '');
 			if (!musicArray.contains(str))

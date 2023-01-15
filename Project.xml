@@ -69,15 +69,14 @@
 	<section if="PRELOAD_ALL">
 		<library name="gameplay"	preload="true"/>
 		<library name="core"	preload="true"/>
+		<library name="scripts"	preload="true"/>
 	</section>
 	
 	<section if="NO_PRELOAD_ALL">
 		<library name="gameplay"	preload="false"/>
 		<library name="core"	preload="false"/>
+		<library name="scripts"	preload="false"/>
 	</section>
-	
-	<assets path="assets/gameplay"    library="gameplay"    exclude="*.ogg" if="web"/>
-	<assets path="assets/gameplay"    library="gameplay"    exclude="*.mp3" unless="web"/>
 	
 	<assets path="assets/core/locales" rename="locales" />
 	<assets path='example_mods' rename='mods' embed='false'/>
@@ -88,7 +87,27 @@
 	<section if="embedAssets">
 		<assets path="assets/core"
 						library="core"
-						embed="true" />
+						embed="true"
+						exclude="*.md|*.ogg"
+						if="web" />
+
+		<assets path="assets/core"
+						library="core"
+						embed="true"
+						exclude="*.md|*.mp3"
+						unless="web" />
+
+		<assets path="assets/gameplay"
+					    library="gameplay"
+						embed="true"    
+						exclude="*.ogg" 
+						if="web"/>
+
+		<assets path="assets/gameplay"
+					    library="gameplay"
+						embed="true"    
+						exclude="*.mp3" 
+						unless="web"/>
 						
 		<assets path="assets/gameplay/scripts"
 						library="scripts"
@@ -106,12 +125,34 @@
 	<section unless="embedAssets">
 		<assets path="assets/core"
 						library="core"
-						embed="false" />
+						embed="false"
+						exclude="*.md|*.ogg"
+						if="web" />
+
+		<assets path="assets/core"
+						library="core"
+						embed="false"
+						exclude="*.md|*.mp3"
+						unless="web" />
+
+		<assets path="assets/gameplay"
+					    library="gameplay"
+						embed="false"    
+						exclude="*.ogg" 
+						if="web"/>
+
+		<assets path="assets/gameplay"
+					    library="gameplay"
+						embed="false"    
+						exclude="*.mp3" 
+						unless="web"/>
+
 		<assets path="assets/gameplay/scripts"
 						library="scripts"
 						embed="false"
 						exclude="*.md|*.ogg"
 						if="web" />
+
 		<assets path="assets/gameplay/scripts"
 						library="scripts"
 						embed="false"

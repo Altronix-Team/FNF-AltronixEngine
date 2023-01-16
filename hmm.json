@@ -92,10 +92,8 @@
     },
     {
       "name": "polymod",
-      "type": "git",
-      "dir": null,
-      "ref": "feature/blacklist",
-      "url": "https://github.com/AltronMaxX/polymod"
+      "type": "haxelibt",
+      "version": 1.7.0
     },
     {
       "name": "yaml",

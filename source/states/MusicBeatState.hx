@@ -33,6 +33,11 @@ class MusicBeatState extends BaseState implements gameplayStuff.Conductor.IMusic
 
 	override function destroy()
 	{
+		Main.fnfSignals.beatHit.remove(_beatHit);
+		Main.fnfSignals.sectionHit.remove(_sectionHit);
+		Main.fnfSignals.stepHit.remove(_stepHit);
+		Main.fnfSignals.decimalBeatHit.remove(_decimalBeatHit);
+
 		Application.current.window.onFocusOut.remove(onWindowFocusOut);
 		Application.current.window.onFocusIn.remove(onWindowFocusIn);
 		super.destroy();
@@ -77,6 +82,11 @@ class MusicBeatState extends BaseState implements gameplayStuff.Conductor.IMusic
 				Main.save.data.laneTransparency = 1;
 		}
 
+		Main.fnfSignals.beatHit.add(_beatHit);
+		Main.fnfSignals.sectionHit.add(_sectionHit);
+		Main.fnfSignals.stepHit.add(_stepHit);
+		Main.fnfSignals.decimalBeatHit.add(_decimalBeatHit);
+
 		Application.current.window.onFocusIn.add(onWindowFocusIn);
 		Application.current.window.onFocusOut.add(onWindowFocusOut);
 		TimingStruct.clearTimings();
@@ -93,8 +103,6 @@ class MusicBeatState extends BaseState implements gameplayStuff.Conductor.IMusic
 		if (transIn != null)
 			trace('reg ' + transIn.region);
 
-		Conductor.MusicBeatInterface = this;
-
 		super.create();
 	}
 
@@ -110,7 +118,7 @@ class MusicBeatState extends BaseState implements gameplayStuff.Conductor.IMusic
 		#end
 
 		super.update(elapsed);
-	}
+	};
 
 	public static function switchState(nextState:FlxState) 
 	{
@@ -134,19 +142,19 @@ class MusicBeatState extends BaseState implements gameplayStuff.Conductor.IMusic
 	{
 		/*if (curStep % 4 == 0)
 			beatHit();*/
-		ScriptHelper.stepHit();
+		ScriptHelper.stepHit(curStep);
 	}
 
 	public function beatHit():Void
 	{
 		//beatHit
-		ScriptHelper.beatHit();
+		ScriptHelper.beatHit(curBeat);
 	}
 
 	public function sectionHit():Void
 	{
 		//Section Hit
-		ScriptHelper.sectionHit();
+		ScriptHelper.sectionHit(curSection);
 	}
 
 	public function fancyOpenURL(schmancy:String)
@@ -182,5 +190,28 @@ class MusicBeatState extends BaseState implements gameplayStuff.Conductor.IMusic
 			sound.resume();
 		});*/
 		FlxG.sound.music.resume();
+	}
+
+	private function _stepHit(step:Int):Void
+	{
+		curStep = step;
+		stepHit();
+	}
+
+	private function _beatHit(beat:Int):Void
+	{
+		curBeat = beat;
+		beatHit();
+	}
+
+	private function _sectionHit(section:SwagSection):Void
+	{
+		curSection = section;
+		sectionHit();
+	}
+
+	private function _decimalBeatHit(beat:Float):Void
+	{
+		curDecimalBeat = beat;
 	}
 }

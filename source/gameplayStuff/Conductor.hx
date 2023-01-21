@@ -32,9 +32,6 @@ class Conductor
 
 	public static var bpmChangeMap:Array<BPMChangeEvent> = [];
 
-	public static var MusicBeatInterface:IMusicBeat;
-	//public static var MusicBeatInterfaces:Array<Class<IMusicBeat>> = listIntClasses();
-
 	private static var lastBeat:Float = 0;
 	private static var lastStep:Float = 0;
 	private static var lastSection:SwagSection = null;
@@ -107,22 +104,6 @@ class Conductor
 		trace("new BPM map BUDDY " + bpmChangeMap);
 	}
 
-	public static function recalculateTimingStruct(SONG:SongData)
-	{
-		for (i in SONG.eventObjects)
-		{
-			/*TimingStruct.addTiming(beat,bpm,endBeat, Std.parseFloat(OFFSET));
-
-				if (changeEvents.length != 0)
-				{
-					var data = TimingStruct.AllTimings[currentIndex - 1];
-					data.endBeat = beat;
-					data.length = (data.endBeat - data.startBeat) / (data.bpm / 60);
-					TimingStruct.AllTimings[currentIndex].startTime = data.startTime + data.length;
-			}*/
-		}
-	}
-
 	public static function changeBPM(newBpm:Float, ?recalcLength = true)
 	{
 		bpm = newBpm;
@@ -133,11 +114,6 @@ class Conductor
 
 	public static function updateSongPosition(elapsed:Float)
 	{
-		/*if (MusicBeatInterfaces.length == 0)
-		{
-			MusicBeatInterfaces = listIntClasses();
-		}*/
-
 		if (songPosition < 0)
 			curDecimalBeat = 0;
 		else
@@ -156,9 +132,7 @@ class Conductor
 				var startInMS = (data.startTime * 1000);
 
 				curDecimalBeat = data.startBeat + ((((songPosition / 1000)) - data.startTime) * (data.bpm / 60));
-				if (MusicBeatInterface != null)
-					MusicBeatInterface.curDecimalBeat = curDecimalBeat;
-				//setOnMusicBeatInterfaces('curDecimalBeat', curDecimalBeat);
+				Main.fnfSignals.decimalBeatHit.dispatch(curDecimalBeat);
 				var ste:Int = Math.floor(data.startStep + ((songPosition) - startInMS) / step);
 				if (ste >= 0)
 				{
@@ -185,9 +159,7 @@ class Conductor
 			else
 			{
 				curDecimalBeat = (((songPosition / 1000))) * (bpm / 60);
-				if (MusicBeatInterface != null)
-					MusicBeatInterface.curDecimalBeat = curDecimalBeat;
-				//setOnMusicBeatInterfaces('curDecimalBeat', curDecimalBeat);
+				Main.fnfSignals.decimalBeatHit.dispatch(curDecimalBeat);
 				var nextStep:Int = Math.floor((songPosition) / stepCrochet);
 				if (nextStep >= 0)
 				{
@@ -226,9 +198,6 @@ class Conductor
 		curSection = TimingStruct.getSectionByTime(songPosition);
 		if (lastSection != curSection)
 		{
-			if (MusicBeatInterface != null)
-				MusicBeatInterface.curSection = curSection;
-			//setOnMusicBeatInterfaces('curSection', curSection);
 			sectionHit();
 		}
 	}
@@ -237,69 +206,23 @@ class Conductor
 	{
 		lastBeat = curBeat;
 		curBeat = Math.floor(curStep / 4);
-		//setOnMusicBeatInterfaces('curBeat', curBeat);
-		if (MusicBeatInterface != null)
-			MusicBeatInterface.curBeat = curBeat;
 	}
 
 	public static function stepHit():Void
-	{
-		//setOnMusicBeatInterfaces('curStep', curStep);
-		//callOnMusicBeatInterfaces('stepHit');
-		if (MusicBeatInterface != null){
-		MusicBeatInterface.stepHit();
-		MusicBeatInterface.curStep = curStep;}
+	{	
+		Main.fnfSignals.stepHit.dispatch(curStep);
 		if (curStep % 4 == 0)
 			beatHit();
 	}
 
 	public static function beatHit():Void
 	{
-		//callOnMusicBeatInterfaces('beatHit');
-		if (MusicBeatInterface != null)
-			MusicBeatInterface.beatHit();
+		Main.fnfSignals.beatHit.dispatch(curBeat);
 	}
 
 	public static function sectionHit():Void
 	{
-		//callOnMusicBeatInterfaces('sectionHit');
-		if (MusicBeatInterface != null)
-			MusicBeatInterface.sectionHit();
-	}
-
-	//it works but without callOnMusicBeatInterfaces, it`s peace of shit
-	public static function setOnMusicBeatInterfaces(variable:String, arg:Dynamic)
-	{
-		/*for (int in MusicBeatInterfaces)
-		{
-			try
-			{
-				Reflect.setProperty(int, variable, arg);
-			}
-			catch (e)
-			{
-				Debug.logError('Error with setting variable $variable: ${e.message} \n ${e.stack}');
-			}
-		}*/
-	}
-
-	//if it worked, it would be cool, but alas, it doesn't call the necessary functions.
-	public static function callOnMusicBeatInterfaces(func:String)
-	{
-		/*for (int in MusicBeatInterfaces)
-		{
-			try
-			{
-				var cl:IMusicBeat = Type.createEmptyInstance(int);
-				var functionField:Function = Reflect.field(cl, func);
-				Reflect.callMethod(cl, functionField, []);
-			}
-			catch (e)
-			{
-				Debug.logError('Error with calling function $func: ${e.message} \n ${e.stack}');
-				continue;
-			}
-		}*/
+		Main.fnfSignals.sectionHit.dispatch(curSection);
 	}
 }
 

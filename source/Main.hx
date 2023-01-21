@@ -1,5 +1,8 @@
 package;
 
+import openfl.utils.AssetLibrary;
+import cpp.vm.Gc;
+import openfl.utils.AssetCache;
 import states.HscriptableState.PolymodHscriptState;
 import lime.app.Application;
 import flixel.util.FlxColor;
@@ -20,7 +23,7 @@ import utils.EngineSave;
 import sys.io.Process;
 
 #if FEATURE_MODCORE
-import ModCore;
+import modding.ModCore;
 #end
 
 //TODO Altronix Engine start splash
@@ -55,8 +58,10 @@ class Main extends Sprite
 
 	public static final defaultWindowTitle:String = 'Friday Night Funkin\': Altronix Engine';
 
-	public static var compileTime:String = #if macro utils.MacroUtil.buildDate().toString() #else '' #end;
-	public static var gitCommitSha:String = #if macro utils.MacroUtil.buildGitCommitSha()#else '' #end;
+	public static var fnfSignals:FNFSignals = new FNFSignals();
+
+	//public static var compileTime:String = macro utils.MacroUtil.buildDate();
+	//public static var gitCommitSha:String = macro utils.MacroUtil.buildGitCommitSha();
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
 	// Ho-ho-ho, no
@@ -64,6 +69,8 @@ class Main extends Sprite
 	var modsToLoad = [];
 	public static var configFound = false;
 	public static var hscriptClasses:Array<String> = [];
+
+	var globalScripts:Array<scriptStuff.scriptBodies.GlobalScriptBody> = [];
 
 	public static function main():Void
 	{
@@ -157,6 +164,9 @@ class Main extends Sprite
 
 		game = new FlxGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash, save.data.fullscreenOnStart);
 		addChild(game);	
+		
+		FlxG.signals.preStateCreate.add(preStateSwitch);
+		FlxG.signals.postStateSwitch.add(postStateSwitch);
 
 		#if !mobile
 		//addChild(fpsCounter);
@@ -174,6 +184,28 @@ class Main extends Sprite
 
 		//setup automatic beat, step and section updates
 		gameplayStuff.Conductor.setupUpdates();
+
+		Lib.current.addEventListener(Event.ENTER_FRAME, function(_)
+		{
+			fnfSignals.update.dispatch(FlxG.elapsed);
+		});
+
+		//Global scripts
+		reloadGlobalScripts();
+	}
+
+	public function reloadGlobalScripts()
+	{
+		for (script in globalScripts)
+		{
+			script.destroy();
+		}
+
+		var filesToCheck:Array<String> = AssetsUtil.readLibrary("gameplay", HSCRIPT, "scripts/global/");
+		for (file in filesToCheck)
+		{
+			globalScripts.push(new scriptStuff.scriptBodies.GlobalScriptBody(file));
+		}
 	}
 
 	static final ERROR_REPORT_URL = "https://github.com/AltronMaxX/FNF-AltronixEngine";
@@ -351,4 +383,29 @@ class Main extends Sprite
 			Debug.logError('Failed to set save ' + e.details());
 			return false;}
 	}
+
+	private function preStateSwitch(newState:FlxState)
+	{
+		var cache = cast(Assets.cache, AssetCache);
+
+		dumpCache();
+
+		cache.clear();
+		#if cpp
+		Gc.run(true);
+		#else
+		openfl.system.System.gc();
+		#end
+	}
+
+	private function postStateSwitch()
+	{
+		#if cpp
+		Gc.run(true);
+		#else
+		openfl.system.System.gc();
+		#end
+		fpsCounter.clearMaxFPS();
+	}
+
 }

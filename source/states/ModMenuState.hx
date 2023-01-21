@@ -2,7 +2,7 @@ package states;
 
 import states.XMLLayoutState;
 import flixel.addons.ui.FlxUIButton;
-import ModCore;
+import modding.ModCore;
 import ModList;
 import flixel.addons.ui.interfaces.IFlxUIWidget;
 import states.Caching;

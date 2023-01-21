@@ -47,6 +47,11 @@ class MusicBeatSubstate extends FlxSubState implements IMusicBeat
 
 	override function destroy()
 	{
+		Main.fnfSignals.beatHit.remove(_beatHit);
+		Main.fnfSignals.sectionHit.remove(_sectionHit);
+		Main.fnfSignals.stepHit.remove(_stepHit);
+		Main.fnfSignals.decimalBeatHit.remove(_decimalBeatHit);
+		
 		Application.current.window.onFocusOut.remove(onWindowFocusOut);
 		Application.current.window.onFocusIn.remove(onWindowFocusIn);
 		super.destroy();
@@ -58,7 +63,11 @@ class MusicBeatSubstate extends FlxSubState implements IMusicBeat
 		Application.current.window.onFocusIn.add(onWindowFocusIn);
 		Application.current.window.onFocusOut.add(onWindowFocusOut);
 
-		Conductor.MusicBeatInterface = this;
+		Main.fnfSignals.beatHit.add(_beatHit);
+		Main.fnfSignals.sectionHit.add(_sectionHit);
+		Main.fnfSignals.stepHit.add(_stepHit);
+		Main.fnfSignals.decimalBeatHit.add(_decimalBeatHit);
+
 		super.create();
 	}
 
@@ -117,5 +126,28 @@ class MusicBeatSubstate extends FlxSubState implements IMusicBeat
 	{
 		Debug.logTrace("IM BACK!!!");
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(Main.save.data.fpsCap);
+	}
+
+	private function _stepHit(step:Int):Void
+	{
+		curStep = step;
+		stepHit();
+	}
+
+	private function _beatHit(beat:Int):Void
+	{
+		curBeat = beat;
+		beatHit();
+	}
+
+	private function _sectionHit(section:SwagSection):Void
+	{
+		curSection = section;
+		sectionHit();
+	}
+
+	private function _decimalBeatHit(beat:Float):Void
+	{
+		curDecimalBeat = beat;
 	}
 }

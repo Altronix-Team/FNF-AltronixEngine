@@ -755,12 +755,6 @@ class FreeplayState extends MusicBeatState
 		if (!openedPreview)
 			FlxG.sound.music.resume();
 	}
-
-	override function closeSubState()
-	{
-		Conductor.MusicBeatInterface = this;
-		super.closeSubState();
-	}
 } 
 typedef FreeplaySonglist =
 {

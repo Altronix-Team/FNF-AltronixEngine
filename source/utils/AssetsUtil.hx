@@ -64,6 +64,39 @@ class AssetsUtil
         }
     }
 
+	public static function readLibrary(library:String, type:AssetTypes = UNKNOWN, ?subfolders:String = ''):Array<String>
+	{
+		if (type == UNKNOWN || type == DIRECTORY)
+		{
+			Debug.logError("Can`t list this type");
+			return [];
+		}
+
+		var retVal = [];
+		var library = OpenFlAssets.getLibrary(library);
+		var files = library.list(AssetTypes.toOpenFlType(type).toString());
+
+		for (file in files)
+		{
+			if (file.contains(subfolders))
+			{
+				for (ext in AssetTypes.returnExts(type))
+				{
+					if (file.endsWith(ext))
+					{
+						var fileName = file.removeBefore(subfolders).removeAll(subfolders).removeAfter(".");
+						if (!retVal.contains(fileName))
+							retVal.push(fileName);
+					}
+					else continue;
+				}	
+			}
+			else continue;
+		}
+
+		return retVal;
+	}
+
 	static public function getSparrowAtlas(key:String, ?library:String = "core")
 	{
 		if (LanguageStuff.getSparrowAtlas(key) != null)

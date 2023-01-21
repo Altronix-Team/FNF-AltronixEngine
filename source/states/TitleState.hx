@@ -102,7 +102,7 @@ class TitleState extends MusicBeatState
 
 			Highscore.load();
 
-			NoteskinHelpers.updateNoteskins();
+			/*NoteskinHelpers.updateNoteskins();
 
 			MenuMusicStuff.updateMusic();
 
@@ -110,7 +110,7 @@ class TitleState extends MusicBeatState
 
 			LanguageStuff.initLanguages();
 
-			Achievements.listAllAchievements();
+			Achievements.listAllAchievements();*/
 
 			#if desktop
 			GameJoltAPI.leaderboardToggle = Main.save.data.toggleLeaderboard;

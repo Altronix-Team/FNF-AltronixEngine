@@ -168,4 +168,9 @@ class EngineFPS extends TextField
 
 		cacheCount = currentCount;
 	}
+
+	public function clearMaxFPS()
+	{
+		memoryTotal = 0;
+	}
 }

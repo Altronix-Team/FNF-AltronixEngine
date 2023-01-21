@@ -134,7 +134,7 @@ class FlxSoundTray extends Sprite
 	{
 		if (!Silent)
 		{
-			var sound = FlxAssets.getSound("assets/sounds/scrollMenu");
+			var sound = FlxAssets.getSound(Paths.sound('scrollMenu').removeAfter('.').replaceAll('.', ''));
 			if (sound != null)
 				FlxG.sound.load(sound).play();
 		}

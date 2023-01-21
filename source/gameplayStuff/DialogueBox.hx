@@ -20,6 +20,8 @@ class DialogueBox extends FlxSpriteGroup
 	public var dialogueBoxJson(default, set):DialogueBoxJson;
 	public var dialogueSound(default, set):String;
 	public var dialogue(default, set):DialogueJson;
+	
+	public var isPixel:Bool = false;
 
 	var curLine:DialogueLines = null;
 
@@ -246,7 +248,7 @@ class DialogueBox extends FlxSpriteGroup
 	function generateBoxSprite(json:DialogueBoxJson)
 	{
 		Debug.logInfo('Generating dialogue box sprite');
-		box.frames = Paths.getSparrowAtlas(json.image);
+		box.frames = FlxAtlasFrames.fromSparrow(Paths.file('ui/' + (isPixel ? 'pixel/' : 'normal/') + '${json.image}.png', 'core'), Paths.file('ui/' + (isPixel ? 'pixel/' : 'normal/') + '${json.image}.xml', 'core'));
 		for (anim in json.anims)
 		{
 			if (anim.animIndices.length > 0)

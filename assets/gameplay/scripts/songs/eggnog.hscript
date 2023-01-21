@@ -1,4 +1,18 @@
 var triggeredAlready = false;
+var lightsShutOff:FlxSound;
+
+function onCreate()
+{
+	if (isStoryMode)
+	{
+		lightsShutOff = new FlxSound().loadEmbedded(Paths.sound('Lights_Shut_off'));
+		FlxG.sound.list.add(lightsShutOff);
+		lightsShutOff.onComplete = function(){
+			PlayState.instance.blockSongEnd = false;
+			PlayState.instance.endSong();
+		};
+	}
+}
 
 function onUpdate(elapsed)
 {
@@ -33,9 +47,6 @@ function onEndSong()
 		PlayState.instance.add(blackShit);
 		camHUD.visible = false;
 
-		FlxG.sound.play(Paths.sound('Lights_Shut_off'), 1, false, null, true, onComplete: function(){
-			PlayState.instance.blockSongEnd = false;
-			PlayState.instance.endSong();
-		});
+		lightsShutOff.play(true);
 	}
 }

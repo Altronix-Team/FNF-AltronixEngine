@@ -1,5 +1,10 @@
 package;
 
+import modding.ModUtil;
+#if FEATURE_MULTITHREADING
+import sys.thread.Thread;
+import utils.ThreadUtil.ThreadObject;
+#end
 import openfl.utils.AssetLibrary;
 import cpp.vm.Gc;
 import openfl.utils.AssetCache;
@@ -71,6 +76,10 @@ class Main extends Sprite
 	public static var hscriptClasses:Array<String> = [];
 
 	var globalScripts:Array<scriptStuff.scriptBodies.GlobalScriptBody> = [];
+
+	#if FEATURE_MULTITHREADING
+	public static var gameThreads:Array<ThreadObject> = [];
+	#end
 
 	public static function main():Void
 	{
@@ -152,7 +161,7 @@ class Main extends Sprite
 			save.data.fullscreenOnStart = false;
 
 		#if FEATURE_MODCORE
-		modsToLoad = ModCore.getConfiguredMods();
+		modsToLoad = ModUtil.getConfiguredMods();
 		configFound = (modsToLoad != null && modsToLoad.length > 0);
 		if (configFound)
 			ModCore.loadConfiguredMods();
@@ -178,6 +187,14 @@ class Main extends Sprite
 
 		// Finish up loading debug tools.
 		Debug.onGameStart();
+
+		#if FEATURE_MULTITHREADING
+		gameThreads.push(new ThreadObject(true, "songLoader"));
+		for (i in 0...3)
+		{
+			gameThreads.push(new ThreadObject());
+		}
+		#end
 		/*#if debug
 		flixel.addons.studio.FlxStudio.create();
 		#end*/

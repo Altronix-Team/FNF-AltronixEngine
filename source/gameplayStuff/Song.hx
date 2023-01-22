@@ -248,344 +248,347 @@ class Song
 
 	public static function conversionChecks(song:SongData):SongData
 	{
-		var ba = song.bpm;
-
-		var index = 0;
-		//trace("conversion stuff " + song.songId + " " + song.notes.length);
-		var convertedStuff:Array<Song.EventsAtPos> = [];
-
-		if (song.eventsArray == null)
-		{	
-			//trace('song events is null, wtf');
-
-			var initBpm:EventsAtPos = 
-			{
-				position: 0,
-				events: []
-			};
-			var firstEvent:Song.EventObject = new Song.EventObject("Init BPM", song.bpm, "BPM Change");
-
-			initBpm.events.push(firstEvent);
-			song.eventsArray = [initBpm];
-		}
-
-		for (i in song.eventsArray)
-		{			
-			var pos = Reflect.field(i, "position");
-
-			var convertedPos:EventsAtPos =
-			{
-				position: pos,
-				events: []
-			};
-
-			for (j in i.events)
-			{
-				var name = Reflect.field(j, "name");
-				var type = Reflect.field(j, "type");
-				var value = Reflect.field(j, "value");
-
-				var event:Song.EventObject = new Song.EventObject(name, value, type);
-
-				convertedPos.events.push(event);
-			}
-
-			convertedStuff.push(convertedPos);
-		}
-			
-		song.eventsArray = convertedStuff;
-
-		var checkedPositions:Array<Float> = [];
-
-		for (i in song.eventsArray)
+		ThreadUtil.runReservedTask("songLoader",  function()
 		{
-			checkedPositions.push(i.position);
-		}
+			var ba = song.bpm;
 
-		if (song.eventObjects != null)
-		{
-			convertKadeEvents(song, checkedPositions);
-		}
+			var index = 0;
+			//trace("conversion stuff " + song.songId + " " + song.notes.length);
+			var convertedStuff:Array<Song.EventsAtPos> = [];
 
-		if (song.stage == null)
-		{
-			switch (song.songId)
-			{
-				case 'spookeez' | 'south' | 'monster':
-					song.stage = 'halloween';
-				case 'pico' | 'blammed' | 'philly':
-					song.stage = 'philly';
-				case 'milf' | 'satin-panties' | 'high':
-					song.stage = 'limo';
-				case 'cocoa' | 'eggnog':
-					song.stage = 'mall';
-				case 'winter-horrorland':
-					song.stage = 'mallEvil';
-				case 'senpai' | 'roses':
-					song.stage = 'school';
-				case 'thorns':
-					song.stage = 'schoolEvil';
-				case 'ugh' | 'guns' | 'stress':
-					song.stage = 'warzone';
-				default:
-					song.stage = 'stage';
-			}
-		}
+			if (song.eventsArray == null)
+			{	
+				//trace('song events is null, wtf');
 
-		if (song.noteStyle == null)
-			song.noteStyle = "normal";
-
-		if (song.gfVersion == null)
-		{
-			switch (song.stage)
-			{
-				case 'limo':
-					song.gfVersion = 'gf-car';
-				case 'mall' | 'mallEvil':
-					song.gfVersion = 'gf-christmas';
-				case 'school' | 'schoolEvil':
-					song.gfVersion = 'gf-pixel';
-				case 'warzone':
-					if (song.songId != 'stress')
-						song.gfVersion = 'gftank';
-					else
-						song.gfVersion = 'picospeaker';
-				default:
-					song.gfVersion = 'gf';
-			}
-		}
-
-		if (song.hideGF == null)
-			song.hideGF = false;
-
-		if (song.diffSoundAssets == null)
-			song.diffSoundAssets = false;
-
-		if (song.specialSongNoteSkin == null)
-			song.specialSongNoteSkin = Main.save.data.noteskin;
-
-		if (song.showbgdancers == null)
-			{
-				if (song.songId != 'senpai' && song.songId != 'roses')
-					song.showbgdancers = false;
-				else
+				var initBpm:EventsAtPos = 
 				{
-					song.showbgdancers = true;
-					if (song.songId == 'roses')
-						song.scaredbgdancers = true;
-				}
+					position: 0,
+					events: []
+				};
+				var firstEvent:Song.EventObject = new Song.EventObject("Init BPM", song.bpm, "BPM Change");
+
+				initBpm.events.push(firstEvent);
+				song.eventsArray = [initBpm];
 			}
 
-		TimingStruct.clearTimings();
+			for (i in song.eventsArray)
+			{			
+				var pos = Reflect.field(i, "position");
 
-		var currentIndex = 0;
-
-		for (i in song.eventsArray)
-		{
-			var beat:Float = i.position;
-
-			for (j in i.events)
-			{
-				switch (j.type)
+				var convertedPos:EventsAtPos =
 				{
-					case "BPM Change":
-						var endBeat:Float = Math.POSITIVE_INFINITY;
-
-						TimingStruct.addTiming(beat, j.value, endBeat, 0);
-
-						if (currentIndex != 0)
-						{
-							var data = TimingStruct.AllTimings[currentIndex - 1];
-							data.endBeat = beat;
-							data.length = (data.endBeat - data.startBeat) / (data.bpm / 60);
-							var step = ((60 / data.bpm) * 1000) / 4;
-							TimingStruct.AllTimings[currentIndex].startStep = Math.floor(((data.endBeat / (data.bpm / 60)) * 1000) / step);
-							TimingStruct.AllTimings[currentIndex].startTime = data.startTime + data.length;
-						}
-
-						currentIndex++;
-				}
-			}
-		}
-
-		if (song.events != null)
-		{
-			convertPsychEvents(song, checkedPositions);
-		}
-		
-		for (i in song.notes)
-		{
-			if (i.altAnim)
-				i.CPUAltAnim = i.altAnim;
-
-			var currentBeat = 4 * index;
-
-			var currentSeg = TimingStruct.getTimingAtBeat(currentBeat);
-
-			if (currentSeg == null)
-				continue;
-
-			var beat:Float = currentSeg.startBeat + (currentBeat - currentSeg.startBeat);
-
-			var start:Float = (currentBeat - currentSeg.startBeat) / (currentSeg.bpm / 60);
-
-			i.startTime = (currentSeg.startTime + start) * 1000;
-
-			if (index != 0)
-				song.notes[index - 1].endTime = i.startTime;
-			i.endTime = Math.POSITIVE_INFINITY;
-
-			if (i.changeBPM && i.bpm != ba)
-			{
-				ba = i.bpm;
-
-				var eventAtPos:EventsAtPos = 
-				{
-					position: beat,
-					events: [new Song.EventObject("FNF BPM Change " + index, i.bpm, "BPM Change")]
+					position: pos,
+					events: []
 				};
 
-				song.eventsArray.push(eventAtPos);
+				for (j in i.events)
+				{
+					var name = Reflect.field(j, "name");
+					var type = Reflect.field(j, "type");
+					var value = Reflect.field(j, "value");
+
+					var event:Song.EventObject = new Song.EventObject(name, value, type);
+
+					convertedPos.events.push(event);
+				}
+
+				convertedStuff.push(convertedPos);
+			}
+				
+			song.eventsArray = convertedStuff;
+
+			var checkedPositions:Array<Float> = [];
+
+			for (i in song.eventsArray)
+			{
+				checkedPositions.push(i.position);
 			}
 
-			for (ii in i.sectionNotes)
+			if (song.eventObjects != null)
 			{
-				//First of all, check is it psych engine event note
-				if (ii[1] == -1)
+				convertKadeEvents(song, checkedPositions);
+			}
+
+			if (song.stage == null)
+			{
+				switch (song.songId)
 				{
-					var eventBeat:Float = CoolUtil.truncateFloat(TimingStruct.getBeatFromTime(ii[0]), 3);
+					case 'spookeez' | 'south' | 'monster':
+						song.stage = 'halloween';
+					case 'pico' | 'blammed' | 'philly':
+						song.stage = 'philly';
+					case 'milf' | 'satin-panties' | 'high':
+						song.stage = 'limo';
+					case 'cocoa' | 'eggnog':
+						song.stage = 'mall';
+					case 'winter-horrorland':
+						song.stage = 'mallEvil';
+					case 'senpai' | 'roses':
+						song.stage = 'school';
+					case 'thorns':
+						song.stage = 'schoolEvil';
+					case 'ugh' | 'guns' | 'stress':
+						song.stage = 'warzone';
+					default:
+						song.stage = 'stage';
+				}
+			}
 
-					if (checkedPositions.contains(eventBeat))
+			if (song.noteStyle == null)
+				song.noteStyle = "normal";
+
+			if (song.gfVersion == null)
+			{
+				switch (song.stage)
+				{
+					case 'limo':
+						song.gfVersion = 'gf-car';
+					case 'mall' | 'mallEvil':
+						song.gfVersion = 'gf-christmas';
+					case 'school' | 'schoolEvil':
+						song.gfVersion = 'gf-pixel';
+					case 'warzone':
+						if (song.songId != 'stress')
+							song.gfVersion = 'gftank';
+						else
+							song.gfVersion = 'picospeaker';
+					default:
+						song.gfVersion = 'gf';
+				}
+			}
+
+			if (song.hideGF == null)
+				song.hideGF = false;
+
+			if (song.diffSoundAssets == null)
+				song.diffSoundAssets = false;
+
+			if (song.specialSongNoteSkin == null)
+				song.specialSongNoteSkin = Main.save.data.noteskin;
+
+			if (song.showbgdancers == null)
+				{
+					if (song.songId != 'senpai' && song.songId != 'roses')
+						song.showbgdancers = false;
+					else
 					{
-						for (i in song.eventsArray)
-						{
-							if (i.position == eventBeat)
+						song.showbgdancers = true;
+						if (song.songId == 'roses')
+							song.scaredbgdancers = true;
+					}
+				}
+
+			TimingStruct.clearTimings();
+
+			var currentIndex = 0;
+
+			for (i in song.eventsArray)
+			{
+				var beat:Float = i.position;
+
+				for (j in i.events)
+				{
+					switch (j.type)
+					{
+						case "BPM Change":
+							var endBeat:Float = Math.POSITIVE_INFINITY;
+
+							TimingStruct.addTiming(beat, j.value, endBeat, 0);
+
+							if (currentIndex != 0)
 							{
-								var eventType:String;
+								var data = TimingStruct.AllTimings[currentIndex - 1];
+								data.endBeat = beat;
+								data.length = (data.endBeat - data.startBeat) / (data.bpm / 60);
+								var step = ((60 / data.bpm) * 1000) / 4;
+								TimingStruct.AllTimings[currentIndex].startStep = Math.floor(((data.endBeat / (data.bpm / 60)) * 1000) / step);
+								TimingStruct.AllTimings[currentIndex].startTime = data.startTime + data.length;
+							}
 
-								switch (ii[2])
+							currentIndex++;
+					}
+				}
+			}
+
+			if (song.events != null)
+			{
+				convertPsychEvents(song, checkedPositions);
+			}
+			
+			for (i in song.notes)
+			{
+				if (i.altAnim)
+					i.CPUAltAnim = i.altAnim;
+
+				var currentBeat = 4 * index;
+
+				var currentSeg = TimingStruct.getTimingAtBeat(currentBeat);
+
+				if (currentSeg == null)
+					continue;
+
+				var beat:Float = currentSeg.startBeat + (currentBeat - currentSeg.startBeat);
+
+				var start:Float = (currentBeat - currentSeg.startBeat) / (currentSeg.bpm / 60);
+
+				i.startTime = (currentSeg.startTime + start) * 1000;
+
+				if (index != 0)
+					song.notes[index - 1].endTime = i.startTime;
+				i.endTime = Math.POSITIVE_INFINITY;
+
+				if (i.changeBPM && i.bpm != ba)
+				{
+					ba = i.bpm;
+
+					var eventAtPos:EventsAtPos = 
+					{
+						position: beat,
+						events: [new Song.EventObject("FNF BPM Change " + index, i.bpm, "BPM Change")]
+					};
+
+					song.eventsArray.push(eventAtPos);
+				}
+
+				for (ii in i.sectionNotes)
+				{
+					//First of all, check is it psych engine event note
+					if (ii[1] == -1)
+					{
+						var eventBeat:Float = CoolUtil.truncateFloat(TimingStruct.getBeatFromTime(ii[0]), 3);
+
+						if (checkedPositions.contains(eventBeat))
+						{
+							for (i in song.eventsArray)
+							{
+								if (i.position == eventBeat)
 								{
-									case 'Add Camera Zoom':
-										eventType = 'Camera zoom';
-									case 'Change Scroll Speed':
-										eventType = 'Scroll Speed Change';
-									case 'Alt Idle Animation':
-										eventType = 'Toggle Alt Idle';
-									case 'Play Animation':
-										eventType = 'Character play animation';
-									default:
-										eventType = ii[2];
+									var eventType:String;
+
+									switch (ii[2])
+									{
+										case 'Add Camera Zoom':
+											eventType = 'Camera zoom';
+										case 'Change Scroll Speed':
+											eventType = 'Scroll Speed Change';
+										case 'Alt Idle Animation':
+											eventType = 'Toggle Alt Idle';
+										case 'Play Animation':
+											eventType = 'Character play animation';
+										default:
+											eventType = ii[2];
+									}
+
+									var eventValue:Dynamic = '';
+
+									if (ii[3] != '')
+									{
+										eventValue = ii[3];
+										if (ii[4] != '')
+											eventValue += ', ' + ii[4];
+									}
+
+									i.events.push(new Song.EventObject('Psych Event ' + eventBeat, eventValue, eventType));
 								}
-
-								var eventValue:Dynamic = '';
-
-								if (ii[3] != '')
-								{
-									eventValue = ii[3];
-									if (ii[4] != '')
-										eventValue += ', ' + ii[4];
-								}
-
-								i.events.push(new Song.EventObject('Psych Event ' + eventBeat, eventValue, eventType));
 							}
 						}
-					}
-					else
-					{
-						var eventAtPos:Song.EventsAtPos = {
-							position: eventBeat,
-							events: []
-						};
-						var eventType:String;
-
-						switch (ii[2])
+						else
 						{
-							case 'Add Camera Zoom':
-								eventType = 'Camera zoom';
-							case 'Change Scroll Speed':
-								eventType = 'Scroll Speed Change';
-							case 'Alt Idle Animation':
-								eventType = 'Toggle Alt Idle';
-							case 'Play Animation':
-								eventType = 'Character play animation';
-							default:
-								eventType = ii[2];
+							var eventAtPos:Song.EventsAtPos = {
+								position: eventBeat,
+								events: []
+							};
+							var eventType:String;
+
+							switch (ii[2])
+							{
+								case 'Add Camera Zoom':
+									eventType = 'Camera zoom';
+								case 'Change Scroll Speed':
+									eventType = 'Scroll Speed Change';
+								case 'Alt Idle Animation':
+									eventType = 'Toggle Alt Idle';
+								case 'Play Animation':
+									eventType = 'Character play animation';
+								default:
+									eventType = ii[2];
+							}
+
+							var eventValue:Dynamic = '';
+
+							if (ii[3] != '')
+							{
+								eventValue = ii[3];
+								if (ii[4] != '')
+									eventValue += ', ' + ii[4];
+							}
+
+							checkedPositions.push(eventBeat);
+
+							eventAtPos.events.push(new Song.EventObject('Psych Event ' + eventBeat, eventValue, eventType));
+							song.eventsArray.push(eventAtPos);
 						}
-
-						var eventValue:Dynamic = '';
-
-						if (ii[3] != '')
-						{
-							eventValue = ii[3];
-							if (ii[4] != '')
-								eventValue += ', ' + ii[4];
-						}
-
-						checkedPositions.push(eventBeat);
-
-						eventAtPos.events.push(new Song.EventObject('Psych Event ' + eventBeat, eventValue, eventType));
-						song.eventsArray.push(eventAtPos);
+						i.sectionNotes.remove(ii);
 					}
-					i.sectionNotes.remove(ii);
-				}
 
-				if (Std.isOfType(ii[3], String))
-				{
-					if (ii[3] == 'Alt Animation')
+					if (Std.isOfType(ii[3], String))
 					{
-						ii[3] = true;
-						ii[4] = TimingStruct.getBeatFromTime(ii[0]);
+						if (ii[3] == 'Alt Animation')
+						{
+							ii[3] = true;
+							ii[4] = TimingStruct.getBeatFromTime(ii[0]);
+						}
+						else if (ii[3] == null || ii[3] == '')
+						{
+							ii[3] = false;
+							ii[4] = TimingStruct.getBeatFromTime(ii[0]);
+						}
+						else
+						{
+							ii[5] = ii[3];
+							ii[3] = false;
+							ii[4] = TimingStruct.getBeatFromTime(ii[0]);
+						}
 					}
-					else if (ii[3] == null || ii[3] == '')
+
+					if (ii[3] == null)
 					{
 						ii[3] = false;
 						ii[4] = TimingStruct.getBeatFromTime(ii[0]);
 					}
-					else
+
+					if (ii[3] == 0)
+						ii[3] == false;
+
+					var gottaHitNote:Bool = true;
+
+					if (ii[1] > 3 && i.mustHitSection)
+						gottaHitNote = false;
+					else if (ii[1] < 4 && (!i.mustHitSection || i.gfSection))
+						gottaHitNote = false;
+
+					var altNote = ((i.altAnim || i.CPUAltAnim) && !gottaHitNote) || (i.playerAltAnim && gottaHitNote);
+
+					if (altNote != ii[3])
 					{
-						ii[5] = ii[3];
-						ii[3] = false;
-						ii[4] = TimingStruct.getBeatFromTime(ii[0]);
+						ii[3] = altNote;
 					}
+
+					if (ii[5] == null)
+						ii[5] = 'Default Note';
+
+					if (ii[6] == null || ii[6] == 0 || ii[6] == '' || ii[6] == '0')
+						ii[6] = song.noteStyle;
 				}
 
-				if (ii[3] == null)
-				{
-					ii[3] = false;
-					ii[4] = TimingStruct.getBeatFromTime(ii[0]);
-				}
-
-				if (ii[3] == 0)
-					ii[3] == false;
-
-				var gottaHitNote:Bool = true;
-
-				if (ii[1] > 3 && i.mustHitSection)
-					gottaHitNote = false;
-				else if (ii[1] < 4 && (!i.mustHitSection || i.gfSection))
-					gottaHitNote = false;
-
-				var altNote = ((i.altAnim || i.CPUAltAnim) && !gottaHitNote) || (i.playerAltAnim && gottaHitNote);
-
-				if (altNote != ii[3])
-				{
-					ii[3] = altNote;
-				}
-
-				if (ii[5] == null)
-					ii[5] = 'Default Note';
-
-				if (ii[6] == null || ii[6] == 0 || ii[6] == '' || ii[6] == '0')
-					ii[6] = song.noteStyle;
+				index++;
 			}
 
-			index++;
-		}
+			song.eventsArray.sort(sortByBeat);
 
-		song.eventsArray.sort(sortByBeat);
+			song.chartVersion = latestChart;
 
-		song.chartVersion = latestChart;
-
+		});
 		return song;
 	}
 

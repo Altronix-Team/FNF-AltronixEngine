@@ -1,35 +1,35 @@
 package states;
 
-import gameplayStuff.Character;
-import gameplayStuff.PlayStateChangeables;
-import openfl.utils.Future;
-import openfl.media.Sound;
-import flixel.system.FlxSound;
-#if FEATURE_FILESYSTEM
-import sys.FileSystem;
-import sys.io.File;
-#end
-import gameplayStuff.Song.SongData;
-import flixel.input.gamepad.FlxGamepad;
 import flash.text.TextField;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.input.gamepad.FlxGamepad;
 import flixel.math.FlxMath;
+import flixel.system.FlxSound;
 import flixel.text.FlxText;
-import openfl.Lib;
-import flixel.util.FlxColor;
 import flixel.tweens.FlxTween;
-import openfl.utils.Assets as OpenFlAssets;
-import gameplayStuff.SongMetadata;
-import gameplayStuff.HealthIcon;
-import gameplayStuff.Song;
-import gameplayStuff.DiffCalc;
-import gameplayStuff.Highscore;
-import gameplayStuff.DiffOverview;
+import flixel.util.FlxColor;
+import gameplayStuff.Character;
 import gameplayStuff.Conductor;
-
+import gameplayStuff.DiffCalc;
+import gameplayStuff.DiffOverview;
+import gameplayStuff.HealthIcon;
+import gameplayStuff.Highscore;
+import gameplayStuff.PlayStateChangeables;
+import gameplayStuff.Song.SongData;
+import gameplayStuff.Song;
+import gameplayStuff.SongMetadata;
+import openfl.Lib;
+import sys.thread.Lock;
+import openfl.media.Sound;
+import openfl.utils.Assets as OpenFlAssets;
+import openfl.utils.Future;
+#if FEATURE_FILESYSTEM
+import sys.FileSystem;
+import sys.io.File;
+#end
 
 class FreeplayState extends MusicBeatState
 {
@@ -54,6 +54,7 @@ class FreeplayState extends MusicBeatState
 	var intendedScore:Int = 0;
 	var combo:String = '';
 	var bg:FlxSprite;
+
 	public var freeplayBgColor:FlxColor;
 
 	private var grpSongs:FlxTypedGroup<Alphabet>;
@@ -61,7 +62,9 @@ class FreeplayState extends MusicBeatState
 
 	private var iconArray:Array<HealthIcon> = [];
 	private var bgColorArray:Array<Int> = [];
+
 	public var intendedColor:FlxColor;
+
 	var colorTween:FlxTween;
 
 	public static var openedPreview:Bool = false;
@@ -130,7 +133,9 @@ class FreeplayState extends MusicBeatState
 		add(bg);
 
 		if (!SongMetadata.preloaded)
+		{
 			populateSongData();
+		}
 
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);
@@ -187,7 +192,7 @@ class FreeplayState extends MusicBeatState
 		textBG.alpha = 0.6;
 		add(textBG);
 
-		//TODO localization
+		// TODO localization
 		#if PRELOAD_ALL
 		var leText:String = "Press SPACE to display the Song / Press 7 to go to the Charting Menu / Hold CTRL + Left/Right to toggle two players mode / Hold SHIFT + Left/Right to change the song rate";
 		var size:Int = 12;
@@ -244,7 +249,7 @@ class FreeplayState extends MusicBeatState
 			else
 			{
 				addWeek(week.weekSongs, week.weekID, week.weekChar, week.weekDiffs);
-			}			
+			}
 		}
 		SongMetadata.preloaded = true;
 	}
@@ -289,9 +294,9 @@ class FreeplayState extends MusicBeatState
 
 		if (CoolUtil.songDiffs.get(songId) == null)
 			CoolUtil.songDiffs.set(songId, diffsThatExist);
-		
+
 		meta.diffs = diffsThatExist;
-									
+
 		songData.set(songId, diffs);
 	}
 
@@ -301,7 +306,6 @@ class FreeplayState extends MusicBeatState
 		songs.push(meta);
 		checkExistDiffs(songName, meta, weekDiffs);
 	}
-
 
 	public static function addWeek(songs:Array<String>, weekNum:Int, songCharacters:Array<String>, weekDiffs:Array<String>)
 	{
@@ -326,6 +330,7 @@ class FreeplayState extends MusicBeatState
 	}
 
 	private static var vocals:FlxSound = null;
+
 	var instPlaying:Int = -1;
 
 	public static function destroyFreeplayVocals()
@@ -407,7 +412,6 @@ class FreeplayState extends MusicBeatState
 					if (songs.length > 1)
 						changeSelection(1);
 				}
-			
 
 				if (FlxG.keys.justPressed.SPACE)
 				{
@@ -491,11 +495,11 @@ class FreeplayState extends MusicBeatState
 				}
 				else if (charting)
 				{
-					destroyFreeplayVocals();	
+					destroyFreeplayVocals();
 					loadSong(true);
 				}
 			}
-		}	
+		}
 	}
 
 	function loadAnimDebug(dad:Bool = true)
@@ -522,18 +526,18 @@ class FreeplayState extends MusicBeatState
 	function loadSong(isCharting:Bool = false)
 	{
 		blockInput = true;
-		
+
 		loadSongInFreePlay(songs[curSelected].songName, curDifficulty, isCharting);
 
 		clean();
 	}
 
 	/**
- * Load into a song in free play, by name.
- * This is a static function, so you can call it anywhere.
- * @param songName The name of the song to load. Use the human readable name, with spaces.
- * @param isCharting If true, load into the Chart Editor instead.
- */
+	 * Load into a song in free play, by name.
+	 * This is a static function, so you can call it anywhere.
+	 * @param songName The name of the song to load. Use the human readable name, with spaces.
+	 * @param isCharting If true, load into the Chart Editor instead.
+	 */
 	public static function loadSongInFreePlay(songName:String, difficulty:Int, isCharting:Bool, reloadSong:Bool = false)
 	{
 		// Make sure song data is initialized first.
@@ -557,7 +561,7 @@ class FreeplayState extends MusicBeatState
 		catch (ex)
 		{
 			return;
-		}	
+		}
 
 		PlayState.SONG = currentSongData;
 		PlayState.storyDifficulty = CoolUtil.difficultyArray.indexOf(songs[curSelected].diffs[difficulty]);
@@ -580,8 +584,8 @@ class FreeplayState extends MusicBeatState
 
 	function changeDiff(change:Int = 0)
 	{
-		//if (!songs[curSelected].diffs.contains(CoolUtil.difficultyFromInt(curDifficulty + change)))
-			//return;
+		// if (!songs[curSelected].diffs.contains(CoolUtil.difficultyFromInt(curDifficulty + change)))
+		// return;
 
 		curDifficulty += change;
 
@@ -589,7 +593,7 @@ class FreeplayState extends MusicBeatState
 			curDifficulty = songs[curSelected].diffs.length - 1;
 		if (curDifficulty > songs[curSelected].diffs.length - 1)
 			curDifficulty = 0;
-		
+
 		// adjusting the highscore song name to be compatible (changeDiff)
 		var songHighscore = StringTools.replace(songs[curSelected].songName, " ", "-");
 		switch (songHighscore)
@@ -676,7 +680,6 @@ class FreeplayState extends MusicBeatState
 
 		diffText.text = CoolUtil.difficultyFromInt(CoolUtil.difficultyArray.indexOf(songs[curSelected].diffs[curDifficulty])).toUpperCase();
 
-
 		var hmm;
 		try
 		{
@@ -728,9 +731,9 @@ class FreeplayState extends MusicBeatState
 		}
 	}
 
-	public static function createEmptyFile():FreeplaySonglist {
-		var testWeek:SongsWithWeekId = 
-		{
+	public static function createEmptyFile():FreeplaySonglist
+	{
+		var testWeek:SongsWithWeekId = {
 			weekSongs: ['tutorial'],
 			weekChar: ['gf'],
 			weekID: 0,
@@ -755,7 +758,8 @@ class FreeplayState extends MusicBeatState
 		if (!openedPreview)
 			FlxG.sound.music.resume();
 	}
-} 
+}
+
 typedef FreeplaySonglist =
 {
 	var freeplaySonglist:Array<SongsWithWeekId>;

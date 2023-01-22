@@ -9,7 +9,8 @@
 		{
 			"name": "Debug",
 			"type": "lime",
-			"request": "launch"
+			"request": "launch",
+			"preLaunchTask": null
 		},
 		{
 			"name": "Macro",

@@ -1,5 +1,6 @@
 package states;
 
+import modding.ModUtil;
 import states.XMLLayoutState;
 import flixel.addons.ui.FlxUIButton;
 import modding.ModCore;
@@ -88,12 +89,12 @@ class ModMenuState extends XMLLayoutState
 		unloadedModsUI.cbAddToOtherList = loadedModsUI.addMod.bind();
 		loadedModsUI.cbAddToOtherList = unloadedModsUI.addMod.bind();
 
-		var modDatas = ModCore.getAllMods().filter(function(m)
+		var modDatas = ModUtil.getAllMods().filter(function(m)
 		{
 			return m != null;
 		});
 
-		var loadedModIds = ModCore.getConfiguredMods();
+		var loadedModIds = ModUtil.getConfiguredMods();
 
 		if (loadedModIds != null)
 		{

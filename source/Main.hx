@@ -75,7 +75,7 @@ class Main extends Sprite
 	public static var configFound = false;
 	public static var hscriptClasses:Array<String> = [];
 
-	var globalScripts:Array<scriptStuff.scriptBodies.GlobalScriptBody> = [];
+	//var globalScripts:Array<scriptStuff.scriptBodies.GlobalScriptBody> = [];
 
 	#if FEATURE_MULTITHREADING
 	public static var gameThreads:Array<ThreadObject> = [];
@@ -213,7 +213,7 @@ class Main extends Sprite
 
 	public function reloadGlobalScripts()
 	{
-		for (script in globalScripts)
+		/*for (script in globalScripts)
 		{
 			script.destroy();
 		}
@@ -222,7 +222,7 @@ class Main extends Sprite
 		for (file in filesToCheck)
 		{
 			globalScripts.push(new scriptStuff.scriptBodies.GlobalScriptBody(file));
-		}
+		}*/
 	}
 
 	static final ERROR_REPORT_URL = "https://github.com/AltronMaxX/FNF-AltronixEngine";

@@ -100,7 +100,7 @@ import scriptStuff.ScriptHelper;
 import openfl.filters.ShaderFilter;
 import Shaders;
 import gameplayStuff.Ratings;
-import scriptStuff.scriptBodies.*;
+//import scriptStuff.scriptBodies.*;
 import modding.ModCore;
 
 #if VIDEOS_ALLOWED
@@ -380,13 +380,13 @@ class PlayState extends MusicBeatState
 	var useDownscroll(default, set):Bool = false;
 
 	//Hscript groups
-	public static var noteScripts:Array<NoteScriptBody> = [];
+	//public static var noteScripts:Array<NoteScriptBody> = [];
 	/*public static var diffScripts:Array<DiffScriptBody> = [];
 	public static var characterScripts:Array<CharacterScriptBody> = [];
 	public static var eventScripts:Array<EventScriptBody> = [];
 	public static var songScripts:Array<SongScriptBody> = [];*/
 
-	public static var stageScript:StageScriptBody = null;
+	//public static var stageScript:StageScriptBody = null;
 
 	public function addObject(object:FlxBasic)
 	{
@@ -1112,11 +1112,55 @@ class PlayState extends MusicBeatState
 		
 		generateSong(SONG.songId);		
 
-		var filesToCheck:Array<String> = AssetsUtil.readLibrary("gameplay", HSCRIPT, "scripts/notes/");
+		#if desktop
+			var filesToCheck:Array<String> = AssetsUtil.listAssetsInPath('assets/gameplay/scripts/events/', HSCRIPT);
+			var filesPushed:Array<String> = [];
+			for (file in filesToCheck)
+			{
+				if(!filesPushed.contains(file))
+				{
+					if (OpenFlAssets.exists(Paths.getPath('scripts/events' + file, null, 'gameplay')))
+					{
+						ScriptHelper.hscriptFiles.push(new ModchartHelper(Paths.getPath('scripts/events' + file, null, 'gameplay'), this));
+						filesPushed.push(file);
+					}
+				}
+			}		
+
+			var filesToCheck:Array<String> = AssetsUtil.listAssetsInPath('assets/gameplay/scripts/notes/', HSCRIPT);
+			var filesPushed:Array<String> = [];
+			for (file in filesToCheck)
+			{
+				if(!filesPushed.contains(file))
+				{
+					if (OpenFlAssets.exists(Paths.getPath('scripts/notes' + file, null, 'gameplay')))
+					{
+						ScriptHelper.hscriptFiles.push(new ModchartHelper(Paths.getPath('scripts/notes' + file, null, 'gameplay'), this));
+						filesPushed.push(file);
+					}
+				}
+			}		
+
+			var filesToCheck:Array<String> = AssetsUtil.listAssetsInPath('assets/gameplay/scripts/difficulties/', HSCRIPT);
+			var filesPushed:Array<String> = [];
+			for (file in filesToCheck)
+			{
+				if (!filesPushed.contains(file))
+				{
+					if (OpenFlAssets.exists(Paths.getPath('scripts/difficulties' + file, null, 'gameplay')))
+					{
+						ScriptHelper.hscriptFiles.push(new ModchartHelper(Paths.getPath('scripts/difficulties' + file, null, 'gameplay'), this));
+						filesPushed.push(file);
+					}
+				}
+			}
+			#end
+
+		/*var filesToCheck:Array<String> = AssetsUtil.readLibrary("gameplay", HSCRIPT, "scripts/notes/");
 		for (file in filesToCheck)
 		{
 			noteScripts.push(new NoteScriptBody(file));
-		}
+		}*/
 
 		if (startTime != 0)
 		{
@@ -1357,7 +1401,7 @@ class PlayState extends MusicBeatState
 			});
 		}
 
-		//ScriptHelper.callOnScripts('onCreatePost', []);
+		ScriptHelper.callOnScripts('onCreatePost', []);
 	
 		// This allow arrow key to be detected by flixel. See https://github.com/HaxeFlixel/flixel/issues/2190
 		FlxG.keys.preventDefaultKeys = [];
@@ -2030,13 +2074,13 @@ class PlayState extends MusicBeatState
 	public function startCountdown():Void
 	{
 		if(startedCountdown) {
-			//ScriptHelper.callOnScripts('onStartCountdown', []);
+			ScriptHelper.callOnScripts('onStartCountdown', []);
 			return;
 		}
 
 		inCutscene = false;
 
-		//var ret:Dynamic = ScriptHelper.callOnScripts('onStartCountdown', []);
+		var ret:Dynamic = ScriptHelper.callOnScripts('onStartCountdown', []);
 		if(!blockCountdown) {
 			appearStaticArrows();
 
@@ -2048,9 +2092,9 @@ class PlayState extends MusicBeatState
 			Conductor.songPosition = 0;
 			Conductor.songPosition -= Conductor.crochet * 5;
 
-			//ScriptHelper.setOnScripts('startedCountdown', true);
+			ScriptHelper.setOnScripts('startedCountdown', true);
 
-			//ScriptHelper.callOnScripts('onCountdownStarted', []);
+			ScriptHelper.callOnScripts('onCountdownStarted', []);
 
 			if (FlxG.sound.music.playing)
 				FlxG.sound.music.stop();
@@ -2159,7 +2203,7 @@ class PlayState extends MusicBeatState
 
 				swagCounter += 1;
 
-				//ScriptHelper.callOnScripts('onCountdownTick', [swagCounter]);
+				ScriptHelper.callOnScripts('onCountdownTick', [swagCounter]);
 			}, 4);
 		}
 	}
@@ -2248,7 +2292,7 @@ class PlayState extends MusicBeatState
 
 		keys[data] = false;
 
-		//ScriptHelper.callOnScripts('onKeyRelease', [key]);
+		ScriptHelper.callOnScripts('onKeyRelease', [key]);
 	}
 
 	public var closestNotes:Array<Note> = [];
@@ -2397,7 +2441,7 @@ class PlayState extends MusicBeatState
 				ana.hitJudge = Ratings.judgeNote(noteDiff);
 				ana.nearestNote = [coolNote.strumTime, coolNote.noteData, coolNote.sustainLength];
 
-				//ScriptHelper.callOnScripts('onKeyPress', [key]);
+				ScriptHelper.callOnScripts('onKeyPress', [key]);
 			}
 			else if (dataNotesP2.length != 0 && PlayStateChangeables.twoPlayersMode)
 			{
@@ -2442,7 +2486,7 @@ class PlayState extends MusicBeatState
 
 				songStats.anaArray.push(ana);
 
-				//ScriptHelper.callOnScripts('onKeyPress', [key]);
+				ScriptHelper.callOnScripts('onKeyPress', [key]);
 			}
 		}
 		else if (!Main.save.data.ghost && songStarted)
@@ -2453,18 +2497,18 @@ class PlayState extends MusicBeatState
 			ana.nearestNote = [];
 			health -= 0.20;
 
-			//ScriptHelper.callOnScripts('noteMissPress', [key]);
+			ScriptHelper.callOnScripts('noteMissPress', [key]);
 		}
 	}
 
 	function startNextDialogue() {
 		dialogueCount++;
 
-		//ScriptHelper.callOnScripts('onNextDialogue', [dialogueCount]);
+		ScriptHelper.callOnScripts('onNextDialogue', [dialogueCount]);
 	}
 
 	function skipDialogue() {
-		//ScriptHelper.callOnScripts('onSkipDialogue', [dialogueCount]);
+		ScriptHelper.callOnScripts('onSkipDialogue', [dialogueCount]);
 	}
 
 	public var songStarted = false;
@@ -2574,9 +2618,9 @@ class PlayState extends MusicBeatState
 			add(skipText);
 		}
 
-		//ScriptHelper.setOnScripts('songLength', songLength);
+		ScriptHelper.setOnScripts('songLength', songLength);
 
-		//ScriptHelper.callOnScripts('onSongStart', []);
+		ScriptHelper.callOnScripts('onSongStart', []);
 
 		sectionHit();
 	}
@@ -2936,7 +2980,7 @@ class PlayState extends MusicBeatState
 
 			paused = false;
 
-			//ScriptHelper.callOnScripts('onResume', []);
+			ScriptHelper.callOnScripts('onResume', []);
 
 			#if desktop
 			if (startTimer != null){
@@ -3042,7 +3086,7 @@ class PlayState extends MusicBeatState
 
 	override public function update(elapsed:Float)
 	{		
-		//ScriptHelper.callOnScripts('onUpdate', [elapsed]);
+		ScriptHelper.callOnScripts('onUpdate', [elapsed]);
 
 		#if !debug
 		perfectMode = false;
@@ -3173,7 +3217,7 @@ class PlayState extends MusicBeatState
 			&& !cannotDie)
 		{
 
-			//var ret:Dynamic = ScriptHelper.callOnScripts('onPause', []);
+			var ret:Dynamic = ScriptHelper.callOnScripts('onPause', []);
 			if(!blockPause) {
 				persistentUpdate = false;
 				persistentDraw = true;
@@ -3469,7 +3513,7 @@ class PlayState extends MusicBeatState
 			if (!usedTimeTravel)
 			{
 
-				//var ret:Dynamic = ScriptHelper.callOnScripts('onGameOver', []);
+				var ret:Dynamic = ScriptHelper.callOnScripts('onGameOver', []);
 				if(!blockGameOver) {
 					isDead = true;
 					boyfriend.stunned = true;
@@ -3709,11 +3753,11 @@ class PlayState extends MusicBeatState
 					notes.remove(daNote, true);
 					daNote.destroy();
 
-					//ScriptHelper.callOnScripts('opponentNoteHit', [notes.members.indexOf(daNote), Math.abs(daNote.noteData), daNote.noteType, daNote.isSustainNote]);
-					for (script in noteScripts)
+					ScriptHelper.callOnScripts('opponentNoteHit', [notes.members.indexOf(daNote), Math.abs(daNote.noteData), daNote.noteType, daNote.isSustainNote]);
+					/*for (script in noteScripts)
 					{
 						script.opponentNoteHit(daNote);
-					}
+					}*/
 				}
 
 				if (!daNote.mustPress
@@ -3874,13 +3918,13 @@ class PlayState extends MusicBeatState
 
 		super.update(elapsed);
 
-		//ScriptHelper.setOnScripts('cameraX', camFollow.x);
-		//ScriptHelper.setOnScripts('cameraY', camFollow.y);
-		//ScriptHelper.setOnScripts('botPlay', PlayStateChangeables.botPlay);
+		ScriptHelper.setOnScripts('cameraX', camFollow.x);
+		ScriptHelper.setOnScripts('cameraY', camFollow.y);
+		ScriptHelper.setOnScripts('botPlay', PlayStateChangeables.botPlay);
 
-		//ScriptHelper.setOnScripts('curDecimalBeat', curDecimalBeat);
+		ScriptHelper.setOnScripts('curDecimalBeat', curDecimalBeat);
 
-		//ScriptHelper.callOnScripts('onUpdatePost', [elapsed]);
+		ScriptHelper.callOnScripts('onUpdatePost', [elapsed]);
 	}
 
 	public function addCharacterToList(newCharacter:String, type:Int) {
@@ -4119,7 +4163,7 @@ class PlayState extends MusicBeatState
 						if (split.length < 2)
 							split.push('');
 
-						//ScriptHelper.callOnScripts('onEvent', [eventType, split[0], split[1]]);
+						ScriptHelper.callOnScripts('onEvent', [eventType, split[0], split[1]]);
 				}
 		}
 
@@ -4472,7 +4516,7 @@ class PlayState extends MusicBeatState
 		if (Main.save.data.fpsCap > 290)
 			(cast(Lib.current.getChildAt(0), Main)).setFPSCap(290);
 
-		//var ret:Dynamic = ScriptHelper.callOnScripts('onEndSong', []);
+		var ret:Dynamic = ScriptHelper.callOnScripts('onEndSong', []);
 
 		canPause = false;
 		/*FlxG.sound.music.volume = 0;
@@ -5385,7 +5429,7 @@ class PlayState extends MusicBeatState
 					FlxFlicker.flicker(dad, 0.2, 0.05, true);
 				health += 0.02;
 
-				//ScriptHelper.callOnScripts('onAttack', []);
+				ScriptHelper.callOnScripts('onAttack', []);
 			}
 		}
 
@@ -5487,10 +5531,10 @@ class PlayState extends MusicBeatState
 			{
 
 				ScriptHelper.callOnScripts('noteMiss', [notes.members.indexOf(daNote), daNote.noteData, daNote.noteType, daNote.isSustainNote]);
-				for (script in noteScripts)
+				/*for (script in noteScripts)
 				{
 					script.noteMiss(daNote);
-				}
+				}*/
 			}
 
 			updateAccuracy();
@@ -5527,19 +5571,19 @@ class PlayState extends MusicBeatState
 			camFollow.y += gf.camPos[1] + girlfriendCameraOffset[1];
 			tweenCamIn();
 
-			//ScriptHelper.callOnScripts('onMoveCamera', ['gf']);
+			ScriptHelper.callOnScripts('onMoveCamera', ['gf']);
 			return;
 		}
 	
 		if (!curSection.mustHitSection)
 		{
 			moveCamera(true);
-			//ScriptHelper.callOnScripts('onMoveCamera', ['dad']);
+			ScriptHelper.callOnScripts('onMoveCamera', ['dad']);
 		}
 		else
 		{
 			moveCamera(false);
-			//ScriptHelper.callOnScripts('onMoveCamera', ['boyfriend']);
+			ScriptHelper.callOnScripts('onMoveCamera', ['boyfriend']);
 		}
 	}
 
@@ -5666,11 +5710,11 @@ class PlayState extends MusicBeatState
 
 				updateAccuracy();
 			}
-			//ScriptHelper.callOnScripts('goodNoteHit', [notes.members.indexOf(note), Math.abs(note.noteData), note.noteType, note.isSustainNote]);
-			for (script in noteScripts)
+			ScriptHelper.callOnScripts('goodNoteHit', [notes.members.indexOf(note), Math.abs(note.noteData), note.noteType, note.isSustainNote]);
+			/*for (script in noteScripts)
 			{
 				script.playerNoteHit(note);
-			}
+			}*/
 		}
 	}
 

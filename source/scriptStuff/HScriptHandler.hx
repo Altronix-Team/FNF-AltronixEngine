@@ -449,21 +449,21 @@ class HScriptHandler
 			return Reflect.callMethod(instance, func, args);
 	}
 
-	function getProperty(instance:Null<Dynamic> = null, variable:String):Any { //Copy from lua
+	function getProperty(instance:Null<Dynamic> = null, variable:String):Any {
 		if (instance == null)
 			return Reflect.getProperty(getInstance(), variable);
 		else
 			return Reflect.getProperty(instance, variable);
 	}
 
-	function setProperty(instance:Null<Dynamic> = null, variable:String, value:Dynamic) { // Copy from lua
+	function setProperty(instance:Null<Dynamic> = null, variable:String, value:Dynamic) {
 		if (instance == null)
 			Reflect.setProperty(getInstance(), variable, value);
 		else
 			Reflect.setProperty(instance, variable, value);
 	}
 
-	function getInstance() { //Copy from lua
+	function getInstance() {
 		return states.PlayState.instance.isDead ? states.GameOverSubstate.instance : states.PlayState.instance;
 	}
 	

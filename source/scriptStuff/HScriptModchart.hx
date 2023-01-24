@@ -14,7 +14,6 @@ import Paths;
 import scriptStuff.HScriptHandler;
 import states.PlayState;
 import openfl.utils.Assets;
-import scriptStuff.FunkinLua;
 import gameplayStuff.TankmenBG;
 import gameplayStuff.BackgroundDancer;
 import gameplayStuff.BackgroundGirls;
@@ -151,14 +150,6 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 				return;
 			}
 		}	
-	}
-
-	public function startLuaScript(scriptName:String) //In Psych Engine you can start hscript from lua, but in Altronix we have another rules XD
-	{
-		if (Assets.exists('assets/scripts/$scriptName.lua'))
-		{
-			ScriptHelper.luaArray.push(new FunkinLua(Assets.getPath('assets/scripts/$scriptName.lua')));
-		}
 	}
 
 	//TODO Redo to work with DialogueBox.hx

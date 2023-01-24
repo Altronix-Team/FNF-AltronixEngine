@@ -23,7 +23,6 @@
 	 - `haxelib run lime setup`
 	 - `haxelib run lime setup flixel`
 	 - `haxelib run flixel-tools setup`
-	 - `haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit`
 	 - `haxelib install polymod`
 	 - `haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc`
 	 - `haxelib install haxe-strings 7.0.2`

@@ -71,7 +71,7 @@ class StrumLine extends FlxTypedGroup<StaticArrow>
                     babyArrow.y -= 10;
                     // babyArrow.alpha = 0;
                     if (tweenShit)
-                        if (!PlayStateChangeables.useMiddlescroll || PlayState.instance.executeModchart || player == 1)
+                        if (!PlayStateChangeables.useMiddlescroll || player == 1)
                             FlxTween.tween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
                 }
 
@@ -91,10 +91,10 @@ class StrumLine extends FlxTypedGroup<StaticArrow>
                 babyArrow.x += ((FlxG.width / 2) * player);
 
                 if (PlayStateChangeables.Optimize
-                    || (PlayStateChangeables.useMiddlescroll && !PlayState.instance.executeModchart && player == 1))
+                    || (PlayStateChangeables.useMiddlescroll && player == 1))
                     babyArrow.x -= 320;
                 else if (PlayStateChangeables.Optimize
-                    || (PlayStateChangeables.useMiddlescroll && !PlayState.instance.executeModchart && player == 0))
+                    || (PlayStateChangeables.useMiddlescroll && player == 0))
                 {
                     if (index < 2)
                         babyArrow.x -= 75;

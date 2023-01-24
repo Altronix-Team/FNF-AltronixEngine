@@ -78,13 +78,7 @@
       "type": "haxelib",
       "version": null
     },
-    {
-      "name": "linc_luajit",
-      "type": "git",
-      "dir": null,
-      "ref": "master",
-      "url": "https://github.com/nebulazorua/linc_luajit"
-    },
+
     {
       "name": "openfl",
       "type": "haxelib",
@@ -93,7 +87,7 @@
     {
       "name": "polymod",
       "type": "haxelibt",
-      "version": 1.7.0
+      "version": null
     },
     {
       "name": "yaml",

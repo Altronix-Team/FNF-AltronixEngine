@@ -45,13 +45,10 @@ class Note extends FlxSprite
 	public var tooLate:Bool = false;
 	public var wasGoodHit:Bool = false;
 	public var prevNote:Note;
-	public var modifiedByLua:Bool = false;
 	public var sustainLength:Float = 0;
 	public var isSustainNote:Bool = false;
 	public var isEnd:Bool = false;
 	public var noteSection:Int = 0;
-
-	public var luaID:Int = 0;
 
 	public var isAlt:Bool = false;
 
@@ -347,17 +344,12 @@ class Note extends FlxSprite
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		if (!modifiedByLua)
-			angle = modAngle + localAngle;
-		else
-			angle = modAngle;
+		
+		angle = modAngle + localAngle;
 
-		if (!modifiedByLua)
+		if (!sustainActive)
 		{
-			if (!sustainActive)
-			{
-				alpha = 0.3;
-			}
+			alpha = 0.3;
 		}
 		
 		if (Main.save.data.downscroll != flipY && isSustainNote)
@@ -371,9 +363,7 @@ class Note extends FlxSprite
 				modAngle = cast(sprTracker, StaticArrow).modAngle;
 			if (sustainActive)
 			{
-				#if (!cpp && LUA_ALLOWED)
-					alpha = sprTracker.alpha;
-				#end
+				alpha = sprTracker.alpha;
 			}
 			modAngle = cast(sprTracker, StaticArrow).modAngle;
 

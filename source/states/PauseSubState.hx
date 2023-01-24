@@ -3,9 +3,6 @@ package states;
 import scriptStuff.ScriptHelper;
 import flixel.input.gamepad.FlxGamepad;
 import openfl.Lib;
-#if LUA_ALLOWED
-import llua.Lua;
-#end
 import Controls.Control;
 import flixel.FlxG;
 import flixel.FlxSprite;

@@ -9,7 +9,6 @@ import flixel.graphics.frames.FlxAtlasFrames;
 
 class StaticArrow extends FlxSprite
 {
-	public var modifiedByLua:Bool = false;
 	public var modAngle:Float = 0; // The angle set by modcharts
 	public var localAngle:Float = 0; // The angle to be edited inside here
 	public var resetAnim:Float = 0;
@@ -55,10 +54,7 @@ class StaticArrow extends FlxSprite
 				resetAnim = 0;
 			}
 		}
-		if (!modifiedByLua)
-			angle = localAngle + modAngle;
-		else
-			angle = modAngle;
+		angle = localAngle + modAngle;
 		super.update(elapsed);
 
 		if (FlxG.keys.justPressed.THREE)

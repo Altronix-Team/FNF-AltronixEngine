@@ -470,27 +470,12 @@ class Stage extends states.MusicBeatState
 
 					wiggleShit = new WiggleEffect(effectType[FlxG.random.int(0, effectType.length - 1)], 0.8, 60, 0.01);
 
-					var bgGhouls:FlxSprite = new FlxSprite(-100, 190);
-					bgGhouls.frames = Paths.getSparrowAtlas('weeks/assets/week6/images/weeb/bgGhouls', 'gameplay');
-					bgGhouls.animation.addByPrefix('idle', 'BG freaks glitch instance', 24, false);
-					bgGhouls.visible = false;
-					bgGhouls.antialiasing = false;
-					bgGhouls.scrollFactor.set(0.9, 0.9);
-					bgGhouls.setGraphicSize(Std.int(bgGhouls.width * CoolUtil.daPixelZoom));
-					bgGhouls.updateHitbox();
-					if (Main.save.data.distractions)
-					{
-						swagBacks['bgGhouls'] = bgGhouls;
-						toAdd.push(bgGhouls);	
-					}
-
 					if (Main.save.data.distractions)
 					{
 						if (!PlayStateChangeables.Optimize)
 						{
 							bg.shader = wiggleShit.shader;
 							fg.shader = wiggleShit.shader;
-							bgGhouls.shader = wiggleShit.shader;
 						}
 					}					
 				}
@@ -784,9 +769,6 @@ class Stage extends states.MusicBeatState
 					
 				case 'warzone':
 					moveTank(elapsed);
-
-				/*case 'weeks/assets/week4/limo':
-					killShit(elapsed);*/
 			}
 		}
 	}
@@ -866,12 +848,6 @@ class Stage extends states.MusicBeatState
 					{
 						swagBacks['bgGirls'].dance();
 					}
-				case 'schoolEvil':
-					if ((curBeat == 64 || curBeat == 66 || curBeat == 69 || curBeat == 71 || curBeat == 73 || curBeat == 75 || curBeat == 77 || curBeat == 79 || curBeat == 81 || curBeat == 83 || curBeat == 85 || curBeat == 87 || curBeat == 89 || curBeat == 91 || curBeat == 93 || curBeat == 95 || curBeat == 161 || curBeat == 163 || curBeat == 164 || curBeat == 166 || curBeat == 168 || curBeat == 170 || curBeat == 172 || curBeat == 174 || curBeat == 176 || curBeat == 178 || curBeat == 180 || curBeat == 182 || curBeat == 184 || curBeat == 186 || curBeat == 188 || curBeat == 190 || curBeat == 256 || curBeat == 258 || curBeat == 260 || curBeat == 262 || curBeat == 264 || curBeat == 266 || curBeat == 268 || curBeat == 270 || curBeat == 272 || curBeat == 274 || curBeat == 276 || curBeat == 278 || curBeat == 280 || curBeat == 282 || curBeat == 284 || curBeat == 286) 
-						&& Main.save.data.distractions && PlayState.SONG.songId == 'thorns')
-					{
-						ghoulDance();
-					}
 				case 'limo':
 					if (Main.save.data.distractions)
 					{
@@ -879,13 +855,6 @@ class Stage extends states.MusicBeatState
 						{
 							dancer.dance();
 						});
-
-						/*if (PlayState.SONG.songId == 'satin-panties' && (curBeat == 40 || curBeat == 103))
-							killHenchmen();
-						else if (PlayState.SONG.songId == 'high' && (curBeat == 8 || curBeat == 40 || curBeat == 135 || curBeat == 168 || curBeat == 200))
-							killHenchmen();
-						else if (PlayState.SONG.songId == 'milf' && (curBeat == 232 || curBeat == 296))
-							killHenchmen();*/
 
 						if (FlxG.random.bool(10) && fastCarCanDrive)
 							fastCarDrive();
@@ -935,35 +904,6 @@ class Stage extends states.MusicBeatState
 
 	var blammedeventplayed:Bool = false;
 
-	/*function killHenchmen():Void
-	{
-		if(Main.save.data.distractions && curStage == 'weeks/assets/week4/limo') {
-			var savedAchievements:Array<String> = Main.save.data.savedAchievements;
-			var killed:Int = Main.save.data.killedHenchmans;
-			if(limoKillingState < 1) {
-				limoMetalPole.x = -400;
-				limoMetalPole.visible = true;
-				limoLight.visible = true;
-				limoCorpse.visible = false;
-				limoCorpseTwo.visible = false;
-				limoKillingState = 1;
-				if (!savedAchievements.contains('henchmen_dies')
-					&& !PlayStateChangeables.botPlay
-					&& !states.PlayState.instance.addedBotplayOnce)
-				{
-					killed += 1;
-					Main.save.data.killedHenchmans = killed;
-				}
-			}
-			
-			if (killed == 100
-				&& !savedAchievements.contains('henchmen_dies')
-				&& !PlayStateChangeables.botPlay
-				&& !states.PlayState.instance.addedBotplayOnce)
-				Achievements.getAchievement(167274);
-		}
-	}*/
-
 	function randomColor() {
 		curLight = FlxG.random.int(0, 4, [oldLight]);
 		oldLight = curLight;
@@ -982,121 +922,6 @@ class Stage extends states.MusicBeatState
 				windowColor = FlxColor.fromRGB(49, 162, 253);
 		}
 	}
-		
-	/*var limoSpeed:Float = 0;
-	function killShit(elapsed:Float)
-	{
-		if (Main.save.data.distractions) {
-			grpLimoParticles.forEach(function(spr:BGSprite) {
-				if(spr.animation.curAnim.finished) {
-					spr.kill();
-					grpLimoParticles.remove(spr, true);
-					spr.destroy();
-				}
-			});
-
-			switch(limoKillingState) {
-				case 1:
-					limoMetalPole.x += 5000 * elapsed;
-					limoLight.x = limoMetalPole.x - 180;
-					limoCorpse.x = limoLight.x - 50;
-					limoCorpseTwo.x = limoLight.x + 35;
-
-					var dancers:Array<BackgroundDancer> = grpLimoDancers.members;
-					for (i in 0...dancers.length) {
-						if(dancers[i].x < FlxG.width * 1.5 && limoLight.x > (370 * i) + 130) {
-							switch(i) {
-								case 0 | 3:
-									if(i == 0) FlxG.sound.play(Paths.sound('dancerdeath'), 0.5);
-
-									var diffStr:String = i == 3 ? ' 2 ' : ' ';
-									var particle:BGSprite = new BGSprite('gore/noooooo', dancers[i].x + 200, dancers[i].y, 0.4, 0.4, ['hench leg spin' + diffStr + 'PINK'], false);
-									grpLimoParticles.add(particle);
-									var particle:BGSprite = new BGSprite('gore/noooooo', dancers[i].x + 160, dancers[i].y + 200, 0.4, 0.4, ['hench arm spin' + diffStr + 'PINK'], false);
-									grpLimoParticles.add(particle);
-									var particle:BGSprite = new BGSprite('gore/noooooo', dancers[i].x, dancers[i].y + 50, 0.4, 0.4, ['hench head spin' + diffStr + 'PINK'], false);
-									grpLimoParticles.add(particle);
-
-									var particle:BGSprite = new BGSprite('gore/stupidBlood', dancers[i].x - 110, dancers[i].y + 20, 0.4, 0.4, ['blood'], false);
-									particle.flipX = true;
-									particle.angle = -57.5;
-									grpLimoParticles.add(particle);
-								case 1:
-									limoCorpse.visible = true;
-								case 2:
-									limoCorpseTwo.visible = true;
-							} //Note: Nobody cares about the fifth dancer because he is mostly hidden offscreen :(
-							dancers[i].x += FlxG.width * 2;
-						}
-					}
-
-					if(limoMetalPole.x > FlxG.width * 2) {
-						resetLimoKill();
-						limoSpeed = 800;
-						limoKillingState = 2;
-					}
-
-				case 2:
-					limoSpeed -= 4000 * elapsed;
-					swagBacks['bgLimo'].x -= limoSpeed * elapsed;
-					if(swagBacks['bgLimo'].x > FlxG.width * 1.5) {
-						limoSpeed = 3000;
-						limoKillingState = 3;
-					}
-
-				case 3:
-					limoSpeed -= 2000 * elapsed;
-					if(limoSpeed < 1000) limoSpeed = 1000;
-
-					swagBacks['bgLimo'].x -= limoSpeed * elapsed;
-					if(swagBacks['bgLimo'].x < -275) {
-						limoKillingState = 4;
-						limoSpeed = 800;
-					}
-
-				case 4:
-					swagBacks['bgLimo'].x = FlxMath.lerp(swagBacks['bgLimo'].x, -150, CoolUtil.boundTo(elapsed * 9, 0, 1));
-					if(Math.round(swagBacks['bgLimo'].x) == -150) {
-						swagBacks['bgLimo'].x = -150;
-						limoKillingState = 0;
-					}
-			}
-
-			if(limoKillingState > 2) {
-				var dancers:Array<BackgroundDancer> = grpLimoDancers.members;
-				for (i in 0...dancers.length) {
-					dancers[i].x = (370 * i) + swagBacks['bgLimo'].x + 280;
-				}
-			}
-		}
-	}*/
-
-	function ghoulDance()
-	{
-		var ghoul = swagBacks['bgGhouls'];
-			
-		ghoul.visible = true;
-		ghoul.animation.play('idle');
-
-		ghoul.animation.finishCallback = function(name:String)
-		{
-			ghoul.visible = false;
-		};
-	}
-
-	/*function resetLimoKill():Void
-		{
-			if(curStage == 'weeks/assets/week4/limo') {
-				limoMetalPole.x = -500;
-				limoMetalPole.visible = false;
-				limoLight.x = -500;
-				limoLight.visible = false;
-				limoCorpse.x = -500;
-				limoCorpse.visible = false;
-				limoCorpseTwo.x = -500;
-				limoCorpseTwo.visible = false;
-			}
-		}*/
 
 	// Variables and Functions for Stages
 	var lightningStrikeBeat:Int = 0;
@@ -1119,7 +944,7 @@ class Stage extends states.MusicBeatState
 
 	function lightningStrikeShit():Void
 	{
-		FlxG.sound.play(Paths.soundRandom('thunder_', 1, 2, 'shared'));
+		FlxG.sound.play(Paths.soundRandom('thunder_', 1, 2, 'core'));
 		swagBacks['halloweenBG'].animation.play('lightning');
 
 		lightningStrikeBeat = curBeat;
@@ -1247,7 +1072,7 @@ class Stage extends states.MusicBeatState
 	{
 		if (Main.save.data.distractions)
 		{
-			FlxG.sound.play(Paths.soundRandom('carPass', 0, 1, 'shared'), 0.7);
+			FlxG.sound.play(Paths.soundRandom('carPass', 0, 1, 'core'), 0.7);
 
 			swagBacks['fastCar'].visible = true;
 			swagBacks['fastCar'].velocity.x = (FlxG.random.int(170, 220) / FlxG.elapsed) * 3;

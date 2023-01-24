@@ -182,7 +182,7 @@ class AssetsUtil
         {
             case SOUND | MUSIC:
                 return doesSoundAssetExist(path);
-            case TEXT | XML | LUA | JSON | HSCRIPT | YAML:
+            case TEXT | XML | JSON | HSCRIPT | YAML:
                 return doesTextAssetExist(path);
             default:
                 return OpenFlAssets.exists(path, BINARY);
@@ -388,7 +388,6 @@ enum abstract AssetTypes(String) from (String) to (String)
     var JSON:AssetTypes = 'json';
     var XML:AssetTypes = 'xml';
     var HSCRIPT:AssetTypes = 'hscript';
-    var LUA:AssetTypes = 'lua';
     var VIDEOS:AssetTypes = 'videos';
     var DIRECTORY:AssetTypes = 'directory';
 	var FONT:AssetTypes = "font";
@@ -407,7 +406,7 @@ enum abstract AssetTypes(String) from (String) to (String)
 				return AssetType.MUSIC;
 			case SOUND:
 				return AssetType.SOUND;
-			case XML | HSCRIPT | JSON | LUA | TEXT | YAML:
+			case XML | HSCRIPT | JSON | TEXT | YAML:
 				return AssetType.TEXT;
 			default:
 				return AssetType.BINARY;		
@@ -430,8 +429,6 @@ enum abstract AssetTypes(String) from (String) to (String)
 				return ['xml'];
 			case HSCRIPT:
 				return ['hscript', 'hx'];
-			case LUA:
-				return ['lua'];
 			case VIDEOS:
 				return ['mp4'];
 			case FONT:
@@ -459,8 +456,6 @@ enum abstract AssetTypes(String) from (String) to (String)
 				return [XML];
 			case 'hscript' | 'hx':
 				return [HSCRIPT];
-			case 'lua':
-				return [LUA];
 			case 'mp4':
 				return [VIDEOS];
 			case 'otf' | 'ttf':
@@ -482,7 +477,6 @@ enum abstract AssetTypes(String) from (String) to (String)
 			'xml',
 			'hscript',
 			'hx',
-			'lua',
 			'mp4',
 			'otf',
 			'ttf'];

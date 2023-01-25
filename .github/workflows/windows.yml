@@ -22,8 +22,8 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Windows build action
         run: |
-          haxelib setup ~/haxelib
-          haxelib install hxcpp > /dev/null
+          haxelib setup C:/haxelib
+          haxelib install hxcp
           haxelib --global install hmm
           haxelib --global run hmm setup
           haxelib run hmm install

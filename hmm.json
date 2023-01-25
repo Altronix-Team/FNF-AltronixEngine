@@ -86,7 +86,7 @@
     },
     {
       "name": "polymod",
-      "type": "haxelibt",
+      "type": "haxelib",
       "version": null
     },
     {

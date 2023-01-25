@@ -52,7 +52,6 @@ jobs:
           haxelib install hmm --quiet
           haxelib run hmm install --quiet
           haxelib run lime build linux
-        shell: cmd
           
       - uses: actions/upload-artifact@v2
         with:
@@ -78,7 +77,6 @@ jobs:
           haxelib install hmm --quiet
           haxelib run hmm install --quiet
           haxelib run lime build html5
-        shell: cmd
           
       - uses: actions/upload-artifact@v2
         with:

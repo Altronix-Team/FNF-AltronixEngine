@@ -23,7 +23,6 @@ jobs:
       - name: Windows build action
         run: |
           haxelib setup C:\haxelib
-          haxelib install hxcpp > /dev/null
           haxelib --global install hmm
           haxelib --global run hmm setup
           haxelib run hmm install

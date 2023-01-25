@@ -1,5 +1,5 @@
 
-![Altronix Engine logo](assets/preload/images/enginelogo.png)
+![Altronix Engine logo](https://raw.githubusercontent.com/Altronix-Team/FNF-AltronixEngine/main/enginelogo.png)
 
 # Friday Night Funkin': Altronix Engine
 

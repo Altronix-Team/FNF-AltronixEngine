@@ -1,6 +1,16 @@
 {
   "dependencies": [
     {
+      "name": "openfl",
+      "type": "haxelib",
+      "version": null
+    },
+    {
+      "name": "lime",
+      "type": "haxelib",
+      "version": null
+    },   
+    {
       "name": "SScript",
       "type": "git",
       "dir": null,
@@ -74,17 +84,6 @@
       "dir": null,
       "ref": "master",
       "url": "https://github.com/polybiusproxy/hxCodec"
-    },
-    {
-      "name": "lime",
-      "type": "haxelib",
-      "version": null
-    },
-
-    {
-      "name": "openfl",
-      "type": "haxelib",
-      "version": null
     },
     {
       "name": "polymod",

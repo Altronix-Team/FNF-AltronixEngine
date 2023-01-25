@@ -22,10 +22,8 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Windows build action
         run: |
-          cinst haxe --version 4.2.3 -y
-          RefreshEnv
-          mkdir "%HAXELIB_ROOT%"
-          haxelib setup "%HAXELIB_ROOT%"
+          haxelib setup C:\haxelib
+          haxelib install hxcpp > /dev/null
           haxelib --global install hmm
           haxelib --global run hmm setup
           haxelib run hmm install

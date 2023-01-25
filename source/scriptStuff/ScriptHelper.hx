@@ -1,5 +1,7 @@
 package scriptStuff;
 
+import gameplayStuff.Section.SwagSection;
+
 @:allow(states.PlayState)
 class ScriptHelper
 {
@@ -8,7 +10,6 @@ class ScriptHelper
 	public static function clearAllScripts()
 	{
 		hscriptFiles = [];
-		luaArray = [];
 		Debug.logInfo('Cleared all scripts');
 	}
 
@@ -56,17 +57,17 @@ class ScriptHelper
 		return retVal;
 	}
 
-	public static function stepHit()
+	public static function stepHit(step:Int)
 	{
 		callOnScripts('onStepHit', []);
 	}
 
-	public static function beatHit()
+	public static function beatHit(beat:Int)
 	{
 		callOnScripts('onBeatHit', []);
 	}
 
-	public static function sectionHit()
+	public static function sectionHit(section:SwagSection)
 	{
 		callOnScripts('onSectionHit', []);
 	}

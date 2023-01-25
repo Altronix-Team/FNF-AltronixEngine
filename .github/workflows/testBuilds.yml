@@ -1,13 +1,12 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Windows Build CI
+name: CI
 
 # Controls when the workflow will run
 on: [push, pull_request]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   buildWindows:
     # The type of runner that the job will run on
     runs-on: windows-latest
@@ -33,3 +32,55 @@ jobs:
         with:
           name: Windows Build
           path: export/release/windows/bin
+          
+  buildLinux:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - uses: krdlab/setup-haxe@v1
+        with:
+          haxe-version: 4.2.5
+      # Runs a set of commands using the runners shell
+      - name: Linux build action
+        run: |
+          haxelib setup ~/haxelib
+          haxelib install hxcpp > /dev/null --quiet
+          haxelib install hmm --quiet
+          haxelib run hmm install --quiet
+          haxelib run lime build linux
+        shell: cmd
+          
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Linux Build
+          path: export/release/linux/bin
+          
+  buildHTML5:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - uses: krdlab/setup-haxe@v1
+        with:
+          haxe-version: 4.2.5
+      # Runs a set of commands using the runners shell
+      - name: HTML5 build action
+        run: |
+          haxelib setup ~/haxelib
+          haxelib install hxcpp > /dev/null --quiet
+          haxelib install hmm --quiet
+          haxelib run hmm install --quiet
+          haxelib run lime build html5
+        shell: cmd
+          
+      - uses: actions/upload-artifact@v2
+        with:
+          name: HTML5 Build
+          path: export/release/html5/bin

@@ -104,7 +104,7 @@ import gameplayStuff.Ratings;
 import modding.ModCore;
 
 #if VIDEOS_ALLOWED
-import VideoHandler;
+import hxcodec.VideoHandler;
 #end
 
 

@@ -27,7 +27,7 @@
 	 - `haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc`
 	 - `haxelib install haxe-strings 7.0.2`
 	 - `haxelib install hscript-ex 0.0.0`
-	 - `haxelib install hxCodec`
+	 - `haxelib git hxCodec https://github.com/polybiusproxy/hxCodec`
 	 - `haxelib install yaml`
 	 - `haxelib git SScript https://github.com/AltronMaxX/SScript`
 	 - `haxelib git firetongue https://github.com/larsiusprime/firetongue dev`

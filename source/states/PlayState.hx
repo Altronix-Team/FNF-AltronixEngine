@@ -104,7 +104,7 @@ import gameplayStuff.Ratings;
 import modding.ModCore;
 
 #if VIDEOS_ALLOWED
-import vlc.MP4Handler;
+import VideoHandler;
 #end
 
 
@@ -1429,14 +1429,14 @@ class PlayState extends MusicBeatState
 			ScriptHelper.callOnHscript('startCutscene', []);
 	}
 
-	var video:MP4Handler;
+	var video:VideoHandler;
 
 	public function playCutscene(name:String, atend:Bool = false, blockFinish:Bool = false)
 	{
 		#if VIDEOS_ALLOWED
 		inCutscene = true;
 
-		video = new MP4Handler();
+		video = new VideoHandler();
 		video.finishCallback = function()
 		{
 			if (!blockFinish)

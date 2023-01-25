@@ -23,11 +23,12 @@ jobs:
       - name: Windows build action
         run: |
           haxelib setup C:/haxelib
-          haxelib install hxcp
+          haxelib install hxcpp > /dev/null --quiet
           haxelib --global install hmm
           haxelib --global run hmm setup
           haxelib run hmm install
           haxelib run lime build windows
+        shell: cmd
           
       - uses: actions/upload-artifact@v2
         with:

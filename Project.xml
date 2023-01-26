@@ -57,7 +57,7 @@
 	
 	<define name="CHECK_FOR_DEFAULT_CHARACTERS"/>
 	<define name="USE_SSCRIPT"/>
-	<define name="VIDEOS_ALLOWED" if="web || windows" unless="32bits" />
+	<define name="VIDEOS_ALLOWED" if="desktop || android"/>
 	
 	<!-- <define name="PRELOAD_ALL" /> -->
 	<define name="PRELOAD_ALL" unless="web" />

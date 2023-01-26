@@ -6,7 +6,9 @@ import sys.thread.Thread;
 import utils.ThreadUtil.ThreadObject;
 #end
 import openfl.utils.AssetLibrary;
+#if cpp
 import cpp.vm.Gc;
+#end
 import openfl.utils.AssetCache;
 import states.HscriptableState.PolymodHscriptState;
 import lime.app.Application;

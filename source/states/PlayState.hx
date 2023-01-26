@@ -107,7 +107,6 @@ import modding.ModCore;
 import hxcodec.VideoHandler;
 #end
 
-
 class PlayState extends MusicBeatState
 {
 	public static var instance:PlayState = null;
@@ -1429,7 +1428,9 @@ class PlayState extends MusicBeatState
 			ScriptHelper.callOnHscript('startCutscene', []);
 	}
 
+	#if VIDEOS_ALLOWED
 	var video:VideoHandler;
+	#end
 
 	public function playCutscene(name:String, atend:Bool = false, blockFinish:Bool = false)
 	{

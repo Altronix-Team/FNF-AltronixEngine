@@ -35,9 +35,9 @@
 	
 	<!-- ____________________________ Unsupporded things ___________________________ -->
 	
-	<section if="html5">
+	<!--section if="html5">
 		<error value="html5 isn't supported!" />
-	</section>
+	</section-->
 	
 	<section if="mobile">
 		<error value="mobile isn't supported!" />

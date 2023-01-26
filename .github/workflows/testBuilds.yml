@@ -14,8 +14,8 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      - uses: krdlab/setup-haxe@v1
+      - uses: actions/checkout@main
+      - uses: krdlab/setup-haxe@master
         with:
           haxe-version: 4.2.5
       # Runs a set of commands using the runners shell
@@ -40,8 +40,8 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      - uses: krdlab/setup-haxe@v1
+      - uses: actions/checkout@main
+      - uses: krdlab/setup-haxe@master
         with:
           haxe-version: 4.2.5
       # Runs a set of commands using the runners shell
@@ -52,7 +52,6 @@ jobs:
           haxelib install hmm --quiet
           haxelib run hmm install --quiet
           haxelib run lime build linux
-        shell: cmd
           
       - uses: actions/upload-artifact@v2
         with:
@@ -66,8 +65,8 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      - uses: krdlab/setup-haxe@v1
+      - uses: actions/checkout@main
+      - uses: krdlab/setup-haxe@master
         with:
           haxe-version: 4.2.5
       # Runs a set of commands using the runners shell
@@ -78,7 +77,6 @@ jobs:
           haxelib install hmm --quiet
           haxelib run hmm install --quiet
           haxelib run lime build html5
-        shell: cmd
           
       - uses: actions/upload-artifact@v2
         with:

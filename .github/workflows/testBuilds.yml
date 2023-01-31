@@ -41,12 +41,16 @@ jobs:
           name: Windows Build
           path: build
           
+      - uses: montudor/action-zip@v1
+        with:
+            args: zip -qq -r engine.zip build
+          
       - name: Make release
         uses: softprops/action-gh-release@v1
         with:
           name: Latest build from action with id ${{github.run_number}}
           tag_name: Actions_Build_${{github.run_number}}
-          files: build/*
+          files: engine.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           

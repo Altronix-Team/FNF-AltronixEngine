@@ -31,16 +31,22 @@ jobs:
           haxelib run lime build windows
         shell: cmd
           
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@main
         with:
           name: Windows Build
           path: export/release/windows/bin
           
+      - uses: actions/download-artifact@v2
+        with:
+          name: Windows Build
+          path: build
+          
       - name: Make release
         uses: softprops/action-gh-release@v1
         with:
-          name: "Latest build from action with id $GITHUB_RUN_ID"
-          tag_name: "Latest_build"
+          name: Latest build from action with id $GITHUB_RUN_ID
+          tag_name: Latest_build
+          files: build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           

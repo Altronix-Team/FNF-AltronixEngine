@@ -44,9 +44,9 @@ jobs:
       - name: Make release
         uses: softprops/action-gh-release@v1
         with:
-          name: Latest build from action with id ${{github.GITHUB_RUN_ID}}
-          tag_name: Actions_Build_${{github.GITHUB_RUN_ID}}
-          files: build
+          name: Latest build from action with id ${{github.run_number}}
+          tag_name: Actions_Build_${{github.run_number}}
+          files: build/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           

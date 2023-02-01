@@ -30,30 +30,16 @@ jobs:
           haxelib run hmm install --quiet
           haxelib run lime build windows
         shell: cmd
-          
-      - uses: actions/upload-artifact@main
-        with:
-          name: Windows Build
-          path: export/release/windows/bin
-        
       
-     
-       
-        
-      #- uses: actions/download-artifact@v2
-       # with:
-         # name: Windows Build
-         # path: build
-          
-
-
-          
+      - name: Make zip
+        run: 7z a -tzip "engine.zip" "./export/release/windows/bin/*"
+         
       - name: Make release
         uses: softprops/action-gh-release@v1
         with:
           name: Latest build from action with id ${{github.run_number}}
           tag_name: Actions_Build_${{github.run_number}}
-          files: artifacts/*
+          files: engine.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           

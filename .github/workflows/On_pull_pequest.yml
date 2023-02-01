@@ -1,4 +1,4 @@
-name: CI
+name: On pull request CI
 
 # Controls when the workflow will run
 on: [pull_request]

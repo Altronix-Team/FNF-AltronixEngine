@@ -53,7 +53,7 @@ jobs:
         with:
           name: Latest build from action with id ${{github.run_number}}
           tag_name: Actions_Build_${{github.run_number}}
-          files: Windows Build.zip
+          files: export/release/windows/bin/Windows Build.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           

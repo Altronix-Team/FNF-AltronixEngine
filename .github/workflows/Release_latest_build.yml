@@ -1,0 +1,44 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on: [push]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  buildWindows:
+    # The type of runner that the job will run on
+    runs-on: windows-latest
+    
+    permissions:
+       contents: write
+    
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@main
+      - uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: 4.2.5
+      # Runs a set of commands using the runners shell
+      - name: Windows build action
+        run: |
+          haxelib setup C:/haxelib
+          haxelib install hxcpp > /dev/null --quiet
+          haxelib install hmm --quiet
+          haxelib run hmm install --quiet
+          haxelib run lime build windows
+        shell: cmd
+      
+      - name: Make zip
+        run: 7z a -tzip "engine.zip" "./export/release/windows/bin/*"
+         
+      - name: Make release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Latest build from action with id ${{github.run_number}}
+          tag_name: Actions_Build_${{github.run_number}}
+          files: engine.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

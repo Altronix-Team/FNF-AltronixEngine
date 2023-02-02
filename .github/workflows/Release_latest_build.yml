@@ -68,4 +68,4 @@ jobs:
             .haxelib/
             export/release/windows/haxe/
             export/release/windows/obj/
-          key: ${{ steps.cache-primes-restore.outputs.cache-primary-key }}
+          key: ${{ steps.cache-restore.outputs.cache-primary-key }}

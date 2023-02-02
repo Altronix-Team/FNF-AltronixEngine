@@ -187,9 +187,9 @@ class Conductor
 		}
 
 		#if !GITHUB_RELEASE
-		EngineFPS.curStep = curStep;
-		EngineFPS.curBeat = curBeat;
-		EngineFPS.curDecimalBeat = curDecimalBeat;
+		FPSText.curStep = curStep;
+		FPSText.curBeat = curBeat;
+		FPSText.curDecimalBeat = curDecimalBeat;
 		#end
 	}
 

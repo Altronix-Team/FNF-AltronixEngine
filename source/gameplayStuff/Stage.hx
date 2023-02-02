@@ -1,5 +1,7 @@
 package gameplayStuff;
 
+import Shaders.BuildingShaders;
+import Shaders.BuildingShader;
 import flixel.addons.effects.chainable.FlxEffectSprite;
 import flixel.FlxSprite;
 import flixel.FlxG;
@@ -60,6 +62,8 @@ class Stage extends states.MusicBeatState
 	var grpLimoParticles:FlxTypedGroup<BGSprite>;
 	var limoKillingState:Int = 0;*/
 	var grpLimoDancers:FlxTypedGroup<BackgroundDancer>;
+
+	var windowsShader:BuildingShaders;
 
 	var wiggleShit:WiggleEffect;
 
@@ -138,11 +142,14 @@ class Stage extends states.MusicBeatState
 					//for (i in 0...5)
 					//{
 						//Lets change color for white windows instead of using different sprites
+					windowsShader = new BuildingShaders();
+
 					var light:FlxSprite = new FlxSprite(city.x).loadGraphic(Paths.loadImage('weeks/assets/week3/images/philly/window', 'gameplay'));
 						light.scrollFactor.set(0.3, 0.3);
 						light.setGraphicSize(Std.int(light.width * 0.85));
 						light.updateHitbox();
 						light.antialiasing = Main.save.data.antialiasing;
+						light.shader = windowsShader.shader;
 						randomColor();
 						light.color = windowColor;
 						swagBacks['light'] = light;
@@ -753,6 +760,8 @@ class Stage extends states.MusicBeatState
 			switch (curStage)
 			{
 				case 'philly':
+					windowsShader.update((Conductor.crochet / 1000) * FlxG.elapsed * 1.5);
+
 					if (trainMoving)
 					{
 						trainFrameTiming += elapsed;
@@ -875,6 +884,8 @@ class Stage extends states.MusicBeatState
 								if (PlayState.SONG.songId != 'blammed')
 									phillyCityLight.color = windowColor;
 							}
+
+							windowsShader.reset();
 						}
 					}
 

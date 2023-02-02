@@ -231,7 +231,7 @@ class PlayState extends MusicBeatState
 	//public var camSustains:FlxCamera;
 	//public var camNotes:FlxCamera;
 
-	public var camGame:FlxCamera;
+	public var camGame:SwagCamera;
 
 	public var cannotDie = false;
 	public var isDead:Bool = false;
@@ -521,7 +521,7 @@ class PlayState extends MusicBeatState
 		#end
 
 		// var gameCam:FlxCamera = FlxG.camera;
-		camGame = new FlxCamera();
+		camGame = new SwagCamera();
 		camHUD = new FlxCamera();
 		camHUD.bgColor.alpha = 0;
 		/*camSustains = new FlxCamera();
@@ -851,7 +851,7 @@ class PlayState extends MusicBeatState
 				GameOverSubstate.characterName = 'bfAndGF-DEAD';
 		}
 
-		#if desktop
+		/*#if desktop
 		if (Paths.getHscriptPath(SONG.songId, 'songs') != null)
 		{
 			try
@@ -869,7 +869,7 @@ class PlayState extends MusicBeatState
 					Debug.displayAlert('Error with hscript file!', Std.string(e));
 			}
 		}
-		#end
+		#end*/
 
 		overlayColor = FlxColor.fromRGB(0, 0, 0, 0);
 		overlay = new FlxSprite(0, 0);
@@ -2624,6 +2624,7 @@ class PlayState extends MusicBeatState
 		ScriptHelper.callOnScripts('onSongStart', []);
 
 		sectionHit();
+
 	}
 
 	var debugNum:Int = 0;
@@ -5778,6 +5779,7 @@ class PlayState extends MusicBeatState
 		super.sectionHit();
 	}
 
+	var shdrFilter:ShaderFilter;
 	override function beatHit()
 	{
 		if (generatedMusic)
@@ -5871,7 +5873,7 @@ class PlayState extends MusicBeatState
 		}
 
 		if (curSong == 'blammed')
-		{
+		{			
 			if (!hscriptStageCheck)
 			{
 				if (curBeat % 4 == 0){

@@ -162,7 +162,7 @@ class Main extends Sprite
 		Debug.onInitProgram();
 
 		#if !mobile
-		fpsCounter = new EngineFPS(10, 3, 0xFFFFFF);
+		fpsCounter = new EngineFPS();
 		#end		
 
 		if (save.data.fullscreenOnStart == null)
@@ -329,7 +329,7 @@ class Main extends Sprite
 		throw message;
 	}
 
-	var fpsCounter:EngineFPS;
+	public static var fpsCounter:EngineFPS = null;
 
 	// taken from forever engine, cuz optimization very pog.
 	// thank you shubs :)
@@ -354,15 +354,13 @@ class Main extends Sprite
 		if (fpsEnabled && !contains(fpsCounter))
 		{
 			if (fpsCounter == null)
-				fpsCounter = new EngineFPS(10, 3, 0xFFFFFF);
+				fpsCounter = new EngineFPS();
 
 			addChild(fpsCounter);
 		}
 		else if (!fpsEnabled && contains(fpsCounter))
 		{
 			removeChild(fpsCounter);
-			if (contains(fpsCounter.bitmap))
-				removeChild(fpsCounter.bitmap);
 
 			fpsCounter = null;
 		}
@@ -372,7 +370,7 @@ class Main extends Sprite
 
 	public function changeFPSColor(color:FlxColor)
 	{
-		fpsCounter.textColor = color;
+		EngineFPS.fpsText.textColor = color;
 	}
 
 	public function setFPSCap(cap:Float)
@@ -387,7 +385,7 @@ class Main extends Sprite
 
 	public function getFPS():Float
 	{
-		return fpsCounter.currentFPS;
+		return EngineFPS.fpsText.currentFPS;
 	}
 
 	public static function getSaveByString(str:String):Dynamic
@@ -430,7 +428,7 @@ class Main extends Sprite
 		#else
 		openfl.system.System.gc();
 		#end
-		fpsCounter.clearMaxFPS();
+		EngineFPS.fpsText.clearMaxFPS();
 	}
 
 }

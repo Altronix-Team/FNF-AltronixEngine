@@ -14,8 +14,7 @@ jobs:
     # The type of runner that the job will run on
     runs-on: windows-latest
     
-    permissions:
-       contents: write
+    permissions: read-all|write-all
     
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -61,9 +60,24 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Clearing already existing cache
-        uses: easimon/wipe-cache@main
+        uses: actions/github-script@v6
         with:
-          dry-run: 'true'
+          script: |
+            const caches = await github.rest.actions.getActionsCacheList({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            })
+            for (const cache of caches.data.actions_caches) {
+              if (cache.key == "cache-build-windows") {
+                console.log('Clearing ' + cache.key + '...')
+                await github.rest.actions.deleteActionsCacheById({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  cache_id: cache.id,
+                })
+                console.log("Cache cleared.")
+              }
+            }
           
       - name: Save new cache
         uses: actions/cache/save@v3

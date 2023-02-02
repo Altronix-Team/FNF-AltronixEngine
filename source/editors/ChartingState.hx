@@ -1244,10 +1244,7 @@ class ChartingState extends MusicBeatState
 		return FlxSort.byValues(FlxSort.ASCENDING, CoolUtil.truncateFloat(Obj1.position, 3), CoolUtil.truncateFloat(Obj2.position, 3));
 	}
 
-	#if desktop
 	var waveformEnabled:FlxUICheckBox;
-	#end
-
 	var songNoteStyleDropDown:FlxUIDropDownMenuCustom;
 	var noteSkinInputText:FlxUIInputText;
 
@@ -1285,9 +1282,8 @@ class ChartingState extends MusicBeatState
 			loadJson(_song.songId.toLowerCase());
 		});
 
-		#if desktop
 		waveformEnabled = new FlxUICheckBox(10, 90, null, null, "Visible Waveform", 100);
-		if (Main.save.data.chart_waveform == null) Main.save.data.chart_waveform = false;
+		#if desktop if (Main.save.data.chart_waveform == null) Main.save.data.chart_waveform = false;
 		waveformEnabled.checked = Main.save.data.chart_waveform;
 		waveformEnabled.callback = function()
 		{

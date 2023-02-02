@@ -1,14 +1,30 @@
 package scriptStuff;
 
+#if FEATURE_MODCORE
+import scriptStuff.scriptBodies.ScriptBody;
+#end
 import gameplayStuff.Section.SwagSection;
-
 @:allow(states.PlayState)
 class ScriptHelper
 {
-	public static var hscriptFiles:Array<Dynamic> = [];
+	public static var hscriptFiles:Array<Dynamic> = []; //Old Hscript format
+
+	#if FEATURE_MODCORE
+	public static var allHscriptFiles:Array<IScript> = []; //Handle basic stuff, such as beat, step and section hit and update
+	#end
 
 	public static function clearAllScripts()
 	{
+		#if FEATURE_MODCORE
+		for (script in allHscriptFiles)
+		{
+			if (!script.isGlobal)
+			{
+				allHscriptFiles.remove(script);
+				script.destroy();
+			}	
+		}
+		#end
 		hscriptFiles = [];
 		Debug.logInfo('Cleared all scripts');
 	}
@@ -60,15 +76,44 @@ class ScriptHelper
 	public static function stepHit(step:Int)
 	{
 		callOnScripts('onStepHit', []);
+
+		#if FEATURE_MODCORE
+		for (script in allHscriptFiles)
+		{
+			script.stepHit(step);
+		}
+		#end
 	}
 
 	public static function beatHit(beat:Int)
 	{
 		callOnScripts('onBeatHit', []);
+		#if FEATURE_MODCORE
+		for (script in allHscriptFiles)
+		{
+			script.beatHit(beat);
+		}
+		#end
 	}
 
 	public static function sectionHit(section:SwagSection)
 	{
 		callOnScripts('onSectionHit', []);
+		#if FEATURE_MODCORE
+		for (script in allHscriptFiles)
+		{
+			script.sectionHit(section);
+		}
+		#end
+	}
+
+	public static function update(elapsed:Float)
+	{
+		#if FEATURE_MODCORE
+		for (script in allHscriptFiles)
+		{
+			script.update(elapsed);
+		}
+		#end
 	}
 }

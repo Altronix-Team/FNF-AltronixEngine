@@ -622,7 +622,9 @@ class HScriptHandler extends SScript
 		set('Application', Application);
 		set('FlxGraphic', FlxGraphic);
 		set('FlxAtlasFrames', FlxAtlasFrames);
+		#if sys
 		set('File', File);
+		#end
 		set('FlxTrail', FlxTrail);
 		set('FlxShader', FlxShader);
 		set('FlxBar', FlxBar);
@@ -656,19 +658,25 @@ class HScriptHandler extends SScript
 		set('ColorSwap', ColorSwap);
 		set('StaticArrow', StaticArrow);
 		set('AssetsUtil', AssetsUtil);
+		#if FEATURE_MODCORE
 		set('PolymodHscriptState', states.HscriptableState.PolymodHscriptState);
+		#end
 
 		set('getRGBColor', getRGBColor);
+		#if FEATURE_MODCORE
 		set('openPolymodState', openPolymodState);
+		#end
 	}
 
 	function openPolymodState(scriptFileName:String)
 	{
+		#if FEATURE_MODCORE
 		try{
 			var state = states.HscriptableState.PolymodHscriptState.init(scriptFileName);
 			MusicBeatState.switchState(state);
 		}
 		catch(e) {Debug.logTrace(e.details());}
+		#end
 	}
 
 	function getRGBColor(r:Int, g:Int, b:Int, ?a:Int):FlxColor

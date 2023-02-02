@@ -1,6 +1,8 @@
 package states;
 
+#if FEATURE_MODCORE
 import states.HscriptableState.PolymodHscriptState;
+#end
 import scriptStuff.HscriptStage;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -171,6 +173,7 @@ class TitleState extends MusicBeatState
 	{
 		persistentUpdate = true;
 
+		#if FEATURE_MODCORE
 		var scriptedStatesList = PolymodHscriptState.listScriptClasses();
 		for (state in scriptedStatesList)
 		{
@@ -180,6 +183,7 @@ class TitleState extends MusicBeatState
 				FlxG.switchState(hscriptState); // Automatically switches states to hscript variant
 			}
 		}
+		#end
 
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		// bg.antialiasing = Main.save.data.antialiasing;

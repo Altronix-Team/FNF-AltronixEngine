@@ -211,32 +211,32 @@ class CharacterEditorState extends MusicBeatState
 		super.create();
 	}
 
-	var stageDropDown:FlxUIDropDownMenuCustom;
+	//var stageDropDown:FlxUIDropDownMenuCustom;
 	function addStagesUI()
 	{
 		var tab_group = new FlxUI(null, UI_stages);
 		tab_group.name = "Stages";
 
-		stageDropDown = new FlxUIDropDownMenuCustom(10, 30, FlxUIDropDownMenuCustom.makeStrIdLabelArray([''], true), function(character:String)
+		/*stageDropDown = new FlxUIDropDownMenuCustom(10, 30, FlxUIDropDownMenuCustom.makeStrIdLabelArray([''], true), function(character:String)
 		{
 			daStage = stageDropDown.selectedLabel;
 			reloadBGs();
 		},  new FlxUIDropDownHeader(85, null, new FlxUIText(10, 12, 0, 'Stage: ')));
 		stageDropDown.selectedLabel = daStage;
 		blockPressWhileScrolling.push(stageDropDown);
-		reloadStagesDropDown();
+		reloadStagesDropDown();*/
 
-		tab_group.add(new FlxText(stageDropDown.x, stageDropDown.y - 18, 0, 'Stage:'));
-		tab_group.add(stageDropDown);
+		//tab_group.add(new FlxText(stageDropDown.x, stageDropDown.y - 18, 0, 'Stage:'));
+		//tab_group.add(stageDropDown);
 		UI_stages.addGroup(tab_group);
 	}
 
-	function reloadStagesDropDown() {
+	/*function reloadStagesDropDown() {
 		var stageList = EngineConstants.defaultStages;
 
 		stageDropDown.setData(FlxUIDropDownMenuCustom.makeStrIdLabelArray(stageList, true));
 		stageDropDown.selectedLabel = daStage;
-	}
+	}*/
 
 	var char_X:Float = 100;
 	var char_Y:Float = 100;
@@ -244,7 +244,7 @@ class CharacterEditorState extends MusicBeatState
 	var loadedStageOnce:Bool = false;
 	var onPixelBG:Bool = false;
 	var OFFSET_X:Float = 300;
-	function reloadBGs() {
+	/*function reloadBGs() {
 		if (loadedStageOnce)
 			{
 				remove(cameraFollowPointer);
@@ -331,7 +331,7 @@ class CharacterEditorState extends MusicBeatState
 					}
 				add(cameraFollowPointer);
 			}
-	}
+	}*/
 
 	var charDropDown:FlxUIDropDownMenuCustom;
 	var check_player:FlxUICheckBox;
@@ -349,25 +349,25 @@ class CharacterEditorState extends MusicBeatState
 			ghostChar.flipX = char.flipX;
 			if (check_player.checked)
 			{
-				var stageData:StageFile = Stage.stageData;
+				/*var stageData:StageFile = Stage.stageData;
 				for (char in charLayer)
 				{
 					char.setPosition(stageData.boyfriend[0], stageData.boyfriend[1]);
 
 					char.x += char.positionArray[0];
 					char.y += char.positionArray[1];
-				}
+				}*/
 			}
 			else
 			{
-				var stageData:StageFile = Stage.stageData;
+				/*var stageData:StageFile = Stage.stageData;
 				for (char in charLayer)
 				{
 					char.setPosition(stageData.dad[0], stageData.dad[1]);
 					
 					char.x += char.positionArray[0];
 					char.y += char.positionArray[1];
-				}
+				}*/
 			}
 		};
 
@@ -386,7 +386,7 @@ class CharacterEditorState extends MusicBeatState
 			charFolder = daAnim;
 			updatePresence();
 			reloadCharacterDropDown();
-			reloadBGs();
+			//reloadBGs();
 		});
 		charDropDown.selectedLabel = daAnim;
 		blockPressWhileScrolling.push(charDropDown);
@@ -959,7 +959,7 @@ class CharacterEditorState extends MusicBeatState
 			genBoyOffsets();
 		}
 		reloadCharacterOptions();
-		reloadBGs();
+		//reloadBGs();
 		updatePointerPos();
 	}
 

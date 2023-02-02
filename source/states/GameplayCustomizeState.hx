@@ -57,7 +57,7 @@ class GameplayCustomizeState extends MusicBeatState
 	public static var dad:Character;
 	public static var gf:Character;
 	public static var boyfriend:Boyfriend;
-	public static var Stage:Stage;
+	public static var Stage:StageScript;
 	public static var freeplayBf:String = 'bf';
 	public static var freeplayDad:String = 'dad';
 	public static var freeplayGf:String = 'gf';
@@ -174,7 +174,7 @@ class GameplayCustomizeState extends MusicBeatState
 			dad = new Character(100, 100, 'dad');
 		}
 
-		Stage = new Stage(stageCheck);
+		Stage = StageScript.init(stageCheck);
 
 		var stageData:StageFile = StageData.getStageFile(stageCheck);
 		if (stageData == null)
@@ -208,29 +208,15 @@ class GameplayCustomizeState extends MusicBeatState
 		DAD_Y = stageData.dad[1];
 		dad.setPosition(DAD_X, DAD_Y);
 
-		for (i in Stage.toAdd)
-		{
-			add(i);
-		}
-		for (index => array in Stage.layInFront)
-		{
-			switch (index)
-			{
-				case 0:
-					add(gf);
-					gf.scrollFactor.set(0.95, 0.95);
-					for (bg in array)
-						add(bg);
-				case 1:
-					add(dad);
-					for (bg in array)
-						add(bg);
-				case 2:
-					add(boyfriend);
-					for (bg in array)
-						add(bg);
-			}
-		}
+		add(Stage);
+
+		Stage.gfGroup.add(gf);
+		gf.scrollFactor.set(0.95, 0.95);
+
+		Stage.dadGroup.add(dad);
+
+		Stage.boyfriendGroup.add(boyfriend);
+
 
 		camPos = new FlxPoint(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
 

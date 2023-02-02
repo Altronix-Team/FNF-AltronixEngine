@@ -10,7 +10,6 @@ import openfl.utils.AssetLibrary;
 import cpp.vm.Gc;
 #end
 import openfl.utils.AssetCache;
-import states.HscriptableState.PolymodHscriptState;
 import lime.app.Application;
 import flixel.util.FlxColor;
 import flixel.FlxG;
@@ -27,10 +26,14 @@ import utils.Debug.DebugLogWriter;
 import openfl.system.Capabilities;
 import haxe.CallStack;
 import utils.EngineSave;
+
+#if sys
 import sys.io.Process;
+#end
 
 #if FEATURE_MODCORE
 import modding.ModCore;
+import states.HscriptableState.PolymodHscriptState;
 #end
 
 //TODO Altronix Engine start splash
@@ -65,7 +68,7 @@ class Main extends Sprite
 
 	public static final defaultWindowTitle:String = 'Friday Night Funkin\': Altronix Engine';
 
-	public static var fnfSignals:FNFSignals = new FNFSignals();
+	public static var fnfSignals:signals.MusicBeatSignals = new signals.MusicBeatSignals();
 
 	//public static var compileTime:String = macro utils.MacroUtil.buildDate();
 	//public static var gitCommitSha:String = macro utils.MacroUtil.buildGitCommitSha();
@@ -77,7 +80,9 @@ class Main extends Sprite
 	public static var configFound = false;
 	public static var hscriptClasses:Array<String> = [];
 
-	//var globalScripts:Array<scriptStuff.scriptBodies.GlobalScriptBody> = [];
+	var globalScripts:Array<scriptStuff.scriptBodies.GlobalScriptBody> = [];
+
+	public static var fromLauncher:Bool = false;
 
 	#if FEATURE_MULTITHREADING
 	public static var gameThreads:Array<ThreadObject> = [];
@@ -94,13 +99,13 @@ class Main extends Sprite
 	{
 		instance = this;
 
+		var args = Sys.args();
+
+		if (args[0] != null && args[0] == 'fromLauncher') fromLauncher = true;
+
 		super();
 
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtError);
-
-		#if cpp
-		untyped __global__.__hxcpp_set_critical_error_handler(onCriticalErrorEvent);
-		#end
 
 		if (stage != null)
 		{
@@ -154,7 +159,7 @@ class Main extends Sprite
 
 		// Run this first so we can see logs.
 		Debug.onInitProgram();
-
+		
 		#if !mobile
 		fpsCounter = new EngineFPS(10, 3, 0xFFFFFF);
 		#end		
@@ -167,11 +172,10 @@ class Main extends Sprite
 		configFound = (modsToLoad != null && modsToLoad.length > 0);
 		if (configFound)
 			ModCore.loadConfiguredMods();
+		hscriptClasses = PolymodHscriptState.listScriptClasses();
 		#else
 		configFound = false;
 		#end
-
-		hscriptClasses = PolymodHscriptState.listScriptClasses();
 
 		game = new FlxGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash, save.data.fullscreenOnStart);
 		addChild(game);	
@@ -204,27 +208,17 @@ class Main extends Sprite
 		//setup automatic beat, step and section updates
 		gameplayStuff.Conductor.setupUpdates();
 
-		Lib.current.addEventListener(Event.ENTER_FRAME, function(_)
-		{
-			fnfSignals.update.dispatch(FlxG.elapsed);
-		});
-
 		//Global scripts
 		reloadGlobalScripts();
 	}
 
 	public function reloadGlobalScripts()
 	{
-		/*for (script in globalScripts)
-		{
-			script.destroy();
-		}
-
-		var filesToCheck:Array<String> = AssetsUtil.readLibrary("gameplay", HSCRIPT, "scripts/global/");
+		var filesToCheck:Array<String> = scriptStuff.scriptBodies.GlobalScriptBody.GlobalScript.listScriptClasses();
 		for (file in filesToCheck)
 		{
-			globalScripts.push(new scriptStuff.scriptBodies.GlobalScriptBody(file));
-		}*/
+			globalScripts.push(scriptStuff.scriptBodies.GlobalScriptBody.GlobalScript.init(file));
+		}
 	}
 
 	static final ERROR_REPORT_URL = "https://github.com/AltronMaxX/FNF-AltronixEngine";
@@ -235,8 +229,7 @@ class Main extends Sprite
 	 * @param error The error that was thrown.
 	 */
 	public static function onUncaughtError(error:UncaughtErrorEvent)
-	{
-		#if FEATURE_FILESYSTEM
+	{		
 		var errorMsg:String = '';
 
 		var funnyTitle:Array<String> = 
@@ -250,6 +243,7 @@ class Main extends Sprite
 			'Tester couldn`t find it'
 		];
 
+		#if FEATURE_FILESYSTEM
 		errorMsg += '==========FATAL ERROR==========\n';
 		errorMsg += 'An uncaught error was thrown, and the game had to close.\n';
 		errorMsg += 'Please use the link below, create a new issue, and upload this file to report the error.\n';
@@ -316,11 +310,6 @@ class Main extends Sprite
 			+ ERROR_REPORT_URL,
 			funnyTitle[FlxG.random.int(0, funnyTitle.length - 1)]);
 		#end
-	}
-	private function onCriticalErrorEvent(message:String):Void
-	{
-		Debug.logError(message);
-		throw message;
 	}
 
 	var fpsCounter:EngineFPS;

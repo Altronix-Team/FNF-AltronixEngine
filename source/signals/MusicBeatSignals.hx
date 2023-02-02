@@ -1,10 +1,9 @@
-package;
+package signals;
 
 import gameplayStuff.Section.SwagSection;
 import flixel.util.FlxSignal;
 
-//Wonderful idea, Max
-class FNFSignals
+class MusicBeatSignals
 {
 	public var beatHit(default, null):FlxTypedSignal<Int->Void> = new FlxTypedSignal<Int->Void>();
 
@@ -16,6 +15,8 @@ class FNFSignals
 
     //Lol, flixel signals does not have update signals with elapsed val
 	public var update(default, null):FlxTypedSignal<Float->Void> = new FlxTypedSignal<Float->Void>();
+
+	public var updatePost(default, null):FlxTypedSignal<Float->Void> = new FlxTypedSignal<Float->Void>();
 
     @:allow(Main)
     function new() {}

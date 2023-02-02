@@ -41,7 +41,7 @@ class MasterEditorMenu extends states.MusicBeatState
 		DiscordClient.changePresence("Editors Main Menu", null);
 		#end
 
-		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage('menuDesat'));
 		bg.scrollFactor.set();
 		bg.color = 0xFF353535;
 		add(bg);
@@ -94,8 +94,6 @@ class MasterEditorMenu extends states.MusicBeatState
 					//LoadingState.loadAndSwitchState(new DialogueCharacterEditorState());
 				case 'Freeplay Songlist Editor':
 					LoadingState.loadAndSwitchState(new FreeplaySongsEditorState());
-				case 'GF Editor':
-					LoadingState.loadAndSwitchState(new GirlfriendEditorState());
 			}
 			FlxG.sound.music.volume = 0;
 			#if PRELOAD_ALL

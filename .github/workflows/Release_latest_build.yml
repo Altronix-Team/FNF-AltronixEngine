@@ -61,26 +61,16 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Clearing already existing cache
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const caches = await github.rest.actions.getActionsCacheList({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-            })
-            for (const cache of caches.data.actions_caches) {
-              if (cache.key == "cache-build-windows") {
-                console.log('Clearing ' + cache.key + '...')
-                await github.rest.actions.deleteActionsCacheById({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  cache_id: cache.id,
-                })
-                console.log("Cache cleared.")
-              }
-            }
+        shell: bash
+        env:
+          GH_TOKEN: ${{ inputs.github-token }}
+        run: |
+          echo "deleting cache cache-build-windows"
+          gh api \
+            --method DELETE \
+            -H 'Accept: application/vnd.github+json' \
+            "/repos/Altronix-Team/FNF-AltronixEngine/actions/caches?key=cache-build-windows"
           
-       #Well, I hope that will work
       - name: Save new cache
         uses: actions/cache/save@v3
         with:
@@ -88,4 +78,4 @@ jobs:
             .haxelib/
             export/release/windows/haxe/
             export/release/windows/obj/
-          key: ${{ steps.cache-restore.outputs.cache-primary-key }}
+          key: cache-build-windows

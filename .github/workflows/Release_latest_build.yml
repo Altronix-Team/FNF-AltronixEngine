@@ -29,15 +29,14 @@ jobs:
           
       #Took caching functions from Codename Engine
       - name: Restore existing build cache for faster compilation
-        uses: actions/cache@v3
+        id: cache-restore
+        uses: actions/cache/restore@v3
         with:
           key: cache-build-windows
           path: |
             .haxelib/
             export/release/windows/haxe/
             export/release/windows/obj/
-          restore-keys: |
-            cache-build-windows
             
       # Runs a set of commands using the runners shell
       - name: Windows build action
@@ -62,34 +61,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
        #Well, I hope that will work
-      - name: Clearing already existing cache
-        run: |
-          gh extension install actions/gh-actions-cache
-          
-          REPO=${{ github.repository }}
-          BRANCH="refs/pull/${{ github.event.pull_request.number }}/merge"
-
-          echo "Fetching list of cache key"
-          cacheKeysForPR=$(gh actions-cache list -R $REPO -B $BRANCH | cut -f 1 )
-
-          ## Setting this to not fail the workflow while deleting cache keys. 
-          set +e
-          echo "Deleting caches..."
-          for cacheKey in $cacheKeysForPR
-          do
-              gh actions-cache delete $cacheKey -R $REPO -B $BRANCH --confirm
-          done
-          echo "Done"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Uploading new cache
-        uses: actions/cache@v3
+      - name: Save new cache
+        uses: actions/cache/save@v3
         with:
-          # caching again since for some reason it doesnt work with the first post cache shit
-          key: cache-build-windows
           path: |
             .haxelib/
             export/release/windows/haxe/
             export/release/windows/obj/
-          restore-keys: |
-            cache-build-windows
+          key: ${{ steps.cache-primes-restore.outputs.cache-primary-key }}

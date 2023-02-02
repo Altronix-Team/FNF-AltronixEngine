@@ -118,6 +118,8 @@ class MusicBeatState extends BaseState implements gameplayStuff.Conductor.IMusic
 		#end
 
 		super.update(elapsed);
+
+		Main.fnfSignals.update.dispatch(elapsed);
 	};
 
 	public static function switchState(nextState:FlxState) 

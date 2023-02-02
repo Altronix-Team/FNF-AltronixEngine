@@ -161,7 +161,9 @@ class WindowUtil
 	 */
 	public static function sleep(milliseconds:Int):Void
 	{
+		#if sys
 		Sys.sleep(milliseconds / 1000);
+		#end
 	}
 
 	/**

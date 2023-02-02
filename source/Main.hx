@@ -79,6 +79,8 @@ class Main extends Sprite
 
 	//var globalScripts:Array<scriptStuff.scriptBodies.GlobalScriptBody> = [];
 
+	public static var fromLauncher:Bool = false;
+
 	#if FEATURE_MULTITHREADING
 	public static var gameThreads:Array<ThreadObject> = [];
 	#end
@@ -93,6 +95,10 @@ class Main extends Sprite
 	public function new()
 	{
 		instance = this;
+
+		var args = Sys.args();
+
+		if (args[0] != null && args[0] == 'fromLauncher') fromLauncher = true;
 
 		super();
 

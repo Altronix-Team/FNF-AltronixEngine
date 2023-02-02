@@ -22,7 +22,6 @@ import gameplayStuff.Song.SongData;
 import gameplayStuff.Song;
 import gameplayStuff.SongMetadata;
 import openfl.Lib;
-import sys.thread.Lock;
 import openfl.media.Sound;
 import openfl.utils.Assets as OpenFlAssets;
 import openfl.utils.Future;

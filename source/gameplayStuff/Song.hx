@@ -248,8 +248,8 @@ class Song
 
 	public static function conversionChecks(song:SongData):SongData
 	{
-		ThreadUtil.runReservedTask("songLoader",  function()
-		{
+		#if FEATURE_MULTITHREADING ThreadUtil.runReservedTask("songLoader",  function()
+		{ #end
 			var ba = song.bpm;
 
 			var index = 0;
@@ -588,7 +588,7 @@ class Song
 
 			song.chartVersion = latestChart;
 
-		});
+		#if FEATURE_MULTITHREADING }); #end
 		return song;
 	}
 

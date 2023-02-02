@@ -23,8 +23,6 @@ class ThreadUtil
         }
     }
 }
-#end
-
 class ThreadObject
 {
     public var thread:Thread;
@@ -47,3 +45,4 @@ class ThreadObject
         return thread.events.run(func);
     }
 }
+#end

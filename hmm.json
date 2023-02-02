@@ -94,6 +94,11 @@
       "name": "yaml",
       "type": "haxelib",
       "version": null
+    },
+    {
+      "name": "away3d",
+      "type": "haxelib",
+      "version": null
     }
   ]
 }

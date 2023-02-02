@@ -30,7 +30,9 @@ class ModCore
 
 	public static var polymodLoaded:Bool = false;
 
+	#if FEATURE_MODCORE
 	public static var loadedModList:Array<ModMetadata>;
+	#end
 
 	public static function loadConfiguredMods()
 	{
@@ -114,6 +116,9 @@ class ModCore
 				modsToLoad = [];
 			}
 		}
+
+		loadDefaultImports();
+
 		var loadedModList = polymod.Polymod.init({
 			// Root directory for all mods.
 			modRoot: MOD_DIRECTORY,
@@ -207,8 +212,6 @@ class ModCore
 		if (!polymodLoaded)
 			polymodLoaded = true;
 
-		loadDefaultImports();
-
 		NoteskinHelpers.updateNoteskins();
 
 		MenuMusicStuff.updateMusic();
@@ -233,75 +236,71 @@ class ModCore
 
 	static function loadDefaultImports()
 	{
-		@:privateAccess()
-		if (Polymod.prevParams.useScriptedClasses)
+		Debug.logInfo('Loading default imports');
+
+		function set(clsName:String, importClass:Class<Dynamic>)
 		{
-			Debug.logInfo('Loading default imports');
-
-			function set(clsName:String, importClass:Class<Dynamic>)
-			{
-				Polymod.addDefaultImport(importClass, clsName);
-			}
-
-			set('Reflect', Reflect);
-			set('FlxG', FlxG);
-			set('FlxBasic', flixel.FlxBasic);
-			set('FlxObject', flixel.FlxObject);
-			set('FlxCamera', flixel.FlxCamera);
-			set('FlxSprite', flixel.FlxSprite);
-			set('FlxText', flixel.text.FlxText);
-			set('FlxRuntimeShader', flixel.addons.display.FlxRuntimeShader);
-			set('FlxSound', flixel.system.FlxSound);
-			set('FlxTimer', flixel.util.FlxTimer);
-			set('FlxTween', flixel.tweens.FlxTween);
-			set('FlxEase', flixel.tweens.FlxEase);
-			set('FlxMath', flixel.math.FlxMath);
-			set('FlxSound', flixel.system.FlxSound);
-			set('FlxGroup', flixel.group.FlxGroup);
-			set('FlxTypedGroup', flixel.group.FlxGroup.FlxTypedGroup);
-			set('FlxSpriteGroup', flixel.group.FlxSpriteGroup);
-			set('FlxTypedSpriteGroup', flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup);
-			set('FlxStringUtil', flixel.util.FlxStringUtil);
-			set('FlxAtlasFrames', flixel.graphics.frames.FlxAtlasFrames);
-			set('FlxSort', flixel.util.FlxSort);
-			set('Application', lime.app.Application);
-			set('FlxGraphic', flixel.graphics.FlxGraphic);
-			set('FlxAtlasFrames', flixel.graphics.frames.FlxAtlasFrames);
-			set('File', sys.io.File);
-			set('FlxTrail', flixel.addons.effects.FlxTrail);
-			set('FlxShader', flixel.system.FlxAssets.FlxShader);
-			set('FlxBar', flixel.ui.FlxBar);
-			set('FlxBackdrop', flixel.addons.display.FlxBackdrop);
-			set('StageSizeScaleMode', flixel.system.scaleModes.StageSizeScaleMode);
-			set('GraphicsShader', openfl.display.GraphicsShader);
-			set('ShaderFilter', openfl.filters.ShaderFilter);
-			set('Capabilities', flash.system.Capabilities);
-
-			set('Discord', utils.DiscordClient);
-
-			set('Alphabet', Alphabet);
-			set('Song', gameplayStuff.Song);
-			set('Character', Character);
-			set('controls', Controls);
-			set('CoolUtil', CoolUtil);
-			set('Conductor', gameplayStuff.Conductor);
-			set('PlayState', states.PlayState);
-			set('Main', Main);
-			set('Note', gameplayStuff.Note);
-			set('Paths', Paths);
-			set('Stage', gameplayStuff.Stage);
-			set('WindowUtil', WindowUtil);
-			set('WindowShakeEvent', WindowUtil.WindowShakeEvent);
-			set('Debug', Debug);
-			set('WiggleEffect', WiggleEffect);
-			set('AtlasFrameMaker', animateatlas.AtlasFrameMaker);
-			set('Achievements', Achievements);
-			set('VCRDistortionEffect', Shaders.VCRDistortionEffect);
-			set('ColorSwap', Shaders.ColorSwap);
-			set('StaticArrow', gameplayStuff.StaticArrow);
-			set('AssetsUtil', AssetsUtil);
-			set('PolymodHscriptState', states.HscriptableState.PolymodHscriptState);
+			Polymod.addDefaultImport(importClass, clsName);
 		}
+
+		set('Reflect', Reflect);
+		set('FlxG', FlxG);
+		set('FlxBasic', flixel.FlxBasic);
+		set('FlxObject', flixel.FlxObject);
+		set('FlxCamera', flixel.FlxCamera);
+		set('FlxSprite', flixel.FlxSprite);
+		set('FlxText', flixel.text.FlxText);
+		set('FlxRuntimeShader', flixel.addons.display.FlxRuntimeShader);
+		set('FlxSound', flixel.system.FlxSound);
+		set('FlxTimer', flixel.util.FlxTimer);
+		set('FlxTween', flixel.tweens.FlxTween);
+		set('FlxEase', flixel.tweens.FlxEase);
+		set('FlxMath', flixel.math.FlxMath);
+		set('FlxSound', flixel.system.FlxSound);
+		set('FlxGroup', flixel.group.FlxGroup);
+		set('FlxTypedGroup', flixel.group.FlxGroup.FlxTypedGroup);
+		set('FlxSpriteGroup', flixel.group.FlxSpriteGroup);
+		set('FlxTypedSpriteGroup', flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup);
+		set('FlxStringUtil', flixel.util.FlxStringUtil);
+		set('FlxAtlasFrames', flixel.graphics.frames.FlxAtlasFrames);
+		set('FlxSort', flixel.util.FlxSort);
+		set('Application', lime.app.Application);
+		set('FlxGraphic', flixel.graphics.FlxGraphic);
+		set('FlxAtlasFrames', flixel.graphics.frames.FlxAtlasFrames);
+		set('File', sys.io.File);
+		set('FlxTrail', flixel.addons.effects.FlxTrail);
+		set('FlxShader', flixel.system.FlxAssets.FlxShader);
+		set('FlxBar', flixel.ui.FlxBar);
+		set('FlxBackdrop', flixel.addons.display.FlxBackdrop);
+		set('StageSizeScaleMode', flixel.system.scaleModes.StageSizeScaleMode);
+		set('GraphicsShader', openfl.display.GraphicsShader);
+		set('ShaderFilter', openfl.filters.ShaderFilter);
+		set('Capabilities', flash.system.Capabilities);
+
+		set('Discord', utils.DiscordClient);
+
+		set('Alphabet', Alphabet);
+		set('Song', gameplayStuff.Song);
+		set('Character', Character);
+		set('controls', Controls);
+		set('CoolUtil', CoolUtil);
+		set('Conductor', gameplayStuff.Conductor);
+		set('PlayState', states.PlayState);
+		set('Main', Main);
+		set('Note', gameplayStuff.Note);
+		set('Paths', Paths);
+		set('Stage', gameplayStuff.Stage);
+		set('WindowUtil', WindowUtil);
+		set('WindowShakeEvent', WindowUtil.WindowShakeEvent);
+		set('Debug', Debug);
+		set('WiggleEffect', WiggleEffect);
+		set('AtlasFrameMaker', animateatlas.AtlasFrameMaker);
+		set('Achievements', Achievements);
+		set('VCRDistortionEffect', Shaders.VCRDistortionEffect);
+		set('ColorSwap', Shaders.ColorSwap);
+		set('StaticArrow', gameplayStuff.StaticArrow);
+		set('AssetsUtil', AssetsUtil);
+		set('PolymodHscriptState', states.HscriptableState.PolymodHscriptState);
 	}
 
 	static inline function buildFrameworkParams():polymod.FrameworkParams
@@ -398,5 +397,4 @@ class ModCoreBackend extends OpenFLBackend
 		return super.list(type);
 	}
 }
-
 #end

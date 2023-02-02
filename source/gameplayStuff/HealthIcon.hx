@@ -161,7 +161,8 @@ class HealthIcon extends FlxSprite
 		}
 		else
 		{
-			return loadImage('', 'face');
+			var bitmap = OpenFlAssets.getBitmapData(image('', 'face'));
+			return FlxGraphic.fromBitmapData(bitmap);
 		}
 	}
 }

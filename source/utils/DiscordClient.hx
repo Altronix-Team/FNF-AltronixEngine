@@ -10,6 +10,7 @@ class DiscordClient
 	public static var isInitialized:Bool = false;
 	public function new()
 	{
+		#if desktop
 		Debug.logInfo("Discord Client starting...");
 		DiscordRpc.start({
 			clientID: "489437279799083028", // change this to what ever the fuck you want lol
@@ -27,21 +28,26 @@ class DiscordClient
 		}
 
 		DiscordRpc.shutdown();
+		#end
 	}
 
 	public static function shutdown()
 	{
+		#if desktop
 		DiscordRpc.shutdown();
+		#end
 	}
 
 	static function onReady()
 	{
+		#if desktop
 		DiscordRpc.presence({
 			details: "In the Menus",
 			state: null,
 			largeImageKey: 'icon',
 			largeImageText: "fridaynightfunkin"
 		});
+		#end
 	}
 
 	static function onError(_code:Int, _message:String)
@@ -56,16 +62,19 @@ class DiscordClient
 
 	public static function initialize()
 	{
+		#if desktop
 		var DiscordDaemon = sys.thread.Thread.create(() ->
 		{
 			new DiscordClient();
 		});
 		Debug.logInfo("Discord Client initialized");
 		isInitialized = true;
+		#end
 	}
 
 	public static function changePresence(details:String, state:Null<String>, ?smallImageKey:String, ?hasStartTimestamp:Bool, ?endTimestamp:Float)
 	{
+		#if desktop
 		var startTimestamp:Float = if (hasStartTimestamp) Date.now().getTime() else 0;
 
 		if (endTimestamp > 0)
@@ -83,6 +92,6 @@ class DiscordClient
 			startTimestamp: Std.int(startTimestamp / 1000),
 			endTimestamp: Std.int(endTimestamp / 1000)
 		});
-
+		#end
 	}
 }

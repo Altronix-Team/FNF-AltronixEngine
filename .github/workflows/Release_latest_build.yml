@@ -63,7 +63,7 @@ jobs:
       - name: Clearing already existing cache
         shell: bash
         env:
-          GH_TOKEN: ${{ inputs.github-token }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           echo "deleting cache cache-build-windows"
           gh api \

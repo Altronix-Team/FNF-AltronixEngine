@@ -61,15 +61,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Clearing already existing cache
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          echo "deleting cache cache-build-windows"
-          gh api \
-            --method DELETE \
-            -H 'Accept: application/vnd.github+json' \
-            "/repos/Altronix-Team/FNF-AltronixEngine/actions/caches?key=cache-build-windows"
+        uses: easimon/wipe-cache@main
+        with:
+          dry-run: 'true'
           
       - name: Save new cache
         uses: actions/cache/save@v3

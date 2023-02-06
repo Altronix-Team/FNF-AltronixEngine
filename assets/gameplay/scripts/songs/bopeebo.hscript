@@ -2,9 +2,9 @@ var triggeredAlready = false;
 
 function onUpdate(elapsed)
 {
-    if (gf.animation.curAnim.name == 'danceLeft'
-		|| gf.animation.curAnim.name == 'danceRight'
-		|| gf.animation.curAnim.name == 'idle')
+    if (gf.getCurAnimName() == 'danceLeft'
+		|| gf.getCurAnimName() == 'danceRight'
+		|| gf.getCurAnimName() == 'idle')
 	{
         if (curBeat > 5 && curBeat < 130)
         {

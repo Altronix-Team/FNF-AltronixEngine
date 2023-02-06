@@ -33,6 +33,7 @@
 	 - `haxelib git firetongue https://github.com/larsiusprime/firetongue dev`
 	 - `haxelib install thx.semver`
 	 - `openfl install away3d`
+	 - `haxelib git flxanimate https://github.com/Dot-Stuff/flxanimate/`
 	      - Note: for Linux, you need to install the `g++-multilib` and `gcc-multilib` packages respectively. (use apt to install them.)
 
 ### Windows-only dependencies (only for building *to* Windows. Building html5 on Windows does not require this)

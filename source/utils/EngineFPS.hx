@@ -200,14 +200,14 @@ class EngineFPS extends Sprite
 		addChild(fpsText);
 
 		bgSprite.scaleX = fpsText.width;
-		bgSprite.scaleY = fpsText.height - 60;
+		bgSprite.scaleY = fpsText.height - 70;
 	}
 
 	public static function set_showDebugInfo(value:Bool)
 	{
 		FPSText.showDebugInfo = value;
 		showDebugInfo = value;
-		bgSprite.scaleY += value ? 60 : -60;
+		bgSprite.scaleY += value ? 70 : -70;
 		return value;
 	}
 

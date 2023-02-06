@@ -1,5 +1,6 @@
 package utils;
 
+import flxanimate.frames.FlxAnimateFrames;
 import lime.tools.AssetType;
 import openfl.net.FileFilter;
 import openfl.events.Event;
@@ -109,19 +110,26 @@ class AssetsUtil
 		}
 	}
 
-	inline static public function getCharacterFrames(charName:String, key:String):FlxFramesCollection
+	static public function getCharacterFrames(charName:String, key:String):FlxFramesCollection
 	{
-		var filePath = 'characters/$charName/$key';
-		if (OpenFlAssets.exists(Paths.txt('characters/$charName/$key', "gameplay")))
-			return FlxAtlasFrames.fromSpriteSheetPacker(loadCharacterImage(charName, key), Paths.file('$filePath.txt', "gameplay"));
-		else
-		{
-			if (OpenFlAssets.exists(Paths.xml('characters/$charName/$key', "gameplay")))
-			{
-				return FlxAtlasFrames.fromSparrow(loadCharacterImage(charName, key), Paths.file('$filePath.xml', "gameplay"));
-			}
+		try{
+			var filePath = 'characters/$charName/$key';
+			if (OpenFlAssets.exists(Paths.txt('characters/$charName/$key', "gameplay")))
+				return FlxAtlasFrames.fromSpriteSheetPacker(loadCharacterImage(charName, key), Paths.file('$filePath.txt', "gameplay"));
 			else
-				return null;
+			{
+				if (OpenFlAssets.exists(Paths.xml('characters/$charName/$key', "gameplay")))
+				{
+					return FlxAtlasFrames.fromSparrow(loadCharacterImage(charName, key), Paths.file('$filePath.xml', "gameplay"));
+				}
+				else
+					return null;
+			}
+		}
+		catch(e)
+		{
+			Debug.logError('Failed to load character frames ' + e.details());
+			return null;
 		}
 	}
 

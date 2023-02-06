@@ -10,12 +10,15 @@ function startCutscene()
 	PlayState.inCutscene = true;
 	
 	var tankman:FlxSprite = new FlxSprite(dad.x, dad.y);
-	tankman.frames = Paths.getSparrowAtlas('weeks/assets/week7/images/cutscenes/' + songName, "gameplay");
+	tankman.frames = Paths.getSparrowAtlas('weeks/assets/week7/images/cutscenes/' + songName, 'gameplay');
 	tankman.antialiasing = Main.save.data.antialiasing;
 	cutsceneHandler.push(tankman);
 	PlayState.instance.insert(PlayState.instance.members.indexOf(dadGroup) + 1, tankman);
 
 	Main.gjToastManager.visible = false;
+
+	cutsceneHandler.endTime = 12;
+	cutsceneHandler.music = 'weeks/assets/week7/music/DISTORTO';
 	
 	cutsceneHandler.finishCallback = function()
 	{
@@ -33,27 +36,22 @@ function startCutscene()
 		boyfriendGroup.alpha = 1;
 		boyfriend.visible = true;
 		boyfriend.animation.finishCallback = null;
-		gf.animation.finishCallback = null;
 		gf.dance();
 
 		destroyScript();
 	};
 	
 	PlayState.instance.camFollow.setPosition(dad.x + 280, dad.y + 170);
-    
-    cutsceneHandler.endTime = 12;
-	cutsceneHandler.music = 'weeks/assets/week7/music/DISTORTO';
-	cutsceneHandler.assetLibrary = 'gameplay';
-			
-	var wellWellWell:FlxSound = new FlxSound().loadEmbedded(Paths.getPath('weeks/assets/week7/sounds/wellWellWell.' + Paths.SOUND_EXT, "SOUND", "gameplay"));
+					
+	var wellWellWell:FlxSound = new FlxSound().loadEmbedded(Paths.getPath('weeks/assets/week7/sounds/wellWellWell.' + Paths.SOUND_EXT, null, 'gameplay'));
 	FlxG.sound.list.add(wellWellWell);
 	cutsceneHandler.sounds.push(wellWellWell);
 
-	var beep:FlxSound = new FlxSound().loadEmbedded(Paths.getPath('weeks/assets/week7/sounds/bfBeep.' + Paths.SOUND_EXT, "SOUND", "gameplay"));
+	var beep:FlxSound = new FlxSound().loadEmbedded(Paths.getPath('weeks/assets/week7/sounds/bfBeep.' + Paths.SOUND_EXT, null, 'gameplay'));
 	FlxG.sound.list.add(beep);
 	cutsceneHandler.sounds.push(beep);
 
-	var killYou:FlxSound = new FlxSound().loadEmbedded(Paths.getPath('weeks/assets/week7/sounds/killYou.' + Paths.SOUND_EXT, "SOUND", "gameplay"));
+	var killYou:FlxSound = new FlxSound().loadEmbedded(Paths.getPath('weeks/assets/week7/sounds/killYou.' + Paths.SOUND_EXT, null, 'gameplay'));
 	FlxG.sound.list.add(killYou);
 	cutsceneHandler.sounds.push(killYou);
 	

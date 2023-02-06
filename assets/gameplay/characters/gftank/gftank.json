@@ -11,6 +11,7 @@
   "startingAnim": "danceRight",
   "antialiasing": true,
   "isGF": true,
+  "charPos": [100, 275],
   "animations": [
     {
       "name": "danceLeft",
@@ -29,7 +30,7 @@
 	{
 			"offsets": [
 				0,
-				-17
+				0
 			],
 			"looped": false,
 			"frameRate": 24,

@@ -10,7 +10,7 @@ function startCutscene()
 	PlayState.inCutscene = true;
 	
 	var tankman:FlxSprite = new FlxSprite(dad.x, dad.y);
-	tankman.frames = Paths.getSparrowAtlas('weeks/assets/week7/images/cutscenes/' + songName, "gameplay");
+	tankman.frames = Paths.getSparrowAtlas('weeks/assets/week7/images/cutscenes/' + songName, 'gameplay');
 	tankman.antialiasing = Main.save.data.antialiasing;
 	cutsceneHandler.push(tankman);
 	PlayState.instance.insert(PlayState.instance.members.indexOf(dadGroup) + 1, tankman);
@@ -19,21 +19,19 @@ function startCutscene()
 	tankman2.antialiasing = Main.save.data.antialiasing;
 	tankman2.alpha = 0.000001;
 	cutsceneHandler.push(tankman2);
-    tankman2.frames = Paths.getSparrowAtlas('weeks/assets/week7/images/cutscenes/stress2', "gameplay");
+    tankman2.frames = Paths.getSparrowAtlas('weeks/assets/week7/images/cutscenes/stress2', 'gameplay');
 	PlayState.instance.insert(PlayState.instance.members.indexOf(dadGroup) + 1, tankman2);
 
-    var gfDance:FlxSprite = new FlxSprite(gf.x - 107, gf.y + 140);
+    var gfDance:Character = new Character(gf.x + 140, gf.y + 420, 'gftank');
 	gfDance.antialiasing = Main.save.data.antialiasing;
 	cutsceneHandler.push(gfDance);
-    gfDance.frames = Paths.getCharacterFrames('gftank', 'gfTankmen');
-	gfDance.animation.addByPrefix('dance', 'GF Dancing at Gunpoint', 24, true);
-	gfDance.animation.play('dance', true);
+	gfDance.dance;
 	PlayState.instance.insert(PlayState.instance.members.indexOf(gfGroup) + 1, gfDance);
 
 	var gfCutscene:FlxSprite = new FlxSprite(gf.x - 104, gf.y + 122);
 	gfCutscene.antialiasing = Main.save.data.antialiasing;
 	cutsceneHandler.push(gfCutscene);
-    gfCutscene.frames = Paths.getSparrowAtlas('weeks/assets/week7/images/cutscenes/stressGF', "gameplay");
+    gfCutscene.frames = Paths.getSparrowAtlas('weeks/assets/week7/images/cutscenes/stressGF', 'gameplay');
 	gfCutscene.animation.addByPrefix('dieBitch', 'GF STARTS TO TURN PART 1', 24, false);
 	gfCutscene.animation.addByPrefix('getRektLmao', 'GF STARTS TO TURN PART 2', 24, false);
 	PlayState.instance.insert(PlayState.instance.members.indexOf(gfGroup) + 1, gfCutscene);
@@ -74,7 +72,6 @@ function startCutscene()
 		boyfriendGroup.alpha = 1;
 		boyfriend.visible = true;
 		boyfriend.animation.finishCallback = null;
-		gf.animation.finishCallback = null;
 		gf.dance();
 
 		destroyScript();
@@ -90,7 +87,7 @@ function startCutscene()
 	PlayState.instance.camFollow.setPosition(dad.x + 400, dad.y + 170);
 	cutsceneHandler.tweens.push(FlxTween.tween(FlxG.camera, {zoom: 0.9 * 1.2}, 1, {ease: FlxEase.quadInOut}));
 	
-	var cutsceneSnd:FlxSound = new FlxSound().loadEmbedded(Paths.getPath('weeks/assets/week7/sounds/stressCutscene.' + Paths.SOUND_EXT, "SOUND", "gameplay"));
+	var cutsceneSnd:FlxSound = new FlxSound().loadEmbedded(Paths.getPath('weeks/assets/week7/sounds/stressCutscene.' + Paths.SOUND_EXT, null, 'gameplay'));
 	FlxG.sound.list.add(cutsceneSnd);
 	cutsceneHandler.sounds.push(cutsceneSnd);
 

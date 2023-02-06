@@ -10,7 +10,7 @@ function startCutscene()
 	PlayState.inCutscene = true;
 	
 	var tankman:FlxSprite = new FlxSprite(dad.x, dad.y);
-	tankman.frames = Paths.getSparrowAtlas('weeks/assets/week7/images/cutscenes/' + songName,"gameplay");
+	tankman.frames = Paths.getSparrowAtlas('weeks/assets/week7/images/cutscenes/' + songName, 'gameplay');
 	tankman.antialiasing = Main.save.data.antialiasing;
 	cutsceneHandler.push(tankman);
 	PlayState.instance.insert(PlayState.instance.members.indexOf(dadGroup) + 1, tankman);
@@ -43,11 +43,10 @@ function startCutscene()
 
     cutsceneHandler.endTime = 11.5;
 	cutsceneHandler.music = 'weeks/assets/week7/music/DISTORTO';
-	cutsceneHandler.assetLibrary = 'gameplay';
 	tankman.x += 40;
 	tankman.y += 10;
 	
-	var tightBars:FlxSound = new FlxSound().loadEmbedded(Paths.getPath('weeks/assets/week7/sounds/tankSong2.' + Paths.SOUND_EXT, "SOUND", "gameplay"));
+	var tightBars:FlxSound = new FlxSound().loadEmbedded(Paths.getPath('weeks/assets/week7/sounds/tankSong2.' + Paths.SOUND_EXT, null, 'gameplay'));
 	FlxG.sound.list.add(tightBars);
 	cutsceneHandler.sounds.push(tightBars);
 
@@ -66,7 +65,7 @@ function startCutscene()
 	cutsceneHandler.timer(4, function()
 	{
 		gf.playAnim('sad', true);
-		gf.animation.finishCallback = function(name:String)
+		gf.animateAtlas.anim.onComplete = function()
 		{
 			gf.playAnim('sad', true);
 		};

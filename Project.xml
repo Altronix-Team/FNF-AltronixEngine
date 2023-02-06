@@ -117,7 +117,7 @@
 	<haxelib name="discord_rpc" if="desktop"/>
 	<haxelib name="hxCodec" if="VIDEOS_ALLOWED"/>
 	<haxelib name="yaml" />
-	<!--Waiting for extension-ffmpeg to replace hxCodec :3-->
+	<haxelib name="flxanimate" />
 
 	<haxelib name="haxe-strings" />
 	<haxelib name="firetongue" />

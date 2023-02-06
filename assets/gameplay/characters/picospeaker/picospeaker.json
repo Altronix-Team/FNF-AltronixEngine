@@ -39,7 +39,7 @@
 		{
 			"offsets": [
 				0,
-				-130
+				0
 			],
 			"frameRate": 24,
 			"prefix": "Pico shoot 2",
@@ -48,8 +48,8 @@
 		},
 		{
 			"offsets": [
-				414,
-				-63
+				0,
+				0
 			],
 			"frameRate": 24,
 			"prefix": "Pico shoot 3",
@@ -58,8 +58,8 @@
 		},
 		{
 			"offsets": [
-				440,
-				-18
+				0,
+				0
 			],
 			"frameRate": 24,
 			"prefix": "Pico shoot 4",
@@ -69,13 +69,13 @@
 	],
 	"hasTrail": false,
 	"camPos": [
-		0,
-		0
+		195,
+		365
 	],
 	"holdLength": 4,
 	"charPos": [
-		120,
-		-125
+		0,
+		-120
 	],
 	"flipX": false,
 	"asset": "characters/picoSpeaker",

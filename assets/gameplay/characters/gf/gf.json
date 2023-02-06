@@ -3,7 +3,7 @@
 		{
 			"offsets": [
 				0,
-				-19
+				0
 			],
 			"nextAnim": "danceRight",
 			"frameRate": 24,
@@ -15,7 +15,7 @@
 		{
 			"offsets": [
 				0,
-				-20
+				0
 			],
 			"nextAnim": "danceRight",
 			"frameRate": 24,
@@ -39,7 +39,7 @@
 		{
 			"offsets": [
 				0,
-				-20
+				0
 			],
 			"nextAnim": "danceRight",
 			"frameRate": 24,
@@ -51,7 +51,7 @@
 		{
 			"offsets": [
 				0,
-				-9
+				0
 			],
 			"frameRate": 24,
 			"prefix": "GF Dancing Beat",
@@ -78,7 +78,7 @@
 		{
 			"offsets": [
 				0,
-				-9
+				0
 			],
 			"frameRate": 24,
 			"prefix": "GF Dancing Beat",
@@ -113,8 +113,8 @@
 		},
 		{
 			"offsets": [
-				45,
-				-8
+				0,
+				0
 			],
 			"frameRate": 24,
 			"frameIndices": [
@@ -131,7 +131,7 @@
 		{
 			"offsets": [
 				0,
-				-9
+				0
 			],
 			"nextAnim": "danceRight",
 			"frameRate": 24,
@@ -156,8 +156,8 @@
 		},
 		{
 			"offsets": [
-				-2,
-				-21
+				0,
+				0
 			],
 			"frameRate": 24,
 			"prefix": "gf sad",
@@ -180,8 +180,8 @@
 		},
 		{
 			"offsets": [
-				-2,
-				-17
+				0,
+				0
 			],
 			"frameRate": 24,
 			"frameIndices": [],
@@ -197,8 +197,8 @@
 	],
 	"holdLength": 4.1,
 	"charPos": [
-		0,
-		0
+		100,
+		275
 	],
 	"flipX": false,
 	"asset": "characters/GF_assets",

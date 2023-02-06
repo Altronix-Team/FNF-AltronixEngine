@@ -32,7 +32,7 @@ function onUpdate(elapsed)
             char.playAnim('shoot' + noteData, true);
             animationNotes.shift();
         }
-        if(char.animation.curAnim.finished) char.playAnim(char.animation.curAnim.name, false, false, char.animation.curAnim.frames.length - 3);
+        if(char.animateAtlas.anim.finished) char.playAnim(char.getCurAnimName(), false, false, char.animateAtlas.anim.length - 3);
     }
 }
 

@@ -292,7 +292,7 @@ class Main extends Sprite
 				case LocalFunction(v):
 					errorMsg += '  localFunction:${v}\n';
 				default:
-					Sys.println(line);
+					errorMsg += line;
 			}
 		}
 		errorMsg += '\n';

@@ -51,7 +51,7 @@ class CutsceneHandler extends FlxBasic
 		cutsceneTime += elapsed;
 		if(endTime <= cutsceneTime)
 		{
-			finishCallback();
+			if (finishCallback != null) finishCallback();
 			if(finishCallback2 != null) finishCallback2();
 
 			for (spr in objects)

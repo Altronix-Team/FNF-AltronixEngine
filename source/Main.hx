@@ -102,7 +102,7 @@ class Main extends Sprite
 
 		super();
 
-		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtError);
+		addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtError);
 
 		#if cpp
 		untyped __global__.__hxcpp_set_critical_error_handler(onCriticalErrorEvent);
@@ -179,7 +179,7 @@ class Main extends Sprite
 
 		hscriptClasses = PolymodHscriptState.listScriptClasses();
 
-		game = new FlxGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash, save.data.fullscreenOnStart);
+		game = new FlxGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash#if (!debug), save.data.fullscreenOnStart#end);
 		addChild(game);	
 		
 		FlxG.signals.preStateCreate.add(preStateSwitch);

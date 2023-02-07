@@ -12,7 +12,6 @@ import flixel.input.gamepad.FlxGamepadButton;
 import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.input.keyboard.FlxKey;
 
-#if (haxe >= "4.0.0")
 enum abstract Action(String) to String from String
 {
 	var UP = "up";
@@ -46,42 +45,6 @@ enum abstract Action(String) to String from String
 	var RIGHT_RP2 = "d-release";
 	var DOWN_RP2 = "s-release";
 }
-#else
-@:enum
-abstract Action(String) to String from String
-{
-	var UP = "up";
-	var LEFT = "left";
-	var RIGHT = "right";
-	var DOWN = "down";
-	var UP_P = "up-press";
-	var LEFT_P = "left-press";
-	var RIGHT_P = "right-press";
-	var DOWN_P = "down-press";
-	var UP_R = "up-release";
-	var LEFT_R = "left-release";
-	var RIGHT_R = "right-release";
-	var DOWN_R = "down-release";
-	var ACCEPT = "accept";
-	var BACK = "back";
-	var PAUSE = "pause";
-	var RESET = "reset";
-	var CHEAT = "cheat";
-	var ATTACK = "attack";
-	var UPP2 = "w";
-	var LEFTP2 = "a";
-	var RIGHTP2 = "d";
-	var DOWNP2 = "s";
-	var UP_PP2 = "w-press";
-	var LEFT_PP2 = "a-press";
-	var RIGHT_PP2 = "d-press";
-	var DOWN_PP2 = "s-press";
-	var UP_RP2 = "w-release";
-	var LEFT_RP2 = "a-release";
-	var RIGHT_RP2 = "d-release";
-	var DOWN_RP2 = "s-release";
-}
-#end
 
 enum Device
 {
@@ -94,22 +57,22 @@ enum Device
  * rebinding UI to list every action. ActionBinders are what the user percieves as
  * an input so, for instance, they can't set jump-press and jump-release to different keys.
  */
-enum Control
+enum abstract Control(String) to String from String
 {
-	UP;
-	LEFT;
-	RIGHT;
-	DOWN;
-	UPP2;
-	LEFTP2;
-	RIGHTP2;
-	DOWNP2;
-	RESET;
-	ACCEPT;
-	BACK;
-	PAUSE;
-	CHEAT;
-	ATTACK;
+	var UP = 'up';
+	var LEFT = 'left';
+	var RIGHT = 'right';
+	var DOWN = 'down';
+	var UPP2 = 'upP2';
+	var LEFTP2 = 'leftP2';
+	var RIGHTP2 = 'rightP2';
+	var DOWNP2 = 'downP2';
+	var RESET = 'reset';
+	var ACCEPT = 'accept';
+	var BACK = 'back';
+	var PAUSE = 'pause';
+	var CHEAT = 'cheat';
+	var ATTACK = 'attack';
 }
 
 enum KeyboardScheme
@@ -126,284 +89,100 @@ enum KeyboardScheme
  */
 class Controls extends FlxActionSet
 {
-	var _up = new FlxActionDigital(Action.UP);
-	var _left = new FlxActionDigital(Action.LEFT);
-	var _right = new FlxActionDigital(Action.RIGHT);
-	var _down = new FlxActionDigital(Action.DOWN);
-	var _upP = new FlxActionDigital(Action.UP_P);
-	var _leftP = new FlxActionDigital(Action.LEFT_P);
-	var _rightP = new FlxActionDigital(Action.RIGHT_P);
-	var _downP = new FlxActionDigital(Action.DOWN_P);
-	var _upR = new FlxActionDigital(Action.UP_R);
-	var _leftR = new FlxActionDigital(Action.LEFT_R);
-	var _rightR = new FlxActionDigital(Action.RIGHT_R);
-	var _downR = new FlxActionDigital(Action.DOWN_R);
-	var _accept = new FlxActionDigital(Action.ACCEPT);
-	var _back = new FlxActionDigital(Action.BACK);
-	var _pause = new FlxActionDigital(Action.PAUSE);
-	var _reset = new FlxActionDigital(Action.RESET);
-	var _cheat = new FlxActionDigital(Action.CHEAT);
-	var _attack = new FlxActionDigital(Action.ATTACK);
+	var _up = new Key(Action.UP, Action.UP_P, Action.UP_R);
+	var _left = new Key(Action.LEFT, Action.LEFT_P, Action.LEFT_R);
+	var _right = new Key(Action.RIGHT, Action.RIGHT_P, Action.RIGHT_R);
+	var _down = new Key(Action.DOWN, Action.DOWN_P, Action.DOWN_R);
 
-	var _upP2 = new FlxActionDigital(Action.UPP2);
-	var _leftP2 = new FlxActionDigital(Action.LEFTP2);
-	var _rightP2 = new FlxActionDigital(Action.RIGHTP2);
-	var _downP2 = new FlxActionDigital(Action.DOWNP2);
-	var _upPP2 = new FlxActionDigital(Action.UP_PP2);
-	var _leftPP2 = new FlxActionDigital(Action.LEFT_PP2);
-	var _rightPP2 = new FlxActionDigital(Action.RIGHT_PP2);
-	var _downPP2 = new FlxActionDigital(Action.DOWN_PP2);
-	var _upRP2 = new FlxActionDigital(Action.UP_RP2);
-	var _leftRP2 = new FlxActionDigital(Action.LEFT_RP2);
-	var _rightRP2 = new FlxActionDigital(Action.RIGHT_RP2);
-	var _downRP2 = new FlxActionDigital(Action.DOWN_RP2);
+	var _upP2 = new Key(Action.UPP2, Action.UP_PP2, Action.UP_RP2);
+	var _leftP2 = new Key(Action.LEFTP2, Action.LEFT_PP2, Action.LEFT_RP2);
+	var _rightP2 = new Key(Action.RIGHTP2, Action.RIGHT_PP2, Action.RIGHT_RP2);
+	var _downP2 = new Key(Action.DOWNP2, Action.DOWN_PP2, Action.DOWN_RP2);
 
-	#if (haxe >= "4.0.0")
+	var _accept = new Key(Action.ACCEPT);
+	var _back = new Key(Action.BACK);
+	var _pause = new Key(Action.PAUSE);
+	var _reset = new Key(Action.RESET);
+	var _cheat = new Key(Action.CHEAT);
+	var _attack = new Key(Action.ATTACK);
+
 	var byName:Map<String, FlxActionDigital> = [];
-	#else
-	var byName:Map<String, FlxActionDigital> = new Map<String, FlxActionDigital>();
-	#end
 
 	public var gamepadsAdded:Array<Int> = [];
 	public var keyboardScheme = KeyboardScheme.None;
 
-	public var UP(get, never):Bool;
+	public var UP(get, never):Bool; inline function get_UP() return _up.key.check();
+	public var LEFT(get, never):Bool; inline function get_LEFT() return _left.key.check();
+	public var RIGHT(get, never):Bool; inline function get_RIGHT() return _right.key.check();
+	public var DOWN(get, never):Bool; inline function get_DOWN() return _down.key.check();
+	public var UP_P(get, never):Bool; inline function get_UP_P() return _up.keyP.check();
+	public var LEFT_P(get, never):Bool; inline function get_LEFT_P() return _left.keyP.check();
+	public var RIGHT_P(get, never):Bool; inline function get_RIGHT_P() return _right.keyP.check();
+	public var DOWN_P(get, never):Bool; inline function get_DOWN_P() return _down.keyP.check();
+	public var UP_R(get, never):Bool; inline function get_UP_R() return _up.keyR.check();
+	public var LEFT_R(get, never):Bool; inline function get_LEFT_R() return _left.keyR.check();
+	public var RIGHT_R(get, never):Bool; inline function get_RIGHT_R() return _right.keyR.check();
+	public var DOWN_R(get, never):Bool; inline function get_DOWN_R() return _down.keyR.check();
+	public var ACCEPT(get, never):Bool; inline function get_ACCEPT() return _accept.key.check();
+	public var BACK(get, never):Bool; inline function get_BACK() return _back.key.check();
+	public var PAUSE(get, never):Bool; inline function get_PAUSE() return _pause.key.check();
+	public var RESET(get, never):Bool; inline function get_RESET() return _reset.key.check();
+	public var CHEAT(get, never):Bool; inline function get_CHEAT() return _cheat.key.check();
+	public var ATTACK(get, never):Bool; inline function get_ATTACK() return _attack.key.check();
+	public var UPP2(get, never):Bool; inline function get_UPP2() return _upP2.key.check();
+	public var LEFTP2(get, never):Bool; inline function get_LEFTP2() return _leftP2.key.check();
+	public var RIGHTP2(get, never):Bool; inline function get_RIGHTP2() return _rightP2.key.check();
+	public var DOWNP2(get, never):Bool; inline function get_DOWNP2() return _downP2.key.check();
+	public var UP_PP2(get, never):Bool; inline function get_UP_PP2() return _upP2.keyP.check();
+	public var LEFT_PP2(get, never):Bool; inline function get_LEFT_PP2() return _leftP2.keyP.check();
+	public var RIGHT_PP2(get, never):Bool; inline function get_RIGHT_PP2() return _rightP2.keyP.check();
+	public var DOWN_PP2(get, never):Bool; inline function get_DOWN_PP2() return _downP2.keyP.check();
+	public var UP_RP2(get, never):Bool; inline function get_UP_RP2() return _upP2.keyR.check();
+	public var LEFT_RP2(get, never):Bool; inline function get_LEFT_RP2() return _leftP2.keyR.check();
+	public var RIGHT_RP2(get, never):Bool; inline function get_RIGHT_RP2() return _rightP2.keyR.check();
+	public var DOWN_RP2(get, never):Bool; inline function get_DOWN_RP2() return _downP2.keyR.check();
 
-	inline function get_UP()
-		return _up.check();
-
-	public var LEFT(get, never):Bool;
-
-	inline function get_LEFT()
-		return _left.check();
-
-	public var RIGHT(get, never):Bool;
-
-	inline function get_RIGHT()
-		return _right.check();
-
-	public var DOWN(get, never):Bool;
-
-	inline function get_DOWN()
-		return _down.check();
-
-	public var UP_P(get, never):Bool;
-
-	inline function get_UP_P()
-		return _upP.check();
-
-	public var LEFT_P(get, never):Bool;
-
-	inline function get_LEFT_P()
-		return _leftP.check();
-
-	public var RIGHT_P(get, never):Bool;
-
-	inline function get_RIGHT_P()
-		return _rightP.check();
-
-	public var DOWN_P(get, never):Bool;
-
-	inline function get_DOWN_P()
-		return _downP.check();
-
-	public var UP_R(get, never):Bool;
-
-	inline function get_UP_R()
-		return _upR.check();
-
-	public var LEFT_R(get, never):Bool;
-
-	inline function get_LEFT_R()
-		return _leftR.check();
-
-	public var RIGHT_R(get, never):Bool;
-
-	inline function get_RIGHT_R()
-		return _rightR.check();
-
-	public var DOWN_R(get, never):Bool;
-
-	inline function get_DOWN_R()
-		return _downR.check();
-
-	public var ACCEPT(get, never):Bool;
-
-	inline function get_ACCEPT()
-		return _accept.check();
-
-	public var BACK(get, never):Bool;
-
-	inline function get_BACK()
-		return _back.check();
-
-	public var PAUSE(get, never):Bool;
-
-	inline function get_PAUSE()
-		return _pause.check();
-
-	public var RESET(get, never):Bool;
-
-	inline function get_RESET()
-		return _reset.check();
-
-	public var CHEAT(get, never):Bool;
-
-	inline function get_CHEAT()
-		return _cheat.check();
-
-	public var ATTACK(get, never):Bool;
-
-	inline function get_ATTACK()
-		return _attack.check();
-
-	public var UPP2(get, never):Bool;
-
-	inline function get_UPP2()
-		return _upP2.check();
-
-	public var LEFTP2(get, never):Bool;
-
-	inline function get_LEFTP2()
-		return _leftP2.check();
-
-	public var RIGHTP2(get, never):Bool;
-
-	inline function get_RIGHTP2()
-		return _rightP2.check();
-
-	public var DOWNP2(get, never):Bool;
-
-	inline function get_DOWNP2()
-		return _downP2.check();
-
-	public var UP_PP2(get, never):Bool;
-
-	inline function get_UP_PP2()
-		return _upPP2.check();
-
-	public var LEFT_PP2(get, never):Bool;
-
-	inline function get_LEFT_PP2()
-		return _leftPP2.check();
-
-	public var RIGHT_PP2(get, never):Bool;
-
-	inline function get_RIGHT_PP2()
-		return _rightPP2.check();
-
-	public var DOWN_PP2(get, never):Bool;
-
-	inline function get_DOWN_PP2()
-		return _downPP2.check();
-
-	public var UP_RP2(get, never):Bool;
-
-	inline function get_UP_RP2()
-		return _upRP2.check();
-
-	public var LEFT_RP2(get, never):Bool;
-
-	inline function get_LEFT_RP2()
-		return _leftRP2.check();
-
-	public var RIGHT_RP2(get, never):Bool;
-
-	inline function get_RIGHT_RP2()
-		return _rightRP2.check();
-
-	public var DOWN_RP2(get, never):Bool;
-
-	inline function get_DOWN_RP2()
-		return _downRP2.check();
-
-	#if (haxe >= "4.0.0")
 	public function new(name, scheme = None)
 	{
 		super(name);
 
-		add(_up);
-		add(_left);
-		add(_right);
-		add(_down);
-		add(_upP);
-		add(_leftP);
-		add(_rightP);
-		add(_downP);
-		add(_upR);
-		add(_leftR);
-		add(_rightR);
-		add(_downR);
-		add(_accept);
-		add(_back);
-		add(_pause);
-		add(_reset);
-		add(_cheat);
-		add(_attack);
+		add(_up.key);
+		add(_left.key);
+		add(_right.key);
+		add(_down.key);
+		add(_up.keyP);
+		add(_left.keyP);
+		add(_right.keyP);
+		add(_down.keyP);
+		add(_up.keyR);
+		add(_left.keyR);
+		add(_right.keyR);
+		add(_down.keyR);
+		add(_accept.key);
+		add(_back.key);
+		add(_pause.key);
+		add(_reset.key);
+		add(_cheat.key);
+		add(_attack.key);
 
-		add(_upP2);
-		add(_leftP2);
-		add(_rightP2);
-		add(_downP2);
-		add(_upPP2);
-		add(_leftPP2);
-		add(_rightPP2);
-		add(_downPP2);
-		add(_upRP2);
-		add(_leftRP2);
-		add(_rightRP2);
-		add(_downRP2);
+		add(_upP2.key);
+		add(_leftP2.key);
+		add(_rightP2.key);
+		add(_downP2.key);
+		add(_upP2.keyP);
+		add(_leftP2.keyP);
+		add(_rightP2.keyP);
+		add(_downP2.keyP);
+		add(_upP2.keyR);
+		add(_leftP2.keyR);
+		add(_rightP2.keyR);
+		add(_downP2.keyR);
 
 		for (action in digitalActions)
 			byName[action.name] = action;
 
 		setKeyboardScheme(scheme, false);
 	}
-	#else
-	public function new(name, scheme:KeyboardScheme = null)
-	{
-		super(name);
-
-		add(_up);
-		add(_left);
-		add(_right);
-		add(_down);
-		add(_upP);
-		add(_leftP);
-		add(_rightP);
-		add(_downP);
-		add(_upR);
-		add(_leftR);
-		add(_rightR);
-		add(_downR);
-		add(_accept);
-		add(_back);
-		add(_pause);
-		add(_reset);
-		add(_cheat);
-		add(_attack);
-
-		add(_upP2);
-		add(_leftP2);
-		add(_rightP2);
-		add(_downP2);
-		add(_upPP2);
-		add(_leftPP2);
-		add(_rightPP2);
-		add(_downPP2);
-		add(_upRP2);
-		add(_leftRP2);
-		add(_rightRP2);
-		add(_downRP2);
-
-		for (action in digitalActions)
-			byName[action.name] = action;
-
-		if (scheme == null)
-			scheme = None;
-		setKeyboardScheme(scheme, false);
-	}
-	#end
 
 	override function update()
 	{
@@ -433,27 +212,27 @@ class Controls extends FlxActionSet
 
 	public function getDialogueNameFromToken(token:String):String
 	{
-		return getDialogueName(getActionFromControl(Control.createByName(token.toUpperCase())));
+		return getDialogueName(getActionFromControl(token.toUpperCase()));
 	}
 
 	function getActionFromControl(control:Control):FlxActionDigital
 	{
 		return switch (control)
 		{
-			case UP: _up;
-			case DOWN: _down;
-			case LEFT: _left;
-			case RIGHT: _right;
-			case ACCEPT: _accept;
-			case BACK: _back;
-			case PAUSE: _pause;
-			case RESET: _reset;
-			case CHEAT: _cheat;
-			case ATTACK: _attack;
-			case UPP2: _upP2;
-			case DOWNP2: _downP2;
-			case LEFTP2: _leftP2;
-			case RIGHTP2: _rightP2;
+			case UP: _up.key;
+			case DOWN: _down.key;
+			case LEFT: _left.key;
+			case RIGHT: _right.key;
+			case ACCEPT: _accept.key;
+			case BACK: _back.key;
+			case PAUSE: _pause.key;
+			case RESET: _reset.key;
+			case CHEAT: _cheat.key;
+			case ATTACK: _attack.key;
+			case UPP2: _upP2.key;
+			case DOWNP2: _downP2.key;
+			case LEFTP2: _leftP2.key;
+			case RIGHTP2: _rightP2.key;
 		}
 	}
 
@@ -471,52 +250,18 @@ class Controls extends FlxActionSet
 	 */
 	function forEachBound(control:Control, func:FlxActionDigital->FlxInputState->Void)
 	{
-		switch (control)
+		try{
+			var curKey = cast(Reflect.field(this, '_$control'), Key);
+			func(curKey.key, PRESSED);
+			if (curKey.keyP != null)
+				func(curKey.keyP, JUST_PRESSED);
+			if (curKey.keyR != null)
+				func(curKey.keyR, JUST_PRESSED);
+		}
+		catch(e)
 		{
-			case UP:
-				func(_up, PRESSED);
-				func(_upP, JUST_PRESSED);
-				func(_upR, JUST_RELEASED);
-			case LEFT:
-				func(_left, PRESSED);
-				func(_leftP, JUST_PRESSED);
-				func(_leftR, JUST_RELEASED);
-			case RIGHT:
-				func(_right, PRESSED);
-				func(_rightP, JUST_PRESSED);
-				func(_rightR, JUST_RELEASED);
-			case DOWN:
-				func(_down, PRESSED);
-				func(_downP, JUST_PRESSED);
-				func(_downR, JUST_RELEASED);
-			case ACCEPT:
-				func(_accept, JUST_PRESSED);
-			case BACK:
-				func(_back, JUST_PRESSED);
-			case PAUSE:
-				func(_pause, JUST_PRESSED);
-			case RESET:
-				func(_reset, JUST_PRESSED);
-			case CHEAT:
-				func(_cheat, JUST_PRESSED);
-			case ATTACK:
-				func(_attack, JUST_PRESSED);
-			case UPP2:
-				func(_upP2, PRESSED);
-				func(_upPP2, JUST_PRESSED);
-				func(_upRP2, JUST_RELEASED);
-			case LEFTP2:
-				func(_leftP2, PRESSED);
-				func(_leftPP2, JUST_PRESSED);
-				func(_leftRP2, JUST_RELEASED);
-			case RIGHTP2:
-				func(_rightP2, PRESSED);
-				func(_rightPP2, JUST_PRESSED);
-				func(_rightRP2, JUST_RELEASED);
-			case DOWNP2:
-				func(_downP2, PRESSED);
-				func(_downPP2, JUST_PRESSED);
-				func(_downRP2, JUST_RELEASED);
+			Debug.logWarn(e.details());
+			return;
 		}
 	}
 
@@ -543,7 +288,6 @@ class Controls extends FlxActionSet
 
 	public function copyFrom(controls:Controls, ?device:Device)
 	{
-		#if (haxe >= "4.0.0")
 		for (name => action in controls.byName)
 		{
 			for (input in action.inputs)
@@ -552,31 +296,14 @@ class Controls extends FlxActionSet
 					byName[name].add(cast input);
 			}
 		}
-		#else
-		for (name in controls.byName.keys())
-		{
-			var action = controls.byName[name];
-			for (input in action.inputs)
-			{
-				if (device == null || isDevice(input, device))
-					byName[name].add(cast input);
-			}
-		}
-		#end
 
 		switch (device)
 		{
 			case null:
 				// add all
-				#if (haxe >= "4.0.0")
 				for (gamepad in controls.gamepadsAdded)
 					if (!gamepadsAdded.contains(gamepad))
 						gamepadsAdded.push(gamepad);
-				#else
-				for (gamepad in controls.gamepadsAdded)
-					if (gamepadsAdded.indexOf(gamepad) == -1)
-						gamepadsAdded.push(gamepad);
-				#end
 
 				mergeKeyboardScheme(controls.keyboardScheme);
 
@@ -612,11 +339,7 @@ class Controls extends FlxActionSet
 	 */
 	public function bindKeys(control:Control, keys:Array<FlxKey>)
 	{
-		#if (haxe >= "4.0.0")
 		inline forEachBound(control, (action, state) -> addKeys(action, keys, state));
-		#else
-		forEachBound(control, function(action, state) addKeys(action, keys, state));
-		#end
 	}
 
 	/**
@@ -625,11 +348,7 @@ class Controls extends FlxActionSet
 	 */
 	public function unbindKeys(control:Control, keys:Array<FlxKey>)
 	{
-		#if (haxe >= "4.0.0")
 		inline forEachBound(control, (action, _) -> removeKeys(action, keys));
-		#else
-		forEachBound(control, function(action, _) removeKeys(action, keys));
-		#end
 	}
 
 	inline static function addKeys(action:FlxActionDigital, keys:Array<FlxKey>, state:FlxInputState)
@@ -657,8 +376,6 @@ class Controls extends FlxActionSet
 
 	public function loadKeyBindsP2()
 	{
-		// trace(FlxKey.fromString(Main.save.data.upBind));
-
 		removeKeyboard();
 		if (gamepadsAdded.length != 0)
 			removeGamepad();
@@ -675,7 +392,6 @@ class Controls extends FlxActionSet
 
 			addGamepad(0, buttons);
 		}
-
 		inline bindKeys(Control.UPP2, [FlxKey.fromString(Main.save.data.upBindP2), FlxKey.W]);
 		inline bindKeys(Control.DOWNP2, [FlxKey.fromString(Main.save.data.downBindP2), FlxKey.S]);
 		inline bindKeys(Control.LEFTP2, [FlxKey.fromString(Main.save.data.leftBindP2), FlxKey.A]);
@@ -741,27 +457,16 @@ class Controls extends FlxActionSet
 			gamepadsAdded.remove(id);
 
 		gamepadsAdded.push(id);
-
-		#if (haxe >= "4.0.0")
 		for (control => buttons in buttonMap)
 			inline bindButtons(control, id, buttons);
-		#else
-		for (control in buttonMap.keys())
-			bindButtons(control, id, buttonMap[control]);
-		#end
 	}
 
 	inline function addGamepadLiteral(id:Int, ?buttonMap:Map<Control, Array<FlxGamepadInputID>>):Void
 	{
 		gamepadsAdded.push(id);
 
-		#if (haxe >= "4.0.0")
 		for (control => buttons in buttonMap)
 			inline bindButtons(control, id, buttons);
-		#else
-		for (control in buttonMap.keys())
-			bindButtons(control, id, buttonMap[control]);
-		#end
 	}
 
 	public function removeGamepad(deviceID:Int = FlxInputDeviceID.ALL):Void
@@ -782,7 +487,6 @@ class Controls extends FlxActionSet
 
 	public function addDefaultGamepad(id):Void
 	{
-		#if !switch
 		addGamepadLiteral(id, [
 			Control.ACCEPT => [A],
 			Control.BACK => [B],
@@ -793,21 +497,6 @@ class Controls extends FlxActionSet
 			Control.PAUSE => [START],
 			Control.RESET => [Y]
 		]);
-		#else
-		addGamepadLiteral(id, [
-			// Swap A and B for switch
-			Control.ACCEPT => [B],
-			Control.BACK => [A],
-			Control.UP => [DPAD_UP, LEFT_STICK_DIGITAL_UP, RIGHT_STICK_DIGITAL_UP],
-			Control.DOWN => [DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN, RIGHT_STICK_DIGITAL_DOWN],
-			Control.LEFT => [DPAD_LEFT, LEFT_STICK_DIGITAL_LEFT, RIGHT_STICK_DIGITAL_LEFT],
-			Control.RIGHT => [DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT, RIGHT_STICK_DIGITAL_RIGHT],
-			Control.PAUSE => [START],
-			// Swap Y and X for switch
-			Control.RESET => [Y],
-			Control.CHEAT => [X]
-		]);
-		#end
 	}
 
 	/**
@@ -816,11 +505,7 @@ class Controls extends FlxActionSet
 	 */
 	public function bindButtons(control:Control, id, buttons)
 	{
-		#if (haxe >= "4.0.0")
 		inline forEachBound(control, (action, state) -> addButtons(action, buttons, state, id));
-		#else
-		forEachBound(control, function(action, state) addButtons(action, buttons, state, id));
-		#end
 	}
 
 	/**
@@ -829,11 +514,7 @@ class Controls extends FlxActionSet
 	 */
 	public function unbindButtons(control:Control, gamepadID:Int, buttons)
 	{
-		#if (haxe >= "4.0.0")
 		inline forEachBound(control, (action, _) -> removeButtons(action, gamepadID, buttons));
-		#else
-		forEachBound(control, function(action, _) removeButtons(action, gamepadID, buttons));
-		#end
 	}
 
 	inline static function addButtons(action:FlxActionDigital, buttons:Array<FlxGamepadInputID>, state, id)
@@ -899,5 +580,25 @@ class Controls extends FlxActionSet
 	inline static function isGamepad(input:FlxActionInput, deviceID:Int)
 	{
 		return input.device == GAMEPAD && (deviceID == FlxInputDeviceID.ALL || input.deviceID == deviceID);
+	}
+}
+
+class Key 
+{
+	public var key:FlxActionDigital;
+
+	public var keyP:FlxActionDigital;
+
+	public var keyR:FlxActionDigital;
+
+	public function new(key:String, ?keyP:String, ?keyR:String)
+	{
+		this.key = new FlxActionDigital(key);
+
+		if (keyP != null)
+			this.keyP = new FlxActionDigital(keyP);
+
+		if (keyR != null)
+			this.keyR = new FlxActionDigital(keyR);
 	}
 }

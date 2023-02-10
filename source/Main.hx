@@ -136,7 +136,7 @@ class Main extends Sprite
 
 		EngineData.initSave();
 
-		KeyBinds.keyCheck();
+		EngineData.keyCheck();
 
 		#if (flixel < "5.0.0")
 		var stageWidth:Int = Lib.current.stage.stageWidth;

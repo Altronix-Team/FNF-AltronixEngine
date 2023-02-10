@@ -102,16 +102,6 @@ class TitleState extends MusicBeatState
 
 			Highscore.load();
 
-			/*NoteskinHelpers.updateNoteskins();
-
-			MenuMusicStuff.updateMusic();
-
-			Character.initCharacterList();
-
-			LanguageStuff.initLanguages();
-
-			Achievements.listAllAchievements();*/
-
 			#if desktop
 			GameJoltAPI.leaderboardToggle = Main.save.data.toggleLeaderboard;
 
@@ -134,13 +124,6 @@ class TitleState extends MusicBeatState
 
 		super.create();
 
-		#if FREEPLAY
-		FlxG.switchState(new FreeplayState());
-		clean();
-		#elseif CHARTING
-		FlxG.switchState(new ChartingState());
-		clean();
-		#else
 		#if !cpp
 		new FlxTimer().start(1, function(tmr:FlxTimer)
 		{
@@ -157,7 +140,6 @@ class TitleState extends MusicBeatState
 		}
 		#end
 		startIntro();
-		#end
 		#end
 		Debug.logTrace('oh fuck, Altronix Engine is working!');
 	}
@@ -350,48 +332,9 @@ class TitleState extends MusicBeatState
 
 			new FlxTimer().start(2, function(tmr:FlxTimer)
 			{
-				if (checkVer)
-				{
-					//var shit = new URLRequest('https://raw.githubusercontent.com/AltronMaxX/FNF-AltronixEngine/main/version.downloadMe?token=GHSAT0AAAAAABHIQ6SYP4VDYY65FVGRVZ3EYU5R3BA');
-					//Debug.logTrace(shit.data);
-					FlxG.switchState(new MainMenuState());
-						clean();
-					
-					/*http.onData = function(data:String)
-					{
-						returnedData[0] = data.substring(0, data.indexOf(';'));
-						returnedData[1] = data.substring(data.indexOf('-'), data.length);
-						if (EngineConstants.engineVer != returnedData[0].trim() && !OutdatedSubState.leftState)
-						{
-							trace('outdated lmao! ' + returnedData[0] + ' != ' + EngineConstants.engineVer);
-							OutdatedSubState.needVer = returnedData[0];
-							OutdatedSubState.currChanges = returnedData[1];
-							FlxG.switchState(new OutdatedSubState());
-							clean();
-						}
-						else
-						{
-							FlxG.switchState(new MainMenuState());
-							clean();
-						}
-					}
-
-					http.onError = function(error)
-					{
-						trace('error: $error');
-						FlxG.switchState(new MainMenuState()); // fail but we go anyway
-						clean();
-					}
-
-					http.request();*/
-				}
-				else
-				{
-					FlxG.switchState(new MainMenuState());
-						clean();
-				}
+				FlxG.switchState(new MainMenuState());
+					clean();
 			});
-			// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
 		}
 
 		if (pressedEnter && !skippedIntro && initialized)

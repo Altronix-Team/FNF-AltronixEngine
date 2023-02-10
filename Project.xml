@@ -42,10 +42,6 @@
 	<section if="mobile">
 		<error value="mobile isn't supported!" />
 	</section>
-	
-	<section if="haxe < 4.0.0">
-		<error value="only haxe 4.0 and higher is supported!" />
-	</section>
 
 	<!-- _____________________________ Path Settings ____________________________ -->
 	

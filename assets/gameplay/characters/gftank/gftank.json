@@ -11,7 +11,7 @@
   "startingAnim": "danceRight",
   "antialiasing": true,
   "isGF": true,
-  "charPos": [100, 275],
+  "charPos": [270, 295],
   "animations": [
     {
       "name": "danceLeft",

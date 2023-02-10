@@ -111,7 +111,7 @@ class AnimationDebug extends states.MusicBeatState
 
 		addHelpText();
 
-		characters = Character.characterList;
+		characters = CharactersStuff.characterList;
 
 		var tabs = [{name: "Offsets", label: 'Offset menu'},];
 

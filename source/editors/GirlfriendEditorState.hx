@@ -950,7 +950,7 @@ class GirlfriendEditorState extends MusicBeatState
 	function reloadCharacterDropDown() {
 		var charsLoaded:Map<String, Bool> = new Map();
 
-		characterList = Character.girlfriendList;
+		characterList = CharactersStuff.girlfriendList;
 
 		charDropDown.setData(FlxUIDropDownMenuCustom.makeStrIdLabelArray(characterList, true));
 		charDropDown.selectedLabel = daAnim;

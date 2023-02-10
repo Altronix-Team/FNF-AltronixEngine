@@ -146,7 +146,7 @@ class FreeplayState extends MusicBeatState
 			songText.targetY = i;
 			grpSongs.add(songText);
 
-			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter, Character.getCharacterIcon(songs[i].songCharacter));
+			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter, CharactersStuff.getCharacterIcon(songs[i].songCharacter));
 			icon.sprTracker = songText;
 
 			// using a FlxGroup is too much fuss!
@@ -634,7 +634,7 @@ class FreeplayState extends MusicBeatState
 			curDifficulty = 0;
 		}
 
-		var array:Array<Int> = Character.getCharacterColor(songs[curSelected].songCharacter);
+		var array:Array<Int> = CharactersStuff.getCharacterColor(songs[curSelected].songCharacter);
 		freeplayBgColor = FlxColor.fromRGB(array[0], array[1], array[2]);
 
 		if (freeplayBgColor != intendedColor)

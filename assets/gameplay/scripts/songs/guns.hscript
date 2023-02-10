@@ -33,7 +33,7 @@ function startCutscene()
 		boyfriendGroup.alpha = 1;
 		boyfriend.visible = true;
 		boyfriend.animation.finishCallback = null;
-		gf.animation.finishCallback = null;
+		gf.animateAtlas.anim.onComplete = null;
 		gf.dance();
 
 		destroyScript();

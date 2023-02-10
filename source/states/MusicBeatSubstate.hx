@@ -80,9 +80,9 @@ class MusicBeatSubstate extends FlxSubState implements IMusicBeat
 	{
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 		if (gamepad != null)
-			KeyBinds.gamepad = true;
+			Controls.gamepad = true;
 		else
-			KeyBinds.gamepad = false;
+			Controls.gamepad = false;
 
 		super.update(elapsed);
 	}

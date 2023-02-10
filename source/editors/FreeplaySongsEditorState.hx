@@ -100,7 +100,7 @@ class FreeplaySongsEditorState extends MusicBeatState
 
 			if (curWeek.weekChar.length > 1)
 			{
-				icon = new HealthIcon(curWeek.weekChar[i], Character.getCharacterIcon(curWeek.weekChar[i]));
+				icon = new HealthIcon(curWeek.weekChar[i], CharactersStuff.getCharacterIcon(curWeek.weekChar[i]));
 				icon.sprTracker = songText;
 				iconArray.push(icon);
 				icon.visible = true;
@@ -108,7 +108,7 @@ class FreeplaySongsEditorState extends MusicBeatState
 			}
 			else
 			{
-				icon = new HealthIcon(curWeek.weekChar[i], Character.getCharacterIcon(curWeek.weekChar[0]));
+				icon = new HealthIcon(curWeek.weekChar[i], CharactersStuff.getCharacterIcon(curWeek.weekChar[0]));
 				icon.sprTracker = songText;
 				iconArray.push(icon);
 				icon.visible = true;

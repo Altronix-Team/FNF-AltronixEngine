@@ -3,7 +3,6 @@ package states;
 import flixel.FlxBasic;
 import scriptStuff.HScriptHandler;
 import flixel.input.gamepad.FlxGamepad;
-import Controls.KeyboardScheme;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;

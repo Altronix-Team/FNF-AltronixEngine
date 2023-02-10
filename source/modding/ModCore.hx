@@ -85,7 +85,7 @@ class ModCore
 
 		MenuMusicStuff.updateMusic();
 
-		Character.initCharacterList();
+		CharactersStuff.initCharacterList();
 
 		Achievements.listAllAchievements();
 
@@ -216,7 +216,7 @@ class ModCore
 
 		MenuMusicStuff.updateMusic();
 
-		Character.initCharacterList();
+		CharactersStuff.initCharacterList();
 
 		Achievements.listAllAchievements();
 

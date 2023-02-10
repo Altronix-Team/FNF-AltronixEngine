@@ -277,8 +277,8 @@ class ModMenuState extends XMLLayoutState
 	{
 		if (!inContributors)
 		{
-			Character.characterList = [];
-			Character.girlfriendList = [];
+			CharactersStuff.characterList = [];
+			CharactersStuff.girlfriendList = [];
 
 			writeModPreferences();
 

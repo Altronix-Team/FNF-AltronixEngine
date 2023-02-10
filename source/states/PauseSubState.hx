@@ -179,7 +179,7 @@ class PauseSubState extends MusicBeatSubstate
 		var rightPcontroller:Bool = false;
 		var oldOffset:Float = 0;
 
-		if (gamepad != null && KeyBinds.gamepad)
+		if (gamepad != null && Controls.gamepad)
 		{
 			upPcontroller = gamepad.justPressed.DPAD_UP;
 			downPcontroller = gamepad.justPressed.DPAD_DOWN;

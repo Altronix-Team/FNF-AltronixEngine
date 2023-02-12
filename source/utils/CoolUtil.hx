@@ -1,5 +1,6 @@
 package utils;
 
+import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxColor;
 import flixel.addons.ui.FlxUIBar.FlxBarStyle;
 #if sys
@@ -230,6 +231,22 @@ class CoolUtil
 	public static function precacheMusic(sound:String, ?library:String = null):Void {
 		precacheSoundFile(Paths.music(sound, library));
 	}
+
+	public static function fromArray(group:FlxTypedGroup<Dynamic>, array:Array<Dynamic>)
+	{
+		for (obj in array)
+		{
+			try{
+				group.add(obj);
+			}
+			catch(e){
+				Debug.logError('Can not push object to group');
+				continue;
+			}
+		}
+		return group;
+	}
+
 
 	private static function precacheSoundFile(file:Dynamic):Void {
 		if (OpenFlAssets.exists(file, SOUND) || OpenFlAssets.exists(file, MUSIC))

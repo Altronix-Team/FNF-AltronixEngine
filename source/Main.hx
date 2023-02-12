@@ -102,7 +102,7 @@ class Main extends Sprite
 
 		super();
 
-		addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtError);
+		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtError);
 
 		#if cpp
 		untyped __global__.__hxcpp_set_critical_error_handler(onCriticalErrorEvent);
@@ -306,18 +306,16 @@ class Main extends Sprite
 		errorMsg += 'An error has occurred and the game is forced to close.\nPlease access the "crash" folder and send the .crash file to the developers:\n'
 			+ ERROR_REPORT_URL +'\n';
 
-		Application.current.window.alert('An error has occurred and the game is forced to close.\nPlease access the "crash" folder and send the .crash file to the developers:\n' + ERROR_REPORT_URL, funnyTitle[FlxG.random.int(0, funnyTitle.length - 1)]);
+		FlxG.resetGame();
 
-		Sys.println(errorMsg);
+		Application.current.window.alert('An error has occurred and the game is forced to close.\nPlease access the "crash" folder and send the .crash file to the developers:\n' + ERROR_REPORT_URL, funnyTitle[FlxG.random.int(0, funnyTitle.length - 1)]);
 
 		try{
 			new Process(path);
 		}
-
-		#if sys
-		Sys.exit(1);
-		#end
 		#else
+		FlxG.resetGame();
+
 		Application.current.window.alert('An error has occurred and the game is forced to close.\nWe cannot write a log file though. Tell the developers:\n'
 			+ ERROR_REPORT_URL,
 			funnyTitle[FlxG.random.int(0, funnyTitle.length - 1)]);
@@ -325,8 +323,17 @@ class Main extends Sprite
 	}
 	private function onCriticalErrorEvent(message:String):Void
 	{
+		Debug.logError('Critical error!');
 		Debug.logError(message);
-		throw message;
+		try{
+			FlxG.resetGame();
+		}
+		catch (e){
+			throw message;
+			#if sys
+			Sys.exit(1);
+			#end
+		}
 	}
 
 	public static var fpsCounter:EngineFPS = null;

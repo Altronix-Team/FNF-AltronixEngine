@@ -5,6 +5,8 @@ import flixel.system.FlxSound;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.FlxG;
 
+using utils.CoolUtil;
+
 class BaseState extends FlxUIState
 {
 	public var soundList:FlxTypedGroup<FlxSound> = new FlxTypedGroup<FlxSound>();
@@ -15,7 +17,7 @@ class BaseState extends FlxUIState
 		if (soundList.members != FlxG.sound.list.members)
 		{
 			soundList.clear();
-			soundList.members = FlxG.sound.list.members.copy();
+			soundList.fromArray(FlxG.sound.list.members);
 		}
         super.update(elapsed);
     }  

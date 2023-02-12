@@ -1,5 +1,6 @@
 package scriptStuff;
 
+import flx3D.FlxView3D;
 import Shaders.ColorSwap;
 import gameplayStuff.StaticArrow;
 import gameplayStuff.Song;
@@ -657,6 +658,7 @@ class HScriptHandler extends SScript
 		set('StaticArrow', StaticArrow);
 		set('AssetsUtil', AssetsUtil);
 		set('PolymodHscriptState', states.HscriptableState.PolymodHscriptState);
+		set('FlxView3D', FlxView3D);
 
 		set('getRGBColor', getRGBColor);
 		set('openPolymodState', openPolymodState);

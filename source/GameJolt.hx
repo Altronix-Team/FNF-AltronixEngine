@@ -151,6 +151,18 @@ class GameJoltAPI // Connects to flixel.addons.api.FlxGameJolt
 	 */
 	public static function authDaUser(in1, in2, ?loginArg:Bool = false)
 	{
+		if (in1 == null || in2 == null) 
+		{
+			if (loginArg)
+			{
+				GameJoltLogin.login = true;
+				FlxG.switchState(new GameJoltLogin());
+			}
+			Main.gjToastManager.createToast(Paths.getPreloadPath('shared/images/cross.png'),
+				"Not signed in!\nSign in to save GameJolt Trophies and Leaderboard Scores!", "", false);
+			Debug.logError("User login failure!");
+		}
+
 		if (!userLogin)
 		{	
 			GJApi.authUser(in1, in2, function(v:Bool)
@@ -182,18 +194,6 @@ class GameJoltAPI // Connects to flixel.addons.api.FlxGameJolt
 						GameJoltLogin.login = true;
 						FlxG.switchState(new GameJoltLogin());
 					}
-				}
-				else
-				{
-					if (loginArg)
-					{
-						GameJoltLogin.login = true;
-						FlxG.switchState(new GameJoltLogin());
-					}
-					Main.gjToastManager.createToast(Paths.getPreloadPath('shared/images/cross.png'), "Not signed in!\nSign in to save GameJolt Trophies and Leaderboard Scores!", "",
-						false);
-					Debug.logError("User login failure!");
-					// FlxG.switchState(new GameJoltLogin());
 				}
 			});
 		}

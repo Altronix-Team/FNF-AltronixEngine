@@ -42,7 +42,7 @@ jobs:
             export/debug/windows/obj/
             
       # Runs a set of commands using the runners shell
-      - name: Windows build action
+      - name: Setup everything and build release version
         run: |
           haxelib setup C:/haxelib
           haxelib install hxcpp > /dev/null --quiet
@@ -50,15 +50,18 @@ jobs:
           haxelib run hmm install --quiet
           haxelib run lime build windows
         shell: cmd
+        
+      - name: Make release zip
+        run: |
+          7z a -tzip "engine.zip" "./export/release/windows/bin/*"
 
       - name: Build debug version
         run: |
           haxelib run lime build windows --debug
         shell: cmd
-
-      - name: Make zips
+          
+      - name: Make debug zip
         run: |
-          7z a -tzip "engine.zip" "./export/release/windows/bin/*"
           7z a -tzip "engine-debug.zip" "./export/debug/windows/bin/*"
          
       - name: Make release

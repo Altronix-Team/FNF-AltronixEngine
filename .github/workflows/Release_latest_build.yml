@@ -49,16 +49,12 @@ jobs:
           haxelib install hmm --quiet
           haxelib run hmm install --quiet
           haxelib run lime build windows
+          haxelib run lime build windows --debug
         shell: cmd
         
       - name: Make release zip
         run: |
           7z a -tzip "engine.zip" "./export/release/windows/bin/*"
-
-      - name: Build debug version
-        run: |
-          haxelib run lime build windows --debug
-        shell: cmd
           
       - name: Make debug zip
         run: |

@@ -1,8 +1,7 @@
 package gameplayStuff;
 
-import states.PlayState;
 import flixel.FlxG;
-
+import states.playState.PlayState;
 
 class Highscore
 {
@@ -70,12 +69,12 @@ class Highscore
 	}
 
 	static function setWeekScore(week:String, score:Int):Void
-		{
-			// Reminder that I don't need to format this song, it should come formatted!
-			weekScores.set(week, score);
-			Main.save.data.weekScores = weekScores;
-			Main.save.flush();
-		}
+	{
+		// Reminder that I don't need to format this song, it should come formatted!
+		weekScores.set(week, score);
+		Main.save.data.weekScores = weekScores;
+		Main.save.flush();
+	}
 
 	/**
 	 * YOU SHOULD FORMAT SONG WITH formatSong() BEFORE TOSSING IN SONG VARIABLE
@@ -116,7 +115,7 @@ class Highscore
 
 	public static function floorDecimal(value:Float, decimals:Int):Float
 	{
-		if(decimals < 1)
+		if (decimals < 1)
 		{
 			return Math.floor(value);
 		}
@@ -129,7 +128,7 @@ class Highscore
 		var newValue:Float = Math.floor(value * tempMult);
 		return newValue / tempMult;
 	}
-		
+
 	public static function formatSongDiff(song:String, diff:Int):String
 	{
 		var songDiffEnd:String = song;
@@ -186,7 +185,7 @@ class Highscore
 		var daWeek:String = formatSong(week, diff);
 		if (!weekScores.exists(daWeek))
 			setWeekScore(daWeek, 0);
-		
+
 		return weekScores.get(daWeek);
 	}
 

@@ -1,16 +1,16 @@
 package;
 
-import lime.app.Application;
-import flixel.util.FlxColor;
 import flixel.FlxG;
-import openfl.Lib;
-import states.OptionsMenu;
-import states.GameplayCustomizeState;
-import states.PlayState;
-import states.StoryMenuState;
-import states.LoadingState;
-import gameplayStuff.Song;
+import flixel.util.FlxColor;
 import gameplayStuff.Highscore;
+import gameplayStuff.Song;
+import lime.app.Application;
+import openfl.Lib;
+import states.GameplayCustomizeState;
+import states.LoadingState;
+import states.OptionsMenu;
+import states.StoryMenuState;
+import states.playState.PlayState;
 
 class Option
 {
@@ -36,8 +36,10 @@ class Option
 		if (Std.isOfType(value, Bool))
 		{
 			var val = cast(value, Bool);
-			if (val) return invert ? offText : onText;
-			else return invert ? onText : offText;
+			if (val)
+				return invert ? offText : onText;
+			else
+				return invert ? onText : offText;
 		}
 		return invert ? onText : offText;
 	}
@@ -137,7 +139,8 @@ class UpKeybind extends Option
 
 	private override function updateDisplay():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$UpKeybind", 'option', ['<bind>'], [(waitingType ? "> " + Main.save.data.upBind + " <" : Main.save.data.upBind)]);
+		return LanguageStuff.replaceFlagsAndReturn("$UpKeybind", 'option', ['<bind>'],
+			[(waitingType ? "> " + Main.save.data.upBind + " <" : Main.save.data.upBind)]);
 	}
 }
 
@@ -202,8 +205,9 @@ class RightKeybind extends Option
 
 	private override function updateDisplay():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$RightKeybind", 'option', ['<bind>'],
-			[(waitingType ? "> " + Main.save.data.rightBind + " <" : Main.save.data.rightBind)]);
+		return LanguageStuff.replaceFlagsAndReturn("$RightKeybind", 'option', ['<bind>'], [
+			(waitingType ? "> " + Main.save.data.rightBind + " <" : Main.save.data.rightBind)
+		]);
 	}
 }
 
@@ -235,7 +239,8 @@ class LeftKeybind extends Option
 
 	private override function updateDisplay():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$LeftKeybind", 'option', ['<bind>'], [(waitingType ? "> " + Main.save.data.leftBind + " <" : Main.save.data.leftBind)]);
+		return LanguageStuff.replaceFlagsAndReturn("$LeftKeybind", 'option', ['<bind>'],
+			[(waitingType ? "> " + Main.save.data.leftBind + " <" : Main.save.data.leftBind)]);
 	}
 }
 
@@ -267,10 +272,12 @@ class AttackKeybind extends Option
 
 	private override function updateDisplay():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$AttackKeybind", 'option', ['<bind>'],
-			[(waitingType ? "> " + Main.save.data.attackBind + " <" : Main.save.data.attackBind)]);
+		return LanguageStuff.replaceFlagsAndReturn("$AttackKeybind", 'option', ['<bind>'], [
+			(waitingType ? "> " + Main.save.data.attackBind + " <" : Main.save.data.attackBind)
+		]);
 	}
 }
+
 class PauseKeybind extends Option
 {
 	public function new(desc:String)
@@ -299,8 +306,9 @@ class PauseKeybind extends Option
 
 	private override function updateDisplay():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$PauseKeybind", 'option', ['<bind>'],
-			[(waitingType ? "> " + Main.save.data.pauseBind + " <" : Main.save.data.pauseBind)]);
+		return LanguageStuff.replaceFlagsAndReturn("$PauseKeybind", 'option', ['<bind>'], [
+			(waitingType ? "> " + Main.save.data.pauseBind + " <" : Main.save.data.pauseBind)
+		]);
 	}
 }
 
@@ -332,7 +340,9 @@ class ResetBind extends Option
 
 	private override function updateDisplay():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$ResetBind", 'option', ['<bind>'], [(waitingType ? "> " + Main.save.data.resetBind + " <" : Main.save.data.resetBind)]);
+		return LanguageStuff.replaceFlagsAndReturn("$ResetBind", 'option', ['<bind>'], [
+			(waitingType ? "> " + Main.save.data.resetBind + " <" : Main.save.data.resetBind)
+		]);
 	}
 }
 
@@ -397,8 +407,9 @@ class VolUpBind extends Option
 
 	private override function updateDisplay():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$VolUpBind", 'option', ['<bind>'],
-			[(waitingType ? "> " + Main.save.data.volUpBind + " <" : Main.save.data.volUpBind)]);
+		return LanguageStuff.replaceFlagsAndReturn("$VolUpBind", 'option', ['<bind>'], [
+			(waitingType ? "> " + Main.save.data.volUpBind + " <" : Main.save.data.volUpBind)
+		]);
 	}
 }
 
@@ -430,8 +441,9 @@ class VolDownBind extends Option
 
 	private override function updateDisplay():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$VolDownBind", 'option', ['<bind>'],
-			[(waitingType ? "> " + Main.save.data.volDownBind + " <" : Main.save.data.volDownBind)]);
+		return LanguageStuff.replaceFlagsAndReturn("$VolDownBind", 'option', ['<bind>'], [
+			(waitingType ? "> " + Main.save.data.volDownBind + " <" : Main.save.data.volDownBind)
+		]);
 	}
 }
 
@@ -463,8 +475,9 @@ class FullscreenBind extends Option
 
 	private override function updateDisplay():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$FullscreenBind", 'option', ['<bind>'],
-			[(waitingType ? "> " + Main.save.data.fullscreenBind + " <" : Main.save.data.fullscreenBind)]);
+		return LanguageStuff.replaceFlagsAndReturn("$FullscreenBind", 'option', ['<bind>'], [
+			(waitingType ? "> " + Main.save.data.fullscreenBind + " <" : Main.save.data.fullscreenBind)
+		]);
 	}
 }
 
@@ -529,8 +542,9 @@ class DownP2Keybind extends Option
 
 	private override function updateDisplay():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$DownP2Keybind", 'option', ['<bind>'],
-			[(waitingType ? "> " + Main.save.data.downBindP2 + " <" : Main.save.data.downBindP2)]);
+		return LanguageStuff.replaceFlagsAndReturn("$DownP2Keybind", 'option', ['<bind>'], [
+			(waitingType ? "> " + Main.save.data.downBindP2 + " <" : Main.save.data.downBindP2)
+		]);
 	}
 }
 
@@ -562,8 +576,9 @@ class RightP2Keybind extends Option
 
 	private override function updateDisplay():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$RightP2Keybind", 'option', ['<bind>'],
-			[(waitingType ? "> " + Main.save.data.rightBindP2 + " <" : Main.save.data.rightBindP2)]);
+		return LanguageStuff.replaceFlagsAndReturn("$RightP2Keybind", 'option', ['<bind>'], [
+			(waitingType ? "> " + Main.save.data.rightBindP2 + " <" : Main.save.data.rightBindP2)
+		]);
 	}
 }
 
@@ -595,8 +610,9 @@ class LeftP2Keybind extends Option
 
 	private override function updateDisplay():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$LeftP2Keybind", 'option', ['<bind>'],
-			[(waitingType ? "> " + Main.save.data.leftBindP2 + " <" : Main.save.data.leftBindP2)]);
+		return LanguageStuff.replaceFlagsAndReturn("$LeftP2Keybind", 'option', ['<bind>'], [
+			(waitingType ? "> " + Main.save.data.leftBindP2 + " <" : Main.save.data.leftBindP2)
+		]);
 	}
 }
 
@@ -747,6 +763,7 @@ class ShitMsOption extends Option
 		return "SHIT: < " + Main.save.data.shitMs + " ms >";
 	}
 }
+
 class GraphicLoading extends Option
 {
 	public function new(desc:String)
@@ -793,8 +810,9 @@ class EditorRes extends Option
 
 	private override function updateDisplay():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
-		[(Main.save.data.editorBG ? LanguageStuff.getOption("$Show_Text") : LanguageStuff.getOption("$Hidden_Text"))]);
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [
+			(Main.save.data.editorBG ? LanguageStuff.getOption("$Show_Text") : LanguageStuff.getOption("$Hidden_Text"))
+		]);
 	}
 }
 
@@ -822,7 +840,8 @@ class DownscrollOption extends Option
 	private override function updateDisplay():String
 	{
 		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [
-			(Main.save.data.downscroll ? LanguageStuff.getOption("$Downscroll_Text") : LanguageStuff.getOption("$Upscroll_Text"))]);
+			(Main.save.data.downscroll ? LanguageStuff.getOption("$Downscroll_Text") : LanguageStuff.getOption("$Upscroll_Text"))
+		]);
 	}
 }
 
@@ -849,8 +868,7 @@ class GhostTapOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [
-			getOnOff(Main.save.data.ghost)]);
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [getOnOff(Main.save.data.ghost)]);
 	}
 }
 
@@ -981,10 +999,10 @@ class Colour extends Option
 
 	private override function updateDisplay():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
-		[getOnOff(Main.save.data.colour)]);
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [getOnOff(Main.save.data.colour)]);
 	}
 }
+
 class ResetButtonOption extends Option
 {
 	public function new(desc:String)
@@ -1002,8 +1020,7 @@ class ResetButtonOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
-			[getOnOff(Main.save.data.resetButton)]);
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [getOnOff(Main.save.data.resetButton)]);
 	}
 }
 
@@ -1057,8 +1074,7 @@ class FlashingLightsOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
-		[getOnOff(Main.save.data.flashing)]);
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [getOnOff(Main.save.data.flashing)]);
 	}
 }
 
@@ -1123,8 +1139,7 @@ class MissSoundsOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
-		[getOnOff(Main.save.data.missSounds)]);
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [getOnOff(Main.save.data.missSounds)]);
 	}
 }
 
@@ -1272,7 +1287,7 @@ class LanguageOption extends Option
 
 		if (OptionsMenu.isInPause)
 			return false;
-		
+
 		Main.save.data.localeStr = LanguageStuff.locales[selectedId];
 		curLocale = Main.save.data.localeStr;
 		if (curLocale == null)
@@ -1299,7 +1314,7 @@ class LanguageOption extends Option
 		Main.save.data.localeStr = LanguageStuff.locales[selectedId];
 		curLocale = Main.save.data.localeStr;
 		if (curLocale == null)
-		{	
+		{
 			curLocale = LanguageStuff.locales[0];
 			Main.save.data.localeStr = curLocale;
 		}
@@ -1309,10 +1324,10 @@ class LanguageOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
-			[curLocale]);
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [curLocale]);
 	}
 }
+
 class ScoreScreen extends Option
 {
 	public function new(desc:String)
@@ -1330,8 +1345,7 @@ class ScoreScreen extends Option
 
 	private override function updateDisplay():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
-			[getOnOff(Main.save.data.scoreScreen)]);
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [getOnOff(Main.save.data.scoreScreen)]);
 	}
 }
 
@@ -1351,8 +1365,7 @@ class FPSCapOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
-		[Main.save.data.fpsCap]);
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [Main.save.data.fpsCap]);
 	}
 
 	override function right():Bool
@@ -1461,8 +1474,7 @@ class RainbowFPSOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
-		[getOnOff(Main.save.data.fpsRain)]);
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [getOnOff(Main.save.data.fpsRain)]);
 	}
 }
 
@@ -1553,8 +1565,9 @@ class AccuracyDOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
-		[(Main.save.data.accuracyMod == 0 ? LanguageStuff.getOption("$AccuracyDOption_Accurate_Text") : LanguageStuff.getOption("$AccuracyDOption_Complex_Text"))]);
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [
+			(Main.save.data.accuracyMod == 0 ? LanguageStuff.getOption("$AccuracyDOption_Accurate_Text") : LanguageStuff.getOption("$AccuracyDOption_Complex_Text"))
+		]);
 	}
 }
 
@@ -1738,7 +1751,7 @@ class BotPlay extends Option
 	{
 		if (gameplayStuff.PlayStateChangeables.twoPlayersMode)
 			return false;
-		
+
 		Main.save.data.botplay = !Main.save.data.botplay;
 		trace('BotPlay : ' + Main.save.data.botplay);
 		display = updateDisplay();
@@ -1845,8 +1858,7 @@ class CamZoomOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
-		[getOnOff(Main.save.data.camzoom)]);
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [getOnOff(Main.save.data.camzoom)]);
 	}
 }
 
@@ -1965,8 +1977,7 @@ class NoteskinOption extends Option
 
 	public override function getValue():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
-			[curSkin]);
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [curSkin]);
 	}
 }
 
@@ -2034,7 +2045,7 @@ class MenuMusicOption extends Option
 				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(curSelectedId)));
 			}
 		}
-		
+
 		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [curMusic]);
 	}
 }
@@ -2067,8 +2078,7 @@ class HealthBarOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
-		[getOnOff(Main.save.data.healthBar)]);
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [getOnOff(Main.save.data.healthBar)]);
 	}
 }
 

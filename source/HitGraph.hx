@@ -1,5 +1,5 @@
 import gameplayStuff.Conductor;
-import states.PlayState;
+import states.playState.PlayState;
 import flixel.FlxG;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;

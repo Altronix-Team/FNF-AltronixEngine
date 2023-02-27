@@ -1,30 +1,30 @@
 package gameplayStuff;
 
-import flixel.group.FlxSpriteGroup;
-import states.FreeplayState;
-import gameplayStuff.DiffOverview;
-import gameplayStuff.Song;
-import openfl.display.Preloader.DefaultPreloader;
-import flixel.addons.effects.FlxSkewedSprite;
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.addons.effects.FlxSkewedSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxMath;
-import flixel.util.FlxColor;
-import states.PlayState;
-import openfl.display.BitmapData;
-import openfl.utils.Assets as OpenFlAssets;
 import flixel.text.FlxText;
+import flixel.util.FlxColor;
+import gameplayStuff.DiffOverview;
+import gameplayStuff.Song;
+import openfl.display.BitmapData;
+import openfl.display.Preloader.DefaultPreloader;
+import openfl.utils.Assets as OpenFlAssets;
+import states.FreeplayState;
+import states.playState.PlayState;
 
-
-typedef NoteMeta = {
+typedef NoteMeta =
+{
 	var imageFile:String;
 	var ?noteSplashFile:String;
 	var size:Float;
 	var listInSettings:Bool;
-} 
+}
 
-//TODO Try to rework sustain note system
+// TODO Try to rework sustain note system
 class Note extends FlxSprite
 {
 	public var sprTracker:FlxSprite = null;
@@ -85,6 +85,7 @@ class Note extends FlxSprite
 	public var children:Array<Note> = [];
 
 	var noteTypeCheck:String = 'normal';
+
 	public var noteStyle:String;
 
 	public var texture(default, set):String = null;
@@ -125,12 +126,15 @@ class Note extends FlxSprite
 	var noteMetaData:NoteMeta = {
 		imageFile: '',
 		size: 0.7,
-		listInSettings : true
+		listInSettings: true
 	};
 
-	private function set_noteType(value:String):String {
-		if(noteData > -1 && noteType != value) {
-			switch(value) {
+	private function set_noteType(value:String):String
+	{
+		if (noteData > -1 && noteType != value)
+		{
+			switch (value)
+			{
 				case 'Bullet Note':
 					texture = 'Bullet_Note';
 					noteMetaData.imageFile = 'Bullet_Note';
@@ -147,7 +151,7 @@ class Note extends FlxSprite
 				case 'No Animation':
 					noAnimation = true;
 				case 'GF Sing':
-					gfNote = true;					
+					gfNote = true;
 			}
 			noteType = value;
 		}
@@ -219,7 +223,7 @@ class Note extends FlxSprite
 			noteSplashTexture = noteMetaData.imageFile;
 
 		reloadNote(noteMetaData);
-		
+
 		x += 50;
 		// MAKE SURE ITS DEFINITELY OFF SCREEN?
 		y -= 2000;
@@ -243,11 +247,11 @@ class Note extends FlxSprite
 
 		if (noteStyle == 'pixel')
 			sustainNoteOffset = 30;
-			
+
 		if (sprTracker != null)
 			x = sprTracker.x;
 		else
-			x += swagWidth * noteData;	
+			x += swagWidth * noteData;
 
 		animation.play(noteColor + 'Scroll');
 
@@ -262,13 +266,14 @@ class Note extends FlxSprite
 			alpha = 0.5;
 	}
 
-	function reloadNote(meta:NoteMeta) {
+	function reloadNote(meta:NoteMeta)
+	{
 		if (noteStyle == 'pixel')
 		{
 			loadGraphic(NoteskinHelpers.generatePixelSprite(meta.imageFile), true, 17, 17);
 			if (isSustainNote)
 				loadGraphic(NoteskinHelpers.generatePixelSprite(meta.imageFile, true), true, 7, 6);
-		
+
 			loadPixelAnims();
 
 			if (chartNote)
@@ -297,7 +302,8 @@ class Note extends FlxSprite
 			startAnim();
 	}
 
-	function startAnim(){
+	function startAnim()
+	{
 		animation.play(noteColor + 'Scroll', true);
 
 		if (isSustainNote && prevNote != null)
@@ -344,14 +350,14 @@ class Note extends FlxSprite
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		
+
 		angle = modAngle + localAngle;
 
 		if (!sustainActive)
 		{
 			alpha = 0.3;
 		}
-		
+
 		if (Main.save.data.downscroll != flipY && isSustainNote)
 			flipY = Main.save.data.downscroll;
 
@@ -387,14 +393,15 @@ class Note extends FlxSprite
 			}
 			else
 			{
-				if (strumTime - Conductor.songPosition <= (((166 * Conductor.timeScale) / (songMultiplier < 1 ?songMultiplier : 1)))
+				if (strumTime - Conductor.songPosition <= (((166 * Conductor.timeScale) / (songMultiplier < 1 ? songMultiplier : 1)))
 					&& strumTime - Conductor.songPosition >= (((-166 * Conductor.timeScale) / (songMultiplier < 1 ? songMultiplier : 1))))
 					canBeHit = true;
 				else
 					canBeHit = false;
 			}
 
-			if (strumTime - Conductor.songPosition < (((-166 * Conductor.timeScale) / (songMultiplier < 1 ? songMultiplier : 1))) && !wasGoodHit)
+			if (strumTime - Conductor.songPosition < (((-166 * Conductor.timeScale) / (songMultiplier < 1 ? songMultiplier : 1)))
+				&& !wasGoodHit)
 				tooLate = true;
 		}
 		else
@@ -415,7 +422,7 @@ class Note extends FlxSprite
 			noteTypeCheck = 'normal';
 		else
 			noteTypeCheck = 'pixel';
-		
+
 		reloadNote(noteMetaData);
 	}
 
@@ -441,12 +448,11 @@ class Note extends FlxSprite
 			// Tails
 			if (allPrefixes.contains(noteColor + ' hold end'))
 				animation.addByPrefix(noteColor + 'holdend', noteColor + ' hold end');
-			else if (allPrefixes.contains('pruple end hold') && noteColor == 'purple') //Funny
+			else if (allPrefixes.contains('pruple end hold') && noteColor == 'purple') // Funny
 				animation.addByPrefix(noteColor + 'holdend', 'pruple end hold');
 			else
 				animation.addByPrefix(noteColor + 'holdend', noteColor + ' tail');
 		}
-		
 	}
 
 	function loadPixelAnims()
@@ -459,10 +465,11 @@ class Note extends FlxSprite
 		{
 			animation.add(noteColor + 'hold', [noteData]);
 			animation.add(noteColor + 'holdend', [noteData + 4]);
-		}	
+		}
 	}
 
-	function set_texture(value:String):String {
+	function set_texture(value:String):String
+	{
 		if (value != null)
 		{
 			texture = value;
@@ -486,7 +493,7 @@ class Note extends FlxSprite
 					}
 				}
 				reloadNote(noteMetaData);
-			}	
+			}
 		}
 		return value;
 	}

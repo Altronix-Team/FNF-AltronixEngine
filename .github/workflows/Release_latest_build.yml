@@ -38,6 +38,8 @@ jobs:
             .haxelib/
             export/release/windows/haxe/
             export/release/windows/obj/
+            export/debug/windows/haxe/
+            export/debug/windows/obj/
             
       # Runs a set of commands using the runners shell
       - name: Windows build action
@@ -48,16 +50,25 @@ jobs:
           haxelib run hmm install --quiet
           haxelib run lime build windows
         shell: cmd
-      
-      - name: Make zip
-        run: 7z a -tzip "engine.zip" "./export/release/windows/bin/*"
+
+      - name: Build debug version
+        run: |
+          haxelib run lime build windows --debug
+        shell: cmd
+
+      - name: Make zips
+        run: |
+          7z a -tzip "engine.zip" "./export/release/windows/bin/*"
+          7z a -tzip "engine-debug.zip" "./export/debug/windows/bin/*"
          
       - name: Make release
         uses: softprops/action-gh-release@v1
         with:
           name: Latest build from action with id ${{github.run_number}}
           tag_name: Actions_Build_${{github.run_number}}
-          files: engine.zip
+          files: |
+            engine.zip
+            engine-debug.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
@@ -88,4 +99,6 @@ jobs:
             .haxelib/
             export/release/windows/haxe/
             export/release/windows/obj/
+            export/debug/windows/haxe/
+            export/debug/windows/obj/
           key: cache-build-windows

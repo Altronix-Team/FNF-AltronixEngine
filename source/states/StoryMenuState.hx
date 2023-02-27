@@ -23,6 +23,7 @@ import WeekData;
 import gameplayStuff.Conductor;
 import gameplayStuff.Song;
 import gameplayStuff.Highscore;
+import states.playState.PlayState;
 
 
 class StoryMenuState extends MusicBeatState
@@ -635,17 +636,5 @@ class StoryMenuState extends MusicBeatState
 		#if !switch
 		intendedScore = Highscore.getWeekScore(loadedWeeks[curWeek].fileName, curDifficulty);
 		#end
-	}
-
-	public static function unlockNextWeek(week:Int):Void
-	{
-		if (week <= 900)//weekData().length - 1 /*&& Main.save.data.weekUnlocked == week*/) // fuck you, unlocks all weeks
-		{
-			weekUnlocked.push(true);
-			trace('Week ' + week + ' beat (Week ' + (week + 1) + ' unlocked)');
-		}
-
-		Main.save.data.weekUnlocked = weekUnlocked.length - 1;
-		Main.save.flush();
 	}
 }

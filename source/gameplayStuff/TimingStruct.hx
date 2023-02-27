@@ -2,7 +2,7 @@ package gameplayStuff;
 
 import flixel.FlxG;
 import gameplayStuff.Section;
-import states.PlayState;
+import states.playState.PlayState;
 
 class TimingStruct
 {
@@ -87,13 +87,13 @@ class TimingStruct
 			{
 				var start = TimingStruct.getTimeFromBeat((TimingStruct.getBeatFromTime(i.startTime)));
 				var end = TimingStruct.getTimeFromBeat((TimingStruct.getBeatFromTime(i.endTime)));
-		
+
 				if (ms >= start && ms < end)
 				{
 					return i;
 				}
 			}
-	
+
 			return null;
 		}
 		else

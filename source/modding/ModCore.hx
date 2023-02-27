@@ -285,7 +285,7 @@ class ModCore
 		set('controls', Controls);
 		set('CoolUtil', CoolUtil);
 		set('Conductor', gameplayStuff.Conductor);
-		set('PlayState', states.PlayState);
+		set('PlayState', states.playState.PlayState);
 		set('Main', Main);
 		set('Note', gameplayStuff.Note);
 		set('Paths', Paths);

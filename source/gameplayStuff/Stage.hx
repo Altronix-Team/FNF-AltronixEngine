@@ -1,29 +1,29 @@
 package gameplayStuff;
 
-import Shaders.BuildingShaders;
 import Shaders.BuildingShader;
-import flixel.addons.effects.chainable.FlxEffectSprite;
-import flixel.FlxSprite;
-import flixel.FlxG;
+import Shaders.BuildingShaders;
+import WiggleEffect;
 import flixel.FlxBasic;
-import flixel.group.FlxGroup;
-import flixel.system.FlxSound;
+import flixel.FlxG;
+import flixel.FlxSprite;
+import flixel.addons.effects.chainable.FlxEffectSprite;
 import flixel.addons.effects.chainable.FlxWaveEffect;
-import flixel.util.FlxTimer;
+import flixel.effects.FlxFlicker;
+import flixel.group.FlxGroup;
+import flixel.math.FlxAngle;
+import flixel.math.FlxMath;
+import flixel.math.FlxPoint;
+import flixel.math.FlxRandom;
+import flixel.math.FlxRect;
+import flixel.system.FlxSound;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
-import flixel.math.FlxRandom;
-import flixel.math.FlxMath;
-import flixel.math.FlxAngle;
-import flixel.math.FlxPoint;
-import flixel.math.FlxRect;
-import flixel.effects.FlxFlicker;
-import openfl.utils.Assets;
 import flixel.util.FlxColor;
-import states.PlayState;
-import states.GameplayCustomizeState;
+import flixel.util.FlxTimer;
 import gameplayStuff.StageData;
-import WiggleEffect;
+import openfl.utils.Assets;
+import states.GameplayCustomizeState;
+import states.playState.PlayState;
 #if sys
 import sys.FileSystem;
 #end
@@ -49,18 +49,19 @@ class Stage extends states.MusicBeatState
 	// BGs still must be added by using toAdd Array for them to show in game after slowBacks take effect!!
 	// BGs still must be added by using toAdd Array for them to show in game after slowBacks take effect!!
 	// All of the above must be set or used in your stage case code block!!
-
 	public var started:Bool = false;
 	public var startedidle:Bool = false;
 
 	var steve:FlxSprite;
+
 	public var foregroundSprites:FlxTypedGroup<FlxSprite>;
+
 	/*var limoMetalPole:BGSprite;
-	var limoLight:BGSprite;
-	var limoCorpse:BGSprite;
-	var limoCorpseTwo:BGSprite;
-	var grpLimoParticles:FlxTypedGroup<BGSprite>;
-	var limoKillingState:Int = 0;*/
+		var limoLight:BGSprite;
+		var limoCorpse:BGSprite;
+		var limoCorpseTwo:BGSprite;
+		var grpLimoParticles:FlxTypedGroup<BGSprite>;
+		var limoKillingState:Int = 0; */
 	var grpLimoDancers:FlxTypedGroup<BackgroundDancer>;
 
 	var windowsShader:BuildingShaders;
@@ -82,11 +83,11 @@ class Stage extends states.MusicBeatState
 				defaultZoom: 0.9,
 				isPixelStage: false,
 				hideGF: false,
-			
+
 				boyfriend: [770, 450],
 				gf: [400, 130],
 				dad: [100, 100],
-			
+
 				camera_boyfriend: [0, 0],
 				camera_opponent: [0, 0],
 				camera_girlfriend: [0, 0],
@@ -133,29 +134,29 @@ class Stage extends states.MusicBeatState
 					toAdd.push(city);
 
 					/*var phillyCityLights = new FlxTypedGroup<FlxSprite>();
-					if (Main.save.data.distractions)
-					{
-						swagGroup['weeks/assets/week3/phillyCityLights'] = phillyCityLights;
-						toAdd.push(phillyCityLights);
+						if (Main.save.data.distractions)
+						{
+							swagGroup['weeks/assets/week3/phillyCityLights'] = phillyCityLights;
+							toAdd.push(phillyCityLights);
 					}*/
 
-					//for (i in 0...5)
-					//{
-						//Lets change color for white windows instead of using different sprites
+					// for (i in 0...5)
+					// {
+					// Lets change color for white windows instead of using different sprites
 					windowsShader = new BuildingShaders();
 
 					var light:FlxSprite = new FlxSprite(city.x).loadGraphic(Paths.loadImage('weeks/assets/week3/images/philly/window', 'gameplay'));
-						light.scrollFactor.set(0.3, 0.3);
-						light.setGraphicSize(Std.int(light.width * 0.85));
-						light.updateHitbox();
-						light.antialiasing = Main.save.data.antialiasing;
-						light.shader = windowsShader.shader;
-						randomColor();
-						light.color = windowColor;
-						swagBacks['light'] = light;
-						toAdd.push(light);
-						//phillyCityLights.add(light);
-					//}
+					light.scrollFactor.set(0.3, 0.3);
+					light.setGraphicSize(Std.int(light.width * 0.85));
+					light.updateHitbox();
+					light.antialiasing = Main.save.data.antialiasing;
+					light.shader = windowsShader.shader;
+					randomColor();
+					light.color = windowColor;
+					swagBacks['light'] = light;
+					toAdd.push(light);
+					// phillyCityLights.add(light);
+					// }
 
 					var streetBehind:FlxSprite = new FlxSprite(-40,
 						50).loadGraphic(Paths.loadImage('weeks/assets/week3/images/philly/behindTrain', 'gameplay'));
@@ -209,16 +210,16 @@ class Stage extends states.MusicBeatState
 					if (Main.save.data.distractions)
 					{
 						/*limoMetalPole = new BGSprite('gore/metalPole', -500, 220, 0.4, 0.4);
-						swagBacks['weeks/assets/week4/limoMetalPole'] = limoMetalPole;
-						toAdd.push(limoMetalPole);
+							swagBacks['weeks/assets/week4/limoMetalPole'] = limoMetalPole;
+							toAdd.push(limoMetalPole);
 
-						limoCorpse = new BGSprite('gore/noooooo', -500, limoMetalPole.y - 130, 0.4, 0.4, ['Henchmen on rail'], true);
-						swagBacks['weeks/assets/week4/limoCorpse'] = limoCorpse;
-						toAdd.push(limoCorpse);
+							limoCorpse = new BGSprite('gore/noooooo', -500, limoMetalPole.y - 130, 0.4, 0.4, ['Henchmen on rail'], true);
+							swagBacks['weeks/assets/week4/limoCorpse'] = limoCorpse;
+							toAdd.push(limoCorpse);
 
-						limoCorpseTwo = new BGSprite('gore/noooooo', -500, limoMetalPole.y, 0.4, 0.4, ['henchmen death'], true);
-						swagBacks['weeks/assets/week4/limoCorpseTwo'] = limoCorpseTwo;
-						toAdd.push(limoCorpseTwo);*/
+							limoCorpseTwo = new BGSprite('gore/noooooo', -500, limoMetalPole.y, 0.4, 0.4, ['henchmen death'], true);
+							swagBacks['weeks/assets/week4/limoCorpseTwo'] = limoCorpseTwo;
+							toAdd.push(limoCorpseTwo); */
 
 						grpLimoDancers = new FlxTypedGroup<BackgroundDancer>();
 						swagGroup['grpLimoDancers'] = grpLimoDancers;
@@ -233,22 +234,22 @@ class Stage extends states.MusicBeatState
 						}
 
 						/*limoLight = new BGSprite('gore/coldHeartKiller', limoMetalPole.x - 180, limoMetalPole.y - 80, 0.4, 0.4);
-						swagBacks['weeks/assets/week4/limoLight'] = limoLight;
-						toAdd.push(limoLight);
+							swagBacks['weeks/assets/week4/limoLight'] = limoLight;
+							toAdd.push(limoLight);
 
-						grpLimoParticles = new FlxTypedGroup<BGSprite>();
-						swagGroup['grpLimoParticles'] = grpLimoParticles;
-						toAdd.push(grpLimoParticles);
+							grpLimoParticles = new FlxTypedGroup<BGSprite>();
+							swagGroup['grpLimoParticles'] = grpLimoParticles;
+							toAdd.push(grpLimoParticles);
 
-						var particle:BGSprite = new BGSprite('gore/stupidBlood', -400, -400, 0.4, 0.4, ['blood'], false);
-						particle.alpha = 0.01;
-						grpLimoParticles.add(particle);
-						resetLimoKill();*/
+							var particle:BGSprite = new BGSprite('gore/stupidBlood', -400, -400, 0.4, 0.4, ['blood'], false);
+							particle.alpha = 0.01;
+							grpLimoParticles.add(particle);
+							resetLimoKill(); */
 
 						swagBacks['fastCar'] = fastCar;
 						layInFront[2].push(fastCar);
 						resetFastCar();
-						//limoKillingState = 0;
+						// limoKillingState = 0;
 					}
 
 					var overlayShit:FlxSprite = new FlxSprite(-500,
@@ -373,12 +374,14 @@ class Stage extends states.MusicBeatState
 
 					var repositionShit = -200;
 
-					var bgSchool:FlxSprite = new FlxSprite(repositionShit, 0).loadGraphic(Paths.loadImage('weeks/assets/week6/images/weeb/weebSchool', 'gameplay'));
+					var bgSchool:FlxSprite = new FlxSprite(repositionShit,
+						0).loadGraphic(Paths.loadImage('weeks/assets/week6/images/weeb/weebSchool', 'gameplay'));
 					bgSchool.scrollFactor.set(0.6, 0.90);
 					swagBacks['bgSchool'] = bgSchool;
 					toAdd.push(bgSchool);
 
-					var bgStreet:FlxSprite = new FlxSprite(repositionShit).loadGraphic(Paths.loadImage('weeks/assets/week6/images/weeb/weebStreet', 'gameplay'));
+					var bgStreet:FlxSprite = new FlxSprite(repositionShit).loadGraphic(Paths.loadImage('weeks/assets/week6/images/weeb/weebStreet',
+						'gameplay'));
 					bgStreet.scrollFactor.set(0.95, 0.95);
 					swagBacks['bgStreet'] = bgStreet;
 					toAdd.push(bgStreet);
@@ -434,7 +437,7 @@ class Stage extends states.MusicBeatState
 					{
 						if (PlayState.SONG.showbgdancers)
 						{
-							bgGirls.visible = true;	
+							bgGirls.visible = true;
 						}
 						else
 							bgGirls.visible = false;
@@ -460,18 +463,18 @@ class Stage extends states.MusicBeatState
 				{
 					var posX = 400;
 					var posY = 200;
-					 
+
 					var bg:FlxSprite = new FlxSprite(posX + 10,
 						posY + 165).loadGraphic(Paths.loadImage('weeks/assets/week6/images/weeb/evilSchoolBG', 'gameplay'));
 					bg.scale.set(6, 6);
 					swagBacks['bg'] = bg;
-					toAdd.push(bg);	
+					toAdd.push(bg);
 
 					var fg:FlxSprite = new FlxSprite(posX + 10,
 						posY + 165).loadGraphic(Paths.loadImage('weeks/assets/week6/images/weeb/evilSchoolFG', 'gameplay'));
 					fg.scale.set(6, 6);
 					swagBacks['fg'] = fg;
-					toAdd.push(fg);	
+					toAdd.push(fg);
 
 					var effectType:Array<String> = ['DREAMY', 'WAVY', 'HEAT_WAVE_HORIZONTAL', 'HEAT_WAVE_VERTICAL', 'FLAG'];
 
@@ -484,7 +487,7 @@ class Stage extends states.MusicBeatState
 							bg.shader = wiggleShit.shader;
 							fg.shader = wiggleShit.shader;
 						}
-					}					
+					}
 				}
 			case 'warzone':
 				{
@@ -641,22 +644,23 @@ class Stage extends states.MusicBeatState
 					if (PlayState.SONG != null)
 					{
 						if (PlayState.SONG.gfVersion == 'picospeaker')
+						{
+							var firstTank:TankmenBG = new TankmenBG(20, 500, true);
+							firstTank.resetShit(20, 600, true);
+							firstTank.strumTime = 10;
+							tankmanRun.add(firstTank);
+
+							for (i in 0...TankmenBG.animationNotes.length)
 							{
-								var firstTank:TankmenBG = new TankmenBG(20, 500, true);
-								firstTank.resetShit(20, 600, true);
-								firstTank.strumTime = 10;
-								tankmanRun.add(firstTank);
-				
-								for (i in 0...TankmenBG.animationNotes.length)
+								if (FlxG.random.bool(16))
 								{
-									if(FlxG.random.bool(16)) {
-										var tankBih = tankmanRun.recycle(TankmenBG);
-										tankBih.strumTime = TankmenBG.animationNotes[i][0];
-										tankBih.resetShit(500, 200 + FlxG.random.int(50, 100), TankmenBG.animationNotes[i][1] < 2);
-										tankmanRun.add(tankBih);
-									}
+									var tankBih = tankmanRun.recycle(TankmenBG);
+									tankBih.strumTime = TankmenBG.animationNotes[i][0];
+									tankBih.resetShit(500, 200 + FlxG.random.int(50, 100), TankmenBG.animationNotes[i][1] < 2);
+									tankmanRun.add(tankBih);
 								}
 							}
+						}
 					}
 				}
 			case 'stage':
@@ -703,50 +707,50 @@ class Stage extends states.MusicBeatState
 					stageCurtains.active = false;
 
 					swagBacks['stageCurtains'] = stageCurtains;
-					toAdd.push(stageCurtains);	
+					toAdd.push(stageCurtains);
 				}
 			default:
 				{
-						curStage = 'stage';
-						camZoom = 0.9;
-						var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.loadImage('stageback'));
-						bg.antialiasing = Main.save.data.antialiasing;
-						bg.scrollFactor.set(0.9, 0.9);
-						bg.active = false;
-						swagBacks['bg'] = bg;
-						toAdd.push(bg);
+					curStage = 'stage';
+					camZoom = 0.9;
+					var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.loadImage('stageback'));
+					bg.antialiasing = Main.save.data.antialiasing;
+					bg.scrollFactor.set(0.9, 0.9);
+					bg.active = false;
+					swagBacks['bg'] = bg;
+					toAdd.push(bg);
 
-						var stageFront:FlxSprite = new FlxSprite(-650, 600).loadGraphic(Paths.loadImage('stagefront'));
-						stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
-						stageFront.updateHitbox();
-						stageFront.antialiasing = Main.save.data.antialiasing;
-						stageFront.scrollFactor.set(0.9, 0.9);
-						stageFront.active = false;
-						swagBacks['stageFront'] = stageFront;
-						toAdd.push(stageFront);
+					var stageFront:FlxSprite = new FlxSprite(-650, 600).loadGraphic(Paths.loadImage('stagefront'));
+					stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
+					stageFront.updateHitbox();
+					stageFront.antialiasing = Main.save.data.antialiasing;
+					stageFront.scrollFactor.set(0.9, 0.9);
+					stageFront.active = false;
+					swagBacks['stageFront'] = stageFront;
+					toAdd.push(stageFront);
 
-						var stageLightLeft:BGSprite = new BGSprite('stage_light', -125, -100, 0.9, 0.9);
-						stageLightLeft.setGraphicSize(Std.int(stageLightLeft.width * 1.1));
-						stageLightLeft.updateHitbox();
-						swagBacks['stageLightLeft'] = stageLightLeft;
-						toAdd.push(stageLightLeft);
+					var stageLightLeft:BGSprite = new BGSprite('stage_light', -125, -100, 0.9, 0.9);
+					stageLightLeft.setGraphicSize(Std.int(stageLightLeft.width * 1.1));
+					stageLightLeft.updateHitbox();
+					swagBacks['stageLightLeft'] = stageLightLeft;
+					toAdd.push(stageLightLeft);
 
-						var stageLightRight:BGSprite = new BGSprite('stage_light', 1225, -100, 0.9, 0.9);
-						stageLightRight.setGraphicSize(Std.int(stageLightRight.width * 1.1));
-						stageLightRight.updateHitbox();
-						stageLightRight.flipX = true;
-						swagBacks['stageLightRight'] = stageLightRight;
-						toAdd.push(stageLightRight);
+					var stageLightRight:BGSprite = new BGSprite('stage_light', 1225, -100, 0.9, 0.9);
+					stageLightRight.setGraphicSize(Std.int(stageLightRight.width * 1.1));
+					stageLightRight.updateHitbox();
+					stageLightRight.flipX = true;
+					swagBacks['stageLightRight'] = stageLightRight;
+					toAdd.push(stageLightRight);
 
-						var stageCurtains:FlxSprite = new FlxSprite(-500, -300).loadGraphic(Paths.loadImage('stagecurtains'));
-						stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
-						stageCurtains.updateHitbox();
-						stageCurtains.antialiasing = Main.save.data.antialiasing;
-						stageCurtains.scrollFactor.set(1.3, 1.3);
-						stageCurtains.active = false;
+					var stageCurtains:FlxSprite = new FlxSprite(-500, -300).loadGraphic(Paths.loadImage('stagecurtains'));
+					stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
+					stageCurtains.updateHitbox();
+					stageCurtains.antialiasing = Main.save.data.antialiasing;
+					stageCurtains.scrollFactor.set(1.3, 1.3);
+					stageCurtains.active = false;
 
-						swagBacks['stageCurtains'] = stageCurtains;
-						toAdd.push(stageCurtains);
+					swagBacks['stageCurtains'] = stageCurtains;
+					toAdd.push(stageCurtains);
 				}
 		}
 	}
@@ -775,7 +779,7 @@ class Stage extends states.MusicBeatState
 
 				case 'schoolEvil':
 					wiggleShit.update(elapsed);
-					
+
 				case 'warzone':
 					moveTank(elapsed);
 			}
@@ -842,7 +846,8 @@ class Stage extends states.MusicBeatState
 			switch (curStage)
 			{
 				case 'halloween':
-					if (PlayState.SONG != null){
+					if (PlayState.SONG != null)
+					{
 						if (FlxG.random.bool(Conductor.bpm > 320 ? 100 : 10) && curBeat > lightningStrikeBeat + lightningOffset)
 						{
 							if (Main.save.data.distractions)
@@ -880,7 +885,8 @@ class Stage extends states.MusicBeatState
 
 							randomColor();
 
-							if (PlayState.SONG != null){
+							if (PlayState.SONG != null)
+							{
 								if (PlayState.SONG.songId != 'blammed')
 									phillyCityLight.color = windowColor;
 							}
@@ -908,18 +914,19 @@ class Stage extends states.MusicBeatState
 						swagBacks['tank4'].animation.play('idle', true);
 						swagBacks['tank5'].animation.play('idle', true);
 						swagBacks['tank3'].animation.play('idle', true);
-					}				
+					}
 			}
 		}
 	}
 
 	var blammedeventplayed:Bool = false;
 
-	function randomColor() {
+	function randomColor()
+	{
 		curLight = FlxG.random.int(0, 4, [oldLight]);
 		oldLight = curLight;
 
-		switch(curLight)
+		switch (curLight)
 		{
 			case 4:
 				windowColor = FlxColor.fromRGB(251, 166, 51);
@@ -937,14 +944,16 @@ class Stage extends states.MusicBeatState
 	// Variables and Functions for Stages
 	var lightningStrikeBeat:Int = 0;
 	var lightningOffset:Int = 8;
+
 	public var curLight:Int = 0;
 
 	var tankAngle:Float = FlxG.random.int(-90, 45);
 	var tankSpeed:Float = FlxG.random.float(5, 7);
 	var tankX = 400;
+
 	function moveTank(?elapsed:Float = 0)
 	{
-		if(!PlayState.inCutscene)
+		if (!PlayState.inCutscene)
 		{
 			tankAngle += elapsed * tankSpeed;
 			steve.angle = tankAngle - 90 + 15;
@@ -981,7 +990,8 @@ class Stage extends states.MusicBeatState
 			GameplayCustomizeState.gf.playAnim('scared', true);
 		}
 
-		if(Main.save.data.flashing) {
+		if (Main.save.data.flashing)
+		{
 			swagBacks['halloweenWhite'].alpha = 0.4;
 			FlxTween.tween(swagBacks['halloweenWhite'], {alpha: 0.5}, 0.075);
 			FlxTween.tween(swagBacks['halloweenWhite'], {alpha: 0}, 0.25, {startDelay: 0.15});
@@ -1015,7 +1025,8 @@ class Stage extends states.MusicBeatState
 			{
 				startedMoving = true;
 
-				if (PlayState.SONG != null){
+				if (PlayState.SONG != null)
+				{
 					if (PlayState.instance.gf != null)
 						PlayState.instance.gf.playAnim('hairBlow');
 					else
@@ -1047,7 +1058,8 @@ class Stage extends states.MusicBeatState
 	{
 		if (Main.save.data.distractions)
 		{
-			if (PlayState.SONG != null){
+			if (PlayState.SONG != null)
+			{
 				if (PlayState.instance.gf != null)
 					PlayState.instance.gf.playAnim('hairFall');
 				else

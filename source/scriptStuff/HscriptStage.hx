@@ -1,15 +1,15 @@
 package scriptStuff;
 
-import flixel.addons.display.FlxBackdrop;
-import flixel.group.FlxSpriteGroup;
+import Paths;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
+import flixel.addons.display.FlxBackdrop;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import Paths;
-import scriptStuff.HScriptHandler;
-import states.PlayState;
-import gameplayStuff.Character;
+import flixel.group.FlxSpriteGroup;
 import gameplayStuff.Boyfriend;
+import gameplayStuff.Character;
+import scriptStuff.HScriptHandler;
+import states.playState.PlayState;
 
 class HscriptStage extends HScriptModchart
 {
@@ -40,7 +40,7 @@ class HscriptStage extends HScriptModchart
 		gfGroup = state.gfGroup;
 		dadGroup = state.gfGroup;
 		boyfriendGroup = state.boyfriendGroup;
-		
+
 		#if !USE_SSCRIPT
 		scriptHandler.expose.set("stage", this);
 		scriptHandler.expose.set("addGf", addGf);
@@ -69,7 +69,8 @@ class HscriptStage extends HScriptModchart
 		this.state = state;
 	}
 
-	override public function add(object:FlxBasic):FlxBasic {
+	override public function add(object:FlxBasic):FlxBasic
+	{
 		if (object != null)
 		{
 			return super.add(object);
@@ -78,10 +79,11 @@ class HscriptStage extends HScriptModchart
 		{
 			Debug.logError('Failed to add object to stage');
 			return null;
-		} 
+		}
 	}
 
-	public function addObject(object:FlxBasic, objectName:String) {
+	public function addObject(object:FlxBasic, objectName:String)
+	{
 		if (object != null)
 		{
 			if (objectName != null)
@@ -92,7 +94,7 @@ class HscriptStage extends HScriptModchart
 		else
 		{
 			Debug.logError('Failed to add object to stage');
-		} 	
+		}
 	}
 
 	public function getObject(objectName:String):FlxBasic
@@ -108,17 +110,20 @@ class HscriptStage extends HScriptModchart
 		}
 	}
 
-	public function addGf() {
+	public function addGf()
+	{
 		add(gf);
 		addedCharacters.push(gf);
 	}
 
-	public function addDad(){
+	public function addDad()
+	{
 		add(dad);
 		addedCharacters.push(dad);
 	}
 
-	public function addBoyfriend(){
+	public function addBoyfriend()
+	{
 		add(boyfriend);
 		addedCharacters.push(boyfriend);
 	}
@@ -163,5 +168,4 @@ class HscriptStage extends HScriptModchart
 		if (scriptHandler.exists('onUpdate'))
 			scriptHandler.call('onUpdate', [elapsed]);
 	}
-
 }

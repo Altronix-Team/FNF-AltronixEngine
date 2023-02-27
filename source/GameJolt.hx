@@ -153,11 +153,11 @@ class GameJoltAPI // Connects to flixel.addons.api.FlxGameJolt
 	{
 		if (in1 == null || in2 == null) 
 		{
-			if (loginArg)
+			/*if (loginArg)
 			{
 				GameJoltLogin.login = true;
 				FlxG.switchState(new GameJoltLogin());
-			}
+			}*/
 			Main.gjToastManager.createToast(Paths.getPreloadPath('shared/images/cross.png'),
 				"Not signed in!\nSign in to save GameJolt Trophies and Leaderboard Scores!", "", false);
 			Debug.logError("User login failure!");

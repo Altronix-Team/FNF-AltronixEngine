@@ -17,6 +17,7 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import gameplayStuff.PlayStateChangeables;
 import gameplayStuff.Song;
+import states.playState.PlayState;
 
 class PauseSubState extends MusicBeatSubstate
 {
@@ -233,7 +234,7 @@ class PauseSubState extends MusicBeatSubstate
 								default:
 									diff = "-" + daSelected.toLowerCase();
 							}
-							PlayState.SONG = Song.conversionChecks(Song.loadFromJson(PlayState.SONG.songId, diff));
+							PlayState.SONG = ChartUtil.conversionChecks(Song.loadFromJson(PlayState.SONG.songId, diff));
 							PlayState.storyDifficulty = CoolUtil.difficultyArray.indexOf(daSelected);
 							restartSong();
 							FlxG.sound.music.volume = 0;

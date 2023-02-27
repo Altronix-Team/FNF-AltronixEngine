@@ -241,8 +241,9 @@ class Main extends Sprite
 	 * @param error The error that was thrown.
 	 */
 	public static function onUncaughtError(error:UncaughtErrorEvent)
-	{
+	{	
 		#if FEATURE_FILESYSTEM
+		FlxG.resetGame();
 		var errorMsg:String = '';
 
 		var funnyTitle:Array<String> = 
@@ -306,8 +307,6 @@ class Main extends Sprite
 		errorMsg += 'An error has occurred and the game is forced to close.\nPlease access the "crash" folder and send the .crash file to the developers:\n'
 			+ ERROR_REPORT_URL +'\n';
 
-		FlxG.resetGame();
-
 		Application.current.window.alert('An error has occurred and the game is forced to close.\nPlease access the "crash" folder and send the .crash file to the developers:\n' + ERROR_REPORT_URL, funnyTitle[FlxG.random.int(0, funnyTitle.length - 1)]);
 
 		try{
@@ -323,17 +322,10 @@ class Main extends Sprite
 	}
 	private function onCriticalErrorEvent(message:String):Void
 	{
+		FlxG.resetGame();
 		Debug.logError('Critical error!');
 		Debug.logError(message);
-		try{
-			FlxG.resetGame();
-		}
-		catch (e){
-			throw message;
-			#if sys
-			Sys.exit(1);
-			#end
-		}
+		Debug.displayAlert('Critical error!', message);
 	}
 
 	public static var fpsCounter:EngineFPS = null;

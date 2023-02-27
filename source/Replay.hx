@@ -3,14 +3,14 @@ import sys.io.File;
 #end
 import Controls.Control;
 import flixel.FlxG;
-import openfl.events.IOErrorEvent;
-import openfl.events.Event;
-import openfl.net.FileReference;
-import haxe.Json;
 import flixel.input.keyboard.FlxKey;
-import openfl.utils.Dictionary;
-import states.PlayState;
 import gameplayStuff.Conductor;
+import haxe.Json;
+import openfl.events.Event;
+import openfl.events.IOErrorEvent;
+import openfl.net.FileReference;
+import openfl.utils.Dictionary;
+import states.playState.PlayState;
 
 class Ana
 {

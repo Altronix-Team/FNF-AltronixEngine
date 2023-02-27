@@ -1,38 +1,39 @@
 package scriptStuff;
 
-import gameplayStuff.CutsceneHandler;
-import states.MusicBeatState;
-import flixel.FlxSprite;
-import gameplayStuff.PlayStateChangeables;
-import gameplayStuff.DialogueBoxPsych;
-import gameplayStuff.Boyfriend;
-import gameplayStuff.Character;
+import Paths;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
+import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import Paths;
-import scriptStuff.HScriptHandler;
-import states.PlayState;
-import openfl.utils.Assets;
-import gameplayStuff.TankmenBG;
+import gameplayStuff.BGSprite;
 import gameplayStuff.BackgroundDancer;
 import gameplayStuff.BackgroundGirls;
-import gameplayStuff.BGSprite;
+import gameplayStuff.Boyfriend;
+import gameplayStuff.Character;
+import gameplayStuff.CutsceneHandler;
+import gameplayStuff.DialogueBoxPsych;
+import gameplayStuff.PlayStateChangeables;
+import gameplayStuff.TankmenBG;
+import openfl.utils.Assets;
+import scriptStuff.HScriptHandler;
+import states.MusicBeatState;
+import states.playState.PlayState;
 
 #if !USE_SSCRIPT
 @:access(states.PlayState)
 class HScriptModchart extends FlxTypedGroup<FlxBasic>
 {
 	public var scriptHandler:HScriptHandler;
+
 	var playState:PlayState;
-	
+
 	var cachedChars:Map<String, Character> = [];
 	var cachedBFs:Map<String, Boyfriend> = [];
 
 	public function new(path:String, state:PlayState)
 	{
 		super();
-		
+
 		this.playState = state;
 
 		if (scriptHandler == null)
@@ -40,11 +41,13 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 
 		if (!scriptHandler.expose.exists("PlayState"))
 			scriptHandler.expose.set("PlayState", playState);
-		
-		if (playState.hscriptStage != null){
+
+		if (playState.hscriptStage != null)
+		{
 			if (!scriptHandler.expose.exists("stage"))
-				scriptHandler.expose.set("stage", playState.hscriptStage);}
-		
+				scriptHandler.expose.set("stage", playState.hscriptStage);
+		}
+
 		if (!scriptHandler.expose.exists("gf") && playState.gf != null)
 			scriptHandler.expose.set("gf", playState.gf);
 		if (!scriptHandler.expose.exists("dad") && playState.dad != null)
@@ -84,7 +87,8 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 		scriptHandler.call('onCreate', []);
 	}
 
-	override public function update(elapsed:Float) {
+	override public function update(elapsed:Float)
+	{
 		super.update(elapsed);
 		scriptHandler.call('onUpdate', [elapsed]);
 	}
@@ -121,7 +125,7 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 				Debug.logError('This character not cached');
 				return;
 			}
-		}	
+		}
 	}
 
 	public function cacheCharacter(x:Float = 0, y:Float = 0, charName:String = 'bf', charType:String = 'bf')
@@ -149,10 +153,10 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 				cachedChars.remove(charName);
 				return;
 			}
-		}	
+		}
 	}
 
-	//TODO Redo to work with DialogueBox.hx
+	// TODO Redo to work with DialogueBox.hx
 	public function startDialogue(dialogueFile:String, music:String = null)
 	{
 		var path:String = Paths.formatToDialoguePath(PlayState.SONG.songId + '/' + dialogueFile);
@@ -178,7 +182,8 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 		}
 	}
 
-	public function getCameraFromString(camera:String):FlxCamera{
+	public function getCameraFromString(camera:String):FlxCamera
+	{
 		switch (camera.toLowerCase())
 		{
 			case 'camhud' | 'hud':
@@ -275,7 +280,8 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 		Debug.logInfo('Successfully loaded new hscript file: ' + path.removeBefore('/'));
 	}
 
-	private function destroyScript() {
+	private function destroyScript()
+	{
 		if (ScriptHelper.hscriptFiles.contains(this))
 			ScriptHelper.hscriptFiles.remove(this);
 	}
@@ -326,8 +332,13 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 
 	override public function add(Object:FlxBasic):FlxBasic
 	{
-		try{if (!Main.save.data.antialiasing && Reflect.field(Object, 'antialiasing') != null)
-			Reflect.setField(Object, 'antialiasing', false);} catch(e) Debug.logError(e.details());
+		try
+		{
+			if (!Main.save.data.antialiasing && Reflect.field(Object, 'antialiasing') != null)
+				Reflect.setField(Object, 'antialiasing', false);
+		}
+		catch (e)
+			Debug.logError(e.details());
 		return super.add(Object);
 	}
 }

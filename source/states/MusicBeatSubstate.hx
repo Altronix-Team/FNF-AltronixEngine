@@ -1,5 +1,6 @@
 package states;
 
+import flixel.addons.ui.FlxUISubState;
 import flixel.FlxBasic;
 import gameplayStuff.Section.SwagSection;
 import lime.app.Application;
@@ -12,7 +13,7 @@ import flixel.FlxSubState;
 import gameplayStuff.Conductor;
 import gameplayStuff.TimingStruct;
 
-class MusicBeatSubstate extends FlxSubState implements IMusicBeat
+class MusicBeatSubstate extends FlxUISubState implements IMusicBeat
 {
 	public var curStep:Int = 0;
 	public var curBeat:Int = 0;

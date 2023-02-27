@@ -1,78 +1,76 @@
 package scriptStuff;
 
-import flx3D.FlxView3D;
+import Paths;
 import Shaders.ColorSwap;
-import gameplayStuff.StaticArrow;
-import gameplayStuff.Song;
 import Shaders.VCRDistortionEffect;
 import animateatlas.AtlasFrameMaker;
-import lime.app.Application;
-import flixel.util.FlxSort;
-import flixel.util.FlxStringUtil;
+import flixel.FlxBasic;
+import flixel.FlxCamera;
+import flixel.FlxG;
+import flixel.FlxObject;
+import flixel.FlxSprite;
+import flixel.addons.display.FlxBackdrop;
+import flixel.addons.display.FlxRuntimeShader;
+import flixel.addons.effects.FlxTrail;
+import flixel.graphics.FlxGraphic;
+import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.group.FlxGroup;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 import flixel.group.FlxSpriteGroup;
+import flixel.math.FlxMath;
+import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
-import flixel.group.FlxGroup;
-import flixel.addons.effects.FlxTrail;
-import flixel.graphics.frames.FlxAtlasFrames;
-import flixel.system.FlxAssets.FlxShader;
-import flixel.ui.FlxBar;
-import flixel.system.scaleModes.StageSizeScaleMode;
-import flixel.addons.display.FlxBackdrop;
-import flixel.ui.FlxBar.FlxBarFillDirection;
-import flixel.util.FlxAxes;
-import openfl.display.GraphicsShader;
-import openfl.filters.ShaderFilter;
-import flixel.FlxBasic;
-import gameplayStuff.Note;
-import gameplayStuff.Stage;
-import states.PlayState;
-import gameplayStuff.BackgroundGirls;
-import gameplayStuff.BackgroundDancer;
-import haxe.Constraints.Function;
-import flixel.math.FlxMath;
-import flixel.system.macros.FlxMacroUtil;
-import flixel.util.FlxColor;
 import flixel.math.FlxRandom;
-import flixel.group.FlxGroup.FlxTypedGroup;
-import gameplayStuff.TankmenBG;
-#if FEATURE_FILESYSTEM
-import sys.io.File;
-import sys.FileSystem;
-#end
-
-import flixel.addons.display.FlxRuntimeShader;
-import states.MusicBeatState;
-import flixel.FlxObject;
-import flixel.text.FlxText;
-import gameplayStuff.Character;
-import flixel.tweens.FlxEase;
-import flixel.FlxCamera;
-import flixel.tweens.FlxTween;
-import states.GameOverSubstate;
-import flixel.FlxG;
-import flixel.FlxSprite;
-import flixel.graphics.FlxGraphic;
-import flixel.math.FlxMath;
+import flixel.system.FlxAssets.FlxShader;
 import flixel.system.FlxSound;
+import flixel.system.macros.FlxMacroUtil;
+import flixel.system.scaleModes.StageSizeScaleMode;
+import flixel.text.FlxText;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+import flixel.ui.FlxBar.FlxBarFillDirection;
+import flixel.ui.FlxBar;
+import flixel.util.FlxAxes;
+import flixel.util.FlxColor;
+import flixel.util.FlxSort;
+import flixel.util.FlxStringUtil;
 import flixel.util.FlxTimer;
+import flx3D.FlxView3D;
+import gameplayStuff.BGSprite;
+import gameplayStuff.BackgroundDancer;
+import gameplayStuff.BackgroundGirls;
+import gameplayStuff.Character;
+import gameplayStuff.Conductor;
+import gameplayStuff.Note;
+import gameplayStuff.Song;
+import gameplayStuff.Stage;
+import gameplayStuff.StaticArrow;
+import gameplayStuff.TankmenBG;
+import haxe.Constraints.Function;
 import haxe.Exception;
 import haxe.ds.StringMap;
-import Paths;
-import gameplayStuff.Conductor;
-import openfl.Assets as OpenFlAssets;
-import gameplayStuff.BGSprite;
-
-//Base hscript 
 import hscript.Expr;
 import hscript.Interp;
 import hscript.Parser;
+import lime.app.Application;
+import openfl.Assets as OpenFlAssets;
+import openfl.display.GraphicsShader;
+import openfl.filters.ShaderFilter;
+import states.GameOverSubstate;
+import states.MusicBeatState;
+import states.playState.PlayState;
+#if FEATURE_FILESYSTEM
+import sys.FileSystem;
+import sys.io.File;
+#end
 
-//Hscript classes
+// Base hscript
+// Hscript classes
+
 /*import hscript.ParserEx;
-import hscript.InterpEx;*/
-
-class ScriptException extends Exception 
+	import hscript.InterpEx; */
+class ScriptException extends Exception
 {
 	public function new(message:String, ?previous:Exception, ?native:Any):Void
 	{
@@ -84,26 +82,26 @@ class ScriptException extends Exception
 #if !USE_SSCRIPT
 class HScriptHandler
 {
-    public var expose:StringMap<Dynamic>;
-	
+	public var expose:StringMap<Dynamic>;
+
 	var parser:Parser;
+
 	public var interp:CustomInterp;
 
 	/*var parserEx:ParserEx;
-	var interpEx:InterpEx;*/
-
-    var ast:Expr;
+		var interpEx:InterpEx; */
+	var ast:Expr;
 
 	var color:FlxColor;
 
 	var file:String = '';
-    
-    public function new()
-    {        
-        parser = new Parser();
+
+	public function new()
+	{
+		parser = new Parser();
 		interp = new CustomInterp();
 
-        parser.allowTypes = true;
+		parser.allowTypes = true;
 		parser.allowJSON = true;
 		parser.allowMetadata = true;
 
@@ -142,7 +140,7 @@ class HScriptHandler
 		expose.set('newType', newType);
 		expose.set('random', random);
 		expose.set('getRGBColor', getRGBColor);
-		expose.set("loadModule", loadModule);		
+		expose.set("loadModule", loadModule);
 		expose.set("getGraphic", getGraphic);
 		expose.set("playSound", playSound);
 		expose.set("lazyPlaySound", lazyPlaySound);
@@ -157,30 +155,31 @@ class HScriptHandler
 		expose.set('call', call);
 		expose.set('getEngineFont', getEngineFont);
 		expose.set('importClass', importClass);
-		//expose.set("instancePluginClass", instanceExClass);
-		
+		// expose.set("instancePluginClass", instanceExClass);
+
 		expose.set("getSparrowAtlas", Paths.getSparrowAtlas);
 		expose.set("getPackerAtlas", Paths.getPackerAtlas);
 
 		expose.set('setNoteTypeTexture', setNoteTypeTexture);
 		expose.set('setNoteTypeIgnore', setNoteTypeIgnore);
 
-		//Depraceted
+		// Depraceted
 		expose.set("createSprite", createSprite);
 		expose.set("createText", createText);
 		expose.set('createRuntimeShader', createRuntimeShader);
-    }
+	}
 
-    public function get(field:String):Dynamic
-        return interp.variables.get(field);
+	public function get(field:String):Dynamic
+		return interp.variables.get(field);
 
-    public function set(field:String, value:Dynamic)
-        interp.variables.set(field, value);
+	public function set(field:String, value:Dynamic)
+		interp.variables.set(field, value);
 
-    public function exists(field:String):Bool
-        return interp.variables.exists(field);
+	public function exists(field:String):Bool
+		return interp.variables.exists(field);
 
-	public function call(func:String, args:Array<Dynamic>):Dynamic {
+	public function call(func:String, args:Array<Dynamic>):Dynamic
+	{
 		if (func == null)
 		{
 			Debug.logError('Function name cannot be null for $file!');
@@ -196,13 +195,15 @@ class HScriptHandler
 
 		if (!interp.variables.exists(func))
 		{
-			//Debug.logError('Function $func does not exist in $file.');
+			// Debug.logError('Function $func does not exist in $file.');
 			return null;
 		}
 
-		try{
+		try
+		{
 			var functionField:Function = get(func);
-			return Reflect.callMethod(this, functionField, params);}
+			return Reflect.callMethod(this, functionField, params);
+		}
 		catch (e)
 		{
 			Debug.logError('Error with calling function $func: ${e.message} \n ${e.stack}');
@@ -214,7 +215,7 @@ class HScriptHandler
 	 * - Works like: new FlxText(x, y, width, text, size, embedded);
 	 * @param newClass The name of new class: (FlxText)
 	 * @param args Array with arguments for the new function: ([x, y, width, text, size, embedded])
-	 **/
+	**/
 	public function newType(newClass:String, args:Array<Dynamic>):Dynamic
 	{
 		if (interp.variables.get(newClass) == null)
@@ -222,32 +223,33 @@ class HScriptHandler
 		return interp.newType(newClass, args);
 	}
 
-    public function loadScript(path:String, execute:Bool = true)
-    {
-        if (path != "")
-        {
+	public function loadScript(path:String, execute:Bool = true)
+	{
+		if (path != "")
+		{
 			file = path;
 			if (OpenFlAssets.exists(path))
-            {
+			{
 				Debug.logTrace('Found hscript');
 				Debug.logTrace('At path: ' + path);
-                try
-                {
+				try
+				{
 					ast = parser.parseString(OpenFlAssets.getText(path), path);
-					
+
 					for (v in expose.keys())
 						interp.variables.set(v, expose.get(v));
-					
-                    if (execute){
-                        interp.execute(ast);
+
+					if (execute)
+					{
+						interp.execute(ast);
 						return;
 					}
-                }
-                catch (e:Error)
-                {
-                    throw new ScriptException("Script parse error:\n" + e);
-                }
-            }
+				}
+				catch (e:Error)
+				{
+					throw new ScriptException("Script parse error:\n" + e);
+				}
+			}
 			#if FEATURE_FILESYSTEM
 			else if (FileSystem.exists(path))
 			{
@@ -260,7 +262,8 @@ class HScriptHandler
 					for (v in expose.keys())
 						interp.variables.set(v, expose.get(v));
 
-					if (execute){
+					if (execute)
+					{
 						interp.execute(ast);
 						return;
 					}
@@ -271,16 +274,16 @@ class HScriptHandler
 				}
 			}
 			#end
-            else
-            {
-				throw new ScriptException("Cannot locate script file in " + path);
-            }
-        }
-        else
-        {
+		else
+		{
+			throw new ScriptException("Cannot locate script file in " + path);
+		}
+		}
+		else
+		{
 			throw new ScriptException("Path is empty!");
-        }
-    }
+		}
+	}
 
 	function loadModule(path:String):Dynamic
 	{
@@ -304,7 +307,8 @@ class HScriptHandler
 					{
 						switch (v)
 						{
-							case "null", "true", "false", "trace": {/* Does nothing */}
+							case "null", "true", "false", "trace":
+								{/* Does nothing */}
 							default:
 								Reflect.setField(module, v, moduleInterp.variables.get(v));
 						}
@@ -351,10 +355,10 @@ class HScriptHandler
 				}
 			}
 			#end
-			else
-			{
-				throw new ScriptException("Cannot locate module file in " + path);
-			}
+		else
+		{
+			throw new ScriptException("Cannot locate module file in " + path);
+		}
 		}
 		else
 		{
@@ -363,10 +367,9 @@ class HScriptHandler
 	}
 
 	/*function instanceExClass(classname:String, args:Array<Dynamic> = null)
-	{
-		return interpEx.createScriptClassInstance(classname, args);
+		{
+			return interpEx.createScriptClassInstance(classname, args);
 	}*/
-
 	function createRuntimeShader(fragmentSource:String = null, vertexSource:String = null, glslVersion:Int = 120):FlxRuntimeShader
 	{
 		Debug.logWarn('Deprecated! Use newType("FlxRuntimeShader", [fragmentSource, vertexSource, glslVersion]) instead');
@@ -450,25 +453,29 @@ class HScriptHandler
 			return Reflect.callMethod(instance, func, args);
 	}
 
-	function getProperty(instance:Null<Dynamic> = null, variable:String):Any {
+	function getProperty(instance:Null<Dynamic> = null, variable:String):Any
+	{
 		if (instance == null)
 			return Reflect.getProperty(getInstance(), variable);
 		else
 			return Reflect.getProperty(instance, variable);
 	}
 
-	function setProperty(instance:Null<Dynamic> = null, variable:String, value:Dynamic) {
+	function setProperty(instance:Null<Dynamic> = null, variable:String, value:Dynamic)
+	{
 		if (instance == null)
 			Reflect.setProperty(getInstance(), variable, value);
 		else
 			Reflect.setProperty(instance, variable, value);
 	}
 
-	function getInstance() {
+	function getInstance()
+	{
 		return states.PlayState.instance.isDead ? states.GameOverSubstate.instance : states.PlayState.instance;
 	}
-	
-	function importClass(cl:String) {
+
+	function importClass(cl:String)
+	{
 		var splitClassName = cl.split(".");
 		var realClassName = splitClassName.join(".");
 
@@ -547,9 +554,9 @@ class CustomInterp extends Interp
 	}
 }
 #else
-//Original SScript repository https://github.com/TheWorldMachinima/SScript
-//SScript with polymod support https://github.com/AltronMaxX/SScript
-//Engine, that gave me main idea of redo engine hscript to SScript and some SScript handler code https://github.com/BeastlyGhost/Forever-Engine-Underscore
+// Original SScript repository https://github.com/TheWorldMachinima/SScript
+// SScript with polymod support https://github.com/AltronMaxX/SScript
+// Engine, that gave me main idea of redo engine hscript to SScript and some SScript handler code https://github.com/BeastlyGhost/Forever-Engine-Underscore
 class HScriptHandler extends SScript
 {
 	public function new(file:String, ?preset:Bool = true)
@@ -666,11 +673,15 @@ class HScriptHandler extends SScript
 
 	function openPolymodState(scriptFileName:String)
 	{
-		try{
+		try
+		{
 			var state = states.HscriptableState.PolymodHscriptState.init(scriptFileName);
 			MusicBeatState.switchState(state);
 		}
-		catch(e) {Debug.logTrace(e.details());}
+		catch (e)
+		{
+			Debug.logTrace(e.details());
+		}
 	}
 
 	function getRGBColor(r:Int, g:Int, b:Int, ?a:Int):FlxColor

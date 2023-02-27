@@ -1,12 +1,11 @@
 package gameplayStuff;
 
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxAxes;
-import states.PlayState;
-import flixel.text.FlxText;
-import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxColor;
-
+import states.playState.PlayState;
 
 @:access(states.PlayState)
 class RatingText extends FlxTypedGroup<FlxText>
@@ -29,38 +28,38 @@ class RatingText extends FlxTypedGroup<FlxText>
 
 	public var text(get, null):String;
 
-    private var textColor(default, set):FlxColor = FlxColor.WHITE;
+	private var textColor(default, set):FlxColor = FlxColor.WHITE;
 
 	private var missColorTween:FlxTween;
 
-    public function new(x:Float = 0, y:Float = 0)
-    {
-        super();
+	public function new(x:Float = 0, y:Float = 0)
+	{
+		super();
 
-        this.x = x;
-        this.y = y;
+		this.x = x;
+		this.y = y;
 
 		add(scoreText);
 		add(missesText);
 		add(accuracyText);
 
-        forEach(function(text:FlxText)
-        {
+		forEach(function(text:FlxText)
+		{
 			text.setFormat(Paths.font(LanguageStuff.fontName), 16, FlxColor.WHITE, FlxTextAlign.CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-            text.scrollFactor.set();
+			text.scrollFactor.set();
 			text.cameras = [PlayState.instance.camHUD];
-        });
+		});
 
 		updateTexts();
 
 		updateTextsYPos(y);
-    }
+	}
 
-    public function updateTexts()
-    {	
-		scoreText.text = '${LanguageStuff.replaceFlagsAndReturn("$Score_Text", "playState", ['<text>'], [PlayState.instance.songScore])} | ';     
+	public function updateTexts()
+	{
+		scoreText.text = '${LanguageStuff.replaceFlagsAndReturn("$Score_Text", "playState", ['<text>'], [PlayState.instance.songScore])} | ';
 
-		missesText.text = '${LanguageStuff.replaceFlagsAndReturn("$Misses_Text", "playState", ['<text>'], [PlayState.misses])} | ';     
+		missesText.text = '${LanguageStuff.replaceFlagsAndReturn("$Misses_Text", "playState", ['<text>'], [PlayState.misses])} | ';
 
 		accuracyText.text = '${LanguageStuff.replaceFlagsAndReturn("$Accuracy_Text", "playState", ['<text>'], [CoolUtil.truncateFloat(PlayState.instance.accuracy, 2)])}'
 			+ (PlayState.instance.accuracy > 0 ? ' | ${Ratings.GenerateLetterRank(PlayState.instance.accuracy)}' : '');
@@ -69,14 +68,14 @@ class RatingText extends FlxTypedGroup<FlxText>
 
 		if (textColor != getTextColor(PlayState.instance.accuracy) && PlayState.instance.accuracy > 0)
 			textColor = getTextColor(PlayState.instance.accuracy);
-    }
+	}
 
-    public function updateTextsXPos(leftX:Float)
-    {
+	public function updateTextsXPos(leftX:Float)
+	{
 		scoreText.x = leftX;
 		missesText.x = scoreText.x + scoreText.width;
 		accuracyText.x = missesText.x + missesText.width;
-    }
+	}
 
 	public function updateTextsYPos(yPos:Float)
 	{
@@ -86,19 +85,20 @@ class RatingText extends FlxTypedGroup<FlxText>
 		});
 	}
 
-    public function onMiss()
-    {
+	public function onMiss()
+	{
 		missColorTween = FlxTween.tween(missesText, {color: FlxColor.RED}, 0.1, {
-		onComplete:function(twn:FlxTween)
-		{
-			missColorTween = FlxTween.tween(missesText, {color: textColor}, 0.1, {
-				onComplete: function(twn:FlxTween)
-				{
-					missColorTween = null;
-				}
-			});
-		}});
-    }
+			onComplete: function(twn:FlxTween)
+			{
+				missColorTween = FlxTween.tween(missesText, {color: textColor}, 0.1, {
+					onComplete: function(twn:FlxTween)
+					{
+						missColorTween = null;
+					}
+				});
+			}
+		});
+	}
 
 	private function getTextColor(accuracy:Float):FlxColor
 	{
@@ -131,13 +131,15 @@ class RatingText extends FlxTypedGroup<FlxText>
 		return FlxColor.WHITE;
 	}
 
-	function set_y(value:Float):Float {
-        y = value;
+	function set_y(value:Float):Float
+	{
+		y = value;
 		updateTextsYPos(value);
-        return value;
+		return value;
 	}
 
-	function set_alpha(value:Float):Float {
+	function set_alpha(value:Float):Float
+	{
 		alpha = value;
 		forEach(function(text:FlxText)
 		{
@@ -167,7 +169,8 @@ class RatingText extends FlxTypedGroup<FlxText>
 		#end
 	}
 
-	function get_text():String {
+	function get_text():String
+	{
 		var retVal:String = '';
 		forEach(function(text:FlxText)
 		{
@@ -176,37 +179,41 @@ class RatingText extends FlxTypedGroup<FlxText>
 		return retVal;
 	}
 
-	function get_width():Float {
+	function get_width():Float
+	{
 		var returnVal:Float = 0;
 		forEach(function(text:FlxText)
 		{
 			returnVal += text.width;
 		});
-        return returnVal;
+		return returnVal;
 	}
 
-	function get_height():Float {
-		return members[0].height; //all texts has same height lol
+	function get_height():Float
+	{
+		return members[0].height; // all texts has same height lol
 	}
 
-	function set_x(value:Float):Float {
+	function set_x(value:Float):Float
+	{
 		x = value;
 		updateTextsXPos(value);
 		return value;
 	}
 
-	function set_textColor(value:FlxColor):FlxColor {
-        textColor = value;
+	function set_textColor(value:FlxColor):FlxColor
+	{
+		textColor = value;
 		forEach(function(text:FlxText)
 		{
 			if (text.text.contains('Misses') && missColorTween != null)
 			{
-				if (!missColorTween.active)	
+				if (!missColorTween.active)
 					text.color = value;
 			}
 			else
 				text.color = value;
-		});	
-        return value;
+		});
+		return value;
 	}
 }

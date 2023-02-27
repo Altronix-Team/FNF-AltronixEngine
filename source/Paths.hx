@@ -3,19 +3,18 @@ package;
 #if FEATURE_FILESYSTEM
 import sys.FileSystem;
 #end
-
-import flixel.graphics.frames.FlxFramesCollection;
 import animateatlas.AtlasFrameMaker;
-import flixel.graphics.FlxGraphic;
+import flash.media.Sound;
 import flixel.FlxG;
+import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.graphics.frames.FlxFramesCollection;
+import haxe.Json;
 import lime.utils.Assets;
+import openfl.display.BitmapData;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
-import flash.media.Sound;
-import openfl.display.BitmapData;
-import haxe.Json;
-import states.PlayState;
+import states.playState.PlayState;
 
 class Paths
 {
@@ -24,10 +23,10 @@ class Paths
 
 	static function get_SOUND_EXT():String
 	{
-		#if web 
-		return "mp3"; 
-		#else 
-		return "ogg"; 
+		#if web
+		return "mp3";
+		#else
+		return "ogg";
 		#end
 	}
 
@@ -138,28 +137,30 @@ class Paths
 		return getPath('videos/$key.mp4', BINARY, library);
 	}
 
-	static public function formatToDialoguePath(file:String):Dynamic {
-		var retPath:String ='';
+	static public function formatToDialoguePath(file:String):Dynamic
+	{
+		var retPath:String = '';
 		var lang:String = '';
 		if (LanguageStuff.locale != 'en-US')
 			lang = LanguageStuff.locale;
 
 		retPath = Paths.json("songs/" + file + '-' + lang, 'gameplay');
-			
+
 		if (OpenFlAssets.exists(retPath))
 		{
 			Debug.logInfo('Found dialogue file at path ' + retPath);
 		}
-		else{
+		else
+		{
 			Debug.logInfo('Failed found dialogue file with engine language. Trying to load dialogue with default language');
 
 			retPath = Paths.json("songs/" + file, 'gameplay');
 
 			if (OpenFlAssets.exists(retPath))
-			{ 
+			{
 				Debug.logInfo('Found dialogue file at path ' + retPath);
 			}
-			else 
+			else
 			{
 				Debug.logInfo('Failed found dialogue files, is they exists?');
 				return null;
@@ -280,12 +281,12 @@ class Paths
 
 	inline static public function getCharacterFrames(charName:String, key:String):FlxFramesCollection
 	{
-		return AssetsUtil.getCharacterFrames(charName, key);	
+		return AssetsUtil.getCharacterFrames(charName, key);
 	}
 
 	inline static public function getPackerAtlas(key:String, ?library:String)
 	{
-		return AssetsUtil.getPackerAtlas(key, library);		
+		return AssetsUtil.getPackerAtlas(key, library);
 	}
 
 	static public function loadImage(key:String, ?library:String)

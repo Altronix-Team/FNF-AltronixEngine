@@ -1,6 +1,7 @@
 package utils;
 
-import states.PlayState;
+import states.playState.PlayState;
+
 class EtternaFunctions
 {
 	// erf constants

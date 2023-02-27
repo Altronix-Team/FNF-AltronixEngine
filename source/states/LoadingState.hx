@@ -14,6 +14,7 @@ import lime.utils.AssetLibrary;
 import lime.utils.AssetManifest;
 import haxe.io.Path;
 import flixel.text.FlxText;
+import states.playState.PlayState;
 
 class LoadingsState extends FlxSubState
 {
@@ -184,7 +185,7 @@ class LoadingState extends MusicBeatState
 
 	static function getNextState(target:FlxState, stopMusic = false):FlxState
 	{
-		Paths.setCurrentLevel("week" + PlayState.storyWeek);
+		//Paths.setCurrentLevel("week" + PlayState.storyWeek);
 		#if NO_PRELOAD_ALL
 		var loaded = isSoundLoaded(getSongPath())
 			&& (!PlayState.SONG.needsVoices || isSoundLoaded(getVocalPath()))

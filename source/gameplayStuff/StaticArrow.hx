@@ -1,11 +1,11 @@
 package gameplayStuff;
 
-import gameplayStuff.Song.SongData;
-import states.PlayState;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.animation.FlxBaseAnimation;
 import flixel.graphics.frames.FlxAtlasFrames;
+import gameplayStuff.Song.SongData;
+import states.playState.PlayState;
 
 class StaticArrow extends FlxSprite
 {
@@ -14,6 +14,7 @@ class StaticArrow extends FlxSprite
 	public var resetAnim:Float = 0;
 
 	public var noteData:Int = 0;
+
 	private var dataSuffix:Array<String> = ['LEFT', 'DOWN', 'UP', 'RIGHT'];
 	private var dataColor:Array<String> = ['purple', 'blue', 'green', 'red'];
 
@@ -47,9 +48,11 @@ class StaticArrow extends FlxSprite
 
 	override function update(elapsed:Float)
 	{
-		if(resetAnim > 0) {
+		if (resetAnim > 0)
+		{
 			resetAnim -= elapsed;
-			if(resetAnim <= 0) {
+			if (resetAnim <= 0)
+			{
 				playAnim('static');
 				resetAnim = 0;
 			}
@@ -113,7 +116,7 @@ class StaticArrow extends FlxSprite
 					x += Note.swagWidth * noteData;
 
 					antialiasing = Main.save.data.antialiasing;
-					setGraphicSize(Std.int(width * 0.7));	
+					setGraphicSize(Std.int(width * 0.7));
 				}
 				else
 				{
@@ -128,8 +131,8 @@ class StaticArrow extends FlxSprite
 					x += Note.swagWidth * noteData;
 
 					antialiasing = Main.save.data.antialiasing;
-					setGraphicSize(Std.int(width * 0.7));	
-				}						
+					setGraphicSize(Std.int(width * 0.7));
+				}
 		}
 	}
 }

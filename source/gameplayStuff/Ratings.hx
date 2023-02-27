@@ -1,9 +1,9 @@
 package gameplayStuff;
 
 import flixel.FlxG;
-import states.PlayState;
-import gameplayStuff.PlayStateChangeables;
 import gameplayStuff.Conductor;
+import gameplayStuff.PlayStateChangeables;
+import states.playState.PlayState;
 
 class Ratings
 {
@@ -20,7 +20,7 @@ class Ratings
 			ranking = "(MFC)";
 		}
 		else if (PlayState.misses == 0 && PlayState.bads == 0 && PlayState.shits == 0 && PlayState.goods >= 1) // Good Full Combo (Nothing but Goods & Sicks)
-		{	
+		{
 			ranking = "(GFC)";
 		}
 		else if (PlayState.misses == 0) // Regular FC
@@ -140,12 +140,12 @@ class Ratings
 
 	public static function CalculateRanking(score:Int, scoreDef:Int, nps:Int, maxNPS:Int, accuracy:Float):String
 	{
-		if (Main.save.data.accuracyDisplay){
+		if (Main.save.data.accuracyDisplay)
+		{
 			if (Main.save.data.npsDisplay)
 			{
 				return LanguageStuff.replaceFlagsAndReturn("$KADE_RATING_WITH_AC_WITH_NPC", "playState",
-					["<nps>", "<maxnps>", "<score>", "<misses>", "<accuracyPers>", "<accuracyStr>"],
-					[
+					["<nps>", "<maxnps>", "<score>", "<misses>", "<accuracyPers>", "<accuracyStr>"], [
 						Std.string(nps),
 						Std.string(maxNPS),
 						(Conductor.safeFrames != 10 ? Std.string(score) + " (" + Std.string(scoreDef) + ")" : "" + Std.string(score)),
@@ -157,33 +157,24 @@ class Ratings
 			else
 			{
 				return LanguageStuff.replaceFlagsAndReturn("$KADE_RATING_WITH_AC_WITHOUT_NPC", "playState",
-					["<score>", "<misses>", "<accuracyPers>", "<accuracyStr>"], 
-					[
+					["<score>", "<misses>", "<accuracyPers>", "<accuracyStr>"], [
 						(Conductor.safeFrames != 10 ? Std.string(score) + " (" + Std.string(scoreDef) + ")" : "" + Std.string(score)),
-						Std.string(PlayState.misses),								
+						Std.string(PlayState.misses),
 						Std.string(CoolUtil.truncateFloat(accuracy, 2)),
 						GenerateLetterRank(accuracy)
 					]);
 			}
 		}
-		else{
+		else
+		{
 			if (Main.save.data.npsDisplay)
 			{
-				return LanguageStuff.replaceFlagsAndReturn("$KADE_RATING_WITHOUT_AC_WITH_NPC", "playState",
-					["<nps>", "<maxnps>", "<score>"], 
-					[
-						Std.string(nps),
-						Std.string(maxNPS),
-						Std.string(score)
-					]);
+				return LanguageStuff.replaceFlagsAndReturn("$KADE_RATING_WITHOUT_AC_WITH_NPC", "playState", ["<nps>", "<maxnps>", "<score>"],
+					[Std.string(nps), Std.string(maxNPS), Std.string(score)]);
 			}
 			else
 			{
-				return LanguageStuff.replaceFlagsAndReturn("$KADE_RATING_WITHOUT_AC_WITHOUT_NPC", "playState",
-					["<score>"], 
-					[
-						Std.string(score)
-					]);
+				return LanguageStuff.replaceFlagsAndReturn("$KADE_RATING_WITHOUT_AC_WITHOUT_NPC", "playState", ["<score>"], [Std.string(score)]);
 			}
 		}
 	}

@@ -19,6 +19,7 @@ import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import gameplayStuff.PlayStateChangeables;
+import states.playState.PlayState;
 
 class OptionCata extends FlxSprite
 {

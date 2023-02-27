@@ -200,7 +200,7 @@ class Debug
 
 		// Start the log file writer.
 		// We have to set it to TRACE for now.
-		//if (Main.save.data.logWriter) //Now we can disable it by option, because of crash handler
+		//if (Main.save.data.logWriter)
 			logFileWriter = new DebugLogWriter("TRACE");
 
 		logInfo("Debug logging initialized. Hello, developer.");

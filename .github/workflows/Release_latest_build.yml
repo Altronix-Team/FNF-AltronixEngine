@@ -56,6 +56,11 @@ jobs:
         run: |
           7z a -tzip "engine.zip" "./export/release/windows/bin/*"
           
+      - name: Build debug version
+        run: |
+          haxelib run lime build windows -debug
+        shell: cmd
+          
       - name: Make debug zip
         run: |
           7z a -tzip "engine-debug.zip" "./export/debug/windows/bin/*"

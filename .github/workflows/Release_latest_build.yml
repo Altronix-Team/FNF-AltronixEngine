@@ -49,7 +49,6 @@ jobs:
           haxelib install hmm --quiet
           haxelib run hmm install --quiet
           haxelib run lime build windows
-          haxelib run lime build windows --debug
         shell: cmd
         
       - name: Make release zip

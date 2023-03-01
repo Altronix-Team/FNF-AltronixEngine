@@ -1,12 +1,17 @@
 {
   "dependencies": [
-	{
+    {
       "name": "lime",
       "type": "haxelib",
       "version": null
     },
     {
       "name": "openfl",
+      "type": "haxelib",
+      "version": null
+    },
+    {
+      "name": "hxcpp-debug-server",
       "type": "haxelib",
       "version": null
     },

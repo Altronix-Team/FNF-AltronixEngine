@@ -190,7 +190,6 @@ class PlayState extends MusicBeatState
 
 	public var strumLineNotes:StrumLine = null;
 
-	public var stageGroup:FlxTypedGroup<FlxSprite>;
 	public var ratingsGroup:FlxTypedGroup<FlxSprite>;
 
 	public var camZooming:Bool = false;
@@ -732,8 +731,6 @@ class PlayState extends MusicBeatState
 				Stage = new Stage(SONG.stage);
 			#end
 		}
-
-		stageGroup = new FlxTypedGroup<FlxSprite>();
 			
 		var stageData:StageFile = StageData.getStageFile(SONG.stage);
 		if (stageData == null)
@@ -804,7 +801,6 @@ class PlayState extends MusicBeatState
 			for (i in Stage.toAdd)
 			{
 				add(i);
-				stageGroup.add(i);
 			}
 		}
 
@@ -823,7 +819,6 @@ class PlayState extends MusicBeatState
 						for (bg in array)
 						{
 							add(bg);
-							stageGroup.add(bg);
 						}
 					}
 				case 1:
@@ -833,7 +828,6 @@ class PlayState extends MusicBeatState
 						for (bg in array)
 						{
 							add(bg);
-							stageGroup.add(bg);
 						}
 					}
 				case 2:
@@ -843,7 +837,6 @@ class PlayState extends MusicBeatState
 						for (bg in array)
 						{
 							add(bg);
-							stageGroup.add(bg);
 						}
 					}
 			}
@@ -1116,7 +1109,7 @@ class PlayState extends MusicBeatState
 		if (SONG.songId == null)
 			Debug.logTrace('song is null???');
 		else
-			trace('song looks gucci');
+			Debug.logTrace('song looks gucci');
 		
 		generateSong(SONG.songId);		
 
@@ -1127,9 +1120,9 @@ class PlayState extends MusicBeatState
 			{
 				if(!filesPushed.contains(file))
 				{
-					if (OpenFlAssets.exists(Paths.getPath('scripts/events' + file, null, 'gameplay')))
+					if (Paths.getHscriptPath(file, 'events', false) != null)
 					{
-						ScriptHelper.hscriptFiles.push(new ModchartHelper(Paths.getPath('scripts/events' + file, null, 'gameplay'), this));
+						ScriptHelper.hscriptFiles.push(new ModchartHelper(Paths.getHscriptPath(file, 'events', false), this));
 						filesPushed.push(file);
 					}
 				}
@@ -1141,9 +1134,9 @@ class PlayState extends MusicBeatState
 			{
 				if(!filesPushed.contains(file))
 				{
-					if (OpenFlAssets.exists(Paths.getPath('scripts/notes' + file, null, 'gameplay')))
+					if (Paths.getHscriptPath(file, 'notes', false) != null)
 					{
-						ScriptHelper.hscriptFiles.push(new ModchartHelper(Paths.getPath('scripts/notes' + file, null, 'gameplay'), this));
+						ScriptHelper.hscriptFiles.push(new ModchartHelper(Paths.getHscriptPath(file, 'notes', false), this));
 						filesPushed.push(file);
 					}
 				}
@@ -1155,9 +1148,9 @@ class PlayState extends MusicBeatState
 			{
 				if (!filesPushed.contains(file))
 				{
-					if (OpenFlAssets.exists(Paths.getPath('scripts/difficulties' + file, null, 'gameplay')))
+					if (Paths.getHscriptPath(file, 'difficulties', false) != null)
 					{
-						ScriptHelper.hscriptFiles.push(new ModchartHelper(Paths.getPath('scripts/difficulties' + file, null, 'gameplay'), this));
+						ScriptHelper.hscriptFiles.push(new ModchartHelper(Paths.getHscriptPath(file, 'difficulties', false), this));
 						filesPushed.push(file);
 					}
 				}
@@ -4388,33 +4381,77 @@ class PlayState extends MusicBeatState
 	var timeShown = 0;
 	//var currentTimingShown:FlxText = null;
 
+	private var lastDadNote:Note = null;
+	private var lastBfNote:Note = null;
+	private var lastGfNote:Note = null;
+
 	function checkNoteType(char:String, note:Note)
 	{
 		switch (char)
 		{
 			case 'bf':
-				if (!note.noAnimation){
-				if (note.bulletNote){
-					boyfriend.playAnim('dodge', true);
-					FlxG.sound.play(Paths.sound('hankshoot'));}
-				else if (note.hurtNote){
-					health -= 0.2;
-					misses++;}
-				else{
-					boyfriend.playAnim('sing' + dataSuffix[note.noteData] + note.animSuffix, true);}}
-			case 'dad':{
 				if (!note.noAnimation)
-					dad.playAnim('sing' + dataSuffix[note.noteData] + note.animSuffix, true);}
-			case 'gf':{
+				{
+					if (note.bulletNote){
+						boyfriend.playAnim('dodge', true);
+						FlxG.sound.play(Paths.sound('hankshoot'));}
+					else if (note.hurtNote){
+						health -= 0.2;
+						misses++;}
+					else
+					{
+						boyfriend.playAnim('sing' + dataSuffix[note.noteData] + note.animSuffix, true);
+						if (lastBfNote != null)
+						{
+							if (!note.isSustainNote)
+								if (lastBfNote.strumTime == note.strumTime)
+									doGhostAnim(boyfriend, 'sing' + dataSuffix[lastBfNote.noteData] + lastBfNote.animSuffix);
+						}
+					}
+				}
+				if (!note.isSustainNote)
+					lastBfNote = note;
+			case 'dad':
 				if (!note.noAnimation)
-					gf.playAnim('sing' + dataSuffix[note.noteData] + note.animSuffix, true);}				
+				{
+					dad.playAnim('sing' + dataSuffix[note.noteData] + note.animSuffix, true);
+					if (lastDadNote != null)
+					{
+						if (!note.isSustainNote)
+							if (lastDadNote.strumTime == note.strumTime)
+								doGhostAnim(dad, 'sing' + dataSuffix[lastDadNote.noteData] + lastDadNote.animSuffix);
+					}
+				}
+				if (!note.isSustainNote)
+					lastDadNote = note;
+			case 'gf':
+				if (!note.noAnimation)
+				{
+					gf.playAnim('sing' + dataSuffix[note.noteData] + note.animSuffix, true);
+					if (lastGfNote != null)
+					{
+						if (!note.isSustainNote)
+							if (lastGfNote.strumTime == note.strumTime)
+								doGhostAnim(gf, 'sing' + dataSuffix[lastGfNote.noteData] + lastGfNote.animSuffix);
+					}
+				}	
+				if (!note.isSustainNote)
+					lastGfNote = note;			
 		}	
 	}
 
-	public function getControl(key:String) {
-		var pressed:Bool = Reflect.getProperty(controls, key);
-		//trace('Control result: ' + pressed);
-		return pressed;
+	function doGhostAnim(char:Character, animToPlay:String)
+	{
+		if (char.ghostTween != null) char.ghostTween.cancel();
+		char.ghost.alpha = 0.8;
+		char.ghost.visible = true;
+		char.ghost.animation.play(animToPlay, true);
+		char.ghost.offset.set(char.animOffsets.get(animToPlay)[0], char.animOffsets.get(animToPlay)[1]);
+		char.ghostTween = FlxTween.tween(char.ghost, {alpha: 0}, 0.75, {ease: FlxEase.linear, 
+			onComplete: function(twn:FlxTween)
+			{
+				char.ghostTween = null;
+			}});
 	}
 
 	private function popUpScore(daNote:Note):Void

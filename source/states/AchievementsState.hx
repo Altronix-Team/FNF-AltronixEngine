@@ -75,7 +75,7 @@ class AchievementsState extends MusicBeatState
 
 		for (i in 0...checkedAchievements.length)
 		{
-			var nameText:Alphabet = new Alphabet(0, (100 * i) + 200, checkedAchievements[i], true, false, true);
+			var nameText:Alphabet = new Alphabet(0, (100 * i) + 200, checkedAchievements[i], true, false);
             nameText.isMenuItem = true;
             nameText.targetY = i;
 			nameText.x += 280;

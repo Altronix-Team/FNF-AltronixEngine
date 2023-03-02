@@ -109,17 +109,11 @@ class CreditsState extends MusicBeatState
 			if (isSelectable) {
 				var icon:AttachedSprite;
 				if (Assets.exists(Paths.image('crediticons/' + creditsStuff[i][1])))
-				{
 					icon = new AttachedSprite('crediticons/' + creditsStuff[i][1]);
-					icon.xAdd = optionText.width + 10;
-					icon.sprTracker = optionText;
-				}
 				else
-				{
 					icon = new AttachedSprite('crediticons/noname');
-					icon.xAdd = optionText.width + 10;
-					icon.sprTracker = optionText;
-				}
+				icon.xAdd = optionText.width + 10;
+				icon.sprTracker = optionText;
 				// using a FlxGroup is too much fuss!
 				iconArray.push(icon);
 				add(icon);

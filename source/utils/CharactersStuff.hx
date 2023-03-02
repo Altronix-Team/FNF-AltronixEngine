@@ -105,7 +105,7 @@ class CharactersStuff
 
 		girlfriendList = [];
 
-		var pathcheck = listCharacters();
+		var pathcheck = AssetsUtil.listAssetsInPath('assets/gameplay/characters/', DIRECTORY);
 
 		if (initDefaultCharacters())
 		{
@@ -171,23 +171,5 @@ class CharactersStuff
 				}
 			}
 		}
-	}
-
-	public static function listCharacters()
-	{
-		var dataAssets = OpenFlAssets.list(TEXT);
-
-		var queryPath = 'assets/gameplay/characters/';
-
-		var results:Array<String> = [];
-
-		for (data in dataAssets)
-		{
-			if (data.contains(queryPath) && data.endsWith('.json'))
-			{
-				results.push(data.replaceAll('.json', '').replaceAll(queryPath, '').removeBefore('/').removeAfter('/').replaceAll('/', ''));
-			}
-		}
-		return results;
 	}
 }

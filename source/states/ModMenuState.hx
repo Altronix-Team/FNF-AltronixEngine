@@ -1,299 +1,282 @@
 package states;
 
-import modding.ModUtil;
-import states.XMLLayoutState;
-import flixel.addons.ui.FlxUIButton;
-import modding.ModCore;
-import ModList;
-import flixel.addons.ui.interfaces.IFlxUIWidget;
-import states.Caching;
-import states.TitleState;
-import flixel.addons.ui.FlxUIList;
-import flixel.FlxG;
-import flixel.FlxSprite;
-import flixel.group.FlxGroup;
-import flixel.text.FlxText;
-import flixel.tweens.FlxEase;
-import flixel.tweens.FlxTween;
-import flixel.util.FlxColor;
-import flixel.util.FlxTimer;
-import polymod.Polymod.ModMetadata;
-import gameplayStuff.Character;
 import gameplayStuff.SongMetadata;
+#if FEATURE_MODCORE
+import polymod.Polymod.ModMetadata;
+#end
+import flash.geom.Rectangle;
+import flixel.FlxG;
+import flixel.FlxObject;
+import flixel.FlxSprite;
+import flixel.graphics.FlxGraphic;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
+import flixel.text.FlxText;
+import flixel.util.FlxColor;
+import modding.*;
+import openfl.display.BitmapData;
+import openfl.display.BlendMode;
 
-class ModMenuState extends XMLLayoutState
+class ModMenuState extends MusicBeatState
 {
-	var loadAllButton:FlxUIButton;
-	var unloadAllButton:FlxUIButton;
-	var revertButton:FlxUIButton;
-	var saveAndExitButton:FlxUIButton;
-	var exitWithoutSavingButton:FlxUIButton;
+	public var bg:FlxSprite;
 
-	static final MENU_WIDTH = 500;
+	var modsObjects:FlxTypedGroup<ModObject>;
 
-	var unloadedModsUI:ModList;
-	var loadedModsUI:ModList;
+	var emptyModFolder:FlxText;
 
-	override function getXMLId()
+	var curSelected:Int = 0;
+
+	public static var instance:ModMenuState = null;
+
+	override public function create()
 	{
-		return Paths.getPath('xmlStates/mod_menu', 'core');
-	}
+		instance = this;
 
-	override function create()
-	{
-		FlxG.mouse.visible = true;
 		super.create();
-		trace('Initialized ModMenuState.');
 
-		this.addClickEventHandler('btn_loadall', onClickLoadAll.bind());
-		this.addClickEventHandler('btn_reloadall', onClickReloadAll.bind());
-		this.addClickEventHandler('btn_unloadall', onClickUnloadAll.bind());
-		this.addClickEventHandler('btn_revert', onClickRevert.bind());
-		this.addClickEventHandler('btn_saveandexit', onClickSaveAndExit.bind());
-		this.addClickEventHandler('btn_exitwithoutsaving', onClickExitWithoutSaving.bind());
+		// create background
+		bg = new FlxSprite().loadGraphic(Paths.loadImage('menuDesat'));
+		bg.setGraphicSize(Std.int(FlxG.width));
+		bg.scrollFactor.set();
+		bg.blend = BlendMode.DIFFERENCE;
+		bg.color = 0x3DC749;
+		bg.screenCenter();
+		add(bg);
 
-		initModLists();
+		modsObjects = new FlxTypedGroup<ModObject>();
+		add(modsObjects);
+
+		generateModsItems();
+
+		if (emptyModFolder == null)
+			changeSelection();
 	}
 
-	override function buildComponent(tag:String, target:Dynamic, data:Dynamic, ?params:Array<Dynamic>):Dynamic
+	override public function update(elapsed:Float)
 	{
-		var element:Xml = cast data;
-		switch (tag)
+		super.update(elapsed);
+
+		var upP = controls.UP_P;
+		var downP = controls.DOWN_P;
+
+		if (upP)
 		{
-			case 'modlist':
-				var x = Std.parseInt(element.get('x'));
-				var y = Std.parseInt(element.get('y'));
-				var w = Std.parseInt(element.get('w'));
-				var h = Std.parseInt(element.get('h'));
-				var loaded = element.get('loaded') == 'true';
+			FlxG.sound.play(Paths.sound('scrollMenu'));
+			changeSelection(-1);
+		}
+		else if (downP)
+		{
+			FlxG.sound.play(Paths.sound('scrollMenu'));
+			changeSelection(1);
+		}
 
-				var result = new ModList(x, y, w, h, loaded);
+		if (controls.ACCEPT)
+		{
+			modsObjects.members[curSelected].isEnabled = !modsObjects.members[curSelected].isEnabled;
+		}
 
-				if (loaded)
-					loadedModsUI = result;
-				else
-					unloadedModsUI = result;
+		if (controls.BACK)
+		{
+			SongMetadata.preloaded = false;
 
-				return result;
-			default:
-				return super.buildComponent(tag, target, data, params);
+			ModCore.loadConfiguredMods();
+			ModUtil.reloadSavedMods();
+
+			MusicBeatState.switchState(new TitleState());
 		}
 	}
 
-	var loadedMods:Array<ModMetadata> = [];
-	var unloadedMods:Array<ModMetadata> = [];
-
-	function initModLists()
+	function changeSelection(change:Int = 0)
 	{
-		// Unify mod lists.
-		unloadedModsUI.cbAddToOtherList = loadedModsUI.addMod.bind();
-		loadedModsUI.cbAddToOtherList = unloadedModsUI.addMod.bind();
+		curSelected += change;
 
-		var modDatas = ModUtil.getAllMods().filter(function(m)
+		if (curSelected < 0)
+			curSelected = modsObjects.members.length - 1;
+		if (curSelected >= modsObjects.members.length)
+			curSelected = 0;
+
+		var shit = 0;
+		@:privateAccess
+		modsObjects.forEach(function(spr:ModObject)
 		{
-			return m != null;
+			spr.titleText.targetY = shit - curSelected;
+			shit++;
+			if (spr._ModId == curSelected)
+				spr.alpha = 1;
+			else
+				spr.alpha = 0.5;
 		});
-
-		var loadedModIds = ModUtil.getConfiguredMods();
-
-		if (loadedModIds != null)
-		{
-			// If loadedModIds != null, return.
-			loadedMods = modDatas.filter(function(m)
-			{
-				return loadedModIds.contains(m.id);
-			});
-			unloadedMods = modDatas.filter(function(m)
-			{
-				return !loadedModIds.contains(m.id);
-			});
-		}
-		else
-		{
-			// No existing configuration.
-			// We default to ALL mods loaded.
-			unloadedMods = [];
-			loadedMods = modDatas;
-		}
-
-		for (i in loadedMods)
-		{
-			loadedModsUI.addMod(i);
-		}
-		for (i in unloadedMods)
-		{
-			unloadedModsUI.addMod(i);
-		}
 	}
 
-	var inContributors:Bool = false;
-	var blackScreen:FlxSprite;
-	var contributorsText:FlxTypedGroup<FlxText>;
-	public function showContributors(modData:ModMetadata)
+	function generateModsItems():Void
 	{
-		inContributors = true;
-		blackScreen = new FlxSprite(-200, -100).makeGraphic(Std.int(FlxG.width * 0.5), Std.int(FlxG.height * 0.5), FlxColor.BLACK);
-		blackScreen.screenCenter();
-		blackScreen.scrollFactor.set(0, 0);
-		add(blackScreen);
-
-		if (modData.contributors != null)
+		var allMods:Array<ModMetadata> = ModUtil.getAllMods();
+		if (allMods.length > 0)
 		{
-			for (i in modData.contributors)
+			for (i in 0...allMods.length)
 			{
-				var nameText:FlxText = new FlxText(0, 10 * modData.contributors.indexOf(i), 0, i.name, 24);
-				nameText.setFormat('Pixel Arial 11 Bold', 48, FlxColor.WHITE, CENTER);
-				nameText.screenCenter();
-				nameText.scrollFactor.set(0, 0);
-				contributorsText.add(nameText);
-
-				var roleText:FlxText = new FlxText(0, 15 * modData.contributors.indexOf(i), 0, i.role, 12);
-				roleText.setFormat('Pixel Arial 11 Bold', 48, FlxColor.WHITE, CENTER);
-				roleText.screenCenter();
-				roleText.scrollFactor.set(0, 0);
-				contributorsText.add(roleText);
+				var mod = allMods[i];
+				var modObj:ModObject = new ModObject(0, (70 * i) + 60, mod, i);
+				modObj.isEnabled = ModUtil.modList.get(mod.id);
+				@:privateAccess
+				modObj.firstLoad = false;
+				modsObjects.add(modObj);
 			}
+			add(modsObjects);
 		}
 		else
 		{
-			var warnText:FlxText = new FlxText(0, 10, 0, 'There`s no contributors in mod data', 24);
-			warnText.setFormat('Pixel Arial 11 Bold', 48, FlxColor.WHITE, CENTER);
-			warnText.screenCenter();
-			warnText.scrollFactor.set(0, 0);
-			contributorsText.add(warnText);
+			emptyModFolder = new FlxText(0, 0, 0, 'NO MODS INSTALLED\nPRESS BACK TO EXIT AND INSTALL A MOD');
+			emptyModFolder.setFormat(Paths.font("vcr"), 32, FlxColor.WHITE, CENTER);
+			emptyModFolder.screenCenter(XY);
+			add(emptyModFolder);
 		}
-
-		add(contributorsText);
 	}
+}
 
-	public function closeContributors()
+class ModObject extends FlxTypedSpriteGroup<FlxSprite>
+{
+	private var _ModId:Int = 0;
+	private var _modData(default, set):ModMetadata = null;
+
+	private var titleText:Alphabet;
+	private var descriptionText:AttachedText;
+
+	private var modIcon:AttachedSprite;
+	private var checkbox:AttachedSprite;
+
+	public var isEnabled(default, set):Bool = false;
+
+	private var firstLoad:Bool = true;
+
+	public function new(x:Int = 0, y:Int = 0, modData:ModMetadata, modId:Int = 0)
 	{
-		remove(blackScreen);
-		contributorsText.clear();
-		remove(contributorsText);
+		super();
+
+		this.x = x;
+		this.y = y;
+		this._ModId = modId;
+
+		_modData = modData;
 	}
 
-	var curSelected:Int = -1;
+	private function generateAll()
+	{
+		if (_modData == null)
+			return;
+
+		titleText = new Alphabet(-100, y, _modData.title == '' ? 'Unknown mod title' : _modData.title, true, false);
+		titleText.isMenuItem = true;
+		titleText.targetY = _ModId;
+		titleText.size = 0.2;
+
+		checkbox = new AttachedSprite('checkboxanim', 'checkbox0', 'core', false);
+		checkbox.playAnim('idle', true, false, 0, true);
+		checkbox.xAdd = titleText.width + 20;
+		checkbox.yAdd = -20;
+		checkbox.sprTracker = titleText;
+		checkbox.addOffset('idle', 0, 2);
+		checkbox.animation.addByPrefix('check', 'checkbox anim0', 24, false);
+		checkbox.addOffset('check', 34, 25);
+		checkbox.animation.addByPrefix('checked-idle', 'checkbox finish0', 24, false);
+		checkbox.addOffset('checked-idle', 3, 12);
+		checkbox.animation.addByPrefix('check-reversed', 'checkbox anim reverse0', 24, false);
+		checkbox.addOffset('check-reversed', 25, 28);
+		checkbox.setGraphicSize(100, 100);
+		checkbox.updateHitbox();
+
+		if (isEnabled)
+			checkbox.playAnim('checked-idle', true, false, 0, true);
+
+		if (_modData.icon != null)
+		{
+			modIcon = new AttachedSprite();
+			modIcon.loadGraphic(FlxGraphic.fromBitmapData(ImageOutline.outline(BitmapData.fromBytes(_modData.icon), 6, 0x000000, 1, true)));
+			modIcon.setGraphicSize(100, 100);
+			modIcon.updateHitbox();
+			modIcon.xAdd = -100;
+			modIcon.yAdd = -20;
+			modIcon.sprTracker = titleText;
+		};
+
+		descriptionText = new AttachedText(titleText.x, titleText.getGraphicMidpoint().y);
+		descriptionText.text = _modData.description;
+		descriptionText.size = 16;
+		descriptionText.sprTracker = titleText;
+		descriptionText.yAdd = titleText.height;
+		descriptionText.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 1);
+
+		if (_modData.icon != null)
+			add(modIcon);
+		add(titleText);
+		add(descriptionText);
+		add(checkbox);
+	}
+
+	override public function update(elapsed:Float)
+	{
+		super.update(elapsed);
+
+		if (checkbox.animation.curAnim != null)
+			if (checkbox.animation.curAnim.finished && (checkbox.animation.curAnim.name == 'check' || checkbox.animation.curAnim.name == 'check-reversed'))
+			{
+				if (isEnabled)
+					checkbox.playAnim('checked-idle', true);
+				else
+					checkbox.playAnim('idle', true);
+			}
+	}
+
+	function set__modData(value:ModMetadata):ModMetadata
+	{
+		if (value != null)
+		{
+			_modData = value;
+			generateAll();
+		}
+		return value;
+	}
+
+	function set_isEnabled(value:Bool):Bool
+	{
+		if (!firstLoad)
+			ModUtil.setModEnabled(_modData.id, value);
+		if (value)
+		{
+			checkbox.playAnim('check', true);
+		}
+		else
+		{
+			checkbox.playAnim('check-reversed', true);
+		}
+		isEnabled = value;
+		return value;
+	}
+}
+
+class AttachedText extends FlxText
+{
+	public var sprTracker:FlxSprite;
+	public var xAdd:Float = 0;
+	public var yAdd:Float = 0;
+	public var strumTime:Float = 0;
+	public var position:Int = 0;
+
+	public function new(X:Float = 0, Y:Float = 0, FieldWidth:Float = 0, ?Text:String, Size:Int = 8, EmbeddedFont:Bool = true)
+	{
+		super(X, Y, FieldWidth, Text, Size, EmbeddedFont);
+	}
 
 	override function update(elapsed:Float)
 	{
-		if (FlxG.keys.justPressed.ESCAPE && !inContributors)
-		{
-			loadMainGame();
-		}
-		else if (FlxG.keys.justPressed.ESCAPE && inContributors)
-		{
-			inContributors = false;
-			closeContributors();
-		}
-
 		super.update(elapsed);
-	}
 
-	function writeModPreferences()
-	{
-		Debug.logInfo('Saving mod configuration and continuing to game...');
-		var loadedModIds:Array<String> = loadedModsUI.listCurrentMods().map(function(mod:ModMetadata) return mod.id);
-		var modConfigStr = loadedModIds.join('~');
-		//if (modConfigStr != '' && modConfigStr != null){
-			Main.save.data.modConfig = modConfigStr;
-			Main.save.flush();//}
-		/*else{
-			var empty:Array<String> = [];
-			Main.save.data.modConfig = empty;
-			Main.save.flush();}*/
-	}
-
-	function loadMainGame()
-	{
-		FlxG.mouse.visible = false;
-		SongMetadata.preloaded = false;
-		// Gotta load any configured mods.
-
-		ModCore.loadConfiguredMods();
-
-		FlxG.sound.playMusic(Paths.music(Main.save.data.menuMusic), 0);
-
-		FlxG.switchState(new TitleState());
-	}
-
-	function onClickReloadAll()
-	{
-		ModCore.reloadLoadedMods();
-
-		FlxG.sound.playMusic(Paths.music(Main.save.data.menuMusic), 0);
-
-		FlxG.switchState(new TitleState());
-	}
-
-	function onClickLoadAll()
-	{
-		if (!inContributors)
+		if (sprTracker != null)
 		{
-			var unloadedMods:Array<ModMetadata> = unloadedModsUI.listCurrentMods();
-
-			// Add all unloaded mods to the loaded list.
-			for (i in unloadedMods)
-			{
-				loadedModsUI.addMod(i);
-			}
-
-			// Remove all mods from the unloaded list.
-			unloadedModsUI.clearModList();
-		}
-	}
-
-	function onClickUnloadAll()
-	{
-		if (!inContributors)
-		{
-			var loadedMods:Array<ModMetadata> = loadedModsUI.listCurrentMods();
-
-			// Add all loaded mods to the unloaded list.
-			for (i in loadedMods)
-			{
-				unloadedModsUI.addMod(i);
-			}
-
-			// Remove all mods from the loaded list.
-			loadedModsUI.clearModList();
-		}
-	}
-
-	function onClickRevert()
-	{
-		if (!inContributors)
-		{
-			// Clear both mod lists so we're starting from scratch.
-			unloadedModsUI.clearModList();
-			loadedModsUI.clearModList();
-
-			// Add the content to the mod lists again.
-			initModLists();
-		}
-	}
-
-	function onClickSaveAndExit()
-	{
-		if (!inContributors)
-		{
-			CharactersStuff.characterList = [];
-			CharactersStuff.girlfriendList = [];
-
-			writeModPreferences();
-
-
-			// Just move to the main game.
-			loadMainGame();
-		}
-	}
-
-	function onClickExitWithoutSaving()
-	{
-		if (!inContributors)
-		{
-			// Just move to the main game.
-			loadMainGame();
+			setPosition(sprTracker.x + xAdd, sprTracker.y + yAdd);
+			angle = sprTracker.angle;
+			alpha = sprTracker.alpha;
 		}
 	}
 }

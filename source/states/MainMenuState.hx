@@ -104,16 +104,6 @@ class MainMenuState extends MusicBeatState
 		add(magenta);
 		// magenta.scrollFactor.set();
 
-		/*var random = new FlxRandom();
-		var charlist:Array<String> = CoolUtil.coolTextFile(Paths.txt('data/characterList'));
-		var rand = random.int(0, charlist.length);
-
-		dance = new Character(0, 0, charlist[rand]);
-		dance.screenCenter(XY);
-		dance.x += 150;
-		dance.scrollFactor.set();
-		add(dance);*/
-
 		menuItems = new FlxTypedGroup<MenuItem>();
 		add(menuItems);
 
@@ -172,13 +162,7 @@ class MainMenuState extends MusicBeatState
 		gjButton.scrollFactor.set();
 		add(gjButton);
 
-		/*if (Main.save.data.dfjk)
-			controls.setKeyboardScheme(KeyboardScheme.Solo, true);
-		else
-			controls.setKeyboardScheme(KeyboardScheme.Duo(true), true);*/
-
-		//if (!firstStart)
-			changeItem();
+		changeItem();
 
 		super.create();
 	}
@@ -236,13 +220,6 @@ class MainMenuState extends MusicBeatState
 			{
 				FlxG.switchState(new TitleState());
 			}
-
-			/*#if FEATURE_MODCORE You didn't see that
-			if (FlxG.keys.justPressed.NINE)
-			{
-				FlxG.switchState(new NewModsMenuState());
-			}
-			#end*/
 
 			if (controls.ACCEPT)
 			{
@@ -339,10 +316,6 @@ class MainMenuState extends MusicBeatState
 			case 'options':
 				MusicBeatState.switchState(new OptionsDirect());
 				FlxG.mouse.visible = false;
-
-			/*case 'extras':
-				MusicBeatState.switchState(new ExtrasPasswordState());
-				FlxG.mouse.visible = false;*/
 			
 			case 'awards':
 				MusicBeatState.switchState(new AchievementsState());
@@ -354,7 +327,7 @@ class MainMenuState extends MusicBeatState
 			#end
 
 			case 'credits':
-				FlxG.switchState(new CreditsState());
+				MusicBeatState.switchState(new CreditsState());
 				FlxG.mouse.visible = false;
 
 			default:

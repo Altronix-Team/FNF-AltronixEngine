@@ -176,26 +176,26 @@
 	<haxeflag name="--no-traces" unless="debug" />
 	<haxeflag name="-dce no"/>
 
-  <!-- Use defines to ensure compile-time definitions have readable context. -->
-  <!-- Allowed inputs are mobile,desktop,web,ios,android,windows,mac,linux,switch,html5,cpp,neko,flash,js -->
+	<!-- Use defines to ensure compile-time definitions have readable context. -->
+	<!-- Allowed inputs are mobile,desktop,web,ios,android,windows,mac,linux,switch,html5,cpp,neko,flash,js -->
 
-  <!-- Defines whether the Discord client should be enabled. Only works on desktop. -->
-  <haxedef name="FEATURE_DISCORD" if="desktop" />
-  
-  <!-- Defines whether the file system can be read/written directly. Does not work in browser. -->
-  <haxedef name="FEATURE_FILESYSTEM" if="desktop" />
-
-  <!-- Defines whether the Thread class can be used. -->
-  <haxedef name="FEATURE_MULTITHREADING" if="cpp" />
-
-  <!-- Defines whether the Mods menu will display before launching. -->
-  <haxedef name="FEATURE_MODCORE" if="desktop" />
-  
-  <haxedef name="HXCPP_CHECK_POINTER" if="FEATURE_FILESYSTEM" />
-  <haxedef name="HXCPP_STACK_LINE" if="FEATURE_FILESYSTEM" />
-  <haxedef name="HXCPP_GC_BIG_BLOCKS"/>
+	<!-- Defines whether the Discord client should be enabled. Only works on desktop. -->
+	<haxedef name="FEATURE_DISCORD" if="desktop" />
 	
-  <!-- Use defines to configure the behavior of Polymod. -->
+	<!-- Defines whether the file system can be read/written directly. Does not work in browser. -->
+	<haxedef name="FEATURE_FILESYSTEM" if="desktop" />
+
+	<!-- Defines whether the Thread class can be used. -->
+	<haxedef name="FEATURE_MULTITHREADING" if="cpp" />
+
+	<!-- Defines whether the Mods menu will display before launching. -->
+	<haxedef name="FEATURE_MODCORE" if="desktop" />
+	
+	<haxedef name="HXCPP_CHECK_POINTER" if="FEATURE_FILESYSTEM" />
+	<haxedef name="HXCPP_STACK_LINE" if="FEATURE_FILESYSTEM" />
+	<haxedef name="HXCPP_GC_BIG_BLOCKS"/>
+		
+	<!-- Use defines to configure the behavior of Polymod. -->
 	<haxedef name="POLYMOD_SCRIPT_EXT"
 					 value=".hxs"/>
 	<haxedef name="POLYMOD_SCRIPT_CLASS_EXT"

@@ -224,20 +224,6 @@ class Song
 			else
 				return ChartUtil.parseJSONshit(songId, rawJson, metaData);	
 		}
-		else if (OpenFlAssets.exists(OpenFlAssets.getPath(Paths.json('$songFile', 'gameplay'))))
-		{	
-			var rawJson = Paths.loadJSON('$songFile', 'gameplay');
-	
-			var metaData:SongMeta = loadMetadata(songId);
-	
-			if (OpenFlAssets.exists(Paths.json('songs/$songId/events', 'gameplay')))
-			{
-				var rawEvents = Paths.loadJSON('songs/$songId/events', 'gameplay');
-				return ChartUtil.parseJSONshit(songId, rawJson, metaData, rawEvents);
-			}	
-			else
-				return ChartUtil.parseJSONshit(songId, rawJson, metaData);	
-		}
 		else
 		{
 			return null;

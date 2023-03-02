@@ -89,7 +89,7 @@ class Controls extends FlxActionSet
 	var _rightP2 = new Key(Action.RIGHTP2, Action.RIGHT_PP2, Action.RIGHT_RP2);
 	var _downP2 = new Key(Action.DOWNP2, Action.DOWN_PP2, Action.DOWN_RP2);
 
-	var _accept = new Key(Action.ACCEPT);
+	var _accept = new Key(null, Action.ACCEPT);
 	var _back = new Key(Action.BACK);
 	var _pause = new Key(Action.PAUSE);
 	var _reset = new Key(Action.RESET);
@@ -112,7 +112,7 @@ class Controls extends FlxActionSet
 	public var LEFT_R(get, never):Bool; inline function get_LEFT_R() return _left.keyR.check();
 	public var RIGHT_R(get, never):Bool; inline function get_RIGHT_R() return _right.keyR.check();
 	public var DOWN_R(get, never):Bool; inline function get_DOWN_R() return _down.keyR.check();
-	public var ACCEPT(get, never):Bool; inline function get_ACCEPT() return _accept.key.check();
+	public var ACCEPT(get, never):Bool; inline function get_ACCEPT() return _accept.keyP.check();
 	public var BACK(get, never):Bool; inline function get_BACK() return _back.key.check();
 	public var PAUSE(get, never):Bool; inline function get_PAUSE() return _pause.key.check();
 	public var RESET(get, never):Bool; inline function get_RESET() return _reset.key.check();
@@ -147,7 +147,7 @@ class Controls extends FlxActionSet
 		add(_left.keyR);
 		add(_right.keyR);
 		add(_down.keyR);
-		add(_accept.key);
+		add(_accept.keyP);
 		add(_back.key);
 		add(_pause.key);
 		add(_reset.key);
@@ -212,7 +212,7 @@ class Controls extends FlxActionSet
 			case DOWN: _down.key;
 			case LEFT: _left.key;
 			case RIGHT: _right.key;
-			case ACCEPT: _accept.key;
+			case ACCEPT: _accept.keyP;
 			case BACK: _back.key;
 			case PAUSE: _pause.key;
 			case RESET: _reset.key;
@@ -241,11 +241,12 @@ class Controls extends FlxActionSet
 	{
 		try{
 			var curKey = cast(Reflect.field(this, '_$control'), Key);
-			func(curKey.key, PRESSED);
+			if (curKey.key != null)
+				func(curKey.key, PRESSED);
 			if (curKey.keyP != null)
 				func(curKey.keyP, JUST_PRESSED);
 			if (curKey.keyR != null)
-				func(curKey.keyR, JUST_PRESSED);
+				func(curKey.keyR, JUST_RELEASED);
 		}
 		catch(e)
 		{
@@ -526,12 +527,16 @@ class Key
 
 	public function new(key:String, ?keyP:String, ?keyR:String)
 	{
-		this.key = new FlxActionDigital(key);
+		if (key != null)
+			this.key = new FlxActionDigital(key);
 
 		if (keyP != null)
 			this.keyP = new FlxActionDigital(keyP);
 
 		if (keyR != null)
 			this.keyR = new FlxActionDigital(keyR);
+
+		if (key == null && keyP == null && keyR == null)
+			Debug.logWarn('No action was set!');
 	}
 }

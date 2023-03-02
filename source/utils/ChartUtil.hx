@@ -63,15 +63,33 @@ class ChartUtil
 
 		if (jsonEvents != null)
 		{
-			var events = cast jsonEvents;
+			if (Reflect.hasField(jsonEvents, 'song'))
+			{
+				var events:SongData = cast jsonEvents.song;
 
-			if (events.events != null)
-				songData.events = events.events;
+				if (events.notes != null)
+				{
+					for (sect in events.notes)
+					{
+						if (sect.sectionNotes.length > 0)
+						{
+							songData.notes.push(sect);
+						}
+					}
+				}
+			}
+			else
+			{
+				var events = cast jsonEvents;
 
-			if (events.eventObjects != null)
-				songData.eventObjects = events.eventObjects;
+				if (events.events != null)
+					songData.events = events.events;
 
-			songData.eventsArray = events.eventsArray;
+				if (events.eventObjects != null)
+					songData.eventObjects = events.eventObjects;
+
+				songData.eventsArray = events.eventsArray;
+			}
 		}
 
 		return conversionChecks(songData);

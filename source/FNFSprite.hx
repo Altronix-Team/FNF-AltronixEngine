@@ -16,13 +16,15 @@ class FNFSprite extends FlxSprite
 	public function new(?X:Float = 0, ?Y:Float = 0, ?SimpleGraphic:FlxGraphicAsset)
 	{
 		super(X, Y, SimpleGraphic);
+
+		animOffsets = new Map();
 		
 		Main.fnfSignals.beatHit.add(beatHit);
 		Main.fnfSignals.stepHit.add(stepHit);
 		Main.fnfSignals.sectionHit.add(sectionHit);
 	}
 
-	public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void
+	public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0, autoEnd:Bool = false):Void
 	{
 		if (animateAtlas != null && animateAtlas.anim.getByName(AnimName) == null)
 		{
@@ -47,6 +49,16 @@ class FNFSprite extends FlxSprite
 			if (!animation.exists(AnimName))
 				return;
 			animation.play(AnimName, Force, Reversed, Frame);
+		}
+
+		if (autoEnd)
+		{
+			if (animateAtlas != null)
+			{
+				animateAtlas.anim.curFrame = animateAtlas.anim.length;
+			}
+			else
+				animation.curAnim.finish();
 		}
 
 		var daOffset = animOffsets.get(AnimName);
@@ -100,6 +112,8 @@ class FNFSprite extends FlxSprite
 	public override function destroy()
 	{
 		Main.fnfSignals.beatHit.remove(beatHit);
+		Main.fnfSignals.stepHit.remove(stepHit);
+		Main.fnfSignals.sectionHit.remove(sectionHit);
 		super.destroy();
 		if (animateAtlas != null)
 		{

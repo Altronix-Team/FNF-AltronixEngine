@@ -1,10 +1,8 @@
 package;
 
 import flixel.FlxSprite;
-import flixel.FlxG;
-import openfl.utils.Assets as OpenFlAssets;
 
-class AttachedSprite extends FlxSprite
+class AttachedSprite extends FNFSprite
 {
 	public var sprTracker:FlxSprite;
 	public var xAdd:Float = 0;
@@ -15,8 +13,9 @@ class AttachedSprite extends FlxSprite
 	public var copyAngle:Bool = true;
 	public var copyAlpha:Bool = true;
 	public var copyVisible:Bool = false;
+	public var copySize:Bool = false;
 
-	public function new(?file:String = null, ?anim:String = null, ?library:String = null, ?loop:Bool = false)
+	public function new(?file:String = null, ?anim:String = null, ?library:String = 'core', ?loop:Bool = false)
 	{
 		super();
 		if(anim != null) {
@@ -24,7 +23,7 @@ class AttachedSprite extends FlxSprite
 			animation.addByPrefix('idle', anim, 24, loop);
 			animation.play('idle');
 		} else if(file != null) {
-			loadGraphic(Paths.image(file));
+			loadGraphic(Paths.loadImage(file, library));
 		}
 		antialiasing = Main.save.data.antialiasing;
 		scrollFactor.set();
@@ -46,6 +45,9 @@ class AttachedSprite extends FlxSprite
 
 			if(copyVisible) 
 				visible = sprTracker.visible;
+
+			if(copySize)
+				scale.copyFrom(sprTracker.scale);
 		}
 	}
 }

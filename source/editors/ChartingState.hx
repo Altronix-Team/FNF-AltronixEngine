@@ -506,7 +506,7 @@ class ChartingState extends MusicBeatState
 		#end
 
 		#if desktop
-		var noteList:Array<String> = AssetsUtil.listAssetsInPath('assets/custom_notetypes/', HSCRIPT);
+		var noteList:Array<String> = AssetsUtil.listAssetsInPath('assets/gameplay/scripts/notes/', HSCRIPT);
 		for (i in 0...noteList.length)
 		{
 			if (!noteTypeList.contains(noteList[i]))

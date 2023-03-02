@@ -1,11 +1,11 @@
 package gameplayStuff;
 
-import flixel.graphics.frames.FlxFramesCollection;
-import flxanimate.FlxAnimate;
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.graphics.frames.FlxFramesCollection;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
+import flxanimate.FlxAnimate;
 import openfl.utils.Assets as OpenFlAssets;
 
 class Character extends FNFSprite
@@ -51,12 +51,14 @@ class Character extends FNFSprite
 
 	public var altIdle:Bool = false;
 
+	public var ghost:FlxSprite = null;
+	public var ghostTween:FlxTween = null;
+
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
 		super(x, y);
 
 		barColor = isPlayer ? 0xFF66FF33 : 0xFFFF0000;
-		animOffsets = new Map();
 		animInterrupt = new Map<String, Bool>();
 		animNext = new Map<String, String>();
 		animDanced = new Map<String, Bool>();
@@ -65,14 +67,36 @@ class Character extends FNFSprite
 
 		parseDataFile();
 
+		ghost = new FlxSprite(x, y);
+		ghost.frames = frames;
+		ghost.visible = false;
+		ghost.animation.copyFrom(animation);
+		ghost.blend = HARDLIGHT;
+		ghost.alpha = 0.8;
+		ghost.animation.finishCallback = function(name:String)
+		{
+			ghost.visible = false;
+		}
+
 		recalculateDanceIdle();
-		
+
 		if (isPlayer && frames != null)
 		{
 			flipX = !flipX;
 		}
 
 		healthIcon = new HealthIcon(curCharacter, characterIcon, isPlayer);
+	}
+
+	override public function draw()
+	{
+		ghost.x = x;
+		ghost.y = y;
+		ghost.flipX = flipX;
+		ghost.flipY = flipY;
+		if (ghost.visible)
+			ghost.draw();
+		super.draw();
 	}
 
 	function parseDataFile()
@@ -205,7 +229,7 @@ class Character extends FNFSprite
 		}
 	}
 
-	override public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void
+	override public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0, autoEnd:Bool = false):Void
 	{
 		if (animateAtlas != null && animateAtlas.anim.getByName(AnimName) == null && AnimName.endsWith('alt'))
 		{
@@ -262,7 +286,7 @@ class Character extends FNFSprite
 
 	public function recalculateDanceIdle()
 	{
-		danceIdle = (animationExists('danceLeft-alt') && animationExists('danceRight-alt') );
+		danceIdle = (animationExists('danceLeft-alt') && animationExists('danceRight-alt'));
 
 		danceEveryNumBeats = (danceIdle ? 1 : 2);
 	}
@@ -277,8 +301,7 @@ class Character extends FNFSprite
 		else
 		{
 			Debug.logInfo('Looks like character uses texture atlas');
-			animateAtlas = new FlxAnimate(x, y,
-				Paths.getPath('characters/$curCharacter/${data.asset.replaceAll('characters/', '')}', BINARY, 'gameplay'));
+			animateAtlas = new FlxAnimate(x, y, Paths.getPath('characters/$curCharacter/${data.asset.replaceAll('characters/', '')}', BINARY, 'gameplay'));
 		}
 
 		// if (frames != null)
@@ -357,8 +380,7 @@ class Character extends FNFSprite
 		else
 		{
 			Debug.logInfo('Looks like character uses texture atlas');
-			animateAtlas = new FlxAnimate(x, y,
-				Paths.getPath('characters/$curCharacter/${json.image.replaceAll('characters/', '')}', BINARY, 'gameplay'));
+			animateAtlas = new FlxAnimate(x, y, Paths.getPath('characters/$curCharacter/${json.image.replaceAll('characters/', '')}', BINARY, 'gameplay'));
 		}
 
 		if (json.scale != 1)
@@ -432,7 +454,6 @@ class Character extends FNFSprite
 
 		playAnim('idle');
 	}
-
 }
 
 typedef CharacterData =

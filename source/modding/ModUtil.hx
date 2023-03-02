@@ -8,12 +8,14 @@ import polymod.Polymod;
 @:access(modding.ModCore)
 class ModUtil
 {
-	public static var modList:Map<String, Bool> = new Map<String, Bool>();
+	public static var modList:Map<String, Bool> = new Map();
 
 	public static var modMetadatas:Map<String, ModMetadata> = new Map();
 
 	public static function reloadSavedMods():Void
 	{
+		modList.clear();
+		
 		var loadedMods:Array<String> = getConfiguredMods();
 		var allMods:Array<String> = getAllModIds();
 		for (mod in allMods)
@@ -27,9 +29,14 @@ class ModUtil
 
 	public static function setModEnabled(mod:String, enabled:Bool):Void
 	{
+		var enabledArray:Array<String> = [];
 		modList.set(mod, enabled);
-		Main.save.data.modList = modList;
-		Main.save.flush();
+		for (key in modList.keys())
+		{
+			if (modList.get(key))
+				enabledArray.push(key);
+		}
+		saveModList(enabledArray);
 	}
 
 	public static function getModEnabled(mod:String):Bool

@@ -42,16 +42,16 @@ class Paths
 		if (library != null)
 			return getLibraryPath(file, library);
 
-		if (currentLevel != null)
-		{
-			var levelPath = getLibraryPathForce(file, currentLevel);
+		//if (currentLevel != null)
+		//{
+			var levelPath = getLibraryPathForce(file, 'core');
 			if (OpenFlAssets.exists(levelPath, type))
 				return levelPath;
 
 			levelPath = getLibraryPathForce(file, "gameplay");
 			if (OpenFlAssets.exists(levelPath, type))
 				return levelPath;
-		}
+		//}
 
 		return getPreloadPath(file);
 	}

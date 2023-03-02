@@ -1,5 +1,6 @@
 package states;
 
+import flixel.addons.api.FlxGameJolt;
 import flixel.FlxBasic;
 import scriptStuff.HScriptHandler;
 import flixel.input.gamepad.FlxGamepad;
@@ -160,7 +161,8 @@ class MainMenuState extends MusicBeatState
 		gjButton = new CustomButton(1100, 600, Paths.loadImage('mainmenuassets/GameJoltLogo'));
 		gjButton.doOnClick = goToGJ;
 		gjButton.scrollFactor.set();
-		add(gjButton);
+		if (FlxGameJolt.initialized)
+			add(gjButton);
 
 		changeItem();
 

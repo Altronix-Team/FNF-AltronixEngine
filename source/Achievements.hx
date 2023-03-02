@@ -133,10 +133,10 @@ class Achievements
 		if (!savedAchievements.contains(findSaveIdById(id)))
         {
 			#if desktop
-            if (imagePath == null)
+			if (imagePath == null)
 				GameJoltAPI.getTrophy(id, findImageById(id));
-            else
-				GameJoltAPI.getTrophy(id, imagePath);
+			else
+				GameJoltAPI.getTrophy(id, imagePath); 
 			#end
 			savedAchievements.push(findSaveIdById(id));
 			Main.save.data.savedAchievements = savedAchievements;

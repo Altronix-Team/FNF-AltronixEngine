@@ -134,6 +134,11 @@ class GameJoltAPI // Connects to flixel.addons.api.FlxGameJolt
 	public static function connect()
 	{
 		trace("Grabbing API keys...");
+		if (GJKeys.key == "") 
+		{
+			Debug.logError("Unable to init gamejolt api");
+			return;
+		}
 		GJApi.init(Std.int(GJKeys.id), Std.string(GJKeys.key), function(data:Bool)
 		{
 			//#if debug

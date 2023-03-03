@@ -1,5 +1,6 @@
 package states;
 
+import flixel.addons.api.FlxGameJolt;
 import states.HscriptableState.PolymodHscriptState;
 import scriptStuff.HscriptStage;
 import flixel.FlxG;
@@ -106,7 +107,9 @@ class TitleState extends MusicBeatState
 			GameJoltAPI.leaderboardToggle = Main.save.data.toggleLeaderboard;
 
 			GameJoltAPI.connect();
-			GameJoltAPI.authDaUser(Main.save.data.gjUser, Main.save.data.gjToken);
+			@:privateAccess
+			if (FlxGameJolt.gameInit)
+				GameJoltAPI.authDaUser(Main.save.data.gjUser, Main.save.data.gjToken);
 			#end
 
 			if (Main.save.data.volume != null)

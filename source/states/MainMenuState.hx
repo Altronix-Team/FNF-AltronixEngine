@@ -161,7 +161,8 @@ class MainMenuState extends MusicBeatState
 		gjButton = new CustomButton(1100, 600, Paths.loadImage('mainmenuassets/GameJoltLogo'));
 		gjButton.doOnClick = goToGJ;
 		gjButton.scrollFactor.set();
-		if (FlxGameJolt.initialized)
+		@:privateAccess
+		if (FlxGameJolt.gameInit)
 			add(gjButton);
 
 		changeItem();

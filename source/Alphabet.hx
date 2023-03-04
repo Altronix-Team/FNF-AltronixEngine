@@ -1,5 +1,7 @@
 package;
 
+import openfl.utils.Assets;
+import haxe.xml.Access;
 import flash.media.Sound;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -143,9 +145,10 @@ class Alphabet extends FlxSpriteGroup
 
 			listOAlphabets.add(letter);
 
-			if (character != " ")
+			if (character != " " && character != '\n')
 			{
-				if (isAlphabet)
+				letter.createLetter(character.toLowerCase(), isBold, true);
+				/*if (isAlphabet)
 				{
 					if (isBold)
 						letter.createBold(character.toLowerCase());
@@ -157,11 +160,11 @@ class Alphabet extends FlxSpriteGroup
 				else if (isNumber)
 					letter.createNumber(character);
 				else
-					letter.createSymbol(character);
+					letter.createSymbol(character);*/
 			}
 			else
 			{
-				letter.createSymbol('#');
+				letter.createLetter('#', false, false);
 				letter.visible = false;
 				lastWasSpace = false;
 			}
@@ -280,7 +283,9 @@ class Alphabet extends FlxSpriteGroup
 				var letter:AlphaCharacter = new AlphaCharacter(xPos, 55 * yMulti);
 				letter.row = curRow;
 
-				if (isNumber)
+				letter.createLetter(splitWords[loopNum].toLowerCase(), isBold, true);
+
+				/*if (isNumber)
 				{
 					letter.createNumber(splitWords[loopNum]);
 				}
@@ -291,7 +296,7 @@ class Alphabet extends FlxSpriteGroup
 				else
 				{
 					letter.createLetter(splitWords[loopNum]);
-				}
+				}*/
 
 				letter.x += 90;
 
@@ -387,6 +392,78 @@ class AlphaCharacter extends FlxSprite
 
 	public static var symbols:String = "|~#$%()*+-:;<=>@[]^_.,'!? /\\";
 
+	public static var letters:Map<String, Letter> = [
+		'a' => {anim: null, states: [BOLD, LOWERCASE, UPPERCASE]},
+		'b' => {anim: null, states: [BOLD, LOWERCASE, UPPERCASE]},
+		'c' => {anim: null, states: [BOLD, LOWERCASE, UPPERCASE]},
+		'd' => {anim: null, states: [BOLD, LOWERCASE, UPPERCASE]},
+		'e' => {anim: null, states: [BOLD, LOWERCASE, UPPERCASE]},
+		'f' => {anim: null, states: [BOLD, LOWERCASE, UPPERCASE]},
+		'g' => {anim: null, states: [BOLD, LOWERCASE, UPPERCASE]},
+		'h' => {anim: null, states: [BOLD, LOWERCASE, UPPERCASE]},
+		'i' => {anim: null, states: [BOLD, LOWERCASE, UPPERCASE]},
+		'j' => {anim: null, states: [BOLD, LOWERCASE, UPPERCASE]},
+		'k' => {anim: null, states: [BOLD, LOWERCASE, UPPERCASE]},
+		'l' => {anim: null, states: [BOLD, LOWERCASE, UPPERCASE]},
+		'm' => {anim: null, states: [BOLD, LOWERCASE, UPPERCASE]},
+		'n' => {anim: null, states: [BOLD, LOWERCASE, UPPERCASE]},
+		'o' => {anim: null, states: [BOLD, LOWERCASE, UPPERCASE]},
+		'p' => {anim: null, states: [BOLD, LOWERCASE, UPPERCASE]},
+		'q' => {anim: null, states: [BOLD, LOWERCASE, UPPERCASE]},
+		'r' => {anim: null, states: [BOLD, LOWERCASE, UPPERCASE]},
+		's' => {anim: null, states: [BOLD, LOWERCASE, UPPERCASE]},
+		't' => {anim: null, states: [BOLD, LOWERCASE, UPPERCASE]},
+		'u' => {anim: null, states: [BOLD, LOWERCASE, UPPERCASE]},
+		'v' => {anim: null, states: [BOLD, LOWERCASE, UPPERCASE]},
+		'w' => {anim: null, states: [BOLD, LOWERCASE, UPPERCASE]},
+		'x' => {anim: null, states: [BOLD, LOWERCASE, UPPERCASE]},
+		'y' => {anim: null, states: [BOLD, LOWERCASE, UPPERCASE]},
+		'z' => {anim: null, states: [BOLD, LOWERCASE, UPPERCASE]},
+		
+		'0' => {anim: null, states: [BOLD, NORMAL]},
+		'1' => {anim: null, states: [BOLD, NORMAL]},
+		'2' => {anim: null, states: [BOLD, NORMAL]},
+		'3' => {anim: null, states: [BOLD, NORMAL]},
+		'4' => {anim: null, states: [BOLD, NORMAL]},
+		'5' => {anim: null, states: [BOLD, NORMAL]},
+		'6' => {anim: null, states: [BOLD, NORMAL]},
+		'7' => {anim: null, states: [BOLD, NORMAL]},
+		'8' => {anim: null, states: [BOLD, NORMAL]},
+		'9' => {anim: null, states: [BOLD, NORMAL]},
+		
+		'&' => {anim: null, states: [BOLD, NORMAL]},
+		'(' => {anim: null, states: [BOLD, NORMAL]},
+		')' => {anim: null, states: [BOLD, NORMAL]},
+		'*' => {anim: null, states: [BOLD, NORMAL]},
+		'+' => {anim: null, states: [BOLD, NORMAL]},
+		'-' => {anim: null, states: [BOLD, NORMAL]},
+		'<' => {anim: null, states: [BOLD, NORMAL]},
+		'>' => {anim: null, states: [BOLD, NORMAL]},
+		'\'' => {anim: 'apostrophe', states: [BOLD, NORMAL]},
+		'"' => {anim: 'quote', states: [BOLD, NORMAL]},
+		'!' => {anim: 'exclamation', states: [BOLD, NORMAL]},
+		'?' => {anim: 'question', states: [BOLD, NORMAL]},
+		'.' => {anim: 'period', states: [BOLD, NORMAL]},
+		'❝' => {anim: 'start quote', states: [BOLD, NORMAL]},
+		'❞' => {anim: 'end quote', states: [BOLD, NORMAL]},
+		
+		'_' => {anim: null, states: [NORMAL]},
+		'#' => {anim: null, states: [NORMAL]},
+		'$' => {anim: null, states: [NORMAL]},
+		'%' => {anim: null, states: [NORMAL]},
+		':' => {anim: null, states: [NORMAL]},
+		';' => {anim: null, states: [NORMAL]},
+		'@' => {anim: null, states: [NORMAL]},
+		'[' => {anim: null, states: [NORMAL]},
+		']' => {anim: null, states: [NORMAL]},
+		'^' => {anim: null, states: [NORMAL]},
+		',' => {anim: 'comma', states: [NORMAL]},
+		'\\' => {anim: 'back slash', states: [NORMAL]},
+		'/' => {anim: 'forward slash', states: [NORMAL]},
+		'|' => {anim: null, states: [NORMAL]},
+		'~' => {anim: null, states: [NORMAL]}
+	];
+
 	public var row:Int = 0;
 
 	public var textSize(default, set):Float = 1;
@@ -402,105 +479,51 @@ class AlphaCharacter extends FlxSprite
 		}
 	}
 
-	public function createBold(letter:String)
+	public function createLetter(letter:String, isBold:Bool = true, Uppercase:Bool = false)
 	{
-		animation.addByPrefix(letter, letter + " bold instance 1", 24);
-		animation.play(letter);
-		animation.curAnim.frameRate = 24 * (60 / (cast(Lib.current.getChildAt(0), Main)).getFPS());
-		updateHitbox();
-	}
-
-	public function createLetter(letter:String):Void
-	{
-		var letterCase:String = "lowercase";
-		if (letter.toLowerCase() != letter)
+		if (letter == "") return;
+		letter = letter.toLowerCase();
+		if (isBold && AlphaCharacter.letters.get(letter).states.contains(BOLD))
 		{
-			letterCase = 'uppercase';
+			var anim = AlphaCharacter.letters.get(letter).anim == null ? letter : AlphaCharacter.letters.get(letter).anim;
+			animation.addByPrefix(letter, anim + " bold instance 1", 24);
+			animation.play(letter);
+			animation.curAnim.frameRate = 24 * (60 / (cast(Lib.current.getChildAt(0), Main)).getFPS());
+			updateHitbox();
 		}
-
-		letterCase += ' instance 1';
-
-		animation.addByPrefix(letter, letter + " " + letterCase, 24);
-		animation.play(letter);
-		updateHitbox();
-
-		FlxG.log.add('the row' + row);
-
-		y = (110 - height);
-		y += row * 60;
-	}
-
-	public function createNumber(letter:String):Void
-	{
-		animation.addByPrefix(letter, letter + ' bold instance 1', 24);
-		animation.play(letter);
-
-		updateHitbox();
-	}
-
-	public function createSymbol(letter:String)
-	{
-		switch (letter)
+		else
 		{
-			case '.':
-				animation.addByPrefix(letter, 'period normal instance 1', 24);
+			if (Uppercase && AlphaCharacter.letters.get(letter).states.contains(UPPERCASE))
+			{
+				var anim = AlphaCharacter.letters.get(letter).anim == null ? letter : AlphaCharacter.letters.get(letter).anim;
+				animation.addByPrefix(letter, anim + " uppercase instance 1", 24);
 				animation.play(letter);
-				y += 50;
-			case "'":
-				animation.addByPrefix(letter, 'apostrophe normal instance 1', 24);
-				animation.play(letter);
-				y -= 0;
-			case "?":
-				animation.addByPrefix(letter, 'question mark normal instance 1', 24);
-				animation.play(letter);
-			case "!":
-				animation.addByPrefix(letter, 'exclamation point normal instance 1', 24);
-				animation.play(letter);
-			case '_':
-				animation.addByPrefix(letter, '_ normal instance 1', 24);
-				animation.play(letter);
-				y += 50;
-			case "#":
-				animation.addByPrefix(letter, '# normal instance 1', 24);
-				animation.play(letter);
-			case "$":
-				animation.addByPrefix(letter, '$ normal instance 1', 24);
-				animation.play(letter);
-			case "%":
-				animation.addByPrefix(letter, '% normal instance 1', 24);
-				animation.play(letter);
-			case "&":
-				animation.addByPrefix(letter, '& normal instance 1', 24);
-				animation.play(letter);
-			case "(":
-				animation.addByPrefix(letter, '( normal instance 1', 24);
-				animation.play(letter);
-			case ")":
-				animation.addByPrefix(letter, ') normal instance 1', 24);
-				animation.play(letter);
-			case "+":
-				animation.addByPrefix(letter, '+ normal instance 1', 24);
-				animation.play(letter);
-			case "-":
-				animation.addByPrefix(letter, '- normal instance 1', 24);
-				animation.play(letter);
-			case '"':
-				animation.addByPrefix(letter, '" normal instance 1', 24);
-				animation.play(letter);
-				y -= 0;
-			case '@':
-				animation.addByPrefix(letter, '@ normal instance 1', 24);
-				animation.play(letter);
-			case "^":
-				animation.addByPrefix(letter, '^ normal instance 1', 24);
-				animation.play(letter);
-				y -= 0;
-				// case ' ':
-				// animation.addByPrefix(letter, 'space normal instance 1', 24);
-				// animation.play(letter);
-		}
+				updateHitbox();
 
-		updateHitbox();
+				y = (110 - height);
+				y += row * 60;
+			}
+			else if (AlphaCharacter.letters.get(letter).states.contains(LOWERCASE))
+			{
+				var anim = AlphaCharacter.letters.get(letter).anim == null ? letter : AlphaCharacter.letters.get(letter).anim;
+				animation.addByPrefix(letter, anim + " lowercase instance 1", 24);
+				animation.play(letter);
+				updateHitbox();
+
+				y = (110 - height);
+				y += row * 60;
+			}
+			else if (AlphaCharacter.letters.get(letter).states.contains(NORMAL))
+			{
+				var anim = AlphaCharacter.letters.get(letter).anim == null ? letter : AlphaCharacter.letters.get(letter).anim;
+				animation.addByPrefix(letter, anim + ' normal instance 1', 24);
+				animation.play(letter);
+				if (letter == '.' || letter == '_')
+					y += 50;
+			}
+			else
+				return;
+		}
 	}
 
 	function set_textSize(value:Float):Float
@@ -509,4 +532,20 @@ class AlphaCharacter extends FlxSprite
 		scale.set(textSize, textSize);
 		return value;
 	}
+}
+
+typedef Letter = {
+	var anim:Null<String>;
+	var states:Array<AlphaCharacterStates>;
+}
+
+enum abstract AlphaCharacterStates(String) from String to String
+{
+	var BOLD = 'bold';
+	
+	var UPPERCASE = 'uppercase';
+
+	var LOWERCASE = 'lowercase';
+
+	var NORMAL = 'normal';
 }

@@ -15,7 +15,7 @@ class EngineConstants
 			imageName: 'engine'
 		},
 		{
-			displayedName: 'Friday Night Funkin`',
+			displayedName: 'Friday Night Funkin\'',
 			displayedDescription: 'Complete the standart game without misses',
 			saveId: 'vanila_game_completed',
 			GJId: 167263,

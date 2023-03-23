@@ -1,11 +1,5 @@
 package gameplayStuff;
 
-import flixel.FlxG;
-import flixel.FlxSprite;
-import flixel.graphics.frames.FlxAtlasFrames;
-import flixel.util.FlxTimer;
-
-
 class Boyfriend extends Character
 {
 	public function new(x:Float, y:Float, ?char:String = 'bf')

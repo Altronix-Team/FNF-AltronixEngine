@@ -20,6 +20,7 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import gameplayStuff.PlayStateChangeables;
 import states.playState.PlayState;
+import states.playState.GameData as Data;
 
 class OptionCata extends FlxSprite
 {
@@ -462,7 +463,7 @@ class OptionsMenu extends FlxSubState
 					else
 					{
 						PauseSubState.goBack = true;
-						PlayStateChangeables.scrollSpeed = Main.save.data.scrollSpeed * PlayState.songMultiplier;
+						PlayStateChangeables.scrollSpeed = Main.save.data.scrollSpeed * Data.songMultiplier;
 						close();
 					}
 				}

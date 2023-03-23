@@ -18,6 +18,7 @@ import openfl.utils.Assets;
 import scriptStuff.HScriptHandler;
 import states.MusicBeatState;
 import states.playState.PlayState;
+import states.playState.GameData as Data;
 
 #if !USE_SSCRIPT
 @:access(states.PlayState)
@@ -268,7 +269,7 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 
 		scriptHandler.set("startDialogue", startDialogue);
 
-		scriptHandler.set('isStoryMode', PlayState.isStoryMode);
+		scriptHandler.set('isStoryMode', Data.isStoryMode);
 
 		scriptHandler.set('add', add);
 		scriptHandler.set('remove', remove);
@@ -307,7 +308,7 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 	// TODO Redo to work with DialogueBox.hx
 	public function startDialogue(dialogueFile:String, music:String = null)
 	{
-		var path:String = Paths.formatToDialoguePath(PlayState.SONG.songId + '/' + dialogueFile);
+		var path:String = Paths.formatToDialoguePath(Data.SONG.songId + '/' + dialogueFile);
 
 		if (path != null)
 		{

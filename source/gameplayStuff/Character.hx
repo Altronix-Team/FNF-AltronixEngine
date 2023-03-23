@@ -86,6 +86,8 @@ class Character extends FNFSprite
 		}
 
 		healthIcon = new HealthIcon(curCharacter, characterIcon, isPlayer);
+
+		dance();
 	}
 
 	override public function draw()

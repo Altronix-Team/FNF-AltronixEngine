@@ -25,6 +25,7 @@ import openfl.Lib;
 import openfl.media.Sound;
 import openfl.utils.Assets as OpenFlAssets;
 import openfl.utils.Future;
+import states.playState.GameData as Data;
 #if FEATURE_FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
@@ -106,9 +107,9 @@ class FreeplayState extends MusicBeatState
 
 		cached = false;
 
-		PlayState.isFreeplay = true;
-		PlayState.inDaPlay = false;
-		PlayState.currentSong = "bruh";
+		Data.isFreeplay = true;
+		Data.inDaPlay = false;
+		Data.currentSong = "bruh";
 
 		#if desktop
 		// Updating Discord Rich Presence
@@ -483,7 +484,7 @@ class FreeplayState extends MusicBeatState
 
 				if (controls.BACK)
 				{
-					PlayState.isFreeplay = false;
+					Data.isFreeplay = false;
 					FlxG.switchState(new MainMenuState());
 				}
 
@@ -515,9 +516,9 @@ class FreeplayState extends MusicBeatState
 		{
 			return;
 		}
-		PlayState.SONG = hmm;
+		Data.SONG = hmm;
 
-		var character = dad ? PlayState.SONG.player2 : PlayState.SONG.player1;
+		var character = dad ? Data.SONG.player2 : Data.SONG.player1;
 
 		LoadingState.loadAndSwitchState(new editors.AnimationDebug(character));
 	}
@@ -562,12 +563,12 @@ class FreeplayState extends MusicBeatState
 			return;
 		}
 
-		PlayState.SONG = currentSongData;
-		PlayState.storyDifficulty = CoolUtil.difficultyArray.indexOf(songs[curSelected].diffs[difficulty]);
-		PlayState.storyWeek = songs[curSelected].week;
-		Debug.logInfo('Loading song ${PlayState.SONG.songName} from week ${PlayState.storyWeek} into Free Play...');
+		Data.SONG = currentSongData;
+		Data.storyDifficulty = CoolUtil.difficultyArray.indexOf(songs[curSelected].diffs[difficulty]);
+		Data.storyWeek = songs[curSelected].week;
+		Debug.logInfo('Loading song ${Data.SONG.songName} from week ${Data.storyWeek} into Free Play...');
 
-		PlayState.songMultiplier = rate;
+		Data.songMultiplier = rate;
 
 		if (isCharting)
 		{

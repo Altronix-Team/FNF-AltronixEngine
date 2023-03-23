@@ -216,7 +216,6 @@ class EngineFPS extends Sprite
 	{
 		bgSprite.x = -x;
 		
-
 		super.__enterFrame(deltaTime.toInt());
 	}
 }

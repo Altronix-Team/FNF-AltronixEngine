@@ -12,6 +12,7 @@ import flixel.FlxG;
 import flixel.FlxSubState;
 import gameplayStuff.Conductor;
 import gameplayStuff.TimingStruct;
+import states.playState.GameData as Data;
 
 class MusicBeatSubstate extends FlxUISubState implements IMusicBeat
 {
@@ -105,7 +106,7 @@ class MusicBeatSubstate extends FlxUISubState implements IMusicBeat
 
 	function onWindowFocusOut():Void
 	{
-		if (PlayState.inDaPlay)
+		if (Data.inDaPlay)
 		{
 			if (!PlayState.instance.paused && !PlayState.instance.endingSong && PlayState.instance.songStarted)
 			{

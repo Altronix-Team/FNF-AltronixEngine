@@ -15,6 +15,7 @@ import openfl.display.Preloader.DefaultPreloader;
 import openfl.utils.Assets as OpenFlAssets;
 import states.FreeplayState;
 import states.playState.PlayState;
+import states.playState.GameData as Data;
 
 typedef NoteMeta =
 {
@@ -186,8 +187,8 @@ class Note extends FlxSprite
 		}
 		else
 		{
-			SONG = PlayState.SONG;
-			songMultiplier = PlayState.songMultiplier;
+			SONG = Data.SONG;
+			songMultiplier = Data.songMultiplier;
 		}
 
 		texture = SONG.specialSongNoteSkin != null ? SONG.specialSongNoteSkin : Main.save.data.noteskin;

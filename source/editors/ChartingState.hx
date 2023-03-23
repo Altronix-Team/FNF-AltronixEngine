@@ -1,5 +1,6 @@
 package editors;
 
+import states.playState.PlayState;
 import flash.geom.Rectangle;
 import flixel.FlxCamera;
 import flixel.FlxG;
@@ -58,7 +59,7 @@ import openfl.utils.Assets as OpenFlAssets;
 import openfl.utils.ByteArray;
 import states.LoadingState;
 import states.MusicBeatState;
-import states.playState.PlayState;
+import states.playState.GameData as Data;
 #if FEATURE_FILESYSTEM
 import flash.media.Sound;
 import sys.FileSystem;
@@ -192,11 +193,11 @@ class ChartingState extends MusicBeatState
 	{
 		curSectionInt = lastSectionInt;
 
-		PlayState.chartingMode = true;
+		Data.chartingMode = true;
 
 		FlxG.mouse.visible = true;
 
-		PlayState.inDaPlay = false;
+		Data.inDaPlay = false;
 
 		instance = this;
 
@@ -214,16 +215,15 @@ class ChartingState extends MusicBeatState
 		sectionRenderes = new FlxTypedGroup<SectionRender>();
 		lines = new FlxTypedGroup<FlxSprite>();
 		texts = new FlxTypedGroup<EventText>();
-
 		sectionIcons = new FlxTypedGroup<FlxSprite>();
 
 		TimingStruct.clearTimings();
 
-		if (PlayState.SONG != null)
+		if (Data.SONG != null)
 		{
 			var diff:String = "";
 
-			switch (PlayState.storyDifficulty)
+			switch (Data.storyDifficulty)
 			{
 				case 0:
 					diff = "-easy";
@@ -234,9 +234,9 @@ class ChartingState extends MusicBeatState
 				case 1:
 					diff = '';
 				default:
-					diff = "-" + CoolUtil.difficultyFromInt(PlayState.storyDifficulty).toLowerCase();
+					diff = "-" + CoolUtil.difficultyFromInt(Data.storyDifficulty).toLowerCase();
 			}
-			_song = Song.loadFromJson(PlayState.SONG.songId, diff);
+			_song = Song.loadFromJson(Data.SONG.songId, diff);
 		}
 		else
 		{
@@ -263,9 +263,9 @@ class ChartingState extends MusicBeatState
 		}
 
 		if (_song.specialSongNoteSkin != Main.save.data.noteskin && _song.specialSongNoteSkin != null)
-			PlayState.noteskinSprite = NoteskinHelpers.generateNoteskinSprite(_song.specialSongNoteSkin);
+			Data.noteskinSprite = NoteskinHelpers.generateNoteskinSprite(_song.specialSongNoteSkin);
 		else
-			PlayState.noteskinSprite = NoteskinHelpers.generateNoteskinSprite(Main.save.data.noteskin);
+			Data.noteskinSprite = NoteskinHelpers.generateNoteskinSprite(Main.save.data.noteskin);
 
 		addGrid(1);
 
@@ -445,6 +445,8 @@ class ChartingState extends MusicBeatState
 			sectionIcons.add(sectionicon);
 			height = Math.floor(renderer.sectionSprite.y);
 		}
+
+		regenWaveforms(true);
 
 		add(sectionIcons);
 
@@ -1276,10 +1278,11 @@ class ChartingState extends MusicBeatState
 		waveformEnabled.callback = function()
 		{
 			Main.save.data.chart_waveform = waveformEnabled.checked;
+			regenWaveforms(false);
 		};
 		#end
 
-		var skin = PlayState.SONG.specialSongNoteSkin;
+		var skin = Data.SONG.specialSongNoteSkin;
 		if (skin == null)
 			skin = Main.save.data.noteskin;
 		noteSkinInputText = new FlxUIInputText(10, 280, 150, skin, 8);
@@ -1480,7 +1483,7 @@ class ChartingState extends MusicBeatState
 		tab_group_chartshit.add(stepperSongVol);
 		tab_group_chartshit.add(stepperSongVolLabel);
 		#if desktop
-		// tab_group_chartshit.add(waveformEnabled);
+		tab_group_chartshit.add(waveformEnabled);
 		#end
 
 		UI_box.addGroup(tab_group_song);
@@ -1633,11 +1636,11 @@ class ChartingState extends MusicBeatState
 		var startSection:FlxButton = new FlxButton(10, 85, "Play Here", function()
 		{
 			autosaveSong();
-			PlayState.SONG = _song;
+			Data.SONG = _song;
 			FlxG.sound.music.stop();
 			vocals.stop();
 
-			PlayState.startTime = _song.notes[curSectionInt].startTime;
+			Data.startTime = _song.notes[curSectionInt].startTime;
 			while (curRenderedNotes.members.length > 0)
 			{
 				curRenderedNotes.remove(curRenderedNotes.members[0], true);
@@ -1750,10 +1753,10 @@ class ChartingState extends MusicBeatState
 						diff = diffsDropDown.selectedLabel.toLowerCase();
 				}
 				loadJson(_song.songId, diff);
-				PlayState.storyDifficulty = diffsArray.indexOf(diffsDropDown.selectedLabel);
+				Data.storyDifficulty = diffsArray.indexOf(diffsDropDown.selectedLabel);
 				diffText.text = diffsDropDown.selectedLabel;
 			});
-		diffsDropDown.selectedLabel = diffsArray[PlayState.storyDifficulty];
+		diffsDropDown.selectedLabel = diffsArray[Data.storyDifficulty];
 		blockPressWhileScrolling.push(diffsDropDown);
 
 		diffText = new FlxUIInputText(10, diffsDropDown.y + 40, 70, diffsDropDown.selectedLabel, 8);
@@ -2072,12 +2075,12 @@ class ChartingState extends MusicBeatState
 		}
 		if (reloadFromFile)
 		{
-			FlxG.sound.playMusic(Paths.inst(daSong, PlayState.SONG.diffSoundAssets), 0.6);
+			FlxG.sound.playMusic(Paths.inst(daSong, Data.SONG.diffSoundAssets), 0.6);
 
 			if (loadDiff == null)
 			{
-				var diff:String = CoolUtil.difficultyPrefixes[PlayState.storyDifficulty];
-				_song = ChartUtil.conversionChecks(Song.loadFromJson(PlayState.SONG.songId, diff));
+				var diff:String = CoolUtil.difficultyPrefixes[Data.storyDifficulty];
+				_song = ChartUtil.conversionChecks(Song.loadFromJson(Data.SONG.songId, diff));
 			}
 			else
 			{
@@ -2085,17 +2088,17 @@ class ChartingState extends MusicBeatState
 				if (loadDiff != 'normal')
 					diff = '-' + loadDiff;
 
-				_song = ChartUtil.conversionChecks(Song.loadFromJson(PlayState.SONG.songId, diff));
+				_song = ChartUtil.conversionChecks(Song.loadFromJson(Data.SONG.songId, diff));
 			}
 		}
 		else
 		{
-			_song = PlayState.SONG;
+			_song = Data.SONG;
 		}
 
-		FlxG.sound.playMusic(Paths.inst(daSong, PlayState.SONG.diffSoundAssets), 1, false);
+		FlxG.sound.playMusic(Paths.inst(daSong, Data.SONG.diffSoundAssets), 1, false);
 
-		vocals = new FlxSound().loadEmbedded(Paths.voices(daSong, PlayState.SONG.diffSoundAssets));
+		vocals = new FlxSound().loadEmbedded(Paths.voices(daSong, Data.SONG.diffSoundAssets));
 
 		FlxG.sound.list.add(vocals);
 
@@ -2554,10 +2557,10 @@ class ChartingState extends MusicBeatState
 			{
 				autosaveSong();
 				FlxG.sound.playMusic(Paths.music(Main.save.data.menuMusic), 0);
-				PlayState.chartingMode = false;
-				if (PlayState.isFreeplay)
+				Data.chartingMode = false;
+				if (Data.isFreeplay)
 					MusicBeatState.switchState(new states.FreeplayState());
-				else if (PlayState.isStoryMode)
+				else if (Data.isStoryMode)
 					MusicBeatState.switchState(new states.StoryMenuState());
 				else
 					MusicBeatState.switchState(new states.MainMenuState());
@@ -3132,7 +3135,7 @@ class ChartingState extends MusicBeatState
 					autosaveSong();
 					lastSectionInt = curSectionInt;
 
-					PlayState.SONG = _song;
+					Data.SONG = _song;
 					FlxG.sound.music.stop();
 					vocals.stop();
 
@@ -4168,11 +4171,11 @@ class ChartingState extends MusicBeatState
 	{
 		if (diff == null)
 		{
-			PlayState.SONG = Song.loadFromJson(songId, CoolUtil.difficultyPrefixes[PlayState.storyDifficulty]);
+			Data.SONG = Song.loadFromJson(songId, CoolUtil.difficultyPrefixes[Data.storyDifficulty]);
 		}
 		else
 		{
-			PlayState.SONG = Song.loadFromJson(songId, '-' + diff);
+			Data.SONG = Song.loadFromJson(songId, '-' + diff);
 		}
 		while (curRenderedNotes.members.length > 0)
 		{
@@ -4211,7 +4214,7 @@ class ChartingState extends MusicBeatState
 
 	function loadAutosave():Void
 	{
-		PlayState.SONG = Song.parseAutosaveshit(Main.save.data.autosave);
+		Data.SONG = Song.parseAutosaveshit(Main.save.data.autosave);
 
 		MusicBeatState.resetState();
 	}
@@ -4343,6 +4346,24 @@ class ChartingState extends MusicBeatState
 		else
 		{
 			pausedCrashFix = true;
+		}
+	}
+
+	public function regenWaveforms(redraw:Bool = true)
+	{
+		var curSection = getSectionByTime(Conductor.songPosition);
+		for (sr in sectionRenderes.members) sr.waveformSprite.visible = Main.save.data.chart_waveform;
+
+		for (k => e in sectionRenderes.members)
+		{
+			if (e.waveformSprite.visible)
+			{
+				e.waveformSprite.scale.set(1, zoomFactor);
+				e.waveformSprite.updateHitbox();
+				if (redraw)
+					e.waveformSprite.generateFlixel(curSection.startTime, curSection.endTime);
+				e.waveformSprite.y = getYfromStrum(curSection.startTime);
+			}
 		}
 	}
 }

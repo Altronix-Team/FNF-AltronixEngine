@@ -5,6 +5,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import states.playState.PlayState;
+import states.playState.GameData as Data;
 
 // Simple class to work with strum line and note splashes
 class StrumLine extends FlxTypedGroup<StaticArrow>
@@ -55,7 +56,7 @@ class StrumLine extends FlxTypedGroup<StaticArrow>
 			{
 				var babyArrow:StaticArrow = new StaticArrow(-10, PlayState.instance.strumLine.y);
 				babyArrow.noteData = i;
-				babyArrow.texture = PlayState.noteskinTexture;
+				babyArrow.texture = Data.noteskinTexture;
 
 				if (PlayStateChangeables.Optimize && player == 0)
 					continue;
@@ -66,7 +67,7 @@ class StrumLine extends FlxTypedGroup<StaticArrow>
 				if (tweenShit)
 					babyArrow.alpha = 0;
 
-				if (!PlayState.isStoryMode)
+				if (!Data.isStoryMode)
 				{
 					babyArrow.y -= 10;
 					// babyArrow.alpha = 0;

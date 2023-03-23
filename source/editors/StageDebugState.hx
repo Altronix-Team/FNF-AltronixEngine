@@ -16,6 +16,7 @@ import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import openfl.net.FileReference;
 import states.playState.PlayState;
+import states.playState.GameData as Data;
 
 class StageDebugState extends FlxState
 {
@@ -213,7 +214,7 @@ class StageDebugState extends FlxState
 		if (FlxG.keys.justPressed.ESCAPE)
 		{
 			FlxG.switchState(new PlayState());
-			PlayState.stageTesting = true;
+			Data.stageTesting = true;
 			for (i in Stage.toAdd)
 			{
 				remove(i);

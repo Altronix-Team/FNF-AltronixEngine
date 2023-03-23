@@ -15,6 +15,7 @@ import openfl.display.BitmapData;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
 import states.playState.PlayState;
+import states.playState.GameData;
 
 class Paths
 {
@@ -205,7 +206,7 @@ class Paths
 		var diff = '';
 		if (useDiffSongAssets)
 		{
-			switch (PlayState.storyDifficulty)
+			switch (GameData.storyDifficulty)
 			{
 				case 0:
 					diff = '-easy';
@@ -216,7 +217,7 @@ class Paths
 				case 3:
 					diff = '-hardplus';
 				default:
-					diff = '-' + CoolUtil.difficultyArray[PlayState.storyDifficulty].toLowerCase();
+					diff = '-' + CoolUtil.difficultyArray[GameData.storyDifficulty].toLowerCase();
 			}
 			result = Paths.getPath('songs/${songLowercase}/Voices$diff.$SOUND_EXT', null, "gameplay");
 		}
@@ -233,7 +234,7 @@ class Paths
 		var diff = '';
 		if (useDiffSongAssets)
 		{
-			switch (PlayState.storyDifficulty)
+			switch (GameData.storyDifficulty)
 			{
 				case 0:
 					diff = '-easy';
@@ -244,7 +245,7 @@ class Paths
 				case 3:
 					diff = '-hardplus';
 				default:
-					diff = '-' + CoolUtil.difficultyArray[PlayState.storyDifficulty].toLowerCase();
+					diff = '-' + CoolUtil.difficultyArray[GameData.storyDifficulty].toLowerCase();
 			}
 			return Paths.getPath('songs/${songLowercase}/Inst$diff.$SOUND_EXT', null, "gameplay");
 		}

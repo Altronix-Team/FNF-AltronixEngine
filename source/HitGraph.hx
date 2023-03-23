@@ -14,6 +14,7 @@ import flash.text.TextFormatAlign;
 import flixel.math.FlxMath;
 import flixel.util.FlxColor;
 import flixel.util.FlxDestroyUtil;
+import states.playState.GameData as Data;
 
 /**
  * stolen from https://github.com/HaxeFlixel/flixel/blob/master/flixel/system/debug/stats/StatsGraph.hx
@@ -196,9 +197,9 @@ class HitGraph extends Sprite
 
 		if (showInput)
 		{
-			for (i in 0...PlayState.songStats.anaArray.length)
+			for (i in 0...Data.songStats.anaArray.length)
 			{
-				var ana = PlayState.songStats.anaArray[i];
+				var ana = Data.songStats.anaArray[i];
 
 				var value = (ana.key * 25 - minValue) / range;
 
@@ -252,7 +253,7 @@ class HitGraph extends Sprite
 
 	public function fitX(x:Float)
 	{
-		return ((x / (FlxG.sound.music.length / PlayState.songMultiplier)) * width) * PlayState.songMultiplier;
+		return ((x / (FlxG.sound.music.length / Data.songMultiplier)) * width) * Data.songMultiplier;
 	}
 
 	public function addToHistory(diff:Float, judge:String, time:Float)

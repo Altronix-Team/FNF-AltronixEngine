@@ -243,7 +243,7 @@ class Debug
 	{
 		if (FlxG != null && FlxG.game != null && FlxG.log != null)
 		{
-			FlxG.log.advanced(data, logStyle);
+			//FlxG.log.advanced(data, logStyle); //A lot of errors, lol
 		}
 	}
 

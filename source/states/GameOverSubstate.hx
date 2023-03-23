@@ -9,6 +9,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import gameplayStuff.Boyfriend;
 import gameplayStuff.Conductor;
+import states.playState.GameData as Data;
 
 class GameOverSubstate extends MusicBeatSubstate
 {
@@ -26,7 +27,7 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	public function new(x:Float, y:Float)
 	{
-		var daStage = PlayState.stageCheck;
+		var daStage = Data.stageCheck;
 
 		super();
 
@@ -71,7 +72,7 @@ class GameOverSubstate extends MusicBeatSubstate
 		{
 			FlxG.sound.music.stop();
 
-			if (PlayState.isStoryMode)
+			if (Data.isStoryMode)
 			{
 				GameplayCustomizeState.freeplayBf = 'bf';
 				GameplayCustomizeState.freeplayDad = 'dad';
@@ -84,9 +85,9 @@ class GameOverSubstate extends MusicBeatSubstate
 			}
 			else
 				MusicBeatState.switchState(new FreeplayState());
-			PlayState.stageTesting = false;
-			PlayState.isStoryMode = false;
-			PlayState.isFreeplay = false;
+			Data.stageTesting = false;
+			Data.isStoryMode = false;
+			Data.isFreeplay = false;
 			ScriptHelper.clearAllScripts();
 		}
 
@@ -97,7 +98,7 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		if (boyfriend.animation.curAnim.name == 'firstDeath' && boyfriend.animation.curAnim.finished)
 		{
-			if (PlayState.SONG.stage == 'warzone')
+			if (Data.SONG.stage == 'warzone')
 				{				
 					var exclude:Array<Int> = [];
 	
@@ -135,7 +136,7 @@ class GameOverSubstate extends MusicBeatSubstate
 	{
 		if (!isEnding)
 		{
-			PlayState.startTime = 0;
+			Data.startTime = 0;
 			isEnding = true;
 			boyfriend.playAnim('deathConfirm', true);
 			FlxG.sound.music.stop();
@@ -146,7 +147,7 @@ class GameOverSubstate extends MusicBeatSubstate
 				{
 					ScriptHelper.clearAllScripts();
 					LoadingState.loadAndSwitchState(new PlayState());
-					PlayState.stageTesting = false;
+					Data.stageTesting = false;
 				});
 			});
 		}

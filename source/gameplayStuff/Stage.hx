@@ -24,6 +24,7 @@ import gameplayStuff.StageData;
 import openfl.utils.Assets;
 import states.GameplayCustomizeState;
 import states.playState.PlayState;
+import states.playState.GameData as Data;
 #if sys
 import sys.FileSystem;
 #end
@@ -412,9 +413,9 @@ class Stage extends states.MusicBeatState
 					var bgGirls = new BackgroundGirls(-100, 190);
 					bgGirls.scrollFactor.set(0.9, 0.9);
 
-					if (PlayState.SONG != null)
+					if (Data.SONG != null)
 					{
-						if (PlayState.SONG.scaredbgdancers)
+						if (Data.SONG.scaredbgdancers)
 						{
 							if (Main.save.data.distractions)
 								bgGirls.getScared();
@@ -433,9 +434,9 @@ class Stage extends states.MusicBeatState
 						swagBacks['bgGirls'] = bgGirls;
 						toAdd.push(bgGirls);
 					}
-					if (PlayState.SONG != null)
+					if (Data.SONG != null)
 					{
-						if (PlayState.SONG.showbgdancers)
+						if (Data.SONG.showbgdancers)
 						{
 							bgGirls.visible = true;
 						}
@@ -641,9 +642,9 @@ class Stage extends states.MusicBeatState
 						toAdd.push(foregroundSprites);
 					}
 
-					if (PlayState.SONG != null)
+					if (Data.SONG != null)
 					{
-						if (PlayState.SONG.gfVersion == 'picospeaker')
+						if (Data.SONG.gfVersion == 'picospeaker')
 						{
 							var firstTank:TankmenBG = new TankmenBG(20, 500, true);
 							firstTank.resetShit(20, 600, true);
@@ -846,7 +847,7 @@ class Stage extends states.MusicBeatState
 			switch (curStage)
 			{
 				case 'halloween':
-					if (PlayState.SONG != null)
+					if (Data.SONG != null)
 					{
 						if (FlxG.random.bool(Conductor.bpm > 320 ? 100 : 10) && curBeat > lightningStrikeBeat + lightningOffset)
 						{
@@ -885,9 +886,9 @@ class Stage extends states.MusicBeatState
 
 							randomColor();
 
-							if (PlayState.SONG != null)
+							if (Data.SONG != null)
 							{
-								if (PlayState.SONG.songId != 'blammed')
+								if (Data.SONG.songId != 'blammed')
 									phillyCityLight.color = windowColor;
 							}
 
@@ -953,7 +954,7 @@ class Stage extends states.MusicBeatState
 
 	function moveTank(?elapsed:Float = 0)
 	{
-		if (!PlayState.inCutscene)
+		if (!Data.inCutscene)
 		{
 			tankAngle += elapsed * tankSpeed;
 			steve.angle = tankAngle - 90 + 15;
@@ -1025,7 +1026,7 @@ class Stage extends states.MusicBeatState
 			{
 				startedMoving = true;
 
-				if (PlayState.SONG != null)
+				if (Data.SONG != null)
 				{
 					if (PlayState.instance.gf != null)
 						PlayState.instance.gf.playAnim('hairBlow');
@@ -1058,7 +1059,7 @@ class Stage extends states.MusicBeatState
 	{
 		if (Main.save.data.distractions)
 		{
-			if (PlayState.SONG != null)
+			if (Data.SONG != null)
 			{
 				if (PlayState.instance.gf != null)
 					PlayState.instance.gf.playAnim('hairFall');

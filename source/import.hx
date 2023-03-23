@@ -5,7 +5,10 @@ import haxe.macro.Context;
 import flixel.FlxG;
 import utils.*;
 #end
+
+#if !cs
 import yaml.Yaml;
+#end
 
 using StringTools;
 using hx.strings.Strings;

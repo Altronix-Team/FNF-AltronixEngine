@@ -42,6 +42,13 @@ class CoolUtil
 		difficultyArray = defaultDifficulties;
 	}
 
+	public static function flxColorFromRGBArray(value:Array<Int>):FlxColor
+	{
+		if (value.length < 3) return FlxColor.WHITE;
+
+		return FlxColor.fromRGB(value[0], value[1], value[2]);
+	}
+
 	public static function coolTextFile(path:String):Array<String>
 	{
 		var daList:Array<String> = [];

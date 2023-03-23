@@ -24,6 +24,7 @@ import gameplayStuff.Conductor;
 import gameplayStuff.Song;
 import gameplayStuff.Highscore;
 import states.playState.PlayState;
+import states.playState.GameData as Data;
 
 
 class StoryMenuState extends MusicBeatState
@@ -92,9 +93,9 @@ class StoryMenuState extends MusicBeatState
 		WeekData.reloadWeekFiles(true);
 		if(curWeek >= WeekData.weeksList.length) curWeek = 0;
 
-		PlayState.isStoryMode = true;
-		PlayState.currentSong = "bruh";
-		PlayState.inDaPlay = false;
+		Data.isStoryMode = true;
+		Data.currentSong = "bruh";
+		Data.inDaPlay = false;
 		#if desktop
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Story Mode Menu", null);
@@ -378,7 +379,7 @@ class StoryMenuState extends MusicBeatState
 
 		if (controls.BACK && !movedBack && !selectedWeek)
 		{
-			PlayState.isStoryMode = false;
+			Data.isStoryMode = false;
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			movedBack = true;
 			FlxG.switchState(new MainMenuState());
@@ -425,10 +426,10 @@ class StoryMenuState extends MusicBeatState
 					CoolUtil.songDiffs.set(i, weekDiffs);
 			}
 
-			PlayState.storyPlaylist = songArray;
-			PlayState.isStoryMode = true;
+			Data.storyPlaylist = songArray;
+			Data.isStoryMode = true;
 			selectedWeek = true;
-			PlayState.songMultiplier = 1;
+			Data.songMultiplier = 1;
 
 			for (i in weekDiffs)
 			{
@@ -436,10 +437,10 @@ class StoryMenuState extends MusicBeatState
 					CoolUtil.difficultyArray.push(i);
 			}
 
-			PlayState.storyDifficulty = CoolUtil.difficultyArray.indexOf(diffStr);
+			Data.storyDifficulty = CoolUtil.difficultyArray.indexOf(diffStr);
 
 			var diff:String = '';
-			switch (PlayState.storyDifficulty)
+			switch (Data.storyDifficulty)
 			{
 				case 0:
 					diff = "-easy";
@@ -453,14 +454,14 @@ class StoryMenuState extends MusicBeatState
 					diff = "-" + diffStr.toLowerCase();
 			}
 
-			PlayState.sicks = 0;
-			PlayState.bads = 0;
-			PlayState.shits = 0;
-			PlayState.goods = 0;
-			PlayState.campaignMisses = 0;
-			PlayState.SONG = /*Song.conversionChecks(*/Song.loadFromJson(PlayState.storyPlaylist[0], diff)/*)*/;
-			PlayState.storyWeek = curWeek;
-			PlayState.campaignScore = 0;
+			Data.sicks = 0;
+			Data.bads = 0;
+			Data.shits = 0;
+			Data.goods = 0;
+			Data.campaignMisses = 0;
+			Data.SONG = /*Song.conversionChecks(*/Song.loadFromJson(Data.storyPlaylist[0], diff)/*)*/;
+			Data.storyWeek = curWeek;
+			Data.campaignScore = 0;
 			new FlxTimer().start(1, function(tmr:FlxTimer)
 			{
 				LoadingState.loadAndSwitchState(new PlayState(), true);

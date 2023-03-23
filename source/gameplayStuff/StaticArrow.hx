@@ -6,6 +6,7 @@ import flixel.animation.FlxBaseAnimation;
 import flixel.graphics.frames.FlxAtlasFrames;
 import gameplayStuff.Song.SongData;
 import states.playState.PlayState;
+import states.playState.GameData as Data;
 
 class StaticArrow extends FlxSprite
 {
@@ -39,8 +40,8 @@ class StaticArrow extends FlxSprite
 		super(x, y);
 		updateHitbox();
 
-		if (PlayState.SONG != null)
-			noteTypeCheck = PlayState.SONG.noteStyle;
+		if (Data.SONG != null)
+			noteTypeCheck = Data.SONG.noteStyle;
 
 		if (_song != null)
 			noteTypeCheck = _song.noteStyle;

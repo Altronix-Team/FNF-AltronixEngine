@@ -1,5 +1,6 @@
 package;
 
+import states.playState.GameData;
 import flixel.FlxG;
 import flixel.util.FlxColor;
 import gameplayStuff.Highscore;
@@ -1675,12 +1676,12 @@ class OffsetMenu extends Option
 	{
 		trace("switch");
 
-		PlayState.SONG = Song.loadFromJson('tutorial', '');
-		PlayState.isStoryMode = false;
-		PlayState.storyDifficulty = 0;
-		PlayState.storyWeek = 0;
-		PlayState.offsetTesting = true;
-		trace('CUR WEEK' + PlayState.storyWeek);
+		GameData.SONG = Song.loadFromJson('tutorial', '');
+		GameData.isStoryMode = false;
+		GameData.storyDifficulty = 0;
+		GameData.storyWeek = 0;
+		GameData.offsetTesting = true;
+		trace('CUR WEEK' + GameData.storyWeek);
 		LoadingState.loadAndSwitchState(new PlayState());
 		return false;
 	}

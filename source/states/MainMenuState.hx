@@ -1,5 +1,6 @@
 package states;
 
+import states.playState.GameData;
 import flixel.addons.api.FlxGameJolt;
 import flixel.FlxBasic;
 import scriptStuff.HScriptHandler;
@@ -27,7 +28,7 @@ import states.playState.PlayState;
 
 class MainMenuState extends MusicBeatState
 {
-	private var camGame:SwagCamera;
+	private var camGame:FlxCamera;
 
 	var camFollowPos:FlxObject;
 
@@ -35,11 +36,13 @@ class MainMenuState extends MusicBeatState
 
 	var menuItems:FlxTypedGroup<MenuItem>;
 
-	#if !switch
-	var optionShit:Array<String> = ['story mode', 'freeplay',/* 'extras', */#if desktop 'mods',#end 'credits', 'awards', 'options'];
-	#else
-	var optionShit:Array<String> = ['story mode', 'freeplay'];
-	#end
+	var optionShit:Array<String> = [
+		'story mode',
+		'freeplay',
+		#if FEATURE_MODCORE 'mods',#end 
+		'credits', 
+		'awards', 
+		'options'];
 
 	var newGaming:FlxText;
 	var newGaming2:FlxText;
@@ -59,9 +62,9 @@ class MainMenuState extends MusicBeatState
 	override function create()
 	{
 		Achievements.getAchievement(160503, 'engine');
-		camGame = new SwagCamera();
+		camGame = new FlxCamera();
 		clean();
-		PlayState.inDaPlay = false;
+		GameData.inDaPlay = false;
 		#if desktop
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);

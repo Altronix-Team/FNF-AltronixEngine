@@ -3,6 +3,7 @@ package gameplayStuff;
 import flixel.FlxG;
 import gameplayStuff.Section;
 import states.playState.PlayState;
+import states.playState.GameData as Data;
 
 class TimingStruct
 {
@@ -81,9 +82,9 @@ class TimingStruct
 
 	public static function getSectionByTime(ms:Float):SwagSection
 	{
-		if (PlayState.SONG != null)
+		if (Data.SONG != null)
 		{
-			for (i in PlayState.SONG.notes)
+			for (i in Data.SONG.notes)
 			{
 				var start = TimingStruct.getTimeFromBeat((TimingStruct.getBeatFromTime(i.startTime)));
 				var end = TimingStruct.getTimeFromBeat((TimingStruct.getBeatFromTime(i.endTime)));

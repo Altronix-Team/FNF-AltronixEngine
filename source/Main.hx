@@ -1,9 +1,11 @@
 package;
 
+import lime.system.ThreadPool;
+import utils.ThreadUtil;
+import flixel.system.scaleModes.StageSizeScaleMode;
 import modding.ModUtil;
 #if FEATURE_MULTITHREADING
 import sys.thread.Thread;
-import utils.ThreadUtil.ThreadObject;
 #end
 import openfl.utils.AssetLibrary;
 #if cpp
@@ -82,7 +84,8 @@ class Main extends Sprite
 	public static var fromLauncher:Bool = false;
 
 	#if FEATURE_MULTITHREADING
-	public static var gameThreads:Array<ThreadObject> = [];
+	public static var reservedGameThreads:Array<ReservedThreadObject> = [];
+	public static var threadPool:ThreadPool = new ThreadPool(0, 4);
 	#end
 
 	public static function main():Void
@@ -182,6 +185,8 @@ class Main extends Sprite
 		game = new FlxGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash#if (!debug), save.data.fullscreenOnStart#end);
 		addChild(game);	
 		
+		FlxG.scaleMode = new StageSizeScaleMode();
+
 		FlxG.signals.preStateCreate.add(preStateSwitch);
 		FlxG.signals.postStateSwitch.add(postStateSwitch);
 
@@ -197,11 +202,12 @@ class Main extends Sprite
 		Debug.onGameStart();
 
 		#if FEATURE_MULTITHREADING
-		gameThreads.push(new ThreadObject(true, "songLoader"));
-		for (i in 0...3)
-		{
-			gameThreads.push(new ThreadObject());
-		}
+		reservedGameThreads.push(new ReservedThreadObject(true, "songLoader"));
+		reservedGameThreads.push(new ReservedThreadObject(true, "loadStage"));
+		reservedGameThreads.push(new ReservedThreadObject(true, "loadChars"));
+		reservedGameThreads.push(new ReservedThreadObject(true, "loadBF"));
+		reservedGameThreads.push(new ReservedThreadObject(true, "loadGF"));
+		reservedGameThreads.push(new ReservedThreadObject(true, "loadDad"));
 		#end
 		/*#if debug
 		flixel.addons.studio.FlxStudio.create();

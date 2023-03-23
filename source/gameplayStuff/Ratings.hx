@@ -4,6 +4,7 @@ import flixel.FlxG;
 import gameplayStuff.Conductor;
 import gameplayStuff.PlayStateChangeables;
 import states.playState.PlayState;
+import states.playState.GameData as Data;
 
 class Ratings
 {
@@ -15,19 +16,19 @@ class Ratings
 			ranking = LanguageStuff.getPlayState("$BOTPLAY_TEXT");
 		}
 
-		if (PlayState.misses == 0 && PlayState.bads == 0 && PlayState.shits == 0 && PlayState.goods == 0) // Marvelous (SICK) Full Combo
+		if (Data.misses == 0 && Data.bads == 0 && Data.shits == 0 && Data.goods == 0) // Marvelous (SICK) Full Combo
 		{
 			ranking = "(MFC)";
 		}
-		else if (PlayState.misses == 0 && PlayState.bads == 0 && PlayState.shits == 0 && PlayState.goods >= 1) // Good Full Combo (Nothing but Goods & Sicks)
+		else if (Data.misses == 0 && Data.bads == 0 && Data.shits == 0 && Data.goods >= 1) // Good Full Combo (Nothing but Goods & Sicks)
 		{
 			ranking = "(GFC)";
 		}
-		else if (PlayState.misses == 0) // Regular FC
+		else if (Data.misses == 0) // Regular FC
 		{
 			ranking = "(FC)";
 		}
-		else if (PlayState.misses < 10) // Single Digit Combo Breaks
+		else if (Data.misses < 10) // Single Digit Combo Breaks
 		{
 			ranking = "(SDCB)";
 		}
@@ -149,7 +150,7 @@ class Ratings
 						Std.string(nps),
 						Std.string(maxNPS),
 						(Conductor.safeFrames != 10 ? Std.string(score) + " (" + Std.string(scoreDef) + ")" : "" + Std.string(score)),
-						Std.string(PlayState.misses),
+						Std.string(Data.misses),
 						Std.string(CoolUtil.truncateFloat(accuracy, 2)),
 						GenerateLetterRank(accuracy)
 					]);
@@ -159,7 +160,7 @@ class Ratings
 				return LanguageStuff.replaceFlagsAndReturn("$KADE_RATING_WITH_AC_WITHOUT_NPC", "playState",
 					["<score>", "<misses>", "<accuracyPers>", "<accuracyStr>"], [
 						(Conductor.safeFrames != 10 ? Std.string(score) + " (" + Std.string(scoreDef) + ")" : "" + Std.string(score)),
-						Std.string(PlayState.misses),
+						Std.string(Data.misses),
 						Std.string(CoolUtil.truncateFloat(accuracy, 2)),
 						GenerateLetterRank(accuracy)
 					]);

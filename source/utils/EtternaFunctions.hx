@@ -1,6 +1,7 @@
 package utils;
 
 import states.playState.PlayState;
+import states.playState.GameData as Data;
 
 class EtternaFunctions
 {
@@ -30,11 +31,11 @@ class EtternaFunctions
 	public static function getNotes():Int
 	{
 		var notes:Int = 0;
-		for (i in 0...PlayState.SONG.notes.length)
+		for (i in 0...Data.SONG.notes.length)
 		{
-			for (ii in 0...PlayState.SONG.notes[i].sectionNotes.length)
+			for (ii in 0...Data.SONG.notes[i].sectionNotes.length)
 			{
-				var n = PlayState.SONG.notes[i].sectionNotes[ii];
+				var n = Data.SONG.notes[i].sectionNotes[ii];
 				if (n[1] <= 0)
 					notes++;
 			}
@@ -45,12 +46,12 @@ class EtternaFunctions
 	public static function getHolds():Int
 	{
 		var notes:Int = 0;
-		for (i in 0...PlayState.SONG.notes.length)
+		for (i in 0...Data.SONG.notes.length)
 		{
-			trace(PlayState.SONG.notes[i]);
-			for (ii in 0...PlayState.SONG.notes[i].sectionNotes.length)
+			trace(Data.SONG.notes[i]);
+			for (ii in 0...Data.SONG.notes[i].sectionNotes.length)
 			{
-				var n = PlayState.SONG.notes[i].sectionNotes[ii];
+				var n = Data.SONG.notes[i].sectionNotes[ii];
 				trace(n);
 				if (n[1] > 0)
 					notes++;
@@ -69,7 +70,7 @@ class EtternaFunctions
 		var max_points = 1.0;
 		var miss_weight = -5.5;
 		var ridic = 5 * ts;
-		var max_boo_weight = 166 * (ts / PlayState.songMultiplier);
+		var max_boo_weight = 166 * (ts / Data.songMultiplier);
 		var ts_pow = 0.75;
 		var zero = 65 * (Math.pow(ts, ts_pow));
 		var power = 2.5;

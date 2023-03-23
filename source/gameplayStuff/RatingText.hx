@@ -6,6 +6,7 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxAxes;
 import flixel.util.FlxColor;
 import states.playState.PlayState;
+import states.playState.GameData as Data;
 
 @:access(states.PlayState)
 class RatingText extends FlxTypedGroup<FlxText>
@@ -59,7 +60,7 @@ class RatingText extends FlxTypedGroup<FlxText>
 	{
 		scoreText.text = '${LanguageStuff.replaceFlagsAndReturn("$Score_Text", "playState", ['<text>'], [PlayState.instance.songScore])} | ';
 
-		missesText.text = '${LanguageStuff.replaceFlagsAndReturn("$Misses_Text", "playState", ['<text>'], [PlayState.misses])} | ';
+		missesText.text = '${LanguageStuff.replaceFlagsAndReturn("$Misses_Text", "playState", ['<text>'], [Data.misses])} | ';
 
 		accuracyText.text = '${LanguageStuff.replaceFlagsAndReturn("$Accuracy_Text", "playState", ['<text>'], [CoolUtil.truncateFloat(PlayState.instance.accuracy, 2)])}'
 			+ (PlayState.instance.accuracy > 0 ? ' | ${Ratings.GenerateLetterRank(PlayState.instance.accuracy)}' : '');

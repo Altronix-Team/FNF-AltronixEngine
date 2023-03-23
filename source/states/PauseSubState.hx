@@ -18,6 +18,7 @@ import flixel.util.FlxColor;
 import gameplayStuff.PlayStateChangeables;
 import gameplayStuff.Song;
 import states.playState.PlayState;
+import states.playState.GameData as Data;
 
 class PauseSubState extends MusicBeatSubstate
 {
@@ -36,7 +37,7 @@ class PauseSubState extends MusicBeatSubstate
 	var perSongOffset:FlxText;
 
 	var offsetChanged:Bool = false;
-	var startOffset:Float = PlayState.songOffset;
+	var startOffset:Float = Data.songOffset;
 
 	var bg:FlxSprite;
 
@@ -61,21 +62,21 @@ class PauseSubState extends MusicBeatSubstate
 		add(bg);
 
 		var levelInfo:FlxText = new FlxText(20, 15, 0, "Song name: ", 32);
-		levelInfo.text += PlayState.SONG.songName;
+		levelInfo.text += Data.SONG.songName;
 		levelInfo.scrollFactor.set();
 		levelInfo.setFormat(Paths.font("vcr.ttf"), 32);
 		levelInfo.updateHitbox();
 		add(levelInfo);
 
 		var levelDifficulty:FlxText = new FlxText(20, 15 + 32, 0, "Song difficulty: ", 32);
-		levelDifficulty.text += CoolUtil.difficultyFromInt(PlayState.storyDifficulty).toUpperCase();
+		levelDifficulty.text += CoolUtil.difficultyFromInt(Data.storyDifficulty).toUpperCase();
 		levelDifficulty.scrollFactor.set();
 		levelDifficulty.setFormat(Paths.font('vcr.ttf'), 32);
 		levelDifficulty.updateHitbox();
 		add(levelDifficulty);
 
 		var composerNick:FlxText = new FlxText(20, levelDifficulty.y + 32, 0, "Composer: ", 32);
-		composerNick.text += PlayState.SONG.songComposer;
+		composerNick.text += Data.SONG.songComposer;
 		composerNick.scrollFactor.set();
 		composerNick.setFormat(Paths.font('vcr.ttf'), 32);
 		composerNick.updateHitbox();
@@ -100,16 +101,16 @@ class PauseSubState extends MusicBeatSubstate
 		perSongOffset.scrollFactor.set();
 		perSongOffset.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 
-		if (PlayState.isStoryMode)
+		if (Data.isStoryMode)
 		{
-			detailsText = LanguageStuff.replaceFlagsAndReturn("$STORY_MODE", "playState", ["<storyWeek>"], [Std.string(PlayState.storyWeek)]);
+			detailsText = LanguageStuff.replaceFlagsAndReturn("$STORY_MODE", "playState", ["<storyWeek>"], [Std.string(Data.storyWeek)]);
 		}
-		if (PlayState.isFreeplay)
+		if (Data.isFreeplay)
 		{
 			detailsText = LanguageStuff.getPlayState("$FREEPLAY");
 		}
 
-		iconRPC = PlayState.SONG.player2;
+		iconRPC = Data.SONG.player2;
 
 		switch (iconRPC)
 		{
@@ -121,13 +122,13 @@ class PauseSubState extends MusicBeatSubstate
 				iconRPC = 'mom';
 		}
 
-		storyDifficultyText = CoolUtil.difficultyFromInt(PlayState.storyDifficulty);
+		storyDifficultyText = CoolUtil.difficultyFromInt(Data.storyDifficulty);
 
 		#if desktop
 		DiscordClient.changePresence(LanguageStuff.replaceFlagsAndReturn("$PAUSED", "playState", ["<detailsText>"], [
 			detailsText
 			+ ' | '
-			+ PlayState.SONG.songName
+			+ Data.SONG.songName
 			+ " ("
 			+ storyDifficultyText
 			+ ") "
@@ -146,7 +147,7 @@ class PauseSubState extends MusicBeatSubstate
 			grpMenuShit.add(songText);
 		}
 
-		difficultyChoices = CoolUtil.songDiffs.get(PlayState.SONG.songId);
+		difficultyChoices = CoolUtil.songDiffs.get(Data.SONG.songId);
 
 		difficultyChoices.push('BACK');
 
@@ -188,7 +189,7 @@ class PauseSubState extends MusicBeatSubstate
 			rightPcontroller = gamepad.justPressed.DPAD_RIGHT;
 		}
 
-		var songPath = 'assets/data/songs/${PlayState.SONG.songId}/';
+		var songPath = 'assets/data/songs/${Data.SONG.songId}/';
 
 		if (controls.UP_P || upPcontroller)
 		{
@@ -207,13 +208,13 @@ class PauseSubState extends MusicBeatSubstate
 				{
 					if(menuItems.length - 1 != curSelected && difficultyChoices.contains(daSelected)) 
 					{
-						if (PlayState.isFreeplay)
+					if (Data.isFreeplay)
 						{
-							var currentSongData = FreeplayState.songData.get(PlayState.SONG.songId)[difficultyChoices.indexOf(daSelected)];
+							var currentSongData = FreeplayState.songData.get(Data.SONG.songId)[difficultyChoices.indexOf(daSelected)];
 							//var name:String = PlayState.SONG.songId;
 							//var poop = Highscore.formatSongDiff(name, CoolUtil.difficultyArray.indexOf(daSelected));
-							PlayState.SONG = currentSongData;
-							PlayState.storyDifficulty = CoolUtil.difficultyArray.indexOf(daSelected);
+							Data.SONG = currentSongData;
+							Data.storyDifficulty = CoolUtil.difficultyArray.indexOf(daSelected);
 							restartSong();
 							FlxG.sound.music.volume = 0;
 							return;	
@@ -234,8 +235,8 @@ class PauseSubState extends MusicBeatSubstate
 								default:
 									diff = "-" + daSelected.toLowerCase();
 							}
-							PlayState.SONG = ChartUtil.conversionChecks(Song.loadFromJson(PlayState.SONG.songId, diff));
-							PlayState.storyDifficulty = CoolUtil.difficultyArray.indexOf(daSelected);
+							Data.SONG = ChartUtil.conversionChecks(Song.loadFromJson(Data.SONG.songId, diff));
+							Data.storyDifficulty = CoolUtil.difficultyArray.indexOf(daSelected);
 							restartSong();
 							FlxG.sound.music.volume = 0;
 							return;	
@@ -252,7 +253,7 @@ class PauseSubState extends MusicBeatSubstate
 					close();
 				case "Restart Song":
 					restartSong();
-					PlayState.stageTesting = false;
+					Data.stageTesting = false;
 					ScriptHelper.clearAllScripts();
 
 				case 'Change Difficulty':
@@ -264,14 +265,14 @@ class PauseSubState extends MusicBeatSubstate
 					close();
 
 				case "Exit to menu":
-					PlayState.startTime = 0;
-					PlayState.stageTesting = false;
+					Data.startTime = 0;
+					Data.stageTesting = false;
 					if (Main.save.data.fpsCap > 340)
 						(cast(Lib.current.getChildAt(0), Main)).setFPSCap(120);
 
 					PlayState.instance.clean();
 
-					if (PlayState.isStoryMode)
+					if (Data.isStoryMode)
 					{
 						GameplayCustomizeState.freeplayBf = 'bf';
 						GameplayCustomizeState.freeplayDad = 'dad';
@@ -282,11 +283,11 @@ class PauseSubState extends MusicBeatSubstate
 						GameplayCustomizeState.freeplayWeek = 1;
 						MusicBeatState.switchState(new StoryMenuState());
 					}
-					else if (PlayState.isFreeplay)
+					else if (Data.isFreeplay)
 						MusicBeatState.switchState(new FreeplayState());
-					PlayState.isStoryMode = false;
-					PlayState.isFreeplay = false;
-					PlayState.chartingMode = false;
+					Data.isStoryMode = false;
+					Data.isFreeplay = false;
+					Data.chartingMode = false;
 					PlayStateChangeables.twoPlayersMode = false;
 					ScriptHelper.clearAllScripts();
 

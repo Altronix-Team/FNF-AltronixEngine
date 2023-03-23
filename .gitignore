@@ -3,8 +3,8 @@ export/
 AltronixEngine.code-workspace
 deleted
 -_.txt
-source/GJKeys.hx
+GJKeys.hx
 dump
 .haxelib
-source/GJKeys.hx
 Project.hxp
+source/flixel/camera/*

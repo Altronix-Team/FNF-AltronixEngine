@@ -1,7 +1,5 @@
 package;
 
-import openfl.utils.Assets;
-import haxe.xml.Access;
 import flash.media.Sound;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -13,7 +11,9 @@ import flixel.system.FlxSound;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;
+import haxe.xml.Access;
 import openfl.Lib;
+import openfl.utils.Assets;
 
 /**
  * Loosley based on FlxTypeText lolol
@@ -149,18 +149,18 @@ class Alphabet extends FlxSpriteGroup
 			{
 				letter.createLetter(character.toLowerCase(), isBold, true);
 				/*if (isAlphabet)
-				{
-					if (isBold)
-						letter.createBold(character.toLowerCase());
-					else
 					{
-						letter.createLetter(character.toLowerCase());
+						if (isBold)
+							letter.createBold(character.toLowerCase());
+						else
+						{
+							letter.createLetter(character.toLowerCase());
+						}
 					}
-				}
-				else if (isNumber)
-					letter.createNumber(character);
-				else
-					letter.createSymbol(character);*/
+					else if (isNumber)
+						letter.createNumber(character);
+					else
+						letter.createSymbol(character); */
 			}
 			else
 			{
@@ -286,16 +286,16 @@ class Alphabet extends FlxSpriteGroup
 				letter.createLetter(splitWords[loopNum].toLowerCase(), isBold, true);
 
 				/*if (isNumber)
-				{
-					letter.createNumber(splitWords[loopNum]);
-				}
-				else if (isSymbol)
-				{
-					letter.createSymbol(splitWords[loopNum]);
-				}
-				else
-				{
-					letter.createLetter(splitWords[loopNum]);
+					{
+						letter.createNumber(splitWords[loopNum]);
+					}
+					else if (isSymbol)
+					{
+						letter.createSymbol(splitWords[loopNum]);
+					}
+					else
+					{
+						letter.createLetter(splitWords[loopNum]);
 				}*/
 
 				letter.x += 90;
@@ -419,7 +419,6 @@ class AlphaCharacter extends FlxSprite
 		'x' => {anim: null, states: [BOLD, LOWERCASE, UPPERCASE]},
 		'y' => {anim: null, states: [BOLD, LOWERCASE, UPPERCASE]},
 		'z' => {anim: null, states: [BOLD, LOWERCASE, UPPERCASE]},
-		
 		'0' => {anim: null, states: [BOLD, NORMAL]},
 		'1' => {anim: null, states: [BOLD, NORMAL]},
 		'2' => {anim: null, states: [BOLD, NORMAL]},
@@ -430,7 +429,6 @@ class AlphaCharacter extends FlxSprite
 		'7' => {anim: null, states: [BOLD, NORMAL]},
 		'8' => {anim: null, states: [BOLD, NORMAL]},
 		'9' => {anim: null, states: [BOLD, NORMAL]},
-		
 		'&' => {anim: null, states: [BOLD, NORMAL]},
 		'(' => {anim: null, states: [BOLD, NORMAL]},
 		')' => {anim: null, states: [BOLD, NORMAL]},
@@ -446,7 +444,6 @@ class AlphaCharacter extends FlxSprite
 		'.' => {anim: 'period', states: [BOLD, NORMAL]},
 		'❝' => {anim: 'start quote', states: [BOLD, NORMAL]},
 		'❞' => {anim: 'end quote', states: [BOLD, NORMAL]},
-		
 		'_' => {anim: null, states: [NORMAL]},
 		'#' => {anim: null, states: [NORMAL]},
 		'$' => {anim: null, states: [NORMAL]},
@@ -481,11 +478,11 @@ class AlphaCharacter extends FlxSprite
 
 	public function createLetter(letter:String, isBold:Bool = true, Uppercase:Bool = false)
 	{
-		if (letter == "") return;
-		letter = letter.toLowerCase();
-		if (isBold && AlphaCharacter.letters.get(letter).states.contains(BOLD))
+		if (letter == "")
+			return;
+		if (isBold && safeStateCheck(letter, BOLD))
 		{
-			var anim = AlphaCharacter.letters.get(letter).anim == null ? letter : AlphaCharacter.letters.get(letter).anim;
+			var anim = safeGetAnim(letter);
 			animation.addByPrefix(letter, anim + " bold instance 1", 24);
 			animation.play(letter);
 			animation.curAnim.frameRate = 24 * (60 / (cast(Lib.current.getChildAt(0), Main)).getFPS());
@@ -493,9 +490,9 @@ class AlphaCharacter extends FlxSprite
 		}
 		else
 		{
-			if (Uppercase && AlphaCharacter.letters.get(letter).states.contains(UPPERCASE))
+			if (Uppercase && safeStateCheck(letter, UPPERCASE))
 			{
-				var anim = AlphaCharacter.letters.get(letter).anim == null ? letter : AlphaCharacter.letters.get(letter).anim;
+				var anim = safeGetAnim(letter);
 				animation.addByPrefix(letter, anim + " uppercase instance 1", 24);
 				animation.play(letter);
 				updateHitbox();
@@ -503,9 +500,9 @@ class AlphaCharacter extends FlxSprite
 				y = (110 - height);
 				y += row * 60;
 			}
-			else if (AlphaCharacter.letters.get(letter).states.contains(LOWERCASE))
+			else if (safeStateCheck(letter, LOWERCASE))
 			{
-				var anim = AlphaCharacter.letters.get(letter).anim == null ? letter : AlphaCharacter.letters.get(letter).anim;
+				var anim = safeGetAnim(letter);
 				animation.addByPrefix(letter, anim + " lowercase instance 1", 24);
 				animation.play(letter);
 				updateHitbox();
@@ -513,9 +510,9 @@ class AlphaCharacter extends FlxSprite
 				y = (110 - height);
 				y += row * 60;
 			}
-			else if (AlphaCharacter.letters.get(letter).states.contains(NORMAL))
+			else if (safeStateCheck(letter, NORMAL))
 			{
-				var anim = AlphaCharacter.letters.get(letter).anim == null ? letter : AlphaCharacter.letters.get(letter).anim;
+				var anim = safeGetAnim(letter);
 				animation.addByPrefix(letter, anim + ' normal instance 1', 24);
 				animation.play(letter);
 				if (letter == '.' || letter == '_')
@@ -523,6 +520,36 @@ class AlphaCharacter extends FlxSprite
 			}
 			else
 				return;
+		}
+	}
+
+	private function safeGetAnim(letter:String):String {
+		var anim = letter;
+		if (AlphaCharacter.letters.get(letter) != null)
+			if (AlphaCharacter.letters.get(letter).anim != null)
+				return AlphaCharacter.letters.get(letter).anim;
+			else
+				return anim;
+		else
+			return anim;
+	}
+
+	private function safeStateCheck(letter:String, state:AlphaCharacterStates):Bool
+	{
+		try
+		{
+			var let:Letter = {
+				anim: letter,
+				states: [NORMAL]
+			};
+			if (AlphaCharacter.letters.get(letter) != null)
+				let = AlphaCharacter.letters.get(letter);
+			return let.states.contains(state);
+		}
+		catch (e)
+		{
+			Debug.logError(e.details());
+			return false;
 		}
 	}
 
@@ -534,7 +561,8 @@ class AlphaCharacter extends FlxSprite
 	}
 }
 
-typedef Letter = {
+typedef Letter =
+{
 	var anim:Null<String>;
 	var states:Array<AlphaCharacterStates>;
 }
@@ -542,10 +570,7 @@ typedef Letter = {
 enum abstract AlphaCharacterStates(String) from String to String
 {
 	var BOLD = 'bold';
-	
 	var UPPERCASE = 'uppercase';
-
 	var LOWERCASE = 'lowercase';
-
 	var NORMAL = 'normal';
 }

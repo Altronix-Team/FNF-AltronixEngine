@@ -4,6 +4,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.utils.Assets as OpenFlAssets;
+import states.playState.GameData as Data;
 
 
 class NoteSplash extends FlxSprite
@@ -31,7 +32,7 @@ class NoteSplash extends FlxSprite
     public function setupNoteSplash(x:Float, y:Float, note:Note)
     {
 		var texture:String;
-		if (states.PlayState.isPixel)
+		if (Data.isPixel)
 			setPosition(x + 30, (y + Note.swagWidth) / 2);
 		else
 			setPosition(x - Note.swagWidth * 0.95, y - Note.swagWidth);
@@ -63,7 +64,7 @@ class NoteSplash extends FlxSprite
 
 	function loadAnims(skin:String = 'default')
 	{
-		if (states.PlayState.isPixel)
+		if (Data.isPixel)
 		{
 			if (OpenFlAssets.exists(Paths.image('notesplashes/' + skin + '-pixel')))
 			{

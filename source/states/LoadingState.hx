@@ -15,6 +15,7 @@ import lime.utils.AssetManifest;
 import haxe.io.Path;
 import flixel.text.FlxText;
 import states.playState.PlayState;
+import states.playState.GameData as Data;
 
 class LoadingsState extends FlxSubState
 {
@@ -89,11 +90,11 @@ class LoadingState extends MusicBeatState
 			callbacks = new MultiCallback(onLoad);
 			var introComplete = callbacks.add("introComplete");
 			checkLoadSong(getSongPath());
-			if (PlayState.SONG.needsVoices)
+			if (Data.SONG.needsVoices)
 				checkLoadSong(getVocalPath());
 			checkLibrary("shared");
-			if (PlayState.storyWeek > 0)
-				checkLibrary("week" + PlayState.storyWeek);
+			if (Data.storyWeek > 0)
+				checkLibrary("week" + Data.storyWeek);
 			else
 				checkLibrary("tutorial");
 
@@ -170,12 +171,12 @@ class LoadingState extends MusicBeatState
 
 	static function getSongPath()
 	{
-		return Paths.inst(PlayState.SONG.songId);
+		return Paths.inst(Data.SONG.songId);
 	}
 
 	static function getVocalPath()
 	{
-		return Paths.voices(PlayState.SONG.songId);
+		return Paths.voices(Data.SONG.songId);
 	}
 
 	inline static public function loadAndSwitchState(target:FlxState, stopMusic = false, ?lscreen)

@@ -613,7 +613,7 @@ class PlayState extends MusicBeatState
 			var loadedBF = false;
 			var loadedGF = false;
 			var loadedDad = false;
-			var lock = new Lock();
+			//var lock = new Lock();
 			Debug.logInfo('Loading characters');
 			ThreadUtil.runReservedTask('loadGF', function()
 			{
@@ -644,8 +644,8 @@ class PlayState extends MusicBeatState
 
 				loadedGF = true;
 
-				if (loadedDad && loadedBF && loadedGF)
-					lock.release();
+				//if (loadedDad && loadedBF && loadedGF)
+					//lock.release();
 			});
 
 			ThreadUtil.runReservedTask('loadBF', function()
@@ -682,8 +682,8 @@ class PlayState extends MusicBeatState
 
 				loadedBF = true;
 
-				if (loadedDad && loadedBF && loadedGF)
-					lock.release();
+				//if (loadedDad && loadedBF && loadedGF)
+					//lock.release();
 			});
 
 			ThreadUtil.runReservedTask('loadDad', function()
@@ -711,11 +711,11 @@ class PlayState extends MusicBeatState
 
 				loadedDad = true;
 
-				if (loadedDad && loadedBF && loadedGF)
-					lock.release();
+				//if (loadedDad && loadedBF && loadedGF)
+					//lock.release();
 			});
 
-			lock.wait();
+			//lock.wait();
 
 			if (loadedDad && loadedBF && loadedGF)
 			{
@@ -1142,9 +1142,7 @@ class PlayState extends MusicBeatState
 		startingSong = true;
 
 		trace('starting');
-
-		reloadHealthBarColors();
-
+		
 		if (Data.isStoryMode /* && !seenCutscene*/)
 		{
 			songCutscene();
@@ -2241,7 +2239,7 @@ class PlayState extends MusicBeatState
 
 				var type = 0;
 
-				for (susNote in 0...Math.floor(susLength))
+				for (susNote in 0...Math.floor(swagNote.sustainLength / Conductor.stepCrochet))
 				{
 					var altSusNote = songNotes[3]
 						|| ((section.altAnim || section.CPUAltAnim) && !gottaHitNote)
@@ -3542,10 +3540,7 @@ class PlayState extends MusicBeatState
 
 	public function reloadHealthBarColors()
 	{
-		songUI.healthBar.createFilledBar(FlxColor.fromRGB(dad.healthColorArray[0], dad.healthColorArray[1], dad.healthColorArray[2]),
-			FlxColor.fromRGB(boyfriend.healthColorArray[0], boyfriend.healthColorArray[1], boyfriend.healthColorArray[2]));
-
-		songUI.healthBar.updateBar();
+		songUI.reloadHealthBarColors();
 	}
 
 	public function changeCharacter(charType:String = 'bf', newCharName:String)

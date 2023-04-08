@@ -210,6 +210,7 @@ class Debug
 		#else
 		logInfo("This is a RELEASE build.");
 		#end
+		logInfo('Haxe version: ${Main.haxeVersion}');
 		logInfo('HaxeFlixel version: ${Std.string(FlxG.VERSION)}');
 		logInfo('AltronixEngine version: ${EngineConstants.engineVer}');
 		logInfo('Friday Night Funkin\' version: ${states.MainMenuState.gameVer}');

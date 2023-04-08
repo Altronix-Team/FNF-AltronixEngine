@@ -6,7 +6,7 @@ import flixel.FlxG;
 import utils.*;
 #end
 
-#if !cs
+#if USE_YAML
 import yaml.Yaml;
 #end
 

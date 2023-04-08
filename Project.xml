@@ -56,6 +56,7 @@
 	
 	<define name="CHECK_FOR_DEFAULT_CHARACTERS"/>
 	<define name="USE_SSCRIPT"/>
+	<!--define name="USE_YAML"/-->
 	<define name="VIDEOS_ALLOWED" if="desktop || android" unless="cs"/>
 	
 	<!-- <define name="PRELOAD_ALL" /> -->
@@ -116,7 +117,7 @@
 	<haxelib name="polymod" if='desktop'/>
 	<haxelib name="discord_rpc" if="desktop"/>
 	<haxelib name="hxCodec" if="VIDEOS_ALLOWED"/>
-	<haxelib name="yaml" unless="cs"/>
+	<haxelib name="yaml" if="USE_YAML"/>
 	<haxelib name="flxanimate" />
 
 	<haxelib name="haxe-strings" />
@@ -186,7 +187,7 @@
 	<haxedef name="FEATURE_FILESYSTEM" if="desktop" />
 
 	<!-- Defines whether the Thread class can be used. -->
-	<haxedef name="FEATURE_MULTITHREADING" if="cpp" />
+	<!--haxedef name="FEATURE_MULTITHREADING" if="cpp" /-->
 
 	<!-- Defines whether the Mods menu will display before launching. -->
 	<haxedef name="FEATURE_MODCORE" if="desktop" />
@@ -217,5 +218,8 @@
 	<!-- :) -->
 
     <haxedef name="POLYMOD_DEBUG" if="debug" />
+
+	<!-- Remove that if you want to use Haxe versions older than 4.3.0-->
+		<haxeflag name="--macro" value="utils.CheckHaxeVersion.checkHaxeVersion()" />
 
 </project>

@@ -67,7 +67,7 @@ class GameUI extends FlxTypedGroup<FlxBasic>
 			healthBar.alpha = 0;
 			funnyStartObjects.push(healthBar);
 		}
-		// healthBar
+		reloadHealthBarColors();
 
 		engineWatermark = new FlxText(4, healthBarBG.y
 			+ 50, 0,
@@ -185,12 +185,6 @@ class GameUI extends FlxTypedGroup<FlxBasic>
 			add(healthBar);
 			add(iconP1);
 			add(iconP2);
-
-			if (Main.save.data.colour)
-				healthBar.createFilledBar(CoolUtil.flxColorFromRGBArray(CharactersStuff.getCharacterColor(Data.SONG.player2)),
-					CoolUtil.flxColorFromRGBArray(CharactersStuff.getCharacterColor(Data.SONG.player1)));
-			else
-				healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);
 		}
 		if (!PlayStateChangeables.twoPlayersMode)
 			add(scoreTxt);
@@ -235,9 +229,7 @@ class GameUI extends FlxTypedGroup<FlxBasic>
 		var iconOffset:Int = 26;
 
 		iconP1.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01) - iconOffset);
-		iconP2.x = healthBar.x
-			+ (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01))
-			- (iconP2.width - iconOffset);
+		iconP2.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (iconP2.width - iconOffset);
 
 		if (healthBar.percent < 20)
 		{
@@ -269,5 +261,18 @@ class GameUI extends FlxTypedGroup<FlxBasic>
 			iconP2.animation.curAnim.curFrame = 0;
 		}
 		super.update(elapsed);
+	}
+
+	public function reloadHealthBarColors()
+	{
+		if (Main.save.data.colour)
+		{
+			healthBar.createFilledBar(FlxColor.fromRGB(state.dad.healthColorArray[0], state.dad.healthColorArray[1], state.dad.healthColorArray[2]),
+				FlxColor.fromRGB(state.boyfriend.healthColorArray[0], state.boyfriend.healthColorArray[1], state.boyfriend.healthColorArray[2]));
+		}
+		else
+			healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);
+
+		healthBar.updateBar();
 	}
 }

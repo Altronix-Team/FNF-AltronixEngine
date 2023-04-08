@@ -65,6 +65,14 @@ class TitleState extends MusicBeatState
 
 	var checkVer:Bool = true;
 
+	public function new(?reset:Bool = false)
+	{
+		if (initialized)
+			initialized = !reset;
+		
+		super();
+	}
+
 	override public function create():Void
 	{
 		/*@:privateAccess

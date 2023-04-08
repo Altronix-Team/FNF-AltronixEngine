@@ -1,5 +1,6 @@
 package;
 
+import haxe.Exception;
 import lime.system.ThreadPool;
 import utils.ThreadUtil;
 import flixel.system.scaleModes.StageSizeScaleMode;
@@ -63,14 +64,14 @@ class Main extends Sprite
 
 	public static var memoryCount = true;
 
-	public static var game:FlxGame;
+	public static var game:CustomGame;
 
 	public static final defaultWindowTitle:String = 'Friday Night Funkin\': Altronix Engine';
 
 	public static var fnfSignals:FNFSignals = new FNFSignals();
 
-	//public static var compileTime:String = macro utils.MacroUtil.buildDate();
-	//public static var gitCommitSha:String = macro utils.MacroUtil.buildGitCommitSha();
+	public static var compileTime:String = '';
+	public static var haxeVersion:String = '';
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
 	// Ho-ho-ho, no
@@ -110,6 +111,9 @@ class Main extends Sprite
 		#if cpp
 		untyped __global__.__hxcpp_set_critical_error_handler(onCriticalErrorEvent);
 		#end
+
+		compileTime = utils.MacroUtil.buildDateString().toString();
+		haxeVersion = utils.CheckHaxeVersion.checkHaxeVersion().toString();
 
 		if (stage != null)
 		{
@@ -182,10 +186,10 @@ class Main extends Sprite
 
 		hscriptClasses = PolymodHscriptState.listScriptClasses();
 
-		game = new FlxGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash#if (!debug), save.data.fullscreenOnStart#end);
+		game = new CustomGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash#if (!debug), save.data.fullscreenOnStart#end);
 		addChild(game);	
 		
-		FlxG.scaleMode = new StageSizeScaleMode();
+		//FlxG.scaleMode = new StageSizeScaleMode();
 
 		FlxG.signals.preStateCreate.add(preStateSwitch);
 		FlxG.signals.postStateSwitch.add(postStateSwitch);
@@ -435,5 +439,90 @@ class Main extends Sprite
 		#end
 		EngineFPS.fpsText.clearMaxFPS();
 	}
+}
 
+
+class CustomGame extends FlxGame
+{
+	override function create(_):Void
+	{
+		try
+			super.create(_)
+		catch (e:Exception)
+			return onError(e);
+	}
+
+	override function onFocus(_):Void
+	{
+		try
+			super.onFocus(_)
+		catch (e:Exception)
+			return onError(e);
+	}
+
+	override function onFocusLost(_):Void
+	{
+		try
+			super.onFocusLost(_)
+		catch (e:Exception)
+			return onError(e);
+	}
+
+	override function onEnterFrame(_):Void
+	{
+		try
+			super.onEnterFrame(_)
+		catch (e:Exception)
+			return onError(e);
+	}
+
+	override function update():Void
+	{
+		try
+			super.update()
+		catch (e:Exception)
+			return onError(e);
+	}
+
+	override function draw():Void
+	{
+		try
+			super.draw()
+		catch (e:Exception)
+			return onError(e);
+	}
+
+	public function onError(e:Exception):Void
+	{
+		var caughtErrors:Array<String> = [];
+
+		for (item in CallStack.exceptionStack(true))
+		{
+			switch (item)
+			{
+				case CFunction:
+					caughtErrors.push('Non-Haxe (C) Function');
+				case Module(moduleName):
+					caughtErrors.push('Module (${moduleName})');
+				case FilePos(s, file, line, column):
+					caughtErrors.push('${file} (line ${line})');
+				case Method(className, method):
+					caughtErrors.push('${className} (method ${method})');
+				case LocalFunction(name):
+					caughtErrors.push('Local Function (${name})');
+			}
+
+			Debug.logError(item);
+		}
+
+		final msg:String = caughtErrors.join('\n');
+
+		Debug.displayAlert('Error!', '$msg\n${e.details()}');
+
+		FlxG.resetGame();
+		/*@:privateAccess {	
+			FlxG.game._requestedState = new TitleState(true);
+			FlxG.game.switchState();
+		}*/
+	}
 }

@@ -56,8 +56,10 @@ class AssetsUtil
                 return loadJSON(key, library);
             case TEXT:
 				return OpenFlAssets.getText(Paths.getPath(key, TEXT, library));
+			#if USE_YAML 
 			case YAML:
 				return loadYAML(key, library);
+			#end
             case SOUND | MUSIC:
 				return loadSoundAsset(key, type, library);
             default:
@@ -190,7 +192,7 @@ class AssetsUtil
         {
             case SOUND | MUSIC:
                 return doesSoundAssetExist(path);
-            case TEXT | XML | JSON | HSCRIPT | YAML:
+            case TEXT | XML | JSON | HSCRIPT #if USE_YAML | YAML #end:
                 return doesTextAssetExist(path);
             default:
                 return OpenFlAssets.exists(path, BINARY);
@@ -347,6 +349,7 @@ class AssetsUtil
 		}
 	}
 
+	#if USE_YAML 
 	static private function loadYAML(key:String, ?library:String):Dynamic
 	{
 		var rawYaml = OpenFlAssets.getText(Paths.yaml(key, library)).trim();
@@ -365,6 +368,7 @@ class AssetsUtil
 			return null;
 		}
 	}
+	#end
 
 	private static function listFoldersInPath(path:String)
 	{
@@ -400,7 +404,7 @@ enum abstract AssetTypes(String) from (String) to (String)
     var DIRECTORY:AssetTypes = 'directory';
 	var FONT:AssetTypes = "font";
     var UNKNOWN:AssetTypes = 'unknown';
-	var YAML:AssetTypes = 'yaml';
+	#if USE_YAML var YAML:AssetTypes = 'yaml'; #end
 
 	public static function toOpenFlType(type:AssetTypes):AssetType
 	{
@@ -414,7 +418,7 @@ enum abstract AssetTypes(String) from (String) to (String)
 				return AssetType.MUSIC;
 			case SOUND:
 				return AssetType.SOUND;
-			case XML | HSCRIPT | JSON | TEXT | YAML:
+			case XML | HSCRIPT | JSON | TEXT #if (USE_YAML) YAML #end:
 				return AssetType.TEXT;
 			default:
 				return AssetType.BINARY;		
@@ -441,8 +445,10 @@ enum abstract AssetTypes(String) from (String) to (String)
 				return ['mp4'];
 			case FONT:
 				return ['otf', 'ttf'];
+			#if USE_YAML 
 			case YAML:
-				return ['yaml'];
+				return ['yaml']; 
+			#end
 			default:
 				return [''];
 		}
@@ -468,8 +474,10 @@ enum abstract AssetTypes(String) from (String) to (String)
 				return [VIDEOS];
 			case 'otf' | 'ttf':
 				return [FONT];
+			#if USE_YAML
 			case 'yaml':
 				return [YAML];
+			#end
 			default:
 				return [UNKNOWN];
 		}
@@ -487,6 +495,9 @@ enum abstract AssetTypes(String) from (String) to (String)
 			'hx',
 			'mp4',
 			'otf',
-			'ttf'];
+			'ttf'
+			#if USE_YAML ,
+			'yaml'
+			#end];
 	}
 }

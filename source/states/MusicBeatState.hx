@@ -122,40 +122,43 @@ class MusicBeatState extends BaseState implements gameplayStuff.Conductor.IMusic
 		Main.fnfSignals.update.dispatch(elapsed);
 	};
 
-	public static function switchState(nextState:FlxState) 
+	public static function switchState(nextState:FlxState)
 	{
-		if(!FlxTransitionableState.skipNextTransIn) {
+		if (!FlxTransitionableState.skipNextTransIn)
+		{
 			var switchState = new TransitionableState();
 			switchState.nextState = nextState;
 
 			FlxG.switchState(switchState);
 		}
-		else {
+		else
+		{
 			FlxTransitionableState.skipNextTransIn = false;
 			FlxG.switchState(nextState);
 		}
 	}
 
-	public static function resetState() {
+	public static function resetState()
+	{
 		MusicBeatState.switchState(FlxG.state);
 	}
 
 	public function stepHit():Void
 	{
 		/*if (curStep % 4 == 0)
-			beatHit();*/
+			beatHit(); */
 		ScriptHelper.stepHit(curStep);
 	}
 
 	public function beatHit():Void
 	{
-		//beatHit
+		// beatHit
 		ScriptHelper.beatHit(curBeat);
 	}
 
 	public function sectionHit():Void
 	{
-		//Section Hit
+		// Section Hit
 		ScriptHelper.sectionHit(curSection);
 	}
 
@@ -176,9 +179,9 @@ class MusicBeatState extends BaseState implements gameplayStuff.Conductor.IMusic
 	function onWindowFocusOut():Void
 	{
 		/*soundList.forEach(function(sound:FlxSound)
-		{
-			if (sound.playing)
-				sound.pause();
+			{
+				if (sound.playing)
+					sound.pause();
 		});*/
 		if (FlxG.sound.music.playing)
 			FlxG.sound.music.pause();
@@ -188,8 +191,8 @@ class MusicBeatState extends BaseState implements gameplayStuff.Conductor.IMusic
 	{
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(Main.save.data.fpsCap);
 		/*soundList.forEach(function(sound:FlxSound)
-		{
-			sound.resume();
+			{
+				sound.resume();
 		});*/
 		FlxG.sound.music.resume();
 	}

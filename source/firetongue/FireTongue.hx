@@ -947,19 +947,19 @@ class FireTongue
 			// load & store the icon image existence
 
 			/*var iconAsset = directory + "_icons/" + id + ".png";
-			var flagAsset = directory + "_flags/" + id + ".png";
+				var flagAsset = directory + "_flags/" + id + ".png";
 
-			if (loadImage(iconAsset))
-			{
-				indexIcons.set(id, iconAsset);
-			}
-			else if (loadImage(flagAsset))
-			{
-				indexIcons.set(id, flagAsset);
-			}
-			else
-			{
-				indexIcons.set(id, null);
+				if (loadImage(iconAsset))
+				{
+					indexIcons.set(id, iconAsset);
+				}
+				else if (loadImage(flagAsset))
+				{
+					indexIcons.set(id, flagAsset);
+				}
+				else
+				{
+					indexIcons.set(id, null);
 			}*/
 
 			var isDefault:Bool = localeNode.has.is_default && localeNode.att.is_default == "true";

@@ -7,7 +7,6 @@ import flixel.FlxG;
 import utils.*;
 import core.*;
 #end
-
 #if USE_YAML
 import yaml.Yaml;
 #end

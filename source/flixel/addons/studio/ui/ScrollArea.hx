@@ -20,17 +20,17 @@ class ScrollArea extends Sprite
 {
 	public static var SCROLL_HANDLE_WIDTH:Int = 5;
 	public static var SCROLL_HANDLE_HEIGHT:Int = 20;
-	
+
 	public var scrollSpeed:Float = 15.0;
 	public var scrollYPadding:PaddingInfo;
-	
+
 	var _hitArea:TextField;
 	var _content:Sprite;
 	var _scrollMask:Shape;
 	var _scrollHandleY:Sprite;
 	var _scrollableY:Bool;
 	var _usingScrollHandleY:Bool;
-	
+
 	/**
 	 * Creates a new object.
 	 */
@@ -65,7 +65,7 @@ class ScrollArea extends Sprite
 		addChild(_scrollMask);
 
 		setScrollable(true);
-		
+
 		addEventListener(MouseEvent.MOUSE_WHEEL, onMouseWheel);
 		addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
 		addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
@@ -90,7 +90,7 @@ class ScrollArea extends Sprite
 			return;
 
 		_scrollHandleY.visible = needsScrollY();
-		
+
 		var adjustedHeight = SCROLL_HANDLE_HEIGHT / getContentScrollMaskRatio();
 		_scrollHandleY.height = FlxMath.bound(adjustedHeight, SCROLL_HANDLE_HEIGHT * 0.5, SCROLL_HANDLE_HEIGHT * 1.3);
 	}
@@ -160,10 +160,10 @@ class ScrollArea extends Sprite
 	{
 		if (!_scrollableY)
 			return;
-		
+
 		var isScrollingUp = e.delta > 0;
 		_scrollHandleY.y += getAdjustedScrollSpeed() * (isScrollingUp ? -1 : 1);
-		
+
 		ensureScrollHandleBoundaries();
 		var handleProgress = calculateScrollHandleYProgress();
 		setScrollProgressY(handleProgress);
@@ -179,7 +179,7 @@ class ScrollArea extends Sprite
 		var totalNonVisibleArea = Math.max(_content.height - _scrollMask.height, 0);
 
 		progress = FlxMath.bound(progress, 0, 1);
-		_content.y = - totalNonVisibleArea * progress;
+		_content.y = -totalNonVisibleArea * progress;
 
 		ensureScrollBoundaries();
 	}
@@ -199,10 +199,10 @@ class ScrollArea extends Sprite
 	{
 		if (_scrollHandleY.y <= scrollYPadding.top)
 			_scrollHandleY.y = scrollYPadding.top;
-		
+
 		if (_scrollHandleY.y + _scrollHandleY.height >= _scrollMask.height - scrollYPadding.bottom)
-			_scrollHandleY.y =  _scrollMask.height - _scrollHandleY.height - scrollYPadding.bottom;
-	}	
+			_scrollHandleY.y = _scrollMask.height - _scrollHandleY.height - scrollYPadding.bottom;
+	}
 
 	/**
 	 * Check if the size of the scroll area and the content it is housing requires scroll.

@@ -21,9 +21,9 @@ class EventObject
 	}
 }
 
-typedef EventsAtPos = //Altronix Engine Events
+typedef EventsAtPos = // Altronix Engine Events
 {
-	var position:Float; //Song Beat
+	var position:Float; // Song Beat
 	var events:Array<EventObject>; // Events
 }
 
@@ -33,14 +33,14 @@ typedef SongData =
 	var ?song:String;
 
 	/**
-	* The readable name of the song, as displayed to the user.
-	* Can be any string.
-	*/
+	 * The readable name of the song, as displayed to the user.
+	 * Can be any string.
+	 */
 	var songName:String;
 
 	/**
-	* The internal name of the song, as used in the file system.
-	*/
+	 * The internal name of the song, as used in the file system.
+	 */
 	var songId:String;
 
 	/**
@@ -54,112 +54,113 @@ typedef SongData =
 	var songPosBarColor:Int;
 
 	/**
-	* Used this to know on which version of the engine was the chart generated.
+	 * Used this to know on which version of the engine was the chart generated.
 	**/
 	var chartVersion:String;
 
 	/**
-	* Information about notes in this chart.
+	 * Information about notes in this chart.
 	**/
 	var notes:Array<SwagSection>;
 
 	/**
-	* Altronix Engine events array.
-	* Always contains Init BPM event.
+	 * Altronix Engine events array.
+	 * Always contains Init BPM event.
 	**/
 	var eventsArray:Array<EventsAtPos>;
 
 	/**
-	* Song BPM.
+	 * Song BPM.
 	**/
 	var bpm:Float;
 
 	/**
-	* Should game use voices sound file.
+	 * Should game use voices sound file.
 	**/
 	var needsVoices:Bool;
 
 	/**
-	* Speed of notes while playing this song.
+	 * Speed of notes while playing this song.
 	**/
 	var speed:Float;
 
 	/**
-	* Player.
+	 * Player.
 	**/
 	var player1:String;
 
 	/**
-	* Opponent.
+	 * Opponent.
 	**/
 	var player2:String;
 
 	/**
-	* Which character will be used as gf.
+	 * Which character will be used as gf.
 	**/
 	var gfVersion:String;
 
 	/**
-	* If true, toggles GF visibility to false.
+	 * If true, toggles GF visibility to false.
 	**/
 	var ?hideGF:Bool;
 
 	/**
-	* Song note style, like "normal" or "pixel".
-	* Also affects to rating and countdown sprites and sounds.
+	 * Song note style, like "normal" or "pixel".
+	 * Also affects to rating and countdown sprites and sounds.
 	**/
 	var noteStyle:String;
 
 	/**
-	* Name of stage, that will be used in song, while playing.
+	 * Name of stage, that will be used in song, while playing.
 	**/
 	var stage:String;
 
 	/**
-	* Name of sprite file of notes, that will be appear in this song.
+	 * Name of sprite file of notes, that will be appear in this song.
 	**/
 	var specialSongNoteSkin:String;
 
 	/**
-	* Should game saves song result after playing.
+	 * Should game saves song result after playing.
 	**/
 	var ?validScore:Bool;
 
 	/**
-	* Makes senpai fans scared.
-	* Note: Works only on scholl stage.
+	 * Makes senpai fans scared.
+	 * Note: Works only on scholl stage.
 	**/
 	var ?scaredbgdancers:Bool;
 
 	/**
-	* Toggles visibility of senpai fans.
-	* Note: Works only on scholl stage.
+	 * Toggles visibility of senpai fans.
+	 * Note: Works only on scholl stage.
 	**/
 	var ?showbgdancers:Bool;
 
 	/**
-	* Should game use special sound assets for this difficulty of song.
-	* (Example: Inst-hard, Voices-hard).
+	 * Should game use special sound assets for this difficulty of song.
+	 * (Example: Inst-hard, Voices-hard).
 	**/
 	var ?diffSoundAssets:Bool;
 
 	/** Do not use this in your code.
-	* Use eventsArray instead.
-	* Used to convert Kade Engine events to Altronix Engine events.
-	*/
+	 * Use eventsArray instead.
+	 * Used to convert Kade Engine events to Altronix Engine events.
+	 */
 	var ?eventObjects:Array<Event>; // Kade Engine events kekw
 
 	/** Do not use this in your code.
-	* Use eventsArray instead.
-	* Used to convert Psych Engine events to Altronix Engine events.
-	*/
+	 * Use eventsArray instead.
+	 * Used to convert Psych Engine events to Altronix Engine events.
+	 */
 	var ?events:Array<Dynamic>; // Psych Engine events
+
 }
 
 typedef SongMeta =
 {
 	/**
-	* Changes the displayed song name.
+	 * Changes the displayed song name.
 	**/
 	var ?name:String;
 
@@ -220,20 +221,20 @@ class Song
 			{
 				var rawEvents = Paths.loadJSON('songs/$songId/events', 'gameplay');
 				return ChartUtil.parseJSONshit(songId, rawJson, metaData, rawEvents);
-			}	
+			}
 			else
-				return ChartUtil.parseJSONshit(songId, rawJson, metaData);	
+				return ChartUtil.parseJSONshit(songId, rawJson, metaData);
 		}
 		else
 		{
 			return null;
-		}	
+		}
 	}
 
 	public static function picospeakerLoad():SongData
 	{
 		var rawJson = Paths.loadJSON('songs/stress/picospeaker', 'gameplay');
-	
+
 		var swagShit:SongData = (cast rawJson).song;
 		swagShit.validScore = true;
 		return swagShit;

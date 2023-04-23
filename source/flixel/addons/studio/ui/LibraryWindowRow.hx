@@ -31,9 +31,9 @@ class LibraryWindowRow extends Sprite implements IFlxDestroyable
 	private static inline var SELECTED_ALPHA:Float = 0.2;
 	private static inline var GUTTER = 4;
 	private static inline var TEXT_HEIGHT = 15;
-	
+
 	public var item(default, null):LibraryItem;
-	
+
 	var _icon:Bitmap;
 	var _parentWindow:LibraryWindow;
 	var _nameText:TextField;
@@ -52,7 +52,7 @@ class LibraryWindowRow extends Sprite implements IFlxDestroyable
 		_parentWindow = parentWindow;
 
 		buildUI();
-		
+
 		addEventListener(MouseEvent.MOUSE_DOWN, handleMouseEvent);
 		addEventListener(MouseEvent.MOUSE_UP, handleMouseEvent);
 	}
@@ -70,7 +70,7 @@ class LibraryWindowRow extends Sprite implements IFlxDestroyable
 		else if (e.type == MouseEvent.MOUSE_UP)
 			_parentWindow.stopItemDrag();
 	}
-	
+
 	function buildUI():Void
 	{
 		_nameText = initTextField(DebuggerUtil.createTextField());
@@ -86,16 +86,16 @@ class LibraryWindowRow extends Sprite implements IFlxDestroyable
 	{
 		var container = new Sprite();
 		var filling = new Bitmap(new BitmapData(50, TEXT_HEIGHT, false, SELECTED_BG_COLOR));
-		
+
 		filling.alpha = SELECTED_ALPHA;
 		filling.x = 0;
 		filling.y = (TEXT_HEIGHT - filling.height) / 2;
 		container.visible = false;
 		container.mouseEnabled = false;
-		
+
 		container.addChild(filling);
 		addChild(container);
-		
+
 		return container;
 	}
 
@@ -130,7 +130,7 @@ class LibraryWindowRow extends Sprite implements IFlxDestroyable
 	public function setSelected(status:Bool):Void
 	{
 		_selected = status;
-		_selectedMarker.visible = _selected;		
+		_selectedMarker.visible = _selected;
 
 		if (_selected)
 		{
@@ -153,7 +153,7 @@ class LibraryWindowRow extends Sprite implements IFlxDestroyable
 	public function updateSize(windowWidth:Float):Void
 	{
 		_selectedMarker.width = windowWidth;
-	}	
+	}
 
 	function updateName()
 	{
@@ -168,7 +168,7 @@ class LibraryWindowRow extends Sprite implements IFlxDestroyable
 
 		var label = this.item.className;
 		var name = this.item.name;
-		
+
 		if (name == "")
 		{
 			var cutIndex = label.lastIndexOf('.');
@@ -178,12 +178,12 @@ class LibraryWindowRow extends Sprite implements IFlxDestroyable
 		_nameText.text = name;
 		_labelText.text = label;
 	}
-	
+
 	public function getMinWidth():Float
 	{
 		return Math.max(_nameText.textWidth, _labelText.textWidth) + GUTTER * 2;
 	}
-	
+
 	public function destroy()
 	{
 		_nameText = FlxDestroyUtil.removeChild(this, _nameText);

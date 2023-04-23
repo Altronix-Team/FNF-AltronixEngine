@@ -8,6 +8,7 @@ import discord_rpc.DiscordRpc;
 class DiscordClient
 {
 	public static var isInitialized:Bool = false;
+
 	public function new()
 	{
 		#if desktop

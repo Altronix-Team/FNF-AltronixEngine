@@ -9,9 +9,9 @@ package flixel.addons.studio.ui;
 class PaddingInfo
 {
 	public var top:Float;
-	public var right:Float;	
+	public var right:Float;
 	public var bottom:Float;
-	public var left:Float;	
+	public var left:Float;
 
 	/**
 	 * Creates a new object.
@@ -19,8 +19,8 @@ class PaddingInfo
 	public function new(top:Float = 0, right:Float = 0, bottom:Float = 0, left:Float = 0)
 	{
 		this.top = top;
-		this.right = right;		
+		this.right = right;
 		this.bottom = bottom;
-		this.left = left;		
+		this.left = left;
 	}
 }

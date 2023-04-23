@@ -46,8 +46,7 @@ class SectionRender extends FlxTypedSpriteGroup<FlxSprite>
 			h = GRID_SIZE;
 
 		if (Main.save.data.editorBG)
-			FlxGridOverlay.overlay(sectionSprite, GRID_SIZE, Std.int(h), GRID_SIZE * 8, Std.int(GRID_SIZE * Height), true, sectionColors[0],
-				sectionColors[1]);
+			FlxGridOverlay.overlay(sectionSprite, GRID_SIZE, Std.int(h), GRID_SIZE * 8, Std.int(GRID_SIZE * Height), true, sectionColors[0], sectionColors[1]);
 
 		add(sectionSprite);
 
@@ -56,6 +55,5 @@ class SectionRender extends FlxTypedSpriteGroup<FlxSprite>
 		add(waveformSprite);
 		waveformSprite.y = y;
 		waveformSprite.visible = Main.save.data.chart_waveform;
-		
 	}
 }

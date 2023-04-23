@@ -523,7 +523,8 @@ class AlphaCharacter extends FlxSprite
 		}
 	}
 
-	private function safeGetAnim(letter:String):String {
+	private function safeGetAnim(letter:String):String
+	{
 		var anim = letter;
 		if (AlphaCharacter.letters.get(letter) != null)
 			if (AlphaCharacter.letters.get(letter).anim != null)

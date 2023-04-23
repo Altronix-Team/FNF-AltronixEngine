@@ -15,14 +15,16 @@ import flixel.graphics.FlxGraphic;
 import openfl.utils.AssetType;
 import openfl.Assets as OpenFlAssets;
 
-class AssetsUtil 
+class AssetsUtil
 {
 	public var _file:FileReference;
-	
-    public static function listAssetsInPath(path:String, type:AssetTypes = UNKNOWN):Array<String>
-    {
-		if (type == DIRECTORY) return listFoldersInPath(path);
-		var dataAssets = if (type == SOUND || type == MUSIC) OpenFlAssets.list(SOUND).concat(OpenFlAssets.list(MUSIC)) else OpenFlAssets.list(AssetTypes.toOpenFlType(type));
+
+	public static function listAssetsInPath(path:String, type:AssetTypes = UNKNOWN):Array<String>
+	{
+		if (type == DIRECTORY)
+			return listFoldersInPath(path);
+		var dataAssets = if (type == SOUND || type == MUSIC) OpenFlAssets.list(SOUND)
+			.concat(OpenFlAssets.list(MUSIC)) else OpenFlAssets.list(AssetTypes.toOpenFlType(type));
 
 		var queryPath = '${path}';
 
@@ -43,29 +45,29 @@ class AssetsUtil
 				}
 			}
 		}
-        return results;
-    }
+		return results;
+	}
 
 	public static function loadAsset(key:String, type:AssetTypes = UNKNOWN, ?library:String = "core"):Dynamic
-    {
-        switch (type)
-        {
-            case IMAGE:
-                return loadImage(key, library);
-            case JSON:
-                return loadJSON(key, library);
-            case TEXT:
+	{
+		switch (type)
+		{
+			case IMAGE:
+				return loadImage(key, library);
+			case JSON:
+				return loadJSON(key, library);
+			case TEXT:
 				return OpenFlAssets.getText(Paths.getPath(key, TEXT, library));
-			#if USE_YAML 
+			#if USE_YAML
 			case YAML:
 				return loadYAML(key, library);
 			#end
-            case SOUND | MUSIC:
+			case SOUND | MUSIC:
 				return loadSoundAsset(key, type, library);
-            default:
-                return null;
-        }
-    }
+			default:
+				return null;
+		}
+	}
 
 	public static function readLibrary(library:String, type:AssetTypes = UNKNOWN, ?subfolders:String = ''):Array<String>
 	{
@@ -91,10 +93,12 @@ class AssetsUtil
 						if (!retVal.contains(fileName))
 							retVal.push(fileName);
 					}
-					else continue;
-				}	
+					else
+						continue;
+				}
 			}
-			else continue;
+			else
+				continue;
 		}
 
 		return retVal;
@@ -114,7 +118,8 @@ class AssetsUtil
 
 	static public function getCharacterFrames(charName:String, key:String):FlxFramesCollection
 	{
-		try{
+		try
+		{
 			var filePath = 'characters/$charName/$key';
 			if (OpenFlAssets.exists(Paths.txt('characters/$charName/$key', "gameplay")))
 				return FlxAtlasFrames.fromSpriteSheetPacker(loadCharacterImage(charName, key), Paths.file('$filePath.txt', "gameplay"));
@@ -128,7 +133,7 @@ class AssetsUtil
 					return null;
 			}
 		}
-		catch(e)
+		catch (e)
 		{
 			Debug.logError('Failed to load character frames ' + e.details());
 			return null;
@@ -186,23 +191,23 @@ class AssetsUtil
 		}
 	}
 
-    inline static public function doesAssetExists(path:String, type:AssetTypes = UNKNOWN):Bool
-    {
-        switch (type)
-        {
-            case SOUND | MUSIC:
-                return doesSoundAssetExist(path);
-            case TEXT | XML | JSON | HSCRIPT #if USE_YAML | YAML #end:
-                return doesTextAssetExist(path);
-            default:
-                return OpenFlAssets.exists(path, BINARY);
-        }
-    }
+	inline static public function doesAssetExists(path:String, type:AssetTypes = UNKNOWN):Bool
+	{
+		switch (type)
+		{
+			case SOUND | MUSIC:
+				return doesSoundAssetExist(path);
+			case TEXT | XML | JSON | HSCRIPT #if USE_YAML | YAML #end:
+				return doesTextAssetExist(path);
+			default:
+				return OpenFlAssets.exists(path, BINARY);
+		}
+	}
 
 	public static function returnAssetType(path:String, fileName:String):Array<AssetTypes>
 	{
 		var checkExts = AssetTypes.returnAllExts();
-		
+
 		for (ext in checkExts)
 		{
 			if (OpenFlAssets.exists('$path/$fileName.$ext'))
@@ -215,7 +220,14 @@ class AssetsUtil
 
 	public function saveFile(fileContent:Dynamic = '', type:AssetTypes = UNKNOWN, fileName:String = 'file')
 	{
-		if (type == IMAGE || type == DIRECTORY || type == UNKNOWN || type == FONT || type == SOUND || type == MUSIC || type == VIDEOS) return;
+		if (type == IMAGE
+			|| type == DIRECTORY
+			|| type == UNKNOWN
+			|| type == FONT
+			|| type == SOUND
+			|| type == MUSIC
+			|| type == VIDEOS)
+			return;
 
 		var data:Dynamic = '';
 		switch (type)
@@ -270,21 +282,21 @@ class AssetsUtil
 		FlxG.log.error("Problem saving Level data");
 	}
 
-    private static function loadSoundAsset(key:String, type:AssetTypes = SOUND, ?library:String)
-    {
-        var retSound:FlxSound = null;
-        if (type == SOUND)
-        {
-            retSound = new FlxSound().loadEmbedded(Paths.sound(key, library), true);
+	private static function loadSoundAsset(key:String, type:AssetTypes = SOUND, ?library:String)
+	{
+		var retSound:FlxSound = null;
+		if (type == SOUND)
+		{
+			retSound = new FlxSound().loadEmbedded(Paths.sound(key, library), true);
 			FlxG.sound.list.add(retSound);
-        }
-        else if (type == MUSIC)
-        {
+		}
+		else if (type == MUSIC)
+		{
 			retSound = new FlxSound().loadEmbedded(Paths.music(key, library), true);
 			FlxG.sound.list.add(retSound);
-        }
-        return retSound;
-    }
+		}
+		return retSound;
+	}
 
 	inline static private function doesSoundAssetExist(path:String)
 	{
@@ -308,7 +320,7 @@ class AssetsUtil
 	{
 		var retVal:BitmapData;
 		var path = Paths.image(key, library);
-		if(key.contains("images/"))
+		if (key.contains("images/"))
 		{
 			path = path.removeFirst("images/");
 		}
@@ -349,7 +361,7 @@ class AssetsUtil
 		}
 	}
 
-	#if USE_YAML 
+	#if USE_YAML
 	static private function loadYAML(key:String, ?library:String):Dynamic
 	{
 		var rawYaml = OpenFlAssets.getText(Paths.yaml(key, library)).trim();
@@ -394,16 +406,16 @@ class AssetsUtil
 enum abstract AssetTypes(String) from (String) to (String)
 {
 	var SOUND:AssetTypes = 'sound';
-    var MUSIC:AssetTypes = 'music';
-    var IMAGE:AssetTypes = 'image';
-    var TEXT:AssetTypes = 'text';
-    var JSON:AssetTypes = 'json';
-    var XML:AssetTypes = 'xml';
-    var HSCRIPT:AssetTypes = 'hscript';
-    var VIDEOS:AssetTypes = 'videos';
-    var DIRECTORY:AssetTypes = 'directory';
+	var MUSIC:AssetTypes = 'music';
+	var IMAGE:AssetTypes = 'image';
+	var TEXT:AssetTypes = 'text';
+	var JSON:AssetTypes = 'json';
+	var XML:AssetTypes = 'xml';
+	var HSCRIPT:AssetTypes = 'hscript';
+	var VIDEOS:AssetTypes = 'videos';
+	var DIRECTORY:AssetTypes = 'directory';
 	var FONT:AssetTypes = "font";
-    var UNKNOWN:AssetTypes = 'unknown';
+	var UNKNOWN:AssetTypes = 'unknown';
 	#if USE_YAML var YAML:AssetTypes = 'yaml'; #end
 
 	public static function toOpenFlType(type:AssetTypes):AssetType
@@ -421,7 +433,7 @@ enum abstract AssetTypes(String) from (String) to (String)
 			case XML | HSCRIPT | JSON | TEXT #if (USE_YAML) YAML #end:
 				return AssetType.TEXT;
 			default:
-				return AssetType.BINARY;		
+				return AssetType.BINARY;
 		}
 	}
 
@@ -445,9 +457,9 @@ enum abstract AssetTypes(String) from (String) to (String)
 				return ['mp4'];
 			case FONT:
 				return ['otf', 'ttf'];
-			#if USE_YAML 
+			#if USE_YAML
 			case YAML:
-				return ['yaml']; 
+				return ['yaml'];
 			#end
 			default:
 				return [''];
@@ -496,8 +508,7 @@ enum abstract AssetTypes(String) from (String) to (String)
 			'mp4',
 			'otf',
 			'ttf'
-			#if USE_YAML ,
-			'yaml'
-			#end];
+			#if USE_YAML, 'yaml' #end
+		];
 	}
 }

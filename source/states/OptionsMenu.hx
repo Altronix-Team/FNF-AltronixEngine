@@ -164,7 +164,7 @@ class OptionsMenu extends FlxSubState
 				new LanguageOption(LanguageStuff.getOptionDesc("$LANGUAGE_OPTION")),
 				new MemoryCountOption(LanguageStuff.getOptionDesc("$MEMORYCOUNT_OPTION")),
 				new FullscreenOnStartOption(LanguageStuff.getOptionDesc("$FULLSCREENONSTART_OPTION")),
-				//new ScreenResolutionOption("Fullscreen test")
+				// new ScreenResolutionOption("Fullscreen test")
 			]),
 			new OptionCata(935, 40, LanguageStuff.getOptionDesc("$SAVES_CATA"), [
 				new ResetScoreOption(LanguageStuff.getOptionDesc("$RESETSCORE_OPTION")),
@@ -182,8 +182,11 @@ class OptionsMenu extends FlxSubState
 				new VolUpBind(LanguageStuff.getOptionDesc("$VOLUPKEYBIND")),
 				new VolDownBind(LanguageStuff.getOptionDesc("$VOLDOWNKEYBIND")),
 				new AttackKeybind(LanguageStuff.getOptionDesc("$ATTACKKEYBIND")),
-				new LeftP2Keybind(LanguageStuff.getOptionDesc("$LEFTKEYBIND")), new DownP2Keybind(LanguageStuff.getOptionDesc("$DOWNKEYBIND")),
-				new UpP2Keybind(LanguageStuff.getOptionDesc("$UPKEYBIND")), new RightP2Keybind(LanguageStuff.getOptionDesc("$RIGHTKEYBIND"))], true),
+				new LeftP2Keybind(LanguageStuff.getOptionDesc("$LEFTKEYBIND")),
+				new DownP2Keybind(LanguageStuff.getOptionDesc("$DOWNKEYBIND")),
+				new UpP2Keybind(LanguageStuff.getOptionDesc("$UPKEYBIND")),
+				new RightP2Keybind(LanguageStuff.getOptionDesc("$RIGHTKEYBIND"))
+			], true),
 			new OptionCata(-1, 125, LanguageStuff.getOptionDesc("$JUDGEMENTS_CATA"), [
 				new SickMSOption(LanguageStuff.getOptionDesc("$SICKMS_OPTION")),
 				new GoodMsOption(LanguageStuff.getOptionDesc("$GOODMS_OPTION")),
@@ -242,7 +245,7 @@ class OptionsMenu extends FlxSubState
 
 		descText = new FlxText(62, 648);
 		descText.setFormat(Paths.font(LanguageStuff.fontName), 20, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		
+
 		descText.borderSize = 2;
 
 		add(descBack);

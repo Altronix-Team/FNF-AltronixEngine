@@ -47,6 +47,7 @@ class LoadingsState extends FlxSubState
 			loadingart.alpha = 1;
 	}
 }
+
 class LoadingState extends MusicBeatState
 {
 	inline static var MIN_TIME = 1.0;
@@ -149,7 +150,7 @@ class LoadingState extends MusicBeatState
 		if (danceLeft)
 			gfDance.animation.play('danceRight');
 		else
-			gfDance.animation.play('danceLeft');	
+			gfDance.animation.play('danceLeft');
 	}
 
 	override function update(elapsed:Float)
@@ -186,7 +187,7 @@ class LoadingState extends MusicBeatState
 
 	static function getNextState(target:FlxState, stopMusic = false):FlxState
 	{
-		//Paths.setCurrentLevel("week" + PlayState.storyWeek);
+		// Paths.setCurrentLevel("week" + PlayState.storyWeek);
 		#if NO_PRELOAD_ALL
 		var loaded = isSoundLoaded(getSongPath())
 			&& (!PlayState.SONG.needsVoices || isSoundLoaded(getVocalPath()))

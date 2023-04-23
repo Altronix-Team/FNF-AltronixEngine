@@ -15,7 +15,7 @@ class ModUtil
 	public static function reloadSavedMods():Void
 	{
 		modList.clear();
-		
+
 		var loadedMods:Array<String> = getConfiguredMods();
 		var allMods:Array<String> = getAllModIds();
 		for (mod in allMods)

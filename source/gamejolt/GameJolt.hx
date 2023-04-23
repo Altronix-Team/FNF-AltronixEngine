@@ -135,17 +135,17 @@ class GameJoltAPI // Connects to flixel.addons.api.FlxGameJolt
 	public static function connect()
 	{
 		trace("Grabbing API keys...");
-		if (GJKeys.key == "") 
+		if (GJKeys.key == "")
 		{
 			Debug.logError("Unable to init gamejolt api");
 			return;
 		}
 		GJApi.init(Std.int(GJKeys.id), Std.string(GJKeys.key), function(data:Bool)
 		{
-			//#if debug
-			//Main.gjToastManager.createToast(GameJoltInfo.imagePath, "Game " + (data ? "authenticated!" : "not authenticated..."),
-				//(!data ? "If you are a developer, check GJKeys.hx\nMake sure the id and key are formatted correctly!" : "Yay!"), false);
-			//#end
+			// #if debug
+			// Main.gjToastManager.createToast(GameJoltInfo.imagePath, "Game " + (data ? "authenticated!" : "not authenticated..."),
+			// (!data ? "If you are a developer, check GJKeys.hx\nMake sure the id and key are formatted correctly!" : "Yay!"), false);
+			// #end
 		});
 	}
 
@@ -157,12 +157,12 @@ class GameJoltAPI // Connects to flixel.addons.api.FlxGameJolt
 	 */
 	public static function authDaUser(in1, in2, ?loginArg:Bool = false)
 	{
-		if (in1 == null || in2 == null) 
+		if (in1 == null || in2 == null)
 		{
 			/*if (loginArg)
-			{
-				GameJoltLogin.login = true;
-				FlxG.switchState(new GameJoltLogin());
+				{
+					GameJoltLogin.login = true;
+					FlxG.switchState(new GameJoltLogin());
 			}*/
 			Main.gjToastManager.createToast(Paths.getPreloadPath('shared/images/cross.png'),
 				"Not signed in!\nSign in to save GameJolt Trophies and Leaderboard Scores!", "", false);
@@ -170,7 +170,7 @@ class GameJoltAPI // Connects to flixel.addons.api.FlxGameJolt
 		}
 
 		if (!userLogin)
-		{	
+		{
 			GJApi.authUser(in1, in2, function(v:Bool)
 			{
 				Debug.logTrace("user: " + (in1 == "" ? "n/a" : in1));
@@ -294,7 +294,11 @@ class GameJoltAPI // Connects to flixel.addons.api.FlxGameJolt
 			GJApi.addScore(score + "%20Points", score, tableID, false, null, formData, function(data:Map<String, String>)
 			{
 				trace("Score submitted with a result of: " + data.get("success"));
-				Main.gjToastManager.createToast(Paths.getPreloadPath('shared/images/checkMark.png'), "Score submitted!", "Score: " + score + "\n Extra Data: " + extraData, true);
+				Main.gjToastManager.createToast(Paths.getPreloadPath('shared/images/checkMark.png'), "Score submitted!",
+					"Score: "
+					+ score
+					+ "\n Extra Data: "
+					+ extraData, true);
 			});
 		}
 		else
@@ -328,7 +332,6 @@ class GameJoltAPI // Connects to flixel.addons.api.FlxGameJolt
 		});
 		return returnable;
 	}
-
 
 	/**
 	 * Get User Avetar Image
@@ -711,7 +714,7 @@ class GameJoltLogin extends states.MusicBeatSubstate
 	}
 }
 
-/* The toast things, pulled from Hololive Funkin
+/*The toast things, pulled from Hololive Funkin
  * Thank you Firubii for the code for this!
  * https://twitter.com/firubiii
  * https://github.com/firubii
@@ -897,7 +900,6 @@ class Toast extends Sprite
 				icon.height = 80;
 			icon.x = 10;
 			icon.y = 10;
-
 		}
 
 		title = new TextField();

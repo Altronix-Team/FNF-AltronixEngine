@@ -53,7 +53,7 @@ class MusicBeatSubstate extends FlxUISubState implements IMusicBeat
 		Main.fnfSignals.sectionHit.remove(_sectionHit);
 		Main.fnfSignals.stepHit.remove(_stepHit);
 		Main.fnfSignals.decimalBeatHit.remove(_decimalBeatHit);
-		
+
 		Application.current.window.onFocusOut.remove(onWindowFocusOut);
 		Application.current.window.onFocusIn.remove(onWindowFocusIn);
 		super.destroy();
@@ -91,17 +91,17 @@ class MusicBeatSubstate extends FlxUISubState implements IMusicBeat
 
 	public function stepHit():Void
 	{
-		//Step Hit
+		// Step Hit
 	}
 
 	public function beatHit():Void
 	{
-		//Beat Hit
+		// Beat Hit
 	}
 
 	public function sectionHit():Void
 	{
-		//Section Hit
+		// Section Hit
 	}
 
 	function onWindowFocusOut():Void

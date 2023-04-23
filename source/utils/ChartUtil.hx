@@ -565,51 +565,50 @@ class ChartUtil
 	}
 
 	public static var betaChart:String = "AE2";
-
 	/*public static function convertToNewChart(song:SongData):gameplayStuff.SongChartData.SongChart
-	{
-		var newSong:gameplayStuff.SongChartData.SongChart = {
-			songMeta: {
-				songId: '',
+		{
+			var newSong:gameplayStuff.SongChartData.SongChart = {
+				songMeta: {
+					songId: '',
 
-				songName: '',
+					songName: '',
 
-				songComposer: '',
+					songComposer: '',
 
-				songPosBarColor: 0xffffff,
+					songPosBarColor: 0xffffff,
 
-				chartVersion: 'AE2',
+					chartVersion: 'AE2',
 
-				stageId: ''
-			},
+					stageId: ''
+				},
 
-			songCharacters: {
-				opponents: [],
+				songCharacters: {
+					opponents: [],
 
-				players: [],
+					players: [],
 
-				girlfriends: []
-			},
+					girlfriends: []
+				},
 
-			songSettings: {
-				bpm: 0,
+				songSettings: {
+					bpm: 0,
 
-				speed: 0,
+					speed: 0,
 
-				needsVoices: true,
+					needsVoices: true,
 
-				separateVoices: false,
+					separateVoices: false,
 
-				diffSoundAssets: false,
+					diffSoundAssets: false,
 
-				hideGFs: false,
+					hideGFs: false,
 
-				validScore: true
-			},
+					validScore: true
+				},
 
-			songSections: [],
+				songSections: [],
 
-			songEvents: []
-		};
+				songEvents: []
+			};
 	}*/
 }

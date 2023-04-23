@@ -614,7 +614,7 @@ class PlayState extends MusicBeatState
 			var loadedBF = false;
 			var loadedGF = false;
 			var loadedDad = false;
-			//var lock = new Lock();
+			// var lock = new Lock();
 			Debug.logInfo('Loading characters');
 			ThreadUtil.runReservedTask('loadGF', function()
 			{
@@ -645,8 +645,8 @@ class PlayState extends MusicBeatState
 
 				loadedGF = true;
 
-				//if (loadedDad && loadedBF && loadedGF)
-					//lock.release();
+				// if (loadedDad && loadedBF && loadedGF)
+				// lock.release();
 			});
 
 			ThreadUtil.runReservedTask('loadBF', function()
@@ -683,8 +683,8 @@ class PlayState extends MusicBeatState
 
 				loadedBF = true;
 
-				//if (loadedDad && loadedBF && loadedGF)
-					//lock.release();
+				// if (loadedDad && loadedBF && loadedGF)
+				// lock.release();
 			});
 
 			ThreadUtil.runReservedTask('loadDad', function()
@@ -712,11 +712,11 @@ class PlayState extends MusicBeatState
 
 				loadedDad = true;
 
-				//if (loadedDad && loadedBF && loadedGF)
-					//lock.release();
+				// if (loadedDad && loadedBF && loadedGF)
+				// lock.release();
 			});
 
-			//lock.wait();
+			// lock.wait();
 
 			if (loadedDad && loadedBF && loadedGF)
 			{
@@ -1143,7 +1143,7 @@ class PlayState extends MusicBeatState
 		startingSong = true;
 
 		trace('starting');
-		
+
 		if (Data.isStoryMode /* && !seenCutscene*/)
 		{
 			songCutscene();

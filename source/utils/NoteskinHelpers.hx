@@ -23,15 +23,15 @@ class NoteskinHelpers
 				var noteMetaData:NoteMeta = cast Paths.loadJSON('images/noteskins/${i.replace(".png", "")}', 'core');
 				if (!noteMetaData.listInSettings)
 					continue;
-			}			
+			}
 
 			if (i.contains("-pixel"))
 				continue;
 
 			if (!i.endsWith(".png"))
 				continue;
-			
-			noteskinArray.push(i.replace(".png", ""));	
+
+			noteskinArray.push(i.replace(".png", ""));
 		}
 
 		return noteskinArray;
@@ -54,7 +54,7 @@ class NoteskinHelpers
 
 	static public function generateNoteskinSprite(id:String)
 	{
-		return Paths.getSparrowAtlas('noteskins/' + id);	
+		return Paths.getSparrowAtlas('noteskins/' + id);
 	}
 
 	public static function getPrefixesList(id:String):Array<String>
@@ -89,10 +89,10 @@ class NoteskinHelpers
 		}
 		else
 		{
-			if (OpenFlAssets.getBitmapData(path) != null) //It can return null, lol
+			if (OpenFlAssets.getBitmapData(path) != null) // It can return null, lol
 				return OpenFlAssets.getBitmapData(path);
 			else
 				return defaultBitmap;
 		}
 	}
-}	
+}

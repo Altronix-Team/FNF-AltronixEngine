@@ -22,7 +22,6 @@ import gameplayStuff.PlayStateChangeables;
 import gameplayStuff.Note;
 import gameplayStuff.Conductor;
 
-
 class GameplayCustomizeState extends MusicBeatState
 {
 	var defaultX:Float = FlxG.width * 0.55 - 135;
@@ -65,6 +64,7 @@ class GameplayCustomizeState extends MusicBeatState
 	public static var freeplayStage:String = 'stage';
 	public static var freeplaySong:String = 'bopeebo';
 	public static var freeplayWeek:Int = 1;
+
 	public var BF_X:Float = 770;
 	public var BF_Y:Float = 100;
 	public var DAD_X:Float = 100;
@@ -90,7 +90,7 @@ class GameplayCustomizeState extends MusicBeatState
 		FlxG.cameras.reset(camGame);
 		FlxG.cameras.add(camHUD, false);
 
-		//FlxCamera.defaultCameras = [camGame];
+		// FlxCamera.defaultCameras = [camGame];
 		FlxG.cameras.setDefaultDrawTarget(camGame, true);
 
 		camHUD.zoom = Main.save.data.zoom;
@@ -184,18 +184,18 @@ class GameplayCustomizeState extends MusicBeatState
 				defaultZoom: 0.9,
 				isPixelStage: false,
 				hideGF: false,
-			
+
 				boyfriend: [770, 450],
 				gf: [400, 130],
 				dad: [100, 100],
-			
+
 				camera_boyfriend: [0, 0],
 				camera_opponent: [0, 0],
 				camera_girlfriend: [0, 0],
 				camera_speed: 1
 			};
 		}
-	
+
 		BF_X = stageData.boyfriend[0];
 		BF_Y = stageData.boyfriend[1];
 		boyfriend.setPosition(BF_X, BF_Y);
@@ -203,7 +203,7 @@ class GameplayCustomizeState extends MusicBeatState
 		GF_X = stageData.gf[0];
 		GF_Y = stageData.gf[1];
 		gf.setPosition(GF_X, GF_Y);
-	
+
 		DAD_X = stageData.dad[0];
 		DAD_Y = stageData.dad[1];
 		dad.setPosition(DAD_X, DAD_Y);

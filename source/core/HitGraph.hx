@@ -21,7 +21,7 @@ import states.playState.GameData as Data;
 /**
  * stolen from https://github.com/HaxeFlixel/flixel/blob/master/flixel/system/debug/stats/StatsGraph.hx
  */
- //Now without replay stuff!
+// Now without replay stuff!
 class HitGraph extends Sprite
 {
 	static inline var AXIS_COLOR:FlxColor = 0xffffff;

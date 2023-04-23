@@ -32,26 +32,27 @@ import openfl.system.Capabilities;
 import haxe.CallStack;
 import utils.EngineSave;
 import sys.io.Process;
-
 #if FEATURE_MODCORE
 import modding.ModCore;
 #end
 
-//TODO Altronix Engine start splash
+// TODO Altronix Engine start splash
 class Main extends Sprite
 {
 	public static var gjToastManager:GJToastManager;
+
 	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	var gameHeight:Int = 720; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	var initialState:Class<FlxState> = states.TitleState; // The FlxState the game starts with.
 
 	#if (flixel < "5.0.0")
 	var zoom:Float = -1; // If -1, zoom is automatically calculated to fit the window dimensions.
-	#end
 
+	#end
 	var framerate:Int = 120; // How many frames per second the game should run at.
 	var skipSplash:Bool = true; // Whether to skip the flixel splash screen that appears in release mode.
 	var startFullscreen:Bool = false; // Whether to start the game in fullscreen on desktop targets
+
 	public static var isHidden:Bool = false;
 
 	public static var instance:Main;
@@ -76,13 +77,12 @@ class Main extends Sprite
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
 	// Ho-ho-ho, no
-
 	var modsToLoad = [];
+
 	public static var configFound = false;
 	public static var hscriptClasses:Array<String> = [];
 
-	//var globalScripts:Array<scriptStuff.scriptBodies.GlobalScriptBody> = [];
-
+	// var globalScripts:Array<scriptStuff.scriptBodies.GlobalScriptBody> = [];
 	public static var fromLauncher:Bool = false;
 
 	#if FEATURE_MULTITHREADING
@@ -103,7 +103,8 @@ class Main extends Sprite
 
 		var args = Sys.args();
 
-		if (args[0] != null && args[0] == 'fromLauncher') fromLauncher = true;
+		if (args[0] != null && args[0] == 'fromLauncher')
+			fromLauncher = true;
 
 		super();
 
@@ -140,7 +141,7 @@ class Main extends Sprite
 	{
 		lime.utils.Log.level = LogLevel.NONE;
 		lime.utils.Log.throwErrors = false;
-		
+
 		save.bind('funkin', 'ninjamuffin99');
 
 		EngineData.initSave();
@@ -172,7 +173,7 @@ class Main extends Sprite
 
 		#if !mobile
 		fpsCounter = new EngineFPS();
-		#end		
+		#end
 
 		if (save.data.fullscreenOnStart == null)
 			save.data.fullscreenOnStart = false;
@@ -188,16 +189,17 @@ class Main extends Sprite
 
 		hscriptClasses = PolymodHscriptState.listScriptClasses();
 
-		game = new CustomGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash#if (!debug), save.data.fullscreenOnStart#end);
-		addChild(game);	
-		
-		//FlxG.scaleMode = new StageSizeScaleMode();
+		game = new CustomGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash
+			#if (!debug), save.data.fullscreenOnStart #end);
+		addChild(game);
+
+		// FlxG.scaleMode = new StageSizeScaleMode();
 
 		FlxG.signals.preStateCreate.add(preStateSwitch);
 		FlxG.signals.postStateSwitch.add(postStateSwitch);
 
 		#if !mobile
-		//addChild(fpsCounter);
+		// addChild(fpsCounter);
 		toggleFPS(Main.save.data.fps);
 		#end
 
@@ -216,10 +218,10 @@ class Main extends Sprite
 		reservedGameThreads.push(new ReservedThreadObject(true, "loadDad"));
 		#end
 		/*#if debug
-		flixel.addons.studio.FlxStudio.create();
-		#end*/
+			flixel.addons.studio.FlxStudio.create();
+			#end */
 
-		//setup automatic beat, step and section updates
+		// setup automatic beat, step and section updates
 		gameplayStuff.Conductor.setupUpdates();
 
 		Lib.current.addEventListener(Event.ENTER_FRAME, function(_)
@@ -227,21 +229,21 @@ class Main extends Sprite
 			fnfSignals.update.dispatch(FlxG.elapsed);
 		});
 
-		//Global scripts
+		// Global scripts
 		reloadGlobalScripts();
 	}
 
 	public function reloadGlobalScripts()
 	{
 		/*for (script in globalScripts)
-		{
-			script.destroy();
-		}
+			{
+				script.destroy();
+			}
 
-		var filesToCheck:Array<String> = AssetsUtil.readLibrary("gameplay", HSCRIPT, "scripts/global/");
-		for (file in filesToCheck)
-		{
-			globalScripts.push(new scriptStuff.scriptBodies.GlobalScriptBody(file));
+			var filesToCheck:Array<String> = AssetsUtil.readLibrary("gameplay", HSCRIPT, "scripts/global/");
+			for (file in filesToCheck)
+			{
+				globalScripts.push(new scriptStuff.scriptBodies.GlobalScriptBody(file));
 		}*/
 	}
 
@@ -253,13 +255,12 @@ class Main extends Sprite
 	 * @param error The error that was thrown.
 	 */
 	public static function onUncaughtError(error:UncaughtErrorEvent)
-	{	
+	{
 		#if FEATURE_FILESYSTEM
 		FlxG.resetGame();
 		var errorMsg:String = '';
 
-		var funnyTitle:Array<String> = 
-		[
+		var funnyTitle:Array<String> = [
 			'Fatal Error!',
 			'Monika deleted everything!',
 			'Catastrophic Error',
@@ -273,7 +274,7 @@ class Main extends Sprite
 		errorMsg += 'An uncaught error was thrown, and the game had to close.\n';
 		errorMsg += 'Please use the link below, create a new issue, and upload this file to report the error.\n';
 		errorMsg += '\n';
-		errorMsg +=  ERROR_REPORT_URL;
+		errorMsg += ERROR_REPORT_URL;
 		errorMsg += '\n';
 
 		errorMsg += '==========SYSTEM INFO==========\n';
@@ -317,11 +318,15 @@ class Main extends Sprite
 		sys.io.File.saveContent(path, errorMsg + "\n");
 
 		errorMsg += 'An error has occurred and the game is forced to close.\nPlease access the "crash" folder and send the .crash file to the developers:\n'
-			+ ERROR_REPORT_URL +'\n';
+			+ ERROR_REPORT_URL
+			+ '\n';
 
-		Application.current.window.alert('An error has occurred and the game is forced to close.\nPlease access the "crash" folder and send the .crash file to the developers:\n' + ERROR_REPORT_URL, funnyTitle[FlxG.random.int(0, funnyTitle.length - 1)]);
+		Application.current.window.alert('An error has occurred and the game is forced to close.\nPlease access the "crash" folder and send the .crash file to the developers:\n'
+			+ ERROR_REPORT_URL,
+			funnyTitle[FlxG.random.int(0, funnyTitle.length - 1)]);
 
-		try{
+		try
+		{
 			new Process(path);
 		}
 		#else
@@ -332,6 +337,7 @@ class Main extends Sprite
 			funnyTitle[FlxG.random.int(0, funnyTitle.length - 1)]);
 		#end
 	}
+
 	private function onCriticalErrorEvent(message:String):Void
 	{
 		FlxG.resetGame();
@@ -409,13 +415,17 @@ class Main extends Sprite
 
 	public static function setSaveByString(str:String, value:Dynamic):Bool
 	{
-		try {
+		try
+		{
 			Reflect.setField(save.data, str, value);
 			save.flush();
-			return true;}
-		catch(e){
+			return true;
+		}
+		catch (e)
+		{
 			Debug.logError('Failed to set save ' + e.details());
-			return false;}
+			return false;
+		}
 	}
 
 	private function preStateSwitch(newState:FlxState)
@@ -442,7 +452,6 @@ class Main extends Sprite
 		EngineFPS.fpsText.clearMaxFPS();
 	}
 }
-
 
 class CustomGame extends FlxGame
 {

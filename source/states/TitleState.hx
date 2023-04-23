@@ -69,22 +69,22 @@ class TitleState extends MusicBeatState
 	{
 		if (initialized)
 			initialized = !reset;
-		
+
 		super();
 	}
 
 	override public function create():Void
 	{
 		/*@:privateAccess
-		{
-			Debug.logTrace("We loaded " + openfl.Assets.getLibrary("default").assetsLoaded + " assets into the default library");
+			{
+				Debug.logTrace("We loaded " + openfl.Assets.getLibrary("default").assetsLoaded + " assets into the default library");
 		}*/
 
 		if (!initialized)
 		{
 			FlxG.autoPause = false;
 
-			PlayerSettings.init();	
+			PlayerSettings.init();
 
 			EngineData.initAfterGame();
 
@@ -128,7 +128,7 @@ class TitleState extends MusicBeatState
 				StoryMenuState.weekCompleted = Main.save.data.weekCompleted;
 			}
 		}
-		
+
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 
 		// DEBUG BULLSHIT
@@ -145,7 +145,8 @@ class TitleState extends MusicBeatState
 		if (!DiscordClient.isInitialized)
 		{
 			DiscordClient.initialize();
-			Application.current.onExit.add (function (exitCode) {
+			Application.current.onExit.add(function(exitCode)
+			{
 				DiscordClient.shutdown();
 			});
 		}
@@ -190,7 +191,7 @@ class TitleState extends MusicBeatState
 			logoBl = new FlxSprite(-150, -100);
 			logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
 		}
-		logoBl.antialiasing = Main.getSaveByString('antialiasing');//Main.save.data.antialiasing;
+		logoBl.antialiasing = Main.getSaveByString('antialiasing'); // Main.save.data.antialiasing;
 		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24, false);
 		logoBl.updateHitbox();
 		// logoBl.screenCenter();
@@ -200,7 +201,7 @@ class TitleState extends MusicBeatState
 		gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle');
 		gfDance.animation.addByIndices('danceLeft', 'gfDance', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
 		gfDance.animation.addByIndices('danceRight', 'gfDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
-		gfDance.antialiasing = Main.getSaveByString('antialiasing');//Main.save.data.antialiasing;
+		gfDance.antialiasing = Main.getSaveByString('antialiasing'); // Main.save.data.antialiasing;
 		add(gfDance);
 		add(logoBl);
 
@@ -312,7 +313,8 @@ class TitleState extends MusicBeatState
 		#end
 
 		titleTimer += CoolUtil.boundTo(elapsed, 0, 1);
-		if (titleTimer > 2) titleTimer -= 2;
+		if (titleTimer > 2)
+			titleTimer -= 2;
 
 		if (!pressedEnter && !transitioning && skippedIntro)
 		{
@@ -344,7 +346,7 @@ class TitleState extends MusicBeatState
 			new FlxTimer().start(2, function(tmr:FlxTimer)
 			{
 				FlxG.switchState(new MainMenuState());
-					clean();
+				clean();
 			});
 		}
 
@@ -477,10 +479,13 @@ class TitleState extends MusicBeatState
 	}
 }
 
-typedef IntroTextFile = {
+typedef IntroTextFile =
+{
 	var funnyTexts:Array<IntroText>;
 }
-typedef IntroText = {
+
+typedef IntroText =
+{
 	var firstText:String;
 	var secondText:String;
 }

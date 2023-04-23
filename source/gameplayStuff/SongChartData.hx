@@ -1,104 +1,78 @@
 package gameplayStuff;
 
-//Oh, that will be EPIC
-typedef SongChart = {
-
+// Oh, that will be EPIC
+typedef SongChart =
+{
 	var songMeta:SongMetadata;
 
-    var songCharacters:SongCharacters;
-
-    var songSettings:SongSettings;
-
-    var songSections:Array<SectionData>;
-
-    var songEvents:Array<EventsAtPos>;
+	var songCharacters:SongCharacters;
+	var songSettings:SongSettings;
+	var songSections:Array<SectionData>;
+	var songEvents:Array<EventsAtPos>;
 }
 
-typedef SongMetadata = {
-    
-    var songId:String;
+typedef SongMetadata =
+{
+	var songId:String;
 
-    var songName:String;
-
+	var songName:String;
 	var songComposer:String;
-
 	var songPosBarColor:Int;
-
 	var chartVersion:String;
-
-    var stageId:String;
+	var stageId:String;
 }
 
-typedef SongCharacters = {
-
+typedef SongCharacters =
+{
 	var opponents:Array<CharacterData>;
 
 	var players:Array<CharacterData>;
-
 	var girlfriends:Array<CharacterData>;
 }
 
-typedef CharacterData = {
+typedef CharacterData =
+{
+	var charId:String;
 
-    var charId:String;
-
-    var charNotes:Array<NoteData>;
+	var charNotes:Array<NoteData>;
 }
 
-typedef NoteData = {
-
+typedef NoteData =
+{
 	var strumTime:Float;
 
 	var noteData:Int;
-
 	var sustainLength:Float;
-
 	var isAlt:Bool;
-
 	var beat:Float;
-
 	var noteType:String;
-
 	var noteStyle:String;
 }
 
-typedef SongSettings = {
+typedef SongSettings =
+{
+	var bpm:Float;
 
-    var bpm:Float;
-
-    var speed:Float;
-
-    var needsVoices:Bool;
-
-    var separateVoices:Bool;
-
-    var diffSoundAssets:Bool;
-
-    var hideGFs:Bool;
-
-    var validScore:Bool;
+	var speed:Float;
+	var needsVoices:Bool;
+	var separateVoices:Bool;
+	var diffSoundAssets:Bool;
+	var hideGFs:Bool;
+	var validScore:Bool;
 }
 
-typedef SectionData = {
-
+typedef SectionData =
+{
 	var startTime:Float;
 
 	var endTime:Float;
-
 	var lengthInSteps:Int;
-
 	var typeOfSection:Int;
-
 	var mustHitSection:Bool;
-
 	var opponentsAltAnim:Bool;
-
 	var playersAltAnim:Bool;
-
 	var gfsAltAnim:Bool;
-
 	var gfsSection:Bool;
-
 	var activeCharacters:Array<String>;
 }
 
@@ -116,8 +90,8 @@ class EventObject
 	}
 }
 
-typedef EventsAtPos = {
-
+typedef EventsAtPos =
+{
 	var position:Float;
 
 	var events:Array<EventObject>;

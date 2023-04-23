@@ -6,19 +6,20 @@ import gamejolt.GameJolt.GameJoltAPI;
 #end
 import states.AchievementsState;
 
-//TODO Custom achievements
-typedef AchievementData = {
+// TODO Custom achievements
+typedef AchievementData =
+{
 	var displayedName:String;
 	var displayedDescription:String;
 	var saveId:String;
-	var ?GJId:Int; //Not usable for custom achievements
+	var ?GJId:Int; // Not usable for custom achievements
 	var isHidden:Bool;
 	var imageName:String;
-	var ?isCustom:Bool; //Need to know is achievement custom or not. Only for usage in source code
+	var ?isCustom:Bool; // Need to know is achievement custom or not. Only for usage in source code
 }
 
 class Achievements
-{  
+{
 	public static function getWeekSaveId(weekid:Int):String
 	{
 		switch (weekid)
@@ -126,49 +127,50 @@ class Achievements
 		return 'Unidentified achievement';
 	}
 
-    public static function getAchievement(id:Int, imagePath:String = null)
-    {
+	public static function getAchievement(id:Int, imagePath:String = null)
+	{
 		var savedAchievements:Array<String> = Main.save.data.savedAchievements;
 
 		if (!savedAchievements.contains(findSaveIdById(id)))
-        {
+		{
 			#if desktop
 			if (imagePath == null)
 				GameJoltAPI.getTrophy(id, findImageById(id));
 			else
-				GameJoltAPI.getTrophy(id, imagePath); 
+				GameJoltAPI.getTrophy(id, imagePath);
 			#end
 			savedAchievements.push(findSaveIdById(id));
 			Main.save.data.savedAchievements = savedAchievements;
-        }
-    }
+		}
+	}
 
-    public static function checkWeekAchievement(weekId:Int = 0)
-    {
-        switch (weekId)
-        {
-            case 0: 
-                //Tutorial (Do nothing)
-            case 1:
-                getAchievement(167265, 'week1');
-            case 2:
-                getAchievement(167266, 'week2');
-            case 3:
-                getAchievement(167267, 'week3');
-            case 4:
-                getAchievement(167268, 'week4');
-            case 5:
-                getAchievement(167269, 'week5');
-            case 6:
-                getAchievement(167270, 'week6');
-            case 7:
-                getAchievement(167271, 'week7');
-            default:
-                Debug.logTrace('Lol, we dont have achievement for this week');         
-        }
-    }
+	public static function checkWeekAchievement(weekId:Int = 0)
+	{
+		switch (weekId)
+		{
+			case 0:
+			// Tutorial (Do nothing)
+			case 1:
+				getAchievement(167265, 'week1');
+			case 2:
+				getAchievement(167266, 'week2');
+			case 3:
+				getAchievement(167267, 'week3');
+			case 4:
+				getAchievement(167268, 'week4');
+			case 5:
+				getAchievement(167269, 'week5');
+			case 6:
+				getAchievement(167270, 'week6');
+			case 7:
+				getAchievement(167271, 'week7');
+			default:
+				Debug.logTrace('Lol, we dont have achievement for this week');
+		}
+	}
 
-	public static function listAllAchievements() {
+	public static function listAllAchievements()
+	{
 		achievementsArray = [];
 		Debug.logInfo('Loading engine achievements!');
 		achievementsArray = EngineConstants.defaultAchievementsArray.copy();
@@ -188,18 +190,19 @@ class Achievements
 	public static var achievementsArray:Array<AchievementData> = [];
 }
 
-class AchievementSprite extends FlxSprite{
+class AchievementSprite extends FlxSprite
+{
 	public var sprTracker:FlxSprite;
 
 	private var tag:String;
-    private var image:String;
+	private var image:String;
 
 	public function new(x:Float = 0, y:Float = 0, image:String, saveTag:String)
 	{
 		super(x, y);
 
 		this.tag = saveTag;
-        this.image = image;
+		this.image = image;
 
 		reloadAchievementImage();
 		antialiasing = Main.save.data.antialiasing;

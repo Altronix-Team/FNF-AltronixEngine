@@ -28,7 +28,7 @@ class AchievementsState extends MusicBeatState
 	private var iconArray:Array<AchievementSprite> = [];
 	var curSelected:Int = 0;
 	var descText:FlxText;
-    var checkedAchievements:Array<String> = [];
+	var checkedAchievements:Array<String> = [];
 
 	override function create()
 	{
@@ -46,7 +46,6 @@ class AchievementsState extends MusicBeatState
 
 		var isDebug:Bool = false;
 
-
 		#if debug
 		isDebug = true;
 		#end
@@ -54,7 +53,7 @@ class AchievementsState extends MusicBeatState
 		persistentUpdate = true;
 
 		bg = new FlxSprite().loadGraphic(Paths.loadImage('menuDesat'));
-        bg.color = 0x33ff00;
+		bg.color = 0x33ff00;
 		bg.antialiasing = Main.save.data.antialiasing;
 		add(bg);
 
@@ -68,27 +67,27 @@ class AchievementsState extends MusicBeatState
 				checkedAchievements.push(Achievements.achievementsArray[i].displayedName);
 			}
 			else if (!Achievements.achievementsArray[i].isHidden)
-            {
+			{
 				checkedAchievements.push(Achievements.achievementsArray[i].displayedName);
-            }
+			}
 		}
 
 		for (i in 0...checkedAchievements.length)
 		{
 			var nameText:Alphabet = new Alphabet(0, (100 * i) + 200, checkedAchievements[i], true, false);
-            nameText.isMenuItem = true;
-            nameText.targetY = i;
+			nameText.isMenuItem = true;
+			nameText.targetY = i;
 			nameText.x += 280;
-            nameText.xAdd = 200;
-            grpAchievements.add(nameText);
+			nameText.xAdd = 200;
+			grpAchievements.add(nameText);
 
 			var icon:AchievementSprite = new AchievementSprite(nameText.x - 100, nameText.y - 50, Achievements.getImageByName(checkedAchievements[i]),
 				Achievements.getSaveTagByName(checkedAchievements[i]));
-            icon.sprTracker = nameText;
+			icon.sprTracker = nameText;
 
-            iconArray.push(icon);
-            add(icon);
-        }
+			iconArray.push(icon);
+			add(icon);
+		}
 
 		var leText:String = checkedAchievements[0];
 		var descBG:FlxSprite = new FlxSprite(0, 600).makeGraphic(FlxG.width, 600, 0xFF000000);
@@ -98,7 +97,7 @@ class AchievementsState extends MusicBeatState
 		descText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER);
 		descText.scrollFactor.set();
 		descText.borderSize = 2.4;
-        descText.screenCenter(X);
+		descText.screenCenter(X);
 		add(descText);
 
 		changeSelection();
@@ -150,7 +149,6 @@ class AchievementsState extends MusicBeatState
 		{
 			FlxG.switchState(new MainMenuState());
 		}
-		
 	}
 
 	function changeSelection(change:Int = 0)

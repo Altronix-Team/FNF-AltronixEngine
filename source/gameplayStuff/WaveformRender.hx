@@ -21,7 +21,7 @@ class WaveformRender extends FlxSprite
 
 	public function new(x:Float, y:Float, _song:SongData, GRID_SIZE:Int, height:Int = 16, curSection:Int = 0)
 	{
-        super(x, y);
+		super(x, y);
 
 		loadAudioBuffer(_song.songId);
 
@@ -34,7 +34,7 @@ class WaveformRender extends FlxSprite
 
 		var checkForVoices:Int = 1;
 		/*if (waveformUseInstrumental.checked)
-			checkForVoices = 0;*/
+			checkForVoices = 0; */
 
 		if (!Main.save.data.chart_waveform.checked || audioBuffers[checkForVoices] == null)
 		{

@@ -29,10 +29,10 @@ class EngineData
 
 		if (Main.save.data.missSounds == null)
 			Main.save.data.missSounds = true;
-		
+
 		if (Main.save.data.toggleLeaderboard == null)
 			Main.save.data.toggleLeaderboard = true;
-		
+
 		if (Main.save.data.dfjk == null)
 			Main.save.data.dfjk = false;
 
@@ -99,7 +99,7 @@ class EngineData
 
 		if (Main.save.data.botplay == null)
 			Main.save.data.botplay = false;
-		
+
 		if (Main.save.data.savedAchievements == null)
 			Main.save.data.savedAchievements = [];
 
@@ -224,7 +224,8 @@ class EngineData
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(Main.save.data.fpsCap);
 	}
 
-	public static function initAfterGame() {
+	public static function initAfterGame()
+	{
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 
 		Controls.gamepad = gamepad != null;

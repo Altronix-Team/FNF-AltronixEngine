@@ -37,7 +37,8 @@ class AtlasFrameMaker extends FlxFramesCollection
 		* @param   _excludeArray       Use this to only create selected animations. Keep null to create all of them.
 		*
 	 */
-	public static function construct(key:String, ?library:String = "core", ?_excludeArray:Array<String> = null, ?noAntialiasing:Bool = false):FlxFramesCollection
+	public static function construct(key:String, ?library:String = "core", ?_excludeArray:Array<String> = null,
+			?noAntialiasing:Bool = false):FlxFramesCollection
 	{
 		// widthoffset = _widthoffset;
 		// heightoffset = _heightoffset;

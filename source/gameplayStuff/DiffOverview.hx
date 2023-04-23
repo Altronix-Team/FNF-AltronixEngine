@@ -18,7 +18,6 @@ import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import states.FreeplayState;
 
-
 @:access(states.FreeplayState)
 class DiffOverview extends MusicBeatSubstate
 {
@@ -27,6 +26,7 @@ class DiffOverview extends MusicBeatSubstate
 	var blackBox:FlxSprite;
 
 	public var SONG:SongData;
+
 	var strumLine:FlxSprite;
 	var camHUD:FlxCamera;
 
@@ -56,7 +56,7 @@ class DiffOverview extends MusicBeatSubstate
 		FlxG.cameras.add(camGame);
 		FlxG.cameras.add(camHUD);
 
-		//FlxCamera.defaultCameras = [camGame];
+		// FlxCamera.defaultCameras = [camGame];
 		FlxG.cameras.setDefaultDrawTarget(camGame, true);
 
 		playerStrums = new FlxTypedGroup<StaticArrow>();
@@ -140,7 +140,6 @@ class DiffOverview extends MusicBeatSubstate
 
 	override function update(elapsed:Float)
 	{
-
 		// input
 
 		if (frames < 10)
@@ -197,11 +196,8 @@ class DiffOverview extends MusicBeatSubstate
 
 			if (daNote.isSustainNote)
 			{
-				if ((!daNote.mustPress
-					|| daNote.wasGoodHit
-					&& !daNote.ignoreNote)
-					&& daNote.y
-					+ daNote.offset.y * daNote.scale.y <= (strumLine.y + Note.swagWidth / 2))
+				if ((!daNote.mustPress || daNote.wasGoodHit && !daNote.ignoreNote)
+					&& daNote.y + daNote.offset.y * daNote.scale.y <= (strumLine.y + Note.swagWidth / 2))
 				{
 					// Clip to strumline
 					var swagRect = new FlxRect(0, 0, daNote.width / daNote.scale.x, daNote.height / daNote.scale.y);
@@ -217,7 +213,7 @@ class DiffOverview extends MusicBeatSubstate
 			if (!daNote.isSustainNote)
 				daNote.angle = daNote.sprTracker.angle;
 			daNote.alpha = daNote.sprTracker.alpha;
-			
+
 			// auto hit
 			if (daNote.y < strumLine.y)
 			{
@@ -254,7 +250,6 @@ class DiffOverview extends MusicBeatSubstate
 				if (SONG.noteStyle == 'pixel')
 					daNote.x -= 11;
 			}
-
 		});
 
 		super.update(elapsed);
@@ -381,7 +376,7 @@ class DiffOverview extends MusicBeatSubstate
 				var noteStyle = 'normal';
 
 				if (songNotes[6] != null)
-					noteStyle = songNotes[6];					
+					noteStyle = songNotes[6];
 
 				var swagNote:Note = new Note(daStrumTime, daNoteData, oldNote, false, false, altNote, songNotes[4], noteStyle, true);
 

@@ -3,17 +3,17 @@ package gameplayStuff;
 typedef SwagSection =
 {
 	/**
-	* Start time of section in ms.
+	 * Start time of section in ms.
 	**/
 	var startTime:Float;
 
 	/**
-	* End time of section in ms.
+	 * End time of section in ms.
 	**/
 	var endTime:Float;
 
 	/**
-	* Information about notes in this section.
+	 * Information about notes in this section.
 	**/
 	var sectionNotes:Array<Array<Dynamic>>;
 
@@ -23,57 +23,57 @@ typedef SwagSection =
 	var newSectionNotes:Array<SectionNoteData>;
 
 	/**
-	* Length of section in steps.
+	 * Length of section in steps.
 	**/
 	var lengthInSteps:Int;
 
 	/**
-	* Unused?
-	* I think.
+	 * Unused?
+	 * I think.
 	**/
 	var typeOfSection:Int;
 
 	/**
-	* Changes the performer of "left part" of chart between opponent and player.
+	 * Changes the performer of "left part" of chart between opponent and player.
 	**/
 	var mustHitSection:Bool;
 
 	/**
-	* DEPRECATED!!
-	* Special bpm for this section.
+	 * DEPRECATED!!
+	 * Special bpm for this section.
 	**/
 	var bpm:Float;
 
 	/**
-	* DEPRECATED!!
-	* Should song bpm be changed while this section playing.
-	* Warning: Use "BPM change" event to change song BPM.
+	 * DEPRECATED!!
+	 * Should song bpm be changed while this section playing.
+	 * Warning: Use "BPM change" event to change song BPM.
 	**/
 	var changeBPM:Bool;
 
 	/**
-	* DEPRECATED!!
-	* Should "left part character" of chart toggle alt anim.
+	 * DEPRECATED!!
+	 * Should "left part character" of chart toggle alt anim.
 	**/
 	var altAnim:Bool;
 
 	/**
-	* Should opponent toggle alt anim.
+	 * Should opponent toggle alt anim.
 	**/
 	var CPUAltAnim:Bool;
 
 	/**
-	* Should player toggle alt anim.
+	 * Should player toggle alt anim.
 	**/
 	var playerAltAnim:Bool;
 
 	/**
-	* Should GF toggle alt anim.
+	 * Should GF toggle alt anim.
 	**/
 	var gfAltAnim:Bool;
 
 	/**
-	* Forces GF to perform the "left side" of the chart.
+	 * Forces GF to perform the "left side" of the chart.
 	**/
 	var gfSection:Bool;
 }
@@ -81,8 +81,9 @@ typedef SwagSection =
 /**
  * A more intuitive system for storing information about notes than Dynamic array 
  */
- //Will use this later
-class SectionNoteData {
+// Will use this later
+class SectionNoteData
+{
 	var strumTime:Float;
 	var noteData:Int;
 	var sustainLength:Float;
@@ -124,6 +125,6 @@ class Section
 
 	public function new(lengthInSteps:Int = 16)
 	{
-		//this.lengthInSteps = lengthInSteps;
+		// this.lengthInSteps = lengthInSteps;
 	}
 }

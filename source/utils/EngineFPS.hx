@@ -215,7 +215,7 @@ class EngineFPS extends Sprite
 	private override function __enterFrame(deltaTime:Float):Void
 	{
 		bgSprite.x = -x;
-		
+
 		super.__enterFrame(deltaTime.toInt());
 	}
 }

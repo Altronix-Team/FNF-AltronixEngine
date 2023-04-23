@@ -219,7 +219,8 @@ class ModObject extends FlxTypedSpriteGroup<FlxSprite>
 		super.update(elapsed);
 
 		if (checkbox.animation.curAnim != null)
-			if (checkbox.animation.curAnim.finished && (checkbox.animation.curAnim.name == 'check' || checkbox.animation.curAnim.name == 'check-reversed'))
+			if (checkbox.animation.curAnim.finished
+				&& (checkbox.animation.curAnim.name == 'check' || checkbox.animation.curAnim.name == 'check-reversed'))
 			{
 				if (isEnabled)
 					checkbox.playAnim('checked-idle', true);

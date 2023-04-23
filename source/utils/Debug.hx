@@ -12,7 +12,6 @@ import haxe.PosInfos;
 import openfl.system.Capabilities;
 import openfl.events.UncaughtErrorEvent;
 
-
 /**
  * Hey you, developer!
  * This class contains lots of utility functions for logging and debugging.
@@ -200,8 +199,8 @@ class Debug
 
 		// Start the log file writer.
 		// We have to set it to TRACE for now.
-		//if (Main.save.data.logWriter)
-			logFileWriter = new DebugLogWriter("TRACE");
+		// if (Main.save.data.logWriter)
+		logFileWriter = new DebugLogWriter("TRACE");
 
 		logInfo("Debug logging initialized. Hello, developer.");
 
@@ -244,7 +243,7 @@ class Debug
 	{
 		if (FlxG != null && FlxG.game != null && FlxG.log != null)
 		{
-			//FlxG.log.advanced(data, logStyle); //A lot of errors, lol
+			// FlxG.log.advanced(data, logStyle); //A lot of errors, lol
 		}
 	}
 

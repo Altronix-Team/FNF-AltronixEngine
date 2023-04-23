@@ -14,6 +14,7 @@ import states.playState.GameData as Data;
 class GameOverSubstate extends MusicBeatSubstate
 {
 	public var boyfriend:Boyfriend;
+
 	var camFollow:FlxObject;
 
 	public static var stageSuffix:String = "";
@@ -53,7 +54,6 @@ class GameOverSubstate extends MusicBeatSubstate
 	var startVibin:Bool = false;
 
 	override function update(elapsed:Float)
-		
 	{
 		super.update(elapsed);
 
@@ -99,16 +99,19 @@ class GameOverSubstate extends MusicBeatSubstate
 		if (boyfriend.animation.curAnim.name == 'firstDeath' && boyfriend.animation.curAnim.finished)
 		{
 			if (Data.SONG.stage == 'warzone')
-				{				
-					var exclude:Array<Int> = [];
-	
-					FlxG.sound.play(Paths.getPath('weeks/assets/sounds/jeffGameover/jeffGameover-' + FlxG.random.int(1, 25, exclude) + '.${Paths.SOUND_EXT}', SOUND, 'gameplay'), 1, false, null, true, function() {
-						if(!isEnding)
-						{
-							FlxG.sound.music.fadeIn(0.2, 1, 4);
-						}
-					});
-				}
+			{
+				var exclude:Array<Int> = [];
+
+				FlxG.sound.play(Paths.getPath('weeks/assets/sounds/jeffGameover/jeffGameover-' + FlxG.random.int(1, 25, exclude) + '.${Paths.SOUND_EXT}',
+					SOUND, 'gameplay'),
+					1, false, null, true, function()
+				{
+					if (!isEnding)
+					{
+						FlxG.sound.music.fadeIn(0.2, 1, 4);
+					}
+				});
+			}
 			FlxG.sound.playMusic(Paths.music(loopSoundName + stageSuffix));
 			startVibin = true;
 		}
@@ -152,6 +155,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			});
 		}
 	}
+
 	override function onWindowFocusOut():Void
 	{
 		FlxG.sound.pause();

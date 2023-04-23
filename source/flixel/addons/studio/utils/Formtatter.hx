@@ -9,7 +9,7 @@ import flixel.math.FlxMath;
  * @author Fernando Bevilacqua <dovyski@gmail.com>
  */
 class Formatter
-{		
+{
 	public static function prettifyFloat(number:Float):String
 	{
 		var value = FlxMath.roundDecimal(cast number, FlxG.debugger.precision);

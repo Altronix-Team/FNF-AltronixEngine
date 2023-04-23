@@ -4,6 +4,7 @@
  * This includes the command to open an external URL, as well as purposefully crash the game,
  * or manipulate the window.
  */
+
 package utils;
 
 import flixel.system.scaleModes.RatioScaleMode;
@@ -264,7 +265,7 @@ class WindowShakeEvent
 				case Y:
 					offset.y = FlxG.random.float(-intensity, intensity);
 				default:
-					//Do nothing
+					// Do nothing
 			}
 		}
 		else

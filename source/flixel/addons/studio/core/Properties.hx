@@ -33,11 +33,11 @@ class Properties
 
 		if (target == null)
 			return;
-		
+
 		var profile = Tracker.findProfile(_target);
 
 		if (profile == null)
-			FlxG.log.error("Could not find a tracking profile for object of class '" + target.getClassName(true) + "'."); 
+			FlxG.log.error("Could not find a tracking profile for object of class '" + target.getClassName(true) + "'.");
 		else
 		{
 			_window = new Tracker(profile, _target);
@@ -47,17 +47,18 @@ class Properties
 		}
 	}
 
-	public function update():Void {
+	public function update():Void
+	{
 		var selectedItems = FlxG.game.debugger.interaction.selectedItems;
 
-		if(selectedItems.length != 1)
+		if (selectedItems.length != 1)
 			// TODO: show message that multiple elements cannot be tracked?
 			return;
 
 		// TODO: properly get the first selected item
 		var selectedItem = selectedItems.members[0];
 
-		if(_target != selectedItem)
+		if (_target != selectedItem)
 			setTarget(cast selectedItem);
 	}
 	#end

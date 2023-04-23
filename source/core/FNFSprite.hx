@@ -18,7 +18,7 @@ class FNFSprite extends FlxSprite
 		super(X, Y, SimpleGraphic);
 
 		animOffsets = new Map();
-		
+
 		Main.fnfSignals.beatHit.add(beatHit);
 		Main.fnfSignals.stepHit.add(stepHit);
 		Main.fnfSignals.sectionHit.add(sectionHit);
@@ -180,9 +180,15 @@ class FNFSprite extends FlxSprite
 		return super.set_y(value);
 	}
 
-	public function beatHit(beat:Int){}
+	public function beatHit(beat:Int)
+	{
+	}
 
-	public function stepHit(step:Int){}
+	public function stepHit(step:Int)
+	{
+	}
 
-	public function sectionHit(section:SwagSection){}
+	public function sectionHit(section:SwagSection)
+	{
+	}
 }

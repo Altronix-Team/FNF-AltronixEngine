@@ -33,12 +33,12 @@ class GameUI extends FlxTypedGroup<FlxBasic>
 	public var intScoreP1:Int = 0;
 	public var intScoreP2:Int = 0;
 
-    public var engineWatermark:FlxText;
+	public var engineWatermark:FlxText;
 
 	public var funnyStartObjects:Array<FlxBasic> = [];
 
-    public var chartingState:FlxText;
-    public var botPlayState:FlxText;
+	public var chartingState:FlxText;
+	public var botPlayState:FlxText;
 
 	public function new(state:PlayState, camHUD:FlxCamera)
 	{
@@ -197,7 +197,6 @@ class GameUI extends FlxTypedGroup<FlxBasic>
 		if (!PlayStateChangeables.botPlay)
 			add(state.ratingsGroup);
 
-
 		state.strumLineNotes.cameras = [camHUD];
 		state.notes.cameras = [camHUD];
 		healthBar.cameras = [camHUD];
@@ -267,7 +266,8 @@ class GameUI extends FlxTypedGroup<FlxBasic>
 	{
 		if (Main.save.data.colour)
 		{
-			healthBar.createFilledBar(FlxColor.fromRGB(state.dad.healthColorArray[0], state.dad.healthColorArray[1], state.dad.healthColorArray[2]), FlxColor.fromRGB(state.boyfriend.healthColorArray[0], state.boyfriend.healthColorArray[1], state.boyfriend.healthColorArray[2]));
+			healthBar.createFilledBar(FlxColor.fromRGB(state.dad.healthColorArray[0], state.dad.healthColorArray[1], state.dad.healthColorArray[2]),
+				FlxColor.fromRGB(state.boyfriend.healthColorArray[0], state.boyfriend.healthColorArray[1], state.boyfriend.healthColorArray[2]));
 		}
 		else
 			healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);

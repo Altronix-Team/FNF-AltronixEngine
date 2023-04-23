@@ -45,7 +45,7 @@ class FlxView3D extends FlxSprite
 	/**
 	 * Set this flag to true to force the View3D to update during the `draw()` call.
 	 */
-	 public var dirty3D:Bool = true;
+	public var dirty3D:Bool = true;
 
 	private var meshes:Array<Mesh> = [];
 
@@ -146,7 +146,7 @@ class FlxView3D extends FlxSprite
 			}
 			Asset3DLibrary._instances.remove('Flx3DView-${curID}');
 		}
-		
+
 		FlxG.stage.removeChild(view);
 		super.destroy();
 
@@ -156,12 +156,11 @@ class FlxView3D extends FlxSprite
 			bmp = null;
 		}
 
-		if (view != null) 
+		if (view != null)
 		{
 			view.dispose();
 			view = null;
 		}
-	
 	}
 
 	@:noCompletion override function draw()
@@ -196,8 +195,8 @@ class FlxView3D extends FlxSprite
 		return view != null ? view.height = height : height;
 	}
 
-
 	private var _loaders:Map<Asset3DLibraryBundle, AssetLoaderToken> = [];
+
 	private function loadData(data:Dynamic, context:AssetLoaderContext, parser:ParserBase, onAssetCallback:Asset3DEvent->Void):AssetLoaderToken
 	{
 		var token:AssetLoaderToken;

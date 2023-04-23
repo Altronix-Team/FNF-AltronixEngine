@@ -39,10 +39,11 @@ class MainMenuState extends MusicBeatState
 	var optionShit:Array<String> = [
 		'story mode',
 		'freeplay',
-		#if FEATURE_MODCORE 'mods',#end 
-		'credits', 
-		'awards', 
-		'options'];
+		#if FEATURE_MODCORE 'mods', #end
+		'credits',
+		'awards',
+		'options'
+	];
 
 	var newGaming:FlxText;
 	var newGaming2:FlxText;
@@ -57,6 +58,7 @@ class MainMenuState extends MusicBeatState
 	var gjButton:CustomButton;
 
 	public static var finishedFunnyMove:Bool = false;
+
 	var dance:gameplayStuff.Character;
 
 	override function create()
@@ -70,7 +72,7 @@ class MainMenuState extends MusicBeatState
 		DiscordClient.changePresence("In the Menus", null);
 		#end
 		FlxG.cameras.reset(camGame);
-		//FlxCamera.defaultCameras = [camGame];
+		// FlxCamera.defaultCameras = [camGame];
 		FlxG.cameras.setDefaultDrawTarget(camGame, true);
 
 		FlxG.mouse.visible = true;
@@ -119,7 +121,7 @@ class MainMenuState extends MusicBeatState
 			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
 			menuItem.animation.play('idle');
 			menuItem.ID = i;
-			//menuItem.screenCenter(X);
+			// menuItem.screenCenter(X);
 			menuItems.add(menuItem);
 			var scr:Float = optionShit.length * 0.125;
 			if (optionShit.length < 3)
@@ -134,14 +136,14 @@ class MainMenuState extends MusicBeatState
 						menuItem.defaultY = 60 + (i * 160);
 						if (i == optionShit.length - 1)
 							finishedFunnyMove = true;
-						//changeItem();
+						// changeItem();
 					}
 				});
 			else
 			{
 				menuItem.y = 60 + (i * 160);
 				menuItem.defaultY = 60 + (i * 160);
-			}		
+			}
 		}
 
 		FlxG.camera.follow(camFollowPos, null, 1);
@@ -177,7 +179,7 @@ class MainMenuState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-		//dance.dance();
+		// dance.dance();
 		if (FlxG.sound.music.volume < 0.8)
 		{
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
@@ -265,7 +267,7 @@ class MainMenuState extends MusicBeatState
 							else
 							{
 								new FlxTimer().start(1, function(tmr:FlxTimer)
-								{									
+								{
 									goToState();
 								});
 							}
@@ -276,10 +278,10 @@ class MainMenuState extends MusicBeatState
 		}
 
 		super.update(elapsed);
-
 	}
 
-	function goToGJ() {
+	function goToGJ()
+	{
 		selectedSomethin = true;
 		FlxG.sound.play(Paths.sound('confirmMenu'));
 
@@ -314,7 +316,7 @@ class MainMenuState extends MusicBeatState
 			case 'story mode':
 				MusicBeatState.switchState(new StoryMenuState());
 				FlxG.mouse.visible = false;
-				
+
 			case 'freeplay':
 				MusicBeatState.switchState(new FreeplayState());
 				FlxG.mouse.visible = false;
@@ -322,7 +324,7 @@ class MainMenuState extends MusicBeatState
 			case 'options':
 				MusicBeatState.switchState(new options.OptionsDirect());
 				FlxG.mouse.visible = false;
-			
+
 			case 'awards':
 				MusicBeatState.switchState(new AchievementsState());
 				FlxG.mouse.visible = false;
@@ -337,7 +339,7 @@ class MainMenuState extends MusicBeatState
 				FlxG.mouse.visible = false;
 
 			default:
-				//null
+				// null
 		}
 	}
 
@@ -366,7 +368,7 @@ class MainMenuState extends MusicBeatState
 
 				if (spr.y != spr.defaultY)
 					spr.y = spr.defaultY;
-			}		
+			}
 
 			if (spr.ID == curSelected)
 			{
@@ -399,6 +401,6 @@ class MainMenuItem extends FlxSprite
 		defaultX = x;
 		defaultY = y;
 
-		super(x, y);	
+		super(x, y);
 	}
 }

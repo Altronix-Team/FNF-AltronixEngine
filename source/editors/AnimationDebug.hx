@@ -26,7 +26,6 @@ import flixel.addons.ui.FlxUITooltip.FlxUITooltipStyle;
 import gameplayStuff.Character;
 import gameplayStuff.Boyfriend;
 
-
 class AnimationDebug extends states.MusicBeatState
 {
 	var _file:FileReference;
@@ -238,7 +237,6 @@ class AnimationDebug extends states.MusicBeatState
 		result += graphicsize + ',\n';
 		result += startingAnim + ',\n';
 		result += animations + '\n';
-
 
 		for (anim => offsets in char.animOffsets)
 		{

@@ -17,8 +17,8 @@ import sys.io.File;
 import lime.utils.Assets;
 import openfl.Assets;
 
-
-typedef Credit = {
+typedef Credit =
+{
 	var nickname:String;
 	var ?icon:String;
 	var ?description:String;
@@ -26,7 +26,8 @@ typedef Credit = {
 	var ?color:String;
 }
 
-typedef CreditsFile = {
+typedef CreditsFile =
+{
 	var modName:String;
 	var credits:Array<Credit>;
 }
@@ -59,7 +60,7 @@ class CreditsState extends MusicBeatState
 		textborder = new FlxSprite().loadGraphic(Paths.image('textborder'));
 		add(textborder);
 		textborder.screenCenter();
-		
+
 		grpOptions = new FlxTypedGroup<Alphabet>();
 		add(grpOptions);
 
@@ -75,38 +76,84 @@ class CreditsState extends MusicBeatState
 			creditsStuff.push(['']);
 		}
 
-		var pisspoop:Array<Array<String>> = [ //Name - Icon name - Description - Link - BG Color
+		var pisspoop:Array<Array<String>> = [
+			// Name - Icon name - Description - Link - BG Color
 			['Altronix Engine by'],
-			['AltronMaxX', 'altronmaxx', 'Programmer of Altronix Engine', 'https://discord.com/users/324794944042565643', '00ff00'],
-			['Tut byl ya', 'broken', 'Tester of Altronix Engine', 'https://twitter.com/tut_byl_ya', '676A75'],
+			[
+				'AltronMaxX',
+				'altronmaxx',
+				'Programmer of Altronix Engine',
+				'https://discord.com/users/324794944042565643',
+				'00ff00'
+			],
+			[
+				'Tut byl ya',
+				'broken',
+				'Tester of Altronix Engine',
+				'https://twitter.com/tut_byl_ya',
+				'676A75'
+			],
 			[''],
 			['Kade Engine by'],
-			['KadeDeveloper', 'kadedev', 'Main Developer of Kade Engine', 'https://twitter.com/kade0912', '4b6448'],
+			[
+				'KadeDeveloper',
+				'kadedev',
+				'Main Developer of Kade Engine',
+				'https://twitter.com/kade0912',
+				'4b6448'
+			],
 			[''],
 			[''],
 			["Funkin' Crew"],
-			['ninjamuffin99',		'ninjamuffin99',	"Programmer of Friday Night Funkin'", 'https://twitter.com/ninja_muffin99',	'F73838'],
-			['PhantomArcade',		'phantomarcade',	"Animator of Friday Night Funkin'", 'https://twitter.com/PhantomArcade3K', 'FFBB1B'],
-			['evilsk8r',			'evilsk8r',			"Artist of Friday Night Funkin'", 'https://twitter.com/evilsk8r', '53E52C'],
-			['kawaisprite',			'kawaisprite',		"Composer of Friday Night Funkin'", 'https://twitter.com/kawaisprite', '6475F3']
+			[
+				'ninjamuffin99',
+				'ninjamuffin99',
+				"Programmer of Friday Night Funkin'",
+				'https://twitter.com/ninja_muffin99',
+				'F73838'
+			],
+			[
+				'PhantomArcade',
+				'phantomarcade',
+				"Animator of Friday Night Funkin'",
+				'https://twitter.com/PhantomArcade3K',
+				'FFBB1B'
+			],
+			[
+				'evilsk8r',
+				'evilsk8r',
+				"Artist of Friday Night Funkin'",
+				'https://twitter.com/evilsk8r',
+				'53E52C'
+			],
+			[
+				'kawaisprite',
+				'kawaisprite',
+				"Composer of Friday Night Funkin'",
+				'https://twitter.com/kawaisprite',
+				'6475F3'
+			]
 		];
-		
-		for(i in pisspoop){
+
+		for (i in pisspoop)
+		{
 			creditsStuff.push(i);
 		}
-	
+
 		for (i in 0...creditsStuff.length)
 		{
 			var isSelectable:Bool = !(creditsStuff[i].length <= 1);
 			var optionText:Alphabet = new Alphabet(0, 70 * i, creditsStuff[i][0], !isSelectable, false);
 			optionText.isMenuItem = true;
 			optionText.screenCenter(X);
-			if(isSelectable) {
+			if (isSelectable)
+			{
 				optionText.x -= 70;
 			}
 			grpOptions.add(optionText);
 
-			if (isSelectable) {
+			if (isSelectable)
+			{
 				var icon:AttachedSprite;
 				if (Assets.exists(Paths.image('crediticons/' + creditsStuff[i][1])))
 					icon = new AttachedSprite('crediticons/' + creditsStuff[i][1]);
@@ -118,7 +165,8 @@ class CreditsState extends MusicBeatState
 				iconArray.push(icon);
 				add(icon);
 
-				if(curSelected == -1) curSelected = i;
+				if (curSelected == -1)
+					curSelected = i;
 			}
 		}
 
@@ -157,7 +205,8 @@ class CreditsState extends MusicBeatState
 
 		if (controls.BACK)
 		{
-			if(colorTween != null) {
+			if (colorTween != null)
+			{
 				colorTween.cancel();
 			}
 			FlxG.sound.play(Paths.sound('cancelMenu'));
@@ -169,7 +218,8 @@ class CreditsState extends MusicBeatState
 	function changeSelection(change:Int = 0)
 	{
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-		do {
+		do
+		{
 			curSelected += change;
 			if (curSelected < 0)
 				curSelected = creditsStuff.length - 1;
@@ -179,13 +229,16 @@ class CreditsState extends MusicBeatState
 		while (creditsStuff[curSelected].length <= 1);
 
 		var newColor:Int = getCurrentBGColor();
-		if(newColor != intendedColor) {
-			if(colorTween != null) {
+		if (newColor != intendedColor)
+		{
+			if (colorTween != null)
+			{
 				colorTween.cancel();
 			}
 			intendedColor = newColor;
 			colorTween = FlxTween.color(bg, 1, bg.color, intendedColor, {
-				onComplete: function(twn:FlxTween) {
+				onComplete: function(twn:FlxTween)
+				{
 					colorTween = null;
 				}
 			});
@@ -198,9 +251,11 @@ class CreditsState extends MusicBeatState
 			item.targetY = bullShit - curSelected;
 			bullShit++;
 
-			if (!(creditsStuff[bullShit - 1].length <= 1)) {
+			if (!(creditsStuff[bullShit - 1].length <= 1))
+			{
 				item.alpha = 0.6;
-				if (item.targetY == 0) {
+				if (item.targetY == 0)
+				{
 					item.alpha = 1;
 				}
 			}
@@ -208,9 +263,11 @@ class CreditsState extends MusicBeatState
 		descText.text = creditsStuff[curSelected][2];
 	}
 
-	function getCurrentBGColor() {
+	function getCurrentBGColor()
+	{
 		var bgColor:String = creditsStuff[curSelected][4];
-		if(!bgColor.startsWith('0x')) {
+		if (!bgColor.startsWith('0x'))
+		{
 			bgColor = '0xFF' + bgColor;
 		}
 		return Std.parseInt(bgColor);

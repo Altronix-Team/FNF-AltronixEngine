@@ -1,6 +1,6 @@
 package macros;
 
-//stuff for MacroUtil
+// stuff for MacroUtil
 class CompileTimeClassList
 {
 	static var lists:Map<String, List<Class<Dynamic>>> = null;

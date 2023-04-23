@@ -28,18 +28,18 @@ import flixel.math.FlxMath;
 class TabWindow extends flixel.system.debug.Window
 {
 	public static var HEADER_HEIGHT:Int = 15;
-	
+
 	var _siblingLeft:TabWindow;
 	var _siblingRight:TabWindow;
 	var _content:ScrollArea;
 	var _activeTabHighlight:Bitmap;
-	
+
 	/**
 	 * When the window is attached to other windows, this property controls
 	 * if this window is the active one (the one being viewed by the user).
 	 */
 	var _activeTab:Bool;
-	
+
 	/**
 	 * Creates a new tabbed window object.
 	 * 
@@ -51,13 +51,12 @@ class TabWindow extends flixel.system.debug.Window
 	 * @param   bounds      A rectangle indicating the valid screen area for the window.
 	 * @param   closable    Whether this window has a close button that removes the window.
 	 */
-	public function new(title:String, ?icon:BitmapData, width:Float = 0, height:Float = 0, resizable:Bool = true,
-		?bounds:Rectangle, closable:Bool = false)
+	public function new(title:String, ?icon:BitmapData, width:Float = 0, height:Float = 0, resizable:Bool = true, ?bounds:Rectangle, closable:Bool = false)
 	{
 		super(title, icon, width, height, resizable, bounds, closable, false);
 		visible = true;
 		_activeTab = true;
-		
+
 		_content = new ScrollArea();
 		_content.x = 0;
 		_content.y = HEADER_HEIGHT;
@@ -111,7 +110,7 @@ class TabWindow extends flixel.system.debug.Window
 	{
 		if (activeSiblingIndex == -1)
 			return;
-		
+
 		var isActiveTab = activeSiblingIndex == getIndexAmongSiblings();
 		setActiveTab(isActiveTab);
 	}
@@ -158,14 +157,14 @@ class TabWindow extends flixel.system.debug.Window
 		// Decide the next sibling based on the informed flow,
 		// i.e. to the right or to the left.
 		var next = toTheRight ? _siblingRight : _siblingLeft;
-		
+
 		if (commander != null && commander != this)
 		{
 			x = commander.x;
 			y = commander.y;
 			_width = commander._width;
 			_height = commander._height;
-			
+
 			super.updateSize();
 		}
 
@@ -173,7 +172,7 @@ class TabWindow extends flixel.system.debug.Window
 		adjustLayout();
 
 		if (next != null)
-			next.updateBasedOnSibling(commander, toTheRight, activeSiblingIndex);		
+			next.updateBasedOnSibling(commander, toTheRight, activeSiblingIndex);
 	}
 
 	override function updateSize():Void
@@ -242,11 +241,11 @@ class TabWindow extends flixel.system.debug.Window
 			if (_width <= minWidth)
 				_width = minWidth;
 		}
-		
+
 		_background.scaleX = _width;
 		_shadow.scaleX = _width;
 		_header.scaleX = _width;
-		
+
 		if (_content != null)
 			_content.resize(_width, _height - _content.y);
 
@@ -267,7 +266,7 @@ class TabWindow extends flixel.system.debug.Window
 		while (sibling != null && sibling != this)
 		{
 			offset += sibling.getTitleWidth();
-			sibling = sibling._siblingRight;			
+			sibling = sibling._siblingRight;
 		}
 
 		return offset;
@@ -286,7 +285,7 @@ class TabWindow extends flixel.system.debug.Window
 		while (sibling != null && sibling != this)
 		{
 			sibling = sibling._siblingRight;
-			position++;			
+			position++;
 		}
 
 		return position;
@@ -310,7 +309,7 @@ class TabWindow extends flixel.system.debug.Window
 	override public function reposition(x:Float, y:Float):Void
 	{
 		super.reposition(x, y);
-		
+
 		if (hasSiblings())
 			refreshSiblings();
 	}

@@ -192,7 +192,7 @@ class Conductor
 	}
 
 	public static function stepHit():Void
-	{	
+	{
 		Main.fnfSignals.stepHit.dispatch(curStep);
 		if (curStep % 4 == 0)
 			beatHit();

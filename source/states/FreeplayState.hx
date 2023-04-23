@@ -95,7 +95,7 @@ class FreeplayState extends MusicBeatState
 		if (curSongData == null)
 			Debug.displayAlert('ERROR', 'ERROR in Freeplay trying to load song data: ${songId} : ${diffName}');
 		else
-			array.push(/*ChartUtil.conversionChecks(*/Song.loadFromJson(songId, diffName))/*)*/;
+			array.push(/*ChartUtil.conversionChecks(*/ Song.loadFromJson(songId, diffName)) /*)*/;
 	}
 
 	override function create()

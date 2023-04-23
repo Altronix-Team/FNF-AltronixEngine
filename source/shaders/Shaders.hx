@@ -255,6 +255,7 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
 		super();
 	}
 }
+
 class ColorSwap
 {
 	public var shader(default, null):ColorSwapShader = new ColorSwapShader();

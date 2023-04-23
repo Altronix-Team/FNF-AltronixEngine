@@ -1,6 +1,5 @@
 package utils;
 
-
 class MenuMusicStuff
 {
 	public static var musicArray = [];
@@ -29,4 +28,4 @@ class MenuMusicStuff
 	{
 		return musicArray[id];
 	}
-}	
+}

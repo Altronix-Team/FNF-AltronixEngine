@@ -21,23 +21,25 @@ using flixel.util.FlxArrayUtil;
 class Entities
 {
 	var _list:Array<Entity>;
-	
+
 	#if FLX_DEBUG
 	public function new()
 	{
 		parseCurrentState();
 	}
-	
+
 	public function parseCurrentState():Void
 	{
 		_list = findItems(FlxG.state.members);
-		
+
 		// Try to apply the names of the properties of the currently active state
 		// to the items that were just collected if they point to the same object.
 		renameItemsUsingMeaningfulNames();
 	}
 
-	public function update():Void {}
+	public function update():Void
+	{
+	}
 
 	private function renameItemsUsingMeaningfulNames():Void
 	{
@@ -78,7 +80,7 @@ class Entities
 			}
 			else if (Std.is(member, FlxSprite))
 				entity = new Entity(EntityType.SPRITE, cast member, level);
-			
+
 			if (entity != null)
 				result.push(entity);
 		}
@@ -93,7 +95,8 @@ class Entities
 	#end
 }
 
-enum EntityType {
+enum EntityType
+{
 	SPRITE;
 	TILEMAP;
 	EMITTER;
@@ -103,7 +106,7 @@ enum EntityType {
 class Entity
 {
 	public var type:EntityType;
-	public var name:String;	
+	public var name:String;
 	public var children:Array<Entity>;
 	public var level:Int;
 	public var reference:FlxBasic;

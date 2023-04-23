@@ -200,6 +200,7 @@ enum FlxSaveStatus
 	ERROR;
 }
 #else
+
 /**
  * A class to help automate and simplify save game functionality. A simple wrapper for the OpenFl's
  * SharedObject, with a couple helpers. It's used automatically by various flixel utilities like

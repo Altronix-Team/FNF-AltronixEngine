@@ -240,7 +240,7 @@ class ChartingState extends MusicBeatState
 		}
 		else
 		{
-			_song =  ChartUtil.conversionChecks({
+			_song = ChartUtil.conversionChecks({
 				chartVersion: latestChartVersion,
 				songId: 'test',
 				songName: 'Test',
@@ -4352,7 +4352,8 @@ class ChartingState extends MusicBeatState
 	public function regenWaveforms(redraw:Bool = true)
 	{
 		var curSection = getSectionByTime(Conductor.songPosition);
-		for (sr in sectionRenderes.members) sr.waveformSprite.visible = Main.save.data.chart_waveform;
+		for (sr in sectionRenderes.members)
+			sr.waveformSprite.visible = Main.save.data.chart_waveform;
 
 		for (k => e in sectionRenderes.members)
 		{

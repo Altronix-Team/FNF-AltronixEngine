@@ -12,7 +12,7 @@ import flixel.FlxSprite;
 class Library
 {
 	var _list:Array<LibraryItem>;
-	
+
 	#if FLX_DEBUG
 	public function new()
 	{
@@ -39,6 +39,6 @@ class Library
 		addFromObject(item);
 
 		return item;
-	}	
+	}
 	#end
 }

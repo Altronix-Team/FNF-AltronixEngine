@@ -8,10 +8,10 @@ import flixel.system.debug.interaction.tools.Tool;
  * @author Fernando Bevilacqua (dovyski@gmail.com)
  */
 class TileSubTool extends Tool
-{		
+{
 	private var _tileBrain(default, null):Tile;
 
-	public function new(tileTool:Tile) 
+	public function new(tileTool:Tile)
 	{
 		super();
 		_tileBrain = tileTool;

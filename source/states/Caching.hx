@@ -2,7 +2,6 @@ package states;
 
 import gameplayStuff.Song;
 #if FEATURE_FILESYSTEM
-
 import lime.app.Application;
 import openfl.display.BitmapData;
 import openfl.utils.Assets as OpenFlAssets;
@@ -29,10 +28,9 @@ import flixel.text.FlxText;
 import flixel.input.keyboard.FlxKey;
 import gameplayStuff.Highscore;
 
-
-//Just comment everything
+// Just comment everything
 /*class Caching extends MusicBeatState
-{
+	{
 	var toBeDone = 0;
 	var done = 0;
 
@@ -157,16 +155,16 @@ import gameplayStuff.Highscore;
 	{
 		// We need to query OpenFlAssets, not the file system, because of Polymod.
 		var graphicsAssets = OpenFlAssets.list(IMAGE);
-	
+
 		var graphicsNames = [];
-	
+
 		for (graphic in graphicsAssets)
 		{
 			// Parse end-to-beginning to support mods.
 			var path = graphic.split('/');
 			path.reverse();
 		}
-	
+
 		return graphicsNames;
 	}
 
@@ -231,7 +229,7 @@ import gameplayStuff.Highscore;
 	{
 		graphic.persist = true;
 		graphic.destroyOnNoUse = false;
-	
+
 		flxImageCache.set(key, graphic);
 	}
 

@@ -125,8 +125,7 @@ class PauseSubState extends MusicBeatSubstate
 		storyDifficultyText = CoolUtil.difficultyFromInt(Data.storyDifficulty);
 
 		#if desktop
-		DiscordClient.changePresence(LanguageStuff.replaceFlagsAndReturn("$PAUSED", "playState", ["<detailsText>"], [
-			detailsText
+		DiscordClient.changePresence(LanguageStuff.replaceFlagsAndReturn("$PAUSED", "playState", ["<detailsText>"], [detailsText
 			+ ' | '
 			+ Data.SONG.songName
 			+ " ("
@@ -162,7 +161,6 @@ class PauseSubState extends MusicBeatSubstate
 			pauseMusic.volume += 0.01 * elapsed;
 
 		super.update(elapsed);
-
 
 		for (i in FlxG.sound.list)
 		{
@@ -205,47 +203,47 @@ class PauseSubState extends MusicBeatSubstate
 			var daSelected:String = menuItems[curSelected];
 
 			if (menuItems == difficultyChoices)
+			{
+				if (menuItems.length - 1 != curSelected && difficultyChoices.contains(daSelected))
 				{
-					if(menuItems.length - 1 != curSelected && difficultyChoices.contains(daSelected)) 
-					{
 					if (Data.isFreeplay)
-						{
-							var currentSongData = FreeplayState.songData.get(Data.SONG.songId)[difficultyChoices.indexOf(daSelected)];
-							//var name:String = PlayState.SONG.songId;
-							//var poop = Highscore.formatSongDiff(name, CoolUtil.difficultyArray.indexOf(daSelected));
-							Data.SONG = currentSongData;
-							Data.storyDifficulty = CoolUtil.difficultyArray.indexOf(daSelected);
-							restartSong();
-							FlxG.sound.music.volume = 0;
-							return;	
-						}
-						else
-						{
-							var diff:String = '';
-							switch (daSelected)
-							{
-								case 'Easy':
-									diff = "-easy";
-								case 'Hard':
-									diff = "-hard";
-								case 'Hard P':
-									diff = "-hardplus";
-								case 'Normal':
-									diff = '';
-								default:
-									diff = "-" + daSelected.toLowerCase();
-							}
-							Data.SONG = ChartUtil.conversionChecks(Song.loadFromJson(Data.SONG.songId, diff));
-							Data.storyDifficulty = CoolUtil.difficultyArray.indexOf(daSelected);
-							restartSong();
-							FlxG.sound.music.volume = 0;
-							return;	
-						}
+					{
+						var currentSongData = FreeplayState.songData.get(Data.SONG.songId)[difficultyChoices.indexOf(daSelected)];
+						// var name:String = PlayState.SONG.songId;
+						// var poop = Highscore.formatSongDiff(name, CoolUtil.difficultyArray.indexOf(daSelected));
+						Data.SONG = currentSongData;
+						Data.storyDifficulty = CoolUtil.difficultyArray.indexOf(daSelected);
+						restartSong();
+						FlxG.sound.music.volume = 0;
+						return;
 					}
-	
-					menuItems = menuItemsOG;
-					regenMenu();
+					else
+					{
+						var diff:String = '';
+						switch (daSelected)
+						{
+							case 'Easy':
+								diff = "-easy";
+							case 'Hard':
+								diff = "-hard";
+							case 'Hard P':
+								diff = "-hardplus";
+							case 'Normal':
+								diff = '';
+							default:
+								diff = "-" + daSelected.toLowerCase();
+						}
+						Data.SONG = ChartUtil.conversionChecks(Song.loadFromJson(Data.SONG.songId, diff));
+						Data.storyDifficulty = CoolUtil.difficultyArray.indexOf(daSelected);
+						restartSong();
+						FlxG.sound.music.volume = 0;
+						return;
+					}
 				}
+
+				menuItems = menuItemsOG;
+				regenMenu();
+			}
 
 			switch (daSelected)
 			{
@@ -290,37 +288,39 @@ class PauseSubState extends MusicBeatSubstate
 					Data.chartingMode = false;
 					PlayStateChangeables.twoPlayersMode = false;
 					ScriptHelper.clearAllScripts();
-
 			}
 		}
 	}
 
 	public static function restartSong(noTrans:Bool = false)
-		{
-			PlayState.instance.paused = true;
-			FlxG.sound.music.volume = 0;
-			PlayState.instance.vocals.volume = 0;
-	
-			if(noTrans)
-			{
-				FlxTransitionableState.skipNextTransOut = true;
-				FlxG.resetState();
-			}
-			else
-			{
-				FlxG.resetState();
-			}
-		}
+	{
+		PlayState.instance.paused = true;
+		FlxG.sound.music.volume = 0;
+		PlayState.instance.vocals.volume = 0;
 
-	function regenMenu():Void {
-		for (i in 0...grpMenuShit.members.length) {
+		if (noTrans)
+		{
+			FlxTransitionableState.skipNextTransOut = true;
+			FlxG.resetState();
+		}
+		else
+		{
+			FlxG.resetState();
+		}
+	}
+
+	function regenMenu():Void
+	{
+		for (i in 0...grpMenuShit.members.length)
+		{
 			var obj = grpMenuShit.members[0];
 			obj.kill();
 			grpMenuShit.remove(obj, true);
 			obj.destroy();
 		}
 
-		for (i in 0...menuItems.length) {
+		for (i in 0...menuItems.length)
+		{
 			var item = new Alphabet(0, 70 * i + 30, menuItems[i], true, false);
 			item.isMenuItem = true;
 			item.targetY = i;
@@ -371,10 +371,12 @@ class PauseSubState extends MusicBeatSubstate
 			}
 		}
 	}
+
 	override function onWindowFocusOut():Void
 	{
 		pauseMusic.pause();
 	}
+
 	override function onWindowFocusIn():Void
 	{
 		pauseMusic.resume();

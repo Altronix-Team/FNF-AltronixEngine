@@ -22,29 +22,29 @@ class TilemapWindow extends Window
 	private var _tileTool:Tile;
 	private var _tilemapSelector:TilemapSelector;
 	private var _info:TextField;
-	
+
 	private function initLayout():Void
 	{
 		_tilemapSelector = new TilemapSelector(_tileTool);
 		_tilemapSelector.y = 20;
-		
+
 		_info = DebuggerUtil.createTextField(2, _tilemapSelector.y + 20);
 
 		addChild(_tilemapSelector);
 		addChild(_info);
 	}
-	
-	public function new(tileTool:Tile, x:Float, y:Float) 
+
+	public function new(tileTool:Tile, x:Float, y:Float)
 	{
 		super("Tilemap", null, 160, 90);
 		_tileTool = tileTool;
-		
+
 		initLayout();
 		reposition(x, y);
-		
+
 		visible = false;
 	}
-	
+
 	public function refresh(activeTilemap:FlxTilemap):Void
 	{
 		if (activeTilemap == null)
@@ -53,12 +53,12 @@ class TilemapWindow extends Window
 		{
 			var tileWidth:Int = cast activeTilemap.width / activeTilemap.widthInTiles;
 			var tileHeight:Int = cast activeTilemap.height / activeTilemap.heightInTiles;
-			
+
 			// TODO: add some love to this layout
 			_info.text = "Size (px):         " + activeTilemap.width + " x " + activeTilemap.height + "\n";
 			_info.text += "Size (in tiles):    " + activeTilemap.widthInTiles + " x " + activeTilemap.heightInTiles + "\n";
-			_info.text += "Tile size (px):      " + tileWidth + " x " + tileHeight;	
-			
+			_info.text += "Tile size (px):      " + tileWidth + " x " + tileHeight;
+
 			_tilemapSelector.refresh();
 		}
 	}

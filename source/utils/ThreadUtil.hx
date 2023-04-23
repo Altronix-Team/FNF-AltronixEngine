@@ -10,9 +10,9 @@ class ThreadUtil
 		try
 		{
 			Main.threadPool.queue(task);
-            
-            if (callback != null)
-			    Main.threadPool.onComplete.add(callback, true);
+
+			if (callback != null)
+				Main.threadPool.onComplete.add(callback, true);
 		}
 		catch (e)
 		{

@@ -18,7 +18,8 @@ class ScriptHelper
 		setOnHscript(name, value);
 	}
 
-	public static function callOnScripts(functionToCall:String, args:Array<Dynamic>):Dynamic {
+	public static function callOnScripts(functionToCall:String, args:Array<Dynamic>):Dynamic
+	{
 		return callOnHscript(functionToCall, args);
 	}
 

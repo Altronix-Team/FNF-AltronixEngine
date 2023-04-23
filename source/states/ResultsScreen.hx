@@ -34,7 +34,6 @@ import gameplayStuff.Conductor;
 import gameplayStuff.Section;
 import states.playState.GameData as Data;
 
-
 class ResultsScreen extends FlxSubState
 {
 	public var background:FlxSprite;

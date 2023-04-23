@@ -16,14 +16,14 @@ import flixel.addons.studio.utils.Formtatter;
  * @author Fernando Bevilacqua (dovyski@gmail.com)
  */
 class Zoom extends Tool
-{		
+{
 	public static inline var ZOOM_CHANGE_STEP:Float = 0.02;
 	public static inline var TOOLTIP_TTL_SECONDS:Float = 1;
-	
+
 	var _tooltip:TooltipOverlay;
 	var _tooltipTTL:Float;
-	
-	override public function init(brain:Interaction):Tool 
+
+	override public function init(brain:Interaction):Tool
 	{
 		super.init(brain);
 		_name = "Zoom";
@@ -31,11 +31,11 @@ class Zoom extends Tool
 		_tooltip = Tooltip.add(null, "");
 		_tooltip.textField.wordWrap = false;
 		_tooltip.setVisible(false);
-		
+
 		return this;
 	}
-	
-	override public function update():Void 
+
+	override public function update():Void
 	{
 		super.update();
 		updateTooltipOverlay();
@@ -48,7 +48,7 @@ class Zoom extends Tool
 		if (!zoomIn && !zoomOut)
 			return;
 
-		change = ZOOM_CHANGE_STEP * (zoomIn ?  1 : -1);
+		change = ZOOM_CHANGE_STEP * (zoomIn ? 1 : -1);
 		FlxG.camera.setScale(FlxG.camera.scaleX + change, FlxG.camera.scaleY + change);
 
 		showTooltipOverlay();
@@ -62,17 +62,15 @@ class Zoom extends Tool
 		if (_tooltipTTL <= 0 && _tooltip.visible)
 			_tooltip.setVisible(false);
 
-		_tooltip.setText(
-			"camera.scaleX: " + Formatter.prettifyFloat(FlxG.camera.scaleX) + "\n" +
-			"camera.scaleY: " + Formatter.prettifyFloat(FlxG.camera.scaleY)
-		);
+		_tooltip.setText("camera.scaleX: " + Formatter.prettifyFloat(FlxG.camera.scaleX) + "\n" + "camera.scaleY: "
+			+ Formatter.prettifyFloat(FlxG.camera.scaleY));
 	}
 
 	function showTooltipOverlay():Void
 	{
 		if (!_tooltip.visible)
 			_tooltip.setVisible(true);
-			
+
 		_tooltip.x = FlxG.width * 0.4;
 		_tooltip.y = FlxG.height * 0.4;
 		_tooltipTTL = TOOLTIP_TTL_SECONDS;

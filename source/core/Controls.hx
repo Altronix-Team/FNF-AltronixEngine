@@ -79,6 +79,7 @@ enum abstract Control(String) to String from String
 class Controls extends FlxActionSet
 {
 	public static var gamepad:Bool = false;
+
 	var _up = new Key(Action.UP, Action.UP_P, Action.UP_R);
 	var _left = new Key(Action.LEFT, Action.LEFT_P, Action.LEFT_R);
 	var _right = new Key(Action.RIGHT, Action.RIGHT_P, Action.RIGHT_R);
@@ -100,36 +101,155 @@ class Controls extends FlxActionSet
 
 	public var gamepadsAdded:Array<Int> = [];
 
-	public var UP(get, never):Bool; inline function get_UP() return _up.key.check();
-	public var LEFT(get, never):Bool; inline function get_LEFT() return _left.key.check();
-	public var RIGHT(get, never):Bool; inline function get_RIGHT() return _right.key.check();
-	public var DOWN(get, never):Bool; inline function get_DOWN() return _down.key.check();
-	public var UP_P(get, never):Bool; inline function get_UP_P() return _up.keyP.check();
-	public var LEFT_P(get, never):Bool; inline function get_LEFT_P() return _left.keyP.check();
-	public var RIGHT_P(get, never):Bool; inline function get_RIGHT_P() return _right.keyP.check();
-	public var DOWN_P(get, never):Bool; inline function get_DOWN_P() return _down.keyP.check();
-	public var UP_R(get, never):Bool; inline function get_UP_R() return _up.keyR.check();
-	public var LEFT_R(get, never):Bool; inline function get_LEFT_R() return _left.keyR.check();
-	public var RIGHT_R(get, never):Bool; inline function get_RIGHT_R() return _right.keyR.check();
-	public var DOWN_R(get, never):Bool; inline function get_DOWN_R() return _down.keyR.check();
-	public var ACCEPT(get, never):Bool; inline function get_ACCEPT() return _accept.keyP.check();
-	public var BACK(get, never):Bool; inline function get_BACK() return _back.key.check();
-	public var PAUSE(get, never):Bool; inline function get_PAUSE() return _pause.key.check();
-	public var RESET(get, never):Bool; inline function get_RESET() return _reset.key.check();
-	public var CHEAT(get, never):Bool; inline function get_CHEAT() return _cheat.key.check();
-	public var ATTACK(get, never):Bool; inline function get_ATTACK() return _attack.key.check();
-	public var UPP2(get, never):Bool; inline function get_UPP2() return _upP2.key.check();
-	public var LEFTP2(get, never):Bool; inline function get_LEFTP2() return _leftP2.key.check();
-	public var RIGHTP2(get, never):Bool; inline function get_RIGHTP2() return _rightP2.key.check();
-	public var DOWNP2(get, never):Bool; inline function get_DOWNP2() return _downP2.key.check();
-	public var UP_PP2(get, never):Bool; inline function get_UP_PP2() return _upP2.keyP.check();
-	public var LEFT_PP2(get, never):Bool; inline function get_LEFT_PP2() return _leftP2.keyP.check();
-	public var RIGHT_PP2(get, never):Bool; inline function get_RIGHT_PP2() return _rightP2.keyP.check();
-	public var DOWN_PP2(get, never):Bool; inline function get_DOWN_PP2() return _downP2.keyP.check();
-	public var UP_RP2(get, never):Bool; inline function get_UP_RP2() return _upP2.keyR.check();
-	public var LEFT_RP2(get, never):Bool; inline function get_LEFT_RP2() return _leftP2.keyR.check();
-	public var RIGHT_RP2(get, never):Bool; inline function get_RIGHT_RP2() return _rightP2.keyR.check();
-	public var DOWN_RP2(get, never):Bool; inline function get_DOWN_RP2() return _downP2.keyR.check();
+	public var UP(get, never):Bool;
+
+	inline function get_UP()
+		return _up.key.check();
+
+	public var LEFT(get, never):Bool;
+
+	inline function get_LEFT()
+		return _left.key.check();
+
+	public var RIGHT(get, never):Bool;
+
+	inline function get_RIGHT()
+		return _right.key.check();
+
+	public var DOWN(get, never):Bool;
+
+	inline function get_DOWN()
+		return _down.key.check();
+
+	public var UP_P(get, never):Bool;
+
+	inline function get_UP_P()
+		return _up.keyP.check();
+
+	public var LEFT_P(get, never):Bool;
+
+	inline function get_LEFT_P()
+		return _left.keyP.check();
+
+	public var RIGHT_P(get, never):Bool;
+
+	inline function get_RIGHT_P()
+		return _right.keyP.check();
+
+	public var DOWN_P(get, never):Bool;
+
+	inline function get_DOWN_P()
+		return _down.keyP.check();
+
+	public var UP_R(get, never):Bool;
+
+	inline function get_UP_R()
+		return _up.keyR.check();
+
+	public var LEFT_R(get, never):Bool;
+
+	inline function get_LEFT_R()
+		return _left.keyR.check();
+
+	public var RIGHT_R(get, never):Bool;
+
+	inline function get_RIGHT_R()
+		return _right.keyR.check();
+
+	public var DOWN_R(get, never):Bool;
+
+	inline function get_DOWN_R()
+		return _down.keyR.check();
+
+	public var ACCEPT(get, never):Bool;
+
+	inline function get_ACCEPT()
+		return _accept.keyP.check();
+
+	public var BACK(get, never):Bool;
+
+	inline function get_BACK()
+		return _back.key.check();
+
+	public var PAUSE(get, never):Bool;
+
+	inline function get_PAUSE()
+		return _pause.key.check();
+
+	public var RESET(get, never):Bool;
+
+	inline function get_RESET()
+		return _reset.key.check();
+
+	public var CHEAT(get, never):Bool;
+
+	inline function get_CHEAT()
+		return _cheat.key.check();
+
+	public var ATTACK(get, never):Bool;
+
+	inline function get_ATTACK()
+		return _attack.key.check();
+
+	public var UPP2(get, never):Bool;
+
+	inline function get_UPP2()
+		return _upP2.key.check();
+
+	public var LEFTP2(get, never):Bool;
+
+	inline function get_LEFTP2()
+		return _leftP2.key.check();
+
+	public var RIGHTP2(get, never):Bool;
+
+	inline function get_RIGHTP2()
+		return _rightP2.key.check();
+
+	public var DOWNP2(get, never):Bool;
+
+	inline function get_DOWNP2()
+		return _downP2.key.check();
+
+	public var UP_PP2(get, never):Bool;
+
+	inline function get_UP_PP2()
+		return _upP2.keyP.check();
+
+	public var LEFT_PP2(get, never):Bool;
+
+	inline function get_LEFT_PP2()
+		return _leftP2.keyP.check();
+
+	public var RIGHT_PP2(get, never):Bool;
+
+	inline function get_RIGHT_PP2()
+		return _rightP2.keyP.check();
+
+	public var DOWN_PP2(get, never):Bool;
+
+	inline function get_DOWN_PP2()
+		return _downP2.keyP.check();
+
+	public var UP_RP2(get, never):Bool;
+
+	inline function get_UP_RP2()
+		return _upP2.keyR.check();
+
+	public var LEFT_RP2(get, never):Bool;
+
+	inline function get_LEFT_RP2()
+		return _leftP2.keyR.check();
+
+	public var RIGHT_RP2(get, never):Bool;
+
+	inline function get_RIGHT_RP2()
+		return _rightP2.keyR.check();
+
+	public var DOWN_RP2(get, never):Bool;
+
+	inline function get_DOWN_RP2()
+		return _downP2.keyR.check();
 
 	public function new(name)
 	{
@@ -239,7 +359,8 @@ class Controls extends FlxActionSet
 	 */
 	function forEachBound(control:Control, func:FlxActionDigital->FlxInputState->Void)
 	{
-		try{
+		try
+		{
 			var curKey = cast(Reflect.field(this, '_$control'), Key);
 			if (curKey.key != null)
 				func(curKey.key, PRESSED);
@@ -248,7 +369,7 @@ class Controls extends FlxActionSet
 			if (curKey.keyR != null)
 				func(curKey.keyR, JUST_RELEASED);
 		}
-		catch(e)
+		catch (e)
 		{
 			Debug.logWarn(e.details());
 			return;
@@ -507,7 +628,7 @@ class Controls extends FlxActionSet
 			case Gamepad(id):
 				removeGamepad(id);
 			default:
-				//do nothing
+				// do nothing
 		}
 	}
 
@@ -517,7 +638,7 @@ class Controls extends FlxActionSet
 	}
 }
 
-class Key 
+class Key
 {
 	public var key:FlxActionDigital;
 

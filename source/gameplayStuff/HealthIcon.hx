@@ -65,19 +65,19 @@ class HealthIcon extends FlxSprite
 	{
 		Debug.logInfo('Loading icon for ${char}. \n $char icon file is $filename');
 		/*if (char != filename && OpenFlAssets.exists(Paths.json('characters${char != '' ? '/$char' : ''}/$filename', 'gameplay'), TEXT))
-		{
-			loadIcon(char, filename);
-		}
-		else
-		{*/
-			loadIconLegacy(char, filename);
-		//}
+			{
+				loadIcon(char, filename);
+			}
+			else
+			{ */
+		loadIconLegacy(char, filename);
+		// }
 	}
 
 	/*
 		var tut_byl_ya:String = 'gay';
 		tut_byl_ya ?? gay
-	*/
+	 */
 	function loadIcon(char:String, filename:String)
 	{
 		var data:IconData = cast Paths.loadJSON('characters${(char != '' ? '/$char' : '')}/$filename');

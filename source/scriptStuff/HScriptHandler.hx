@@ -1,8 +1,8 @@
 package scriptStuff;
 
-import Paths;
-import Shaders.ColorSwap;
-import Shaders.VCRDistortionEffect;
+import utils.Paths;
+import shaders.Shaders.ColorSwap;
+import shaders.Shaders.VCRDistortionEffect;
 import animateatlas.AtlasFrameMaker;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
@@ -123,7 +123,7 @@ class HScriptHandler
 		expose.set('FlxRandom', FlxRandom);
 		expose.set('FlxSprite', FlxSprite);
 		expose.set('FlxTypedGroup', FlxTypedGroup);
-		expose.set('WiggleEffect', WiggleEffect);
+		expose.set('WiggleEffect', shaders.WiggleEffect);
 		expose.set('FlxCamera', FlxCamera);
 		expose.set('FlxSound', FlxSound);
 		expose.set('FlxTween', FlxTween);
@@ -657,11 +657,11 @@ class HScriptHandler extends SScript
 		set('WindowUtil', WindowUtil);
 		set('WindowShakeEvent', WindowUtil.WindowShakeEvent);
 		set('Debug', Debug);
-		set('WiggleEffect', WiggleEffect);
+		set('WiggleEffect', shaders.WiggleEffect);
 		set('AtlasFrameMaker', AtlasFrameMaker);
 		set('Achievements', Achievements);
-		set('VCRDistortionEffect', VCRDistortionEffect);
-		set('ColorSwap', ColorSwap);
+		set('VCRDistortionEffect', shaders.VCRDistortionEffect);
+		set('ColorSwap', shaders.ColorSwap);
 		set('StaticArrow', StaticArrow);
 		set('AssetsUtil', AssetsUtil);
 		set('PolymodHscriptState', states.HscriptableState.PolymodHscriptState);

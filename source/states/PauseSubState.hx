@@ -3,7 +3,7 @@ package states;
 import scriptStuff.ScriptHelper;
 import flixel.input.gamepad.FlxGamepad;
 import openfl.Lib;
-import Controls.Control;
+import core.Controls.Control;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxSubState;

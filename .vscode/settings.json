@@ -1,13 +1,42 @@
 {
+	"editor.detectIndentation": false,
+    "editor.insertSpaces": false,
+	"files.associations": {
+		"*.hx": "haxe",
+		"*.hscript": "haxe",
+		"*.hxc": "haxe",
+		"*.hxs": "haxe"
+	 },
 	"search.exclude": {
 		"export/**/*.hx": true
 	},
 	"[haxe]": {
-		"editor.formatOnSave": true,
 		"editor.formatOnPaste": true,
 		"editor.codeActionsOnSave": {
 			"source.sortImports": true
 		}
 	},
-	"haxe.enableExtendedIndentation": true
+	"haxe.enableCodeLens": true,
+	"haxe.enableExtendedIndentation": true,
+	"haxe.codeGeneration": {
+	   "imports": {
+		   "enableAutoImports": false
+	   },
+	   "functions": {
+			"anonymous": {
+				"argumentTypeHints": false,
+				"explicitNull": false,
+				"returnTypeHint": "non-void",
+				"useArrowSyntax": true
+			},
+			"field": {
+				"argumentTypeHints": true,
+				"explicitNull": false,
+				"explicitPrivate": false,
+				"explicitPublic": false,
+				"placeOpenBraceOnNewLine": false,
+				"returnTypeHint": "always"
+			}
+		}
+	}
 }

@@ -1,6 +1,6 @@
 package scriptStuff;
 
-import Paths;
+import utils.Paths;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
 import flixel.FlxSprite;
@@ -252,6 +252,8 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 		scriptHandler.set("curBeat", 0);
 		scriptHandler.set("curStep", 0);
 		scriptHandler.set("curSectionNumber", 0);
+
+		scriptHandler.set("songId", Data.SONG.songId);
 
 		scriptHandler.set("setOnScripts", ScriptHelper.setOnScripts);
 		scriptHandler.set("callOnScripts", ScriptHelper.callOnScripts);

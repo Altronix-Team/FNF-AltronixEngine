@@ -20,7 +20,7 @@ import gameplayStuff.Highscore;
 import gameplayStuff.PlayStateChangeables;
 import gameplayStuff.Song.SongData;
 import gameplayStuff.Song;
-import gameplayStuff.SongMetadata;
+import gameplayStuff.FreeplaySongMetadata;
 import openfl.Lib;
 import openfl.media.Sound;
 import openfl.utils.Assets as OpenFlAssets;
@@ -33,7 +33,7 @@ import sys.io.File;
 
 class FreeplayState extends MusicBeatState
 {
-	public static var songs:Array<SongMetadata> = [];
+	public static var songs:Array<FreeplaySongMetadata> = [];
 
 	var selector:FlxText;
 
@@ -132,7 +132,7 @@ class FreeplayState extends MusicBeatState
 		bg.antialiasing = Main.save.data.antialiasing;
 		add(bg);
 
-		if (!SongMetadata.preloaded)
+		if (!FreeplaySongMetadata.preloaded)
 		{
 			populateSongData();
 		}
@@ -251,7 +251,7 @@ class FreeplayState extends MusicBeatState
 				addWeek(week.weekSongs, week.weekID, week.weekChar, week.weekDiffs);
 			}
 		}
-		SongMetadata.preloaded = true;
+		FreeplaySongMetadata.preloaded = true;
 	}
 
 	static function getShitSongID(curDiff:String):Int
@@ -264,7 +264,7 @@ class FreeplayState extends MusicBeatState
 			return 0;
 	}
 
-	static function checkExistDiffs(songId:String = 'tutorial', meta:SongMetadata, weekDiffs:Array<String>)
+	static function checkExistDiffs(songId:String = 'tutorial', meta:FreeplaySongMetadata, weekDiffs:Array<String>)
 	{
 		var diffs = [];
 		var diffsThatExist = [];
@@ -302,7 +302,7 @@ class FreeplayState extends MusicBeatState
 
 	public static function addSong(songName:String, weekNum:Int, songCharacter:String, weekDiffs:Array<String>)
 	{
-		var meta = new SongMetadata(songName, weekNum, songCharacter);
+		var meta = new FreeplaySongMetadata(songName, weekNum, songCharacter);
 		songs.push(meta);
 		checkExistDiffs(songName, meta, weekDiffs);
 	}

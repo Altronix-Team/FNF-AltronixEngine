@@ -14,7 +14,7 @@ import flixel.FlxSubState;
 import haxe.Json;
 import haxe.format.JsonParser;
 import flixel.input.keyboard.FlxKey;
-import Controls;
+import core.Controls;
 #if sys
 import sys.FileSystem;
 import sys.io.File;

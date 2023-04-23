@@ -1,9 +1,11 @@
 #if macro
-import haxe.macro.Expr;
 import haxe.macro.Context;
+import haxe.macro.Expr;
 #else
+import data.*;
 import flixel.FlxG;
 import utils.*;
+import core.*;
 #end
 
 #if USE_YAML

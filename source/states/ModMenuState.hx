@@ -1,6 +1,6 @@
 package states;
 
-import gameplayStuff.SongMetadata;
+import gameplayStuff.FreeplaySongMetadata;
 #if FEATURE_MODCORE
 import polymod.Polymod.ModMetadata;
 #end
@@ -78,7 +78,7 @@ class ModMenuState extends MusicBeatState
 
 		if (controls.BACK)
 		{
-			SongMetadata.preloaded = false;
+			FreeplaySongMetadata.preloaded = false;
 
 			ModCore.loadConfiguredMods();
 			ModUtil.reloadSavedMods();

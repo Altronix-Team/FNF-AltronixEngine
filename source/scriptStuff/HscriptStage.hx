@@ -1,6 +1,6 @@
 package scriptStuff;
 
-import Paths;
+import utils.Paths;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
 import flixel.addons.display.FlxBackdrop;

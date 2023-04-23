@@ -293,11 +293,11 @@ class ModCore
 		set('WindowUtil', WindowUtil);
 		set('WindowShakeEvent', WindowUtil.WindowShakeEvent);
 		set('Debug', Debug);
-		set('WiggleEffect', WiggleEffect);
+		set('WiggleEffect', shaders.WiggleEffect);
 		set('AtlasFrameMaker', animateatlas.AtlasFrameMaker);
 		set('Achievements', Achievements);
-		set('VCRDistortionEffect', Shaders.VCRDistortionEffect);
-		set('ColorSwap', Shaders.ColorSwap);
+		set('VCRDistortionEffect', shaders.Shaders.VCRDistortionEffect);
+		set('ColorSwap', shaders.Shaders.ColorSwap);
 		set('StaticArrow', gameplayStuff.StaticArrow);
 		set('AssetsUtil', AssetsUtil);
 		set('PolymodHscriptState', states.HscriptableState.PolymodHscriptState);

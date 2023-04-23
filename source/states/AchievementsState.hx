@@ -19,7 +19,7 @@ import openfl.Lib;
 import flixel.util.FlxColor;
 import flixel.tweens.FlxTween;
 import openfl.utils.Assets as OpenFlAssets;
-import Achievements;
+import core.Achievements;
 
 class AchievementsState extends MusicBeatState
 {

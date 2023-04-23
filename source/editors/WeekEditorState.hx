@@ -29,7 +29,9 @@ import haxe.Json;
 import sys.io.File;
 import sys.FileSystem;
 #end
-import WeekData;
+import data.WeekData;
+import states.StoryMenuState.MenuCharacter;
+import states.StoryMenuState.MenuItem;
 
 class WeekEditorState extends MusicBeatState
 {

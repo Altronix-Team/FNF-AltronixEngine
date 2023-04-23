@@ -49,23 +49,6 @@ class Conductor
 		});
 	}
 
-	private static function listIntClasses():Array<Class<IMusicBeat>>
-	{
-		var returnArray:Array<Class<IMusicBeat>> = [];
-
-		var list:List<Class<IMusicBeat>> = utils.MacroUtil.getAllClasses(IMusicBeat);
-
-		var val:Null<Class<IMusicBeat>> = list.first();
-
-		while (val != null)
-		{
-			returnArray.push(val);
-			list.remove(val);
-			val = list.first();
-		}
-		return returnArray;
-	}
-
 	public function new()
 	{
 	}

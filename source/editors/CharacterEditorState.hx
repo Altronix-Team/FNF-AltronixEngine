@@ -30,7 +30,7 @@ import gameplayStuff.Character;
 import flixel.system.debug.interaction.tools.Pointer.GraphicCursorCross;
 import lime.system.Clipboard;
 import flixel.animation.FlxAnimation;
-import FlxUIDropDownMenuCustom;
+import core.FlxUIDropDownMenuCustom;
 import flixel.addons.ui.FlxUIText;
 import gameplayStuff.StageData;
 import states.MusicBeatState;

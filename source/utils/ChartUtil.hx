@@ -5,11 +5,10 @@ import flixel.util.FlxColor;
 import gameplayStuff.TimingStruct;
 import gameplayStuff.Song;
 
-
 class ChartUtil
 {
 	public static var latestChart:String = "AE1";
-    
+
 	public static function parseJSONshit(songId:String, jsonData:Dynamic, jsonMetaData:Dynamic, jsonEvents:Dynamic = null):SongData
 	{
 		if (jsonData == null)
@@ -94,7 +93,7 @@ class ChartUtil
 
 		return conversionChecks(songData);
 	}
-    
+
 	public static function conversionChecks(song:SongData):SongData
 	{
 		#if FEATURE_MULTITHREADING
@@ -564,4 +563,53 @@ class ChartUtil
 	{
 		return FlxSort.byValues(FlxSort.ASCENDING, CoolUtil.truncateFloat(Obj1.position, 3), CoolUtil.truncateFloat(Obj2.position, 3));
 	}
+
+	public static var betaChart:String = "AE2";
+
+	/*public static function convertToNewChart(song:SongData):gameplayStuff.SongChartData.SongChart
+	{
+		var newSong:gameplayStuff.SongChartData.SongChart = {
+			songMeta: {
+				songId: '',
+
+				songName: '',
+
+				songComposer: '',
+
+				songPosBarColor: 0xffffff,
+
+				chartVersion: 'AE2',
+
+				stageId: ''
+			},
+
+			songCharacters: {
+				opponents: [],
+
+				players: [],
+
+				girlfriends: []
+			},
+
+			songSettings: {
+				bpm: 0,
+
+				speed: 0,
+
+				needsVoices: true,
+
+				separateVoices: false,
+
+				diffSoundAssets: false,
+
+				hideGFs: false,
+
+				validScore: true
+			},
+
+			songSections: [],
+
+			songEvents: []
+		};
+	}*/
 }

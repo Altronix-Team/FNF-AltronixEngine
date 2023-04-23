@@ -60,7 +60,7 @@ class GameUI extends FlxTypedGroup<FlxBasic>
 
 		healthBar = new FlxUIBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
 			'health', 0, 2);
-		healthBar.percent = 1;
+		healthBar.percent = 50;
 		healthBar.scrollFactor.set();
 		if (Data.isStoryMode)
 		{
@@ -267,8 +267,7 @@ class GameUI extends FlxTypedGroup<FlxBasic>
 	{
 		if (Main.save.data.colour)
 		{
-			healthBar.createFilledBar(FlxColor.fromRGB(state.dad.healthColorArray[0], state.dad.healthColorArray[1], state.dad.healthColorArray[2]),
-				FlxColor.fromRGB(state.boyfriend.healthColorArray[0], state.boyfriend.healthColorArray[1], state.boyfriend.healthColorArray[2]));
+			healthBar.createFilledBar(FlxColor.fromRGB(state.dad.healthColorArray[0], state.dad.healthColorArray[1], state.dad.healthColorArray[2]), FlxColor.fromRGB(state.boyfriend.healthColorArray[0], state.boyfriend.healthColorArray[1], state.boyfriend.healthColorArray[2]));
 		}
 		else
 			healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);

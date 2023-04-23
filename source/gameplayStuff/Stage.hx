@@ -1,8 +1,8 @@
 package gameplayStuff;
 
-import Shaders.BuildingShader;
-import Shaders.BuildingShaders;
-import WiggleEffect;
+import shaders.Shaders.BuildingShader;
+import shaders.Shaders.BuildingShaders;
+import shaders.WiggleEffect;
 import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxSprite;

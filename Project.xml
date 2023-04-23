@@ -220,6 +220,6 @@
     <haxedef name="POLYMOD_DEBUG" if="debug" />
 
 	<!-- Remove that if you want to use Haxe versions older than 4.3.0-->
-		<haxeflag name="--macro" value="utils.CheckHaxeVersion.checkHaxeVersion()" />
+		<haxeflag name="--macro" value="macros.CheckHaxeVersion.checkHaxeVersion()" />
 
 </project>

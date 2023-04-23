@@ -1,6 +1,7 @@
 package states.playState;
 
-import Replay.Analysis;
+import states.playState.Replay.Ana;
+import states.playState.Replay.Analysis;
 import openfl.display.BitmapData;
 import flixel.graphics.frames.FlxAtlasFrames;
 import gameplayStuff.Song.SongData;

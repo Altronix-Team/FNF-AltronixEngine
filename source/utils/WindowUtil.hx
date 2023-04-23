@@ -13,7 +13,7 @@ import openfl.desktop.ClipboardFormats;
 import flixel.math.FlxPoint;
 import flixel.FlxG;
 import flixel.util.FlxAxes;
-import GameDimensions;
+import data.GameDimensions;
 import lime.app.Application as LimeApplication;
 import lime.math.Rectangle;
 import lime.system.System as LimeSystem;

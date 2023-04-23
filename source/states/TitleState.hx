@@ -30,7 +30,7 @@ import lime.app.Application;
 import openfl.Assets;
 import flixel.input.keyboard.FlxKey;
 #if desktop
-import GameJolt.GameJoltAPI;
+import gamejolt.GameJolt.GameJoltAPI;
 #end
 import openfl.utils.Assets as OpenFlAssets;
 import flash.net.URLRequest;

@@ -1,5 +1,6 @@
 package;
 
+import lime.utils.LogLevel;
 import haxe.Exception;
 import lime.system.ThreadPool;
 import utils.ThreadUtil;
@@ -23,7 +24,7 @@ import openfl.Assets;
 import openfl.Lib;
 import openfl.display.Sprite;
 import openfl.events.Event;
-import GameJolt.GJToastManager;
+import gamejolt.GameJolt.GJToastManager;
 import openfl.events.UncaughtErrorEvent;
 import utils.EngineFPS;
 import utils.Debug.DebugLogWriter;
@@ -112,8 +113,8 @@ class Main extends Sprite
 		untyped __global__.__hxcpp_set_critical_error_handler(onCriticalErrorEvent);
 		#end
 
-		compileTime = utils.MacroUtil.buildDateString().toString();
-		haxeVersion = utils.CheckHaxeVersion.checkHaxeVersion().toString();
+		compileTime = macros.MacroUtil.buildDateString().toString();
+		haxeVersion = macros.CheckHaxeVersion.checkHaxeVersion().toString();
 
 		if (stage != null)
 		{
@@ -137,6 +138,7 @@ class Main extends Sprite
 
 	private function setupGame():Void
 	{
+		lime.utils.Log.level = LogLevel.NONE;
 		lime.utils.Log.throwErrors = false;
 		
 		save.bind('funkin', 'ninjamuffin99');

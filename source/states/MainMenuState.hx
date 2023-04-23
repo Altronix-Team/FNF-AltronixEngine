@@ -22,7 +22,7 @@ import lime.app.Application;
 import flash.text.TextField;
 import flixel.addons.ui.FlxInputText;
 import states.LoadingState.LoadingsState;
-import GameJolt.GameJoltLogin;
+import gamejolt.GameJolt.GameJoltLogin;
 import flixel.math.FlxMath;
 import states.playState.PlayState;
 
@@ -34,7 +34,7 @@ class MainMenuState extends MusicBeatState
 
 	var curSelected:Int = 0;
 
-	var menuItems:FlxTypedGroup<MenuItem>;
+	var menuItems:FlxTypedGroup<MainMenuItem>;
 
 	var optionShit:Array<String> = [
 		'story mode',
@@ -108,12 +108,12 @@ class MainMenuState extends MusicBeatState
 		add(magenta);
 		// magenta.scrollFactor.set();
 
-		menuItems = new FlxTypedGroup<MenuItem>();
+		menuItems = new FlxTypedGroup<MainMenuItem>();
 		add(menuItems);
 
 		for (i in 0...optionShit.length)
 		{
-			var menuItem:MenuItem = new MenuItem(0, FlxG.height * 1.6);
+			var menuItem:MainMenuItem = new MainMenuItem(0, FlxG.height * 1.6);
 			menuItem.frames = Paths.getSparrowAtlas('mainmenuassets/${optionShit[i]}');
 			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
 			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
@@ -241,7 +241,7 @@ class MainMenuState extends MusicBeatState
 					if (Main.save.data.flashing)
 						FlxFlicker.flicker(magenta, 1.1, 0.15, false);
 
-					menuItems.forEach(function(spr:MenuItem)
+					menuItems.forEach(function(spr:MainMenuItem)
 					{
 						if (curSelected != spr.ID)
 						{
@@ -286,7 +286,7 @@ class MainMenuState extends MusicBeatState
 		if (Main.save.data.flashing)
 			FlxFlicker.flicker(magenta, 1.1, 0.15, false);
 
-		menuItems.forEach(function(spr:MenuItem)
+		menuItems.forEach(function(spr:MainMenuItem)
 		{
 			if (Main.save.data.flashing)
 			{
@@ -320,7 +320,7 @@ class MainMenuState extends MusicBeatState
 				FlxG.mouse.visible = false;
 
 			case 'options':
-				MusicBeatState.switchState(new OptionsDirect());
+				MusicBeatState.switchState(new options.OptionsDirect());
 				FlxG.mouse.visible = false;
 			
 			case 'awards':
@@ -352,7 +352,7 @@ class MainMenuState extends MusicBeatState
 			if (curSelected < 0)
 				curSelected = menuItems.length - 1;
 		}
-		menuItems.forEach(function(spr:MenuItem)
+		menuItems.forEach(function(spr:MainMenuItem)
 		{
 			spr.animation.play('idle');
 
@@ -387,7 +387,7 @@ class MainMenuState extends MusicBeatState
 	}
 }
 
-class MenuItem extends FlxSprite
+class MainMenuItem extends FlxSprite
 {
 	public var defaultX:Float = 0;
 	public var defaultY:Float = 0;

@@ -1,9 +1,10 @@
 package states.playState; // Will have separated classes for two players mode and singleplayer which will extend this base class
 
-import Replay.Ana;
-import Replay.Analysis;
-import Shaders;
-import WiggleEffect.WiggleEffectType;
+import states.playState.Replay.Ana;
+import states.playState.Replay.Analysis;
+import shaders.Shaders;
+import shaders.WiggleEffect;
+import shaders.WiggleEffect.WiggleEffectType;
 import animateatlas.AtlasFrameMaker;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
@@ -104,7 +105,7 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 #if desktop
-import GameJolt.GameJoltAPI;
+import gamejolt.GameJolt.GameJoltAPI;
 #end
 // import scriptStuff.scriptBodies.*;
 #if VIDEOS_ALLOWED

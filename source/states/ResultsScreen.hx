@@ -11,7 +11,7 @@ import openfl.display.BitmapData;
 import flixel.system.FlxSound;
 import flixel.util.FlxAxes;
 import flixel.FlxSubState;
-import Options.Option;
+import options.Options.Option;
 import flixel.input.FlxInput;
 import flixel.input.keyboard.FlxKey;
 import flixel.FlxG;

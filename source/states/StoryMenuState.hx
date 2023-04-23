@@ -19,13 +19,15 @@ import sys.io.File;
 import sys.FileSystem;
 #end
 import flixel.addons.ui.FlxUIState;
-import WeekData;
+import data.WeekData;
 import gameplayStuff.Conductor;
 import gameplayStuff.Song;
 import gameplayStuff.Highscore;
 import states.playState.PlayState;
 import states.playState.GameData as Data;
-
+import flixel.group.FlxSpriteGroup;
+import openfl.Assets;
+import haxe.Json;
 
 class StoryMenuState extends MusicBeatState
 {
@@ -637,5 +639,110 @@ class StoryMenuState extends MusicBeatState
 		#if !switch
 		intendedScore = Highscore.getWeekScore(loadedWeeks[curWeek].fileName, curDifficulty);
 		#end
+	}
+}
+
+typedef MenuCharacterFile = {
+	var image:String;
+	var scale:Float;
+	var position:Array<Int>;
+	var idle_anim:String;
+	var confirm_anim:String;
+	var ?flipX:Bool;
+}
+
+class MenuCharacter extends FlxSprite
+{
+	public var character:String;
+	private static var DEFAULT_CHARACTER:String = 'bf';
+
+	public function new(x:Float, character:String = 'bf')
+	{
+		super(x);
+
+		changeCharacter(character);
+	}
+
+	public function changeCharacter(?character:String = 'bf') {
+		if(character == null) character = '';
+		if(character == this.character) return;
+
+		this.character = character;
+		antialiasing = Main.save.data.antialiasing;
+		visible = true;
+
+		var dontPlayAnim:Bool = false;
+		scale.set(1, 1);
+		updateHitbox();
+
+		switch(character) {
+			case '':
+				visible = false;
+				dontPlayAnim = true;
+			default:
+				var rawJson = null;
+
+				var path:String = Paths.json('images/menucharacters/' + character, "core");
+				if(!Assets.exists(path)) {
+					path = Paths.json('images/menucharacters/' + DEFAULT_CHARACTER, "core");
+				}
+				rawJson = Assets.getText(path);
+				
+				var charFile:MenuCharacterFile = cast Json.parse(rawJson);
+				frames = Paths.getSparrowAtlas('menucharacters/' + charFile.image, "core");
+				animation.addByPrefix('idle', charFile.idle_anim, 24);
+				animation.addByPrefix('confirm', charFile.confirm_anim, 24, false);
+
+				flipX = charFile.flipX == null ? false : charFile.flipX;
+
+				if(charFile.scale != 1) {
+					scale.set(charFile.scale, charFile.scale);
+					updateHitbox();
+				}
+				offset.set(charFile.position[0], charFile.position[1]);
+				animation.play('idle');
+		}
+	}
+}
+
+class MenuItem extends FlxSpriteGroup
+{
+	public var targetY:Float = 0;
+	public var week:FlxSprite;
+	public var flashingInt:Int = 0;
+
+	public function new(x:Float, y:Float, imgName:String = 'tutorial')
+	{
+		super(x, y);
+		week = new FlxSprite().loadGraphic(AssetsUtil.loadAsset('storymenu/' + imgName, IMAGE));
+		week.antialiasing = Main.save.data.antialiasing;
+		add(week);
+	}
+
+	private var isFlashing:Bool = false;
+
+	public function startFlashing():Void
+	{
+		isFlashing = true;
+	}
+
+	// if it runs at 60fps, fake framerate will be 6
+	// if it runs at 144 fps, fake framerate will be like 14, and will update the graphic every 0.016666 * 3 seconds still???
+	// so it runs basically every so many seconds, not dependant on framerate??
+	// I'm still learning how math works thanks whoever is reading this lol
+	var fakeFramerate:Int = Math.round((1 / FlxG.elapsed) / 10);
+
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
+		y = FlxMath.lerp(y, (targetY * 120) + 480, 0.17 * (60 / Main.save.data.fpsCap));
+
+		if (isFlashing)
+			flashingInt += 1;
+
+		if (flashingInt % fakeFramerate >= Math.floor(fakeFramerate / 2))
+			week.color = 0xFF33ffff;
+		else if (Main.save.data.flashing)
+			week.color = FlxColor.WHITE;
 	}
 }

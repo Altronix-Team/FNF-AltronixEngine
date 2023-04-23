@@ -2,7 +2,8 @@ package data;
 
 class EngineConstants
 {
-	public static final engineVer:String = '0.5 Dev. ver.';
+	public static final engineVer:String = macros.GetEngineVersion.getEngineVersion();
+	public static final funkinVer:String = macros.GetFunkinVersion.getFunkinVersion();
 	public static final defaultStages:Array<String> = [
 		'stage',
 		'halloween',

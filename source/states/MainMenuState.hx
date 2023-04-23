@@ -51,7 +51,7 @@ class MainMenuState extends MusicBeatState
 	public static var firstStart:Bool = true;
 
 	public static var nightly:String = "";
-	public static var gameVer:String = "0.2.8";
+	public static var gameVer:String = EngineConstants.funkinVer;
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;

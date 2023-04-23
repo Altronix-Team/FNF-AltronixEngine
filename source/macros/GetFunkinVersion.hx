@@ -1,0 +1,30 @@
+package macros;
+
+import haxe.Http;
+import haxe.Json;
+
+class GetFunkinVersion {
+	@:access(macros.MacroUtil)
+	public static macro function getFunkinVersion():ExprOf<String>
+	{
+		var http = new Http('https://api.github.com/repos/FunkinCrew/Funkin/releases');
+		http.setHeader("User-Agent", "request");
+		http.addHeader("Accept", "application/vnd.github+json");
+		var r = null;
+		http.onData = function(d)
+		{
+			r = d;
+		}
+		http.onError = function(e)
+		{
+			throw e;
+		}
+		http.request(false);
+
+		var lastRelease = Json.parse(r)[0];
+
+		var relName:String = Reflect.getProperty(lastRelease, 'name');
+
+		return macro ${MacroUtil.toExpr(relName.removeAfter(' '))};
+	}
+}

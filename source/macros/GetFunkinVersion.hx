@@ -9,7 +9,6 @@ class GetFunkinVersion {
 	{
 		var http = new Http('https://api.github.com/repos/FunkinCrew/Funkin/releases');
 		http.setHeader("User-Agent", "request");
-		http.addHeader("Accept", "application/vnd.github+json");
 		var r = null;
 		http.onData = function(d)
 		{

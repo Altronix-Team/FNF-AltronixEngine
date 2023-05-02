@@ -172,6 +172,14 @@
 		{
 			"firstText": "prey",
 			"secondText": "fight or flight"
+		}, 
+		{
+			"firstText": "We are against",
+			"secondText": "AI ban"
+		}, 
+		{
+			"firstText": "I love",
+			"secondText": "ChatGPT"
 		}
 	]
 }

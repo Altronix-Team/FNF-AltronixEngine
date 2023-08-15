@@ -17,10 +17,8 @@
     },
     {
       "name": "SScript",
-      "type": "git",
-      "dir": null,
-      "ref": "testing",
-      "url": "https://github.com/AltronMaxX/SScript"
+      "type": "haxelib",
+      "version": null
     },
     {
       "name": "away3d",

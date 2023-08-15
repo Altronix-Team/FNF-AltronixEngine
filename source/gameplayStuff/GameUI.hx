@@ -1,16 +1,16 @@
 package gameplayStuff;
 
-import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.FlxBasic;
+import flixel.FlxCamera;
+import flixel.FlxSprite;
+import flixel.addons.ui.FlxUIBar;
+import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
 import flixel.text.FlxText;
-import flixel.addons.ui.FlxUIBar;
 import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil;
-import flixel.FlxSprite;
-import flixel.FlxCamera;
-import states.playState.PlayState;
 import states.playState.GameData as Data;
+import states.playState.PlayState;
 
 @:access(states.playState.PlayState)
 class GameUI extends FlxTypedGroup<FlxBasic>
@@ -58,8 +58,7 @@ class GameUI extends FlxTypedGroup<FlxBasic>
 			funnyStartObjects.push(healthBarBG);
 		}
 
-		healthBar = new FlxUIBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
-			'health', 0, 2);
+		healthBar = new FlxUIBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8));
 		healthBar.percent = 50;
 		healthBar.scrollFactor.set();
 		if (Data.isStoryMode)

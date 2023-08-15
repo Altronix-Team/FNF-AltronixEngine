@@ -1,25 +1,25 @@
 package states;
 
-import openfl.utils.Future;
-import openfl.media.Sound;
-import flixel.system.FlxSound;
-#if FEATURE_FILESYSTEM
-import sys.FileSystem;
-import sys.io.File;
-#end
-import flixel.input.gamepad.FlxGamepad;
+import core.Achievements;
 import flash.text.TextField;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.input.gamepad.FlxGamepad;
 import flixel.math.FlxMath;
+import flixel.sound.FlxSound;
 import flixel.text.FlxText;
-import openfl.Lib;
-import flixel.util.FlxColor;
 import flixel.tweens.FlxTween;
+import flixel.util.FlxColor;
+import openfl.Lib;
+import openfl.media.Sound;
 import openfl.utils.Assets as OpenFlAssets;
-import core.Achievements;
+import openfl.utils.Future;
+#if FEATURE_FILESYSTEM
+import sys.FileSystem;
+import sys.io.File;
+#end
 
 class AchievementsState extends MusicBeatState
 {

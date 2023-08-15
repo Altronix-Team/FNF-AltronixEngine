@@ -1,10 +1,5 @@
 package states.playState; // Will have separated classes for two players mode and singleplayer which will extend this base class
 
-import states.playState.Replay.Ana;
-import states.playState.Replay.Analysis;
-import shaders.Shaders;
-import shaders.WiggleEffect;
-import shaders.WiggleEffect.WiggleEffectType;
 import animateatlas.AtlasFrameMaker;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
@@ -21,6 +16,7 @@ import flixel.addons.effects.chainable.FlxEffectSprite;
 import flixel.addons.effects.chainable.FlxWaveEffect;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.ui.FlxUIBar;
+// import flixel.camera.CameraManager;
 import flixel.effects.FlxFlicker;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.atlas.FlxAtlas;
@@ -31,7 +27,7 @@ import flixel.input.keyboard.FlxKey;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 import flixel.system.scaleModes.StageSizeScaleMode;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
@@ -95,10 +91,15 @@ import scriptStuff.HScriptHandler.ScriptException;
 import scriptStuff.HScriptModchart as ModchartHelper;
 import scriptStuff.HscriptStage;
 import scriptStuff.ScriptHelper;
+// import scriptStuff.scriptBodies.*;
+import shaders.Shaders;
+import shaders.WiggleEffect.WiggleEffectType;
+import shaders.WiggleEffect;
 import states.playState.GameData as Data;
+import states.playState.Replay.Ana;
+import states.playState.Replay.Analysis;
 import sys.thread.Lock;
 import sys.thread.Mutex;
-// import flixel.camera.CameraManager;
 #if FEATURE_FILESYSTEM
 import Sys;
 import sys.FileSystem;
@@ -107,7 +108,6 @@ import sys.io.File;
 #if desktop
 import gamejolt.GameJolt.GameJoltAPI;
 #end
-// import scriptStuff.scriptBodies.*;
 #if VIDEOS_ALLOWED
 import hxcodec.VideoHandler;
 #end
@@ -1042,7 +1042,7 @@ class PlayState extends MusicBeatState
 		ThreadUtil.runTaskAsync(function()
 		{
 			#if desktop
-			var filesToCheck:Array<String> = AssetsUtil.listAssetsInPath('assets/gameplay/scripts/events/', HSCRIPT);
+			/*var filesToCheck:Array<String> = AssetsUtil.listAssetsInPath('assets/gameplay/scripts/events/', HSCRIPT);
 			var filesPushed:Array<String> = [];
 			for (file in filesToCheck)
 			{
@@ -1054,7 +1054,7 @@ class PlayState extends MusicBeatState
 						filesPushed.push(file);
 					}
 				}
-			}
+			}*/
 
 			var filesToCheck:Array<String> = AssetsUtil.listAssetsInPath('assets/gameplay/scripts/notes/', HSCRIPT);
 			var filesPushed:Array<String> = [];
@@ -2211,7 +2211,7 @@ class PlayState extends MusicBeatState
 				if (!gottaHitNote && PlayStateChangeables.Optimize)
 					continue;
 
-				swagNote.sustainLength = TimingStruct.getTimeFromBeat((TimingStruct.getBeatFromTime(songNotes[2] / Data.songMultiplier)));
+				swagNote.sustainLength = /*TimingStruct.getTimeFromBeat((TimingStruct.getBeatFromTime(*/songNotes[2]/* / Data.songMultiplier)))*/;
 				swagNote.scrollFactor.set(0, 0);
 				swagNote.gfNote = (section.gfSection && (songNotes[1] < 4));
 				swagNote.noteType = daType;
@@ -3387,153 +3387,6 @@ class PlayState extends MusicBeatState
 		if (eventAtPos.position <= curDecimalBeat && !pastEvents.contains(eventAtPos.position))
 		{
 			pastEvents.push(eventAtPos.position);
-			for (i in eventAtPos.events)
-			{
-				doEvent(i.type, i.value);
-			}
-		}
-	}
-
-	public function doEvent(eventType:String, eventValue:Dynamic)
-	{
-		switch (eventType)
-		{
-			case "Scroll Speed Change":
-				var newValue:Float = Data.SONG.speed * eventValue;
-				PlayStateChangeables.scrollSpeed = newValue;
-
-			case "Start Countdown":
-				startCountdownEvent();
-
-			case "Change Character":
-				var valueArray:Array<Dynamic> = [eventValue];
-				var split:Array<String> = [];
-				for (i in 0...valueArray.length)
-				{
-					split = valueArray[i].split(',');
-				}
-
-				changeCharacter(split[0], split[1].ltrim());
-
-			case "Song Overlay":
-				if (eventValue != 'delete')
-				{
-					var valueArray:Array<Dynamic> = [eventValue];
-					var split:Array<String> = [];
-					for (i in 0...valueArray.length)
-					{
-						split = valueArray[i].split(',');
-					}
-					var red:Int = Std.parseInt(split[0].trim());
-					var green:Int = Std.parseInt(split[1].trim());
-					var blue:Int = Std.parseInt(split[2].trim());
-					var alpha:Int = Std.parseInt(split[3].trim());
-					songOverlay(FlxColor.fromRGB(red, green, blue, alpha));
-				}
-				else
-					songOverlay('delete');
-
-			case "Character play animation":
-				var valueArray:Array<Dynamic> = [eventValue];
-				var split:Array<String> = [];
-				for (i in 0...valueArray.length)
-				{
-					split = valueArray[i].split(',');
-				}
-				switch (split[0])
-				{
-					case 'gf':
-						gf.playAnim(split[1].ltrim(), true);
-					case 'dad':
-						dad.playAnim(split[1].ltrim(), true);
-					case 'bf':
-						boyfriend.playAnim(split[1].ltrim(), true);
-				}
-
-			case "Camera zoom":
-				if (Main.save.data.camzoom)
-				{
-					FlxG.camera.zoom += 0.015 * Std.int(eventValue);
-					camHUD.zoom += 0.03 * Std.int(eventValue);
-				}
-
-			case 'Toggle interface':
-				camHUD.visible = false;
-
-				new FlxTimer().start(Std.int(eventValue), function(tmr:FlxTimer)
-				{
-					camHUD.visible = true;
-				});
-
-			case 'Toggle Alt Idle':
-				switch (eventValue)
-				{
-					case 'dad':
-						dadAltAnim = !dadAltAnim;
-					case 'bf':
-						bfAltAnim = !bfAltAnim;
-					case 'gf':
-						gfAltAnim = !gfAltAnim;
-				}
-			case "Change strum note skin":
-				noteTypeCheck = eventValue;
-				strumLineNotes.clear();
-				strumLineNotes.generateStrumLineArrows();
-
-			case 'Screen Shake':
-				var valuesArray:Array<String> = [eventValue, eventValue];
-				var targetsArray:Array<FlxCamera> = [camGame, camHUD];
-				for (i in 0...targetsArray.length)
-				{
-					var split:Array<String> = valuesArray[i].split(',');
-					var duration:Float = 0;
-					var intensity:Float = 0;
-					if (split[0] != null)
-						duration = Std.parseFloat(split[0].trim());
-					if (split[1] != null)
-						intensity = Std.parseFloat(split[1].trim());
-					if (Math.isNaN(duration))
-						duration = 0;
-					if (Math.isNaN(intensity))
-						intensity = 0;
-
-					if (duration > 0 && intensity != 0)
-					{
-						targetsArray[i].shake(intensity, duration);
-					}
-				}
-			case 'Camera Follow Pos':
-				var valuesArray:Array<String> = [eventValue];
-				var split:Array<String> = [];
-				for (i in 0...valuesArray.length)
-				{
-					split = valuesArray[i].split(',');
-				}
-				var val1:Float = Std.parseFloat(split[0]);
-				var val2:Float = Std.parseFloat(split[1]);
-				if (Math.isNaN(val1))
-					val1 = 0;
-				if (Math.isNaN(val2))
-					val2 = 0;
-
-				isCameraOnForcedPos = false;
-				if (!Math.isNaN(Std.parseFloat(split[0])) || !Math.isNaN(Std.parseFloat(split[1])))
-				{
-					camFollow.x = val1;
-					camFollow.y = val2;
-					isCameraOnForcedPos = true;
-				}
-			default:
-				var valuesArray:Array<String> = [eventValue];
-				var split:Array<String> = [];
-				for (i in 0...valuesArray.length)
-				{
-					split = valuesArray[i].split(',');
-				}
-				if (split.length < 2)
-					split.push('');
-
-				ScriptHelper.callOnScripts('onEvent', [eventType, split[0], split[1]]);
 		}
 	}
 

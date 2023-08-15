@@ -1,13 +1,13 @@
 package flixel.addons.text;
 
+import flash.media.Sound;
 import flixel.FlxG;
 import flixel.input.keyboard.FlxKey;
 import flixel.math.FlxMath;
+import flixel.math.FlxRandom;
+import flixel.sound.FlxSound;
 import flixel.system.FlxAssets;
 import flixel.text.FlxText;
-import flixel.system.FlxSound;
-import flixel.math.FlxRandom;
-import flash.media.Sound;
 
 #if !flash
 @:sound("assets/sounds/type.ogg")

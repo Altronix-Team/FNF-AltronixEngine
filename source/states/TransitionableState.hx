@@ -18,6 +18,8 @@ class TransitionableState extends FlxTransitionableState
 		if (nextState == FlxG.state)
 			FlxG.resetState();
 		else
-			switchTo(nextState);
+			startOutro(() -> {
+				FlxG.switchState(nextState);
+			});
 	}
 }

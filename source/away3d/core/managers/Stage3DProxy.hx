@@ -1,3 +1,4 @@
+#if USE_FLIXEL3D
 package away3d.core.managers;
 
 import away3d.debug.Debug;
@@ -723,3 +724,4 @@ class Stage3DProxy extends EventDispatcher
 		_ibUploadCount++;
 	}
 }
+#end

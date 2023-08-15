@@ -41,21 +41,6 @@ class HscriptStage extends HScriptModchart
 		dadGroup = state.gfGroup;
 		boyfriendGroup = state.boyfriendGroup;
 
-		#if !USE_SSCRIPT
-		scriptHandler.expose.set("stage", this);
-		scriptHandler.expose.set("addGf", addGf);
-		scriptHandler.expose.set("addDad", addDad);
-		scriptHandler.expose.set("addBoyfriend", addBoyfriend);
-		scriptHandler.expose.set("addGfGroup", addGfGroup);
-		scriptHandler.expose.set("addDadGroup", addDadGroup);
-		scriptHandler.expose.set("addBoyfriendGroup", addBoyfriendGroup);
-		scriptHandler.expose.set("addObject", addObject);
-		scriptHandler.expose.set("getObject", getObject);
-		scriptHandler.expose.set('BGSprite', BGSprite);
-		scriptHandler.expose.set('BackgroundGirls', BackgroundGirls);
-		scriptHandler.expose.set('BackgroundDancer', BackgroundDancer);
-		scriptHandler.expose.set('TankmenBG', TankmenBG);
-		#else
 		scriptHandler.set("stage", this);
 		scriptHandler.set("addGf", addGf);
 		scriptHandler.set("addDad", addDad);
@@ -65,7 +50,7 @@ class HscriptStage extends HScriptModchart
 		scriptHandler.set("addBoyfriendGroup", addBoyfriendGroup);
 		scriptHandler.set("addObject", addObject);
 		scriptHandler.set("getObject", getObject);
-		#end
+
 		this.state = state;
 	}
 

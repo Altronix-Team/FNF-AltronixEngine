@@ -6,7 +6,7 @@ import flixel.addons.text.FlxTypeText;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxSpriteGroup;
 import flixel.input.FlxKeyManager;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
@@ -612,14 +612,14 @@ class DialogueBoxSprite extends FlxSprite
 	}
 }
 
-@:enum abstract CharacterPositions(String) from (String) to (String)
+enum abstract CharacterPositions(String) from (String) to (String)
 {
 	var RIGHT = 'right';
 	var LEFT = 'left';
 	var MIDDLE = 'middle';
 }
 
-@:enum abstract DialogueBoxStates(String) from (String) to (String)
+enum abstract DialogueBoxStates(String) from (String) to (String)
 {
 	var NORMAL = 'normal';
 	var ANGRY = 'angry';

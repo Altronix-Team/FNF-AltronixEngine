@@ -1,3 +1,4 @@
+#if USE_FLIXEL3D
 package flx3D;
 
 import away3d.core.managers.Stage3DManager;
@@ -49,3 +50,4 @@ class Flx3DUtil
 		return null;
 	}
 }
+#end

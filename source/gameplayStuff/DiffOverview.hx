@@ -1,22 +1,22 @@
 package gameplayStuff;
 
-import states.MusicBeatSubstate;
 import flixel.FlxCamera;
-import flixel.math.FlxRect;
-import gameplayStuff.Song.SongData;
-import gameplayStuff.Section.SwagSection;
-import flixel.system.FlxSound;
-import flixel.input.gamepad.FlxGamepad;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.util.FlxSort;
+import flixel.input.gamepad.FlxGamepad;
+import flixel.math.FlxMath;
+import flixel.math.FlxRect;
+import flixel.sound.FlxSound;
+import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
-import flixel.math.FlxMath;
-import flixel.text.FlxText;
+import flixel.util.FlxSort;
+import gameplayStuff.Section.SwagSection;
+import gameplayStuff.Song.SongData;
 import states.FreeplayState;
+import states.MusicBeatSubstate;
 
 @:access(states.FreeplayState)
 class DiffOverview extends MusicBeatSubstate

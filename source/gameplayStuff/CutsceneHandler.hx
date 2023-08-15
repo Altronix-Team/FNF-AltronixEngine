@@ -3,7 +3,7 @@ package gameplayStuff;
 import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxSort;
 import states.playState.PlayState;

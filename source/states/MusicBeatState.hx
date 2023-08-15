@@ -1,17 +1,17 @@
 package states;
 
-import flixel.system.FlxSound;
-import scriptStuff.ScriptHelper;
-import flixel.FlxCamera;
-import lime.app.Application;
 import flixel.FlxBasic;
+import flixel.FlxCamera;
+import flixel.FlxG;
 import flixel.FlxState;
 import flixel.addons.transition.FlxTransitionableState;
-import openfl.Lib;
-import flixel.FlxG;
+import flixel.sound.FlxSound;
+import gameplayStuff.Conductor;
 import gameplayStuff.Section;
 import gameplayStuff.TimingStruct;
-import gameplayStuff.Conductor;
+import lime.app.Application;
+import openfl.Lib;
+import scriptStuff.ScriptHelper;
 
 class MusicBeatState extends BaseState implements gameplayStuff.Conductor.IMusicBeat
 {
@@ -124,7 +124,8 @@ class MusicBeatState extends BaseState implements gameplayStuff.Conductor.IMusic
 
 	public static function switchState(nextState:FlxState)
 	{
-		if (!FlxTransitionableState.skipNextTransIn)
+		FlxG.switchState(nextState);
+		/*if (!FlxTransitionableState.skipNextTransIn)
 		{
 			var switchState = new TransitionableState();
 			switchState.nextState = nextState;
@@ -135,7 +136,7 @@ class MusicBeatState extends BaseState implements gameplayStuff.Conductor.IMusic
 		{
 			FlxTransitionableState.skipNextTransIn = false;
 			FlxG.switchState(nextState);
-		}
+		}*/
 	}
 
 	public static function resetState()

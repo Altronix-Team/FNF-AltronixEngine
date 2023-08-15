@@ -2,6 +2,7 @@ package gameplayStuff;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.addons.display.FlxTiledSprite;
 import flixel.addons.effects.FlxSkewedSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxSpriteGroup;
@@ -14,8 +15,8 @@ import openfl.display.BitmapData;
 import openfl.display.Preloader.DefaultPreloader;
 import openfl.utils.Assets as OpenFlAssets;
 import states.FreeplayState;
-import states.playState.PlayState;
 import states.playState.GameData as Data;
+import states.playState.PlayState;
 
 typedef NoteMeta =
 {

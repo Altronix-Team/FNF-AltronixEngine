@@ -1,25 +1,25 @@
 package gameplayStuff;
 
-import flixel.system.FlxSound;
+import core.Controls;
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.FlxSubState;
 import flixel.addons.text.FlxTypeText;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxSpriteGroup;
 import flixel.input.FlxKeyManager;
+import flixel.input.keyboard.FlxKey;
+import flixel.sound.FlxSound;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
-import flixel.FlxSubState;
 import haxe.Json;
 import haxe.format.JsonParser;
-import flixel.input.keyboard.FlxKey;
-import core.Controls;
+import openfl.utils.Assets;
 #if sys
 import sys.FileSystem;
 import sys.io.File;
 #end
-import openfl.utils.Assets;
 
 // TODO Remove and add support for dialog files and characters from psych engine to DialogueBox.hx
 typedef DialogueCharacterFile =

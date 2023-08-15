@@ -1,3 +1,4 @@
+#if USE_FLIXEL3D
 package flx3D;
 
 import away3d.library.Asset3DLibrary;
@@ -249,3 +250,4 @@ class FlxView3D extends FlxSprite
 	public inline function addChild(c)
 		view.scene.addChild(c);
 }
+#end

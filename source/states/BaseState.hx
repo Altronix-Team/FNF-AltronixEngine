@@ -1,9 +1,9 @@
 package states;
 
-import flixel.addons.ui.FlxUIState;
-import flixel.system.FlxSound;
-import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.FlxG;
+import flixel.addons.ui.FlxUIState;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.sound.FlxSound;
 
 using utils.CoolUtil;
 

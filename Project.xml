@@ -2,7 +2,14 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin': Altronix Engine" file="Altronix Engine" packageName="com.altronmaxx.altronixengine" package="com.altronmaxx.altronixengine" main="Main" version="0.2.8" company="AltronMaxX" />
+	<app title="Friday Night Funkin': Altronix Engine" 
+		file="Altronix Engine" 
+		packageName="com.altronmaxx.altronixengine" 
+		package="com.altronmaxx.altronixengine" 
+		main="Main" 
+		version="0.2.8" 
+		company="AltronMaxX" 
+	/>
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
@@ -55,7 +62,7 @@
 	<classpath name="source" />
 	
 	<define name="CHECK_FOR_DEFAULT_CHARACTERS"/>
-	<define name="USE_SSCRIPT"/>
+	<!--define name="USE_FLIXEL3D"/-->
 	<!--define name="USE_YAML"/-->
 	<define name="VIDEOS_ALLOWED" if="desktop || android" unless="cs"/>
 	
@@ -107,14 +114,20 @@
 
 	<haxelib name="flixel" />
 	<haxedev set='webgl' />
-	<haxelib name="away3d"/>
+	<haxelib name="away3d" if="USE_FLIXEL3D"/>
 
 	<haxelib name="flixel-addons" />
-	<haxelib name="hscript"/>
-	<haxelib name="SScript" if="USE_SSCRIPT"/>
+	<haxelib name="hscript" unless="USE_SSCRIPT"/>
+
+	<haxelib name="SScript"/>
+	<haxedef name="hscriptPos"/>
+	<haxedef name="openflPos"/>
 
 	<haxelib name="flixel-ui" />
+
 	<haxelib name="polymod" if='desktop'/>
+	<haxelib name="custom_polymod" if="CUSTOM_POLYMOD"/>
+
 	<haxelib name="discord_rpc" if="desktop"/>
 	<haxelib name="hxCodec" if="VIDEOS_ALLOWED"/>
 	<haxelib name="yaml" if="USE_YAML"/>
@@ -175,7 +188,7 @@
 	<icon path="art/iconOG.png" />
 
 	<!--haxeflag name="no-traces" unless="debug" /-->
-	<haxeflag name="-dce no"/>
+	<haxeflag name="-dce no" unless="cacheBuild"/>
 
 	<!-- Use defines to ensure compile-time definitions have readable context. -->
 	<!-- Allowed inputs are mobile,desktop,web,ios,android,windows,mac,linux,switch,html5,cpp,neko,flash,js -->

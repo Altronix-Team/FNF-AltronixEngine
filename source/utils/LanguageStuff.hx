@@ -85,8 +85,7 @@ class LanguageStuff
 
 		if (tongue.missingFlags == null && tongue.missingFiles == null)
 		{
-			Debug.logTrace('Successfully loaded language stuff');
-			Debug.logTrace(getData("$ENGINE_START"));
+			Debug.logInfo('Successfully loaded language stuff');
 		}
 	}
 
@@ -157,10 +156,9 @@ class LanguageStuff
 		return tongue.get(key, context);
 	}
 
-	@:deprecated('Not wotking, crash the game')
 	public static function getUiLanguageName(targetlocale:String = '', curlocale:String = ''):String
 	{
-		return tongue.getIndexString("$UI_LANGUAGE", targetlocale, curlocale);
+		return tongue.getIndexString(LanguageBilingual, targetlocale, curlocale);
 	}
 
 	public static function replaceFlagsAndReturn(key:String, context:String, flags:Array<String>, values:Array<Dynamic>):String

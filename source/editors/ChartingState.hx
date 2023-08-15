@@ -1,6 +1,5 @@
 package editors;
 
-import states.playState.PlayState;
 import flash.geom.Rectangle;
 import flixel.FlxCamera;
 import flixel.FlxG;
@@ -23,7 +22,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxGroup;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.ui.FlxSpriteButton;
@@ -60,13 +59,14 @@ import openfl.utils.ByteArray;
 import states.LoadingState;
 import states.MusicBeatState;
 import states.playState.GameData as Data;
+import states.playState.PlayState;
 #if FEATURE_FILESYSTEM
 import flash.media.Sound;
 import sys.FileSystem;
 import sys.io.File;
 #end
 
-@:access(flixel.system.FlxSound._sound)
+@:access(flixel.sound.FlxSound._sound)
 @:access(openfl.media.Sound.__buffer)
 class ChartingState extends MusicBeatState
 {
@@ -446,8 +446,6 @@ class ChartingState extends MusicBeatState
 			height = Math.floor(renderer.sectionSprite.y);
 		}
 
-		regenWaveforms(true);
-
 		add(sectionIcons);
 
 		gridBlackLine = new FlxSprite(gridBG.width / 2).makeGraphic(2, height, FlxColor.BLACK);
@@ -523,7 +521,7 @@ class ChartingState extends MusicBeatState
 		addNoteUI();
 
 		// addOptionsUI();
-		addEventsUI();
+		//addEventsUI();
 
 		addDifficultiesUI();
 
@@ -751,7 +749,7 @@ class ChartingState extends MusicBeatState
 
 	var curTrackedEvent:gameplayStuff.Song.EventObject = null;
 
-	function addEventsUI()
+	/*function addEventsUI()
 	{
 		tab_group_events = new FlxUI(null, UI_box);
 		tab_group_events.name = 'Events';
@@ -1222,16 +1220,12 @@ class ChartingState extends MusicBeatState
 		tab_group_events.add(eventPositionsList);
 		// UI_options.addGroup(tab_events);
 		UI_box.addGroup(tab_group_events);
-	}
+	}*/
 
 	function sortByBeat(Obj1:EventsAtPos, Obj2:EventsAtPos):Int
 	{
 		return FlxSort.byValues(FlxSort.ASCENDING, CoolUtil.truncateFloat(Obj1.position, 3), CoolUtil.truncateFloat(Obj2.position, 3));
 	}
-
-	#if desktop
-	var waveformEnabled:FlxUICheckBox;
-	#end
 
 	var songNoteStyleDropDown:FlxUIDropDownMenuCustom;
 	var noteSkinInputText:FlxUIInputText;
@@ -1269,18 +1263,6 @@ class ChartingState extends MusicBeatState
 		{
 			loadJson(_song.songId.toLowerCase());
 		});
-
-		#if desktop
-		waveformEnabled = new FlxUICheckBox(10, 90, null, null, "Visible Waveform", 100);
-		if (Main.save.data.chart_waveform == null)
-			Main.save.data.chart_waveform = false;
-		waveformEnabled.checked = Main.save.data.chart_waveform;
-		waveformEnabled.callback = function()
-		{
-			Main.save.data.chart_waveform = waveformEnabled.checked;
-			regenWaveforms(false);
-		};
-		#end
 
 		var skin = Data.SONG.specialSongNoteSkin;
 		if (skin == null)
@@ -1409,14 +1391,14 @@ class ChartingState extends MusicBeatState
 		{
 			_song.hideGF = hideGF.checked;
 		};
-		var hitsounds = new FlxUICheckBox(waveformEnabled.x, waveformEnabled.y + 30, null, null, "Play hitsounds", 100);
+		var hitsounds = new FlxUICheckBox(10, 90, null, null, "Play hitsounds", 100);
 		hitsounds.checked = false;
 		hitsounds.callback = function()
 		{
 			playClaps = hitsounds.checked;
 		};
 
-		var check_mute_inst = new FlxUICheckBox(waveformEnabled.x, hitsounds.y + 30, null, null, "Mute Instrumental", 100);
+		var check_mute_inst = new FlxUICheckBox(hitsounds.x, hitsounds.y + 30, null, null, "Mute Instrumental", 100);
 		check_mute_inst.checked = false;
 		check_mute_inst.callback = function()
 		{
@@ -1482,9 +1464,6 @@ class ChartingState extends MusicBeatState
 		tab_group_chartshit.add(stepperVocalVolLabel);
 		tab_group_chartshit.add(stepperSongVol);
 		tab_group_chartshit.add(stepperSongVolLabel);
-		#if desktop
-		tab_group_chartshit.add(waveformEnabled);
-		#end
 
 		UI_box.addGroup(tab_group_song);
 		UI_box.addGroup(tab_group_chartshit);
@@ -4346,25 +4325,6 @@ class ChartingState extends MusicBeatState
 		else
 		{
 			pausedCrashFix = true;
-		}
-	}
-
-	public function regenWaveforms(redraw:Bool = true)
-	{
-		var curSection = getSectionByTime(Conductor.songPosition);
-		for (sr in sectionRenderes.members)
-			sr.waveformSprite.visible = Main.save.data.chart_waveform;
-
-		for (k => e in sectionRenderes.members)
-		{
-			if (e.waveformSprite.visible)
-			{
-				e.waveformSprite.scale.set(1, zoomFactor);
-				e.waveformSprite.updateHitbox();
-				if (redraw)
-					e.waveformSprite.generateFlixel(curSection.startTime, curSection.endTime);
-				e.waveformSprite.y = getYfromStrum(curSection.startTime);
-			}
 		}
 	}
 }

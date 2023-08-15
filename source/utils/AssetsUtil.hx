@@ -1,19 +1,19 @@
 package utils;
 
+import flixel.graphics.FlxGraphic;
+import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.graphics.frames.FlxFramesCollection;
+import flixel.sound.FlxSound;
 import flxanimate.frames.FlxAnimateFrames;
+import haxe.Json;
 import lime.tools.AssetType;
-import openfl.net.FileFilter;
+import openfl.Assets as OpenFlAssets;
+import openfl.display.BitmapData;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
+import openfl.net.FileFilter;
 import openfl.net.FileReference;
-import flixel.system.FlxSound;
-import flixel.graphics.frames.FlxFramesCollection;
-import flixel.graphics.frames.FlxAtlasFrames;
-import haxe.Json;
-import openfl.display.BitmapData;
-import flixel.graphics.FlxGraphic;
 import openfl.utils.AssetType;
-import openfl.Assets as OpenFlAssets;
 
 class AssetsUtil
 {

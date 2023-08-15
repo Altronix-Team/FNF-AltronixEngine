@@ -1,15 +1,11 @@
 package editors;
 
+import data.WeekData;
+import flash.net.FileFilter;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.addons.transition.FlxTransitionableState;
-import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.math.FlxMath;
-import flixel.text.FlxText;
-import flixel.util.FlxColor;
-import flixel.system.FlxSound;
-import openfl.utils.Assets;
 import flixel.addons.ui.FlxInputText;
 import flixel.addons.ui.FlxUI9SliceSprite;
 import flixel.addons.ui.FlxUI;
@@ -17,21 +13,25 @@ import flixel.addons.ui.FlxUICheckBox;
 import flixel.addons.ui.FlxUIInputText;
 import flixel.addons.ui.FlxUINumericStepper;
 import flixel.addons.ui.FlxUITabMenu;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.math.FlxMath;
+import flixel.sound.FlxSound;
+import flixel.text.FlxText;
 import flixel.ui.FlxButton;
-import openfl.net.FileReference;
+import flixel.util.FlxColor;
+import haxe.Json;
+import lime.system.Clipboard;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
-import flash.net.FileFilter;
-import lime.system.Clipboard;
+import openfl.net.FileReference;
+import openfl.utils.Assets;
 import states.MusicBeatState;
-import haxe.Json;
-#if sys
-import sys.io.File;
-import sys.FileSystem;
-#end
-import data.WeekData;
 import states.StoryMenuState.MenuCharacter;
 import states.StoryMenuState.MenuItem;
+#if sys
+import sys.FileSystem;
+import sys.io.File;
+#end
 
 class WeekEditorState extends MusicBeatState
 {

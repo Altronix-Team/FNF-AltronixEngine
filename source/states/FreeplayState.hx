@@ -7,7 +7,7 @@ import flixel.addons.display.FlxGridOverlay;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.math.FlxMath;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
@@ -15,12 +15,12 @@ import gameplayStuff.Character;
 import gameplayStuff.Conductor;
 import gameplayStuff.DiffCalc;
 import gameplayStuff.DiffOverview;
+import gameplayStuff.FreeplaySongMetadata;
 import gameplayStuff.HealthIcon;
 import gameplayStuff.Highscore;
 import gameplayStuff.PlayStateChangeables;
 import gameplayStuff.Song.SongData;
 import gameplayStuff.Song;
-import gameplayStuff.FreeplaySongMetadata;
 import openfl.Lib;
 import openfl.media.Sound;
 import openfl.utils.Assets as OpenFlAssets;
@@ -95,7 +95,7 @@ class FreeplayState extends MusicBeatState
 		if (curSongData == null)
 			Debug.displayAlert('ERROR', 'ERROR in Freeplay trying to load song data: ${songId} : ${diffName}');
 		else
-			array.push(/*ChartUtil.conversionChecks(*/ Song.loadFromJson(songId, diffName)) /*)*/;
+			array.push(curSongData);
 	}
 
 	override function create()

@@ -1,37 +1,34 @@
 package;
 
-import lime.utils.LogLevel;
-import haxe.Exception;
-import lime.system.ThreadPool;
-import utils.ThreadUtil;
-import flixel.system.scaleModes.StageSizeScaleMode;
-import modding.ModUtil;
-#if FEATURE_MULTITHREADING
-import sys.thread.Thread;
-#end
-import openfl.utils.AssetLibrary;
-#if cpp
-import cpp.vm.Gc;
-#end
-import openfl.utils.AssetCache;
-import states.HscriptableState.PolymodHscriptState;
-import lime.app.Application;
-import flixel.util.FlxColor;
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
+import flixel.system.scaleModes.StageSizeScaleMode;
+import flixel.util.FlxColor;
+import gamejolt.GameJolt.GJToastManager;
+import haxe.CallStack;
+import haxe.Exception;
+import lime.app.Application;
+import lime.system.ThreadPool;
+import lime.utils.LogLevel;
+import modding.ModUtil;
 import openfl.Assets;
 import openfl.Lib;
 import openfl.display.Sprite;
 import openfl.events.Event;
-import gamejolt.GameJolt.GJToastManager;
 import openfl.events.UncaughtErrorEvent;
-import utils.EngineFPS;
-import utils.Debug.DebugLogWriter;
 import openfl.system.Capabilities;
-import haxe.CallStack;
-import utils.EngineSave;
+import openfl.utils.AssetCache;
+import openfl.utils.AssetLibrary;
+import states.HscriptableState.PolymodHscriptState;
 import sys.io.Process;
+import utils.Debug.DebugLogWriter;
+import utils.EngineFPS;
+import utils.EngineSave;
+import utils.ThreadUtil;
+#if cpp
+import cpp.vm.Gc;
+#end
 #if FEATURE_MODCORE
 import modding.ModCore;
 #end
@@ -82,14 +79,6 @@ class Main extends Sprite
 	public static var configFound = false;
 	public static var hscriptClasses:Array<String> = [];
 
-	// var globalScripts:Array<scriptStuff.scriptBodies.GlobalScriptBody> = [];
-	public static var fromLauncher:Bool = false;
-
-	#if FEATURE_MULTITHREADING
-	public static var reservedGameThreads:Array<ReservedThreadObject> = [];
-	public static var threadPool:ThreadPool = new ThreadPool(0, 4);
-	#end
-
 	public static function main():Void
 	{
 		// quick checks
@@ -100,11 +89,6 @@ class Main extends Sprite
 	public function new()
 	{
 		instance = this;
-
-		var args = Sys.args();
-
-		if (args[0] != null && args[0] == 'fromLauncher')
-			fromLauncher = true;
 
 		super();
 
@@ -209,18 +193,6 @@ class Main extends Sprite
 		// Finish up loading debug tools.
 		Debug.onGameStart();
 
-		#if FEATURE_MULTITHREADING
-		reservedGameThreads.push(new ReservedThreadObject(true, "songLoader"));
-		reservedGameThreads.push(new ReservedThreadObject(true, "loadStage"));
-		reservedGameThreads.push(new ReservedThreadObject(true, "loadChars"));
-		reservedGameThreads.push(new ReservedThreadObject(true, "loadBF"));
-		reservedGameThreads.push(new ReservedThreadObject(true, "loadGF"));
-		reservedGameThreads.push(new ReservedThreadObject(true, "loadDad"));
-		#end
-		/*#if debug
-			flixel.addons.studio.FlxStudio.create();
-			#end */
-
 		// setup automatic beat, step and section updates
 		gameplayStuff.Conductor.setupUpdates();
 
@@ -228,23 +200,6 @@ class Main extends Sprite
 		{
 			fnfSignals.update.dispatch(FlxG.elapsed);
 		});
-
-		// Global scripts
-		reloadGlobalScripts();
-	}
-
-	public function reloadGlobalScripts()
-	{
-		/*for (script in globalScripts)
-			{
-				script.destroy();
-			}
-
-			var filesToCheck:Array<String> = AssetsUtil.readLibrary("gameplay", HSCRIPT, "scripts/global/");
-			for (file in filesToCheck)
-			{
-				globalScripts.push(new scriptStuff.scriptBodies.GlobalScriptBody(file));
-		}*/
 	}
 
 	static final ERROR_REPORT_URL = "https://github.com/AltronMaxX/FNF-AltronixEngine";
@@ -530,10 +485,9 @@ class CustomGame extends FlxGame
 
 		Debug.displayAlert('Error!', '$msg\n${e.details()}');
 
-		FlxG.resetGame();
-		/*@:privateAccess {	
-			FlxG.game._requestedState = new TitleState(true);
+		@:privateAccess {	
+			FlxG.game._requestedState = new states.TitleState(true);
 			FlxG.game.switchState();
-		}*/
+		}
 	}
 }

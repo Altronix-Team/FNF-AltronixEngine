@@ -1325,7 +1325,7 @@ class LanguageOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [curLocale]);
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [LanguageStuff.getUiLanguageName(curLocale)]);
 	}
 }
 

@@ -6,11 +6,11 @@ import flixel.addons.display.FlxGridOverlay;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
+import flixel.sound.FlxSound;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
-import flixel.system.FlxSound;
-import states.LoadingState;
 import gameplayStuff.Character;
+import states.LoadingState;
 #if sys
 import sys.FileSystem;
 #end

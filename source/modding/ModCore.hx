@@ -3,10 +3,10 @@ package modding;
 import flixel.FlxG;
 import gameplayStuff.Character;
 #if FEATURE_MODCORE
+import polymod.Polymod;
 import polymod.backends.OpenFLBackend;
 import polymod.backends.PolymodAssets.PolymodAssetType;
 import polymod.format.ParseRules.TextFileFormat;
-import polymod.Polymod;
 #end
 
 /**
@@ -90,8 +90,6 @@ class ModCore
 		Achievements.listAllAchievements();
 
 		LanguageStuff.initLanguages();
-
-		Main.instance.reloadGlobalScripts();
 	}
 	#end
 
@@ -221,8 +219,6 @@ class ModCore
 		Achievements.listAllAchievements();
 
 		LanguageStuff.initLanguages();
-
-		Main.instance.reloadGlobalScripts();
 	}
 
 	static function buildParseRules():polymod.format.ParseRules
@@ -251,12 +247,12 @@ class ModCore
 		set('FlxSprite', flixel.FlxSprite);
 		set('FlxText', flixel.text.FlxText);
 		set('FlxRuntimeShader', flixel.addons.display.FlxRuntimeShader);
-		set('FlxSound', flixel.system.FlxSound);
+		set('FlxSound', flixel.sound.FlxSound);
 		set('FlxTimer', flixel.util.FlxTimer);
 		set('FlxTween', flixel.tweens.FlxTween);
 		set('FlxEase', flixel.tweens.FlxEase);
 		set('FlxMath', flixel.math.FlxMath);
-		set('FlxSound', flixel.system.FlxSound);
+		set('FlxSound', flixel.sound.FlxSound);
 		set('FlxGroup', flixel.group.FlxGroup);
 		set('FlxTypedGroup', flixel.group.FlxGroup.FlxTypedGroup);
 		set('FlxSpriteGroup', flixel.group.FlxSpriteGroup);
@@ -324,24 +320,8 @@ class ModCore
 				Debug.logInfo('[POLYMOD] ${error.message}', null);
 			case MOD_LOAD_DONE:
 				Debug.logInfo('[POLYMOD] ${error.message}', null);
-			// case MOD_LOAD_FAILED:
 			case MISSING_ICON:
 				Debug.logWarn('[POLYMOD] A mod is missing an icon, will just skip it but please add one: ${error.message}', null);
-			// case "parse_mod_version":
-			// case "parse_api_version":
-			// case "parse_mod_api_version":
-			// case "missing_mod":
-			// case "missing_meta":
-			// case "version_conflict_mod":
-			// case "version_conflict_api":
-			// case "version_prerelease_api":
-			// case "param_mod_version":
-			// case "framework_autodetect":
-			// case "framework_init":
-			// case "undefined_custom_backend":
-			// case "failed_create_backend":
-			// case "merge_error":
-			// case "append_error":
 			default:
 				// Log the message based on its severity.
 				switch (error.severity)

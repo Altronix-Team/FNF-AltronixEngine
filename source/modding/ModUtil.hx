@@ -3,6 +3,9 @@ package modding;
 #if FEATURE_MODCORE
 import flixel.FlxG;
 import polymod.Polymod;
+#if CUSTOM_POLYMOD
+import polymod.ModMetadata;
+#end
 
 // Fun fact, this class and mod menu was originally made for forever engine undercore. But PR got closed
 @:access(modding.ModCore)

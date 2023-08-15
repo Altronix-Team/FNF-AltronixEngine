@@ -1,24 +1,24 @@
 package states;
 
-import scriptStuff.ScriptHelper;
-import flixel.input.gamepad.FlxGamepad;
-import openfl.Lib;
 import core.Controls.Control;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.input.gamepad.FlxGamepad;
 import flixel.input.keyboard.FlxKey;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import gameplayStuff.PlayStateChangeables;
 import gameplayStuff.Song;
-import states.playState.PlayState;
+import openfl.Lib;
+import scriptStuff.ScriptHelper;
 import states.playState.GameData as Data;
+import states.playState.PlayState;
 
 class PauseSubState extends MusicBeatSubstate
 {

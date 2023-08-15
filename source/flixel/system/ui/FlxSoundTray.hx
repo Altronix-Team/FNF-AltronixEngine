@@ -1,17 +1,17 @@
 package flixel.system.ui;
 
 #if FLX_SOUND_SYSTEM
+import flash.Lib;
 import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.Sprite;
-import flash.Lib;
 import flash.text.TextField;
 import flash.text.TextFormat;
 import flash.text.TextFormatAlign;
 import flixel.FlxG;
+import flixel.sound.FlxSound;
 import flixel.system.FlxAssets;
 import flixel.util.FlxColor;
-import flixel.system.FlxSound;
 #if flash
 import flash.text.AntiAliasType;
 import flash.text.GridFitType;

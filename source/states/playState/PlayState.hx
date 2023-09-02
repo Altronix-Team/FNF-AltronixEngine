@@ -100,17 +100,25 @@ import states.playState.Replay.Ana;
 import states.playState.Replay.Analysis;
 import sys.thread.Lock;
 import sys.thread.Mutex;
+
 #if FEATURE_FILESYSTEM
 import Sys;
 import sys.FileSystem;
 import sys.io.File;
 #end
+
+#if (VIDEOS_ALLOWED && !macro)
+#if (hxCodec >= "3.0.0") import hxcodec.flixel.FlxVideo as VideoHandler;
+#elseif (hxCodec >= "2.6.1") import hxcodec.VideoHandler as VideoHandler;
+#elseif (hxCodec == "2.6.0") import VideoHandler;
+#else import vlc.MP4Handler as VideoHandler; #end
+#end
+
 #if desktop
 import gamejolt.GameJolt.GameJoltAPI;
 #end
-#if VIDEOS_ALLOWED
-import hxcodec.VideoHandler;
-#end
+
+
 
 class PlayState extends MusicBeatState
 {
@@ -1189,41 +1197,53 @@ class PlayState extends MusicBeatState
 			ScriptHelper.callOnHscript('startCutscene', []);
 	}
 
-	#if VIDEOS_ALLOWED
+	#if (VIDEOS_ALLOWED && !macro)
 	var video:VideoHandler;
 	#end
 
 	public function playCutscene(name:String, atend:Bool = false, blockFinish:Bool = false)
 	{
-		#if VIDEOS_ALLOWED
+		#if (VIDEOS_ALLOWED && !macro)
 		Data.inCutscene = true;
 
+		var filepath = Paths.video(name);
+
 		video = new VideoHandler();
-		video.finishCallback = function()
-		{
-			if (!blockFinish)
-			{
-				if (atend)
-				{
-					if (Data.storyPlaylist.length <= 0)
-						FlxG.switchState(new StoryMenuState());
-					else
-					{
-						var diff:String = CoolUtil.difficultyPrefixes[Data.storyDifficulty];
-						Data.SONG = Song.loadFromJson(Data.storyPlaylist[0].toLowerCase(), diff);
-						FlxG.switchState(new PlayState());
-					}
-				}
-				else
-					startCountdown();
-			}
-		}
-		if (OpenFlAssets.exists(Paths.video(name)))
-			video.playVideo(Paths.video(name));
-		else
+		if (!OpenFlAssets.exists(filepath))
 		{
 			Debug.logError('Failed to find video');
-			if (atend == true)
+			startAndEnd(atend, false);
+			return;
+		}
+
+		#if (hxCodec >= "3.0.0")
+		// Recent versions
+		video.play(filepath);
+		video.onEndReached.add(function()
+		{
+			video.dispose();
+			startAndEnd(atend, blockFinish);
+			return;
+		}, true);
+		#else
+		// Older versions
+		video.playVideo(filepath);
+		video.finishCallback = function()
+		{
+			startAndEnd(atend, blockFinish);
+			return;
+		}
+		#end
+		#else
+		Debug.logTrace('Videos is not allowed');
+		#end
+	}
+
+	private function startAndEnd(atend:Bool = false, blockFinish:Bool = false)
+	{
+		if (!blockFinish)
+		{
+			if (atend)
 			{
 				if (Data.storyPlaylist.length <= 0)
 					FlxG.switchState(new StoryMenuState());
@@ -1237,9 +1257,6 @@ class PlayState extends MusicBeatState
 			else
 				startCountdown();
 		}
-		#else
-		Debug.logTrace('Videos is not allowed');
-		#end
 	}
 
 	// TODO Redo to work with DialogueBox.hx

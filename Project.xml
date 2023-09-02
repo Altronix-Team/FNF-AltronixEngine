@@ -64,7 +64,9 @@
 	<define name="CHECK_FOR_DEFAULT_CHARACTERS"/>
 	<!--define name="USE_FLIXEL3D"/-->
 	<!--define name="USE_YAML"/-->
-	<define name="VIDEOS_ALLOWED" if="desktop || android" unless="cs"/>
+	<define name="VIDEOS_ALLOWED" if="windows || linux || android" unless="32bits"/>
+
+	<haxeflag name="-dce" value="std" />
 	
 	<!-- <define name="PRELOAD_ALL" /> -->
 	<define name="PRELOAD_ALL" unless="web" />
@@ -188,7 +190,6 @@
 	<icon path="art/iconOG.png" />
 
 	<!--haxeflag name="no-traces" unless="debug" /-->
-	<haxeflag name="-dce no" unless="cacheBuild"/>
 
 	<!-- Use defines to ensure compile-time definitions have readable context. -->
 	<!-- Allowed inputs are mobile,desktop,web,ios,android,windows,mac,linux,switch,html5,cpp,neko,flash,js -->

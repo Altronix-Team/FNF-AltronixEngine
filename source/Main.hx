@@ -92,10 +92,11 @@ class Main extends Sprite
 
 		super();
 
+		#if FEATURE_FILESYSTEM
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtError);
-
 		#if cpp
 		untyped __global__.__hxcpp_set_critical_error_handler(onCriticalErrorEvent);
+		#end
 		#end
 
 		compileTime = macros.MacroUtil.buildDateString().toString();
@@ -163,6 +164,8 @@ class Main extends Sprite
 			save.data.fullscreenOnStart = false;
 
 		#if FEATURE_MODCORE
+		ModUtil.reloadSavedMods();
+
 		modsToLoad = ModUtil.getConfiguredMods();
 		configFound = (modsToLoad != null && modsToLoad.length > 0);
 		if (configFound)
@@ -195,11 +198,6 @@ class Main extends Sprite
 
 		// setup automatic beat, step and section updates
 		gameplayStuff.Conductor.setupUpdates();
-
-		Lib.current.addEventListener(Event.ENTER_FRAME, function(_)
-		{
-			fnfSignals.update.dispatch(FlxG.elapsed);
-		});
 	}
 
 	static final ERROR_REPORT_URL = "https://github.com/AltronMaxX/FNF-AltronixEngine";
@@ -295,10 +293,86 @@ class Main extends Sprite
 
 	private function onCriticalErrorEvent(message:String):Void
 	{
+		#if FEATURE_FILESYSTEM
 		FlxG.resetGame();
-		Debug.logError('Critical error!');
-		Debug.logError(message);
-		Debug.displayAlert('Critical error!', message);
+		var errorMsg:String = '';
+
+		var funnyTitle:Array<String> = [
+			'Fatal Error!',
+			'Monika deleted everything!',
+			'Catastrophic Error',
+			'Well-well-well, what have we got here?',
+			'Game over',
+			'Kade Engine moment',
+			'Tester couldn`t find it'
+		];
+
+		errorMsg += '==========FATAL ERROR==========\n';
+		errorMsg += 'An uncaught error was thrown, and the game had to close.\n';
+		errorMsg += 'Please use the link below, create a new issue, and upload this file to report the error.\n';
+		errorMsg += '\n';
+		errorMsg += ERROR_REPORT_URL;
+		errorMsg += '\n';
+
+		errorMsg += '==========SYSTEM INFO==========\n';
+		errorMsg += 'Altronix Engine version: ${EngineConstants.engineVer}\n';
+		errorMsg += '  HaxeFlixel version: ${Std.string(FlxG.VERSION)}\n';
+		errorMsg += '  Friday Night Funkin\' version: ${states.MainMenuState.gameVer}\n';
+		errorMsg += 'System telemetry:\n';
+		errorMsg += '  OS: ${Capabilities.os}\n';
+
+		errorMsg += '\n';
+
+		errorMsg += '==========STACK TRACE==========\n';
+		errorMsg += message + '\n';
+
+		var errorCallStack:Array<StackItem> = CallStack.exceptionStack(true);
+
+		for (line in errorCallStack)
+		{
+			switch (line)
+			{
+				case CFunction:
+					errorMsg += '  function:\n';
+				case Module(m):
+					errorMsg += '  module:${m}\n';
+				case FilePos(s, file, line, column):
+					errorMsg += '  (${file}#${line},${column})\n';
+				case Method(className, method):
+					errorMsg += '  method:(${className}/${method}\n';
+				case LocalFunction(v):
+					errorMsg += '  localFunction:${v}\n';
+				default:
+					errorMsg += line;
+			}
+		}
+		errorMsg += '\n';
+
+		var logFolderPath = CoolUtil.createDirectoryIfNotExists('crashes');
+
+		var path:String = '${logFolderPath}/Altronix Engine - ${DebugLogWriter.getDateString()}.txt';
+
+		sys.io.File.saveContent(path, errorMsg + "\n");
+
+		errorMsg += 'An error has occurred and the game is forced to close.\nPlease access the "crash" folder and send the .crash file to the developers:\n'
+			+ ERROR_REPORT_URL
+			+ '\n';
+
+		Application.current.window.alert('An error has occurred and the game is forced to close.\nPlease access the "crash" folder and send the .crash file to the developers:\n'
+			+ ERROR_REPORT_URL,
+			funnyTitle[FlxG.random.int(0, funnyTitle.length - 1)]);
+
+		try
+		{
+			new Process(path);
+		}
+		#else
+		FlxG.resetGame();
+
+		Application.current.window.alert('An error has occurred and the game is forced to close.\nWe cannot write a log file though. Tell the developers:\n'
+			+ ERROR_REPORT_URL,
+			funnyTitle[FlxG.random.int(0, funnyTitle.length - 1)]);
+		#end
 	}
 
 	public static var fpsCounter:EngineFPS = null;

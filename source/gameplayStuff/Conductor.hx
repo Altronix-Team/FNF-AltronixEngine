@@ -1,5 +1,6 @@
 package gameplayStuff;
 
+import sys.thread.Thread;
 import haxe.Constraints.Function;
 import gameplayStuff.Section.SwagSection;
 import gameplayStuff.Song.SongData;
@@ -41,11 +42,15 @@ class Conductor
 	public static var curDecimalBeat:Float = 0;
 	public static var curSection:SwagSection = null;
 
+	private static var updateThread:Thread = null;
+
 	public static function setupUpdates()
 	{
+		updateThread = Thread.createWithEventLoop(function() {Thread.current().events.promise();});
 		Lib.current.addEventListener(Event.ENTER_FRAME, function(_)
 		{
-			updateSongPosition(FlxG.elapsed);
+			updateThread.events.run(updateSongPosition);
+			Main.fnfSignals.update.dispatch(FlxG.elapsed);
 		});
 	}
 
@@ -95,8 +100,10 @@ class Conductor
 		stepCrochet = crochet / 4;
 	}
 
-	public static function updateSongPosition(elapsed:Float)
+	public static function updateSongPosition():Void
 	{
+		var elapsed = FlxG.elapsed;
+
 		if (songPosition < 0)
 			curDecimalBeat = 0;
 		else

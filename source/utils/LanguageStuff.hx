@@ -158,7 +158,8 @@ class LanguageStuff
 
 	public static function getUiLanguageName(targetlocale:String = '', curlocale:String = ''):String
 	{
-		return tongue.getIndexString(LanguageBilingual, targetlocale, curlocale);
+		//return tongue.getIndexString(LanguageBilingual, targetlocale);
+		return tongue.locale;
 	}
 
 	public static function replaceFlagsAndReturn(key:String, context:String, flags:Array<String>, values:Array<Dynamic>):String

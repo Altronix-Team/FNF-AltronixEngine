@@ -63,8 +63,8 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 
 		scriptHandler.set("songId", Data.SONG.songId);
 
-		scriptHandler.set("setOnScripts", ScriptHelper.setOnScripts);
-		scriptHandler.set("callOnScripts", ScriptHelper.callOnScripts);
+		scriptHandler.set("setOnHscript", ScriptHelper.setOnHscript);
+		scriptHandler.set("callOnHscript", ScriptHelper.callOnHscript);
 
 		scriptHandler.set("camGame", curState.camGame);
 		scriptHandler.set("camHUD", curState.camHUD);

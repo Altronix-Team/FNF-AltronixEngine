@@ -32,7 +32,7 @@ to install all all libraries, which needed to compiling the engine.
 
 4. To compile game, type:
 ```
-lime build [target platform (wondows, linux, html5, etc)]
+lime build [target platform (windows, linux, html5, etc)]
 ```
 
 ## If you want to edit the engine source code, you should better to install all from this [file](https://github.com/AltronMaxX/FNF-AltronixEngine/blob/main/docs/building.md) and remove ``hmm.json`` file and ``.haxelib`` folder, if it exists

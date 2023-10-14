@@ -19,6 +19,10 @@ class AssetsUtil
 {
 	public var _file:FileReference;
 
+	private static var imageCache:Map<String, FlxGraphic> = [];
+
+	private static var soundCache:Map<String, FlxSound> = [];
+
 	public static function listAssetsInPath(path:String, type:AssetTypes = UNKNOWN):Array<String>
 	{
 		if (type == DIRECTORY)
@@ -53,7 +57,17 @@ class AssetsUtil
 		switch (type)
 		{
 			case IMAGE:
-				return loadImage(key, library);
+				if (imageCache.exists(key)){
+					var cachedImage = imageCache.get(key);
+					return cachedImage ?? loadImage(key, library);
+				}
+				else{
+					var image = loadImage(key, library);
+					image.persist = true;
+					image.destroyOnNoUse = false;
+					imageCache.set(key, image);
+					return image;
+				}
 			case JSON:
 				return loadJSON(key, library);
 			case TEXT:
@@ -63,7 +77,15 @@ class AssetsUtil
 				return loadYAML(key, library);
 			#end
 			case SOUND | MUSIC:
-				return loadSoundAsset(key, type, library);
+				if (soundCache.exists(key)){
+					var cachedSound = soundCache.get(key);
+					return cachedSound ?? loadSoundAsset(key, type, library);
+				}
+				else{
+					var sound = loadSoundAsset(key, type, library);
+					soundCache.set(key, sound);
+					return sound;
+				}
 			default:
 				return null;
 		}
@@ -333,7 +355,7 @@ class AssetsUtil
 			Debug.logWarn('Could not find image at path $path');
 			retVal = new BitmapData(100, 100, true, 0xFFEA00FF);
 		}
-		return FlxGraphic.fromBitmapData(retVal);
+		return FlxGraphic.fromBitmapData(retVal, false, key);
 	}
 
 	static private function loadJSON(key:String, ?library:String):Dynamic

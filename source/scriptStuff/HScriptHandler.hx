@@ -58,7 +58,7 @@ import shaders.Shaders.VCRDistortionEffect;
 import states.GameOverSubstate;
 import states.MusicBeatState;
 import states.playState.PlayState;
-import tea.SScript;
+import aescript.AEScript;
 import utils.Paths;
 #if USE_FLIXEL3D
 import flx3D.FlxView3D;
@@ -77,13 +77,8 @@ class ScriptException extends Exception
 	}
 }
 
-class HScriptHandler extends SScript
+class HScriptHandler extends AEScript
 {
-	public function new(file:String, ?preset:Bool = true)
-	{
-		super(file, preset);
-	}
-
 	override public function preset():Void
 	{
 		super.preset();

@@ -617,271 +617,233 @@ class PlayState extends MusicBeatState
 		else
 			camPos = new FlxPoint(boyfriendCameraOffset[0], boyfriendCameraOffset[1]);
 
-		ThreadUtil.runReservedTask('loadChars', function()
+		Debug.logInfo('Loading characters');
+
+		gf = new Character(400, 130, gfCheck);
+
+		startCharacterPos(gf);
+		gf.scrollFactor.set(0.95, 0.95);
+		gfGroup.add(gf);
+		startCharacterHscript(gf.curCharacter);
+
+		ScriptHelper.setOnHscript('gfName', gf.curCharacter);
+
+		GF_X = stageData.gf[0];
+		GF_Y = stageData.gf[1];
+		gfGroup.setPosition(GF_X, GF_Y);
+
+		gf.x = stageData.gf[0];
+		gf.y = stageData.gf[1];
+
+		if (gf.positionArray != null)
 		{
-			var loadedBF = false;
-			var loadedGF = false;
-			var loadedDad = false;
-			// var lock = new Lock();
-			Debug.logInfo('Loading characters');
-			ThreadUtil.runReservedTask('loadGF', function()
-			{
-				gf = new Character(400, 130, gfCheck);
+			gf.x += gf.positionArray[0];
+			gf.y += gf.positionArray[1];
+		}
 
-				startCharacterPos(gf);
-				gf.scrollFactor.set(0.95, 0.95);
-				gfGroup.add(gf);
-				startCharacterHscript(gf.curCharacter);
+		if (hideGF)
+			gf.visible = false;
 
-				ScriptHelper.setOnHscript('gfName', gf.curCharacter);
+		boyfriend = new Boyfriend(770, 450, Data.SONG.player1);
 
-				GF_X = stageData.gf[0];
-				GF_Y = stageData.gf[1];
-				gfGroup.setPosition(GF_X, GF_Y);
+		startCharacterPos(boyfriend);
+		boyfriendGroup.add(boyfriend);
+		startCharacterHscript(boyfriend.curCharacter);
 
-				gf.x = stageData.gf[0];
-				gf.y = stageData.gf[1];
+		ScriptHelper.setOnHscript('boyfriendName', boyfriend.curCharacter);
 
-				if (gf.positionArray != null)
-				{
-					gf.x += gf.positionArray[0];
-					gf.y += gf.positionArray[1];
-				}
-
-				if (hideGF)
-					gf.visible = false;
-
-				loadedGF = true;
-
-				// if (loadedDad && loadedBF && loadedGF)
-				// lock.release();
-			});
-
-			ThreadUtil.runReservedTask('loadBF', function()
-			{
-				boyfriend = new Boyfriend(770, 450, Data.SONG.player1);
-
-				startCharacterPos(boyfriend);
-				boyfriendGroup.add(boyfriend);
-				startCharacterHscript(boyfriend.curCharacter);
-
-				ScriptHelper.setOnHscript('boyfriendName', boyfriend.curCharacter);
-
-				switch (boyfriend.curCharacter)
-				{
-					case 'bf-pixel':
-						GameOverSubstate.stageSuffix = '-pixel';
-						GameOverSubstate.characterName = 'bf-pixel-dead';
-					case 'bfAndGF':
-						GameOverSubstate.characterName = 'bfAndGF-DEAD';
-				}
-
-				BF_X = stageData.boyfriend[0];
-				BF_Y = stageData.boyfriend[1];
-				boyfriendGroup.setPosition(BF_X, BF_Y);
-
-				boyfriend.x = stageData.boyfriend[0];
-				boyfriend.y = stageData.boyfriend[1];
-
-				if (boyfriend.positionArray != null)
-				{
-					boyfriend.x += boyfriend.positionArray[0];
-					boyfriend.y += boyfriend.positionArray[1];
-				}
-
-				loadedBF = true;
-
-				// if (loadedDad && loadedBF && loadedGF)
-				// lock.release();
-			});
-
-			ThreadUtil.runReservedTask('loadDad', function()
-			{
-				dad = new Character(100, 100, Data.SONG.player2);
-
-				startCharacterPos(dad, true);
-				dadGroup.add(dad);
-				startCharacterHscript(dad.curCharacter);
-
-				ScriptHelper.setOnHscript('dadName', dad.curCharacter);
-
-				DAD_X = stageData.dad[0];
-				DAD_Y = stageData.dad[1];
-				dadGroup.setPosition(DAD_X, DAD_Y);
-
-				dad.x = stageData.dad[0];
-				dad.y = stageData.dad[1];
-
-				if (dad.positionArray != null)
-				{
-					dad.x += dad.positionArray[0];
-					dad.y += dad.positionArray[1];
-				}
-
-				loadedDad = true;
-
-				// if (loadedDad && loadedBF && loadedGF)
-				// lock.release();
-			});
-
-			// lock.wait();
-
-			if (loadedDad && loadedBF && loadedGF)
-			{
-				chars = [boyfriend, gf, dad];
-
-				Debug.logInfo('Generated all song characters');
-
-				if (gf != null && !hideGF)
-				{
-					if (gf.camPos != null)
-					{
-						camPos.x += gf.getGraphicMidpoint().x + gf.camPos[0];
-						camPos.y += gf.getGraphicMidpoint().y + gf.camPos[1];
-					}
-					else
-					{
-						camPos.x += gf.getGraphicMidpoint().x;
-						camPos.y += gf.getGraphicMidpoint().y;
-					}
-				}
-				else
-				{
-					if (boyfriend.camPos != null)
-					{
-						camPos.x += boyfriend.getGraphicMidpoint().x + boyfriend.camPos[0];
-						camPos.y += boyfriend.getGraphicMidpoint().y + boyfriend.camPos[1];
-					}
-					else
-					{
-						camPos.x += boyfriend.getGraphicMidpoint().x;
-						camPos.y += boyfriend.getGraphicMidpoint().y;
-					}
-				}
-
-				// camManager.setFullFocusTo(gf);
-
-				if (hideGF)
-					gf.visible = false;
-				else
-				{
-					if (dad.replacesGF)
-					{
-						if (!Data.stageTesting)
-							dad.setPosition(gf.x, gf.y);
-						gf.visible = false;
-						if (Data.isStoryMode)
-						{
-							camPos.x += 600;
-							tweenCamIn();
-						}
-					}
-					else
-						gf.visible = true;
-				}
-			}
-		});
-
-		ThreadUtil.runReservedTask('loadStage', function()
+		switch (boyfriend.curCharacter)
 		{
-			Debug.logInfo('Loading stage');
-			if (!Data.stageTesting)
+			case 'bf-pixel':
+				GameOverSubstate.stageSuffix = '-pixel';
+				GameOverSubstate.characterName = 'bf-pixel-dead';
+			case 'bfAndGF':
+				GameOverSubstate.characterName = 'bfAndGF-DEAD';
+		}
+
+		BF_X = stageData.boyfriend[0];
+		BF_Y = stageData.boyfriend[1];
+		boyfriendGroup.setPosition(BF_X, BF_Y);
+
+		boyfriend.x = stageData.boyfriend[0];
+		boyfriend.y = stageData.boyfriend[1];
+
+		if (boyfriend.positionArray != null)
+		{
+			boyfriend.x += boyfriend.positionArray[0];
+			boyfriend.y += boyfriend.positionArray[1];
+		}
+
+		dad = new Character(100, 100, Data.SONG.player2);
+
+		startCharacterPos(dad, true);
+		dadGroup.add(dad);
+		startCharacterHscript(dad.curCharacter);
+
+		ScriptHelper.setOnHscript('dadName', dad.curCharacter);
+
+		DAD_X = stageData.dad[0];
+		DAD_Y = stageData.dad[1];
+		dadGroup.setPosition(DAD_X, DAD_Y);
+
+		dad.x = stageData.dad[0];
+		dad.y = stageData.dad[1];
+
+		if (dad.positionArray != null)
+		{
+			dad.x += dad.positionArray[0];
+			dad.y += dad.positionArray[1];
+		}
+
+		chars = [boyfriend, gf, dad];
+
+		Debug.logInfo('Generated all song characters');
+
+		if (gf != null && !hideGF)
+		{
+			if (gf.camPos != null)
 			{
-				if (Paths.getHscriptPath(Data.SONG.stage, 'stages') != null)
+				camPos.x += gf.getGraphicMidpoint().x + gf.camPos[0];
+				camPos.y += gf.getGraphicMidpoint().y + gf.camPos[1];
+			}
+			else
+			{
+				camPos.x += gf.getGraphicMidpoint().x;
+				camPos.y += gf.getGraphicMidpoint().y;
+			}
+		}
+		else
+		{
+			if (boyfriend.camPos != null)
+			{
+				camPos.x += boyfriend.getGraphicMidpoint().x + boyfriend.camPos[0];
+				camPos.y += boyfriend.getGraphicMidpoint().y + boyfriend.camPos[1];
+			}
+			else
+			{
+				camPos.x += boyfriend.getGraphicMidpoint().x;
+				camPos.y += boyfriend.getGraphicMidpoint().y;
+			}
+		}
+
+		// camManager.setFullFocusTo(gf);
+
+		if (hideGF)
+			gf.visible = false;
+		else
+		{
+			if (dad.replacesGF)
+			{
+				if (!Data.stageTesting)
+					dad.setPosition(gf.x, gf.y);
+				gf.visible = false;
+				if (Data.isStoryMode)
 				{
-					try
+					camPos.x += 600;
+					tweenCamIn();
+				}
+			}
+			else
+				gf.visible = true;
+		}
+
+		Debug.logInfo('Loading stage');
+		if (!Data.stageTesting)
+		{
+			if (Paths.getHscriptPath(Data.SONG.stage, 'stages') != null)
+			{
+				try
+				{
+					hscriptStage = new HscriptStage(Paths.getHscriptPath(Data.SONG.stage, 'stages'), this);
+					add(hscriptStage);
+					ScriptHelper.hscriptFiles.push(hscriptStage);
+					hscriptStageCheck = true;
+				}
+				catch (e)
+				{
+					if (Std.isOfType(e, ScriptException))
 					{
-						hscriptStage = new HscriptStage(Paths.getHscriptPath(Data.SONG.stage, 'stages'), this);
-						add(hscriptStage);
-						ScriptHelper.hscriptFiles.push(hscriptStage);
-						hscriptStageCheck = true;
+						scriptError(e);
+						return;
 					}
-					catch (e)
-					{
-						if (Std.isOfType(e, ScriptException))
+					else
+						Debug.displayAlert('Error with hscript stage file!', Std.string(e));
+				}
+			}
+			else
+			{
+				Stage = new Stage(Data.SONG.stage);
+			}
+		}
+
+		if (hscriptStageCheck)
+		{
+			if (!hscriptStage.members.contains(gfGroup))
+				add(gfGroup);
+			else
+				gfGroup = hscriptStage.gfGroup;
+
+			if (!hscriptStage.members.contains(dadGroup))
+				add(dadGroup);
+			else
+				dadGroup = hscriptStage.dadGroup;
+
+			if (!hscriptStage.members.contains(boyfriendGroup))
+				add(boyfriendGroup);
+			else
+				boyfriendGroup = hscriptStage.boyfriendGroup;
+		}
+
+		if (!hscriptStageCheck)
+		{
+			for (i in Stage.toAdd)
+			{
+				add(i);
+			}
+		}
+
+		this.hideGF = stageData.hideGF || Data.SONG.hideGF;
+
+		if (!PlayStateChangeables.Optimize && (!hscriptStageCheck))
+			for (index => array in Stage.layInFront)
+			{
+				switch (index)
+				{
+					case 0:
+						add(gfGroup);
+						gfGroup.scrollFactor.set(0.95, 0.95);
+						if (!hscriptStageCheck)
 						{
-							scriptError(e);
-							return;
+							for (bg in array)
+							{
+								add(bg);
+							}
 						}
-						else
-							Debug.displayAlert('Error with hscript stage file!', Std.string(e));
-					}
-				}
-				else
-				{
-					Stage = new Stage(Data.SONG.stage);
+					case 1:
+						add(dadGroup);
+						if (!hscriptStageCheck)
+						{
+							for (bg in array)
+							{
+								add(bg);
+							}
+						}
+					case 2:
+						add(boyfriendGroup);
+						if (!hscriptStageCheck)
+						{
+							for (bg in array)
+							{
+								add(bg);
+							}
+						}
 				}
 			}
 
-			if (hscriptStageCheck)
-			{
-				if (!hscriptStage.members.contains(gfGroup))
-					add(gfGroup);
-				else
-					gfGroup = hscriptStage.gfGroup;
+		Debug.logTrace('Generated stage');
 
-				if (!hscriptStage.members.contains(dadGroup))
-					add(dadGroup);
-				else
-					dadGroup = hscriptStage.dadGroup;
-
-				if (!hscriptStage.members.contains(boyfriendGroup))
-					add(boyfriendGroup);
-				else
-					boyfriendGroup = hscriptStage.boyfriendGroup;
-			}
-
-			if (!hscriptStageCheck)
-			{
-				for (i in Stage.toAdd)
-				{
-					add(i);
-				}
-			}
-
-			this.hideGF = stageData.hideGF || Data.SONG.hideGF;
-
-			if (!PlayStateChangeables.Optimize && (!hscriptStageCheck))
-				for (index => array in Stage.layInFront)
-				{
-					switch (index)
-					{
-						case 0:
-							add(gfGroup);
-							gfGroup.scrollFactor.set(0.95, 0.95);
-							if (!hscriptStageCheck)
-							{
-								for (bg in array)
-								{
-									add(bg);
-								}
-							}
-						case 1:
-							add(dadGroup);
-							if (!hscriptStageCheck)
-							{
-								for (bg in array)
-								{
-									add(bg);
-								}
-							}
-						case 2:
-							add(boyfriendGroup);
-							if (!hscriptStageCheck)
-							{
-								for (bg in array)
-								{
-									add(bg);
-								}
-							}
-					}
-				}
-
-			Debug.logTrace('Generated stage');
-
-			if (!hscriptStageCheck)
-				Stage.update(0);
-		});
+		if (!hscriptStageCheck)
+			Stage.update(0);
 
 		#if desktop
 		if (Paths.getHscriptPath(Data.SONG.songId, 'songs') != null)
@@ -1047,52 +1009,35 @@ class PlayState extends MusicBeatState
 
 		generateSong(Data.SONG.songId);
 
-		ThreadUtil.runTaskAsync(function()
+		#if desktop
+		var filesToCheck:Array<String> = AssetsUtil.listAssetsInPath('assets/gameplay/scripts/notes/', HSCRIPT);
+		var filesPushed:Array<String> = [];
+		for (file in filesToCheck)
 		{
-			#if desktop
-			/*var filesToCheck:Array<String> = AssetsUtil.listAssetsInPath('assets/gameplay/scripts/events/', HSCRIPT);
-			var filesPushed:Array<String> = [];
-			for (file in filesToCheck)
+			if (!filesPushed.contains(file))
 			{
-				if (!filesPushed.contains(file))
+				if (Paths.getHscriptPath(file, 'notes', false) != null)
 				{
-					if (Paths.getHscriptPath(file, 'events', false) != null)
-					{
-						ScriptHelper.hscriptFiles.push(new ModchartHelper(Paths.getHscriptPath(file, 'events', false), this));
-						filesPushed.push(file);
-					}
-				}
-			}*/
-
-			var filesToCheck:Array<String> = AssetsUtil.listAssetsInPath('assets/gameplay/scripts/notes/', HSCRIPT);
-			var filesPushed:Array<String> = [];
-			for (file in filesToCheck)
-			{
-				if (!filesPushed.contains(file))
-				{
-					if (Paths.getHscriptPath(file, 'notes', false) != null)
-					{
-						ScriptHelper.hscriptFiles.push(new ModchartHelper(Paths.getHscriptPath(file, 'notes', false), this));
-						filesPushed.push(file);
-					}
+					ScriptHelper.hscriptFiles.push(new ModchartHelper(Paths.getHscriptPath(file, 'notes', false), this));
+					filesPushed.push(file);
 				}
 			}
+		}
 
-			var filesToCheck:Array<String> = AssetsUtil.listAssetsInPath('assets/gameplay/scripts/difficulties/', HSCRIPT);
-			var filesPushed:Array<String> = [];
-			for (file in filesToCheck)
+		var filesToCheck:Array<String> = AssetsUtil.listAssetsInPath('assets/gameplay/scripts/difficulties/', HSCRIPT);
+		var filesPushed:Array<String> = [];
+		for (file in filesToCheck)
+		{
+			if (!filesPushed.contains(file))
 			{
-				if (!filesPushed.contains(file))
+				if (Paths.getHscriptPath(file, 'difficulties', false) != null)
 				{
-					if (Paths.getHscriptPath(file, 'difficulties', false) != null)
-					{
-						ScriptHelper.hscriptFiles.push(new ModchartHelper(Paths.getHscriptPath(file, 'difficulties', false), this));
-						filesPushed.push(file);
-					}
+					ScriptHelper.hscriptFiles.push(new ModchartHelper(Paths.getHscriptPath(file, 'difficulties', false), this));
+					filesPushed.push(file);
 				}
 			}
-			#end
-		});
+		}
+		#end
 
 		/*var filesToCheck:Array<String> = AssetsUtil.readLibrary("gameplay", HSCRIPT, "scripts/notes/");
 			for (file in filesToCheck)
@@ -1102,22 +1047,19 @@ class PlayState extends MusicBeatState
 
 		if (Data.startTime != 0)
 		{
-			ThreadUtil.runTaskAsync(function()
+			var toBeRemoved = [];
+			for (i in 0...unspawnNotes.length)
 			{
-				var toBeRemoved = [];
-				for (i in 0...unspawnNotes.length)
-				{
-					var dunceNote:Note = unspawnNotes[i];
+				var dunceNote:Note = unspawnNotes[i];
 
-					if (dunceNote.strumTime <= Data.startTime)
-						toBeRemoved.push(dunceNote);
-				}
+				if (dunceNote.strumTime <= Data.startTime)
+					toBeRemoved.push(dunceNote);
+			}
 
-				for (i in toBeRemoved)
-					unspawnNotes.remove(i);
+			for (i in toBeRemoved)
+				unspawnNotes.remove(i);
 
-				Debug.logTrace("Removed " + toBeRemoved.length + " cuz of start time");
-			});
+			Debug.logTrace("Removed " + toBeRemoved.length + " cuz of start time");
 		}
 
 		trace('generated');

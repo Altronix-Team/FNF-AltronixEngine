@@ -1,5 +1,6 @@
 package utils;
 
+import flixel.addons.ui.FlxUIState;
 import openfl.utils.AssetType;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
@@ -32,6 +33,8 @@ class LanguageStuff
 		locales = tongue.locales;
 
 		fontName = getData("$FONT_NAME");
+
+		FlxUIState.static_tongue = tongue;
 	}
 
 	static function onFinish():Void

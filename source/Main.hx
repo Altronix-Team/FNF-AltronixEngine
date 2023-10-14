@@ -459,7 +459,7 @@ class Main extends Sprite
 
 	private function preStateSwitch(newState:FlxState)
 	{
-		var cache = cast(Assets.cache, AssetCache);
+		/*var cache = cast(Assets.cache, AssetCache);
 
 		dumpCache();
 
@@ -468,17 +468,17 @@ class Main extends Sprite
 		Gc.run(true);
 		#else
 		openfl.system.System.gc();
-		#end
+		#end*/
 	}
 
 	private function postStateSwitch()
 	{
-		#if cpp
+		/*#if cpp
 		Gc.run(true);
 		#else
 		openfl.system.System.gc();
 		#end
-		EngineFPS.fpsText.clearMaxFPS();
+		EngineFPS.fpsText.clearMaxFPS();*/
 	}
 }
 

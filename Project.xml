@@ -119,7 +119,6 @@
 	<haxelib name="flixel-ui" />
 	<haxelib name="flxanimate" />
 
-	<haxedev set='webgl' />
 	<haxelib name="away3d" if="USE_FLIXEL3D"/>
 
 	<haxelib name="AE-Script"/>

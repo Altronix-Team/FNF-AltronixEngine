@@ -8,9 +8,11 @@ class ScriptHelper
 {
 	public static var hscriptFiles:Array<HScriptModchart> = [];
 
+	private static var taskThread:Thread = Thread.createWithEventLoop(function() {Thread.current().events.promise();});
+
 	public static function clearAllScripts()
 	{
-		Thread.create(function() {
+		taskThread.events.run(function() {
 			for (script in hscriptFiles){
 				hscriptFiles.remove(script);
 				script.destroy();
@@ -20,7 +22,7 @@ class ScriptHelper
 
 	public static function setOnHscript(name:String, value:Dynamic)
 	{
-		Thread.create(function() {
+		taskThread.events.run(function() {
 			for (script in hscriptFiles)
 			{
 				script.scriptHandler.set(name, value);
@@ -30,16 +32,21 @@ class ScriptHelper
 
 	public static function callOnHscript(functionToCall:String, ?params:Array<Any>)
 	{
-		Thread.create(function() {
+		//taskThread.events.run(function() {
 			for (script in hscriptFiles)
 			{
 				var scriptHelper = script.scriptHandler;
 				if (scriptHelper.exists(functionToCall))
 				{
-					scriptHelper.call(functionToCall, params);
+					var call = scriptHelper.call(functionToCall, params);
+					if (!call.succeeded){
+						for (exception in call.exceptions){
+							Debug.logError('Error in script ${scriptHelper.scriptPath} \n ${exception.details()}');
+						}
+					}
 				}
 			}
-		});
+		//});
 	}
 
 	public static function isFunctionExists(funcName:String):Bool

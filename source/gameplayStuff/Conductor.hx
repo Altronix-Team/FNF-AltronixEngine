@@ -172,7 +172,7 @@ class Conductor
 			}
 		}
 
-		#if !GITHUB_RELEASE
+		#if debug
 		FPSText.curStep = curStep;
 		FPSText.curBeat = curBeat;
 		FPSText.curDecimalBeat = curDecimalBeat;

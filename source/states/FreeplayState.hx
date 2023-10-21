@@ -180,9 +180,9 @@ class FreeplayState extends MusicBeatState
 		previewtext.font = scoreText.font;
 		add(previewtext);
 
-		twoPlayersMode = new FlxText(scoreText.x, previewtext.y + 36, 0, "Two Players Mode: " + Std.string(PlayStateChangeables.twoPlayersMode), 24);
-		twoPlayersMode.font = scoreText.font;
-		add(twoPlayersMode);
+		//twoPlayersMode = new FlxText(scoreText.x, previewtext.y + 36, 0, "Two Players Mode: " + Std.string(PlayStateChangeables.twoPlayersMode), 24);
+		//twoPlayersMode.font = scoreText.font;
+		//add(twoPlayersMode);
 
 		comboText = new FlxText(diffText.x + 100, diffText.y, 0, "", 24);
 		comboText.font = diffText.font;
@@ -455,7 +455,7 @@ class FreeplayState extends MusicBeatState
 
 					previewtext.text = "Speed: " + FlxMath.roundDecimal(rate, 2) + "x";
 				}
-				else if (FlxG.keys.pressed.CONTROL)
+				/*else if (FlxG.keys.pressed.CONTROL)
 				{
 					if (FlxG.keys.justPressed.LEFT)
 					{
@@ -467,7 +467,7 @@ class FreeplayState extends MusicBeatState
 						PlayStateChangeables.twoPlayersMode = !PlayStateChangeables.twoPlayersMode;
 						twoPlayersMode.text = "Two Players Mode: " + Std.string(PlayStateChangeables.twoPlayersMode);
 					}
-				}
+				}*/
 				else
 				{
 					if (FlxG.keys.justPressed.LEFT)

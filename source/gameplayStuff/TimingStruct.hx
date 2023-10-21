@@ -86,10 +86,7 @@ class TimingStruct
 		{
 			for (i in Data.SONG.notes)
 			{
-				var start = TimingStruct.getTimeFromBeat((TimingStruct.getBeatFromTime(i.startTime)));
-				var end = TimingStruct.getTimeFromBeat((TimingStruct.getBeatFromTime(i.endTime)));
-
-				if (ms >= start && ms < end)
+				if (ms >= i.startTime && ms < i.endTime)
 				{
 					return i;
 				}

@@ -69,19 +69,23 @@ class StaticArrow extends FlxSprite
 
 	public function playAnim(AnimName:String, ?force:Bool = false):Void
 	{
-		animation.play(AnimName, force);
+		if (PlayState.instance.paused) return;
 
-		if (!AnimName.startsWith('dirCon'))
-		{
-			localAngle = 0;
+		if (animation != null){ //Strange shit, but we need to check this
+			animation.play(AnimName, force);
+
+			if (!AnimName.startsWith('dirCon'))
+			{
+				localAngle = 0;
+			}
+			updateHitbox();
+			offset.set(frameWidth / 2, frameHeight / 2);
+
+			offset.x -= 54;
+			offset.y -= 56;
+
+			angle = localAngle + modAngle;
 		}
-		updateHitbox();
-		offset.set(frameWidth / 2, frameHeight / 2);
-
-		offset.x -= 54;
-		offset.y -= 56;
-
-		angle = localAngle + modAngle;
 	}
 
 	function loadNote()

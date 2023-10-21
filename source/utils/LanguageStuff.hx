@@ -170,7 +170,7 @@ class LanguageStuff
 		var stringArray:Array<String> = [];
 		for (i in values)
 		{
-			stringArray.push(Std.string(i));
+			stringArray.push(i.toString());
 		}
 		return Replace.flags(getString(key, context), flags, stringArray);
 	}

@@ -1,7 +1,5 @@
 package states.playState;
 
-import states.playState.Replay.Ana;
-import states.playState.Replay.Analysis;
 import openfl.display.BitmapData;
 import flixel.graphics.frames.FlxAtlasFrames;
 import gameplayStuff.Song.SongData;
@@ -45,7 +43,6 @@ class GameData
 
 	public static var stageCheck:String = 'stage';
 
-	public static var songStats:Analysis;
 	public static var songJudgements:Array<String> = [];
 
 	public static var songMultiplier = 1.0;

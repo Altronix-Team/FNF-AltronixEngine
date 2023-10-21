@@ -41,15 +41,11 @@ class Conductor
 	public static var curBeat:Int = 0;
 	public static var curDecimalBeat:Float = 0;
 	public static var curSection:SwagSection = null;
-
-	private static var updateThread:Thread = null;
-
 	public static function setupUpdates()
 	{
-		updateThread = Thread.createWithEventLoop(function() {Thread.current().events.promise();});
 		Lib.current.addEventListener(Event.ENTER_FRAME, function(_)
 		{
-			updateThread.events.run(updateSongPosition);
+			updateSongPosition();
 			Main.fnfSignals.update.dispatch(FlxG.elapsed);
 		});
 	}
@@ -176,7 +172,7 @@ class Conductor
 			}
 		}
 
-		#if !GITHUB_RELEASE
+		#if debug
 		FPSText.curStep = curStep;
 		FPSText.curBeat = curBeat;
 		FPSText.curDecimalBeat = curDecimalBeat;

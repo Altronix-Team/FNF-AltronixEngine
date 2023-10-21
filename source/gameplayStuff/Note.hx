@@ -126,6 +126,8 @@ class Note extends FlxSprite
 
 	var noteColor:String = '';
 
+	public var lowPriority:Bool = false;
+
 	var noteMetaData:NoteMeta = {
 		imageFile: '',
 		size: 0.7,
@@ -150,6 +152,7 @@ class Note extends FlxSprite
 					noteMetaData.imageFile = 'HURTNOTE_assets';
 					reloadNote(noteMetaData);
 					hurtNote = true;
+					lowPriority = true;
 
 				case 'No Animation':
 					noAnimation = true;
@@ -384,32 +387,17 @@ class Note extends FlxSprite
 			}
 		}
 
-		if (mustPress || PlayStateChangeables.twoPlayersMode)
+		if (mustPress)
 		{
-			if (isSustainNote)
-			{
-				if (strumTime - Conductor.songPosition <= (((166 * Conductor.timeScale) / (songMultiplier < 1 ? songMultiplier : 1) * 0.5))
-					&& strumTime - Conductor.songPosition >= (((-166 * Conductor.timeScale) / (songMultiplier < 1 ? songMultiplier : 1))))
-					canBeHit = true;
-				else
-					canBeHit = false;
-			}
-			else
-			{
-				if (strumTime - Conductor.songPosition <= (((166 * Conductor.timeScale) / (songMultiplier < 1 ? songMultiplier : 1)))
-					&& strumTime - Conductor.songPosition >= (((-166 * Conductor.timeScale) / (songMultiplier < 1 ? songMultiplier : 1))))
-					canBeHit = true;
-				else
-					canBeHit = false;
-			}
+			canBeHit = strumTime - Conductor.songPosition <= (((166 * Conductor.timeScale) / (songMultiplier < 1 ? songMultiplier : 1) * 0.5))
+				&& strumTime - Conductor.songPosition >= (((-166 * Conductor.timeScale) / (songMultiplier < 1 ? songMultiplier : 1)));
 
-			if (strumTime - Conductor.songPosition < (((-166 * Conductor.timeScale) / (songMultiplier < 1 ? songMultiplier : 1)))
-				&& !wasGoodHit)
-				tooLate = true;
+			tooLate = strumTime - Conductor.songPosition < (((-166 * Conductor.timeScale) / (songMultiplier < 1 ? songMultiplier : 1)))
+				&& !wasGoodHit;
 		}
 		else
 		{
-			canBeHit = false;
+			canBeHit = tooLate = false;
 		}
 
 		if (tooLate && !wasGoodHit)

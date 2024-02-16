@@ -1,4 +1,4 @@
-package macros;
+package altronixengine.macros;
 
 // stuff for MacroUtil
 class CompileTimeClassList

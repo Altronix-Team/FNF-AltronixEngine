@@ -1,4 +1,4 @@
-package utils;
+package altronixengine.utils;
 
 class MenuMusicStuff
 {

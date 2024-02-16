@@ -1,6 +1,6 @@
-package editors;
+package altronixengine.editors;
 
-import data.WeekData;
+import altronixengine.data.WeekData;
 import flash.net.FileFilter;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -25,9 +25,9 @@ import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import openfl.net.FileReference;
 import openfl.utils.Assets;
-import states.MusicBeatState;
-import states.StoryMenuState.MenuCharacter;
-import states.StoryMenuState.MenuItem;
+import altronixengine.states.MusicBeatState;
+import altronixengine.states.StoryMenuState.MenuCharacter;
+import altronixengine.states.StoryMenuState.MenuItem;
 #if sys
 import sys.FileSystem;
 import sys.io.File;

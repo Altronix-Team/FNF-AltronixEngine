@@ -1,4 +1,4 @@
-package core;
+package altronixengine.core;
 
 import flixel.util.FlxColor;
 import openfl.display.Sprite;

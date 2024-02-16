@@ -1,4 +1,4 @@
-package core;
+package altronixengine.core;
 
 import flixel.FlxG;
 import flixel.input.FlxInput;

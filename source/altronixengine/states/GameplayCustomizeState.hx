@@ -1,4 +1,4 @@
-package states;
+package altronixengine.states;
 
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -13,14 +13,14 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import openfl.ui.Keyboard;
 import flixel.FlxSprite;
 import flixel.FlxG;
-import gameplayStuff.StageData;
-import gameplayStuff.StaticArrow;
-import gameplayStuff.Character;
-import gameplayStuff.Boyfriend;
-import gameplayStuff.Stage;
-import gameplayStuff.PlayStateChangeables;
-import gameplayStuff.Note;
-import gameplayStuff.Conductor;
+import altronixengine.gameplayStuff.StageData;
+import altronixengine.gameplayStuff.StaticArrow;
+import altronixengine.gameplayStuff.Character;
+import altronixengine.gameplayStuff.Boyfriend;
+import altronixengine.gameplayStuff.Stage;
+import altronixengine.gameplayStuff.PlayStateChangeables;
+import altronixengine.gameplayStuff.Note;
+import altronixengine.gameplayStuff.Conductor;
 
 class GameplayCustomizeState extends MusicBeatState
 {
@@ -514,7 +514,7 @@ class GameplayCustomizeState extends MusicBeatState
 		{
 			FlxG.mouse.visible = false;
 			FlxG.sound.play(Paths.sound('cancelMenu'));
-			FlxG.switchState(new options.OptionsDirect());
+			FlxG.switchState(new altronixengine.options.OptionsDirect());
 		}
 	}
 

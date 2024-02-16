@@ -1,4 +1,4 @@
-package editors;
+package altronixengine.editors;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -9,13 +9,13 @@ import flixel.math.FlxMath;
 import flixel.sound.FlxSound;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
-import gameplayStuff.Character;
-import states.LoadingState;
+import altronixengine.gameplayStuff.Character;
+import altronixengine.states.LoadingState;
 #if sys
 import sys.FileSystem;
 #end
 
-class MasterEditorMenu extends states.MusicBeatState
+class MasterEditorMenu extends altronixengine.states.MusicBeatState
 {
 	var options:Array<String> = [
 		'Character Editor',
@@ -76,7 +76,7 @@ class MasterEditorMenu extends states.MusicBeatState
 
 		if (controls.BACK)
 		{
-			FlxG.switchState(new states.MainMenuState());
+			FlxG.switchState(new altronixengine.states.MainMenuState());
 		}
 
 		if (controls.ACCEPT)
@@ -100,7 +100,7 @@ class MasterEditorMenu extends states.MusicBeatState
 			}
 			FlxG.sound.music.volume = 0;
 			#if PRELOAD_ALL
-			states.FreeplayState.destroyFreeplayVocals();
+			altronixengine.states.FreeplayState.destroyFreeplayVocals();
 			#end
 		}
 

@@ -1,4 +1,4 @@
-package macros;
+package altronixengine.macros;
 
 import haxe.Http;
 import haxe.Json;
@@ -6,7 +6,7 @@ import haxe.crypto.Base64;
 
 class GetEngineVersion 
 {
-	@:access(macros.MacroUtil)
+	@:access(altronixengine.macros.MacroUtil)
 	public static macro function getEngineVersion():ExprOf<String>
 	{
 		try{

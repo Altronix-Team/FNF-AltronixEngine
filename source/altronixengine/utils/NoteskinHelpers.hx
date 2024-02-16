@@ -1,4 +1,4 @@
-package utils;
+package altronixengine.utils;
 
 import openfl.display.BitmapData;
 import flixel.FlxSprite;
@@ -6,7 +6,7 @@ import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.FlxG;
 import openfl.utils.Assets as OpenFlAssets;
-import gameplayStuff.Note;
+import altronixengine.gameplayStuff.Note;
 import haxe.xml.Access;
 
 class NoteskinHelpers

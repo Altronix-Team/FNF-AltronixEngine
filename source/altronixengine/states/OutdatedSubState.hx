@@ -1,4 +1,4 @@
-package states;
+package altronixengine.states;
 
 import flixel.FlxG;
 import flixel.FlxSprite;

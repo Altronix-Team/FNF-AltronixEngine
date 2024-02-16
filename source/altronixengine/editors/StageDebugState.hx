@@ -1,4 +1,4 @@
-package editors;
+package altronixengine.editors;
 
 import flixel.FlxCamera;
 import flixel.FlxG;
@@ -9,14 +9,14 @@ import flixel.group.FlxGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxCollision;
 import flixel.util.FlxColor;
-import gameplayStuff.Boyfriend;
-import gameplayStuff.Character;
-import gameplayStuff.Stage;
+import altronixengine.gameplayStuff.Boyfriend;
+import altronixengine.gameplayStuff.Character;
+import altronixengine.gameplayStuff.Stage;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import openfl.net.FileReference;
-import states.playState.PlayState;
-import states.playState.GameData as Data;
+import altronixengine.states.playState.PlayState;
+import altronixengine.states.playState.GameData as Data;
 
 class StageDebugState extends FlxState
 {

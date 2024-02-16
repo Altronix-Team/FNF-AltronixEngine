@@ -1,6 +1,6 @@
-package editors;
+package altronixengine.editors;
 
-import gameplayStuff.Character;
+import altronixengine.gameplayStuff.Character;
 
 class EmptyCharacters
 {

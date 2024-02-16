@@ -1,11 +1,11 @@
-package gameplayStuff;
+package altronixengine.gameplayStuff;
 
 import flixel.util.FlxColor;
-import gameplayStuff.Section.SwagSection;
+import altronixengine.gameplayStuff.Section.SwagSection;
 import haxe.Json;
 import openfl.utils.Assets as OpenFlAssets;
 import flixel.util.FlxSort;
-import gameplayStuff.Section.SectionNoteData;
+import altronixengine.gameplayStuff.Section.SectionNoteData;
 
 class EventObject
 {

@@ -1,4 +1,4 @@
-package gameplayStuff;
+package altronixengine.gameplayStuff;
 
 // Oh, that will be EPIC
 typedef SongChart =

@@ -1,4 +1,4 @@
-package editors;
+package altronixengine.editors;
 
 import flixel.FlxG;
 import flixel.FlxObject;
@@ -26,16 +26,16 @@ import openfl.net.FileReference;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import haxe.Json;
-import gameplayStuff.Character;
+import altronixengine.gameplayStuff.Character;
 import flixel.system.debug.interaction.tools.Pointer.GraphicCursorCross;
 import lime.system.Clipboard;
 import flixel.animation.FlxAnimation;
-import core.FlxUIDropDownMenuCustom;
+import altronixengine.core.FlxUIDropDownMenuCustom;
 import flixel.addons.ui.FlxUIText;
-import gameplayStuff.StageData;
-import states.MusicBeatState;
-import gameplayStuff.Stage;
-import gameplayStuff.HealthIcon;
+import altronixengine.gameplayStuff.StageData;
+import altronixengine.states.MusicBeatState;
+import altronixengine.gameplayStuff.Stage;
+import altronixengine.gameplayStuff.HealthIcon;
 #if FEATURE_MODCORE
 import sys.FileSystem;
 #end
@@ -1272,7 +1272,7 @@ class CharacterEditorState extends MusicBeatState
 			{
 				if (goToPlayState)
 				{
-					MusicBeatState.switchState(new states.PlayState());
+					MusicBeatState.switchState(new altronixengine.states.PlayState());
 				}
 				else
 				{

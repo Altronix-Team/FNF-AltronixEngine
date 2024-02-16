@@ -1,4 +1,4 @@
-package states;
+package altronixengine.states;
 
 import flixel.FlxG;
 import flixel.FlxObject;
@@ -18,17 +18,17 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxAxes;
 import flixel.util.FlxColor;
-import gameplayStuff.Conductor;
-import gameplayStuff.Highscore;
-import gameplayStuff.Ratings;
-import gameplayStuff.Section;
+import altronixengine.gameplayStuff.Conductor;
+import altronixengine.gameplayStuff.Highscore;
+import altronixengine.gameplayStuff.Ratings;
+import altronixengine.gameplayStuff.Section;
 import haxe.Exception;
 import lime.app.Application;
 import openfl.display.BitmapData;
 import openfl.geom.Matrix;
-import options.Options.Option;
-import states.LoadingState.LoadingsState;
-import states.playState.GameData as Data;
+import altronixengine.options.Options.Option;
+import altronixengine.states.LoadingState.LoadingsState;
+import altronixengine.states.playState.GameData as Data;
 #if FEATURE_FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;

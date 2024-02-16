@@ -1,6 +1,6 @@
-package core;
+package altronixengine.core;
 
-import gameplayStuff.Section.SwagSection;
+import altronixengine.gameplayStuff.Section.SwagSection;
 import flixel.util.FlxSignal;
 
 // Wonderful idea, Max

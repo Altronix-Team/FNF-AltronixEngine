@@ -1,12 +1,12 @@
-package gameplayStuff;
+package altronixengine.gameplayStuff;
 
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxAxes;
 import flixel.util.FlxColor;
-import states.playState.PlayState;
-import states.playState.GameData as Data;
+import altronixengine.states.playState.PlayState;
+import altronixengine.states.playState.GameData as Data;
 
 @:access(states.PlayState)
 class RatingText extends FlxTypedGroup<FlxText>

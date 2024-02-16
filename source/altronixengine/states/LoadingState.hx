@@ -1,4 +1,4 @@
-package states;
+package altronixengine.states;
 
 import flixel.FlxSubState;
 import lime.app.Promise;
@@ -14,8 +14,8 @@ import lime.utils.AssetLibrary;
 import lime.utils.AssetManifest;
 import haxe.io.Path;
 import flixel.text.FlxText;
-import states.playState.PlayState;
-import states.playState.GameData as Data;
+import altronixengine.states.playState.PlayState;
+import altronixengine.states.playState.GameData as Data;
 
 class LoadingsState extends FlxSubState
 {

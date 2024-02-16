@@ -1,4 +1,4 @@
-package gameplayStuff;
+package altronixengine.gameplayStuff;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -7,6 +7,7 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flxanimate.FlxAnimate;
 import openfl.utils.Assets as OpenFlAssets;
+import altronixengine.core.musicbeat.FNFSprite;
 
 class Character extends FNFSprite
 {
@@ -269,9 +270,9 @@ class Character extends FNFSprite
 		}
 	}
 
-	override public function beatHit(beat:Int)
+	override public function beatHit()
 	{
-		if (beat % danceEveryNumBeats == 0)
+		if (curBeat % danceEveryNumBeats == 0)
 		{
 			if (getCurAnim() != null)
 			{

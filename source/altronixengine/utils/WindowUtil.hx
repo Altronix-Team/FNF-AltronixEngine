@@ -5,7 +5,7 @@
  * or manipulate the window.
  */
 
-package utils;
+package altronixengine.utils;
 
 import openfl.desktop.ClipboardFormats;
 import flixel.math.FlxPoint;

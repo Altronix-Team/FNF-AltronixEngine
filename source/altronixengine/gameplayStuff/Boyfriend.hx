@@ -1,4 +1,4 @@
-package gameplayStuff;
+package altronixengine.gameplayStuff;
 
 class Boyfriend extends Character
 {

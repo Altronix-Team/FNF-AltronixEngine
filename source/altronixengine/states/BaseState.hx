@@ -1,11 +1,11 @@
-package states;
+package altronixengine.states;
 
 import flixel.FlxG;
 import flixel.addons.ui.FlxUIState;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.sound.FlxSound;
 
-using utils.CoolUtil;
+using altronixengine.utils.CoolUtil;
 
 class BaseState extends FlxUIState
 {

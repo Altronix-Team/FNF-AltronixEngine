@@ -1,4 +1,4 @@
-package editors;
+package altronixengine.editors;
 
 import flash.net.FileFilter;
 import flixel.FlxG;
@@ -18,8 +18,8 @@ import flixel.sound.FlxSound;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
-import gameplayStuff.Character;
-import gameplayStuff.HealthIcon;
+import altronixengine.gameplayStuff.Character;
+import altronixengine.gameplayStuff.HealthIcon;
 import haxe.Json;
 import hx.strings.String8;
 import lime.system.Clipboard;
@@ -27,9 +27,9 @@ import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import openfl.net.FileReference;
 import openfl.utils.Assets as OpenFlAssets;
-import states.FreeplayState;
-import states.MusicBeatState;
-import states.StoryMenuState;
+import altronixengine.states.FreeplayState;
+import altronixengine.states.MusicBeatState;
+import altronixengine.states.StoryMenuState;
 #if sys
 import sys.FileSystem;
 import sys.io.File;

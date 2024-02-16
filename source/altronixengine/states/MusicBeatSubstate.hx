@@ -1,18 +1,18 @@
-package states;
+package altronixengine.states;
 
 import flixel.addons.ui.FlxUISubState;
 import flixel.FlxBasic;
-import gameplayStuff.Section.SwagSection;
+import altronixengine.gameplayStuff.Section.SwagSection;
 import lime.app.Application;
 import openfl.Lib;
 import flixel.text.FlxText;
 import flixel.input.gamepad.FlxGamepad;
-import gameplayStuff.Conductor.BPMChangeEvent;
+import altronixengine.gameplayStuff.Conductor.BPMChangeEvent;
 import flixel.FlxG;
 import flixel.FlxSubState;
-import gameplayStuff.Conductor;
-import gameplayStuff.TimingStruct;
-import states.playState.GameData as Data;
+import altronixengine.gameplayStuff.Conductor;
+import altronixengine.gameplayStuff.TimingStruct;
+import altronixengine.states.playState.GameData as Data;
 
 class MusicBeatSubstate extends FlxUISubState implements IMusicBeat
 {

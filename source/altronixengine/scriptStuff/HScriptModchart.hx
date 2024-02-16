@@ -1,24 +1,24 @@
-package scriptStuff;
+package altronixengine.scriptStuff;
 
-import utils.Paths;
+import altronixengine.utils.Paths;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import gameplayStuff.BGSprite;
-import gameplayStuff.BackgroundDancer;
-import gameplayStuff.BackgroundGirls;
-import gameplayStuff.Boyfriend;
-import gameplayStuff.Character;
-import gameplayStuff.CutsceneHandler;
-import gameplayStuff.DialogueBoxPsych;
-import gameplayStuff.PlayStateChangeables;
-import gameplayStuff.TankmenBG;
+import altronixengine.gameplayStuff.BGSprite;
+import funkin.gameplayStuff.BackgroundDancer;
+import funkin.gameplayStuff.BackgroundGirls;
+import altronixengine.gameplayStuff.Boyfriend;
+import altronixengine.gameplayStuff.Character;
+import altronixengine.gameplayStuff.CutsceneHandler;
+import altronixengine.gameplayStuff.DialogueBoxPsych;
+import altronixengine.gameplayStuff.PlayStateChangeables;
+import funkin.gameplayStuff.TankmenBG;
 import openfl.utils.Assets;
-import scriptStuff.HScriptHandler;
-import states.MusicBeatState;
-import states.playState.PlayState;
-import states.playState.GameData as Data;
+import altronixengine.scriptStuff.HScriptHandler;
+import altronixengine.states.MusicBeatState;
+import altronixengine.states.playState.PlayState;
+import altronixengine.states.playState.GameData as Data;
 
 class HScriptModchart extends FlxTypedGroup<FlxBasic>
 {

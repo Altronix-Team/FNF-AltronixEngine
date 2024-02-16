@@ -1,14 +1,14 @@
-package states;
+package altronixengine.states;
 
-import gameplayStuff.Ratings;
+import altronixengine.gameplayStuff.Ratings;
 import flixel.FlxCamera;
 import flixel.FlxSubState;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import openfl.Lib;
-import options.Options;
-import core.Controls.Control;
+import altronixengine.options.Options;
+import altronixengine.core.Controls.Control;
 import flash.text.TextField;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -18,9 +18,9 @@ import flixel.input.keyboard.FlxKey;
 import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
-import gameplayStuff.PlayStateChangeables;
-import states.playState.PlayState;
-import states.playState.GameData as Data;
+import altronixengine.gameplayStuff.PlayStateChangeables;
+import altronixengine.states.playState.PlayState;
+import altronixengine.states.playState.GameData as Data;
 
 class OptionCata extends FlxSprite
 {

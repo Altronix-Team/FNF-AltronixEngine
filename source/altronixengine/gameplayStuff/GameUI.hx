@@ -1,4 +1,4 @@
-package gameplayStuff;
+package altronixengine.gameplayStuff;
 
 import flixel.FlxBasic;
 import flixel.FlxCamera;
@@ -9,10 +9,10 @@ import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.util.FlxSpriteUtil;
-import states.playState.GameData as Data;
-import states.playState.PlayState;
+import altronixengine.states.playState.GameData as Data;
+import altronixengine.states.playState.PlayState;
 
-@:access(states.playState.PlayState)
+@:access(altronixengine.states.playState.PlayState)
 class GameUI extends FlxTypedGroup<FlxBasic>
 {
 	var state:PlayState;

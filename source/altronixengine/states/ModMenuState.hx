@@ -1,6 +1,6 @@
-package states;
+package altronixengine.states;
 
-import gameplayStuff.FreeplaySongMetadata;
+import altronixengine.gameplayStuff.FreeplaySongMetadata;
 #if FEATURE_MODCORE
 import polymod.Polymod.ModMetadata;
 #end
@@ -13,7 +13,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
-import modding.*;
+import altronixengine.modding.*;
 import openfl.display.BitmapData;
 import openfl.display.BlendMode;
 

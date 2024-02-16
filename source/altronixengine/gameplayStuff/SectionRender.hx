@@ -1,6 +1,6 @@
-package gameplayStuff;
+package altronixengine.gameplayStuff;
 
-import editors.ChartingState;
+import altronixengine.editors.ChartingState;
 import flash.geom.Rectangle;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -10,7 +10,7 @@ import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 import flixel.math.FlxMath;
 import flixel.sound.FlxSound;
 import flixel.util.FlxColor;
-import gameplayStuff.Section.SwagSection;
+import altronixengine.gameplayStuff.Section.SwagSection;
 
 class SectionRender extends FlxTypedSpriteGroup<FlxSprite>
 {

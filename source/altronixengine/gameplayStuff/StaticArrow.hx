@@ -1,12 +1,12 @@
-package gameplayStuff;
+package altronixengine.gameplayStuff;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.animation.FlxBaseAnimation;
 import flixel.graphics.frames.FlxAtlasFrames;
-import gameplayStuff.Song.SongData;
-import states.playState.PlayState;
-import states.playState.GameData as Data;
+import altronixengine.gameplayStuff.Song.SongData;
+import altronixengine.states.playState.PlayState;
+import altronixengine.states.playState.GameData as Data;
 
 class StaticArrow extends FlxSprite
 {

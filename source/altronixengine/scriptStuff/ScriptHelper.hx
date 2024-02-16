@@ -1,9 +1,9 @@
-package scriptStuff;
+package altronixengine.scriptStuff;
 
 import sys.thread.Thread;
-import gameplayStuff.Section.SwagSection;
+import altronixengine.gameplayStuff.Section.SwagSection;
 
-@:allow(states.PlayState)
+@:allow(altronixengine.states.PlayState)
 class ScriptHelper
 {
 	public static var hscriptFiles:Array<HScriptModchart> = [];

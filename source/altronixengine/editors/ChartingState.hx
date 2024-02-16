@@ -1,4 +1,4 @@
-package editors;
+package altronixengine.editors;
 
 import flash.geom.Rectangle;
 import flixel.FlxCamera;
@@ -29,21 +29,21 @@ import flixel.ui.FlxSpriteButton;
 import flixel.util.FlxColor;
 import flixel.util.FlxSort;
 import flixel.util.FlxStringUtil;
-import gameplayStuff.Boyfriend;
-import gameplayStuff.Character;
-import gameplayStuff.Character;
-import gameplayStuff.Conductor.BPMChangeEvent;
-import gameplayStuff.Conductor;
-import gameplayStuff.HealthIcon;
-import gameplayStuff.Note.AttachedFlxText;
-import gameplayStuff.Note;
-import gameplayStuff.Section.SwagSection;
-import gameplayStuff.SectionRender;
-import gameplayStuff.Song.SongData;
-import gameplayStuff.Song.SongMeta;
-import gameplayStuff.Song;
-import gameplayStuff.Song;
-import gameplayStuff.TimingStruct;
+import altronixengine.gameplayStuff.Boyfriend;
+import altronixengine.gameplayStuff.Character;
+import altronixengine.gameplayStuff.Character;
+import altronixengine.gameplayStuff.Conductor.BPMChangeEvent;
+import altronixengine.gameplayStuff.Conductor;
+import altronixengine.gameplayStuff.HealthIcon;
+import altronixengine.gameplayStuff.Note.AttachedFlxText;
+import altronixengine.gameplayStuff.Note;
+import altronixengine.gameplayStuff.Section.SwagSection;
+import altronixengine.gameplayStuff.SectionRender;
+import altronixengine.gameplayStuff.Song.SongData;
+import altronixengine.gameplayStuff.Song.SongMeta;
+import altronixengine.gameplayStuff.Song;
+import altronixengine.gameplayStuff.Song;
+import altronixengine.gameplayStuff.TimingStruct;
 import haxe.Json;
 import haxe.io.Bytes;
 import haxe.zip.Writer;
@@ -56,10 +56,10 @@ import openfl.net.FileReference;
 import openfl.system.System;
 import openfl.utils.Assets as OpenFlAssets;
 import openfl.utils.ByteArray;
-import states.LoadingState;
-import states.MusicBeatState;
-import states.playState.GameData as Data;
-import states.playState.PlayState;
+import altronixengine.states.LoadingState;
+import altronixengine.states.MusicBeatState;
+import altronixengine.states.playState.GameData as Data;
+import altronixengine.states.playState.PlayState;
 #if FEATURE_FILESYSTEM
 import flash.media.Sound;
 import sys.FileSystem;
@@ -134,7 +134,7 @@ class ChartingState extends MusicBeatState
 
 	var curRenderedNotes:FlxTypedGroup<Note>;
 	var curRenderedSustains:FlxTypedGroup<FlxSprite>;
-	var curRenderedNoteTexts:FlxTypedGroup<gameplayStuff.Note.AttachedFlxText>;
+	var curRenderedNoteTexts:FlxTypedGroup<altronixengine.gameplayStuff.Note.AttachedFlxText>;
 
 	var gridBG:FlxSprite;
 
@@ -282,7 +282,7 @@ class ChartingState extends MusicBeatState
 
 		curRenderedNotes = new FlxTypedGroup<Note>();
 		curRenderedSustains = new FlxTypedGroup<FlxSprite>();
-		curRenderedNoteTexts = new FlxTypedGroup<gameplayStuff.Note.AttachedFlxText>();
+		curRenderedNoteTexts = new FlxTypedGroup<altronixengine.gameplayStuff.Note.AttachedFlxText>();
 
 		FlxG.mouse.visible = true;
 
@@ -310,11 +310,11 @@ class ChartingState extends MusicBeatState
 
 		if (_song.eventsArray == null)
 		{
-			var initBpm:gameplayStuff.Song.EventsAtPos = {
+			var initBpm:altronixengine.gameplayStuff.Song.EventsAtPos = {
 				position: 0,
 				events: []
 			};
-			var firstEvent:gameplayStuff.Song.EventObject = new gameplayStuff.Song.EventObject("Init BPM", _song.bpm, "BPM Change");
+			var firstEvent:altronixengine.gameplayStuff.Song.EventObject = new altronixengine.gameplayStuff.Song.EventObject("Init BPM", _song.bpm, "BPM Change");
 
 			initBpm.events.push(firstEvent);
 			_song.eventsArray = [initBpm];
@@ -322,11 +322,11 @@ class ChartingState extends MusicBeatState
 
 		if (_song.eventsArray.length == 0)
 		{
-			var initBpm:gameplayStuff.Song.EventsAtPos = {
+			var initBpm:altronixengine.gameplayStuff.Song.EventsAtPos = {
 				position: 0,
 				events: []
 			};
-			var firstEvent:gameplayStuff.Song.EventObject = new gameplayStuff.Song.EventObject("Init BPM", _song.bpm, "BPM Change");
+			var firstEvent:altronixengine.gameplayStuff.Song.EventObject = new altronixengine.gameplayStuff.Song.EventObject("Init BPM", _song.bpm, "BPM Change");
 
 			initBpm.events.push(firstEvent);
 			_song.eventsArray = [initBpm];
@@ -735,7 +735,7 @@ class ChartingState extends MusicBeatState
 			}
 			return newEvent;
 	}*/
-	public var chartEvents:Array<gameplayStuff.Song.EventsAtPos> = [];
+	public var chartEvents:Array<altronixengine.gameplayStuff.Song.EventsAtPos> = [];
 
 	public var Typeables:Array<FlxUIInputText> = [];
 
@@ -744,483 +744,6 @@ class ChartingState extends MusicBeatState
 	var eventType:FlxUIDropDownMenuCustom;
 
 	var eventPositionsList:FlxUIDropDownMenuCustom;
-
-	var curTrackedEventAtPos:gameplayStuff.Song.EventsAtPos = null;
-
-	var curTrackedEvent:gameplayStuff.Song.EventObject = null;
-
-	/*function addEventsUI()
-	{
-		tab_group_events = new FlxUI(null, UI_box);
-		tab_group_events.name = 'Events';
-		if (_song.eventsArray == null)
-		{
-			var initBpm:gameplayStuff.Song.EventsAtPos = {
-				position: 0,
-				events: [new gameplayStuff.Song.EventObject("Init BPM", _song.bpm, "BPM Change")]
-			};
-			_song.eventsArray = [initBpm];
-		}
-
-		curTrackedEventAtPos = _song.eventsArray[0];
-		curTrackedEvent = curTrackedEventAtPos.events[0];
-
-		var eventsPosition:Array<Float> = [];
-		var eventsPositionTexts:Array<String> = [];
-
-		for (event in _song.eventsArray)
-		{
-			eventsPosition.push(event.position);
-			eventsPositionTexts.push('Position at beat ' + event.position);
-		}
-
-		eventType = new FlxUIDropDownMenuCustom(10, 110, FlxUIDropDownMenuCustom.makeStrIdLabelArray(eventTypeList, true));
-		blockPressWhileScrolling.push(eventType);
-		var eventName = new FlxUIInputText(150, 110, 80, "");
-		blockPressWhileTypingOn.push(eventName);
-		var eventValue = new FlxUIInputText(150, 150, 80, "");
-		blockPressWhileTypingOn.push(eventValue);
-		var eventPos = new FlxUIInputText(180, 30, 80, "");
-		blockPressWhileTypingOn.push(eventPos);
-		var lastEventType:String;
-		var lastEventValue:Dynamic;
-		var eventSave = new FlxButton(10, 350, "Save Event", function()
-		{
-			var pog:gameplayStuff.Song.EventObject = new gameplayStuff.Song.EventObject(currentSelectedEventName, savedValue, savedType);
-
-			Debug.logTrace("trying to save " + currentSelectedEventName);
-
-			_song.eventsArray.remove(curTrackedEventAtPos);
-
-			for (i in curTrackedEventAtPos.events)
-			{
-				if (i.name == currentSelectedEventName)
-				{
-					curTrackedEventAtPos.events.remove(i);
-				}
-			}
-
-			curTrackedEventAtPos.events.push(pog);
-
-			_song.eventsArray.push(curTrackedEventAtPos);
-
-			TimingStruct.clearTimings();
-
-			var currentIndex = 0;
-			for (i in _song.eventsArray)
-			{
-				var pos = Reflect.field(i, "position");
-				for (j in i.events)
-				{
-					var type = Reflect.field(j, "type");
-					var value = Reflect.field(j, "value");
-
-					if (type == "BPM Change")
-					{
-						var beat:Float = pos;
-
-						var endBeat:Float = Math.POSITIVE_INFINITY;
-
-						TimingStruct.addTiming(beat, value, endBeat, 0); // offset in this case = start time since we don't have a offset
-
-						if (currentIndex != 0)
-						{
-							var data = TimingStruct.AllTimings[currentIndex - 1];
-							data.endBeat = beat;
-							data.length = (data.endBeat - data.startBeat) / (data.bpm / 60);
-							var step = ((60 / data.bpm) * 1000) / 4;
-							TimingStruct.AllTimings[currentIndex].startStep = Math.floor(((data.endBeat / (data.bpm / 60)) * 1000) / step);
-							TimingStruct.AllTimings[currentIndex].startTime = data.startTime + data.length;
-						}
-
-						currentIndex++;
-					}
-				}
-			}
-
-			if (pog.type == "BPM Change")
-			{
-				recalculateAllSectionTimes();
-				poggers();
-			}
-
-			regenerateLines();
-
-			var listofnames = [];
-
-			for (i in curTrackedEventAtPos.events)
-			{
-				listofnames.push(i.name);
-			}
-
-			listOfEvents.setData(FlxUIDropDownMenuCustom.makeStrIdLabelArray(listofnames, true));
-
-			listOfEvents.selectedLabel = pog.name;
-
-			lastEventType = savedType;
-			lastEventValue = savedValue;
-
-			_song.eventsArray.sort(sortByBeat);
-		});
-		var eventAdd = new FlxButton(95, 350, "Add Event", function()
-		{
-			var pog:gameplayStuff.Song.EventObject;
-			if (lastEventType != null && lastEventValue != null)
-				pog = new gameplayStuff.Song.EventObject("New Event " + CoolUtil.truncateFloat(curDecimalBeat, 3), lastEventValue, lastEventType);
-			else
-				pog = new gameplayStuff.Song.EventObject("New Event " + CoolUtil.truncateFloat(curDecimalBeat, 3), _song.bpm, "BPM Change");
-
-			Debug.logTrace("adding " + pog.name);
-
-			_song.eventsArray.remove(curTrackedEventAtPos);
-
-			for (i in curTrackedEventAtPos.events)
-			{
-				if (i.name == pog.name)
-					pog.name += curTrackedEventAtPos.events.length + 1 + '';
-			}
-
-			_song.eventsArray.push(curTrackedEventAtPos);
-
-			eventName.text = pog.name;
-			eventType.selectedLabel = pog.type;
-			eventValue.text = pog.value + "";
-			currentSelectedEventName = pog.name;
-
-			savedType = pog.type;
-			savedValue = pog.value + "";
-
-			var listofnames = [];
-
-			for (i in curTrackedEventAtPos.events)
-			{
-				listofnames.push(i.name);
-			}
-
-			listOfEvents.setData(FlxUIDropDownMenuCustom.makeStrIdLabelArray(listofnames, true));
-
-			listOfEvents.selectedLabel = pog.name;
-
-			TimingStruct.clearTimings();
-
-			var currentIndex = 0;
-			for (i in _song.eventsArray)
-			{
-				var pos = Reflect.field(i, "position");
-				for (j in i.events)
-				{
-					var type = Reflect.field(j, "type");
-					var value = Reflect.field(j, "value");
-
-					if (type == "BPM Change")
-					{
-						var beat:Float = pos;
-
-						var endBeat:Float = Math.POSITIVE_INFINITY;
-
-						TimingStruct.addTiming(beat, value, endBeat, 0); // offset in this case = start time since we don't have a offset
-
-						if (currentIndex != 0)
-						{
-							var data = TimingStruct.AllTimings[currentIndex - 1];
-							data.endBeat = beat;
-							data.length = (data.endBeat - data.startBeat) / (data.bpm / 60);
-							var step = ((60 / data.bpm) * 1000) / 4;
-							TimingStruct.AllTimings[currentIndex].startStep = Math.floor(((data.endBeat / (data.bpm / 60)) * 1000) / step);
-							TimingStruct.AllTimings[currentIndex].startTime = data.startTime + data.length;
-						}
-
-						currentIndex++;
-					}
-				}
-			}
-			Debug.logTrace("BPM CHANGES:");
-
-			for (i in TimingStruct.AllTimings)
-				Debug.logTrace(i.bpm + " - START: " + i.startBeat + " - END: " + i.endBeat + " - START-TIME: " + i.startTime);
-
-			recalculateAllSectionTimes();
-
-			regenerateLines();
-
-			_song.eventsArray.sort(sortByBeat);
-		});
-		var eventRemove = new FlxButton(180, 350, "Remove Event", function()
-		{
-			Debug.logTrace("lets see if we can remove " + listOfEvents.selectedLabel);
-
-			_song.eventsArray.remove(curTrackedEventAtPos);
-
-			for (i in curTrackedEventAtPos.events)
-			{
-				if (i.name == listOfEvents.selectedLabel)
-					curTrackedEventAtPos.events.remove(i);
-			}
-
-			if (curTrackedEventAtPos.events.length > 0)
-				_song.eventsArray.push(curTrackedEventAtPos);
-			else
-			{
-				eventsPosition.remove(curTrackedEventAtPos.position);
-				eventsPositionTexts.remove(eventPositionsList.selectedLabel);
-
-				eventPositionsList.selectedLabel = eventsPositionTexts[0];
-				eventPositionsList.setData(FlxUIDropDownMenuCustom.makeStrIdLabelArray(eventsPositionTexts, true));
-
-				curTrackedEventAtPos = _song.eventsArray[0];
-			}
-
-			var firstEvent = curTrackedEventAtPos.events[0];
-
-			eventName.text = firstEvent.name;
-			eventType.selectedLabel = firstEvent.type;
-			eventValue.text = firstEvent.value + "";
-			eventPos.text = curTrackedEventAtPos.position + "";
-			currentSelectedEventName = firstEvent.name;
-			currentEventPosition = curTrackedEventAtPos.position;
-
-			savedType = firstEvent.type;
-			savedValue = firstEvent.value + '';
-
-			var listofnames = [];
-
-			for (i in curTrackedEventAtPos.events)
-			{
-				listofnames.push(i.name);
-			}
-
-			listOfEvents.setData(FlxUIDropDownMenuCustom.makeStrIdLabelArray(listofnames, true));
-
-			listOfEvents.selectedLabel = firstEvent.name;
-
-			TimingStruct.clearTimings();
-
-			var currentIndex = 0;
-			for (i in _song.eventsArray)
-			{
-				var pos = Reflect.field(i, "position");
-				for (j in i.events)
-				{
-					var type = Reflect.field(j, "type");
-					var value = Reflect.field(j, "value");
-
-					if (type == "BPM Change")
-					{
-						var beat:Float = pos;
-
-						var endBeat:Float = Math.POSITIVE_INFINITY;
-
-						TimingStruct.addTiming(beat, value, endBeat, 0); // offset in this case = start time since we don't have a offset
-
-						if (currentIndex != 0)
-						{
-							var data = TimingStruct.AllTimings[currentIndex - 1];
-							data.endBeat = beat;
-							data.length = (data.endBeat - data.startBeat) / (data.bpm / 60);
-							var step = ((60 / data.bpm) * 1000) / 4;
-							TimingStruct.AllTimings[currentIndex].startStep = Math.floor(((data.endBeat / (data.bpm / 60)) * 1000) / step);
-							TimingStruct.AllTimings[currentIndex].startTime = data.startTime + data.length;
-						}
-
-						currentIndex++;
-					}
-				}
-			}
-
-			recalculateAllSectionTimes();
-
-			regenerateLines();
-
-			_song.eventsArray.sort(sortByBeat);
-		});
-		var updatePos = new FlxButton(180, 50, "Update Pos", function()
-		{
-			_song.eventsArray.remove(curTrackedEventAtPos);
-
-			curTrackedEventAtPos.position = CoolUtil.truncateFloat(curDecimalBeat, 3);
-
-			eventPos.text = curTrackedEventAtPos.position + '';
-
-			_song.eventsArray.push(curTrackedEventAtPos);
-			_song.eventsArray.sort(sortByBeat);
-		});
-
-		var listofnames = [];
-
-		for (event in _song.eventsArray)
-		{
-			var pos = Reflect.field(event, "position");
-
-			var eventAtPos:gameplayStuff.Song.EventsAtPos = {
-				position: pos,
-				events: []
-			};
-
-			for (i in event.events)
-			{
-				var name = Reflect.field(i, "name");
-				var type = Reflect.field(i, "type");
-				var value = Reflect.field(i, "value");
-
-				var eventt = new gameplayStuff.Song.EventObject(name, value, type);
-
-				eventAtPos.events.push(eventt);
-
-				listofnames.push(name);
-			}
-
-			chartEvents.push(eventAtPos);
-		}
-
-		_song.eventsArray = chartEvents;
-
-		if (listofnames.length == 0)
-			listofnames.push("");
-
-		curTrackedEventAtPos = _song.eventsArray[0];
-
-		var firstEventObj:gameplayStuff.Song.EventObject = curTrackedEventAtPos.events[0];
-
-		eventName.text = firstEventObj.name;
-		eventType.selectedLabel = firstEventObj.type;
-		eventValue.text = firstEventObj.value + "";
-		currentSelectedEventName = firstEventObj.name;
-		currentEventPosition = curTrackedEventAtPos.position;
-		eventPos.text = currentEventPosition + "";
-
-		var newEventPosAdd = new FlxButton(10, 60, "Add new pos", function()
-		{
-			var newEventAtPos:gameplayStuff.Song.EventsAtPos = {
-				position: CoolUtil.truncateFloat(curDecimalBeat, 3),
-				events: [
-					new gameplayStuff.Song.EventObject("New Event " + CoolUtil.truncateFloat(curDecimalBeat, 3), savedValue, savedType)
-				]
-			}
-
-			for (i in _song.eventsArray)
-			{
-				if (i.position == newEventAtPos.position) // Check for existed events at pos
-					return;
-			}
-
-			curTrackedEventAtPos = newEventAtPos;
-
-			eventsPosition.push(CoolUtil.truncateFloat(curDecimalBeat, 3));
-			eventsPositionTexts.push('Position at beat ' + CoolUtil.truncateFloat(curDecimalBeat, 3));
-
-			eventPositionsList.setData(FlxUIDropDownMenuCustom.makeStrIdLabelArray(eventsPositionTexts, true));
-
-			eventPositionsList.selectedLabel = 'Position at beat ' + CoolUtil.truncateFloat(curDecimalBeat, 3);
-
-			listOfEvents.setData(FlxUIDropDownMenuCustom.makeStrIdLabelArray([newEventAtPos.events[0].name], true));
-
-			_song.eventsArray.push(newEventAtPos);
-
-			_song.eventsArray.sort(sortByBeat);
-
-			eventName.text = 'New Event';
-			eventValue.text = savedValue + "";
-			eventType.selectedLabel = savedType;
-			currentSelectedEventName = 'New Event';
-
-			currentEventPosition = curTrackedEventAtPos.position;
-			eventPos.text = curTrackedEventAtPos.position + "";
-		});
-
-		listOfEvents = new FlxUIDropDownMenuCustom(10, 150, FlxUIDropDownMenuCustom.makeStrIdLabelArray(listofnames, true), function(name:String)
-		{
-			for (i in curTrackedEventAtPos.events)
-			{
-				if (i.name == listOfEvents.selectedLabel)
-					curTrackedEvent = i;
-			}
-
-			Debug.logTrace('selecting ' + name + ' found: ' + curTrackedEvent);
-
-			eventName.text = curTrackedEvent.name;
-			eventValue.text = curTrackedEvent.value + "";
-			eventType.selectedLabel = curTrackedEvent.type;
-			currentSelectedEventName = curTrackedEvent.name;
-		});
-		blockPressWhileScrolling.push(listOfEvents);
-
-		eventPositionsList = new FlxUIDropDownMenuCustom(10, 30, FlxUIDropDownMenuCustom.makeStrIdLabelArray(eventsPositionTexts, true), function(name:String)
-		{
-			for (i in _song.eventsArray)
-			{
-				if (i.position == eventsPosition[Std.parseInt(eventPositionsList.selectedId)])
-				{
-					curTrackedEventAtPos = i;
-				}
-			}
-
-			var listofnames = [];
-
-			for (i in curTrackedEventAtPos.events)
-			{
-				listofnames.push(i.name);
-			}
-
-			listOfEvents.setData(FlxUIDropDownMenuCustom.makeStrIdLabelArray(listofnames, true));
-
-			listOfEvents.selectedLabel = curTrackedEventAtPos.events[0].name;
-
-			var firstEvent = curTrackedEventAtPos.events[0];
-
-			eventName.text = firstEvent.name;
-			eventValue.text = firstEvent.value + "";
-			eventType.selectedLabel = firstEvent.type;
-			currentSelectedEventName = firstEvent.name;
-
-			currentEventPosition = curTrackedEventAtPos.position;
-			eventPos.text = curTrackedEventAtPos.position + "";
-		});
-		blockPressWhileScrolling.push(eventPositionsList);
-
-		eventValue.callback = function(string:String, string2:String)
-		{
-			Debug.logTrace(string + " - value");
-			savedValue = string;
-		};
-
-		eventType.callback = function(type:String)
-		{
-			savedType = eventType.selectedLabel;
-		};
-
-		eventName.callback = function(string:String, string2:String)
-		{
-			curTrackedEvent.name = string;
-		};
-
-		Typeables.push(eventPos);
-		Typeables.push(eventValue);
-		Typeables.push(eventName);
-
-		eventDescription = new FlxText(10, 250, 'Event Description Text');
-
-		tab_group_events.name = "Events";
-		tab_group_events.add(new FlxText(eventPos.x, eventPos.y - 18, 'Event Position'));
-		tab_group_events.add(new FlxText(eventValue.x, eventValue.y - 18, 'Event Value'));
-		tab_group_events.add(new FlxText(eventName.x, eventName.y - 18, 'Event Name'));
-		tab_group_events.add(new FlxText(listOfEvents.x, listOfEvents.y - 18, 'List of Events'));
-		tab_group_events.add(new FlxText(eventType.x, eventType.y - 18, 'Type of Event'));
-		tab_group_events.add(new FlxText(eventPositionsList.x, eventPositionsList.y - 18, 'Existed event positions'));
-		tab_group_events.add(newEventPosAdd);
-		tab_group_events.add(eventName);
-		tab_group_events.add(eventValue);
-		tab_group_events.add(eventSave);
-		tab_group_events.add(eventAdd);
-		tab_group_events.add(eventRemove);
-		tab_group_events.add(eventPos);
-		tab_group_events.add(updatePos);
-		tab_group_events.add(eventDescription);
-		tab_group_events.add(listOfEvents);
-		tab_group_events.add(eventType);
-		tab_group_events.add(eventPositionsList);
-		// UI_options.addGroup(tab_events);
-		UI_box.addGroup(tab_group_events);
-	}*/
 
 	function sortByBeat(Obj1:EventsAtPos, Obj2:EventsAtPos):Int
 	{
@@ -2538,11 +2061,11 @@ class ChartingState extends MusicBeatState
 				FlxG.sound.playMusic(Paths.music(Main.save.data.menuMusic), 0);
 				Data.chartingMode = false;
 				if (Data.isFreeplay)
-					MusicBeatState.switchState(new states.FreeplayState());
+					MusicBeatState.switchState(new altronixengine.states.FreeplayState());
 				else if (Data.isStoryMode)
-					MusicBeatState.switchState(new states.StoryMenuState());
+					MusicBeatState.switchState(new altronixengine.states.StoryMenuState());
 				else
-					MusicBeatState.switchState(new states.MainMenuState());
+					MusicBeatState.switchState(new altronixengine.states.MainMenuState());
 			}
 
 			if (doInput && !blockInput)

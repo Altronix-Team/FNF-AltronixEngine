@@ -1,4 +1,4 @@
-package utils;
+package altronixengine.utils;
 
 import flixel.addons.ui.FlxUIState;
 import openfl.utils.AssetType;

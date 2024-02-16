@@ -1,15 +1,15 @@
-package scriptStuff;
+package altronixengine.scriptStuff;
 
-import utils.Paths;
+import altronixengine.utils.Paths;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
 import flixel.addons.display.FlxBackdrop;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxSpriteGroup;
-import gameplayStuff.Boyfriend;
-import gameplayStuff.Character;
-import scriptStuff.HScriptHandler;
-import states.playState.PlayState;
+import altronixengine.gameplayStuff.Boyfriend;
+import altronixengine.gameplayStuff.Character;
+import altronixengine.scriptStuff.HScriptHandler;
+import altronixengine.states.playState.PlayState;
 
 class HscriptStage extends HScriptModchart
 {
@@ -131,7 +131,7 @@ class HscriptStage extends HScriptModchart
 		addedCharacterGroups.push(boyfriendGroup);
 	}
 
-	public function getCharacterByIndex(whose:Int):gameplayStuff.Character
+	public function getCharacterByIndex(whose:Int):altronixengine.gameplayStuff.Character
 	{
 		switch (whose)
 		{

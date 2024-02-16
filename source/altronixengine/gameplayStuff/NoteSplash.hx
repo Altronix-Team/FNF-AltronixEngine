@@ -1,10 +1,10 @@
-package gameplayStuff;
+package altronixengine.gameplayStuff;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.utils.Assets as OpenFlAssets;
-import states.playState.GameData as Data;
+import altronixengine.states.playState.GameData as Data;
 
 class NoteSplash extends FlxSprite
 {

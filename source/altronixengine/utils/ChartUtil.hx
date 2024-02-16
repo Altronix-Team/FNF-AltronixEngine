@@ -1,9 +1,9 @@
-package utils;
+package altronixengine.utils;
 
 import flixel.util.FlxColor;
 import flixel.util.FlxSort;
-import gameplayStuff.Song;
-import gameplayStuff.TimingStruct;
+import altronixengine.gameplayStuff.Song;
+import altronixengine.gameplayStuff.TimingStruct;
 
 class ChartUtil
 {

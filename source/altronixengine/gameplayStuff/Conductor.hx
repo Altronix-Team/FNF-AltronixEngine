@@ -1,13 +1,13 @@
-package gameplayStuff;
+package altronixengine.gameplayStuff;
 
 import sys.thread.Thread;
 import haxe.Constraints.Function;
-import gameplayStuff.Section.SwagSection;
-import gameplayStuff.Song.SongData;
+import altronixengine.gameplayStuff.Section.SwagSection;
+import altronixengine.gameplayStuff.Song.SongData;
 import flixel.FlxG;
 import openfl.events.Event;
 import openfl.Lib;
-import utils.EngineFPS;
+import altronixengine.utils.EngineFPS;
 
 typedef BPMChangeEvent =
 {

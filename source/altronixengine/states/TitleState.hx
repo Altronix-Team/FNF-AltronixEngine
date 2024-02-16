@@ -1,4 +1,4 @@
-package states;
+package altronixengine.states;
 
 import flash.net.URLRequest;
 import flixel.FlxG;
@@ -24,16 +24,16 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
-import gameplayStuff.Character;
-import gameplayStuff.Conductor;
-import gameplayStuff.Highscore;
-import gameplayStuff.Song;
+import altronixengine.gameplayStuff.Character;
+import altronixengine.gameplayStuff.Conductor;
+import altronixengine.gameplayStuff.Highscore;
+import altronixengine.gameplayStuff.Song;
 import haxe.Json;
 import lime.app.Application;
 import openfl.Assets;
 import openfl.utils.Assets as OpenFlAssets;
-import scriptStuff.HscriptStage;
-import states.HscriptableState.PolymodHscriptState;
+import altronixengine.scriptStuff.HscriptStage;
+import altronixengine.states.HscriptableState.PolymodHscriptState;
 import sys.FileSystem;
 import sys.io.File;
 #if !html5

@@ -1,4 +1,4 @@
-package utils;
+package altronixengine.utils;
 
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;

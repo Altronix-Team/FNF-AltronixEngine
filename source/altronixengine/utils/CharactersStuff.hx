@@ -1,10 +1,10 @@
-package utils;
+package altronixengine.utils;
 
 import flixel.graphics.frames.FlxFramesCollection;
 import flxanimate.FlxAnimate;
 import flixel.util.FlxColor;
 import openfl.utils.Assets as OpenFlAssets;
-import gameplayStuff.Character;
+import altronixengine.gameplayStuff.Character;
 
 @:access(gameplayStuff.Character)
 class CharactersStuff

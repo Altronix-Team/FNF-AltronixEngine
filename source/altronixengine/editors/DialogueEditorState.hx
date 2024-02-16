@@ -1,4 +1,4 @@
-package editors;
+package altronixengine.editors;
 
 import flash.net.FileFilter;
 import flixel.FlxG;
@@ -20,13 +20,13 @@ import flixel.sound.FlxSound;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
-import gameplayStuff.DialogueBox;
+import altronixengine.gameplayStuff.DialogueBox;
 import haxe.Json;
 import lime.system.Clipboard;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import openfl.net.FileReference;
-import states.MusicBeatState;
+import altronixengine.states.MusicBeatState;
 #if sys
 import sys.io.File;
 #end

@@ -1,12 +1,12 @@
-package utils;
+package altronixengine.utils;
 
-import gameplayStuff.Ratings;
-import gameplayStuff.PlayStateChangeables;
+import altronixengine.gameplayStuff.Ratings;
+import altronixengine.gameplayStuff.PlayStateChangeables;
 import flixel.input.gamepad.FlxGamepad;
 import openfl.Lib;
 import flixel.FlxG;
-import states.StoryMenuState;
-import gameplayStuff.Conductor;
+import altronixengine.states.StoryMenuState;
+import altronixengine.gameplayStuff.Conductor;
 
 class EngineData
 {

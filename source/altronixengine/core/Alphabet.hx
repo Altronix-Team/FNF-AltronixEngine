@@ -1,4 +1,4 @@
-package core;
+package altronixengine.core;
 
 import flash.media.Sound;
 import flixel.FlxG;

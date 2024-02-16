@@ -1,3 +1,3 @@
-package states;
+package altronixengine.states;
 
-typedef PlayState = states.playState.PlayState;
+typedef PlayState = altronixengine.states.playState.PlayState;

@@ -1,6 +1,6 @@
-package gameplayStuff;
+package altronixengine.gameplayStuff;
 
-import core.Controls;
+import altronixengine.core.Controls;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxSubState;

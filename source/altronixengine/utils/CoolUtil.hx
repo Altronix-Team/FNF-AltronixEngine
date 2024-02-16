@@ -1,4 +1,4 @@
-package utils;
+package altronixengine.utils;
 
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxColor;

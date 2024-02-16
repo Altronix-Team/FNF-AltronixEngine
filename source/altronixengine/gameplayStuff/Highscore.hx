@@ -1,7 +1,7 @@
-package gameplayStuff;
+package altronixengine.gameplayStuff;
 
 import flixel.FlxG;
-import states.playState.PlayState;
+import altronixengine.states.playState.PlayState;
 
 class Highscore
 {

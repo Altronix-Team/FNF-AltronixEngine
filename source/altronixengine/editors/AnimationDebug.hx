@@ -1,4 +1,4 @@
-package editors;
+package altronixengine.editors;
 
 import flixel.FlxG;
 import flixel.FlxObject;
@@ -23,10 +23,10 @@ import flixel.addons.ui.FlxUIInputText;
 import flixel.addons.ui.FlxUINumericStepper;
 import flixel.addons.ui.FlxUITabMenu;
 import flixel.addons.ui.FlxUITooltip.FlxUITooltipStyle;
-import gameplayStuff.Character;
-import gameplayStuff.Boyfriend;
+import altronixengine.gameplayStuff.Character;
+import altronixengine.gameplayStuff.Boyfriend;
 
-class AnimationDebug extends states.MusicBeatState
+class AnimationDebug extends altronixengine.states.MusicBeatState
 {
 	var _file:FileReference;
 	var bf:Boyfriend;
@@ -358,7 +358,7 @@ class AnimationDebug extends states.MusicBeatState
 		if (FlxG.keys.justPressed.ESCAPE)
 		{
 			FlxG.mouse.visible = false;
-			FlxG.switchState(new states.MainMenuState());
+			FlxG.switchState(new altronixengine.states.MainMenuState());
 		}
 
 		if (FlxG.keys.justPressed.E)

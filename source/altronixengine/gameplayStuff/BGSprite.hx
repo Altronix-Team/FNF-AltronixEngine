@@ -1,4 +1,4 @@
-package gameplayStuff;
+package altronixengine.gameplayStuff;
 
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;

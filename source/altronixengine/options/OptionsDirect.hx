@@ -1,10 +1,10 @@
-package options;
+package altronixengine.options;
 
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.FlxG;
 import flixel.FlxSprite;
 
-class OptionsDirect extends states.MusicBeatState
+class OptionsDirect extends altronixengine.states.MusicBeatState
 {
 	override function create()
 	{
@@ -21,6 +21,6 @@ class OptionsDirect extends states.MusicBeatState
 		menuBG.antialiasing = Main.save.data.antialiasing;
 		add(menuBG);
 
-		openSubState(new states.OptionsMenu());
+		openSubState(new altronixengine.states.OptionsMenu());
 	}
 }

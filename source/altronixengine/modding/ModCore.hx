@@ -1,7 +1,7 @@
-package modding;
+package altronixengine.modding;
 
 import flixel.FlxG;
-import gameplayStuff.Character;
+import altronixengine.gameplayStuff.Character;
 #if FEATURE_MODCORE
 import polymod.Polymod;
 import polymod.backends.OpenFLBackend;
@@ -273,30 +273,30 @@ class ModCore
 		set('ShaderFilter', openfl.filters.ShaderFilter);
 		set('Capabilities', flash.system.Capabilities);
 
-		set('Discord', utils.DiscordClient);
+		set('Discord', altronixengine.utils.DiscordClient);
 
 		set('Alphabet', Alphabet);
-		set('Song', gameplayStuff.Song);
+		set('Song', altronixengine.gameplayStuff.Song);
 		set('Character', Character);
 		set('controls', Controls);
 		set('CoolUtil', CoolUtil);
-		set('Conductor', gameplayStuff.Conductor);
-		set('PlayState', states.playState.PlayState);
+		set('Conductor', altronixengine.gameplayStuff.Conductor);
+		set('PlayState', altronixengine.states.playState.PlayState);
 		set('Main', Main);
-		set('Note', gameplayStuff.Note);
+		set('Note', altronixengine.gameplayStuff.Note);
 		set('Paths', Paths);
-		set('Stage', gameplayStuff.Stage);
+		set('Stage', altronixengine.gameplayStuff.Stage);
 		set('WindowUtil', WindowUtil);
 		set('WindowShakeEvent', WindowUtil.WindowShakeEvent);
 		set('Debug', Debug);
-		set('WiggleEffect', shaders.WiggleEffect);
+		set('WiggleEffect', altronixengine.shaders.WiggleEffect);
 		set('AtlasFrameMaker', animateatlas.AtlasFrameMaker);
 		set('Achievements', Achievements);
-		set('VCRDistortionEffect', shaders.Shaders.VCRDistortionEffect);
-		set('ColorSwap', shaders.Shaders.ColorSwap);
-		set('StaticArrow', gameplayStuff.StaticArrow);
+		set('VCRDistortionEffect', altronixengine.shaders.Shaders.VCRDistortionEffect);
+		set('ColorSwap', altronixengine.shaders.Shaders.ColorSwap);
+		set('StaticArrow', altronixengine.gameplayStuff.StaticArrow);
 		set('AssetsUtil', AssetsUtil);
-		set('PolymodHscriptState', states.HscriptableState.PolymodHscriptState);
+		set('PolymodHscriptState', altronixengine.states.HscriptableState.PolymodHscriptState);
 	}
 
 	static inline function buildFrameworkParams():polymod.FrameworkParams

@@ -1,4 +1,4 @@
-package gameplayStuff;
+package altronixengine.gameplayStuff;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -11,8 +11,8 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import openfl.utils.Assets;
-import states.FreeplayState.CharColor;
-import states.playState.PlayState;
+import altronixengine.states.FreeplayState.CharColor;
+import altronixengine.states.playState.PlayState;
 
 class DialogueBox extends FlxSpriteGroup
 {

@@ -1,4 +1,4 @@
-package core;
+package altronixengine.core;
 
 import flash.geom.Rectangle;
 import flixel.addons.ui.interfaces.IFlxUIClickable;

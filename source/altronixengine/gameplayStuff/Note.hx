@@ -1,4 +1,4 @@
-package gameplayStuff;
+package altronixengine.gameplayStuff;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -9,14 +9,14 @@ import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
-import gameplayStuff.DiffOverview;
-import gameplayStuff.Song;
+import altronixengine.gameplayStuff.DiffOverview;
+import altronixengine.gameplayStuff.Song;
 import openfl.display.BitmapData;
 import openfl.display.Preloader.DefaultPreloader;
 import openfl.utils.Assets as OpenFlAssets;
-import states.FreeplayState;
-import states.playState.GameData as Data;
-import states.playState.PlayState;
+import altronixengine.states.FreeplayState;
+import altronixengine.states.playState.GameData as Data;
+import altronixengine.states.playState.PlayState;
 
 typedef NoteMeta =
 {

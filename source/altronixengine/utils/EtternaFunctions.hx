@@ -1,6 +1,6 @@
-package utils;
+package altronixengine.utils;
 
-import states.playState.GameData as Data;
+import altronixengine.states.playState.GameData as Data;
 
 class EtternaFunctions
 {

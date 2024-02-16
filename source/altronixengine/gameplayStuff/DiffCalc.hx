@@ -1,9 +1,9 @@
-package gameplayStuff;
+package altronixengine.gameplayStuff;
 
 import openfl.system.System;
 import flixel.math.FlxMath;
-import gameplayStuff.Song.SongData;
-import states.FreeplayState;
+import altronixengine.gameplayStuff.Song.SongData;
+import altronixengine.states.FreeplayState;
 
 class SmallNote // basically Note.hx but small as fuck
 {

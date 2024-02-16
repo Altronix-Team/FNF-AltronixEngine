@@ -1,4 +1,4 @@
-package states;
+package altronixengine.states;
 
 #if FEATURE_MODCORE
 import polymod.hscript.HScriptedClass;

@@ -1,17 +1,17 @@
-package options;
+package altronixengine.options;
 
-import states.playState.GameData;
+import altronixengine.states.playState.GameData;
 import flixel.FlxG;
 import flixel.util.FlxColor;
-import gameplayStuff.Highscore;
-import gameplayStuff.Song;
+import altronixengine.gameplayStuff.Highscore;
+import altronixengine.gameplayStuff.Song;
 import lime.app.Application;
 import openfl.Lib;
-import states.GameplayCustomizeState;
-import states.LoadingState;
-import states.OptionsMenu;
-import states.StoryMenuState;
-import states.playState.PlayState;
+import altronixengine.states.GameplayCustomizeState;
+import altronixengine.states.LoadingState;
+import altronixengine.states.OptionsMenu;
+import altronixengine.states.StoryMenuState;
+import altronixengine.states.playState.PlayState;
 
 class Option
 {
@@ -1739,7 +1739,7 @@ class BotPlay extends Option
 	{
 		super();
 
-		if (gameplayStuff.PlayStateChangeables.twoPlayersMode)
+		if (altronixengine.gameplayStuff.PlayStateChangeables.twoPlayersMode)
 			if (!Main.save.data.language)
 				description = "This option cannot be toggled while you playing two players mode.";
 			else
@@ -1750,7 +1750,7 @@ class BotPlay extends Option
 
 	public override function left():Bool
 	{
-		if (gameplayStuff.PlayStateChangeables.twoPlayersMode)
+		if (altronixengine.gameplayStuff.PlayStateChangeables.twoPlayersMode)
 			return false;
 
 		Main.save.data.botplay = !Main.save.data.botplay;
@@ -2135,7 +2135,7 @@ class DebugMode extends Option
 
 	public override function press():Bool
 	{
-		FlxG.switchState(new editors.AnimationDebug());
+		FlxG.switchState(new altronixengine.editors.AnimationDebug());
 		return false;
 	}
 

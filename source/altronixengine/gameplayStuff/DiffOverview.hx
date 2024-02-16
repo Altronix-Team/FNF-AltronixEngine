@@ -1,4 +1,4 @@
-package gameplayStuff;
+package altronixengine.gameplayStuff;
 
 import flixel.FlxCamera;
 import flixel.FlxG;
@@ -13,10 +13,10 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxSort;
-import gameplayStuff.Section.SwagSection;
-import gameplayStuff.Song.SongData;
-import states.FreeplayState;
-import states.MusicBeatSubstate;
+import altronixengine.gameplayStuff.Section.SwagSection;
+import altronixengine.gameplayStuff.Song.SongData;
+import altronixengine.states.FreeplayState;
+import altronixengine.states.MusicBeatSubstate;
 
 @:access(states.FreeplayState)
 class DiffOverview extends MusicBeatSubstate

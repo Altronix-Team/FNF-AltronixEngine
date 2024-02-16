@@ -1,4 +1,4 @@
-package states;
+package altronixengine.states;
 
 import flash.text.TextField;
 import flixel.FlxBasic;
@@ -19,10 +19,10 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import lime.app.Application;
-import scriptStuff.HScriptHandler;
-import states.LoadingState.LoadingsState;
-import states.playState.GameData;
-import states.playState.PlayState;
+import altronixengine.scriptStuff.HScriptHandler;
+import altronixengine.states.LoadingState.LoadingsState;
+import altronixengine.states.playState.GameData;
+import altronixengine.states.playState.PlayState;
 
 class MainMenuState extends MusicBeatState
 {
@@ -55,8 +55,6 @@ class MainMenuState extends MusicBeatState
 	var camFollow:FlxObject;
 
 	public static var finishedFunnyMove:Bool = false;
-
-	var dance:gameplayStuff.Character;
 
 	override function create()
 	{
@@ -177,7 +175,7 @@ class MainMenuState extends MusicBeatState
 
 		if (FlxG.keys.justPressed.SEVEN)
 		{
-			FlxG.switchState(new editors.MasterEditorMenu());
+			FlxG.switchState(new altronixengine.editors.MasterEditorMenu());
 			clean();
 		}
 
@@ -285,7 +283,7 @@ class MainMenuState extends MusicBeatState
 				FlxG.mouse.visible = false;
 
 			case 'options':
-				MusicBeatState.switchState(new options.OptionsDirect());
+				MusicBeatState.switchState(new altronixengine.options.OptionsDirect());
 				FlxG.mouse.visible = false;
 
 			case 'awards':

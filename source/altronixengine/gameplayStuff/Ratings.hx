@@ -1,10 +1,10 @@
-package gameplayStuff;
+package altronixengine.gameplayStuff;
 
 import flixel.FlxG;
-import gameplayStuff.Conductor;
-import gameplayStuff.PlayStateChangeables;
-import states.playState.PlayState;
-import states.playState.GameData as Data;
+import altronixengine.gameplayStuff.Conductor;
+import altronixengine.gameplayStuff.PlayStateChangeables;
+import altronixengine.states.playState.PlayState;
+import altronixengine.states.playState.GameData as Data;
 
 class Ratings
 {

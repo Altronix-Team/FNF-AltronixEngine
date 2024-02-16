@@ -1,4 +1,4 @@
-package states.playState; // Will have separated classes for two players mode and singleplayer which will extend this base class
+package altronixengine.states.playState; // Will have separated classes for two players mode and singleplayer which will extend this base class
 
 import animateatlas.AtlasFrameMaker;
 import flixel.FlxBasic;
@@ -39,30 +39,30 @@ import flixel.util.FlxSort;
 import flixel.util.FlxSpriteUtil;
 import flixel.util.FlxStringUtil;
 import flixel.util.FlxTimer;
-import gameplayStuff.Boyfriend;
-import gameplayStuff.Character;
-import gameplayStuff.Conductor;
-import gameplayStuff.CutsceneHandler;
-import gameplayStuff.DialogueBox;
-import gameplayStuff.DialogueBoxPsych;
-import gameplayStuff.GameUI;
-import gameplayStuff.HealthIcon;
-import gameplayStuff.Highscore;
-import gameplayStuff.Note;
-import gameplayStuff.NoteSplash;
-import gameplayStuff.PlayStateChangeables;
-import gameplayStuff.RatingText;
-import gameplayStuff.Ratings;
-import gameplayStuff.Section.SwagSection;
-import gameplayStuff.Song.Event;
-import gameplayStuff.Song.EventsAtPos;
-import gameplayStuff.Song.SongData;
-import gameplayStuff.Song;
-import gameplayStuff.Stage;
-import gameplayStuff.StageData;
-import gameplayStuff.StaticArrow;
-import gameplayStuff.StrumLine;
-import gameplayStuff.TimingStruct;
+import altronixengine.gameplayStuff.Boyfriend;
+import altronixengine.gameplayStuff.Character;
+import altronixengine.gameplayStuff.Conductor;
+import altronixengine.gameplayStuff.CutsceneHandler;
+import altronixengine.gameplayStuff.DialogueBox;
+import altronixengine.gameplayStuff.DialogueBoxPsych;
+import altronixengine.gameplayStuff.GameUI;
+import altronixengine.gameplayStuff.HealthIcon;
+import altronixengine.gameplayStuff.Highscore;
+import altronixengine.gameplayStuff.Note;
+import altronixengine.gameplayStuff.NoteSplash;
+import altronixengine.gameplayStuff.PlayStateChangeables;
+import altronixengine.gameplayStuff.RatingText;
+import altronixengine.gameplayStuff.Ratings;
+import altronixengine.gameplayStuff.Section.SwagSection;
+import altronixengine.gameplayStuff.Song.Event;
+import altronixengine.gameplayStuff.Song.EventsAtPos;
+import altronixengine.gameplayStuff.Song.SongData;
+import altronixengine.gameplayStuff.Song;
+import altronixengine.gameplayStuff.Stage;
+import altronixengine.gameplayStuff.StageData;
+import altronixengine.gameplayStuff.StaticArrow;
+import altronixengine.gameplayStuff.StrumLine;
+import altronixengine.gameplayStuff.TimingStruct;
 import haxe.EnumTools;
 import haxe.Exception;
 import haxe.Json;
@@ -70,7 +70,7 @@ import lime.app.Application;
 import lime.graphics.Image;
 import lime.media.AudioContext;
 import lime.media.AudioManager;
-import modding.ModCore;
+import altronixengine.modding.ModCore;
 import openfl.Lib;
 import openfl.display.BitmapData;
 import openfl.display.BlendMode;
@@ -87,15 +87,15 @@ import openfl.utils.AssetLibrary;
 import openfl.utils.AssetManifest;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
-import scriptStuff.HScriptHandler.ScriptException;
-import scriptStuff.HScriptModchart as ModchartHelper;
-import scriptStuff.HscriptStage;
-import scriptStuff.ScriptHelper;
+import altronixengine.scriptStuff.HScriptHandler.ScriptException;
+import altronixengine.scriptStuff.HScriptModchart as ModchartHelper;
+import altronixengine.scriptStuff.HscriptStage;
+import altronixengine.scriptStuff.ScriptHelper;
 // import scriptStuff.scriptBodies.*;
-import shaders.Shaders;
-import shaders.WiggleEffect.WiggleEffectType;
-import shaders.WiggleEffect;
-import states.playState.GameData as Data;
+import altronixengine.shaders.Shaders;
+import altronixengine.shaders.WiggleEffect.WiggleEffectType;
+import altronixengine.shaders.WiggleEffect;
+import altronixengine.states.playState.GameData as Data;
 import sys.thread.Lock;
 import sys.thread.Mutex;
 
@@ -292,7 +292,7 @@ class PlayState extends MusicBeatState
 
 	public var doof:DialogueBox = null;
 
-	public var events:Array<gameplayStuff.Song.EventsAtPos> = [];
+	public var events:Array<altronixengine.gameplayStuff.Song.EventsAtPos> = [];
 
 	public var noteTypeCheck:String = 'normal';
 
@@ -488,11 +488,11 @@ class PlayState extends MusicBeatState
 
 		if (Data.SONG.eventsArray == null)
 		{
-			var initBpm:gameplayStuff.Song.EventsAtPos = {
+			var initBpm:altronixengine.gameplayStuff.Song.EventsAtPos = {
 				position: 0,
 				events: []
 			};
-			var firstEvent:gameplayStuff.Song.EventObject = new gameplayStuff.Song.EventObject("Init BPM", Data.SONG.bpm, "BPM Change");
+			var firstEvent:altronixengine.gameplayStuff.Song.EventObject = new altronixengine.gameplayStuff.Song.EventObject("Init BPM", Data.SONG.bpm, "BPM Change");
 
 			initBpm.events.push(firstEvent);
 			Data.SONG.eventsArray = [initBpm];
@@ -2399,7 +2399,7 @@ class PlayState extends MusicBeatState
 					remove(dad);
 					remove(gf);
 				});
-				MusicBeatState.switchState(new editors.StageDebugState(Stage.curStage, gf.curCharacter, boyfriend.curCharacter, dad.curCharacter));
+				MusicBeatState.switchState(new altronixengine.editors.StageDebugState(Stage.curStage, gf.curCharacter, boyfriend.curCharacter, dad.curCharacter));
 				clean();
 				FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, handleInput);
 				FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, releaseInput);
@@ -2996,7 +2996,7 @@ class PlayState extends MusicBeatState
 		paused = true;
 		canPause = false;
 		cancelMusicFadeTween();
-		MusicBeatState.switchState(new editors.ChartingState());
+		MusicBeatState.switchState(new altronixengine.editors.ChartingState());
 		Data.chartingMode = true;
 
 		#if DISCORD_ALLOWED
@@ -3025,15 +3025,13 @@ class PlayState extends MusicBeatState
 		isCameraOnForcedPos = true;
 	}
 
-	public function checkEventAtPos(eventAtPos:gameplayStuff.Song.EventsAtPos)
+	public function checkEventAtPos(eventAtPos:altronixengine.gameplayStuff.Song.EventsAtPos)
 	{
 		if (eventAtPos.position <= curDecimalBeat && !pastEvents.contains(eventAtPos.position))
 		{
 			pastEvents.push(eventAtPos.position);
 		}
 	}
-
-	var blammedeventplayed:Bool = false;
 
 	public function reloadHealthBarColors()
 	{
@@ -3447,7 +3445,7 @@ class PlayState extends MusicBeatState
 					remove(dad);
 					remove(gf);
 				});
-				MusicBeatState.switchState(new editors.StageDebugState(Stage.curStage));
+				MusicBeatState.switchState(new altronixengine.editors.StageDebugState(Stage.curStage));
 			}
 			else
 			{
@@ -4501,67 +4499,6 @@ class PlayState extends MusicBeatState
 			if (PlayStateChangeables.Optimize)
 				if (vocals.volume == 0 && !curSection.mustHitSection)
 					vocals.volume = 1;
-		}
-
-		if (curSong == 'blammed')
-		{
-			if (!hscriptStageCheck)
-			{
-				if (curBeat % 4 == 0)
-				{
-					var windowColor:FlxColor = FlxColor.WHITE;
-
-					switch (Stage.curLight)
-					{
-						case 4:
-							windowColor = FlxColor.fromRGB(251, 166, 51);
-						case 3:
-							windowColor = FlxColor.fromRGB(253, 69, 49);
-						case 2:
-							windowColor = FlxColor.fromRGB(251, 51, 245);
-						case 1:
-							windowColor = FlxColor.fromRGB(49, 253, 140);
-						case 0:
-							windowColor = FlxColor.fromRGB(49, 162, 253);
-					}
-					if ((curBeat >= 128 && curBeat <= 192) && !blammedeventplayed && Main.save.data.distractions)
-					{
-						var eventColor:FlxColor = FlxColor.WHITE;
-
-						eventColor = windowColor;
-						eventColor.alpha = 175;
-
-						camGame.flash(windowColor, 0.1);
-						camHUD.flash(windowColor, 0.1);
-						songOverlay(eventColor, 0.1);
-					}
-
-					var phillyCityLight:FlxSprite = Stage.swagBacks['light'];
-
-					phillyCityLight.color = windowColor;
-				}
-
-				if (curBeat >= 192 && !blammedeventplayed && Main.save.data.distractions)
-				{
-					overlayColor = FlxColor.fromRGB(0, 0, 0, 0);
-					colorTween = FlxTween.color(overlay, 0.1, overlay.color, overlayColor, {
-						onComplete: function(twn:FlxTween)
-						{
-							colorTween = null;
-						}
-					});
-					for (char in chars)
-					{
-						char.colorTween = FlxTween.color(char, 0.1, char.color, FlxColor.WHITE, {
-							onComplete: function(twn:FlxTween)
-							{
-							},
-							ease: FlxEase.quadInOut
-						});
-					}
-					blammedeventplayed = true;
-				}
-			}
 		}
 
 		ScriptHelper.setOnHscript('curBeat', curBeat);

@@ -1,4 +1,4 @@
-package states;
+package altronixengine.states;
 
 import flixel.FlxBasic;
 import flixel.FlxCamera;
@@ -6,14 +6,14 @@ import flixel.FlxG;
 import flixel.FlxState;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.sound.FlxSound;
-import gameplayStuff.Conductor;
-import gameplayStuff.Section;
-import gameplayStuff.TimingStruct;
+import altronixengine.gameplayStuff.Conductor;
+import altronixengine.gameplayStuff.Section;
+import altronixengine.gameplayStuff.TimingStruct;
 import lime.app.Application;
 import openfl.Lib;
-import scriptStuff.ScriptHelper;
+import altronixengine.scriptStuff.ScriptHelper;
 
-class MusicBeatState extends BaseState implements gameplayStuff.Conductor.IMusicBeat
+class MusicBeatState extends BaseState implements altronixengine.gameplayStuff.Conductor.IMusicBeat
 {
 	private var controls(get, never):Controls;
 

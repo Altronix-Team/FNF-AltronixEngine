@@ -1,4 +1,4 @@
-package utils;
+package altronixengine.utils;
 
 import Sys.sleep;
 #if DISCORD_ALLOWED

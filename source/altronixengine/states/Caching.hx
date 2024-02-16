@@ -1,6 +1,6 @@
-package states;
+package altronixengine.states;
 
-import gameplayStuff.Song;
+import altronixengine.gameplayStuff.Song;
 #if FEATURE_FILESYSTEM
 import lime.app.Application;
 import openfl.display.BitmapData;
@@ -26,7 +26,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import flixel.text.FlxText;
 import flixel.input.keyboard.FlxKey;
-import gameplayStuff.Highscore;
+import altronixengine.gameplayStuff.Highscore;
 
 // Just comment everything
 /*class Caching extends MusicBeatState

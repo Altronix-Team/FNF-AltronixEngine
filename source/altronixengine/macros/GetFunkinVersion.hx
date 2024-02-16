@@ -1,10 +1,10 @@
-package macros;
+package altronixengine.macros;
 
 import haxe.Http;
 import haxe.Json;
 
 class GetFunkinVersion {
-	@:access(macros.MacroUtil)
+	@:access(altronixengine.macros.MacroUtil)
 	public static macro function getFunkinVersion():ExprOf<String>
 	{
 		try

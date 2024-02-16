@@ -1,4 +1,4 @@
-package core;
+package altronixengine.core;
 
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;

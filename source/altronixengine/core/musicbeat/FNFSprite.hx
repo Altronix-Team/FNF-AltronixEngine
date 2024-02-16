@@ -1,11 +1,12 @@
-package core;
+package altronixengine.core.musicbeat;
 
 import flixel.system.FlxAssets.FlxGraphicAsset;
-import gameplayStuff.Section.SwagSection;
+import altronixengine.gameplayStuff.Section.SwagSection;
 import flxanimate.FlxAnimate;
 import flixel.FlxSprite;
+import altronixengine.gameplayStuff.Conductor;
 
-class FNFSprite extends FlxSprite
+class FNFSprite extends FlxSprite implements IMusicBeat
 {
 	public var animOffsets:Map<String, Array<Dynamic>>;
 
@@ -19,9 +20,10 @@ class FNFSprite extends FlxSprite
 
 		animOffsets = new Map();
 
-		Main.fnfSignals.beatHit.add(beatHit);
-		Main.fnfSignals.stepHit.add(stepHit);
-		Main.fnfSignals.sectionHit.add(sectionHit);
+		Main.fnfSignals.beatHit.add(_beatHit);
+		Main.fnfSignals.sectionHit.add(_sectionHit);
+		Main.fnfSignals.stepHit.add(_stepHit);
+		Main.fnfSignals.decimalBeatHit.add(_decimalBeatHit);
 	}
 
 	public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0, autoEnd:Bool = false):Void
@@ -111,9 +113,10 @@ class FNFSprite extends FlxSprite
 
 	public override function destroy()
 	{
-		Main.fnfSignals.beatHit.remove(beatHit);
-		Main.fnfSignals.stepHit.remove(stepHit);
-		Main.fnfSignals.sectionHit.remove(sectionHit);
+		Main.fnfSignals.beatHit.remove(_beatHit);
+		Main.fnfSignals.sectionHit.remove(_sectionHit);
+		Main.fnfSignals.stepHit.remove(_stepHit);
+		Main.fnfSignals.decimalBeatHit.remove(_decimalBeatHit);
 		super.destroy();
 		if (animateAtlas != null)
 		{
@@ -180,15 +183,43 @@ class FNFSprite extends FlxSprite
 		return super.set_y(value);
 	}
 
-	public function beatHit(beat:Int)
+	public var curBeat:Int;
+	public var curStep:Int;
+	public var curDecimalBeat:Float;
+	public var curSection:SwagSection;
+
+	public function beatHit()
 	{
 	}
 
-	public function stepHit(step:Int)
+	public function stepHit()
 	{
 	}
 
-	public function sectionHit(section:SwagSection)
+	public function sectionHit()
 	{
 	}
+
+	private function _stepHit(step:Int):Void
+		{
+			curStep = step;
+			stepHit();
+		}
+	
+		private function _beatHit(beat:Int):Void
+		{
+			curBeat = beat;
+			beatHit();
+		}
+	
+		private function _sectionHit(section:SwagSection):Void
+		{
+			curSection = section;
+			sectionHit();
+		}
+	
+		private function _decimalBeatHit(beat:Float):Void
+		{
+			curDecimalBeat = beat;
+		}
 }

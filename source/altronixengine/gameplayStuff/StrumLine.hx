@@ -1,11 +1,11 @@
-package gameplayStuff;
+package altronixengine.gameplayStuff;
 
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
-import states.playState.PlayState;
-import states.playState.GameData as Data;
+import altronixengine.states.playState.PlayState;
+import altronixengine.states.playState.GameData as Data;
 
 // Simple class to work with strum line and note splashes
 class StrumLine extends FlxTypedGroup<StaticArrow>

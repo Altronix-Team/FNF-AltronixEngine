@@ -1,4 +1,4 @@
-package states;
+package altronixengine.states;
 
 import flash.text.TextField;
 import flixel.FlxG;
@@ -11,21 +11,21 @@ import flixel.sound.FlxSound;
 import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
-import gameplayStuff.Character;
-import gameplayStuff.Conductor;
-import gameplayStuff.DiffCalc;
-import gameplayStuff.DiffOverview;
-import gameplayStuff.FreeplaySongMetadata;
-import gameplayStuff.HealthIcon;
-import gameplayStuff.Highscore;
-import gameplayStuff.PlayStateChangeables;
-import gameplayStuff.Song.SongData;
-import gameplayStuff.Song;
+import altronixengine.gameplayStuff.Character;
+import altronixengine.gameplayStuff.Conductor;
+import altronixengine.gameplayStuff.DiffCalc;
+import altronixengine.gameplayStuff.DiffOverview;
+import altronixengine.gameplayStuff.FreeplaySongMetadata;
+import altronixengine.gameplayStuff.HealthIcon;
+import altronixengine.gameplayStuff.Highscore;
+import altronixengine.gameplayStuff.PlayStateChangeables;
+import altronixengine.gameplayStuff.Song.SongData;
+import altronixengine.gameplayStuff.Song;
 import openfl.Lib;
 import openfl.media.Sound;
 import openfl.utils.Assets as OpenFlAssets;
 import openfl.utils.Future;
-import states.playState.GameData as Data;
+import altronixengine.states.playState.GameData as Data;
 #if FEATURE_FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
@@ -520,7 +520,7 @@ class FreeplayState extends MusicBeatState
 
 		var character = dad ? Data.SONG.player2 : Data.SONG.player1;
 
-		LoadingState.loadAndSwitchState(new editors.AnimationDebug(character));
+		LoadingState.loadAndSwitchState(new altronixengine.editors.AnimationDebug(character));
 	}
 
 	function loadSong(isCharting:Bool = false)
@@ -572,7 +572,7 @@ class FreeplayState extends MusicBeatState
 
 		if (isCharting)
 		{
-			LoadingState.loadAndSwitchState(new editors.ChartingState(reloadSong));
+			LoadingState.loadAndSwitchState(new altronixengine.editors.ChartingState(reloadSong));
 		}
 		else
 		{

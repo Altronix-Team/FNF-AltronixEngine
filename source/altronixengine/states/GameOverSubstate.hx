@@ -1,15 +1,15 @@
-package states;
+package altronixengine.states;
 
-import scriptStuff.ScriptHelper;
+import altronixengine.scriptStuff.ScriptHelper;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSubState;
 import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
-import gameplayStuff.Boyfriend;
-import gameplayStuff.Conductor;
-import states.playState.GameData as Data;
+import altronixengine.gameplayStuff.Boyfriend;
+import altronixengine.gameplayStuff.Conductor;
+import altronixengine.states.playState.GameData as Data;
 
 class GameOverSubstate extends MusicBeatSubstate
 {

@@ -1,4 +1,4 @@
-package macros;
+package altronixengine.macros;
 
 class CheckHaxeVersion
 {

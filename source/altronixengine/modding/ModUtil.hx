@@ -1,4 +1,4 @@
-package modding;
+package altronixengine.modding;
 
 #if FEATURE_MODCORE
 import flixel.FlxG;
@@ -8,7 +8,7 @@ import polymod.ModMetadata;
 #end
 
 // Fun fact, this class and mod menu was originally made for forever engine undercore. But PR got closed
-@:access(modding.ModCore)
+@:access(altronixengine.modding.ModCore)
 class ModUtil
 {
 	public static var modList:Map<String, Bool> = new Map();

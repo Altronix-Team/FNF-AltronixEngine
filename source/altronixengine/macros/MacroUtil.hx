@@ -1,4 +1,4 @@
-package macros;
+package altronixengine.macros;
 
 import haxe.Json;
 import haxe.macro.Context;
@@ -161,9 +161,9 @@ class MacroUtil
 		};
 
 		if (extendsBaseClass != null)
-			return macro macros.CompileTimeClassList.getTyped($v{listID}, $extendsBaseClass);
+			return macro altronixengine.macros.CompileTimeClassList.getTyped($v{listID}, $extendsBaseClass);
 		else
-			return macro macros.CompileTimeClassList.get($v{listID});
+			return macro altronixengine.macros.CompileTimeClassList.get($v{listID});
 	}
 
 	#if macro

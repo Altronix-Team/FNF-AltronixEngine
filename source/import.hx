@@ -2,12 +2,12 @@
 import haxe.macro.Context;
 import haxe.macro.Expr;
 #else
-import core.*;
-import data.*;
+import altronixengine.core.*;
+import altronixengine.data.*;
 import flixel.FlxG;
-import utils.*;
+import altronixengine.utils.*;
 #end
 
 using StringTools;
 using hx.strings.Strings;
-using utils.ConvertUtil;
+using altronixengine.utils.ConvertUtil;

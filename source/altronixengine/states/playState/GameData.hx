@@ -1,8 +1,8 @@
-package states.playState;
+package altronixengine.states.playState;
 
 import openfl.display.BitmapData;
 import flixel.graphics.frames.FlxAtlasFrames;
-import gameplayStuff.Song.SongData;
+import altronixengine.gameplayStuff.Song.SongData;
 
 // All static data from PlayState now here
 class GameData

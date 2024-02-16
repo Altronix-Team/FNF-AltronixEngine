@@ -1,4 +1,4 @@
-package states;
+package altronixengine.states;
 
 import flixel.input.gamepad.FlxGamepad;
 import flixel.FlxG;
@@ -19,12 +19,12 @@ import sys.io.File;
 import sys.FileSystem;
 #end
 import flixel.addons.ui.FlxUIState;
-import data.WeekData;
-import gameplayStuff.Conductor;
-import gameplayStuff.Song;
-import gameplayStuff.Highscore;
-import states.playState.PlayState;
-import states.playState.GameData as Data;
+import altronixengine.data.WeekData;
+import altronixengine.gameplayStuff.Conductor;
+import altronixengine.gameplayStuff.Song;
+import altronixengine.gameplayStuff.Highscore;
+import altronixengine.states.playState.PlayState;
+import altronixengine.states.playState.GameData as Data;
 import flixel.group.FlxSpriteGroup;
 import openfl.Assets;
 import haxe.Json;

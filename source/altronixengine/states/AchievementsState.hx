@@ -1,6 +1,6 @@
-package states;
+package altronixengine.states;
 
-import core.Achievements;
+import altronixengine.core.Achievements;
 import flash.text.TextField;
 import flixel.FlxG;
 import flixel.FlxSprite;

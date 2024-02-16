@@ -1,6 +1,6 @@
-package states;
+package altronixengine.states;
 
-import gameplayStuff.Conductor;
+import altronixengine.gameplayStuff.Conductor;
 import flash.text.TextField;
 import flixel.FlxG;
 import flixel.FlxSprite;

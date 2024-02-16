@@ -1,8 +1,8 @@
-package core;
+package altronixengine.core;
 
 import flixel.FlxSprite;
 
-class AttachedSprite extends FNFSprite
+class AttachedSprite extends altronixengine.core.musicbeat.FNFSprite
 {
 	public var sprTracker:FlxSprite;
 	public var xAdd:Float = 0;

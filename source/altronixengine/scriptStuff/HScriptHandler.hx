@@ -1,4 +1,4 @@
-package scriptStuff;
+package altronixengine.scriptStuff;
 
 import animateatlas.AtlasFrameMaker;
 import flixel.FlxBasic;
@@ -33,16 +33,16 @@ import flixel.util.FlxColor;
 import flixel.util.FlxSort;
 import flixel.util.FlxStringUtil;
 import flixel.util.FlxTimer;
-import gameplayStuff.BGSprite;
-import gameplayStuff.BackgroundDancer;
-import gameplayStuff.BackgroundGirls;
-import gameplayStuff.Character;
-import gameplayStuff.Conductor;
-import gameplayStuff.Note;
-import gameplayStuff.Song;
-import gameplayStuff.Stage;
-import gameplayStuff.StaticArrow;
-import gameplayStuff.TankmenBG;
+import altronixengine.gameplayStuff.BGSprite;
+import funkin.gameplayStuff.BackgroundDancer;
+import funkin.gameplayStuff.BackgroundGirls;
+import altronixengine.gameplayStuff.Character;
+import altronixengine.gameplayStuff.Conductor;
+import altronixengine.gameplayStuff.Note;
+import altronixengine.gameplayStuff.Song;
+import altronixengine.gameplayStuff.Stage;
+import altronixengine.gameplayStuff.StaticArrow;
+import funkin.gameplayStuff.TankmenBG;
 import haxe.Constraints.Function;
 import haxe.Exception;
 import haxe.ds.StringMap;
@@ -53,13 +53,13 @@ import lime.app.Application;
 import openfl.Assets as OpenFlAssets;
 import openfl.display.GraphicsShader;
 import openfl.filters.ShaderFilter;
-import shaders.Shaders.ColorSwap;
-import shaders.Shaders.VCRDistortionEffect;
-import states.GameOverSubstate;
-import states.MusicBeatState;
-import states.playState.PlayState;
+import altronixengine.shaders.Shaders.ColorSwap;
+import altronixengine.shaders.Shaders.VCRDistortionEffect;
+import altronixengine.states.GameOverSubstate;
+import altronixengine.states.MusicBeatState;
+import altronixengine.states.playState.PlayState;
 import tea.SScript;
-import utils.Paths;
+import altronixengine.utils.Paths;
 #if FEATURE_FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
@@ -154,7 +154,7 @@ class HScriptHandler extends SScript
 		set('Capabilities', flash.system.Capabilities);
 		set('FlxColor', CustomFlxColor);
 
-		set('Discord', utils.DiscordClient);
+		set('Discord', altronixengine.utils.DiscordClient);
 
 		set('Alphabet', Alphabet);
 		set('Song', Song);
@@ -170,14 +170,14 @@ class HScriptHandler extends SScript
 		set('WindowUtil', WindowUtil);
 		set('WindowShakeEvent', WindowUtil.WindowShakeEvent);
 		set('Debug', Debug);
-		set('WiggleEffect', shaders.WiggleEffect);
+		set('WiggleEffect', altronixengine.shaders.WiggleEffect);
 		set('AtlasFrameMaker', AtlasFrameMaker);
 		set('Achievements', Achievements);
-		set('VCRDistortionEffect', shaders.VCRDistortionEffect);
-		set('ColorSwap', shaders.ColorSwap);
+		set('VCRDistortionEffect', altronixengine.shaders.VCRDistortionEffect);
+		set('ColorSwap', altronixengine.shaders.ColorSwap);
 		set('StaticArrow', StaticArrow);
 		set('AssetsUtil', AssetsUtil);
-		set('PolymodHscriptState', states.HscriptableState.PolymodHscriptState);
+		set('PolymodHscriptState', altronixengine.states.HscriptableState.PolymodHscriptState);
 
 		set('getRGBColor', getRGBColor);
 		set('openPolymodState', openPolymodState);
@@ -187,7 +187,7 @@ class HScriptHandler extends SScript
 	{
 		try
 		{
-			var state = states.HscriptableState.PolymodHscriptState.init(scriptFileName);
+			var state = altronixengine.states.HscriptableState.PolymodHscriptState.init(scriptFileName);
 			MusicBeatState.switchState(state);
 		}
 		catch (e)

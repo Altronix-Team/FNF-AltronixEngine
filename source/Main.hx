@@ -10,7 +10,7 @@ import haxe.Exception;
 import lime.app.Application;
 import lime.system.ThreadPool;
 import lime.utils.LogLevel;
-import modding.ModUtil;
+import altronixengine.modding.ModUtil;
 import openfl.Assets;
 import openfl.Lib;
 import openfl.display.Sprite;
@@ -19,25 +19,24 @@ import openfl.events.UncaughtErrorEvent;
 import openfl.system.Capabilities;
 import openfl.utils.AssetCache;
 import openfl.utils.AssetLibrary;
-import states.HscriptableState.PolymodHscriptState;
+import altronixengine.states.HscriptableState.PolymodHscriptState;
 import sys.io.Process;
-import utils.Debug.DebugLogWriter;
-import utils.EngineFPS;
-import utils.EngineSave;
-import utils.ThreadUtil;
+import altronixengine.utils.Debug.DebugLogWriter;
+import altronixengine.utils.EngineFPS;
+import altronixengine.utils.EngineSave;
+import altronixengine.utils.ThreadUtil;
 #if cpp
 import cpp.vm.Gc;
 #end
 #if FEATURE_MODCORE
-import modding.ModCore;
+import altronixengine.modding.ModCore;
 #end
 
-// TODO Altronix Engine start splash
 class Main extends Sprite
 {
 	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	var gameHeight:Int = 720; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
-	var initialState:Class<FlxState> = states.TitleState; // The FlxState the game starts with.
+	var initialState:Class<FlxState> = altronixengine.states.TitleState; // The FlxState the game starts with.
 
 	var framerate:Int = 120; // How many frames per second the game should run at.
 	var skipSplash:Bool = true; // Whether to skip the flixel splash screen that appears in release mode.
@@ -92,8 +91,8 @@ class Main extends Sprite
 		#end
 		#end
 
-		compileTime = macros.MacroUtil.buildDateString().toString();
-		haxeVersion = macros.CheckHaxeVersion.checkHaxeVersion().toString();
+		compileTime = altronixengine.macros.MacroUtil.buildDateString().toString();
+		haxeVersion = altronixengine.macros.CheckHaxeVersion.checkHaxeVersion().toString();
 
 		if (stage != null)
 		{
@@ -168,7 +167,7 @@ class Main extends Sprite
 		Debug.onGameStart();
 
 		// setup automatic beat, step and section updates
-		gameplayStuff.Conductor.setupUpdates();
+		altronixengine.gameplayStuff.Conductor.setupUpdates();
 	}
 
 	static final ERROR_REPORT_URL = "https://github.com/AltronMaxX/FNF-AltronixEngine";
@@ -204,7 +203,7 @@ class Main extends Sprite
 		errorMsg += '==========SYSTEM INFO==========\n';
 		errorMsg += 'Altronix Engine version: ${EngineConstants.engineVer}\n';
 		errorMsg += '  HaxeFlixel version: ${Std.string(FlxG.VERSION)}\n';
-		errorMsg += '  Friday Night Funkin\' version: ${states.MainMenuState.gameVer}\n';
+		errorMsg += '  Friday Night Funkin\' version: ${altronixengine.states.MainMenuState.gameVer}\n';
 		errorMsg += 'System telemetry:\n';
 		errorMsg += '  OS: ${Capabilities.os}\n';
 
@@ -288,7 +287,7 @@ class Main extends Sprite
 		errorMsg += '==========SYSTEM INFO==========\n';
 		errorMsg += 'Altronix Engine version: ${EngineConstants.engineVer}\n';
 		errorMsg += '  HaxeFlixel version: ${Std.string(FlxG.VERSION)}\n';
-		errorMsg += '  Friday Night Funkin\' version: ${states.MainMenuState.gameVer}\n';
+		errorMsg += '  Friday Night Funkin\' version: ${altronixengine.states.MainMenuState.gameVer}\n';
 		errorMsg += 'System telemetry:\n';
 		errorMsg += '  OS: ${Capabilities.os}\n';
 

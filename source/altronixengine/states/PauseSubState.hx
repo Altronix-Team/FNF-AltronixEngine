@@ -1,6 +1,6 @@
-package states;
+package altronixengine.states;
 
-import core.Controls.Control;
+import altronixengine.core.Controls.Control;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
@@ -13,12 +13,12 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
-import gameplayStuff.PlayStateChangeables;
-import gameplayStuff.Song;
+import altronixengine.gameplayStuff.PlayStateChangeables;
+import altronixengine.gameplayStuff.Song;
 import openfl.Lib;
-import scriptStuff.ScriptHelper;
-import states.playState.GameData as Data;
-import states.playState.PlayState;
+import altronixengine.scriptStuff.ScriptHelper;
+import altronixengine.states.playState.GameData as Data;
+import altronixengine.states.playState.PlayState;
 
 class PauseSubState extends MusicBeatSubstate
 {

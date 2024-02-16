@@ -1,6 +1,6 @@
-package core;
+package altronixengine.core;
 
-import core.Controls;
+import altronixengine.core.Controls;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.util.FlxSignal;

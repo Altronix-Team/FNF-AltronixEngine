@@ -1,4 +1,4 @@
-package states;
+package altronixengine.states;
 
 import flixel.FlxState;
 import flixel.addons.transition.FlxTransitionableState;

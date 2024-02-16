@@ -1,4 +1,4 @@
-package shaders;
+package altronixengine.shaders;
 
 import flixel.system.FlxAssets.FlxShader;
 import openfl.Lib;

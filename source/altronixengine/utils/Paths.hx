@@ -1,11 +1,11 @@
-package utils;
+package altronixengine.utils;
 
 import flixel.FlxG;
 import flixel.graphics.frames.FlxFramesCollection;
 import haxe.Json;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
-import states.playState.GameData;
+import altronixengine.states.playState.GameData;
 
 class Paths
 {

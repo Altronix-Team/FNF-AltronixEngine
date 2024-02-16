@@ -14,8 +14,6 @@ function startCutscene()
 	tankman.antialiasing = Main.save.data.antialiasing;
 	cutsceneHandler.push(tankman);
 	PlayState.instance.insert(PlayState.instance.members.indexOf(dadGroup) + 1, tankman);
-
-	Main.gjToastManager.visible = false;
 	
 	cutsceneHandler.finishCallback = function()
 	{
@@ -26,7 +24,6 @@ function startCutscene()
 		PlayState.instance.moveCamera(true);
 		PlayState.instance.startCountdown();
 		
-		Main.gjToastManager.visible = true;
 		camHUD.visible = true;
 		dadGroup.alpha = 1;
 		gfGroup.alpha = 1;

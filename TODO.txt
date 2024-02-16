@@ -1,2 +1,7 @@
-Make a basic game in the form of a mod
+!!!!Make a basic game in the form of a mod
 And other todo`s in code files
+source code refacor
+polymod script classes
+rework game stage system
+psych to altronix dialogue convertion
+dialogue editors?

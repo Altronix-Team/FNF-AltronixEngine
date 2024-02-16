@@ -76,7 +76,6 @@ function startCutscene()
 
 	PlayState.instance.add(red);
 	camHUD.visible = false;
-	Main.gjToastManager.visible = false;
 
 	new FlxTimer().start(0.3, function(tmr:FlxTimer)
 	{
@@ -97,7 +96,6 @@ function startCutscene()
 					PlayState.instance.remove(senpaiEvil);
 					PlayState.instance.remove(red);
 					camHUD.visible = true;
-					Main.gjToastManager.visible = true;
 					FlxG.camera.fade(0xFFFFFFFF, 0.01, true, function()
 					{
 						PlayState.instance.add(dialogueBox);

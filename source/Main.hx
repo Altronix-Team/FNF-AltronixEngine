@@ -5,7 +5,6 @@ import flixel.FlxGame;
 import flixel.FlxState;
 import flixel.system.scaleModes.StageSizeScaleMode;
 import flixel.util.FlxColor;
-import gamejolt.GameJolt.GJToastManager;
 import haxe.CallStack;
 import haxe.Exception;
 import lime.app.Application;
@@ -36,16 +35,10 @@ import modding.ModCore;
 // TODO Altronix Engine start splash
 class Main extends Sprite
 {
-	public static var gjToastManager:GJToastManager;
-
 	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	var gameHeight:Int = 720; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	var initialState:Class<FlxState> = states.TitleState; // The FlxState the game starts with.
 
-	#if (flixel < "5.0.0")
-	var zoom:Float = -1; // If -1, zoom is automatically calculated to fit the window dimensions.
-
-	#end
 	var framerate:Int = 120; // How many frames per second the game should run at.
 	var skipSplash:Bool = true; // Whether to skip the flixel splash screen that appears in release mode.
 	var startFullscreen:Bool = false; // Whether to start the game in fullscreen on desktop targets
@@ -133,20 +126,6 @@ class Main extends Sprite
 
 		EngineData.keyCheck();
 
-		#if (flixel < "5.0.0")
-		var stageWidth:Int = Lib.current.stage.stageWidth;
-		var stageHeight:Int = Lib.current.stage.stageHeight;
-
-		if (zoom == -1)
-		{
-			var ratioX:Float = stageWidth / gameWidth;
-			var ratioY:Float = stageHeight / gameHeight;
-			zoom = Math.min(ratioX, ratioY);
-			gameWidth = Math.ceil(stageWidth / zoom);
-			gameHeight = Math.ceil(stageHeight / zoom);
-		}
-		#end
-
 		framerate = save.data.fpsCap;
 
 		#if !cpp
@@ -176,22 +155,14 @@ class Main extends Sprite
 
 		hscriptClasses = PolymodHscriptState.listScriptClasses();
 
-		game = new CustomGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash
+		game = new CustomGame(gameWidth, gameHeight, initialState, framerate, framerate, skipSplash
 			#if (!debug), save.data.fullscreenOnStart #end);
 		addChild(game);
-
-		// FlxG.scaleMode = new StageSizeScaleMode();
-
-		FlxG.signals.preStateCreate.add(preStateSwitch);
-		FlxG.signals.postStateSwitch.add(postStateSwitch);
 
 		#if !mobile
 		// addChild(fpsCounter);
 		toggleFPS(Main.save.data.fps);
 		#end
-
-		gjToastManager = new GJToastManager();
-		addChild(gjToastManager);
 
 		// Finish up loading debug tools.
 		Debug.onGameStart();
@@ -377,8 +348,6 @@ class Main extends Sprite
 
 	public static var fpsCounter:EngineFPS = null;
 
-	// taken from forever engine, cuz optimization very pog.
-	// thank you shubs :)
 	public static function dumpCache()
 	{
 		@:privateAccess
@@ -455,30 +424,6 @@ class Main extends Sprite
 			Debug.logError('Failed to set save ' + e.details());
 			return false;
 		}
-	}
-
-	private function preStateSwitch(newState:FlxState)
-	{
-		/*var cache = cast(Assets.cache, AssetCache);
-
-		dumpCache();
-
-		cache.clear();
-		#if cpp
-		Gc.run(true);
-		#else
-		openfl.system.System.gc();
-		#end*/
-	}
-
-	private function postStateSwitch()
-	{
-		/*#if cpp
-		Gc.run(true);
-		#else
-		openfl.system.System.gc();
-		#end
-		EngineFPS.fpsText.clearMaxFPS();*/
 	}
 }
 
@@ -558,10 +503,5 @@ class CustomGame extends FlxGame
 		final msg:String = caughtErrors.join('\n');
 
 		Debug.displayAlert('Error!', '$msg\n${e.details()}');
-
-		@:privateAccess {	
-			FlxG.game._requestedState = new states.TitleState(true);
-			FlxG.game.switchState();
-		}
 	}
 }

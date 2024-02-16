@@ -62,9 +62,8 @@
 	<classpath name="source" />
 	
 	<define name="CHECK_FOR_DEFAULT_CHARACTERS"/>
-	<!--define name="USE_FLIXEL3D"/-->
-	<!--define name="USE_YAML"/-->
-	<define name="VIDEOS_ALLOWED" if="windows || linux || android" unless="32bits"/>
+	<define name="VIDEOS_ALLOWED" if="windows || linux || android || cpp" unless="32bits"/>
+	<define name="DISCORD_ALLOWED" if="desctop || cpp" />
 
 	<haxeflag name="-dce" value="std" />
 	
@@ -119,16 +118,14 @@
 	<haxelib name="flixel-ui" />
 	<haxelib name="flxanimate" />
 
-	<haxelib name="away3d" if="USE_FLIXEL3D"/>
-
-	<haxelib name="AE-Script"/>
+	<haxelib name="SScript" />
 	<haxedef name="hscriptPos"/>
 	<haxedef name="openflPos"/>	
 
 	<haxelib name="polymod" if='desktop'/>
-	<haxelib name="discord_rpc" if="desktop"/>
+	<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED"/>
+	<haxedef name="DISCORD_DISABLE_IO_THREAD" if="hxdiscord_rpc" />
 	<haxelib name="hxCodec" if="VIDEOS_ALLOWED"/>
-	<haxelib name="yaml" if="USE_YAML"/>
 	<haxelib name="haxe-strings" />
 	<haxelib name="firetongue" />
 	
@@ -166,7 +163,9 @@
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
 	
 	<haxedef name="no-deprecation-warnings" unless="debug"/>
-	
+
+	<!-- Disable Discord IO Thread -->
+	<haxedef name="DISCORD_DISABLE_IO_THREAD" if="hxdiscord_rpc" />
 
 	<!-- _________________________________ Custom _______________________________ -->
 

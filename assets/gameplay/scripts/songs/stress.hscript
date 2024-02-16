@@ -53,8 +53,6 @@ function startCutscene()
 	boyfriendCutscene.animation.play('idle', true);
 	boyfriendCutscene.animation.curAnim.finish();
 	PlayState.instance.insert(PlayState.instance.members.indexOf(boyfriendGroup) + 1, boyfriendCutscene);
-
-	Main.gjToastManager.visible = false;
 	
 	cutsceneHandler.finishCallback = function()
 	{
@@ -64,8 +62,7 @@ function startCutscene()
 		FlxTween.tween(FlxG.camera, {zoom: PlayState.instance.defaultCamZoom}, timeForStuff, {ease: FlxEase.quadInOut});
 		PlayState.instance.moveCamera(true);
 		PlayState.instance.startCountdown();
-		
-		Main.gjToastManager.visible = true;
+
 		camHUD.visible = true;
 		dadGroup.alpha = 1;
 		gfGroup.alpha = 1;

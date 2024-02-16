@@ -2123,9 +2123,6 @@ class PlayState extends MusicBeatState
 		#if !debug
 		perfectMode = false;
 		#end
-		/*if (!PlayStateChangeables.Optimize && !hscriptStageCheck)
-			if (Stage != null)
-				Stage.update(elapsed);*/
 
 		if (Main.save.data.botplay != PlayStateChangeables.botPlay)
 		{
@@ -2292,35 +2289,6 @@ class PlayState extends MusicBeatState
 		}
 
 		#if debug
-		/*if (!PlayStateChangeables.Optimize && (!hscriptStageCheck))
-			if (FlxG.keys.justPressed.EIGHT && songStarted)
-			{
-				paused = true;
-				new FlxTimer().start(0.3, function(tmr:FlxTimer)
-				{
-					for (bg in Stage.toAdd)
-					{
-						remove(bg);
-					}
-					for (array in Stage.layInFront)
-					{
-						for (bg in array)
-							remove(bg);
-					}
-					for (group in Stage.swagGroup)
-					{
-						remove(group);
-					}
-					remove(boyfriend);
-					remove(dad);
-					remove(gf);
-				});
-				MusicBeatState.switchState(new altronixengine.editors.StageDebugState(Stage.curStage, gf.curCharacter, boyfriend.curCharacter, dad.curCharacter));
-				clean();
-				FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, handleInput);
-				FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, releaseInput);
-			}*/
-
 		if (FlxG.keys.justPressed.TWO && songStarted)
 		{ // Go 10 seconds into the future, credit: Shadow Mario#9396
 			if (!usedTimeTravel && Conductor.songPosition + 10000 < FlxG.sound.music.length)
@@ -3331,25 +3299,6 @@ class PlayState extends MusicBeatState
 				clean();
 				Main.save.data.offset = offsetTest;
 			}
-			/*else if (Data.stageTesting)
-			{
-				new FlxTimer().start(0.3, function(tmr:FlxTimer)
-				{
-					for (bg in Stage.toAdd)
-					{
-						remove(bg);
-					}
-					for (array in Stage.layInFront)
-					{
-						for (bg in array)
-							remove(bg);
-					}
-					remove(boyfriend);
-					remove(dad);
-					remove(gf);
-				});
-				MusicBeatState.switchState(new altronixengine.editors.StageDebugState(Stage.curStage));
-			}*/
 			else
 			{
 				var savedAchievements:Array<String> = Main.save.data.savedAchievements;
@@ -4291,9 +4240,6 @@ class PlayState extends MusicBeatState
 
 		ScriptHelper.setOnHscript('curStep', curStep);
 
-		//if (Stage != null)
-			//Stage.stepHit();
-
 		super.stepHit();
 	}
 
@@ -4320,9 +4266,6 @@ class PlayState extends MusicBeatState
 		ScriptHelper.setOnHscript('curSectionNumber', curSectionInt);
 
 		ScriptHelper.setOnHscript('curSection', curSection);
-
-		//if (Stage != null)
-			//Stage.sectionHit();
 
 		super.sectionHit();
 	}
@@ -4405,9 +4348,6 @@ class PlayState extends MusicBeatState
 		}
 
 		ScriptHelper.setOnHscript('curBeat', curBeat);
-
-		//if (Stage != null)
-			//Stage.beatHit();
 
 		super.beatHit();
 

@@ -883,6 +883,30 @@ class Stage extends altronixengine.states.MusicBeatState
 		}
 	}
 
+	var oldLight = 999999;
+
+	public var windowColor:FlxColor = FlxColor.WHITE;
+
+	function randomColor()
+	{
+		curLight = FlxG.random.int(0, 4, [oldLight]);
+		oldLight = curLight;
+
+		switch (curLight)
+		{
+			case 4:
+				windowColor = FlxColor.fromRGB(251, 166, 51);
+			case 3:
+				windowColor = FlxColor.fromRGB(253, 69, 49);
+			case 2:
+				windowColor = FlxColor.fromRGB(251, 51, 245);
+			case 1:
+				windowColor = FlxColor.fromRGB(49, 253, 140);
+			case 0:
+				windowColor = FlxColor.fromRGB(49, 162, 253);
+		}
+	}
+
 	// Variables and Functions for Stages
 	var lightningStrikeBeat:Int = 0;
 	var lightningOffset:Int = 8;

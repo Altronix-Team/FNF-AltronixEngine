@@ -277,10 +277,10 @@ class Character extends FNFSprite
 			if (getCurAnim() != null)
 			{
 				if (!getCurAnimName().contains('sing') || getCurAnim().finished)
-					dance(false, altIdle);
+					dance(true, altIdle);
 			}
 			else
-				dance(false, altIdle);
+				dance(true, altIdle);
 		}
 	}
 

@@ -162,6 +162,8 @@ class WarzoneStage extends BaseStage{
     }
 
     override function update(elapsed:Float){
+        super.update(elapsed);
+        
         moveTank(elapsed);
     }
 

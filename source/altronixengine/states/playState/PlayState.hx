@@ -1365,10 +1365,6 @@ class PlayState extends MusicBeatState
 					Paths.getUIImagePath('set', true),
 					Paths.getUIImagePath('date', true)
 				]);
-				var introSndPaths:Array<String> = [
-					"intro3" + altSuffix, "intro2" + altSuffix,
-					"intro1" + altSuffix, "introGo" + altSuffix
-				];
 
 				var introAlts:Array<String> = introAssets.get('default');
 				var week6Bullshit:String = null;
@@ -1379,6 +1375,11 @@ class PlayState extends MusicBeatState
 					altSuffix = '-pixel';
 					week6Bullshit = 'week6';
 				}
+
+				var introSndPaths:Array<String> = [
+					"intro3" + altSuffix, "intro2" + altSuffix,
+					"intro1" + altSuffix, "introGo" + altSuffix
+				];
 
 				if (swagCounter > 0)
 					readySetGo(introAlts[swagCounter - 1]);

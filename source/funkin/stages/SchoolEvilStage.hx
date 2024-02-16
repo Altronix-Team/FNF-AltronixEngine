@@ -7,8 +7,6 @@ class SchoolEvilStage extends BaseStage{
     var wiggleShit:WiggleEffect;
 
     override function create() {
-        super.create();
-
         var posX = 400;
         var posY = 200;
 
@@ -41,6 +39,8 @@ class SchoolEvilStage extends BaseStage{
     }
 
     override function update(elapsed:Float){
+        super.update(elapsed);
+        
         wiggleShit.update(elapsed);
     }
 }

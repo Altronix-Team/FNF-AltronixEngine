@@ -58,7 +58,6 @@ import altronixengine.gameplayStuff.Song.Event;
 import altronixengine.gameplayStuff.Song.EventsAtPos;
 import altronixengine.gameplayStuff.Song.SongData;
 import altronixengine.gameplayStuff.Song;
-import altronixengine.gameplayStuff.Stage;
 import altronixengine.gameplayStuff.StageData;
 import altronixengine.gameplayStuff.StaticArrow;
 import altronixengine.gameplayStuff.StrumLine;
@@ -98,6 +97,7 @@ import altronixengine.shaders.WiggleEffect;
 import altronixengine.states.playState.GameData as Data;
 import sys.thread.Lock;
 import sys.thread.Mutex;
+import altronixengine.gameplayStuff.BaseStage;
 
 #if FEATURE_FILESYSTEM
 import Sys;
@@ -149,9 +149,9 @@ class PlayState extends MusicBeatState
 
 	public var vocals:FlxSound;
 
-	public var dad:Character = null;
-	public var gf:Character = null;
-	public var boyfriend:Boyfriend = null;
+	public var dad(get, never):Character;
+	public var gf(get, never):Character;
+	public var boyfriend(get, never):Boyfriend;
 
 	var chars:Array<Character> = [];
 
@@ -198,9 +198,6 @@ class PlayState extends MusicBeatState
 
 	public var camHUD:FlxCamera;
 
-	// public var camSustains:FlxCamera;
-	// public var camNotes:FlxCamera;
-	// public var camManager:CameraManager;
 	public var camGame:FlxCamera;
 
 	public var cannotDie = false;
@@ -245,7 +242,7 @@ class PlayState extends MusicBeatState
 
 	public var randomVar = false;
 
-	public var Stage:Stage;
+	public var curStage:BaseStage;
 
 	public var hscriptStage:HscriptStage;
 
@@ -265,9 +262,9 @@ class PlayState extends MusicBeatState
 	public var dadMap:Map<String, Character> = new Map();
 	public var gfMap:Map<String, Character> = new Map();
 
-	public var boyfriendGroup:FlxSpriteGroup;
-	public var dadGroup:FlxSpriteGroup;
-	public var gfGroup:FlxSpriteGroup;
+	public var boyfriendGroup(get, never):FlxSpriteGroup;
+	public var dadGroup(get, never):FlxSpriteGroup;
+	public var gfGroup(get, never):FlxSpriteGroup;
 
 	private var isCameraOnForcedPos:Bool = false;
 
@@ -288,7 +285,7 @@ class PlayState extends MusicBeatState
 	var bfAltAnim:Bool = false;
 	var dadAltAnim:Bool = false;
 
-	var hscriptStageCheck = false;
+	public var hscriptStageCheck = false;
 
 	public var doof:DialogueBox = null;
 
@@ -298,13 +295,6 @@ class PlayState extends MusicBeatState
 
 	var useDownscroll(default, set):Bool = false;
 
-	// Hscript groups
-	// public static var noteScripts:Array<NoteScriptBody> = [];
-	/*public static var diffScripts:Array<DiffScriptBody> = [];
-		public static var characterScripts:Array<CharacterScriptBody> = [];
-		public static var eventScripts:Array<EventScriptBody> = [];
-		public static var songScripts:Array<SongScriptBody> = []; */
-	// public static var stageScript:StageScriptBody = null;
 	var openChart:Bool = false;
 
 	public function new(openChart:Bool = false)
@@ -556,14 +546,6 @@ class PlayState extends MusicBeatState
 		if (Data.isStoryMode)
 			Data.songMultiplier = 1;
 
-		var gfCheck:String = 'gf';
-
-		gfCheck = Data.SONG.gfVersion;
-
-		boyfriendGroup = new FlxSpriteGroup(BF_X, BF_Y);
-		dadGroup = new FlxSpriteGroup(DAD_X, DAD_Y);
-		gfGroup = new FlxSpriteGroup(GF_X, GF_Y);
-
 		var stageData:StageFile = StageData.getStageFile(Data.SONG.stage);
 		if (stageData == null)
 		{
@@ -603,14 +585,35 @@ class PlayState extends MusicBeatState
 		else
 			camPos = new FlxPoint(boyfriendCameraOffset[0], boyfriendCameraOffset[1]);
 
+		Debug.logInfo('Loading stage');
+		if (!Data.stageTesting)
+		{
+			/*if (Paths.getHscriptPath(Data.SONG.stage, 'stages') != null)
+			{
+				try
+				{
+					hscriptStage = new HscriptStage(Paths.getHscriptPath(Data.SONG.stage, 'stages'), this);
+					ScriptHelper.hscriptFiles.push(hscriptStage);
+					hscriptStageCheck = true;
+				}
+				catch (e)
+				{
+					if (Std.isOfType(e, ScriptException))
+					{
+						scriptError(e);
+						return;
+					}
+					else
+						Debug.displayAlert('Error with hscript stage file!', Std.string(e));
+				}
+			}
+			else
+			{*/
+				curStage = BaseStage.initStage(Data.SONG.stage, this);
+			//}
+		}
+
 		Debug.logInfo('Loading characters');
-
-		gf = new Character(400, 130, gfCheck);
-
-		startCharacterPos(gf);
-		gf.scrollFactor.set(0.95, 0.95);
-		gfGroup.add(gf);
-		startCharacterHscript(gf.curCharacter);
 
 		ScriptHelper.setOnHscript('gfName', gf.curCharacter);
 
@@ -629,12 +632,6 @@ class PlayState extends MusicBeatState
 
 		if (hideGF)
 			gf.visible = false;
-
-		boyfriend = new Boyfriend(770, 450, Data.SONG.player1);
-
-		startCharacterPos(boyfriend);
-		boyfriendGroup.add(boyfriend);
-		startCharacterHscript(boyfriend.curCharacter);
 
 		ScriptHelper.setOnHscript('boyfriendName', boyfriend.curCharacter);
 
@@ -659,12 +656,6 @@ class PlayState extends MusicBeatState
 			boyfriend.x += boyfriend.positionArray[0];
 			boyfriend.y += boyfriend.positionArray[1];
 		}
-
-		dad = new Character(100, 100, Data.SONG.player2);
-
-		startCharacterPos(dad, true);
-		dadGroup.add(dad);
-		startCharacterHscript(dad.curCharacter);
 
 		ScriptHelper.setOnHscript('dadName', dad.curCharacter);
 
@@ -733,38 +724,14 @@ class PlayState extends MusicBeatState
 				gf.visible = true;
 		}
 
-		Debug.logInfo('Loading stage');
-		if (!Data.stageTesting)
-		{
-			if (Paths.getHscriptPath(Data.SONG.stage, 'stages') != null)
-			{
-				try
-				{
-					hscriptStage = new HscriptStage(Paths.getHscriptPath(Data.SONG.stage, 'stages'), this);
-					add(hscriptStage);
-					ScriptHelper.hscriptFiles.push(hscriptStage);
-					hscriptStageCheck = true;
-				}
-				catch (e)
-				{
-					if (Std.isOfType(e, ScriptException))
-					{
-						scriptError(e);
-						return;
-					}
-					else
-						Debug.displayAlert('Error with hscript stage file!', Std.string(e));
-				}
-			}
-			else
-			{
-				Stage = new Stage(Data.SONG.stage);
-			}
-		}
+		//if (hscriptStage != null)
+			//add(hscriptStage);
+		//else if (curStage != null)
+			add(curStage);
 
 		if (hscriptStageCheck)
 		{
-			if (!hscriptStage.members.contains(gfGroup))
+			/*if (!hscriptStage.members.contains(gfGroup))
 				add(gfGroup);
 			else
 				gfGroup = hscriptStage.gfGroup;
@@ -772,64 +739,13 @@ class PlayState extends MusicBeatState
 			if (!hscriptStage.members.contains(dadGroup))
 				add(dadGroup);
 			else
-				dadGroup = hscriptStage.dadGroup;
+				dadGroup = hscriptStage.dadGroup;*/
 
-			if (!hscriptStage.members.contains(boyfriendGroup))
-				add(boyfriendGroup);
-			else
-				boyfriendGroup = hscriptStage.boyfriendGroup;
-		}
-
-		if (!hscriptStageCheck)
-		{
-			for (i in Stage.toAdd)
-			{
-				add(i);
-			}
+			//if (hscriptStage.members.contains(boyfriendGroup))
+				//boyfriendGroup = hscriptStage.boyfriendGroup;
 		}
 
 		this.hideGF = stageData.hideGF || Data.SONG.hideGF;
-
-		if (!PlayStateChangeables.Optimize && (!hscriptStageCheck))
-			for (index => array in Stage.layInFront)
-			{
-				switch (index)
-				{
-					case 0:
-						add(gfGroup);
-						gfGroup.scrollFactor.set(0.95, 0.95);
-						if (!hscriptStageCheck)
-						{
-							for (bg in array)
-							{
-								add(bg);
-							}
-						}
-					case 1:
-						add(dadGroup);
-						if (!hscriptStageCheck)
-						{
-							for (bg in array)
-							{
-								add(bg);
-							}
-						}
-					case 2:
-						add(boyfriendGroup);
-						if (!hscriptStageCheck)
-						{
-							for (bg in array)
-							{
-								add(bg);
-							}
-						}
-				}
-			}
-
-		Debug.logTrace('Generated stage');
-
-		if (!hscriptStageCheck)
-			Stage.update(0);
 
 		#if desktop
 		if (Paths.getHscriptPath(Data.SONG.songId, 'songs') != null)
@@ -2207,9 +2123,9 @@ class PlayState extends MusicBeatState
 		#if !debug
 		perfectMode = false;
 		#end
-		if (!PlayStateChangeables.Optimize && !hscriptStageCheck)
+		/*if (!PlayStateChangeables.Optimize && !hscriptStageCheck)
 			if (Stage != null)
-				Stage.update(elapsed);
+				Stage.update(elapsed);*/
 
 		if (Main.save.data.botplay != PlayStateChangeables.botPlay)
 		{
@@ -2376,7 +2292,7 @@ class PlayState extends MusicBeatState
 		}
 
 		#if debug
-		if (!PlayStateChangeables.Optimize && (!hscriptStageCheck))
+		/*if (!PlayStateChangeables.Optimize && (!hscriptStageCheck))
 			if (FlxG.keys.justPressed.EIGHT && songStarted)
 			{
 				paused = true;
@@ -2403,7 +2319,7 @@ class PlayState extends MusicBeatState
 				clean();
 				FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, handleInput);
 				FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, releaseInput);
-			}
+			}*/
 
 		if (FlxG.keys.justPressed.TWO && songStarted)
 		{ // Go 10 seconds into the future, credit: Shadow Mario#9396
@@ -2953,7 +2869,7 @@ class PlayState extends MusicBeatState
 		ScriptHelper.callOnHscript('onUpdatePost', [elapsed]);
 	}
 
-	public function addCharacterToList(newCharacter:String, type:Int)
+	/*public function addCharacterToList(newCharacter:String, type:Int)
 	{
 		switch (type)
 		{
@@ -2988,7 +2904,7 @@ class PlayState extends MusicBeatState
 					newGf.alpha = 0.00001;
 				}
 		}
-	}
+	}*/
 
 	function openChartEditor()
 	{
@@ -3004,19 +2920,6 @@ class PlayState extends MusicBeatState
 		#end
 	}
 
-	function startCharacterPos(char:Character, ?gfCheck:Bool = false)
-	{
-		if (gfCheck && char.replacesGF)
-		{
-			char.setPosition(GF_X, GF_Y);
-			char.scrollFactor.set(0.95, 0.95);
-		}
-		if (char.positionArray != null)
-		{
-			char.x += char.positionArray[0];
-			char.y += char.positionArray[1];
-		}
-	}
 
 	public function camFollowPos(x:Float = 0, y:Float = 0)
 	{
@@ -3038,7 +2941,7 @@ class PlayState extends MusicBeatState
 		songUI.reloadHealthBarColors();
 	}
 
-	public function changeCharacter(charType:String = 'bf', newCharName:String)
+	/*public function changeCharacter(charType:String = 'bf', newCharName:String)
 	{
 		switch (charType)
 		{
@@ -3177,9 +3080,9 @@ class PlayState extends MusicBeatState
 		}
 		reloadHealthBarColors();
 		reloadIcons();
-	}
+	}*/
 
-	public function changeCharacterToCached(charType:String = 'bf', newChar:Dynamic)
+	/*public function changeCharacterToCached(charType:String = 'bf', newChar:Dynamic)
 	{
 		if (newChar == null)
 		{
@@ -3324,7 +3227,7 @@ class PlayState extends MusicBeatState
 		}
 		reloadHealthBarColors();
 		reloadIcons();
-	}
+	}*/
 
 	public function reloadIcons()
 	{
@@ -3428,7 +3331,7 @@ class PlayState extends MusicBeatState
 				clean();
 				Main.save.data.offset = offsetTest;
 			}
-			else if (Data.stageTesting)
+			/*else if (Data.stageTesting)
 			{
 				new FlxTimer().start(0.3, function(tmr:FlxTimer)
 				{
@@ -3446,7 +3349,7 @@ class PlayState extends MusicBeatState
 					remove(gf);
 				});
 				MusicBeatState.switchState(new altronixengine.editors.StageDebugState(Stage.curStage));
-			}
+			}*/
 			else
 			{
 				var savedAchievements:Array<String> = Main.save.data.savedAchievements;
@@ -4388,8 +4291,8 @@ class PlayState extends MusicBeatState
 
 		ScriptHelper.setOnHscript('curStep', curStep);
 
-		if (Stage != null)
-			Stage.stepHit();
+		//if (Stage != null)
+			//Stage.stepHit();
 
 		super.stepHit();
 	}
@@ -4418,8 +4321,8 @@ class PlayState extends MusicBeatState
 
 		ScriptHelper.setOnHscript('curSection', curSection);
 
-		if (Stage != null)
-			Stage.sectionHit();
+		//if (Stage != null)
+			//Stage.sectionHit();
 
 		super.sectionHit();
 	}
@@ -4503,8 +4406,8 @@ class PlayState extends MusicBeatState
 
 		ScriptHelper.setOnHscript('curBeat', curBeat);
 
-		if (Stage != null)
-			Stage.beatHit();
+		//if (Stage != null)
+			//Stage.beatHit();
 
 		super.beatHit();
 
@@ -4539,7 +4442,7 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	function startCharacterHscript(name:String)
+	public function startCharacterHscript(name:String)
 	{
 		try
 		{
@@ -4556,7 +4459,7 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	function scriptError(e:Exception)
+	public function scriptError(e:Exception)
 	{
 		Debug.displayAlert("Script error!", Std.string(e));
 
@@ -4657,5 +4560,29 @@ class PlayState extends MusicBeatState
 		ScriptHelper.callOnHscript('onHealthChange', [health]);
 
 		return value;
+	}
+
+	private function get_gfGroup():FlxSpriteGroup{
+		return curStage?.gfGroup;
+	}
+
+	private function get_boyfriendGroup():FlxSpriteGroup{
+		return curStage?.boyfriendGroup;
+	}
+
+	private function get_dadGroup():FlxSpriteGroup{
+		return curStage?.dadGroup;
+	}
+
+	private function get_gf():Character{
+		return curStage?.gf;
+	}
+
+	private function get_boyfriend():Boyfriend{
+		return curStage?.boyfriend;
+	}
+
+	private function get_dad():Character{
+		return curStage?.dad;
 	}
 }

@@ -40,7 +40,6 @@ import altronixengine.gameplayStuff.Character;
 import altronixengine.gameplayStuff.Conductor;
 import altronixengine.gameplayStuff.Note;
 import altronixengine.gameplayStuff.Song;
-import altronixengine.gameplayStuff.Stage;
 import altronixengine.gameplayStuff.StaticArrow;
 import funkin.gameplayStuff.TankmenBG;
 import haxe.Constraints.Function;
@@ -166,7 +165,7 @@ class HScriptHandler extends SScript
 		set('Main', Main);
 		set('Note', Note);
 		set('Paths', Paths);
-		set('Stage', Stage);
+		//set('Stage', Stage);
 		set('WindowUtil', WindowUtil);
 		set('WindowShakeEvent', WindowUtil.WindowShakeEvent);
 		set('Debug', Debug);

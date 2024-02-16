@@ -11,7 +11,6 @@ import flixel.util.FlxCollision;
 import flixel.util.FlxColor;
 import altronixengine.gameplayStuff.Boyfriend;
 import altronixengine.gameplayStuff.Character;
-import altronixengine.gameplayStuff.Stage;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import openfl.net.FileReference;
@@ -30,7 +29,7 @@ class StageDebugState extends FlxState
 	var gf:Character;
 	var boyfriend:Boyfriend;
 	var dad:Character;
-	var Stage:Stage;
+	//var Stage:Stage;
 	var camFollow:FlxObject;
 	var posText:FlxText;
 	var curChar:FlxSprite;
@@ -60,7 +59,7 @@ class StageDebugState extends FlxState
 		FlxG.sound.music.stop();
 		FlxG.mouse.visible = true;
 
-		Stage = PlayState.instance.Stage;
+		//Stage = PlayState.instance.Stage;
 
 		gf = PlayState.instance.gf;
 		boyfriend = PlayState.instance.boyfriend;
@@ -70,7 +69,7 @@ class StageDebugState extends FlxState
 			curChars.pop();
 		curChar = curChars[curCharIndex];
 
-		for (i in Stage.toAdd)
+		/*for (i in Stage.toAdd)
 		{
 			add(i);
 		}
@@ -92,7 +91,7 @@ class StageDebugState extends FlxState
 					for (bg in array)
 						add(bg);
 			}
-		}
+		}*/
 
 		camFollow = new FlxObject(0, 0, 2, 2);
 		camFollow.screenCenter();
@@ -215,7 +214,7 @@ class StageDebugState extends FlxState
 		{
 			FlxG.switchState(new PlayState());
 			Data.stageTesting = true;
-			for (i in Stage.toAdd)
+			/*for (i in Stage.toAdd)
 			{
 				remove(i);
 			}
@@ -242,7 +241,7 @@ class StageDebugState extends FlxState
 						for (bg in array)
 							remove(bg);
 				}
-			}
+			}*/
 		}
 
 		if (FlxG.keys.pressed.CONTROL && FlxG.keys.justPressed.S)
@@ -264,7 +263,7 @@ class StageDebugState extends FlxState
 
 	function getNextObject():Void
 	{
-		for (key => value in Stage.swagBacks)
+		/*for (key => value in Stage.swagBacks)
 		{
 			if (!usedObjects.contains(value))
 			{
@@ -273,7 +272,7 @@ class StageDebugState extends FlxState
 				curChar = value;
 				return;
 			}
-		}
+		}*/
 		usedObjects = [];
 		getNextObject();
 	}
@@ -303,11 +302,11 @@ class StageDebugState extends FlxState
 	{
 		var result = "";
 
-		for (spriteName => sprite in Stage.swagBacks)
+		/*for (spriteName => sprite in Stage.swagBacks)
 		{
 			var text = spriteName + " X: " + sprite.x + " Y: " + sprite.y + " Rotation: " + sprite.angle;
 			result += text + "\n";
-		}
+		}*/
 		var curCharIndex:Int = 0;
 		var char:String = '';
 		for (sprite in curChars)

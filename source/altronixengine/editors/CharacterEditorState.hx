@@ -34,7 +34,6 @@ import altronixengine.core.FlxUIDropDownMenuCustom;
 import flixel.addons.ui.FlxUIText;
 import altronixengine.gameplayStuff.StageData;
 import altronixengine.states.MusicBeatState;
-import altronixengine.gameplayStuff.Stage;
 import altronixengine.gameplayStuff.HealthIcon;
 #if FEATURE_MODCORE
 import sys.FileSystem;
@@ -42,7 +41,7 @@ import sys.FileSystem;
 
 class CharacterEditorState extends MusicBeatState
 {
-	var Stage:Stage;
+	//var Stage:Stage;
 	var char:Character;
 	var ghostChar:Character;
 	var textAnim:FlxText;
@@ -245,7 +244,7 @@ class CharacterEditorState extends MusicBeatState
 
 	function reloadBGs()
 	{
-		if (loadedStageOnce)
+		/*if (loadedStageOnce)
 		{
 			remove(cameraFollowPointer);
 			remove(charLayer);
@@ -330,7 +329,7 @@ class CharacterEditorState extends MusicBeatState
 					add(bg);
 			}
 			add(cameraFollowPointer);
-		}
+		}*/
 	}
 
 	var charDropDown:FlxUIDropDownMenuCustom;
@@ -351,25 +350,25 @@ class CharacterEditorState extends MusicBeatState
 			ghostChar.flipX = char.flipX;
 			if (check_player.checked)
 			{
-				var stageData:StageFile = Stage.stageData;
+				/*var stageData:StageFile = Stage.stageData;
 				for (char in charLayer)
 				{
 					char.setPosition(stageData.boyfriend[0], stageData.boyfriend[1]);
 
 					char.x += char.positionArray[0];
 					char.y += char.positionArray[1];
-				}
+				}*/
 			}
 			else
 			{
-				var stageData:StageFile = Stage.stageData;
+				/*var stageData:StageFile = Stage.stageData;
 				for (char in charLayer)
 				{
 					char.setPosition(stageData.dad[0], stageData.dad[1]);
 
 					char.x += char.positionArray[0];
 					char.y += char.positionArray[1];
-				}
+				}*/
 			}
 		};
 
@@ -1208,7 +1207,7 @@ class CharacterEditorState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-		Stage.update(elapsed);
+		//Stage.update(elapsed);
 
 		MusicBeatState.camBeat = FlxG.camera;
 

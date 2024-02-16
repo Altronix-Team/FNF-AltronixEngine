@@ -1,9 +1,12 @@
-package altronixengine.core;
+package altronixengine.core.musicbeat;
 
-import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
+import flixel.FlxSprite;
+import flixel.FlxBasic;
+import flixel.group.FlxGroup.FlxTypedGroup;
 import altronixengine.gameplayStuff.Conductor;
+import altronixengine.gameplayStuff.Section;
 
-class FNFSpriteGroup<T:MusicBeatSprite> extends FlxTypedSpriteGroup<T> implements IMusicBeat{
+class FNFTypedGroup<T:FlxBasic> extends FlxTypedGroup<T> implements IMusicBeat{
     
     public var curBeat:Int;
 	public var curStep:Int;
@@ -12,7 +15,7 @@ class FNFSpriteGroup<T:MusicBeatSprite> extends FlxTypedSpriteGroup<T> implement
 
 	public function new(X:Float = 0, Y:Float = 0, MaxSize:Int = 0)
 	{
-		super(X, Y, MaxSize);
+		super(MaxSize);
 	
 		Main.fnfSignals.beatHit.add(_beatHit);
 		Main.fnfSignals.sectionHit.add(_sectionHit);
@@ -33,21 +36,20 @@ class FNFSpriteGroup<T:MusicBeatSprite> extends FlxTypedSpriteGroup<T> implement
 	public function stepHit() {
 		forEach(function(obj:T){
 			if (obj is IMusicBeat)
-				obj.stepHit(step);
+			{
+				var a:IMusicBeat = cast obj;
+				a.stepHit();
+			}			
 		});
 	}
 
 	public function beatHit() {
 		forEach(function(obj:T){
 			if (obj is IMusicBeat)
-				obj.beatHit(beat);
-		});
-	}
-
-	public function decimalBeatHit() {
-		forEach(function(obj:T){
-			if (obj is IMusicBeat)
-				obj.decimalBeatHit(decBeat);
+			{
+				var a:IMusicBeat = cast obj;
+				a.beatHit();
+			}
 		});
 	}
 
@@ -55,32 +57,33 @@ class FNFSpriteGroup<T:MusicBeatSprite> extends FlxTypedSpriteGroup<T> implement
 	{
 		forEach(function(obj:T){
 			if (obj is IMusicBeat)
-				obj.sectionHir(decBeat);
+			{
+				var a:IMusicBeat = cast obj;
+				a.sectionHit();
+			}
 		});
 	}
 
 	private function _stepHit(step:Int):Void
-		{
-			curStep = step;
-			stepHit();
-		}
-	
-		private function _beatHit(beat:Int):Void
-		{
-			curBeat = beat;
-			beatHit();
-		}
-	
-		private function _sectionHit(section:SwagSection):Void
-		{
-			curSection = section;
-			sectionHit();
-		}
-	
-		private function _decimalBeatHit(beat:Float):Void
-		{
-			curDecimalBeat = beat;
-		}
+	{
+		curStep = step;
+		stepHit();
+	}
 
-	
+	private function _beatHit(beat:Int):Void
+	{
+		curBeat = beat;
+		beatHit();
+	}
+
+	private function _sectionHit(section:SwagSection):Void
+	{
+		curSection = section;
+		sectionHit();
+	}
+
+	private function _decimalBeatHit(beat:Float):Void
+	{
+		curDecimalBeat = beat;
+	}
 }

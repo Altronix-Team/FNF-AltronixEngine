@@ -34,7 +34,6 @@ import flixel.animation.FlxAnimation;
 import altronixengine.core.FlxUIDropDownMenuCustom;
 import altronixengine.gameplayStuff.StageData;
 import altronixengine.states.MusicBeatState;
-import altronixengine.gameplayStuff.Stage;
 import altronixengine.gameplayStuff.HealthIcon;
 #if FEATURE_MODCORE
 import sys.FileSystem;
@@ -45,7 +44,7 @@ import sys.FileSystem;
  */
 class GirlfriendEditorState extends MusicBeatState
 {
-	var Stage:Stage;
+	//var Stage:Stage;
 	var char:Character;
 	var ghostChar:Character;
 	var textAnim:FlxText;
@@ -229,7 +228,7 @@ class GirlfriendEditorState extends MusicBeatState
 
 	function reloadBGs()
 	{
-		if (loadedStageOnce)
+		/*if (loadedStageOnce)
 		{
 			remove(charLayer);
 			remove(cameraFollowPointer);
@@ -301,7 +300,7 @@ class GirlfriendEditorState extends MusicBeatState
 					add(bg);
 			}
 			add(cameraFollowPointer);
-		}
+		}*/
 	}
 
 	var charDropDown:FlxUIDropDownMenuCustom;
@@ -1060,7 +1059,7 @@ class GirlfriendEditorState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-		Stage.update(elapsed);
+		//Stage.update(elapsed);
 
 		var blockInput = false;
 

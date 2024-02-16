@@ -17,7 +17,6 @@ import altronixengine.gameplayStuff.StageData;
 import altronixengine.gameplayStuff.StaticArrow;
 import altronixengine.gameplayStuff.Character;
 import altronixengine.gameplayStuff.Boyfriend;
-import altronixengine.gameplayStuff.Stage;
 import altronixengine.gameplayStuff.PlayStateChangeables;
 import altronixengine.gameplayStuff.Note;
 import altronixengine.gameplayStuff.Conductor;
@@ -56,7 +55,7 @@ class GameplayCustomizeState extends MusicBeatState
 	public static var dad:Character;
 	public static var gf:Character;
 	public static var boyfriend:Boyfriend;
-	public static var Stage:Stage;
+	//public static var Stage:Stage;
 	public static var freeplayBf:String = 'bf';
 	public static var freeplayDad:String = 'dad';
 	public static var freeplayGf:String = 'gf';
@@ -174,7 +173,7 @@ class GameplayCustomizeState extends MusicBeatState
 			dad = new Character(100, 100, 'dad');
 		}
 
-		Stage = new Stage(stageCheck);
+		//Stage = new Stage(stageCheck);
 
 		var stageData:StageFile = StageData.getStageFile(stageCheck);
 		if (stageData == null)
@@ -208,7 +207,7 @@ class GameplayCustomizeState extends MusicBeatState
 		DAD_Y = stageData.dad[1];
 		dad.setPosition(DAD_X, DAD_Y);
 
-		for (i in Stage.toAdd)
+		/*for (i in Stage.toAdd)
 		{
 			add(i);
 		}
@@ -230,7 +229,7 @@ class GameplayCustomizeState extends MusicBeatState
 					for (bg in array)
 						add(bg);
 			}
-		}
+		}*/
 
 		camPos = new FlxPoint(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
 
@@ -265,7 +264,7 @@ class GameplayCustomizeState extends MusicBeatState
 		add(camFollow);
 
 		FlxG.camera.follow(camFollow, LOCKON, 0.01);
-		FlxG.camera.zoom = Stage.camZoom;
+		//FlxG.camera.zoom = Stage.camZoom;
 		FlxG.camera.focusOn(camFollow.getPosition());
 
 		FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);
@@ -376,7 +375,7 @@ class GameplayCustomizeState extends MusicBeatState
 	{
 		super.update(elapsed);
 
-		Stage.update(elapsed);
+		//Stage.update(elapsed);
 
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
@@ -387,7 +386,7 @@ class GameplayCustomizeState extends MusicBeatState
 		if (Main.save.data.zoom > 1.2)
 			Main.save.data.zoom = 1.2;
 
-		FlxG.camera.zoom = FlxMath.lerp(Stage.camZoom, FlxG.camera.zoom, 0.95);
+		//FlxG.camera.zoom = FlxMath.lerp(Stage.camZoom, FlxG.camera.zoom, 0.95);
 		camHUD.zoom = FlxMath.lerp(Main.save.data.zoom, camHUD.zoom, 0.95);
 
 		if (FlxG.mouse.overlaps(sick) && FlxG.mouse.pressed)

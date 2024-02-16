@@ -324,12 +324,6 @@ class Debug
 			Debug.logInfo('CONSOLE: Opening song $songName ($difficulty) in Chart Editor...');
 			altronixengine.states.FreeplayState.loadSongInFreePlay(songName, difficulty, true, true);
 		});
-
-		addConsoleCommand("changeCharacter", function(character:String, name:String)
-		{
-			Debug.logInfo('CONSOLE: Changing character $character to $name');
-			altronixengine.states.PlayState.instance.changeCharacter(character, name);
-		});
 	}
 
 	static function formatOutput(input:Dynamic, pos:haxe.PosInfos):Array<Dynamic>

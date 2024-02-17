@@ -6,9 +6,9 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import altronixengine.gameplayStuff.Conductor;
 import altronixengine.gameplayStuff.Section;
 
-class FNFTypedGroup<T:FlxBasic> extends FlxTypedGroup<T> implements IMusicBeat{
-    
-    public var curBeat:Int;
+class FNFTypedGroup<T:FlxBasic> extends FlxTypedGroup<T> implements IMusicBeat
+{
+	public var curBeat:Int;
 	public var curStep:Int;
 	public var curDecimalBeat:Float;
 	public var curSection:SwagSection;
@@ -16,35 +16,39 @@ class FNFTypedGroup<T:FlxBasic> extends FlxTypedGroup<T> implements IMusicBeat{
 	public function new(X:Float = 0, Y:Float = 0, MaxSize:Int = 0)
 	{
 		super(MaxSize);
-	
+
 		Main.fnfSignals.beatHit.add(_beatHit);
 		Main.fnfSignals.sectionHit.add(_sectionHit);
 		Main.fnfSignals.stepHit.add(_stepHit);
 		Main.fnfSignals.decimalBeatHit.add(_decimalBeatHit);
 	}
-	
-	override function destroy() 
+
+	override function destroy()
 	{
 		Main.fnfSignals.beatHit.remove(_beatHit);
 		Main.fnfSignals.sectionHit.remove(_sectionHit);
 		Main.fnfSignals.stepHit.remove(_stepHit);
 		Main.fnfSignals.decimalBeatHit.remove(_decimalBeatHit);
-	
+
 		super.destroy();
 	}
 
-	public function stepHit() {
-		forEach(function(obj:T){
+	public function stepHit()
+	{
+		forEach(function(obj:T)
+		{
 			if (obj is IMusicBeat)
 			{
 				var a:IMusicBeat = cast obj;
 				a.stepHit();
-			}			
+			}
 		});
 	}
 
-	public function beatHit() {
-		forEach(function(obj:T){
+	public function beatHit()
+	{
+		forEach(function(obj:T)
+		{
 			if (obj is IMusicBeat)
 			{
 				var a:IMusicBeat = cast obj;
@@ -55,7 +59,8 @@ class FNFTypedGroup<T:FlxBasic> extends FlxTypedGroup<T> implements IMusicBeat{
 
 	public function sectionHit()
 	{
-		forEach(function(obj:T){
+		forEach(function(obj:T)
+		{
 			if (obj is IMusicBeat)
 			{
 				var a:IMusicBeat = cast obj;

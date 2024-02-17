@@ -38,7 +38,8 @@ class HscriptStage extends BaseStage implements IHScriptModchart
 		Debug.logInfo('Successfully loaded new hscript file: ' + path.removeBefore('/'));
 	}
 
-	override function create(){
+	override function create()
+	{
 		scriptHandler.call('onCreate', []);
 	}
 
@@ -136,7 +137,8 @@ class HscriptStage extends BaseStage implements IHScriptModchart
 			scriptHandler.call('onUpdate', [elapsed]);
 	}
 
-	private function scriptHandlerPreset(){
+	private function scriptHandlerPreset()
+	{
 		if (!scriptHandler.exists("PlayState"))
 			scriptHandler.set("PlayState", playState);
 
@@ -211,7 +213,7 @@ class HscriptStage extends BaseStage implements IHScriptModchart
 		}
 	}
 
-		// TODO Redo to work with DialogueBox.hx
+	// TODO Redo to work with DialogueBox.hx
 	public function startDialogue(dialogueFile:String, music:String = null)
 	{
 		var path:String = Paths.formatToDialoguePath(Data.SONG.songId + '/' + dialogueFile);

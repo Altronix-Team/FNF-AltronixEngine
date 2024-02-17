@@ -1,4 +1,5 @@
 package altronixengine.data;
+
 class EngineConstants
 {
 	public static final engineVer:String = "1.0.0";

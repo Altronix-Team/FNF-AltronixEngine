@@ -41,6 +41,7 @@ class Conductor
 	public static var curBeat:Int = 0;
 	public static var curDecimalBeat:Float = 0;
 	public static var curSection:SwagSection = null;
+
 	public static function setupUpdates()
 	{
 		Lib.current.addEventListener(Event.ENTER_FRAME, function(_)

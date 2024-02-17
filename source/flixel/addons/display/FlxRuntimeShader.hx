@@ -286,7 +286,6 @@ class FlxRuntimeShader extends FlxShader
 			__processGLData(glVertexSource, "uniform");
 			__processGLData(glFragmentSource, "uniform");
 		}
-
 		@:privateAccess
 		if (__context != null && program == null)
 		{

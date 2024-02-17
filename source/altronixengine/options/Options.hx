@@ -934,8 +934,7 @@ class SongPositionOption extends Option
 
 	public override function getValue():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
-			[getOnOff(Main.save.data.songPosition)]);
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [getOnOff(Main.save.data.songPosition)]);
 	}
 }
 
@@ -967,8 +966,7 @@ class DistractionsAndEffectsOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
-			[getOnOff(Main.save.data.distractions)]);
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [getOnOff(Main.save.data.distractions)]);
 	}
 }
 
@@ -1107,8 +1105,7 @@ class AntialiasingOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
-			[getOnOff(Main.save.data.antialiasing)]);
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [getOnOff(Main.save.data.antialiasing)]);
 	}
 }
 
@@ -1254,8 +1251,7 @@ class NoteSplashOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
-			[getOnOff(Main.save.data.notesplashes)]);
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [getOnOff(Main.save.data.notesplashes)]);
 	}
 }
 
@@ -1325,7 +1321,8 @@ class LanguageOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [LanguageStuff.getUiLanguageName(curLocale)]);
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
+			[LanguageStuff.getUiLanguageName(curLocale)]);
 	}
 }
 
@@ -1919,8 +1916,7 @@ class MiddleScrollOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'],
-			[getOnOff(Main.save.data.middleScroll)]);
+		return LanguageStuff.replaceFlagsAndReturn("$" + Type.getClassName(Type.getClass(this)), 'option', ['<text>'], [getOnOff(Main.save.data.middleScroll)]);
 	}
 }
 

@@ -44,7 +44,7 @@ import sys.FileSystem;
  */
 class GirlfriendEditorState extends MusicBeatState
 {
-	//var Stage:Stage;
+	// var Stage:Stage;
 	var char:Character;
 	var ghostChar:Character;
 	var textAnim:FlxText;
@@ -229,77 +229,77 @@ class GirlfriendEditorState extends MusicBeatState
 	function reloadBGs()
 	{
 		/*if (loadedStageOnce)
-		{
-			remove(charLayer);
-			remove(cameraFollowPointer);
-			for (bg in Stage.toAdd)
 			{
-				remove(bg);
-			}
+				remove(charLayer);
+				remove(cameraFollowPointer);
+				for (bg in Stage.toAdd)
+				{
+					remove(bg);
+				}
 
-			for (fuck in Stage.layInFront)
-				for (shit in fuck)
-					remove(shit);
+				for (fuck in Stage.layInFront)
+					for (shit in fuck)
+						remove(shit);
 
-			for (group in Stage.swagGroup)
-			{
-				remove(group);
-			}
+				for (group in Stage.swagGroup)
+				{
+					remove(group);
+				}
 
-			Stage = new Stage(daStage);
-			var stageData:StageFile = Stage.stageData;
+				Stage = new Stage(daStage);
+				var stageData:StageFile = Stage.stageData;
 
-			for (i in Stage.toAdd)
-			{
-				add(i);
+				for (i in Stage.toAdd)
+				{
+					add(i);
+				}
+				for (group in Stage.swagGroup)
+				{
+					add(group);
+				}
+				for (char in charLayer)
+				{
+					char.setPosition(stageData.gf[0], stageData.gf[1]);
+					char.x += char.positionArray[0];
+					char.y += char.positionArray[1];
+				}
+				add(charLayer);
+				for (array in Stage.layInFront)
+				{
+					for (bg in array)
+						add(bg);
+				}
+				add(cameraFollowPointer);
 			}
-			for (group in Stage.swagGroup)
+			else
 			{
-				add(group);
-			}
-			for (char in charLayer)
-			{
-				char.setPosition(stageData.gf[0], stageData.gf[1]);
-				char.x += char.positionArray[0];
-				char.y += char.positionArray[1];
-			}
-			add(charLayer);
-			for (array in Stage.layInFront)
-			{
-				for (bg in array)
-					add(bg);
-			}
-			add(cameraFollowPointer);
-		}
-		else
-		{
-			remove(charLayer);
-			remove(cameraFollowPointer);
-			Stage = new Stage(daStage);
-			var stageData:StageFile = Stage.stageData;
+				remove(charLayer);
+				remove(cameraFollowPointer);
+				Stage = new Stage(daStage);
+				var stageData:StageFile = Stage.stageData;
 
-			for (i in Stage.toAdd)
-			{
-				add(i);
-			}
-			for (group in Stage.swagGroup)
-			{
-				add(group);
-			}
-			loadedStageOnce = true;
-			for (char in charLayer)
-			{
-				char.setPosition(stageData.gf[0], stageData.gf[1]);
-				char.x += char.positionArray[0];
-				char.y += char.positionArray[1];
-			}
-			add(charLayer);
-			for (array in Stage.layInFront)
-			{
-				for (bg in array)
-					add(bg);
-			}
-			add(cameraFollowPointer);
+				for (i in Stage.toAdd)
+				{
+					add(i);
+				}
+				for (group in Stage.swagGroup)
+				{
+					add(group);
+				}
+				loadedStageOnce = true;
+				for (char in charLayer)
+				{
+					char.setPosition(stageData.gf[0], stageData.gf[1]);
+					char.x += char.positionArray[0];
+					char.y += char.positionArray[1];
+				}
+				add(charLayer);
+				for (array in Stage.layInFront)
+				{
+					for (bg in array)
+						add(bg);
+				}
+				add(cameraFollowPointer);
 		}*/
 	}
 
@@ -1059,7 +1059,7 @@ class GirlfriendEditorState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-		//Stage.update(elapsed);
+		// Stage.update(elapsed);
 
 		var blockInput = false;
 
@@ -1179,8 +1179,7 @@ class GirlfriendEditorState extends MusicBeatState
 					char.animationsArray[curAnim].offsets = [0, 0];
 
 					char.addOffset(char.animationsArray[curAnim].name, char.animationsArray[curAnim].offsets[0], char.animationsArray[curAnim].offsets[1]);
-					ghostChar.addOffset(char.animationsArray[curAnim].name, char.animationsArray[curAnim].offsets[0],
-						char.animationsArray[curAnim].offsets[1]);
+					ghostChar.addOffset(char.animationsArray[curAnim].name, char.animationsArray[curAnim].offsets[0], char.animationsArray[curAnim].offsets[1]);
 					genBoyOffsets();
 				}
 

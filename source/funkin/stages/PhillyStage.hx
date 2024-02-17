@@ -6,111 +6,114 @@ import flixel.util.FlxColor;
 import flixel.sound.FlxSound;
 import altronixengine.gameplayStuff.Conductor;
 
-class PhillyStage extends BaseStage{
-    var windowsShader:BuildingShaders;
-    var light:FlxSprite;
-    var phillyTrain:FlxSprite;
-    
-    override function create() {
-        var bg:FlxSprite = new FlxSprite(-100).loadGraphic(Paths.loadImage('weeks/assets/week3/images/philly/sky', 'gameplay'));
-        bg.scrollFactor.set(0.1, 0.1);
-        bg.antialiasing = Main.save.data.antialiasing;
-        add(bg);
+class PhillyStage extends BaseStage
+{
+	var windowsShader:BuildingShaders;
+	var light:FlxSprite;
+	var phillyTrain:FlxSprite;
 
-        var city:FlxSprite = new FlxSprite(-10).loadGraphic(Paths.loadImage('weeks/assets/week3/images/philly/city', 'gameplay'));
-        city.scrollFactor.set(0.3, 0.3);
-        city.setGraphicSize(Std.int(city.width * 0.85));
-        city.updateHitbox();
-        city.antialiasing = Main.save.data.antialiasing;
-        add(city);
+	override function create()
+	{
+		var bg:FlxSprite = new FlxSprite(-100).loadGraphic(Paths.loadImage('weeks/assets/week3/images/philly/sky', 'gameplay'));
+		bg.scrollFactor.set(0.1, 0.1);
+		bg.antialiasing = Main.save.data.antialiasing;
+		add(bg);
 
-        windowsShader = new BuildingShaders();
+		var city:FlxSprite = new FlxSprite(-10).loadGraphic(Paths.loadImage('weeks/assets/week3/images/philly/city', 'gameplay'));
+		city.scrollFactor.set(0.3, 0.3);
+		city.setGraphicSize(Std.int(city.width * 0.85));
+		city.updateHitbox();
+		city.antialiasing = Main.save.data.antialiasing;
+		add(city);
 
-        light = new FlxSprite(city.x).loadGraphic(Paths.loadImage('weeks/assets/week3/images/philly/window', 'gameplay'));
-        light.scrollFactor.set(0.3, 0.3);
-        light.setGraphicSize(Std.int(light.width * 0.85));
-        light.updateHitbox();
-        light.antialiasing = Main.save.data.antialiasing;
-        light.shader = windowsShader.shader;
-        randomColor();
-        light.color = windowColor;
-        add(light);
-        // phillyCityLights.add(light);
-        // }
+		windowsShader = new BuildingShaders();
 
-        var streetBehind:FlxSprite = new FlxSprite(-40,
-            50).loadGraphic(Paths.loadImage('weeks/assets/week3/images/philly/behindTrain', 'gameplay'));
-        streetBehind.antialiasing = Main.save.data.antialiasing;
-        add(streetBehind);
+		light = new FlxSprite(city.x).loadGraphic(Paths.loadImage('weeks/assets/week3/images/philly/window', 'gameplay'));
+		light.scrollFactor.set(0.3, 0.3);
+		light.setGraphicSize(Std.int(light.width * 0.85));
+		light.updateHitbox();
+		light.antialiasing = Main.save.data.antialiasing;
+		light.shader = windowsShader.shader;
+		randomColor();
+		light.color = windowColor;
+		add(light);
+		// phillyCityLights.add(light);
+		// }
 
-        phillyTrain = new FlxSprite(2000, 360).loadGraphic(Paths.loadImage('weeks/assets/week3/images/philly/train', 'gameplay'));
-        phillyTrain.antialiasing = Main.save.data.antialiasing;
-        if (Main.save.data.distractions)
-        {
-            add(phillyTrain);
-        }
+		var streetBehind:FlxSprite = new FlxSprite(-40, 50).loadGraphic(Paths.loadImage('weeks/assets/week3/images/philly/behindTrain', 'gameplay'));
+		streetBehind.antialiasing = Main.save.data.antialiasing;
+		add(streetBehind);
 
-        trainSound = new FlxSound().loadEmbedded(Paths.sound('train_passes'));
-        FlxG.sound.list.add(trainSound);
+		phillyTrain = new FlxSprite(2000, 360).loadGraphic(Paths.loadImage('weeks/assets/week3/images/philly/train', 'gameplay'));
+		phillyTrain.antialiasing = Main.save.data.antialiasing;
+		if (Main.save.data.distractions)
+		{
+			add(phillyTrain);
+		}
 
-        // var cityLights:FlxSprite = new FlxSprite().loadGraphic(AssetPaths.win0.png);
+		trainSound = new FlxSound().loadEmbedded(Paths.sound('train_passes'));
+		FlxG.sound.list.add(trainSound);
 
-        var street:FlxSprite = new FlxSprite(-40,
-            streetBehind.y).loadGraphic(Paths.loadImage('weeks/assets/week3/images/philly/street', 'gameplay'));
-        street.antialiasing = Main.save.data.antialiasing;
-        add(street);
+		// var cityLights:FlxSprite = new FlxSprite().loadGraphic(AssetPaths.win0.png);
 
-        add(gfGroup);
-        add(dadGroup);
-        add(boyfriendGroup);
-    } 
+		var street:FlxSprite = new FlxSprite(-40, streetBehind.y).loadGraphic(Paths.loadImage('weeks/assets/week3/images/philly/street', 'gameplay'));
+		street.antialiasing = Main.save.data.antialiasing;
+		add(street);
 
-    override function update(elapsed:Float) {
-        super.update(elapsed);
+		add(gfGroup);
+		add(dadGroup);
+		add(boyfriendGroup);
+	}
 
-        windowsShader.update((Conductor.crochet / 1000) * FlxG.elapsed * 1.5);
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
 
-        if (trainMoving)
-        {
-            trainFrameTiming += elapsed;
+		windowsShader.update((Conductor.crochet / 1000) * FlxG.elapsed * 1.5);
 
-            if (trainFrameTiming >= 1 / 24)
-            {
-                updateTrainPos();
-                trainFrameTiming = 0;
-            }
-        }
-    } 
+		if (trainMoving)
+		{
+			trainFrameTiming += elapsed;
 
-    override function beatHit() {
-        super.beatHit();
+			if (trainFrameTiming >= 1 / 24)
+			{
+				updateTrainPos();
+				trainFrameTiming = 0;
+			}
+		}
+	}
 
-        if (Main.save.data.distractions)
-        {
-            if (!trainMoving)
-                trainCooldown += 1;
+	override function beatHit()
+	{
+		super.beatHit();
 
-            if (curBeat % 4 == 0)
-            {
-                var phillyCityLight:FlxSprite = light;
+		if (Main.save.data.distractions)
+		{
+			if (!trainMoving)
+				trainCooldown += 1;
 
-                randomColor();
+			if (curBeat % 4 == 0)
+			{
+				var phillyCityLight:FlxSprite = light;
 
-                phillyCityLight.color = windowColor;
+				randomColor();
 
-                windowsShader.reset();
-            }
-        }
+				phillyCityLight.color = windowColor;
 
-        if (curBeat % 8 == 4 && FlxG.random.bool(Conductor.bpm > 320 ? 150 : 30) && !trainMoving && trainCooldown > 8)
-        {
-            if (Main.save.data.distractions)
-            {
-                trainCooldown = FlxG.random.int(-4, 0);
-                trainStart();
-            }
-        }
-    }
+				windowsShader.reset();
+			}
+		}
+
+		if (curBeat % 8 == 4 && FlxG.random.bool(Conductor.bpm > 320 ? 150 : 30) && !trainMoving && trainCooldown > 8)
+		{
+			if (Main.save.data.distractions)
+			{
+				trainCooldown = FlxG.random.int(-4, 0);
+				trainStart();
+			}
+		}
+	}
+
 	public var windowColor:FlxColor = FlxColor.WHITE;
 
 	function randomColor()
@@ -118,7 +121,7 @@ class PhillyStage extends BaseStage{
 		windowColor = FlxG.random.color(null, null, 255);
 	}
 
-    var startedMoving:Bool = false;
+	var startedMoving:Bool = false;
 
 	function updateTrainPos():Void
 	{
@@ -131,7 +134,7 @@ class PhillyStage extends BaseStage{
 				if (Data.SONG != null)
 				{
 					if (gf != null)
-                        gf.playAnim('hairBlow');
+						gf.playAnim('hairBlow');
 					else
 						GameplayCustomizeState.gf.playAnim('hairBlow');
 				}
@@ -151,9 +154,10 @@ class PhillyStage extends BaseStage{
 						trainFinishing = true;
 				}
 
-				if (phillyTrain.x < -4000 && trainFinishing){
-                    trainReset();
-                }			
+				if (phillyTrain.x < -4000 && trainFinishing)
+				{
+					trainReset();
+				}
 			}
 		}
 	}
@@ -164,12 +168,13 @@ class PhillyStage extends BaseStage{
 		{
 			if (Data.SONG != null)
 			{
-				if (gf != null){
-                    @:privateAccess()
-                    gf.danced = false;
-                    gf.playAnim('hairFall');
-                    gf.specialAnim = true;
-                }		
+				if (gf != null)
+				{
+					@:privateAccess()
+					gf.danced = false;
+					gf.playAnim('hairFall');
+					gf.specialAnim = true;
+				}
 				else
 					GameplayCustomizeState.gf.playAnim('hairFall');
 			}
@@ -182,7 +187,7 @@ class PhillyStage extends BaseStage{
 		}
 	}
 
-    var trainMoving:Bool = false;
+	var trainMoving:Bool = false;
 	var trainFrameTiming:Float = 0;
 
 	var trainCars:Int = 8;

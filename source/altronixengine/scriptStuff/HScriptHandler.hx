@@ -166,7 +166,7 @@ class HScriptHandler extends SScript
 		set('Main', Main);
 		set('Note', Note);
 		set('Paths', Paths);
-		//set('Stage', Stage);
+		// set('Stage', Stage);
 		set('WindowUtil', WindowUtil);
 		set('WindowShakeEvent', WindowUtil.WindowShakeEvent);
 		set('Debug', Debug);
@@ -206,7 +206,7 @@ class HScriptHandler extends SScript
 		return new FlxTypedGroup<Dynamic>();
 	}
 
-	static function set_defaultDebug(value:Null<Bool>):Null<Bool> 
+	static function set_defaultDebug(value:Null<Bool>):Null<Bool>
 	{
 		return defaultDebug = SScript.defaultDebug = value;
 	}
@@ -235,19 +235,22 @@ class CustomFlxColor
 	{
 		return cast FlxColor.fromRGB(Red, Green, Blue, Alpha);
 	}
+
 	public static function fromRGBFloat(Red:Float, Green:Float, Blue:Float, Alpha:Float = 1):Int
-	{	
+	{
 		return cast FlxColor.fromRGBFloat(Red, Green, Blue, Alpha);
 	}
 
 	public static function fromHSB(Hue:Float, Sat:Float, Brt:Float, Alpha:Float = 1):Int
-	{	
+	{
 		return cast FlxColor.fromHSB(Hue, Sat, Brt, Alpha);
 	}
+
 	public static function fromHSL(Hue:Float, Sat:Float, Light:Float, Alpha:Float = 1):Int
-	{	
+	{
 		return cast FlxColor.fromHSL(Hue, Sat, Light, Alpha);
 	}
+
 	public static function fromString(str:String):Int
 	{
 		return cast FlxColor.fromString(str);

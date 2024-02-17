@@ -146,12 +146,13 @@ class Character extends FNFSprite
 
 			if (nextAnim != null && isAnimationFinished())
 			{
-				if (specialAnim) specialAnim = false;
+				if (specialAnim)
+					specialAnim = false;
 				if (isDancing && forceDanced != null)
 					danced = forceDanced;
 				playAnim(nextAnim);
 				return;
-			}			
+			}
 
 			if (!isPlayer)
 			{
@@ -171,7 +172,8 @@ class Character extends FNFSprite
 			}
 		}
 
-		if (isAnimationNull()) dance(true, wasAltIdle);
+		if (isAnimationNull())
+			dance(true, wasAltIdle);
 	}
 
 	private var danced:Bool = false;
@@ -263,7 +265,8 @@ class Character extends FNFSprite
 		{
 			if (!isAnimationNull())
 			{
-				if (!getCurAnimName().contains('sing') || isAnimationFinished()){
+				if (!getCurAnimName().contains('sing') || isAnimationFinished())
+				{
 					dance(true, wasAltIdle);
 				}
 			}

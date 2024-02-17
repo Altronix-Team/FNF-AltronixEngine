@@ -130,16 +130,16 @@ class MusicBeatState extends BaseState implements altronixengine.gameplayStuff.C
 	{
 		FlxG.switchState(nextState);
 		/*if (!FlxTransitionableState.skipNextTransIn)
-		{
-			var switchState = new TransitionableState();
-			switchState.nextState = nextState;
+			{
+				var switchState = new TransitionableState();
+				switchState.nextState = nextState;
 
-			FlxG.switchState(switchState);
-		}
-		else
-		{
-			FlxTransitionableState.skipNextTransIn = false;
-			FlxG.switchState(nextState);
+				FlxG.switchState(switchState);
+			}
+			else
+			{
+				FlxTransitionableState.skipNextTransIn = false;
+				FlxG.switchState(nextState);
 		}*/
 	}
 

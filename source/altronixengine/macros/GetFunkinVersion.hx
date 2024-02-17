@@ -3,7 +3,8 @@ package altronixengine.macros;
 import haxe.Http;
 import haxe.Json;
 
-class GetFunkinVersion {
+class GetFunkinVersion
+{
 	@:access(altronixengine.macros.MacroUtil)
 	public static macro function getFunkinVersion():ExprOf<String>
 	{
@@ -32,6 +33,6 @@ class GetFunkinVersion {
 		{
 			trace(e.details());
 			return macro ${MacroUtil.toExpr('0.2.7.1')};
-		}	
+		}
 	}
 }

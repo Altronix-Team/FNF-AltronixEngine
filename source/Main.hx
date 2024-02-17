@@ -159,8 +159,7 @@ class Main extends Sprite
 
 		hscriptClasses = PolymodHscriptState.listScriptClasses();
 
-		game = new CustomGame(gameWidth, gameHeight, initialState, framerate, framerate, skipSplash
-			#if (!debug), save.data.fullscreenOnStart #end);
+		game = new CustomGame(gameWidth, gameHeight, initialState, framerate, framerate, skipSplash #if (!debug), save.data.fullscreenOnStart #end);
 		addChild(game);
 
 		#if !mobile

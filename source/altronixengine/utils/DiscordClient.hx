@@ -23,7 +23,8 @@ class DiscordClient
 		discordHandlers.errored = cpp.Function.fromStaticFunction(onError);
 		Discord.Initialize(clientID, cpp.RawPointer.addressOf(discordHandlers), 1, null);
 
-		if(!isInitialized) Debug.logTrace("Discord Client initialized");
+		if (!isInitialized)
+			Debug.logTrace("Discord Client initialized");
 
 		sys.thread.Thread.create(() ->
 		{
@@ -40,8 +41,10 @@ class DiscordClient
 			}
 		});
 		isInitialized = true;
-		Application.current.window.onClose.add(function() {
-			if(isInitialized) shutdown();
+		Application.current.window.onClose.add(function()
+		{
+			if (isInitialized)
+				shutdown();
 		});
 		#end
 	}
@@ -59,10 +62,10 @@ class DiscordClient
 		#if DISCORD_ALLOWED
 		var requestPtr:cpp.Star<DiscordUser> = cpp.ConstPointer.fromRaw(request).ptr;
 
-		if (Std.parseInt(cast(requestPtr.discriminator, String)) != 0) //New Discord IDs/Discriminator system
-			trace('(Discord) Connected to User (${cast(requestPtr.username, String)}#${cast(requestPtr.discriminator, String)})');
-		else //Old discriminators
-			trace('(Discord) Connected to User (${cast(requestPtr.username, String)})');
+		if (Std.parseInt(cast(requestPtr.discriminator, String)) != 0) // New Discord IDs/Discriminator system
+			trace('(Discord) Connected to User (${cast (requestPtr.username, String)}#${cast (requestPtr.discriminator, String)})');
+		else // Old discriminators
+			trace('(Discord) Connected to User (${cast (requestPtr.username, String)})');
 
 		changePresence();
 		#end
@@ -70,20 +73,23 @@ class DiscordClient
 
 	static function onError(errorCode:Int, message:cpp.ConstCharStar)
 	{
-		Debug.logError('Discord: Error ($errorCode: ${cast(message, String)})');
+		Debug.logError('Discord: Error ($errorCode: ${cast (message, String)})');
 	}
 
 	static function onDisconnected(errorCode:Int, message:cpp.ConstCharStar)
 	{
-		Debug.logInfo('Discord: Disconnected ($errorCode: ${cast(message, String)})');
+		Debug.logInfo('Discord: Disconnected ($errorCode: ${cast (message, String)})');
 	}
 
-	public static function changePresence(?details:String = 'In the Menus', ?state:Null<String>, ?smallImageKey:String, ?hasStartTimestamp:Bool, ?endTimestamp:Float)
+	public static function changePresence(?details:String = 'In the Menus', ?state:Null<String>, ?smallImageKey:String, ?hasStartTimestamp:Bool,
+			?endTimestamp:Float)
 	{
 		#if DISCORD_ALLOWED
 		var startTimestamp:Float = 0;
-		if (hasStartTimestamp) startTimestamp = Date.now().getTime();
-		if (endTimestamp > 0) endTimestamp = startTimestamp + endTimestamp;
+		if (hasStartTimestamp)
+			startTimestamp = Date.now().getTime();
+		if (endTimestamp > 0)
+			endTimestamp = startTimestamp + endTimestamp;
 
 		presence.details = details;
 		presence.state = state;
@@ -98,11 +104,10 @@ class DiscordClient
 
 	public static function updatePresence()
 	{
-		#if DISCORD_ALLOWED 
-		Discord.UpdatePresence(cpp.RawConstPointer.addressOf(presence)); 
+		#if DISCORD_ALLOWED
+		Discord.UpdatePresence(cpp.RawConstPointer.addressOf(presence));
 		#end
 	}
-		
 
 	public static function resetClientID()
 		clientID = _defaultID;
@@ -112,7 +117,7 @@ class DiscordClient
 		var change:Bool = (clientID != newID);
 		clientID = newID;
 
-		if(change && isInitialized)
+		if (change && isInitialized)
 		{
 			shutdown();
 			initialize();

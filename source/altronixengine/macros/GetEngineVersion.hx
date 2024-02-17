@@ -4,12 +4,13 @@ import haxe.Http;
 import haxe.Json;
 import haxe.crypto.Base64;
 
-class GetEngineVersion 
+class GetEngineVersion
 {
 	@:access(altronixengine.macros.MacroUtil)
 	public static macro function getEngineVersion():ExprOf<String>
 	{
-		try{
+		try
+		{
 			var http = new Http('https://api.github.com/repos/Altronix-Team/FNF-AltronixEngine/contents/version.downloadMe');
 			http.setHeader("User-Agent", "request");
 			var responce:GitHubFileData = null;
@@ -32,26 +33,28 @@ class GetEngineVersion
 		{
 			trace(e.details());
 			return macro ${MacroUtil.toExpr('0.5')};
-		}	
+		}
 	}
 }
 
-typedef GitHubFileData = {
+typedef GitHubFileData =
+{
 	var name:String;
-	var path:String; 
-	var sha:String; 
+	var path:String;
+	var sha:String;
 	var size:Int;
 	var url:String;
 	var html_url:String;
 	var git_url:String;
-	var download_url:String; 
+	var download_url:String;
 	var type:String;
 	var content:String;
-	var encoding:String; 
+	var encoding:String;
 	var _links:Links;
 }
 
-typedef Links = {
+typedef Links =
+{
 	var self:String;
 	var git:String;
 	var html:String;

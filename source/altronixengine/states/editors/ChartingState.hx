@@ -316,7 +316,8 @@ class ChartingState extends MusicBeatState
 				position: 0,
 				events: []
 			};
-			var firstEvent:altronixengine.gameplayStuff.Song.EventObject = new altronixengine.gameplayStuff.Song.EventObject("Init BPM", _song.bpm, "BPM Change");
+			var firstEvent:altronixengine.gameplayStuff.Song.EventObject = new altronixengine.gameplayStuff.Song.EventObject("Init BPM", _song.bpm,
+				"BPM Change");
 
 			initBpm.events.push(firstEvent);
 			_song.eventsArray = [initBpm];
@@ -328,7 +329,8 @@ class ChartingState extends MusicBeatState
 				position: 0,
 				events: []
 			};
-			var firstEvent:altronixengine.gameplayStuff.Song.EventObject = new altronixengine.gameplayStuff.Song.EventObject("Init BPM", _song.bpm, "BPM Change");
+			var firstEvent:altronixengine.gameplayStuff.Song.EventObject = new altronixengine.gameplayStuff.Song.EventObject("Init BPM", _song.bpm,
+				"BPM Change");
 
 			initBpm.events.push(firstEvent);
 			_song.eventsArray = [initBpm];
@@ -523,7 +525,7 @@ class ChartingState extends MusicBeatState
 		addNoteUI();
 
 		// addOptionsUI();
-		//addEventsUI();
+		// addEventsUI();
 
 		addDifficultiesUI();
 

@@ -41,7 +41,7 @@ import sys.FileSystem;
 
 class CharacterEditorState extends MusicBeatState
 {
-	//var Stage:Stage;
+	// var Stage:Stage;
 	var char:Character;
 	var ghostChar:Character;
 	var textAnim:FlxText;
@@ -245,90 +245,90 @@ class CharacterEditorState extends MusicBeatState
 	function reloadBGs()
 	{
 		/*if (loadedStageOnce)
-		{
-			remove(cameraFollowPointer);
-			remove(charLayer);
-			for (bg in Stage.toAdd)
 			{
-				remove(bg);
+				remove(cameraFollowPointer);
+				remove(charLayer);
+				for (bg in Stage.toAdd)
+				{
+					remove(bg);
+				}
+
+				for (fuck in Stage.layInFront)
+					for (shit in fuck)
+						remove(shit);
+
+				for (group in Stage.swagGroup)
+				{
+					remove(group);
+				}
+
+				Stage = new Stage(daStage);
+				var stageData:StageFile = Stage.stageData;
+				for (char in charLayer)
+				{
+					if (check_player.checked)
+					{
+						char.setPosition(stageData.boyfriend[0], stageData.boyfriend[1]);
+						char_X = stageData.boyfriend[0];
+						char_Y = stageData.boyfriend[1];
+					}
+					else
+					{
+						char.setPosition(stageData.dad[0], stageData.dad[1]);
+						char_X = stageData.dad[0];
+						char_Y = stageData.dad[1];
+					}
+
+					char.x += char.positionArray[0];
+					char.y += char.positionArray[1];
+				}
+				for (i in Stage.toAdd)
+				{
+					add(i);
+				}
+				for (group in Stage.swagGroup)
+				{
+					add(group);
+				}
+				add(charLayer);
+				for (array in Stage.layInFront)
+				{
+					for (bg in array)
+						add(bg);
+				}
+				add(cameraFollowPointer);
 			}
-
-			for (fuck in Stage.layInFront)
-				for (shit in fuck)
-					remove(shit);
-
-			for (group in Stage.swagGroup)
+			else
 			{
-				remove(group);
-			}
+				remove(cameraFollowPointer);
+				remove(charLayer);
+				Stage = new Stage(daStage);
 
-			Stage = new Stage(daStage);
-			var stageData:StageFile = Stage.stageData;
-			for (char in charLayer)
-			{
-				if (check_player.checked)
+				for (i in Stage.toAdd)
+				{
+					add(i);
+				}
+				for (group in Stage.swagGroup)
+				{
+					add(group);
+				}
+				loadedStageOnce = true;
+				var stageData:StageFile = Stage.stageData;
+				for (char in charLayer)
 				{
 					char.setPosition(stageData.boyfriend[0], stageData.boyfriend[1]);
 					char_X = stageData.boyfriend[0];
 					char_Y = stageData.boyfriend[1];
+					char.x += char.positionArray[0];
+					char.y += char.positionArray[1];
 				}
-				else
+				add(charLayer);
+				for (array in Stage.layInFront)
 				{
-					char.setPosition(stageData.dad[0], stageData.dad[1]);
-					char_X = stageData.dad[0];
-					char_Y = stageData.dad[1];
+					for (bg in array)
+						add(bg);
 				}
-
-				char.x += char.positionArray[0];
-				char.y += char.positionArray[1];
-			}
-			for (i in Stage.toAdd)
-			{
-				add(i);
-			}
-			for (group in Stage.swagGroup)
-			{
-				add(group);
-			}
-			add(charLayer);
-			for (array in Stage.layInFront)
-			{
-				for (bg in array)
-					add(bg);
-			}
-			add(cameraFollowPointer);
-		}
-		else
-		{
-			remove(cameraFollowPointer);
-			remove(charLayer);
-			Stage = new Stage(daStage);
-
-			for (i in Stage.toAdd)
-			{
-				add(i);
-			}
-			for (group in Stage.swagGroup)
-			{
-				add(group);
-			}
-			loadedStageOnce = true;
-			var stageData:StageFile = Stage.stageData;
-			for (char in charLayer)
-			{
-				char.setPosition(stageData.boyfriend[0], stageData.boyfriend[1]);
-				char_X = stageData.boyfriend[0];
-				char_Y = stageData.boyfriend[1];
-				char.x += char.positionArray[0];
-				char.y += char.positionArray[1];
-			}
-			add(charLayer);
-			for (array in Stage.layInFront)
-			{
-				for (bg in array)
-					add(bg);
-			}
-			add(cameraFollowPointer);
+				add(cameraFollowPointer);
 		}*/
 	}
 
@@ -351,23 +351,23 @@ class CharacterEditorState extends MusicBeatState
 			if (check_player.checked)
 			{
 				/*var stageData:StageFile = Stage.stageData;
-				for (char in charLayer)
-				{
-					char.setPosition(stageData.boyfriend[0], stageData.boyfriend[1]);
+					for (char in charLayer)
+					{
+						char.setPosition(stageData.boyfriend[0], stageData.boyfriend[1]);
 
-					char.x += char.positionArray[0];
-					char.y += char.positionArray[1];
+						char.x += char.positionArray[0];
+						char.y += char.positionArray[1];
 				}*/
 			}
 			else
 			{
 				/*var stageData:StageFile = Stage.stageData;
-				for (char in charLayer)
-				{
-					char.setPosition(stageData.dad[0], stageData.dad[1]);
+					for (char in charLayer)
+					{
+						char.setPosition(stageData.dad[0], stageData.dad[1]);
 
-					char.x += char.positionArray[0];
-					char.y += char.positionArray[1];
+						char.x += char.positionArray[0];
+						char.y += char.positionArray[1];
 				}*/
 			}
 		};
@@ -1207,7 +1207,7 @@ class CharacterEditorState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-		//Stage.update(elapsed);
+		// Stage.update(elapsed);
 
 		MusicBeatState.camBeat = FlxG.camera;
 
@@ -1331,8 +1331,7 @@ class CharacterEditorState extends MusicBeatState
 					char.animationsArray[curAnim].offsets = [0, 0];
 
 					char.addOffset(char.animationsArray[curAnim].name, char.animationsArray[curAnim].offsets[0], char.animationsArray[curAnim].offsets[1]);
-					ghostChar.addOffset(char.animationsArray[curAnim].name, char.animationsArray[curAnim].offsets[0],
-						char.animationsArray[curAnim].offsets[1]);
+					ghostChar.addOffset(char.animationsArray[curAnim].name, char.animationsArray[curAnim].offsets[0], char.animationsArray[curAnim].offsets[1]);
 					genBoyOffsets();
 				}
 

@@ -55,7 +55,7 @@ class GameplayCustomizeState extends MusicBeatState
 	public static var dad:Character;
 	public static var gf:Character;
 	public static var boyfriend:Boyfriend;
-	//public static var Stage:Stage;
+	// public static var Stage:Stage;
 	public static var freeplayBf:String = 'bf';
 	public static var freeplayDad:String = 'dad';
 	public static var freeplayGf:String = 'gf';
@@ -173,7 +173,7 @@ class GameplayCustomizeState extends MusicBeatState
 			dad = new Character(100, 100, 'dad');
 		}
 
-		//Stage = new Stage(stageCheck);
+		// Stage = new Stage(stageCheck);
 
 		var stageData:StageFile = StageData.getStageFile(stageCheck);
 		if (stageData == null)
@@ -208,27 +208,27 @@ class GameplayCustomizeState extends MusicBeatState
 		dad.setPosition(DAD_X, DAD_Y);
 
 		/*for (i in Stage.toAdd)
-		{
-			add(i);
-		}
-		for (index => array in Stage.layInFront)
-		{
-			switch (index)
 			{
-				case 0:
-					add(gf);
-					gf.scrollFactor.set(0.95, 0.95);
-					for (bg in array)
-						add(bg);
-				case 1:
-					add(dad);
-					for (bg in array)
-						add(bg);
-				case 2:
-					add(boyfriend);
-					for (bg in array)
-						add(bg);
+				add(i);
 			}
+			for (index => array in Stage.layInFront)
+			{
+				switch (index)
+				{
+					case 0:
+						add(gf);
+						gf.scrollFactor.set(0.95, 0.95);
+						for (bg in array)
+							add(bg);
+					case 1:
+						add(dad);
+						for (bg in array)
+							add(bg);
+					case 2:
+						add(boyfriend);
+						for (bg in array)
+							add(bg);
+				}
 		}*/
 
 		camPos = new FlxPoint(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
@@ -264,7 +264,7 @@ class GameplayCustomizeState extends MusicBeatState
 		add(camFollow);
 
 		FlxG.camera.follow(camFollow, LOCKON, 0.01);
-		//FlxG.camera.zoom = Stage.camZoom;
+		// FlxG.camera.zoom = Stage.camZoom;
 		FlxG.camera.focusOn(camFollow.getPosition());
 
 		FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);
@@ -342,8 +342,7 @@ class GameplayCustomizeState extends MusicBeatState
 		laneunderlayOpponent.screenCenter(Y);
 
 		text = new FlxText(5, FlxG.height + 40, 0,
-			"Click and drag around gameplay elements to customize their positions. Press R to reset. Q/E to change zoom. C to show combo. Escape to exit.",
-			12);
+			"Click and drag around gameplay elements to customize their positions. Press R to reset. Q/E to change zoom. C to show combo. Escape to exit.", 12);
 		text.scrollFactor.set();
 		text.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 
@@ -375,7 +374,7 @@ class GameplayCustomizeState extends MusicBeatState
 	{
 		super.update(elapsed);
 
-		//Stage.update(elapsed);
+		// Stage.update(elapsed);
 
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
@@ -386,7 +385,7 @@ class GameplayCustomizeState extends MusicBeatState
 		if (Main.save.data.zoom > 1.2)
 			Main.save.data.zoom = 1.2;
 
-		//FlxG.camera.zoom = FlxMath.lerp(Stage.camZoom, FlxG.camera.zoom, 0.95);
+		// FlxG.camera.zoom = FlxMath.lerp(Stage.camZoom, FlxG.camera.zoom, 0.95);
 		camHUD.zoom = FlxMath.lerp(Main.save.data.zoom, camHUD.zoom, 0.95);
 
 		if (FlxG.mouse.overlaps(sick) && FlxG.mouse.pressed)

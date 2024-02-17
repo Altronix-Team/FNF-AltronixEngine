@@ -69,9 +69,11 @@ class StaticArrow extends FlxSprite
 
 	public function playAnim(AnimName:String, ?force:Bool = false):Void
 	{
-		if (PlayState.instance.paused) return;
+		if (PlayState.instance.paused)
+			return;
 
-		if (animation != null){ //Strange shit, but we need to check this
+		if (animation != null)
+		{ // Strange shit, but we need to check this
 			animation.play(AnimName, force);
 
 			if (!AnimName.startsWith('dirCon'))

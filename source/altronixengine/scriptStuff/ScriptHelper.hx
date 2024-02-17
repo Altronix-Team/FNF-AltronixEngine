@@ -10,7 +10,8 @@ class ScriptHelper
 
 	public static function clearAllScripts()
 	{
-		for (script in hscriptFiles){
+		for (script in hscriptFiles)
+		{
 			hscriptFiles.remove(script);
 			script.destroy();
 		}
@@ -32,8 +33,10 @@ class ScriptHelper
 			if (scriptHelper.exists(functionToCall))
 			{
 				var call = scriptHelper.call(functionToCall, params);
-				if (!call.succeeded){
-					for (exception in call.exceptions){
+				if (!call.succeeded)
+				{
+					for (exception in call.exceptions)
+					{
 						Debug.logError('Error in script ${scriptHelper.scriptFile} \n ${exception.details()}');
 					}
 				}

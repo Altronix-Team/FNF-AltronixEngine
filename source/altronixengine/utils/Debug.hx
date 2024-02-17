@@ -264,7 +264,8 @@ class Debug
 		// Example: This will display all the properties that FlxSprite does, along with curCharacter and barColor.
 		FlxG.debugger.addTrackerProfile(new TrackerProfile(altronixengine.gameplayStuff.Character, ["curCharacter", "isPlayer", "barColor"], [FlxSprite]));
 		FlxG.debugger.addTrackerProfile(new TrackerProfile(altronixengine.gameplayStuff.HealthIcon, ["char", "isPlayer", "isOldIcon"], [FlxSprite]));
-		FlxG.debugger.addTrackerProfile(new TrackerProfile(altronixengine.gameplayStuff.Note, ["x", "y", "strumTime", "mustPress", "rawNoteData", "sustainLength"], []));
+		FlxG.debugger.addTrackerProfile(new TrackerProfile(altronixengine.gameplayStuff.Note,
+			["x", "y", "strumTime", "mustPress", "rawNoteData", "sustainLength"], []));
 		FlxG.debugger.addTrackerProfile(new TrackerProfile(altronixengine.gameplayStuff.Song, [
 			"chartVersion",
 			"song",

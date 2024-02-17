@@ -161,7 +161,7 @@ class LanguageStuff
 
 	public static function getUiLanguageName(targetlocale:String = '', curlocale:String = ''):String
 	{
-		//return tongue.getIndexString(LanguageBilingual, targetlocale);
+		// return tongue.getIndexString(LanguageBilingual, targetlocale);
 		return tongue.locale;
 	}
 

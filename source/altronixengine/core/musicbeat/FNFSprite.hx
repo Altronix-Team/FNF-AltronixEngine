@@ -125,8 +125,10 @@ class FNFSprite extends FlxSprite implements IMusicBeat
 		}
 	}
 
-	override function update(elapsed:Float){
-		if (animateAtlas != null) animateAtlas.update(elapsed);
+	override function update(elapsed:Float)
+	{
+		if (animateAtlas != null)
+			animateAtlas.update(elapsed);
 
 		super.update(elapsed);
 	}
@@ -156,7 +158,8 @@ class FNFSprite extends FlxSprite implements IMusicBeat
 		return name;
 	}
 
-	public function getAnimFrame():Int{
+	public function getAnimFrame():Int
+	{
 		return animateAtlas != null ? animateAtlas.anim.curFrame : animation.curAnim.curFrame;
 	}
 
@@ -165,7 +168,8 @@ class FNFSprite extends FlxSprite implements IMusicBeat
 
 	public function isAnimationFinished():Bool
 	{
-		if(isAnimationNull()) return false;
+		if (isAnimationNull())
+			return false;
 		return animateAtlas != null ? animateAtlas.anim.finished : animation.curAnim.finished;
 	}
 
@@ -212,25 +216,25 @@ class FNFSprite extends FlxSprite implements IMusicBeat
 	}
 
 	private function _stepHit(step:Int):Void
-		{
-			curStep = step;
-			stepHit();
-		}
-	
-		private function _beatHit(beat:Int):Void
-		{
-			curBeat = beat;
-			beatHit();
-		}
-	
-		private function _sectionHit(section:SwagSection):Void
-		{
-			curSection = section;
-			sectionHit();
-		}
-	
-		private function _decimalBeatHit(beat:Float):Void
-		{
-			curDecimalBeat = beat;
-		}
+	{
+		curStep = step;
+		stepHit();
+	}
+
+	private function _beatHit(beat:Int):Void
+	{
+		curBeat = beat;
+		beatHit();
+	}
+
+	private function _sectionHit(section:SwagSection):Void
+	{
+		curSection = section;
+		sectionHit();
+	}
+
+	private function _decimalBeatHit(beat:Float):Void
+	{
+		curDecimalBeat = beat;
+	}
 }

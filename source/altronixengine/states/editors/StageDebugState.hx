@@ -29,7 +29,7 @@ class StageDebugState extends FlxState
 	var gf:Character;
 	var boyfriend:Boyfriend;
 	var dad:Character;
-	//var Stage:Stage;
+	// var Stage:Stage;
 	var camFollow:FlxObject;
 	var posText:FlxText;
 	var curChar:FlxSprite;
@@ -59,7 +59,7 @@ class StageDebugState extends FlxState
 		FlxG.sound.music.stop();
 		FlxG.mouse.visible = true;
 
-		//Stage = PlayState.instance.Stage;
+		// Stage = PlayState.instance.Stage;
 
 		gf = PlayState.instance.gf;
 		boyfriend = PlayState.instance.boyfriend;
@@ -70,27 +70,27 @@ class StageDebugState extends FlxState
 		curChar = curChars[curCharIndex];
 
 		/*for (i in Stage.toAdd)
-		{
-			add(i);
-		}
-
-		for (index => array in Stage.layInFront)
-		{
-			switch (index)
 			{
-				case 0:
-					add(gf);
-					for (bg in array)
-						add(bg);
-				case 1:
-					add(dad);
-					for (bg in array)
-						add(bg);
-				case 2:
-					add(boyfriend);
-					for (bg in array)
-						add(bg);
+				add(i);
 			}
+
+			for (index => array in Stage.layInFront)
+			{
+				switch (index)
+				{
+					case 0:
+						add(gf);
+						for (bg in array)
+							add(bg);
+					case 1:
+						add(dad);
+						for (bg in array)
+							add(bg);
+					case 2:
+						add(boyfriend);
+						for (bg in array)
+							add(bg);
+				}
 		}*/
 
 		camFollow = new FlxObject(0, 0, 2, 2);
@@ -215,32 +215,32 @@ class StageDebugState extends FlxState
 			FlxG.switchState(new PlayState());
 			Data.stageTesting = true;
 			/*for (i in Stage.toAdd)
-			{
-				remove(i);
-			}
-
-			for (group in Stage.swagGroup)
-			{
-				remove(group);
-			}
-
-			for (index => array in Stage.layInFront)
-			{
-				switch (index)
 				{
-					case 0:
-						remove(gf);
-						for (bg in array)
-							remove(bg);
-					case 1:
-						remove(dad);
-						for (bg in array)
-							remove(bg);
-					case 2:
-						remove(boyfriend);
-						for (bg in array)
-							remove(bg);
+					remove(i);
 				}
+
+				for (group in Stage.swagGroup)
+				{
+					remove(group);
+				}
+
+				for (index => array in Stage.layInFront)
+				{
+					switch (index)
+					{
+						case 0:
+							remove(gf);
+							for (bg in array)
+								remove(bg);
+						case 1:
+							remove(dad);
+							for (bg in array)
+								remove(bg);
+						case 2:
+							remove(boyfriend);
+							for (bg in array)
+								remove(bg);
+					}
 			}*/
 		}
 
@@ -264,14 +264,14 @@ class StageDebugState extends FlxState
 	function getNextObject():Void
 	{
 		/*for (key => value in Stage.swagBacks)
-		{
-			if (!usedObjects.contains(value))
 			{
-				usedObjects.push(value);
-				curCharString = key;
-				curChar = value;
-				return;
-			}
+				if (!usedObjects.contains(value))
+				{
+					usedObjects.push(value);
+					curCharString = key;
+					curChar = value;
+					return;
+				}
 		}*/
 		usedObjects = [];
 		getNextObject();
@@ -303,9 +303,9 @@ class StageDebugState extends FlxState
 		var result = "";
 
 		/*for (spriteName => sprite in Stage.swagBacks)
-		{
-			var text = spriteName + " X: " + sprite.x + " Y: " + sprite.y + " Rotation: " + sprite.angle;
-			result += text + "\n";
+			{
+				var text = spriteName + " X: " + sprite.x + " Y: " + sprite.y + " Rotation: " + sprite.angle;
+				result += text + "\n";
 		}*/
 		var curCharIndex:Int = 0;
 		var char:String = '';

@@ -298,7 +298,7 @@ class ModCore
 		set('Main', Main);
 		set('Note', altronixengine.gameplayStuff.Note);
 		set('Paths', Paths);
-		//set('Stage', altronixengine.gameplayStuff.Stage);
+		// set('Stage', altronixengine.gameplayStuff.Stage);
 		set('WindowUtil', WindowUtil);
 		set('WindowShakeEvent', WindowShakeEvent);
 		set('Debug', Debug);

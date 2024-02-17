@@ -15,7 +15,8 @@ class ChartUtil
 			return null;
 		var songData:SongData = cast jsonData.song;
 
-		if (songData.chartVersion != null){
+		if (songData.chartVersion != null)
+		{
 			return songData;
 		}
 

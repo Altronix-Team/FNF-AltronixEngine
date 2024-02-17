@@ -176,7 +176,7 @@ class MainMenuState extends MusicBeatState
 
 		if (FlxG.keys.justPressed.SEVEN)
 		{
-			FlxG.switchState(new altronixengine.editors.MasterEditorMenu());
+			FlxG.switchState(new altronixengine.states.editors.MasterEditorMenu());
 			clean();
 		}
 

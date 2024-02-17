@@ -1,4 +1,4 @@
-package altronixengine.editors;
+package altronixengine.states.editors;
 
 import flash.geom.Rectangle;
 import flixel.FlxCamera;

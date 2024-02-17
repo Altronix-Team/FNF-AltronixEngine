@@ -1,4 +1,4 @@
-package altronixengine.editors;
+package altronixengine.states.editors;
 
 import flixel.FlxCamera;
 import flixel.FlxG;

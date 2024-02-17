@@ -523,7 +523,7 @@ class FreeplayState extends MusicBeatState
 
 		var character = dad ? Data.SONG.player2 : Data.SONG.player1;
 
-		LoadingState.loadAndSwitchState(new altronixengine.editors.AnimationDebug(character));
+		LoadingState.loadAndSwitchState(new altronixengine.states.editors.AnimationDebug(character));
 	}
 
 	function loadSong(isCharting:Bool = false)
@@ -575,7 +575,7 @@ class FreeplayState extends MusicBeatState
 
 		if (isCharting)
 		{
-			LoadingState.loadAndSwitchState(new altronixengine.editors.ChartingState(reloadSong));
+			LoadingState.loadAndSwitchState(new altronixengine.states.editors.ChartingState(reloadSong));
 		}
 		else
 		{

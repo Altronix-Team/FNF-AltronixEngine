@@ -1,6 +1,6 @@
 package altronixengine.gameplayStuff;
 
-import altronixengine.editors.ChartingState;
+import altronixengine.states.editors.ChartingState;
 import flash.geom.Rectangle;
 import flixel.FlxG;
 import flixel.FlxSprite;

@@ -1,4 +1,4 @@
-package altronixengine.editors;
+package altronixengine.states.editors;
 
 import altronixengine.gameplayStuff.Character;
 

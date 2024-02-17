@@ -2135,7 +2135,7 @@ class DebugMode extends Option
 
 	public override function press():Bool
 	{
-		FlxG.switchState(new altronixengine.editors.AnimationDebug());
+		FlxG.switchState(new altronixengine.states.editors.AnimationDebug());
 		return false;
 	}
 

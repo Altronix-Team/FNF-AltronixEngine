@@ -2834,7 +2834,7 @@ class PlayState extends MusicBeatState
 		paused = true;
 		canPause = false;
 		cancelMusicFadeTween();
-		MusicBeatState.switchState(new altronixengine.editors.ChartingState());
+		MusicBeatState.switchState(new altronixengine.states.editors.ChartingState());
 		Data.chartingMode = true;
 
 		#if DISCORD_ALLOWED

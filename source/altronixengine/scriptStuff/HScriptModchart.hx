@@ -23,6 +23,8 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic> implements IHScriptModchar
 
 	public function new(path:String, state:PlayState)
 	{
+		HScriptHandler.defaultDebug = true;
+
 		super();
 
 		curState = state;

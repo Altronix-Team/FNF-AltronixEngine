@@ -55,9 +55,10 @@ class DialogueBox extends FlxSpriteGroup
 
 	var boxFile:String = 'speech_bubble';
 
-	public function new(dialogueFile:DialogueJson, ?boxFile:String)
+	public function new(dialogueFile:DialogueJson, isPixel:Bool = false, ?boxFile:String)
 	{
 		super();
+		this.isPixel = isPixel;
 
 		dialogue = dialogueFile;
 

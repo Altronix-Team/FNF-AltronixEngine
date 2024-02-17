@@ -75,6 +75,11 @@ class ScriptException extends Exception
 
 class HScriptHandler extends SScript
 {
+	/**
+		If not null, switches traces from `doString` and `new()`. 
+	**/
+	public static var defaultDebug(default, set):Null<Bool> = null;
+
 	override public function preset():Void
 	{
 		super.preset();
@@ -199,6 +204,11 @@ class HScriptHandler extends SScript
 	function createTypedGroup():FlxTypedGroup<Dynamic>
 	{
 		return new FlxTypedGroup<Dynamic>();
+	}
+
+	static function set_defaultDebug(value:Null<Bool>):Null<Bool> 
+	{
+		return defaultDebug = SScript.defaultDebug = value;
 	}
 }
 

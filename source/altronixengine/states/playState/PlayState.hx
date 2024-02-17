@@ -753,14 +753,13 @@ class PlayState extends MusicBeatState
 
 		if (Data.isStoryMode && dialogue != null)
 		{
-			doof = new DialogueBox(dialogue);
+			doof = new DialogueBox(dialogue, Data.isPixel);
 
 			if (Data.SONG.songId == 'senpai')
 				doof.dialogueSound = 'Lunchbox';
 			else if (Data.SONG.songId == 'thorns')
 				doof.dialogueSound = 'LunchboxScary';
 
-			doof.isPixel = Data.isPixel;
 			doof.scrollFactor.set();
 			doof.finishThing = startCountdown;
 		}
@@ -865,6 +864,10 @@ class PlayState extends MusicBeatState
 		else
 			Debug.logTrace('song looks gucci');
 
+		notes = new FlxTypedGroup<Note>();
+
+		songUI = new GameUI(this, camHUD);
+
 		generateSong(Data.SONG.songId);
 
 		#if desktop
@@ -939,7 +942,6 @@ class PlayState extends MusicBeatState
 		FlxG.fixedTimestep = false;
 		moveCameraSection();
 
-		songUI = new GameUI(this, camHUD);
 		add(songUI);
 
 		startingSong = true;
@@ -1697,6 +1699,8 @@ class PlayState extends MusicBeatState
 				bar.alpha = 0;
 				songName.alpha = 0;
 
+				Debug.logTrace(songUI);
+
 				songUI.funnyStartObjects.push(songPosBG);
 				songUI.funnyStartObjects.push(songPosBar);
 				songUI.funnyStartObjects.push(bar);
@@ -1711,7 +1715,6 @@ class PlayState extends MusicBeatState
 			songName.cameras = [camHUD];
 		}
 
-		notes = new FlxTypedGroup<Note>();
 		add(notes);
 
 		var noteData:Array<SwagSection>;

@@ -16,6 +16,7 @@ import flixel.util.FlxTimer;
 import haxe.Json;
 import haxe.format.JsonParser;
 import openfl.utils.Assets;
+import altronixengine.core.Alphabet;
 #if sys
 import sys.FileSystem;
 import sys.io.File;

@@ -1,5 +1,7 @@
 package altronixengine.gameplayStuff;
 
+import altronixengine.utils.ChartUtil;
+import altronixengine.utils.Paths;
 import flixel.util.FlxColor;
 import altronixengine.gameplayStuff.Section.SwagSection;
 import haxe.Json;

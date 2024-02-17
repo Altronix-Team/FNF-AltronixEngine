@@ -1,5 +1,4 @@
 package altronixengine.data;
-
 class EngineConstants
 {
 	public static final engineVer:String = "1.0.0";
@@ -32,7 +31,7 @@ class EngineConstants
 		[3840, 2160],
 		[7680, 4320]
 	];
-	public static final defaultAchievementsArray:Array<Achievements.AchievementData> = [
+	public static final defaultAchievementsArray:Array<altronixengine.core.Achievements.AchievementData> = [
 		{
 			displayedName: 'First Play!',
 			displayedDescription: 'Start an Altronix Engine',

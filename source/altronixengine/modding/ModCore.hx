@@ -1,7 +1,20 @@
 package altronixengine.modding;
 
+import altronixengine.utils.LanguageStuff;
+import altronixengine.utils.CharactersStuff;
+import altronixengine.utils.MenuMusicStuff;
+import altronixengine.utils.NoteskinHelpers;
 import flixel.FlxG;
 import altronixengine.gameplayStuff.Character;
+import altronixengine.utils.Debug;
+import altronixengine.core.Alphabet;
+import altronixengine.core.Controls;
+import altronixengine.utils.CoolUtil;
+import altronixengine.utils.Paths;
+import altronixengine.utils.WindowUtil.WindowShakeEvent;
+import altronixengine.utils.WindowUtil;
+import altronixengine.utils.AssetsUtil;
+import altronixengine.core.Achievements;
 #if FEATURE_MODCORE
 import polymod.Polymod;
 import polymod.backends.OpenFLBackend;
@@ -287,7 +300,7 @@ class ModCore
 		set('Paths', Paths);
 		//set('Stage', altronixengine.gameplayStuff.Stage);
 		set('WindowUtil', WindowUtil);
-		set('WindowShakeEvent', WindowUtil.WindowShakeEvent);
+		set('WindowShakeEvent', WindowShakeEvent);
 		set('Debug', Debug);
 		set('WiggleEffect', altronixengine.shaders.WiggleEffect);
 		set('AtlasFrameMaker', animateatlas.AtlasFrameMaker);

@@ -34,6 +34,7 @@ import openfl.Assets;
 import openfl.utils.Assets as OpenFlAssets;
 import altronixengine.scriptStuff.HscriptStage;
 import altronixengine.states.HscriptableState.PolymodHscriptState;
+import altronixengine.core.Alphabet;
 import sys.FileSystem;
 import sys.io.File;
 #if !html5

@@ -3,6 +3,7 @@ package altronixengine.modding;
 #if FEATURE_MODCORE
 import flixel.FlxG;
 import polymod.Polymod;
+import altronixengine.utils.Debug;
 #if CUSTOM_POLYMOD
 import polymod.ModMetadata;
 #end

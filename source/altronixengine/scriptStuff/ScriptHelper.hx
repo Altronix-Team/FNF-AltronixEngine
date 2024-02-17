@@ -1,6 +1,7 @@
 package altronixengine.scriptStuff;
 
 import altronixengine.gameplayStuff.Section.SwagSection;
+import altronixengine.utils.Debug;
 
 @:allow(altronixengine.states.PlayState)
 class ScriptHelper

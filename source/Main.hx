@@ -25,6 +25,11 @@ import altronixengine.utils.Debug.DebugLogWriter;
 import altronixengine.utils.EngineFPS;
 import altronixengine.utils.EngineSave;
 import altronixengine.utils.ThreadUtil;
+import altronixengine.core.FNFSignals;
+import altronixengine.data.EngineConstants;
+import altronixengine.utils.CoolUtil;
+import altronixengine.utils.EngineData;
+import altronixengine.utils.Debug;
 #if cpp
 import cpp.vm.Gc;
 #end

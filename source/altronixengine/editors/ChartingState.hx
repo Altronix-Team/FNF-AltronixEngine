@@ -44,6 +44,8 @@ import altronixengine.gameplayStuff.Song.SongMeta;
 import altronixengine.gameplayStuff.Song;
 import altronixengine.gameplayStuff.Song;
 import altronixengine.gameplayStuff.TimingStruct;
+import altronixengine.core.FlxUIDropDownMenuCustom;
+import altronixengine.utils.*;
 import haxe.Json;
 import haxe.io.Bytes;
 import haxe.zip.Writer;

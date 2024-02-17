@@ -11,6 +11,7 @@ import haxe.Log;
 import haxe.PosInfos;
 import openfl.system.Capabilities;
 import openfl.events.UncaughtErrorEvent;
+import altronixengine.data.EngineConstants;
 
 /**
  * Hey you, developer!

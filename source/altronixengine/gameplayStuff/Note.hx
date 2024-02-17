@@ -1,5 +1,8 @@
 package altronixengine.gameplayStuff;
 
+import altronixengine.utils.CoolUtil;
+import altronixengine.utils.NoteskinHelpers;
+import altronixengine.utils.Paths;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxTiledSprite;

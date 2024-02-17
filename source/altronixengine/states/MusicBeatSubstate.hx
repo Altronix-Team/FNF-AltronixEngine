@@ -13,6 +13,8 @@ import flixel.FlxSubState;
 import altronixengine.gameplayStuff.Conductor;
 import altronixengine.gameplayStuff.TimingStruct;
 import altronixengine.states.playState.GameData as Data;
+import altronixengine.core.Controls;
+import altronixengine.core.PlayerSettings;
 
 class MusicBeatSubstate extends FlxUISubState implements IMusicBeat
 {

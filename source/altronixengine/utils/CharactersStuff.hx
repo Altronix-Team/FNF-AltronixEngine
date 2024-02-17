@@ -5,6 +5,7 @@ import flxanimate.FlxAnimate;
 import flixel.util.FlxColor;
 import openfl.utils.Assets as OpenFlAssets;
 import altronixengine.gameplayStuff.Character;
+import altronixengine.data.EngineConstants;
 
 @:access(gameplayStuff.Character)
 class CharactersStuff

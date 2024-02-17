@@ -4,3 +4,4 @@ source code refacor
 polymod script classes
 psych to altronix dialogue convertion
 dialogue editors?
+FIX FUCKING HSCRIPT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

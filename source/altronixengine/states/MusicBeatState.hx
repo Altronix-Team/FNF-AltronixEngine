@@ -12,6 +12,10 @@ import altronixengine.gameplayStuff.TimingStruct;
 import lime.app.Application;
 import openfl.Lib;
 import altronixengine.scriptStuff.ScriptHelper;
+import altronixengine.core.Controls;
+import altronixengine.core.PlayerSettings;
+import altronixengine.utils.WindowUtil;
+import altronixengine.utils.EngineFPS;
 
 class MusicBeatState extends BaseState implements altronixengine.gameplayStuff.Conductor.IMusicBeat
 {

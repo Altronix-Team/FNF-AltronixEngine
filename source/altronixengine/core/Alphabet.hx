@@ -1,5 +1,6 @@
 package altronixengine.core;
 
+import altronixengine.utils.Paths;
 import flash.media.Sound;
 import flixel.FlxG;
 import flixel.FlxSprite;

@@ -1,7 +1,9 @@
 package altronixengine.core;
 
+import altronixengine.utils.AssetsUtil;
 import flixel.FlxSprite;
 import altronixengine.states.AchievementsState;
+import altronixengine.data.EngineConstants;
 
 // TODO Custom achievements
 typedef AchievementData =

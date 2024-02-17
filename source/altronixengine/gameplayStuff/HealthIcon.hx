@@ -1,5 +1,6 @@
 package altronixengine.gameplayStuff;
 
+import altronixengine.utils.Paths;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.animation.FlxBaseAnimation;

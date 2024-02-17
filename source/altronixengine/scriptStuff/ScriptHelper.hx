@@ -6,7 +6,7 @@ import altronixengine.gameplayStuff.Section.SwagSection;
 @:allow(altronixengine.states.PlayState)
 class ScriptHelper
 {
-	public static var hscriptFiles:Array<HScriptModchart> = [];
+	public static var hscriptFiles:Array<IHScriptModchart> = [];
 
 	private static var taskThread:Thread = Thread.createWithEventLoop(function() {Thread.current().events.promise();});
 
@@ -22,12 +22,12 @@ class ScriptHelper
 
 	public static function setOnHscript(name:String, value:Dynamic)
 	{
-		taskThread.events.run(function() {
+		//taskThread.events.run(function() {
 			for (script in hscriptFiles)
 			{
 				script.scriptHandler.set(name, value);
 			}
-		});
+		//});
 	}
 
 	public static function callOnHscript(functionToCall:String, ?params:Array<Any>)

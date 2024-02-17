@@ -116,6 +116,7 @@
 				0,
 				0
 			],
+			"nextAnim": "hairFall",
 			"frameRate": 24,
 			"frameIndices": [
 				0,
@@ -150,7 +151,6 @@
 				11
 			],
 			"prefix": "GF Dancing Beat Hair Landing",
-			"isDanced": true,
 			"name": "hairFall",
 			"interrupt": false
 		},

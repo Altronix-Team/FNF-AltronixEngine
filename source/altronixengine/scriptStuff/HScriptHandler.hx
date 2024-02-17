@@ -128,10 +128,6 @@ class HScriptHandler extends SScript
 		set('FlxMath', FlxMath);
 		set('FlxSound', FlxSound);
 		set('FlxGroup', FlxGroup);
-		#if (flixel < "5.0.0")
-		set('FlxPoint', FlxPoint);
-		set('FlxAxes', FlxAxes);
-		#end
 		set('FlxTypedGroup', FlxTypedGroup);
 		set('FlxSpriteGroup', FlxSpriteGroup);
 		set('FlxTypedSpriteGroup', FlxTypedSpriteGroup);

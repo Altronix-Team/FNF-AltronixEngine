@@ -1,5 +1,13 @@
 package altronixengine.scriptStuff;
 
+import altronixengine.gameplayStuff.DialogueBoxPsych;
+import altronixengine.gameplayStuff.PlayStateChangeables;
+import altronixengine.gameplayStuff.CutsceneHandler;
+import altronixengine.gameplayStuff.BGSprite;
+import funkin.gameplayStuff.BackgroundGirls;
+import funkin.gameplayStuff.BackgroundDancer;
+import funkin.gameplayStuff.TankmenBG;
+import altronixengine.gameplayStuff.BaseStage;
 import altronixengine.utils.Paths;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
@@ -10,48 +18,26 @@ import altronixengine.gameplayStuff.Boyfriend;
 import altronixengine.gameplayStuff.Character;
 import altronixengine.scriptStuff.HScriptHandler;
 import altronixengine.states.playState.PlayState;
+import altronixengine.states.playState.GameData as Data;
 
-class HscriptStage extends HScriptModchart
+class HscriptStage extends BaseStage implements IHScriptModchart
 {
-	var state:PlayState;
-
-	public var gf:Character = null;
-	public var dad:Character = null;
-	public var boyfriend:Boyfriend = null;
-
-	public var gfGroup:FlxSpriteGroup;
-	public var dadGroup:FlxSpriteGroup;
-	public var boyfriendGroup:FlxSpriteGroup;
-
-	public var addedCharacters:Array<Character> = [];
-	public var addedCharacterGroups:Array<FlxSpriteGroup> = [];
+	public var scriptHandler:HScriptHandler;
 
 	public var objectsMap:Map<String, FlxBasic> = new Map<String, FlxBasic>();
 	public var objectsArray:Array<FlxBasic> = [];
 
-	public function new(path:String, state:PlayState)
+	public function new(curStage:String, state:PlayState, path:String)
 	{
-		super(path, state);
+		scriptHandler = new HScriptHandler(path);
 
-		gf = state.gf;
-		dad = state.dad;
-		boyfriend = state.boyfriend;
+		scriptHandlerPreset();
 
-		gfGroup = state.gfGroup;
-		dadGroup = state.gfGroup;
-		boyfriendGroup = state.boyfriendGroup;
+		super(curStage, state);
+	}
 
-		scriptHandler.set("stage", this);
-		scriptHandler.set("addGf", addGf);
-		scriptHandler.set("addDad", addDad);
-		scriptHandler.set("addBoyfriend", addBoyfriend);
-		scriptHandler.set("addGfGroup", addGfGroup);
-		scriptHandler.set("addDadGroup", addDadGroup);
-		scriptHandler.set("addBoyfriendGroup", addBoyfriendGroup);
-		scriptHandler.set("addObject", addObject);
-		scriptHandler.set("getObject", getObject);
-
-		this.state = state;
+	override function create(){
+		scriptHandler.call('onCreate', []);
 	}
 
 	override public function add(object:FlxBasic):FlxBasic
@@ -98,37 +84,31 @@ class HscriptStage extends HScriptModchart
 	public function addGf()
 	{
 		add(gf);
-		addedCharacters.push(gf);
 	}
 
 	public function addDad()
 	{
 		add(dad);
-		addedCharacters.push(dad);
 	}
 
 	public function addBoyfriend()
 	{
 		add(boyfriend);
-		addedCharacters.push(boyfriend);
 	}
 
 	public function addGfGroup()
 	{
 		add(gfGroup);
-		addedCharacterGroups.push(gfGroup);
 	}
 
 	public function addDadGroup()
 	{
 		add(dadGroup);
-		addedCharacterGroups.push(dadGroup);
 	}
 
 	public function addBoyfriendGroup()
 	{
 		add(boyfriendGroup);
-		addedCharacterGroups.push(boyfriendGroup);
 	}
 
 	public function getCharacterByIndex(whose:Int):altronixengine.gameplayStuff.Character
@@ -136,11 +116,11 @@ class HscriptStage extends HScriptModchart
 		switch (whose)
 		{
 			case 0:
-				return state.dad;
+				return dad;
 			case 1:
-				return state.boyfriend;
+				return boyfriend;
 			case 2:
-				return state.gf;
+				return gf;
 			default:
 				return null;
 		}
@@ -152,5 +132,116 @@ class HscriptStage extends HScriptModchart
 		super.update(elapsed);
 		if (scriptHandler.exists('onUpdate'))
 			scriptHandler.call('onUpdate', [elapsed]);
+	}
+
+	private function scriptHandlerPreset(){
+		if (!scriptHandler.exists("PlayState"))
+			scriptHandler.set("PlayState", playState);
+
+		if (!scriptHandler.exists("stage"))
+			scriptHandler.set("stage", this);
+
+		if (!scriptHandler.exists("gf") && gf != null)
+			scriptHandler.set("gf", gf);
+		if (!scriptHandler.exists("dad") && dad != null)
+			scriptHandler.set("dad", dad);
+		if (!scriptHandler.exists("boyfriend") && boyfriend != null)
+			scriptHandler.set("boyfriend", boyfriend);
+
+		if (!scriptHandler.exists("gfGroup") && gfGroup != null)
+			scriptHandler.set("gfGroup", gfGroup);
+		if (!scriptHandler.exists("dadGroup") && dadGroup != null)
+			scriptHandler.set("dadGroup", dadGroup);
+		if (!scriptHandler.exists("boyfriendGroup") && boyfriendGroup != null)
+			scriptHandler.set("boyfriendGroup", boyfriendGroup);
+
+		scriptHandler.set("curBeat", 0);
+		scriptHandler.set("curStep", 0);
+		scriptHandler.set("curSectionNumber", 0);
+
+		scriptHandler.set("songId", Data.SONG.songId);
+
+		scriptHandler.set("setOnHscript", ScriptHelper.setOnHscript);
+		scriptHandler.set("callOnHscript", ScriptHelper.callOnHscript);
+
+		scriptHandler.set("camGame", playState.camGame);
+		scriptHandler.set("camHUD", playState.camHUD);
+		scriptHandler.set("PlayStateChangeables", PlayStateChangeables);
+		scriptHandler.set('CutsceneHandler', CutsceneHandler);
+		scriptHandler.set('BGSprite', BGSprite);
+		scriptHandler.set('BackgroundGirls', BackgroundGirls);
+		scriptHandler.set('BackgroundDancer', BackgroundDancer);
+		scriptHandler.set('TankmenBG', TankmenBG);
+
+		scriptHandler.set("setObjectCam", setObjectCam);
+
+		scriptHandler.set("startDialogue", startDialogue);
+
+		scriptHandler.set('isStoryMode', Data.isStoryMode);
+
+		scriptHandler.set('add', add);
+		scriptHandler.set('remove', remove);
+
+		scriptHandler.set('destroyScript', destroyScript);
+
+		scriptHandler.set("stage", this);
+		scriptHandler.set("addGf", addGf);
+		scriptHandler.set("addDad", addDad);
+		scriptHandler.set("addBoyfriend", addBoyfriend);
+		scriptHandler.set("addGfGroup", addGfGroup);
+		scriptHandler.set("addDadGroup", addDadGroup);
+		scriptHandler.set("addBoyfriendGroup", addBoyfriendGroup);
+		scriptHandler.set("addObject", addObject);
+		scriptHandler.set("getObject", getObject);
+	}
+
+	private function destroyScript()
+	{
+		if (ScriptHelper.hscriptFiles.contains(this))
+			ScriptHelper.hscriptFiles.remove(this);
+	}
+
+	public function setObjectCam(object:FlxBasic, camera:String)
+	{
+		if (object != null)
+		{
+			object.cameras = [getCameraFromString(camera)];
+		}
+	}
+
+		// TODO Redo to work with DialogueBox.hx
+	public function startDialogue(dialogueFile:String, music:String = null)
+	{
+		var path:String = Paths.formatToDialoguePath(Data.SONG.songId + '/' + dialogueFile);
+
+		if (path != null)
+		{
+			var shit:DialogueFile = DialogueBoxPsych.parseDialogue(path);
+			if (shit.dialogue.length > 0)
+			{
+				PlayState.instance.startDialogue(shit, music);
+			}
+		}
+		else
+		{
+			if (PlayState.instance.endingSong)
+			{
+				PlayState.instance.endSong();
+			}
+			else
+			{
+				PlayState.instance.startCountdown();
+			}
+		}
+	}
+
+	public function getCameraFromString(camera:String):FlxCamera
+	{
+		switch (camera.toLowerCase())
+		{
+			case 'camhud' | 'hud':
+				return PlayState.instance.camHUD;
+		}
+		return PlayState.instance.camGame;
 	}
 }

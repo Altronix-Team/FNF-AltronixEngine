@@ -96,11 +96,7 @@ class PhillyStage extends BaseStage{
 
                 randomColor();
 
-                if (Data.SONG != null)
-                {
-                    if (Data.SONG.songId != 'blammed')
-                        phillyCityLight.color = windowColor;
-                }
+                phillyCityLight.color = windowColor;
 
                 windowsShader.reset();
             }
@@ -112,37 +108,15 @@ class PhillyStage extends BaseStage{
             {
                 trainCooldown = FlxG.random.int(-4, 0);
                 trainStart();
-                trace('train');
             }
         }
     }
-
-    var oldLight = 999999;
-
 	public var windowColor:FlxColor = FlxColor.WHITE;
 
 	function randomColor()
 	{
-		curLight = FlxG.random.int(0, 4, [oldLight]);
-		oldLight = curLight;
-
-		switch (curLight)
-		{
-			case 4:
-				windowColor = FlxColor.fromRGB(251, 166, 51);
-			case 3:
-				windowColor = FlxColor.fromRGB(253, 69, 49);
-			case 2:
-				windowColor = FlxColor.fromRGB(251, 51, 245);
-			case 1:
-				windowColor = FlxColor.fromRGB(49, 253, 140);
-			case 0:
-				windowColor = FlxColor.fromRGB(49, 162, 253);
-		}
+		windowColor = FlxG.random.color(null, null, 255);
 	}
-
-
-	public var curLight:Int = 0;
 
     var startedMoving:Bool = false;
 
@@ -156,8 +130,8 @@ class PhillyStage extends BaseStage{
 
 				if (Data.SONG != null)
 				{
-					if (PlayState.instance.gf != null)
-						PlayState.instance.gf.playAnim('hairBlow');
+					if (gf != null)
+                        gf.playAnim('hairBlow');
 					else
 						GameplayCustomizeState.gf.playAnim('hairBlow');
 				}
@@ -177,8 +151,9 @@ class PhillyStage extends BaseStage{
 						trainFinishing = true;
 				}
 
-				if (phillyTrain.x < -4000 && trainFinishing)
-					trainReset();
+				if (phillyTrain.x < -4000 && trainFinishing){
+                    trainReset();
+                }			
 			}
 		}
 	}
@@ -189,16 +164,18 @@ class PhillyStage extends BaseStage{
 		{
 			if (Data.SONG != null)
 			{
-				if (PlayState.instance.gf != null)
-					PlayState.instance.gf.playAnim('hairFall');
+				if (gf != null){
+                    @:privateAccess()
+                    gf.danced = false;
+                    gf.playAnim('hairFall');
+                    gf.specialAnim = true;
+                }		
 				else
 					GameplayCustomizeState.gf.playAnim('hairFall');
 			}
 
 			phillyTrain.x = FlxG.width + 200;
 			trainMoving = false;
-			// trainSound.stop();
-			// trainSound.time = 0;
 			trainCars = 8;
 			trainFinishing = false;
 			startedMoving = false;

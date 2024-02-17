@@ -88,7 +88,6 @@ import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
 import altronixengine.scriptStuff.HScriptHandler.ScriptException;
 import altronixengine.scriptStuff.HScriptModchart as ModchartHelper;
-import altronixengine.scriptStuff.HscriptStage;
 import altronixengine.scriptStuff.ScriptHelper;
 // import scriptStuff.scriptBodies.*;
 import altronixengine.shaders.Shaders;
@@ -243,8 +242,6 @@ class PlayState extends MusicBeatState
 	public var randomVar = false;
 
 	public var curStage:BaseStage;
-
-	public var hscriptStage:HscriptStage;
 
 	public var defaultCamZoom:Float = 1.05;
 	public var boyfriendCameraOffset:Array<Float> = null;
@@ -588,29 +585,7 @@ class PlayState extends MusicBeatState
 		Debug.logInfo('Loading stage');
 		if (!Data.stageTesting)
 		{
-			/*if (Paths.getHscriptPath(Data.SONG.stage, 'stages') != null)
-			{
-				try
-				{
-					hscriptStage = new HscriptStage(Paths.getHscriptPath(Data.SONG.stage, 'stages'), this);
-					ScriptHelper.hscriptFiles.push(hscriptStage);
-					hscriptStageCheck = true;
-				}
-				catch (e)
-				{
-					if (Std.isOfType(e, ScriptException))
-					{
-						scriptError(e);
-						return;
-					}
-					else
-						Debug.displayAlert('Error with hscript stage file!', Std.string(e));
-				}
-			}
-			else
-			{*/
-				curStage = BaseStage.initStage(Data.SONG.stage, this);
-			//}
+			curStage = BaseStage.initStage(Data.SONG.stage, this);
 		}
 
 		Debug.logInfo('Loading characters');
@@ -724,26 +699,7 @@ class PlayState extends MusicBeatState
 				gf.visible = true;
 		}
 
-		//if (hscriptStage != null)
-			//add(hscriptStage);
-		//else if (curStage != null)
-			add(curStage);
-
-		if (hscriptStageCheck)
-		{
-			/*if (!hscriptStage.members.contains(gfGroup))
-				add(gfGroup);
-			else
-				gfGroup = hscriptStage.gfGroup;
-
-			if (!hscriptStage.members.contains(dadGroup))
-				add(dadGroup);
-			else
-				dadGroup = hscriptStage.dadGroup;*/
-
-			//if (hscriptStage.members.contains(boyfriendGroup))
-				//boyfriendGroup = hscriptStage.boyfriendGroup;
-		}
+		add(curStage);
 
 		this.hideGF = stageData.hideGF || Data.SONG.hideGF;
 
@@ -3051,153 +3007,6 @@ class PlayState extends MusicBeatState
 		reloadIcons();
 	}*/
 
-	/*public function changeCharacterToCached(charType:String = 'bf', newChar:Dynamic)
-	{
-		if (newChar == null)
-		{
-			Debug.logError('Cached character is null');
-			return;
-		}
-
-		switch (charType)
-		{
-			case 'bf':
-				{
-					if (boyfriend.hasTrail)
-					{
-						if (Main.save.data.distractions)
-						{
-							if (!PlayStateChangeables.Optimize)
-							{
-								remove(bfTrail);
-							}
-						}
-					}
-					boyfriendGroup.clear();
-					boyfriend = null;
-					boyfriend = newChar;
-					boyfriend.alpha = 0.0000001;
-					boyfriendGroup.add(boyfriend);
-					boyfriend.alpha = 1;
-
-					boyfriend.setPosition(BF_X, BF_Y);
-					boyfriend.x += boyfriend.positionArray[0];
-					boyfriend.y += boyfriend.positionArray[1];
-
-					ScriptHelper.setOnHscript('boyfriendName', boyfriend.curCharacter);
-
-					if (hscriptStage != null)
-					{
-						hscriptStage.boyfriend = boyfriend;
-						hscriptStage.boyfriendGroup = boyfriendGroup;
-					}
-
-					if (boyfriend.hasTrail)
-					{
-						if (Main.save.data.distractions)
-						{
-							if (!PlayStateChangeables.Optimize)
-							{
-								bfTrail = new FlxTrail(boyfriend, null, 4, 24, 0.3, 0.069);
-								add(bfTrail);
-							}
-						}
-					}
-				}
-				startCharacterHscript(boyfriend.curCharacter);
-			case 'dad':
-				{
-					if (dad.hasTrail)
-					{
-						if (Main.save.data.distractions)
-						{
-							if (!PlayStateChangeables.Optimize)
-							{
-								remove(dadTrail);
-							}
-						}
-					}
-					dadGroup.clear();
-					dad = null;
-					dad = newChar;
-					dad.alpha = 0.0000001;
-					dadGroup.add(dad);
-					dad.alpha = 1;
-
-					dad.setPosition(DAD_X, DAD_Y);
-					dad.x += dad.positionArray[0];
-					dad.y += dad.positionArray[1];
-
-					ScriptHelper.setOnHscript('dadName', dad.curCharacter);
-
-					if (hscriptStage != null)
-					{
-						hscriptStage.dad = dad;
-						hscriptStage.dadGroup = dadGroup;
-					}
-
-					if (dad.hasTrail)
-					{
-						if (Main.save.data.distractions)
-						{
-							if (!PlayStateChangeables.Optimize)
-							{
-								dadTrail = new FlxTrail(dad, null, 4, 24, 0.3, 0.069);
-								add(dadTrail);
-							}
-						}
-					}
-				}
-				startCharacterHscript(dad.curCharacter);
-			case 'gf':
-				{
-					if (gf.hasTrail)
-					{
-						if (Main.save.data.distractions)
-						{
-							if (!PlayStateChangeables.Optimize)
-							{
-								remove(gfTrail);
-							}
-						}
-					}
-					gfGroup.clear();
-					gf = null;
-					gf = newChar;
-					gf.alpha = 0.0000001;
-					gfGroup.add(gf);
-					gf.alpha = 1;
-
-					gf.setPosition(GF_X, GF_Y);
-					gf.x += gf.positionArray[0];
-					gf.y += gf.positionArray[1];
-
-					ScriptHelper.setOnHscript('gfName', gf.curCharacter);
-
-					if (hscriptStage != null)
-					{
-						hscriptStage.gf = gf;
-						hscriptStage.gfGroup = gfGroup;
-					}
-
-					if (gf.hasTrail)
-					{
-						if (Main.save.data.distractions)
-						{
-							if (!PlayStateChangeables.Optimize)
-							{
-								gfTrail = new FlxTrail(gf, null, 4, 24, 0.3, 0.069);
-								add(gfTrail);
-							}
-						}
-					}
-				}
-				startCharacterHscript(gf.curCharacter);
-		}
-		reloadHealthBarColors();
-		reloadIcons();
-	}*/
-
 	public function reloadIcons()
 	{
 		songUI.iconP1.changeIcon(boyfriend.curCharacter, boyfriend.characterIcon);
@@ -3970,7 +3779,7 @@ class PlayState extends MusicBeatState
 	private function playerBop(){
 		if (boyfriend.getCurAnimName().startsWith('sing')
 			&& !boyfriend.getCurAnimName().endsWith('miss')
-			&& (boyfriend.getCurAnim().curFrame >= 10 || boyfriend.getCurAnim().finished))
+			&& (boyfriend.getAnimFrame() >= 10 || boyfriend.isAnimationFinished()))
 			boyfriend.dance();
 	}
 

@@ -137,11 +137,22 @@ class Character extends FNFSprite
 
 	override function update(elapsed:Float)
 	{
-		if (animateAtlas != null)
-			animateAtlas.update(elapsed);
+		super.update(elapsed);
 
-		if (!debugMode && getCurAnim() != null)
+		if (!debugMode && !isAnimationNull())
 		{
+			var nextAnim = animNext.get(getCurAnimName());
+			var forceDanced = animDanced.get(getCurAnimName());
+
+			if (nextAnim != null && isAnimationFinished())
+			{
+				if (specialAnim) specialAnim = false;
+				if (isDancing && forceDanced != null)
+					danced = forceDanced;
+				playAnim(nextAnim);
+				return;
+			}			
+
 			if (!isPlayer)
 			{
 				if (getCurAnimName().startsWith('sing'))
@@ -150,7 +161,7 @@ class Character extends FNFSprite
 				if (holdTimer >= Conductor.stepCrochet * holdLength * 0.001)
 				{
 					if (isDancing)
-						playAnim('danceLeft'); // overridden by dance correctly later
+						playAnim('danceLeft');
 					dance(false, wasAltIdle);
 					holdTimer = 0;
 
@@ -158,33 +169,9 @@ class Character extends FNFSprite
 						color = FlxColor.WHITE;
 				}
 			}
-
-			if (getCurAnim().finished && specialAnim)
-			{
-				specialAnim = false;
-				dance(false, wasAltIdle);
-			}
 		}
 
-		if (!debugMode)
-		{
-			var nextAnim = null;
-			var forceDanced = null;
-			if (getCurAnim() != null)
-			{
-				nextAnim = animNext.get(getCurAnimName());
-				forceDanced = animDanced.get(getCurAnimName());
-			}
-
-			if (nextAnim != null && getCurAnim().finished)
-			{
-				if (isDancing && forceDanced != null)
-					danced = forceDanced;
-				playAnim(nextAnim);
-			}
-		}
-
-		super.update(elapsed);
+		if (isAnimationNull()) dance(true, wasAltIdle);
 	}
 
 	private var danced:Bool = false;
@@ -194,7 +181,7 @@ class Character extends FNFSprite
 		if (!debugMode)
 		{
 			var canInterrupt = true;
-			if (getCurAnim() != null)
+			if (!isAnimationNull())
 				canInterrupt = animInterrupt.get(getCurAnimName());
 
 			if (altAnim != wasAltIdle)
@@ -274,10 +261,11 @@ class Character extends FNFSprite
 	{
 		if (curBeat % danceEveryNumBeats == 0)
 		{
-			if (getCurAnim() != null)
+			if (!isAnimationNull())
 			{
-				if (!getCurAnimName().contains('sing') || getCurAnim().finished)
-					dance(true, altIdle);
+				if (!getCurAnimName().contains('sing') || isAnimationFinished()){
+					dance(true, wasAltIdle);
+				}
 			}
 			else
 				dance(true, altIdle);
@@ -289,7 +277,7 @@ class Character extends FNFSprite
 
 	public function recalculateDanceIdle()
 	{
-		danceIdle = (animationExists('danceLeft-alt') && animationExists('danceRight-alt'));
+		danceIdle = (animationExists('danceLeft') && animationExists('danceRight'));
 
 		danceEveryNumBeats = (danceIdle ? 1 : 2);
 	}
@@ -303,11 +291,9 @@ class Character extends FNFSprite
 			frames = tex;
 		else
 		{
-			Debug.logInfo('Looks like character uses texture atlas');
 			animateAtlas = new FlxAnimate(x, y, Paths.getPath('characters/$curCharacter/${data.asset.replaceAll('characters/', '')}', BINARY, 'gameplay'));
 		}
 
-		// if (frames != null)
 		for (anim in data.animations)
 		{
 			var frameRate = anim.frameRate;
@@ -332,12 +318,10 @@ class Character extends FNFSprite
 
 			animOffsets[anim.name] = anim.offsets == null ? [0, 0] : anim.offsets;
 			animInterrupt[anim.name] = anim.interrupt == null ? true : anim.interrupt;
+			animNext[anim.name] = anim.nextAnim;
 
 			if (data.isDancing && anim.isDanced != null)
 				animDanced[anim.name] = anim.isDanced;
-
-			if (anim.nextAnim != null)
-				animNext[anim.name] = anim.nextAnim;
 		}
 
 		replacesGF = data.replacesGF == null ? false : data.replacesGF;

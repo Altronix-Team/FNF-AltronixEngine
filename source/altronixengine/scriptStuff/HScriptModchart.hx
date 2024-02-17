@@ -3,24 +3,19 @@ package altronixengine.scriptStuff;
 import altronixengine.utils.Paths;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
-import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import altronixengine.gameplayStuff.BGSprite;
 import funkin.gameplayStuff.BackgroundDancer;
 import funkin.gameplayStuff.BackgroundGirls;
-import altronixengine.gameplayStuff.Boyfriend;
-import altronixengine.gameplayStuff.Character;
 import altronixengine.gameplayStuff.CutsceneHandler;
 import altronixengine.gameplayStuff.DialogueBoxPsych;
 import altronixengine.gameplayStuff.PlayStateChangeables;
 import funkin.gameplayStuff.TankmenBG;
-import openfl.utils.Assets;
 import altronixengine.scriptStuff.HScriptHandler;
-import altronixengine.states.MusicBeatState;
 import altronixengine.states.playState.PlayState;
 import altronixengine.states.playState.GameData as Data;
 
-class HScriptModchart extends FlxTypedGroup<FlxBasic>
+class HScriptModchart extends FlxTypedGroup<FlxBasic> implements IHScriptModchart
 {
 	public var scriptHandler:HScriptHandler;
 
@@ -37,11 +32,8 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 		if (!scriptHandler.exists("PlayState"))
 			scriptHandler.set("PlayState", curState);
 
-		if (curState.hscriptStage != null)
-		{
-			if (!scriptHandler.exists("stage"))
-				scriptHandler.set("stage", curState.hscriptStage);
-		}
+		if (!scriptHandler.exists("stage"))
+			scriptHandler.set("stage", curState.curStage);
 
 		if (!scriptHandler.exists("gf") && curState.gf != null)
 			scriptHandler.set("gf", curState.gf);

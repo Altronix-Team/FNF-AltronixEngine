@@ -1,5 +1,8 @@
 package altronixengine.gameplayStuff;
 
+import altronixengine.scriptStuff.HScriptHandler.ScriptException;
+import altronixengine.scriptStuff.HscriptStage;
+import altronixengine.scriptStuff.ScriptHelper;
 import flixel.FlxSprite;
 import flixel.FlxBasic;
 import altronixengine.core.musicbeat.FNFTypedGroup;
@@ -42,11 +45,11 @@ class BaseStage extends FNFTypedGroup<FlxBasic>{
             case 'warzone':
                 return new WarzoneStage(daStage, playState);
             default:
-                /*if (Paths.getHscriptPath(Data.SONG.stage, 'stages') != null)
+                if (Paths.getHscriptPath(Data.SONG.stage, 'stages') != null)
                 {
                     try
                     {
-                        hscriptStage = new HscriptStage(Paths.getHscriptPath(Data.SONG.stage, 'stages'), this);
+                        var hscriptStage = new HscriptStage(daStage, playState, Paths.getHscriptPath(Data.SONG.stage, 'stages'));
                         ScriptHelper.hscriptFiles.push(hscriptStage);
                         playState.hscriptStageCheck = true;
                         return hscriptStage;
@@ -61,7 +64,7 @@ class BaseStage extends FNFTypedGroup<FlxBasic>{
                         else
                             Debug.displayAlert('Error with hscript stage file!', Std.string(e));
                     }
-                }*/
+                }
                 return new BaseStage("stage", playState);
         }
     }

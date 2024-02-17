@@ -125,6 +125,12 @@ class FNFSprite extends FlxSprite implements IMusicBeat
 		}
 	}
 
+	override function update(elapsed:Float){
+		if (animateAtlas != null) animateAtlas.update(elapsed);
+
+		super.update(elapsed);
+	}
+
 	public function addOffset(name:String, x:Float = 0, y:Float = 0)
 	{
 		animOffsets[name] = [x, y];
@@ -133,14 +139,6 @@ class FNFSprite extends FlxSprite implements IMusicBeat
 	public function quickAnimAdd(name:String, anim:String)
 	{
 		animation.addByPrefix(name, anim, 24, false);
-	}
-
-	public function getCurAnim():Dynamic
-	{
-		if (animateAtlas != null)
-			return animateAtlas.anim;
-		else
-			return animation.curAnim;
 	}
 
 	public inline function getCurAnimName()
@@ -156,6 +154,19 @@ class FNFSprite extends FlxSprite implements IMusicBeat
 				name = animation.curAnim.name;
 		}
 		return name;
+	}
+
+	public function getAnimFrame():Int{
+		return animateAtlas != null ? animateAtlas.anim.curFrame : animation.curAnim.curFrame;
+	}
+
+	inline public function isAnimationNull():Bool
+		return animateAtlas != null ? (animateAtlas.anim.curSymbol == null) : (animation.curAnim == null);
+
+	public function isAnimationFinished():Bool
+	{
+		if(isAnimationNull()) return false;
+		return animateAtlas != null ? animateAtlas.anim.finished : animation.curAnim.finished;
 	}
 
 	public function animationExists(animName:String):Bool

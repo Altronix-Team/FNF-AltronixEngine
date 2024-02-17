@@ -34,6 +34,8 @@ class HscriptStage extends BaseStage implements IHScriptModchart
 		scriptHandlerPreset();
 
 		super(curStage, state);
+
+		Debug.logInfo('Successfully loaded new hscript file: ' + path.removeBefore('/'));
 	}
 
 	override function create(){

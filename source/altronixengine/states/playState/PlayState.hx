@@ -897,12 +897,6 @@ class PlayState extends MusicBeatState
 		}
 		#end
 
-		/*var filesToCheck:Array<String> = AssetsUtil.readLibrary("gameplay", HSCRIPT, "scripts/notes/");
-			for (file in filesToCheck)
-			{
-				noteScripts.push(new NoteScriptBody(file));
-		}*/
-
 		if (Data.startTime != 0)
 		{
 			var toBeRemoved = [];

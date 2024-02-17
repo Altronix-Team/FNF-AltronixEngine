@@ -1,5 +1,9 @@
 package funkin.stages;
 
+import altronixengine.gameplayStuff.Conductor;
+import funkin.gameplayStuff.TankmenBG;
+import flixel.util.FlxSort;
+import altronixengine.gameplayStuff.Song;
 import flixel.group.FlxGroup.FlxTypedGroup;
 
 class WarzoneStage extends BaseStage{
@@ -140,20 +144,28 @@ class WarzoneStage extends BaseStage{
 
         if (Data.SONG != null)
         {
-            if (Data.SONG.gfVersion == 'picospeaker')
+            if (Data.SONG.songId == 'stress')
             {
-                var firstTank:funkin.gameplayStuff.TankmenBG = new funkin.gameplayStuff.TankmenBG(20, 500, true);
+                var picoAnims = Song.picospeakerLoad().notes;
+                for (anim in picoAnims) {
+                     for (note in anim.sectionNotes) {
+                        TankmenBG.animationNotes.push(note);
+                    }
+                }
+                TankmenBG.animationNotes.sort(sortAnims);
+
+                var firstTank:TankmenBG = new TankmenBG(20, 500, true);
                 firstTank.resetShit(20, 600, true);
                 firstTank.strumTime = 10;
                 tankmanRun.add(firstTank);
 
-                for (i in 0...funkin.gameplayStuff.TankmenBG.animationNotes.length)
+                for (i in 0...TankmenBG.animationNotes.length)
                 {
                     if (FlxG.random.bool(16))
                     {
-                        var tankBih = tankmanRun.recycle(funkin.gameplayStuff.TankmenBG);
-                        tankBih.strumTime = funkin.gameplayStuff.TankmenBG.animationNotes[i][0];
-                        tankBih.resetShit(500, 200 + FlxG.random.int(50, 100), funkin.gameplayStuff.TankmenBG.animationNotes[i][1] < 2);
+                        var tankBih = tankmanRun.recycle(TankmenBG);
+                        tankBih.strumTime = TankmenBG.animationNotes[i][0];
+                        tankBih.resetShit(500, 200 + FlxG.random.int(50, 100), TankmenBG.animationNotes[i][1] < 2);
                         tankmanRun.add(tankBih);
                     }
                 }
@@ -165,6 +177,20 @@ class WarzoneStage extends BaseStage{
         super.update(elapsed);
         
         moveTank(elapsed);
+
+        if (Data.SONG.songId == 'stress')
+        {
+            if(TankmenBG.animationNotes.length > 0 && Conductor.songPosition > TankmenBG.animationNotes[0][0])
+            {
+                var noteData:Int = 1;
+                if(TankmenBG.animationNotes[0][1] > 2) noteData = 3;
+                    
+                noteData += FlxG.random.int(0, 1);
+                gf.playAnim('shoot' + noteData, true);
+                TankmenBG.animationNotes.shift();
+            }
+            if(gf.isAnimationFinished()) gf.playAnim(gf.getCurAnimName(), false, false, gf.animateAtlas.anim.length - 3);
+        }
     }
 
     override function beatHit(){
@@ -191,4 +217,9 @@ class WarzoneStage extends BaseStage{
 			steve.y = 1300 + 1100 * Math.sin(Math.PI / 180 * (1 * tankAngle + 180));
 		}
 	}
+
+    function sortAnims(Obj1:Array<Dynamic>, Obj2:Array<Dynamic>):Int
+    {
+        return FlxSort.byValues(FlxSort.ASCENDING, Obj1[0], Obj2[0]);
+    }
 }

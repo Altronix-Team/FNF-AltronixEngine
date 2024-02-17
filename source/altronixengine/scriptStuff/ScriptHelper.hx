@@ -1,6 +1,5 @@
 package altronixengine.scriptStuff;
 
-import sys.thread.Thread;
 import altronixengine.gameplayStuff.Section.SwagSection;
 
 @:allow(altronixengine.states.PlayState)
@@ -8,45 +7,37 @@ class ScriptHelper
 {
 	public static var hscriptFiles:Array<IHScriptModchart> = [];
 
-	private static var taskThread:Thread = Thread.createWithEventLoop(function() {Thread.current().events.promise();});
-
 	public static function clearAllScripts()
 	{
-		taskThread.events.run(function() {
-			for (script in hscriptFiles){
-				hscriptFiles.remove(script);
-				script.destroy();
-			}
-		});
+		for (script in hscriptFiles){
+			hscriptFiles.remove(script);
+			script.destroy();
+		}
 	}
 
 	public static function setOnHscript(name:String, value:Dynamic)
 	{
-		//taskThread.events.run(function() {
-			for (script in hscriptFiles)
-			{
-				script.scriptHandler.set(name, value);
-			}
-		//});
+		for (script in hscriptFiles)
+		{
+			script.scriptHandler.set(name, value);
+		}
 	}
 
 	public static function callOnHscript(functionToCall:String, ?params:Array<Any>)
 	{
-		//taskThread.events.run(function() {
-			for (script in hscriptFiles)
+		for (script in hscriptFiles)
+		{
+			var scriptHelper = script.scriptHandler;
+			if (scriptHelper.exists(functionToCall))
 			{
-				var scriptHelper = script.scriptHandler;
-				if (scriptHelper.exists(functionToCall))
-				{
-					var call = scriptHelper.call(functionToCall, params);
-					if (!call.succeeded){
-						for (exception in call.exceptions){
-							Debug.logError('Error in script ${scriptHelper.scriptFile} \n ${exception.details()}');
-						}
+				var call = scriptHelper.call(functionToCall, params);
+				if (!call.succeeded){
+					for (exception in call.exceptions){
+						Debug.logError('Error in script ${scriptHelper.scriptFile} \n ${exception.details()}');
 					}
 				}
 			}
-		//});
+		}
 	}
 
 	public static function isFunctionExists(funcName:String):Bool

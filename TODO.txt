@@ -5,3 +5,4 @@ polymod script classes
 psych to altronix dialogue convertion
 dialogue editors?
 FIX FUCKING HSCRIPT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Better function calling for hscript (Maybe macro and async events(?)) 

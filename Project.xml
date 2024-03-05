@@ -65,7 +65,6 @@
 	<define name="VIDEOS_ALLOWED" if="windows || linux || android || cpp" unless="32bits"/>
 	<define name="DISCORD_ALLOWED" if="desctop || cpp" />
 
-	<haxeflag name="-dce" value="std" />
 	<haxedef name="message.reporting" value="pretty" />
 	
 	<!-- <define name="PRELOAD_ALL" /> -->
@@ -226,6 +225,6 @@
     <haxedef name="POLYMOD_DEBUG" if="debug" />
 
 	<!-- Remove that if you want to use Haxe versions older than 4.3.0-->
-		<haxeflag name="--macro" value="altronixengine.macros.CheckHaxeVersion.checkHaxeVersion()" />
+	<haxeflag name="--macro" value="altronixengine.macros.CheckHaxeVersion.checkHaxeVersion()" />
 
 </project>

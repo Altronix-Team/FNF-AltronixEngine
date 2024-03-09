@@ -6,3 +6,4 @@ psych to altronix dialogue convertion
 dialogue editors?
 FIX FUCKING HSCRIPT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 Better function calling for hscript (Maybe macro and async events(?)) 
+New chart system (end work on it, lol, it started almost year ago)

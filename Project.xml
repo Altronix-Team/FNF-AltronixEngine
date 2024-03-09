@@ -19,26 +19,20 @@
 	<!-- <app preloader="Preloader" resizable="true" /> -->
 	<app preloader="flixel.system.FlxPreloader" />
 	
-
 	<!--Minimum without FLX_NO_GAMEPAD: 11.8, without FLX_NO_NATIVE_CURSOR: 11.2-->
 	<set name="SWF_VERSION" value="11.8" />
+
+	<define name="CHECK_FOR_DEFAULT_CHARACTERS"/>
+	<define name="VIDEOS_ALLOWED" if="windows || linux || android || cpp" unless="32bits"/>
+	<define name="DISCORD_ALLOWED" if="desctop || cpp" />
 
 	<!-- ____________________________ Window Settings ___________________________ -->
 
 	<!--These window settings apply to all targets-->
 	<window width="1280" height="720" fps="" background="#000000" hardware="true" vsync="false" />
 
-	<!--HTML5-specific-->
-	<window if="html5" resizable="true" />
-
 	<!--Desktop-specific-->
 	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" vsync="false"/>
-
-	<!--Mobile-specific-->
-	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0" resizable="false"/>
-
-	<!--Switch-specific-->
-	<window if="switch" orientation="landscape" fullscreen="true" width="0" height="0" resizable="true" />
 	
 	<!-- ____________________________ Unsupporded things ___________________________ -->
 	
@@ -54,18 +48,7 @@
 	
 	<set name="BUILD_DIR" value="export/debug" if="debug" />
 	<set name="BUILD_DIR" value="export/release" unless="debug" />
-	<set name="BUILD_DIR" value="export/32bit" if="32bit" />
-	
-	<!--I just don't want to clear the game files of my secret stuff :)-->
-	<set name="BUILD_DIR" value="export/github-release" if="doRelease" />
-
 	<classpath name="source" />
-	
-	<define name="CHECK_FOR_DEFAULT_CHARACTERS"/>
-	<define name="VIDEOS_ALLOWED" if="windows || linux || android || cpp" unless="32bits"/>
-	<define name="DISCORD_ALLOWED" if="desctop || cpp" />
-
-	<haxedef name="message.reporting" value="pretty" />
 	
 	<!-- <define name="PRELOAD_ALL" /> -->
 	<define name="PRELOAD_ALL" unless="web" />
@@ -110,7 +93,7 @@
 	<assets path='art/readme.txt' rename='do NOT readme.txt' />
 	<assets path='LICENSE' rename='LICENSE.txt' />
 	<assets path="assets/core/fonts" embed='true'/>
-	
+
 	<!-- _______________________________ Libraries ______________________________ -->
 
 	<haxelib name="flixel" />
@@ -119,39 +102,58 @@
 	<haxelib name="flxanimate" />
 
 	<haxelib name="SScript" />
-	<haxedef name="hscriptPos"/>
-	<haxedef name="openflPos"/>	
 
 	<haxelib name="polymod" if='desktop'/>
 	<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED"/>
-	<haxedef name="DISCORD_DISABLE_IO_THREAD" if="hxdiscord_rpc" />
-	<haxelib name="hxCodec" if="VIDEOS_ALLOWED"/>
+	<haxelib name="hxvlc" if="VIDEOS_ALLOWED"/>
 	<haxelib name="haxe-strings" />
 	<haxelib name="firetongue" />
 	
 	<haxelib name="hxcpp-debug-server" if="debug"/>
+	
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
-	<!--Enable the Flixel core recording system-->
-	<!--<haxedef name="FLX_RECORD" />-->
+	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->
+	
+	<icon path="art/icon8.png" size='8'/>
+	<icon path="art/icon16.png" size='16'/>
+	<icon path="art/icon32.png" size='32'/>
+	<icon path="art/icon64.png" size='64'/>
+	<icon path="art/icon128.png" size='128'/>
+	<icon path="art/icon256.png" size='256'/>
+	<icon path="art/icon512.png" size='512'/>
+	<icon path="art/iconOG.png" />
 
-	<!--Disable the right and middle mouse buttons-->
-	<!-- <haxedef name="FLX_NO_MOUSE_ADVANCED" /> -->
+	<haxedef name="hscriptPos"/>
+	<haxedef name="openflPos"/>	
+	<haxedef name="message.reporting" value="pretty" />
 
-	<!--Disable the native cursor API on Flash-->
-	<!--<haxedef name="FLX_NO_NATIVE_CURSOR" />-->
+	<!--hxVLC Defines-->
+	<section if="VIDEOS_ALLOWED">
+		<!--The level of verbosity that is being used for logging-->
+		<haxedef name="HXVLC_VERBOSE" value="2" if="debug" />
 
-	<!--Optimise inputs, be careful you will get null errors if you don't use conditionals in your game-->
-	<!-- <haxedef name="FLX_NO_MOUSE" if="mobile" /> -->
-	<!-- <haxedef name="FLX_NO_KEYBOARD" if="mobile" /> -->
-	<!-- <haxedef name="FLX_NO_TOUCH" if="desktop" /> -->
-	<!--<haxedef name="FLX_NO_GAMEPAD" />-->
+		<!--Enable libVLC logging on hxVLC-->
+		<haxedef name="HXVLC_LOGGING" if="debug" />
+	</section>
 
-	<!--Disable the Flixel core sound tray-->
-	<!--<haxedef name="FLX_NO_SOUND_TRAY" />-->
+	<!--haxeflag name="no-traces" unless="debug" /-->
 
-	<!--Disable the Flixel sound management code-->
-	<!--<haxedef name="FLX_NO_SOUND_SYSTEM" />-->
+	<!-- Use defines to ensure compile-time definitions have readable context. -->
+	<!-- Allowed inputs are mobile,desktop,web,ios,android,windows,mac,linux,switch,html5,cpp,neko,flash,js -->
+
+	<!-- Defines whether the Discord client should be enabled. Only works on desktop. -->
+	<haxedef name="FEATURE_DISCORD" if="desktop" />
+	
+	<!-- Defines whether the file system can be read/written directly. Does not work in browser. -->
+	<haxedef name="FEATURE_FILESYSTEM" if="desktop" />
+
+	<!-- Defines whether the Mods menu will display before launching. -->
+	<haxedef name="FEATURE_MODCORE" if="desktop" />
+	
+	<haxedef name="HXCPP_CHECK_POINTER" if="FEATURE_FILESYSTEM" />
+	<haxedef name="HXCPP_STACK_LINE" if="FEATURE_FILESYSTEM" />
+	<haxedef name="HXCPP_GC_BIG_BLOCKS"/>
 
 	<!--Disable the Flixel core focus lost screen-->
 	<haxedef name="FLX_NO_FOCUS_LOST_SCREEN" />
@@ -166,40 +168,6 @@
 
 	<!-- Disable Discord IO Thread -->
 	<haxedef name="DISCORD_DISABLE_IO_THREAD" if="hxdiscord_rpc" />
-
-	<!-- _________________________________ Custom _______________________________ -->
-
-	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->
-	
-	<icon path="art/icon8.png" size='8'/>
-	<icon path="art/icon16.png" size='16'/>
-	<icon path="art/icon32.png" size='32'/>
-	<icon path="art/icon64.png" size='64'/>
-	<icon path="art/icon128.png" size='128'/>
-	<icon path="art/icon256.png" size='256'/>
-	<icon path="art/icon512.png" size='512'/>
-	<icon path="art/iconOG.png" />
-
-	<!--haxeflag name="no-traces" unless="debug" /-->
-
-	<!-- Use defines to ensure compile-time definitions have readable context. -->
-	<!-- Allowed inputs are mobile,desktop,web,ios,android,windows,mac,linux,switch,html5,cpp,neko,flash,js -->
-
-	<!-- Defines whether the Discord client should be enabled. Only works on desktop. -->
-	<haxedef name="FEATURE_DISCORD" if="desktop" />
-	
-	<!-- Defines whether the file system can be read/written directly. Does not work in browser. -->
-	<haxedef name="FEATURE_FILESYSTEM" if="desktop" />
-
-	<!-- Defines whether the Thread class can be used. -->
-	<!--haxedef name="FEATURE_MULTITHREADING" if="cpp" /-->
-
-	<!-- Defines whether the Mods menu will display before launching. -->
-	<haxedef name="FEATURE_MODCORE" if="desktop" />
-	
-	<haxedef name="HXCPP_CHECK_POINTER" if="FEATURE_FILESYSTEM" />
-	<haxedef name="HXCPP_STACK_LINE" if="FEATURE_FILESYSTEM" />
-	<haxedef name="HXCPP_GC_BIG_BLOCKS"/>
 		
 	<!-- Use defines to configure the behavior of Polymod. -->
 	<haxedef name="POLYMOD_SCRIPT_EXT"

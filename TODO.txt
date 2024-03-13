@@ -7,3 +7,4 @@ dialogue editors?
 FIX FUCKING HSCRIPT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 Better function calling for hscript (Maybe macro and async events(?)) 
 New chart system (end work on it, lol, it started almost year ago)
+Save last played week and song in story mode and ability to start from save (Indie cross)

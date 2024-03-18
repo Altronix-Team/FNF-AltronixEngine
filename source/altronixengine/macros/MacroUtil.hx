@@ -138,13 +138,6 @@ class MacroUtil
 		// Add the onGenerate function to search for matching classes and add them to our metadata.
 		// Make sure we run it once per-compile, not once per-controller-per-compile.
 		// Also ensure that it is re-run for each new compile if using the compiler cache.
-		#if (haxe_ver < 4.0)
-		Context.onMacroContextReused(function()
-		{
-			allClassesSearches = new Map();
-			return true;
-		});
-		#end
 		if (Lambda.count(allClassesSearches) == 0)
 		{
 			Context.onGenerate(checkForMatchingClasses);

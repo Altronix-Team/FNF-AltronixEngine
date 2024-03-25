@@ -1,19 +1,15 @@
 package scriptStuff;
 
-import gameplayStuff.TankmenBG;
-import gameplayStuff.BackgroundDancer;
-import gameplayStuff.BackgroundGirls;
-import gameplayStuff.BGSprite;
-import flixel.addons.display.FlxBackdrop;
-import flixel.group.FlxSpriteGroup;
+import utils.Paths;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
+import flixel.addons.display.FlxBackdrop;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import Paths;
-import scriptStuff.HScriptHandler;
-import states.PlayState;
-import gameplayStuff.Character;
+import flixel.group.FlxSpriteGroup;
 import gameplayStuff.Boyfriend;
+import gameplayStuff.Character;
+import scriptStuff.HScriptHandler;
+import states.playState.PlayState;
 
 class HscriptStage extends HScriptModchart
 {
@@ -35,7 +31,7 @@ class HscriptStage extends HScriptModchart
 
 	public function new(path:String, state:PlayState)
 	{
-		scriptHelper = new HScriptHandler();
+		super(path, state);
 
 		gf = state.gf;
 		dad = state.dad;
@@ -44,29 +40,22 @@ class HscriptStage extends HScriptModchart
 		gfGroup = state.gfGroup;
 		dadGroup = state.gfGroup;
 		boyfriendGroup = state.boyfriendGroup;
-		
-		scriptHelper.expose.set("stage", this);
-		scriptHelper.expose.set("gf", gf);
-		scriptHelper.expose.set("dad", dad);
-		scriptHelper.expose.set("boyfriend", boyfriend);
-		scriptHelper.expose.set("addGf", addGf);
-		scriptHelper.expose.set("addDad", addDad);
-		scriptHelper.expose.set("addBoyfriend", addBoyfriend);
-		scriptHelper.expose.set("addGfGroup", addGfGroup);
-		scriptHelper.expose.set("addDadGroup", addDadGroup);
-		scriptHelper.expose.set("addBoyfriendGroup", addBoyfriendGroup);
-		scriptHelper.expose.set("addObject", addObject);
-		scriptHelper.expose.set("getObject", getObject);
-		scriptHelper.expose.set('BGSprite', BGSprite);
-		scriptHelper.expose.set('BackgroundGirls', BackgroundGirls);
-		scriptHelper.expose.set('BackgroundDancer', BackgroundDancer);
-		scriptHelper.expose.set('TankmenBG', TankmenBG);
+
+		scriptHandler.set("stage", this);
+		scriptHandler.set("addGf", addGf);
+		scriptHandler.set("addDad", addDad);
+		scriptHandler.set("addBoyfriend", addBoyfriend);
+		scriptHandler.set("addGfGroup", addGfGroup);
+		scriptHandler.set("addDadGroup", addDadGroup);
+		scriptHandler.set("addBoyfriendGroup", addBoyfriendGroup);
+		scriptHandler.set("addObject", addObject);
+		scriptHandler.set("getObject", getObject);
 
 		this.state = state;
-		super(path, state);
 	}
 
-	override public function add(object:FlxBasic):FlxBasic {
+	override public function add(object:FlxBasic):FlxBasic
+	{
 		if (object != null)
 		{
 			return super.add(object);
@@ -75,10 +64,11 @@ class HscriptStage extends HScriptModchart
 		{
 			Debug.logError('Failed to add object to stage');
 			return null;
-		} 
+		}
 	}
 
-	public function addObject(object:FlxBasic, objectName:String) {
+	public function addObject(object:FlxBasic, objectName:String)
+	{
 		if (object != null)
 		{
 			if (objectName != null)
@@ -89,7 +79,7 @@ class HscriptStage extends HScriptModchart
 		else
 		{
 			Debug.logError('Failed to add object to stage');
-		} 	
+		}
 	}
 
 	public function getObject(objectName:String):FlxBasic
@@ -105,17 +95,20 @@ class HscriptStage extends HScriptModchart
 		}
 	}
 
-	public function addGf() {
+	public function addGf()
+	{
 		add(gf);
 		addedCharacters.push(gf);
 	}
 
-	public function addDad(){
+	public function addDad()
+	{
 		add(dad);
 		addedCharacters.push(dad);
 	}
 
-	public function addBoyfriend(){
+	public function addBoyfriend()
+	{
 		add(boyfriend);
 		addedCharacters.push(boyfriend);
 	}
@@ -152,5 +145,12 @@ class HscriptStage extends HScriptModchart
 				return null;
 		}
 		return null;
+	}
+
+	override public function update(elapsed:Float)
+	{
+		super.update(elapsed);
+		if (scriptHandler.exists('onUpdate'))
+			scriptHandler.call('onUpdate', [elapsed]);
 	}
 }

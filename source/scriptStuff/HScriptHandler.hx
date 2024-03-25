@@ -1,51 +1,74 @@
 package scriptStuff;
 
-import gameplayStuff.BackgroundGirls;
-import gameplayStuff.BackgroundDancer;
-import haxe.Constraints.Function;
-import flixel.math.FlxMath;
-import flixel.system.macros.FlxMacroUtil;
-import flixel.util.FlxColor;
-import flixel.math.FlxRandom;
-import flixel.group.FlxGroup.FlxTypedGroup;
-import gameplayStuff.TankmenBG;
-#if FEATURE_FILESYSTEM
-import sys.io.File;
-import sys.FileSystem;
-#end
-
-import flixel.addons.display.FlxRuntimeShader;
-import states.MusicBeatState;
-import flixel.FlxObject;
-import flixel.text.FlxText;
-import gameplayStuff.Character;
-import flixel.tweens.FlxEase;
+import animateatlas.AtlasFrameMaker;
+import flixel.FlxBasic;
 import flixel.FlxCamera;
-import flixel.tweens.FlxTween;
-import states.GameOverSubstate;
 import flixel.FlxG;
+import flixel.FlxObject;
 import flixel.FlxSprite;
+import flixel.addons.display.FlxBackdrop;
+import flixel.addons.display.FlxRuntimeShader;
+import flixel.addons.effects.FlxTrail;
 import flixel.graphics.FlxGraphic;
+import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.group.FlxGroup;
+import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
+import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxMath;
-import flixel.system.FlxSound;
+import flixel.math.FlxMath;
+import flixel.math.FlxPoint;
+import flixel.math.FlxRandom;
+import flixel.sound.FlxSound;
+import flixel.system.FlxAssets.FlxShader;
+import flixel.system.macros.FlxMacroUtil;
+import flixel.system.scaleModes.StageSizeScaleMode;
+import flixel.text.FlxText;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+import flixel.ui.FlxBar.FlxBarFillDirection;
+import flixel.ui.FlxBar;
+import flixel.util.FlxAxes;
+import flixel.util.FlxColor;
+import flixel.util.FlxSort;
+import flixel.util.FlxStringUtil;
 import flixel.util.FlxTimer;
+import gameplayStuff.BGSprite;
+import gameplayStuff.BackgroundDancer;
+import gameplayStuff.BackgroundGirls;
+import gameplayStuff.Character;
+import gameplayStuff.Conductor;
+import gameplayStuff.Note;
+import gameplayStuff.Song;
+import gameplayStuff.Stage;
+import gameplayStuff.StaticArrow;
+import gameplayStuff.TankmenBG;
+import haxe.Constraints.Function;
 import haxe.Exception;
 import haxe.ds.StringMap;
-import Paths;
-import gameplayStuff.Conductor;
-import openfl.Assets as OpenFlAssets;
-import gameplayStuff.BGSprite;
-
-//Base hscript 
 import hscript.Expr;
 import hscript.Interp;
 import hscript.Parser;
+import lime.app.Application;
+import openfl.Assets as OpenFlAssets;
+import openfl.display.GraphicsShader;
+import openfl.filters.ShaderFilter;
+import shaders.Shaders.ColorSwap;
+import shaders.Shaders.VCRDistortionEffect;
+import states.GameOverSubstate;
+import states.MusicBeatState;
+import states.playState.PlayState;
+import aescript.AEScript;
+import utils.Paths;
+#if USE_FLIXEL3D
+import flx3D.FlxView3D;
+#end
+#if FEATURE_FILESYSTEM
+import sys.FileSystem;
+import sys.io.File;
+#end
 
-//Hscript classes
-/*import hscript.ParserEx;
-import hscript.InterpEx;*/
-
-class ScriptException extends Exception 
+class ScriptException extends Exception
 {
 	public function new(message:String, ?previous:Exception, ?native:Any):Void
 	{
@@ -54,366 +77,129 @@ class ScriptException extends Exception
 	}
 }
 
-class HScriptHandler
+class HScriptHandler extends AEScript
 {
-    public var expose:StringMap<Dynamic>;
-	
-	var parser:Parser;
-	public var interp:CustomInterp;
+	override public function preset():Void
+	{
+		super.preset();
 
-	/*var parserEx:ParserEx;
-	var interpEx:InterpEx;*/
-
-    var ast:Expr;
-
-	var color:FlxColor;
-
-	var file:String = '';
-    
-    public function new()
-    {        
-        parser = new Parser();
-		interp = new CustomInterp();
-
-        parser.allowTypes = true;
-		parser.allowJSON = true;
-		parser.allowMetadata = true;
-
-		expose = new StringMap<Dynamic>();
-
-		expose.set("Sys", Sys);
-		expose.set("Reflect", Reflect);
-		expose.set("Std", Std);
-		expose.set("Math", Math);
-		expose.set("StringTools", StringTools);
-		expose.set("FlxMath", FlxMath);
-		expose.set("Conductor", Conductor);
-		expose.set('Debug', Debug);
-		expose.set('Paths', Paths);
-		expose.set('PlayState', states.PlayState);
-		expose.set('GameOverSubstate', GameOverSubstate);
-		expose.set("CoolUtil", CoolUtil);
-		expose.set('FlxG', FlxG);
-		expose.set('FlxRandom', FlxRandom);
-		expose.set('FlxSprite', FlxSprite);
-		expose.set('FlxTypedGroup', FlxTypedGroup);
-		expose.set('WiggleEffect', WiggleEffect);
-		expose.set('FlxCamera', FlxCamera);
-		expose.set('FlxSound', FlxSound);
-		expose.set('FlxTween', FlxTween);
-		expose.set('FlxEase', FlxEase);
-		expose.set('FlxText', FlxText);
-		expose.set('FlxTimer', FlxTimer);
-		expose.set('FlxObject', FlxObject);
-		expose.set('Character', Character);
-		expose.set('Alphabet', Alphabet);
-		expose.set('MusicBeatState', MusicBeatState);
-		expose.set('WindowUtil', WindowUtil);
-		expose.set('WindowShakeEvent', WindowUtil.WindowShakeEvent);
-
-		expose.set('newType', newType);
-		expose.set('random', random);
-		expose.set('getRGBColor', getRGBColor);
-		expose.set("loadModule", loadModule);		
-		expose.set("getGraphic", getGraphic);
-		expose.set("playSound", playSound);
-		expose.set("lazyPlaySound", lazyPlaySound);
-		expose.set("createTimer", createTimer);
-		expose.set('setProperty', setProperty);
-		expose.set('getProperty', getProperty);
-		expose.set('getInstance', getInstance);
-		expose.set('callMethod', callMethod);
-		expose.set('set', set);
-		expose.set('get', get);
-		expose.set('exists', exists);
-		expose.set('call', call);
-		expose.set('getEngineFont', getEngineFont);
-		expose.set('importClass', importClass);
-		//expose.set("instancePluginClass", instanceExClass);
-		
-		expose.set("getSparrowAtlas", Paths.getSparrowAtlas);
-		expose.set("getPackerAtlas", Paths.getPackerAtlas);
-
-		expose.set('setNoteTypeTexture', setNoteTypeTexture);
-		expose.set('setNoteTypeIgnore', setNoteTypeIgnore);
-
-		//Depraceted
-		expose.set("createSprite", createSprite);
-		expose.set("createText", createText);
-		expose.set('createRuntimeShader', createRuntimeShader);
-    }
-
-    public function get(field:String):Dynamic
-        return interp.variables.get(field);
-
-    public function set(field:String, value:Dynamic)
-        interp.variables.set(field, value);
-
-    public function exists(field:String):Bool
-        return interp.variables.exists(field);
-
-	public function call(func:String, args:Array<Dynamic>):Dynamic {
-		if (func == null)
+		set("trace", Reflect.makeVarArgs(function(el)
 		{
-			Debug.logError('Function name cannot be null for $file!');
-			return null;
-		}
-
-		var params:Array<Dynamic> = [];
-
-		if (args != null)
+			var inf = interp.posInfos();
+			var v = el.shift();
+			if (el.length > 0)
+				inf.customParams = el;
+			Debug.logTrace(Std.string(v));
+		}));
+		set("info", Reflect.makeVarArgs(function(el)
 		{
-			params = args;
-		}
-
-		if (!interp.variables.exists(func))
+			var inf = interp.posInfos();
+			var v = el.shift();
+			if (el.length > 0)
+				inf.customParams = el;
+			Debug.logInfo(Std.string(v));
+		}));
+		set("warn", Reflect.makeVarArgs(function(el)
 		{
-			//Debug.logError('Function $func does not exist in $file.');
-			return null;
-		}
+			var inf = interp.posInfos();
+			var v = el.shift();
+			if (el.length > 0)
+				inf.customParams = el;
+			Debug.logWarn(Std.string(v));
+		}));
+		set("error", Reflect.makeVarArgs(function(el)
+		{
+			var inf = interp.posInfos();
+			var v = el.shift();
+			if (el.length > 0)
+				inf.customParams = el;
+			Debug.logError(Std.string(v));
+		}));
 
-		try{
-			var functionField:Function = get(func);
-			return Reflect.callMethod(this, functionField, params);}
+		set('Reflect', Reflect);
+		set('FlxG', FlxG);
+		set('FlxBasic', FlxBasic);
+		set('FlxObject', FlxObject);
+		set('FlxCamera', FlxCamera);
+		set('FlxSprite', FlxSprite);
+		set('FlxText', FlxText);
+		set('FlxTextBorderStyle', FlxTextBorderStyle);
+		set('FlxRuntimeShader', flixel.addons.display.FlxRuntimeShader);
+		set('FlxSound', FlxSound);
+		set('FlxTimer', FlxTimer);
+		set('FlxTween', FlxTween);
+		set('FlxEase', FlxEase);
+		set('FlxMath', FlxMath);
+		set('FlxSound', FlxSound);
+		set('FlxGroup', FlxGroup);
+		#if (flixel < "5.0.0")
+		set('FlxPoint', FlxPoint);
+		set('FlxAxes', FlxAxes);
+		#end
+		set('FlxTypedGroup', FlxTypedGroup);
+		set('FlxSpriteGroup', FlxSpriteGroup);
+		set('FlxTypedSpriteGroup', FlxTypedSpriteGroup);
+		set('FlxStringUtil', FlxStringUtil);
+		set('FlxAtlasFrames', FlxAtlasFrames);
+		set('FlxSort', FlxSort);
+		set('Application', Application);
+		set('FlxGraphic', FlxGraphic);
+		set('FlxAtlasFrames', FlxAtlasFrames);
+		set('File', File);
+		set('FlxTrail', FlxTrail);
+		set('FlxShader', FlxShader);
+		set('FlxBar', FlxBar);
+		set('FlxBackdrop', FlxBackdrop);
+		set('StageSizeScaleMode', StageSizeScaleMode);
+		set('FlxBarFillDirection', FlxBarFillDirection);
+		set('GraphicsShader', GraphicsShader);
+		set('ShaderFilter', ShaderFilter);
+		set('Capabilities', flash.system.Capabilities);
+		set('FlxColor', CustomFlxColor);
+
+		set('Discord', utils.DiscordClient);
+
+		set('Alphabet', Alphabet);
+		set('Song', Song);
+		set('Character', Character);
+		set('controls', Controls);
+		set('CoolUtil', CoolUtil);
+		set('Conductor', Conductor);
+		set('PlayState', PlayState);
+		set('Main', Main);
+		set('Note', Note);
+		set('Paths', Paths);
+		set('Stage', Stage);
+		set('WindowUtil', WindowUtil);
+		set('WindowShakeEvent', WindowUtil.WindowShakeEvent);
+		set('Debug', Debug);
+		set('WiggleEffect', shaders.WiggleEffect);
+		set('AtlasFrameMaker', AtlasFrameMaker);
+		set('Achievements', Achievements);
+		set('VCRDistortionEffect', shaders.VCRDistortionEffect);
+		set('ColorSwap', shaders.ColorSwap);
+		set('StaticArrow', StaticArrow);
+		set('AssetsUtil', AssetsUtil);
+		set('PolymodHscriptState', states.HscriptableState.PolymodHscriptState);
+		#if USE_FLIXEL3D
+		set('FlxView3D', FlxView3D);
+		#end
+
+		set('getRGBColor', getRGBColor);
+		set('openPolymodState', openPolymodState);
+	}
+
+	function openPolymodState(scriptFileName:String)
+	{
+		try
+		{
+			var state = states.HscriptableState.PolymodHscriptState.init(scriptFileName);
+			MusicBeatState.switchState(state);
+		}
 		catch (e)
 		{
-			Debug.logError('Error with calling function $func: ${e.message} \n ${e.stack}');
-			return null;
+			Debug.logTrace(e.details());
 		}
-	}
-
-	/** Creates new class and returns it.
-	 * - Works like: new FlxText(x, y, width, text, size, embedded);
-	 * @param newClass The name of new class: (FlxText)
-	 * @param args Array with arguments for the new function: ([x, y, width, text, size, embedded])
-	 **/
-	public function newType(newClass:String, args:Array<Dynamic>):Dynamic
-	{
-		if (interp.variables.get(newClass) == null)
-			interp.variables.set(newClass, Type.resolveClass(newClass));
-		return interp.newType(newClass, args);
-	}
-
-    public function loadScript(path:String, execute:Bool = true)
-    {
-        if (path != "")
-        {
-			file = path;
-			if (OpenFlAssets.exists(path))
-            {
-				Debug.logTrace('Found hscript');
-				Debug.logTrace('At path: ' + path);
-                try
-                {
-					ast = parser.parseString(OpenFlAssets.getText(path), path);
-					
-					for (v in expose.keys())
-						interp.variables.set(v, expose.get(v));
-					
-                    if (execute){
-                        interp.execute(ast);
-						return;
-					}
-                }
-                catch (e:Error)
-                {
-                    throw new ScriptException("Script parse error:\n" + e);
-                }
-            }
-			#if FEATURE_FILESYSTEM
-			else if (FileSystem.exists(path))
-			{
-				Debug.logTrace('Found hscript');
-				Debug.logTrace('At path: ' + path);
-				try
-				{
-					ast = parser.parseString(File.getContent(path), path);
-
-					for (v in expose.keys())
-						interp.variables.set(v, expose.get(v));
-
-					if (execute){
-						interp.execute(ast);
-						return;
-					}
-				}
-				catch (e:Error)
-				{
-					throw new ScriptException("Script parse error:\n" + e);
-				}
-			}
-			#end
-            else
-            {
-				throw new ScriptException("Cannot locate script file in " + path);
-            }
-        }
-        else
-        {
-			throw new ScriptException("Path is empty!");
-        }
-    }
-
-	function loadModule(path:String):Dynamic
-	{
-		if (path != "")
-		{
-			if (OpenFlAssets.exists(path))
-			{
-				try
-				{
-					var moduleInterp = new CustomInterp();
-					var moduleAst = parser.parseString(OpenFlAssets.getText(path), path);
-
-					for (v in expose.keys())
-						moduleInterp.variables.set(v, expose.get(v));
-
-					moduleInterp.execute(moduleAst);
-
-					var module:Dynamic = {};
-
-					for (v in moduleInterp.variables.keys())
-					{
-						switch (v)
-						{
-							case "null", "true", "false", "trace": {/* Does nothing */}
-							default:
-								Reflect.setField(module, v, moduleInterp.variables.get(v));
-						}
-					}
-
-					return module;
-				}
-				catch (e:Error)
-				{
-					throw new ScriptException("Module parse error:\n" + e);
-				}
-			}
-			#if FEATURE_FILESYSTEM
-			else if (FileSystem.exists(path))
-			{
-				try
-				{
-					var moduleInterp = new CustomInterp();
-					var moduleAst = parser.parseString(File.getContent(path), path);
-
-					for (v in expose.keys())
-						moduleInterp.variables.set(v, expose.get(v));
-
-					moduleInterp.execute(moduleAst);
-
-					var module:Dynamic = {};
-
-					for (v in moduleInterp.variables.keys())
-					{
-						switch (v)
-						{
-							case "null", "true", "false", "trace":
-								{/* Does nothing */}
-							default:
-								Reflect.setField(module, v, moduleInterp.variables.get(v));
-						}
-					}
-
-					return module;
-				}
-				catch (e:Error)
-				{
-					throw new ScriptException("Module parse error:\n" + e);
-				}
-			}
-			#end
-			else
-			{
-				throw new ScriptException("Cannot locate module file in " + path);
-			}
-		}
-		else
-		{
-			throw new ScriptException("Path is empty!");
-		}
-	}
-
-	/*function instanceExClass(classname:String, args:Array<Dynamic> = null)
-	{
-		return interpEx.createScriptClassInstance(classname, args);
-	}*/
-
-	function createRuntimeShader(fragmentSource:String = null, vertexSource:String = null, glslVersion:Int = 120):FlxRuntimeShader
-	{
-		Debug.logWarn('Deprecated! Use newType("FlxRuntimeShader", [fragmentSource, vertexSource, glslVersion]) instead');
-		var shader = new FlxRuntimeShader(fragmentSource, vertexSource, glslVersion);
-		return shader;
-	}
-
-	function createText(x:Float = 0, y:Float = 0, width:Float = 0, text:String = '', size:Int = 8, embedded:Bool = true):FlxText
-	{
-		Debug.logWarn('Deprecated! Use newType("FlxText", [x, y, width, text, size, embedded]) instead');
-		var text = new FlxText(x, y, width, text, size, embedded);
-		return text;
-	}
-
-	function getEngineFont():String
-	{
-		if (!FlxG.save.data.language)
-		{
-			return Paths.font("vcr.ttf");
-		}
-		else
-		{
-			return Paths.font("UbuntuBold.ttf");
-		}
-	}
-
-	function random(type:String, args:Array<Dynamic>):Dynamic
-	{
-		switch (type)
-		{
-			case 'bool':
-				return FlxG.random.bool(args[0]);
-			case 'int':
-				return FlxG.random.int(args[0], args[1], args[3]);
-			case 'float':
-				return FlxG.random.float(args[0], args[1], args[3]);
-		}
-		return null;
-	}
-
-	function createSprite(x:Float, y:Float):FlxSprite
-	{
-		Debug.logWarn('Deprecated! Use newType("FlxSprite", [x, y]) instead');
-		var sprite = new FlxSprite(x, y);
-		return sprite;
-	}
-
-	function getGraphic(path:String):FlxGraphic
-	{
-		return Paths.loadImage(path);
-	}
-
-	function playSound(path:String, group:String = null):FlxSound
-	{
-		return FlxG.sound.play(Paths.sound(path, group));
-	}
-
-	function lazyPlaySound(path:String, group:String = null)
-	{
-		FlxG.sound.play(Paths.sound(path, group));
-	}
-
-	function createTimer():FlxTimer
-	{
-		return new FlxTimer();
-	}
-
-	function setNoteTypeTexture(type:String, texture:String)
-	{
-		states.PlayState.instance.setNoteTypeTexture(type, texture);
-	}
-
-	function setNoteTypeIgnore(type:String, ignore:Bool)
-	{
-		states.PlayState.instance.setNoteTypeIgnore(type, ignore);
 	}
 
 	function getRGBColor(r:Int, g:Int, b:Int, ?a:Int):FlxColor
@@ -421,107 +207,50 @@ class HScriptHandler
 		return FlxColor.fromRGB(r, g, b, a);
 	}
 
-	function callMethod(instance:Null<Dynamic> = null, func:Function, args:Array<Dynamic>):Dynamic
+	function createTypedGroup():FlxTypedGroup<Dynamic>
 	{
-		if (instance == null)
-			return Reflect.callMethod(getInstance(), func, args);
-		else
-			return Reflect.callMethod(instance, func, args);
-	}
-
-	function getProperty(instance:Null<Dynamic> = null, variable:String):Any { //Copy from lua
-		if (instance == null)
-			return Reflect.getProperty(getInstance(), variable);
-		else
-			return Reflect.getProperty(instance, variable);
-	}
-
-	function setProperty(instance:Null<Dynamic> = null, variable:String, value:Dynamic) { // Copy from lua
-		if (instance == null)
-			Reflect.setProperty(getInstance(), variable, value);
-		else
-			Reflect.setProperty(instance, variable, value);
-	}
-
-	function getInstance() { //Copy from lua
-		return states.PlayState.instance.isDead ? states.GameOverSubstate.instance : states.PlayState.instance;
-	}
-	
-	function importClass(cl:String) {
-		var splitClassName = cl.split(".");
-		var realClassName = splitClassName.join(".");
-
-		var cl = Type.resolveClass(realClassName);
-		var en = Type.resolveEnum(realClassName);
-
-		if (cl == null && en == null)
-		{
-			Debug.logWarn("Invalid class" + realClassName);
-		}
-		else
-		{
-			if (en != null)
-			{
-				var enumThingy = {};
-				for (c in en.getConstructors())
-				{
-					Reflect.setField(enumThingy, c, en.createByName(c));
-				}
-				set(splitClassName[splitClassName.length - 1], enumThingy);
-			}
-			else
-			{
-				set(splitClassName[splitClassName.length - 1], cl);
-			}
-		}
-
-		return null;
+		return new FlxTypedGroup<Dynamic>();
 	}
 }
 
-class CustomInterp extends Interp
+class CustomFlxColor
 {
-	public function new()
-		super();
+	public static var TRANSPARENT(default, null):Int = FlxColor.TRANSPARENT;
+	public static var BLACK(default, null):Int = FlxColor.BLACK;
+	public static var WHITE(default, null):Int = FlxColor.WHITE;
+	public static var GRAY(default, null):Int = FlxColor.GRAY;
 
-	public function newType(newClass:String, args:Array<Dynamic>):Dynamic
-		return cnew(newClass, args);
+	public static var GREEN(default, null):Int = FlxColor.GREEN;
+	public static var LIME(default, null):Int = FlxColor.LIME;
+	public static var YELLOW(default, null):Int = FlxColor.YELLOW;
+	public static var ORANGE(default, null):Int = FlxColor.ORANGE;
+	public static var RED(default, null):Int = FlxColor.RED;
+	public static var PURPLE(default, null):Int = FlxColor.PURPLE;
+	public static var BLUE(default, null):Int = FlxColor.BLUE;
+	public static var BROWN(default, null):Int = FlxColor.BROWN;
+	public static var PINK(default, null):Int = FlxColor.PINK;
+	public static var MAGENTA(default, null):Int = FlxColor.MAGENTA;
+	public static var CYAN(default, null):Int = FlxColor.CYAN;
 
-	override private function resetVariables()
+	public static function fromRGB(Red:Int, Green:Int, Blue:Int, Alpha:Int = 255):Int
 	{
-		super.resetVariables();
+		return cast FlxColor.fromRGB(Red, Green, Blue, Alpha);
+	}
+	public static function fromRGBFloat(Red:Float, Green:Float, Blue:Float, Alpha:Float = 1):Int
+	{	
+		return cast FlxColor.fromRGBFloat(Red, Green, Blue, Alpha);
+	}
 
-		variables.set("trace", Reflect.makeVarArgs(function(el)
-		{
-			var inf = posInfos();
-			var v = el.shift();
-			if (el.length > 0)
-				inf.customParams = el;
-			Debug.logTrace(Std.string(v));
-		}));
-		variables.set("info", Reflect.makeVarArgs(function(el)
-		{
-			var inf = posInfos();
-			var v = el.shift();
-			if (el.length > 0)
-				inf.customParams = el;
-			Debug.logInfo(Std.string(v));
-		}));
-		variables.set("warn", Reflect.makeVarArgs(function(el)
-		{
-			var inf = posInfos();
-			var v = el.shift();
-			if (el.length > 0)
-				inf.customParams = el;
-			Debug.logWarn(Std.string(v));
-		}));
-		variables.set("error", Reflect.makeVarArgs(function(el)
-		{
-			var inf = posInfos();
-			var v = el.shift();
-			if (el.length > 0)
-				inf.customParams = el;
-			Debug.logError(Std.string(v));
-		}));
+	public static function fromHSB(Hue:Float, Sat:Float, Brt:Float, Alpha:Float = 1):Int
+	{	
+		return cast FlxColor.fromHSB(Hue, Sat, Brt, Alpha);
+	}
+	public static function fromHSL(Hue:Float, Sat:Float, Light:Float, Alpha:Float = 1):Int
+	{	
+		return cast FlxColor.fromHSL(Hue, Sat, Light, Alpha);
+	}
+	public static function fromString(str:String):Int
+	{
+		return cast FlxColor.fromString(str);
 	}
 }

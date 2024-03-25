@@ -1,20 +1,18 @@
 package gameplayStuff;
 
-import states.FreeplayState.CharColor;
-import openfl.utils.Assets;
-import flixel.system.FlxSound;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.text.FlxTypeText;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxSpriteGroup;
 import flixel.input.FlxKeyManager;
+import flixel.sound.FlxSound;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
-import states.PlayState;
-
-using StringTools;
+import openfl.utils.Assets;
+import states.FreeplayState.CharColor;
+import states.playState.PlayState;
 
 class DialogueBox extends FlxSpriteGroup
 {
@@ -22,16 +20,18 @@ class DialogueBox extends FlxSpriteGroup
 	public var dialogueSound(default, set):String;
 	public var dialogue(default, set):DialogueJson;
 
+	public var isPixel:Bool = false;
+
 	var curLine:DialogueLines = null;
 
 	var curLineInt = 0;
 
 	var box:DialogueBoxSprite;
 
-	//All dialogue lines
+	// All dialogue lines
 	var dialogueLines:Array<String> = [];
 
-	//All anims that should characters play in this dialogue
+	// All anims that should characters play in this dialogue
 	var dialogueCharactersAnims:Array<String> = [];
 
 	var dialogueBoxStates:Array<String> = ['normal'];
@@ -41,7 +41,7 @@ class DialogueBox extends FlxSpriteGroup
 	var dropText:FlxText;
 	var skipText:FlxText;
 
-	public var finishThing:Void->Void = PlayState.instance.startCountdown; //Set the default finish dialogue function
+	public var finishThing:Void->Void = PlayState.instance.startCountdown; // Set the default finish dialogue function
 	public var nextLineThing:Void->Void;
 	public var skipDialogueThing:Void->Void;
 	public var skipLineThing:Void->Void;
@@ -76,13 +76,14 @@ class DialogueBox extends FlxSpriteGroup
 
 		box = new DialogueBoxSprite(-20, 45);
 
-		if (boxFile != null) this.boxFile = boxFile;
+		if (boxFile != null)
+			this.boxFile = boxFile;
 
 		if (dialogue != null)
 			curLine = dialogue.dialogue[0];
 
 		loadDialogueBoxFile(this.boxFile);
-		
+
 		skipText = new FlxText(10, 10, Std.int(FlxG.width * 0.6), "", 16);
 		skipText.font = Paths.font(LanguageStuff.fontName);
 		skipText.text = 'press back to skip';
@@ -97,7 +98,6 @@ class DialogueBox extends FlxSpriteGroup
 		swagDialogue = new FlxTypeText(240, 480, Std.int(FlxG.width * 0.6), "", 32);
 		swagDialogue.font = Paths.font(LanguageStuff.fontName);
 		swagDialogue.color = 0xFF3F2021;
-		swagDialogue.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
 		swagDialogue.scrollFactor.set();
 		swagDialogue.skipCallback = function()
 		{
@@ -122,7 +122,7 @@ class DialogueBox extends FlxSpriteGroup
 		curDialogueCharacter = new DialogueCharacter(curLine.character);
 		add(curDialogueCharacter);
 
-		//Set up after create all
+		// Set up after create all
 		box.onAppearCallback = function()
 		{
 			if (!dialogueStarted && dialogue != null && curLine != null)
@@ -135,7 +135,8 @@ class DialogueBox extends FlxSpriteGroup
 		if (dialogue == null && curLine == null)
 		{
 			Debug.logError('Oh, fuck, dialogue is broken');
-			if (finishThing != null) finishThing();
+			if (finishThing != null)
+				finishThing();
 			kill();
 		}
 	}
@@ -149,7 +150,8 @@ class DialogueBox extends FlxSpriteGroup
 		if (PlayerSettings.player1.controls.BACK && isEnding != true)
 		{
 			dialogueEnd();
-			if (skipDialogueThing != null) skipDialogueThing();
+			if (skipDialogueThing != null)
+				skipDialogueThing();
 		}
 
 		if (PlayerSettings.player1.controls.ACCEPT && dialogueStarted == true)
@@ -187,8 +189,12 @@ class DialogueBox extends FlxSpriteGroup
 	{
 		reloadLine();
 
+		swagDialogue.sounds = [
+			FlxG.sound.load(Paths.sound(curLine.sound != null ? curLine.sound : 'pixelText'), 0.6)
+		];
 		swagDialogue.resetText(dialogueLines[curLineInt]);
-		swagDialogue.start(curLine.speed != null ? curLine.speed : 0.03, true, false, [], function(){
+		swagDialogue.start(curLine.speed != null ? curLine.speed : 0.03, true, false, [], function()
+		{
 			isTyping = false;
 		});
 		isTyping = true;
@@ -199,23 +205,25 @@ class DialogueBox extends FlxSpriteGroup
 
 		box.flipX = false;
 
-		box.boxState = box.returnBoxState(curLine.boxState);
+		box.boxState = /*box.returnBoxState(*/ curLine.boxState /*)*/;
 
 		switch (curDialogueCharacter.position)
 		{
 			case LEFT:
 				box.flipX = true;
-				box.playAnim(box.returnStateAnim());
+				box.playAnim(box.boxState /*box.returnStateAnim()*/);
 			case MIDDLE:
-				box.playAnim(box.returnStateAnim());
+				box.playAnim(box.boxState /*box.returnStateAnim()*/);
 			default:
-				box.playAnim(box.returnStateAnim());
-		}	
+				box.playAnim(box.boxState /*box.returnStateAnim()*/);
+		}
 
-		if (nextLineThing != null) nextLineThing();
+		if (nextLineThing != null)
+			nextLineThing();
 	}
 
-	function reloadLine(){
+	function reloadLine()
+	{
 		if (dialogue != null)
 			curLine = dialogue.dialogue[curLineInt];
 	}
@@ -244,16 +252,17 @@ class DialogueBox extends FlxSpriteGroup
 
 		new FlxTimer().start(1.2, function(tmr:FlxTimer)
 		{
-			if (finishThing != null) finishThing();
+			if (finishThing != null)
+				finishThing();
 			kill();
 		});
 	}
 
-
 	function generateBoxSprite(json:DialogueBoxJson)
 	{
 		Debug.logInfo('Generating dialogue box sprite');
-		box.frames = Paths.getSparrowAtlas(json.image);
+		box.frames = FlxAtlasFrames.fromSparrow(Paths.file('ui/' + (isPixel ? 'pixel/' : 'normal/') + '${json.image}.png', 'core'),
+			Paths.file('ui/' + (isPixel ? 'pixel/' : 'normal/') + '${json.image}.xml', 'core'));
 		for (anim in json.anims)
 		{
 			if (anim.animIndices.length > 0)
@@ -265,7 +274,7 @@ class DialogueBox extends FlxSpriteGroup
 				box.animation.addByPrefix(anim.animName, anim.animPrefix, anim.animFramerate, anim.isLooped);
 			}
 		}
-		box.boxState = box.returnBoxState(dialogueBoxStates[0]);
+		box.boxState = /*box.returnBoxState(*/ dialogueBoxStates[0] /*)*/;
 		switch (box.boxState)
 		{
 			case ANGRY:
@@ -327,12 +336,16 @@ class DialogueBox extends FlxSpriteGroup
 				dialogueBoxStates.push(line.boxState);
 			}
 			Debug.logInfo('Succesfully loaded dialogue file');
-		}	
+		}
 	}
 
-	function set_dialogue(value:DialogueJson):DialogueJson {
-		if (value != null && dialogue != value){ parseDialogueFile(value);
-			dialogue = value;}
+	function set_dialogue(value:DialogueJson):DialogueJson
+	{
+		if (value != null && dialogue != value)
+		{
+			parseDialogueFile(value);
+			dialogue = value;
+		}
 		return value;
 	}
 
@@ -340,12 +353,15 @@ class DialogueBox extends FlxSpriteGroup
 	{
 		if (value != null && value != '' && dialogueSound != value)
 		{
-			if (sound.playing)
+			if (sound != null)
 			{
-				sound.stop();
-				FlxG.sound.list.remove(sound);
+				if (sound.playing)
+				{
+					sound.stop();
+					FlxG.sound.list.remove(sound);
+				}
+				sound = null;
 			}
-			sound = null;
 
 			sound = new FlxSound().loadEmbedded(Paths.music(value), true);
 			sound.volume = 0;
@@ -370,10 +386,12 @@ class DialogueBox extends FlxSpriteGroup
 class DialogueCharacter extends FlxSprite
 {
 	var animOffsets:Map<String, Array<Int>> = new Map();
-	var animations:Map<String, DialogueAnimArrayJson> = new Map();
+
+	public var animations:Map<String, DialogueAnimArrayJson> = new Map();
 	public var jsonFile:DialogueCharacterJson = null;
 	public var characterName:String = 'bf';
 	public var position:CharacterPositions = RIGHT;
+
 	var curAnim:String = null;
 
 	public static var LEFT_CHAR_X:Float = -60;
@@ -390,13 +408,14 @@ class DialogueCharacter extends FlxSprite
 		jsonFile = reloadJson(character);
 
 		super();
-		
+
 		reloadCharacter(jsonFile);
-		antialiasing = FlxG.save.data.antialiasing;
+		antialiasing = Main.save.data.antialiasing;
 		antialiasing = jsonFile.antialiasing;
 	}
 
-	public function reloadJson(char:String):DialogueCharacterJson {
+	public function reloadJson(char:String):DialogueCharacterJson
+	{
 		var rawJson = null;
 
 		if (Assets.exists(Paths.json('data/dialogue/characters/$char')))
@@ -413,20 +432,14 @@ class DialogueCharacter extends FlxSprite
 			return null;
 		}
 
-		return cast rawJson;   
+		return cast rawJson;
 	}
 
-	public function reloadCharacter(json:DialogueCharacterJson) {
+	public function reloadCharacter(json:DialogueCharacterJson)
+	{
 		Debug.logTrace('Reloading character');
 		frames = Paths.getSparrowAtlas('dialogue/' + json.image);
-		for (anim in json.animations)
-		{
-			animation.addByPrefix(anim.prefix, anim.idle_name, 24, false);
-			animation.addByPrefix(anim.prefix + '-loop', anim.loop_name, 24, false);
-			animOffsets.set(anim.prefix, anim.idle_offsets);
-			animOffsets.set(anim.prefix + '-loop', anim.loop_offsets);
-			animations.set(anim.prefix, anim);
-		}
+		reloadAnims(json);
 
 		setGraphicSize(Std.int(width * json.scale * 0.9));
 		updateHitbox();
@@ -468,27 +481,59 @@ class DialogueCharacter extends FlxSprite
 		playAnim(json.startingAnim);
 	}
 
-	public function playAnim(animName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void
+	public function reloadAnims(?json:DialogueCharacterJson)
 	{
-		if (animation.getByName(animName) == null)
-		{
-			#if debug
-			Debug.logWarn(['Such animation doesnt exist: ' + animName]);
-			#end
+		var anims = json != null ? json.animations : jsonFile.animations;
+		if (anims == null)
 			return;
-		}
-
-		animation.play(animName, Force, Reversed, Frame);
-
-		curAnim = animName;
-
-		var daOffset = animOffsets.get(animName);
-		if (animOffsets.exists(animName))
+		for (anim in anims)
 		{
-			offset.set(daOffset[0], daOffset[1]);
+			animation.addByPrefix(anim.prefix, anim.idle_name, 24, false);
+			animation.addByPrefix(anim.prefix + '-loop', anim.loop_name, 24, false);
+			animOffsets.set(anim.prefix, anim.idle_offsets);
+			animOffsets.set(anim.prefix + '-loop', anim.loop_offsets);
+			animations.set(anim.prefix, anim);
+		}
+	}
+
+	public function playAnim(?animName:String, ?Force:Bool = false, ?Reversed:Bool = false, ?Frame:Int = 0):Void
+	{
+		if (animName != null)
+		{
+			if (animation.getByName(animName) == null)
+			{
+				#if debug
+				Debug.logWarn(['Such animation doesnt exist: ' + animName]);
+				#end
+				return;
+			}
+
+			animation.play(animName, Force, Reversed, Frame);
+
+			curAnim = animName;
+
+			var daOffset = animOffsets.get(animName);
+			if (animOffsets.exists(animName))
+			{
+				offset.set(daOffset[0], daOffset[1]);
+			}
+			else
+				offset.set(0, 0);
 		}
 		else
-			offset.set(0, 0);
+		{
+			animation.play(animation.getNameList()[0], Force, Reversed, Frame);
+
+			curAnim = animation.getNameList()[0];
+
+			var daOffset = animOffsets.get(animation.getNameList()[0]);
+			if (animOffsets.exists(animation.getNameList()[0]))
+			{
+				offset.set(daOffset[0], daOffset[1]);
+			}
+			else
+				offset.set(0, 0);
+		}
 	}
 
 	override public function update(elapsed:Float)
@@ -512,40 +557,8 @@ class DialogueBoxSprite extends FlxSprite
 
 	var curAnim:String = null;
 
-	public function returnBoxState(str:String):DialogueBoxStates
+	public function closeBox()
 	{
-		if (str != null)
-		{
-			switch (str)
-			{
-				case 'angry' | 'ANGRY':
-					return ANGRY;
-				case 'middle' | 'MIDDLE':
-					return MIDDLE;
-				case 'angry_middle' | 'ANGRY_MIDDLE':
-					return ANGRY_MIDDLE;				
-			}	
-			return NORMAL;
-		}
-		return NORMAL;
-	}
-
-	public function returnStateAnim():String
-	{
-		switch (boxState)
-		{
-			case ANGRY:
-				return 'angry';
-			case MIDDLE:
-				return 'center-normal';
-			case ANGRY_MIDDLE:
-				return 'center-angry';
-			default:
-				return 'normal';
-		}
-	}
-
-	public function closeBox(){
 		switch (boxState)
 		{
 			case ANGRY:
@@ -599,31 +612,36 @@ class DialogueBoxSprite extends FlxSprite
 	}
 }
 
-enum CharacterPositions {
-	RIGHT;
-	LEFT;
-	MIDDLE;
+enum abstract CharacterPositions(String) from (String) to (String)
+{
+	var RIGHT = 'right';
+	var LEFT = 'left';
+	var MIDDLE = 'middle';
 }
 
-enum DialogueBoxStates {
-	NORMAL;
-	ANGRY;
-	MIDDLE;
-	ANGRY_MIDDLE;
+enum abstract DialogueBoxStates(String) from (String) to (String)
+{
+	var NORMAL = 'normal';
+	var ANGRY = 'angry';
+	var MIDDLE = 'middle';
+	var ANGRY_MIDDLE = 'angry_middle';
 }
 
-typedef DialogueJson = {
+typedef DialogueJson =
+{
 	var boxType:String;
 	var sound:String;
 	var dialogue:Array<DialogueLines>;
 }
 
-typedef DialogueLines = {
+typedef DialogueLines =
+{
 	var character:String;
 	var expression:String;
 	var line:String;
 	var boxState:String;
 	var speed:Null<Float>;
+	var sound:Null<String>;
 }
 
 typedef DialogueBoxJson =
@@ -636,7 +654,8 @@ typedef DialogueBoxJson =
 	var xOffset:Int;
 	var anims:Array<DialogueBoxAnims>;
 }
-typedef DialogueBoxAnims = 
+
+typedef DialogueBoxAnims =
 {
 	var animName:String;
 	var animPrefix:String;
@@ -644,6 +663,7 @@ typedef DialogueBoxAnims =
 	var isLooped:Bool;
 	var animIndices:Array<Int>;
 }
+
 typedef DialogueCharacterJson =
 {
 	var image:String;

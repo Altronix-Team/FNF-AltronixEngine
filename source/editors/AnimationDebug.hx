@@ -26,11 +26,6 @@ import flixel.addons.ui.FlxUITooltip.FlxUITooltipStyle;
 import gameplayStuff.Character;
 import gameplayStuff.Boyfriend;
 
-/**
-	*DEBUG MODE
- */
-using StringTools;
-
 class AnimationDebug extends states.MusicBeatState
 {
 	var _file:FileReference;
@@ -75,9 +70,9 @@ class AnimationDebug extends states.MusicBeatState
 		background = new FlxSprite(-600, -525).loadGraphic(Paths.loadImage('stageback', 'shared'));
 		front = new FlxSprite(-650, 325).loadGraphic(Paths.loadImage('stagefront', 'shared'));
 		curt = new FlxSprite(-500, -625).loadGraphic(Paths.loadImage('stagecurtains', 'shared'));
-		background.antialiasing = FlxG.save.data.antialiasing;
-		front.antialiasing = FlxG.save.data.antialiasing;
-		curt.antialiasing = FlxG.save.data.antialiasing;
+		background.antialiasing = Main.save.data.antialiasing;
+		front.antialiasing = Main.save.data.antialiasing;
+		curt.antialiasing = Main.save.data.antialiasing;
 
 		background.screenCenter(X);
 		background.scale.set(0.7, 0.7);
@@ -115,7 +110,7 @@ class AnimationDebug extends states.MusicBeatState
 
 		addHelpText();
 
-		characters = Character.characterList;
+		characters = CharactersStuff.characterList;
 
 		var tabs = [{name: "Offsets", label: 'Offset menu'},];
 
@@ -242,7 +237,6 @@ class AnimationDebug extends states.MusicBeatState
 		result += graphicsize + ',\n';
 		result += startingAnim + ',\n';
 		result += animations + '\n';
-
 
 		for (anim => offsets in char.animOffsets)
 		{
@@ -451,9 +445,9 @@ class AnimationDebug extends states.MusicBeatState
 			saveBoyOffsets();
 
 		if (FlxG.keys.justPressed.F1)
-			FlxG.save.data.showHelp = !FlxG.save.data.showHelp;
+			Main.save.data.showHelp = !Main.save.data.showHelp;
 
-		helpText.visible = FlxG.save.data.showHelp;
+		helpText.visible = Main.save.data.showHelp;
 
 		super.update(elapsed);
 	}

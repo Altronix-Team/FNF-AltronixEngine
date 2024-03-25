@@ -1,17 +1,17 @@
 package flixel.system.ui;
 
 #if FLX_SOUND_SYSTEM
+import flash.Lib;
 import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.Sprite;
-import flash.Lib;
 import flash.text.TextField;
 import flash.text.TextFormat;
 import flash.text.TextFormatAlign;
 import flixel.FlxG;
+import flixel.sound.FlxSound;
 import flixel.system.FlxAssets;
 import flixel.util.FlxColor;
-import flixel.system.FlxSound;
 #if flash
 import flash.text.AntiAliasType;
 import flash.text.GridFitType;
@@ -118,9 +118,9 @@ class FlxSoundTray extends Sprite
 				active = false;
 
 				// Save sound preferences
-				FlxG.save.data.mute = FlxG.sound.muted;
-				FlxG.save.data.volume = FlxG.sound.volume;
-				FlxG.save.flush();
+				Main.save.data.mute = FlxG.sound.muted;
+				Main.save.data.volume = FlxG.sound.volume;
+				Main.save.flush();
 			}
 		}
 	}
@@ -134,7 +134,7 @@ class FlxSoundTray extends Sprite
 	{
 		if (!Silent)
 		{
-			var sound = FlxAssets.getSound("assets/sounds/scrollMenu");
+			var sound = FlxAssets.getSound(Paths.sound('scrollMenu').removeAfter('.').replaceAll('.', ''));
 			if (sound != null)
 				FlxG.sound.load(sound).play();
 		}

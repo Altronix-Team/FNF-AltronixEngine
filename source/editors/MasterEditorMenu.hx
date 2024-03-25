@@ -1,34 +1,29 @@
 package editors;
 
-#if desktop
-import DiscordClient;
-#end
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
+import flixel.sound.FlxSound;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
-import flixel.system.FlxSound;
-import states.LoadingState;
 import gameplayStuff.Character;
+import states.LoadingState;
 #if sys
 import sys.FileSystem;
 #end
-
-using StringTools;
 
 class MasterEditorMenu extends states.MusicBeatState
 {
 	var options:Array<String> = [
 		'Character Editor',
-		//'GF Editor',
+		// 'GF Editor',
 		'Week Editor',
 		'Freeplay Songlist Editor',
-		//'Dialogue Editor',
-		//'Dialogue Character Editor',
+		'Dialogue Editor',
+		// 'Dialogue Character Editor',
 		'Chart Editor'
 	];
 	private var grpTexts:FlxTypedGroup<Alphabet>;
@@ -61,7 +56,7 @@ class MasterEditorMenu extends states.MusicBeatState
 			leText.targetY = i;
 			grpTexts.add(leText);
 		}
-		
+
 		changeSelection();
 
 		FlxG.mouse.visible = false;
@@ -86,17 +81,18 @@ class MasterEditorMenu extends states.MusicBeatState
 
 		if (controls.ACCEPT)
 		{
-			switch(options[curSelected]) {
+			switch (options[curSelected])
+			{
 				case 'Character Editor':
 					LoadingState.loadAndSwitchState(new CharacterEditorState(Character.DEFAULT_CHARACTER, false));
-				//case 'Chart Editor':
-					//LoadingState.loadAndSwitchState(new ChartingState(), false);
-				//case 'Dialogue Editor':
-					//LoadingState.loadAndSwitchState(new DialogueEditorState());
+				case 'Chart Editor':
+					LoadingState.loadAndSwitchState(new ChartingState(), false);
+				case 'Dialogue Editor':
+					LoadingState.loadAndSwitchState(new DialogueEditorState());
 				case 'Week Editor':
 					LoadingState.loadAndSwitchState(new WeekEditorState());
-			//	case 'Dialogue Character Editor':
-					//LoadingState.loadAndSwitchState(new DialogueCharacterEditorState());
+				// case 'Dialogue Character Editor':
+				// LoadingState.loadAndSwitchState(new DialogueCharacterEditorState());
 				case 'Freeplay Songlist Editor':
 					LoadingState.loadAndSwitchState(new FreeplaySongsEditorState());
 				case 'GF Editor':
@@ -104,10 +100,10 @@ class MasterEditorMenu extends states.MusicBeatState
 			}
 			FlxG.sound.music.volume = 0;
 			#if PRELOAD_ALL
-				states.FreeplayState.destroyFreeplayVocals();
+			states.FreeplayState.destroyFreeplayVocals();
 			#end
 		}
-		
+
 		var bullShit:Int = 0;
 		for (item in grpTexts.members)
 		{

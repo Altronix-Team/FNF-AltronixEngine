@@ -1,5 +1,5 @@
 
-![Altronix Engine logo](assets/preload/images/enginelogo.png)
+![Altronix Engine logo](https://raw.githubusercontent.com/Altronix-Team/FNF-AltronixEngine/main/enginelogo.png)
 
 # Friday Night Funkin': Altronix Engine
 
@@ -13,6 +13,29 @@ Links: **[itch.io page](https://ninja-muffin24.itch.io/funkin) ⋅ [Newgrounds](
 **Altronix Engine** is a mod for Friday Night Funkin' based on Kade Engine, including an engine rework, and more.
 
 **REMEMBER**: This is a **mod**. This is not the vanilla game and should be treated as a **modification**. This is not and probably will never be official, so don't get confused.
+
+![Repository size](https://img.shields.io/github/repo-size/altronmaxx/FNF-AltronixEngine?color=brightgreen&label=Repository%20size)
+
+# How to build?
+
+1. Install Haxe
+2. Open Command Prompt, PowerShell or the terminal of your choice and type: 
+```
+ haxelib --global install hmm
+ haxelib --global run hmm setup
+```
+3. Go to the engine folder and open Command Prompt, PowerShell or the terminal of your choice in this folder and type: 
+```
+haxelib run hmm install
+``` 
+to install all all libraries, which needed to compiling the engine.
+
+4. To compile game, type:
+```
+lime build [target platform (windows, linux, html5, etc)]
+```
+
+## If you want to edit the engine source code, you should better to install all from this [file](https://github.com/AltronMaxX/FNF-AltronixEngine/blob/main/docs/building.md) and remove ``hmm.json`` file and ``.haxelib`` folder, if it exists
 
 # Features
  I will add it sometime XD

@@ -1,0 +1,2 @@
+This is an example mod folder with folders which are most frequently used while you will make mod.
+But you can add here any folder which you like. This engine has polymod modding system, that makes you absolutely free to add or replace engine files without editing base engine files.

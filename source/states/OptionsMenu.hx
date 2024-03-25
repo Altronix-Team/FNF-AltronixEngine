@@ -1,13 +1,14 @@
 package states;
 
+import gameplayStuff.Ratings;
 import flixel.FlxCamera;
 import flixel.FlxSubState;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import openfl.Lib;
-import Options;
-import Controls.Control;
+import options.Options;
+import core.Controls.Control;
 import flash.text.TextField;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -18,6 +19,8 @@ import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import gameplayStuff.PlayStateChangeables;
+import states.playState.PlayState;
+import states.playState.GameData as Data;
 
 class OptionCata extends FlxSprite
 {
@@ -132,7 +135,6 @@ class OptionsMenu extends FlxSubState
 				new InstantRespawn(LanguageStuff.getOptionDesc("$INSTANTRESPAWN_OPTION")),
 				new CamZoomOption(LanguageStuff.getOptionDesc("$CAMZOOM_OPTION")),
 				new NoteSplashOption(LanguageStuff.getOptionDesc("$NOTESPLASH_OPTION")),
-				new PsychInterfaceOption(LanguageStuff.getOptionDesc("$PSYCHINTERFACE_OPTION")),
 				new DFJKOption(),
 				new Judgement(LanguageStuff.getOptionDesc("$JUDGEMENT")),
 				new CustomizeGameplay(LanguageStuff.getOptionDesc("$CUSTOMIZE_GAMEPLAY"))
@@ -148,7 +150,6 @@ class OptionsMenu extends FlxSubState
 				new AccuracyOption(LanguageStuff.getOptionDesc("$ACCURACY_OPTION")),
 				new SongPositionOption(LanguageStuff.getOptionDesc("$SONGPOS_OPTION")),
 				new Colour(LanguageStuff.getOptionDesc("$COLOUR_OPTION")),
-				new NPSDisplayOption(LanguageStuff.getOptionDesc("$NPSDISPLAY_OPTION")),
 				new RainbowFPSOption(LanguageStuff.getOptionDesc("$RAINBOWFPS_OPTION")),
 			]),
 			new OptionCata(640, 40, LanguageStuff.getOptionDesc("$MISC_CATA"), [
@@ -163,7 +164,7 @@ class OptionsMenu extends FlxSubState
 				new LanguageOption(LanguageStuff.getOptionDesc("$LANGUAGE_OPTION")),
 				new MemoryCountOption(LanguageStuff.getOptionDesc("$MEMORYCOUNT_OPTION")),
 				new FullscreenOnStartOption(LanguageStuff.getOptionDesc("$FULLSCREENONSTART_OPTION")),
-				//new ScreenResolutionOption("Fullscreen test")
+				// new ScreenResolutionOption("Fullscreen test")
 			]),
 			new OptionCata(935, 40, LanguageStuff.getOptionDesc("$SAVES_CATA"), [
 				new ResetScoreOption(LanguageStuff.getOptionDesc("$RESETSCORE_OPTION")),
@@ -181,8 +182,11 @@ class OptionsMenu extends FlxSubState
 				new VolUpBind(LanguageStuff.getOptionDesc("$VOLUPKEYBIND")),
 				new VolDownBind(LanguageStuff.getOptionDesc("$VOLDOWNKEYBIND")),
 				new AttackKeybind(LanguageStuff.getOptionDesc("$ATTACKKEYBIND")),
-				new LeftP2Keybind(LanguageStuff.getOptionDesc("$LEFTKEYBIND")), new DownP2Keybind(LanguageStuff.getOptionDesc("$DOWNKEYBIND")),
-				new UpP2Keybind(LanguageStuff.getOptionDesc("$UPKEYBIND")), new RightP2Keybind(LanguageStuff.getOptionDesc("$RIGHTKEYBIND"))], true),
+				new LeftP2Keybind(LanguageStuff.getOptionDesc("$LEFTKEYBIND")),
+				new DownP2Keybind(LanguageStuff.getOptionDesc("$DOWNKEYBIND")),
+				new UpP2Keybind(LanguageStuff.getOptionDesc("$UPKEYBIND")),
+				new RightP2Keybind(LanguageStuff.getOptionDesc("$RIGHTKEYBIND"))
+			], true),
 			new OptionCata(-1, 125, LanguageStuff.getOptionDesc("$JUDGEMENTS_CATA"), [
 				new SickMSOption(LanguageStuff.getOptionDesc("$SICKMS_OPTION")),
 				new GoodMsOption(LanguageStuff.getOptionDesc("$GOODMS_OPTION")),
@@ -206,6 +210,8 @@ class OptionsMenu extends FlxSubState
 		descBack.alpha = 0.3;
 		descBack.scrollFactor.set();
 		menu.add(descBack);
+
+		FlxG.mouse.visible = true;
 
 		if (isInPause)
 		{
@@ -239,7 +245,7 @@ class OptionsMenu extends FlxSubState
 
 		descText = new FlxText(62, 648);
 		descText.setFormat(Paths.font(LanguageStuff.fontName), 20, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		
+
 		descText.borderSize = 2;
 
 		add(descBack);
@@ -373,6 +379,21 @@ class OptionsMenu extends FlxSubState
 		any = FlxG.keys.justPressed.ANY || (gamepad != null ? gamepad.justPressed.ANY : false);
 		escape = FlxG.keys.justPressed.ESCAPE || (gamepad != null ? gamepad.justPressed.B : false);
 
+		for (cata in options)
+		{
+			if (FlxG.mouse.overlaps(cata))
+			{
+				if (FlxG.mouse.justPressed)
+				{
+					FlxG.sound.play(Paths.sound('scrollMenu'));
+					selectedCat.optionObjects.members[selectedOptionIndex].text = selectedOption.getValue();
+					selectedCatIndex = options.indexOf(cata);
+
+					switchCat(cata);
+				}
+			}
+		}
+
 		if (selectedCat != null && !isInCat)
 		{
 			for (i in selectedCat.optionObjects.members)
@@ -439,12 +460,13 @@ class OptionsMenu extends FlxSubState
 
 				if (escape)
 				{
+					FlxG.mouse.visible = false;
 					if (!isInPause)
 						FlxG.switchState(new MainMenuState());
 					else
 					{
 						PauseSubState.goBack = true;
-						PlayStateChangeables.scrollSpeed = FlxG.save.data.scrollSpeed * PlayState.songMultiplier;
+						PlayStateChangeables.scrollSpeed = Main.save.data.scrollSpeed * Data.songMultiplier;
 						close();
 					}
 				}
@@ -481,7 +503,7 @@ class OptionsMenu extends FlxSubState
 
 						if (selectedOptionIndex == prev)
 						{
-							FlxG.save.flush();
+							Main.save.flush();
 
 							object.text = "> " + selectedOption.getValue();
 						}
@@ -568,13 +590,13 @@ class OptionsMenu extends FlxSubState
 						var object = selectedCat.optionObjects.members[selectedOptionIndex];
 						selectedOption.right();
 
-						FlxG.save.flush();
+						Main.save.flush();
 
 						object.text = "> " + selectedOption.getValue();
 						Debug.logTrace("New text: " + object.text);
 						if (selectedOptionIndex == 8 && selectedCatIndex == 2)
 						{
-							var lang = FlxG.save.data.localeStr;
+							var lang = Main.save.data.localeStr;
 							LanguageStuff.loadLanguage(lang);
 							FlxG.resetState();
 						}
@@ -585,13 +607,13 @@ class OptionsMenu extends FlxSubState
 						var object = selectedCat.optionObjects.members[selectedOptionIndex];
 						selectedOption.left();
 
-						FlxG.save.flush();
+						Main.save.flush();
 
 						object.text = "> " + selectedOption.getValue();
 						Debug.logTrace("New text: " + object.text);
 						if (selectedOptionIndex == 8 && selectedCatIndex == 2)
 						{
-							var lang = FlxG.save.data.localeStr;
+							var lang = Main.save.data.localeStr;
 							LanguageStuff.loadLanguage(lang);
 							FlxG.resetState();
 						}
@@ -607,10 +629,10 @@ class OptionsMenu extends FlxSubState
 						PlayerSettings.player1.controls.loadKeyBinds();
 
 						Ratings.timingWindows = [
-							FlxG.save.data.shitMs,
-							FlxG.save.data.badMs,
-							FlxG.save.data.goodMs,
-							FlxG.save.data.sickMs
+							Main.save.data.shitMs,
+							Main.save.data.badMs,
+							Main.save.data.goodMs,
+							Main.save.data.sickMs
 						];
 
 						for (i in 0...selectedCat.options.length)

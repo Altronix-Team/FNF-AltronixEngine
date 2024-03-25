@@ -1,10 +1,12 @@
 package utils;
 
+import flixel.FlxG;
 import flixel.math.FlxMath;
 import flixel.util.FlxColor;
+import lime.app.Application as LimeApplication;
 import openfl.Lib;
 import openfl.display.Bitmap;
-import flixel.FlxG;
+import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
@@ -15,7 +17,6 @@ import openfl.display._internal.stats.DrawCallContext;
 #if flash
 import openfl.Lib;
 #end
-
 #if openfl
 import openfl.system.System;
 #end
@@ -28,12 +29,13 @@ import openfl.system.System;
 @:fileXml('tags="haxe,release"')
 @:noDebug
 #end
-class EngineFPS extends TextField
+class FPSText extends TextField
 {
 	/**
 		The current frame rate, expressed using frames-per-second
 	**/
 	public var currentFPS(default, null):Int;
+
 	private var memoryMegas:Float = 0;
 	private var memoryTotal:Float = 0;
 
@@ -42,6 +44,13 @@ class EngineFPS extends TextField
 	@:noCompletion private var cacheCount:Int;
 	@:noCompletion private var currentTime:Float;
 	@:noCompletion private var times:Array<Float>;
+
+	#if !GITHUB_RELEASE
+	public static var showDebugInfo:Bool = false;
+	public static var curStep:Int = 0;
+	public static var curBeat:Int = 0;
+	public static var curDecimalBeat:Float = 0;
+	#end
 
 	public function new(x:Float = 10, y:Float = 10, color:Int = 0x000000)
 	{
@@ -53,9 +62,10 @@ class EngineFPS extends TextField
 		currentFPS = 0;
 		selectable = false;
 		mouseEnabled = false;
-		defaultTextFormat = new TextFormat(openfl.utils.Assets.getFont("assets/fonts/vcr.ttf").fontName, 14, color);
+		defaultTextFormat = new TextFormat(openfl.utils.Assets.getFont("assets/core/fonts/vcr.ttf").fontName, 14, color);
 		text = "FPS: ";
 		width += 200;
+		height += 30;
 
 		cacheCount = 0;
 		currentTime = 0;
@@ -121,12 +131,22 @@ class EngineFPS extends TextField
 
 		if (currentCount != cacheCount /*&& visible*/)
 		{
-			text = (''
-				+ (Main.save.data.fps ? "FPS: " + currentFPS : '')
-			#if openfl
+			text = ('' + (Main.save.data.fps ? "FPS: " + currentFPS : '')
+				#if openfl
 				+ (Main.memoryCount ? '\nMemory: ' + memoryMegas + " MB / " + memoryTotal + " MB" : '')
-			#end
+				#end
 				+ (Main.watermarks ? "\nAE " + "v" + EngineConstants.engineVer : ''));
+
+			#if !GITHUB_RELEASE
+			if (showDebugInfo)
+			{
+				text += '\nObjects: ${FlxG.state.members.length}\n';
+				text += 'Cameras: ${FlxG.cameras.list.length}\n';
+				text += 'CurStep: ${curStep}\n';
+				text += 'CurBeat: ${curBeat}\n';
+				text += 'CurDecimalBeat: ${curDecimalBeat}\n';
+			}
+			#end
 
 			#if (gl_stats && !disable_cffi && (!html5 || !canvas))
 			text += "\ntotalDC: " + Context3DStats.totalDrawCalls();
@@ -136,16 +156,66 @@ class EngineFPS extends TextField
 			#end
 		}
 
-		visible = true;
+		// visible = true;
 
-		Main.instance.removeChild(bitmap);
+		/*Main.instance.removeChild(bitmap);
 
-		bitmap = ImageOutline.renderImage(this, 2, 0x000000, 1);
+			bitmap = ImageOutline.renderImage(this, 2, 0x000000, 1);
 
-		Main.instance.addChild(bitmap);
+			Main.instance.addChild(bitmap); */
 
-		visible = false;
+		// visible = false;
 
 		cacheCount = currentCount;
+	}
+
+	public function clearMaxFPS()
+	{
+		memoryTotal = 0;
+	}
+}
+
+class EngineFPS extends Sprite
+{
+	public static var bgSprite:Sprite = null;
+
+	public static var fpsText:FPSText = null;
+
+	#if !GITHUB_RELEASE
+	public static var showDebugInfo(default, set):Bool = false;
+	#end
+
+	public function new()
+	{
+		super();
+
+		bgSprite = new Sprite();
+		bgSprite.graphics.beginFill(0xFF000000);
+		bgSprite.graphics.drawRect(0, 0, 1, 1);
+		bgSprite.graphics.endFill();
+		bgSprite.alpha = 0.4;
+		addChild(bgSprite);
+
+		fpsText = new FPSText(10, 3, 0xFFFFFF);
+		addChild(fpsText);
+
+		bgSprite.scaleX = fpsText.width;
+		bgSprite.scaleY = fpsText.height - 70;
+	}
+
+	public static function set_showDebugInfo(value:Bool)
+	{
+		FPSText.showDebugInfo = value;
+		showDebugInfo = value;
+		bgSprite.scaleY += value ? 70 : -70;
+		return value;
+	}
+
+	@:noCompletion
+	private override function __enterFrame(deltaTime:Float):Void
+	{
+		bgSprite.x = -x;
+
+		super.__enterFrame(deltaTime.toInt());
 	}
 }

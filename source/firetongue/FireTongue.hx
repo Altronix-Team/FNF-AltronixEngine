@@ -947,19 +947,19 @@ class FireTongue
 			// load & store the icon image existence
 
 			/*var iconAsset = directory + "_icons/" + id + ".png";
-			var flagAsset = directory + "_flags/" + id + ".png";
+				var flagAsset = directory + "_flags/" + id + ".png";
 
-			if (loadImage(iconAsset))
-			{
-				indexIcons.set(id, iconAsset);
-			}
-			else if (loadImage(flagAsset))
-			{
-				indexIcons.set(id, flagAsset);
-			}
-			else
-			{
-				indexIcons.set(id, null);
+				if (loadImage(iconAsset))
+				{
+					indexIcons.set(id, iconAsset);
+				}
+				else if (loadImage(flagAsset))
+				{
+					indexIcons.set(id, flagAsset);
+				}
+				else
+				{
+					indexIcons.set(id, null);
 			}*/
 
 			var isDefault:Bool = localeNode.has.is_default && localeNode.att.is_default == "true";
@@ -1543,8 +1543,7 @@ class FireTongue
 	}
 }
 
-@:enum
-abstract IndexString(String) from String to String
+enum abstract IndexString(String) from String to String
 {
 	var TheWordLanguage = "$UI_LANGUAGE";
 	var TheWordRegion = "$UI_REGION";
@@ -1567,8 +1566,7 @@ enum Framework
 	// add more frameworks as they are supported ... maybe?
 }
 
-@:enum
-abstract Case(Int) from Int to Int
+enum abstract Case(Int) from Int to Int
 {
 	var Upper = 1;
 	var Lower = -1;

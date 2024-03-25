@@ -1,16 +1,7 @@
 package gameplayStuff;
 
-import flixel.FlxG;
-import flixel.FlxSprite;
-import flixel.graphics.frames.FlxAtlasFrames;
-import flixel.util.FlxTimer;
-
-using StringTools;
-
 class Boyfriend extends Character
 {
-	public var stunned:Bool = false;
-
 	public function new(x:Float, y:Float, ?char:String = 'bf')
 	{
 		super(x, y, char, true);
@@ -27,12 +18,11 @@ class Boyfriend extends Character
 			else
 				holdTimer = 0;
 
-			if (animation.curAnim.name.endsWith('miss') && animation.curAnim.finished && !debugMode)
+			if (animation.curAnim.name.endsWith('miss') && animation.curAnim.finished && !curCharacter.endsWith('-car'))
 			{
 				playAnim('idle', true, false, 10);
 			}
-
-			if (curCharacter.endsWith('-car') && !animation.curAnim.name.startsWith('sing') && animation.curAnim.finished)
+			else if (curCharacter.endsWith('-car') && !animation.curAnim.name.startsWith('sing') && animation.curAnim.finished)
 				playAnim('idleHair');
 
 			if (animation.curAnim.name == 'firstDeath' && animation.curAnim.finished)

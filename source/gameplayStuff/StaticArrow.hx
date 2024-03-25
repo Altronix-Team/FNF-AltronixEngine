@@ -1,25 +1,28 @@
 package gameplayStuff;
 
-import states.PlayState;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.animation.FlxBaseAnimation;
 import flixel.graphics.frames.FlxAtlasFrames;
-
-using StringTools;
+import gameplayStuff.Song.SongData;
+import states.playState.PlayState;
+import states.playState.GameData as Data;
 
 class StaticArrow extends FlxSprite
 {
-	public var modifiedByLua:Bool = false;
 	public var modAngle:Float = 0; // The angle set by modcharts
 	public var localAngle:Float = 0; // The angle to be edited inside here
 	public var resetAnim:Float = 0;
 
 	public var noteData:Int = 0;
+
 	private var dataSuffix:Array<String> = ['LEFT', 'DOWN', 'UP', 'RIGHT'];
 	private var dataColor:Array<String> = ['purple', 'blue', 'green', 'red'];
 
 	public var texture(default, set):String = null;
+
+	var noteTypeCheck = 'normal';
+
 	private function set_texture(value:String):String
 	{
 		if (texture != value)
@@ -30,27 +33,32 @@ class StaticArrow extends FlxSprite
 		return value;
 	}
 
-	public function new(xx:Float, yy:Float)
+	public function new(xx:Float, yy:Float, ?_song:SongData = null)
 	{
 		x = xx;
 		y = yy;
 		super(x, y);
 		updateHitbox();
+
+		if (Data.SONG != null)
+			noteTypeCheck = Data.SONG.noteStyle;
+
+		if (_song != null)
+			noteTypeCheck = _song.noteStyle;
 	}
 
 	override function update(elapsed:Float)
 	{
-		if(resetAnim > 0) {
+		if (resetAnim > 0)
+		{
 			resetAnim -= elapsed;
-			if(resetAnim <= 0) {
+			if (resetAnim <= 0)
+			{
 				playAnim('static');
 				resetAnim = 0;
 			}
 		}
-		if (!modifiedByLua)
-			angle = localAngle + modAngle;
-		else
-			angle = modAngle;
+		angle = localAngle + modAngle;
 		super.update(elapsed);
 
 		if (FlxG.keys.justPressed.THREE)
@@ -61,24 +69,28 @@ class StaticArrow extends FlxSprite
 
 	public function playAnim(AnimName:String, ?force:Bool = false):Void
 	{
-		animation.play(AnimName, force);
+		if (PlayState.instance.paused) return;
 
-		if (!AnimName.startsWith('dirCon'))
-		{
-			localAngle = 0;
+		if (animation != null){ //Strange shit, but we need to check this
+			animation.play(AnimName, force);
+
+			if (!AnimName.startsWith('dirCon'))
+			{
+				localAngle = 0;
+			}
+			updateHitbox();
+			offset.set(frameWidth / 2, frameHeight / 2);
+
+			offset.x -= 54;
+			offset.y -= 56;
+
+			angle = localAngle + modAngle;
 		}
-		updateHitbox();
-		offset.set(frameWidth / 2, frameHeight / 2);
-
-		offset.x -= 54;
-		offset.y -= 56;
-
-		angle = localAngle + modAngle;
 	}
 
 	function loadNote()
 	{
-		switch (PlayState.instance.noteTypeCheck)
+		switch (noteTypeCheck)
 		{
 			case 'pixel':
 				loadGraphic(NoteskinHelpers.generatePixelSprite(texture), true, 17, 17);
@@ -96,7 +108,7 @@ class StaticArrow extends FlxSprite
 				animation.add('pressed', [4 + noteData, 8 + noteData], 12, false);
 				animation.add('confirm', [12 + noteData, 16 + noteData], 12, false);
 			default:
-				if (PlayState.instance.noteTypeCheck == 'normal')
+				if (noteTypeCheck == 'normal')
 				{
 					frames = NoteskinHelpers.generateNoteskinSprite(texture);
 
@@ -108,12 +120,12 @@ class StaticArrow extends FlxSprite
 
 					x += Note.swagWidth * noteData;
 
-					antialiasing = FlxG.save.data.antialiasing;
-					setGraphicSize(Std.int(width * 0.7));	
+					antialiasing = Main.save.data.antialiasing;
+					setGraphicSize(Std.int(width * 0.7));
 				}
 				else
 				{
-					frames = NoteskinHelpers.generateNoteskinSprite(PlayState.instance.noteTypeCheck);
+					frames = NoteskinHelpers.generateNoteskinSprite(noteTypeCheck);
 
 					var lowerDir:String = dataSuffix[noteData].toLowerCase();
 
@@ -123,9 +135,9 @@ class StaticArrow extends FlxSprite
 
 					x += Note.swagWidth * noteData;
 
-					antialiasing = FlxG.save.data.antialiasing;
-					setGraphicSize(Std.int(width * 0.7));	
-				}						
+					antialiasing = Main.save.data.antialiasing;
+					setGraphicSize(Std.int(width * 0.7));
+				}
 		}
 	}
 }

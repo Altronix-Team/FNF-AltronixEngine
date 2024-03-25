@@ -1,20 +1,17 @@
 package utils;
 
-import flixel.FlxCamera;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.util.FlxColor;
+import flixel.addons.ui.FlxUIBar.FlxBarStyle;
 #if sys
 import sys.io.File;
 import sys.FileSystem;
 #end
-
 import Type;
 import flixel.math.FlxMath;
-
 import openfl.utils.Assets as OpenFlAssets;
 
-using StringTools;
-using hx.strings.Strings;
-
-
+@:cppFileCode('#include <windows.h>\n#include <iostream>')
 class CoolUtil
 {
 	public static var difficultyArray:Array<String> = ['Easy', "Normal", "Hard", "Hard P"];
@@ -26,11 +23,11 @@ class CoolUtil
 	public static final defaultDifficultyPrefixes:Array<String> = ['-easy', '', '-hard', '-hardplus'];
 
 	public static var songDiffs:Map<String, Array<String>> = [];
-	
+
 	public static var songDiffsPrefix:Map<String, Array<String>> = [];
 
 	public static var daPixelZoom:Float = 6;
-	
+
 	public static function difficultyFromInt(difficulty:Int):String
 	{
 		return difficultyArray[difficulty];
@@ -41,38 +38,61 @@ class CoolUtil
 		difficultyArray = defaultDifficulties;
 	}
 
+	public static function flxColorFromRGBArray(value:Array<Int>):FlxColor
+	{
+		if (value.length < 3)
+			return FlxColor.WHITE;
+
+		return FlxColor.fromRGB(value[0], value[1], value[2]);
+	}
+
 	public static function coolTextFile(path:String):Array<String>
+	{
+		var daList:Array<String> = [];
+		if (OpenFlAssets.exists(path))
+			daList = OpenFlAssets.getText(path).trim().split('\n');
+
+		for (i in 0...daList.length)
 		{
-			var daList:Array<String> = [];
-			if(OpenFlAssets.exists(path)) daList = OpenFlAssets.getText(path).trim().split('\n');
-
-			for (i in 0...daList.length)
-			{
-				daList[i] = daList[i].trim();
-			}
-
-			return daList;
+			daList[i] = daList[i].trim();
 		}
 
-	public static function dominantColor(sprite:flixel.FlxSprite):Int{
+		return daList;
+	}
+
+	public static function camLerpShit(lerp:Float):Float
+	{
+		return lerp * (FlxG.elapsed / (1 / 60));
+	}
+
+	public static function dominantColor(sprite:flixel.FlxSprite):Int
+	{
 		var countByColor:Map<Int, Int> = [];
-		for(col in 0...sprite.frameWidth){
-			for(row in 0...sprite.frameHeight){
-			  var colorOfThisPixel:Int = sprite.pixels.getPixel32(col, row);
-			  if(colorOfThisPixel != 0){
-				  if(countByColor.exists(colorOfThisPixel)){
-				    countByColor[colorOfThisPixel] =  countByColor[colorOfThisPixel] + 1;
-				  }else if(countByColor[colorOfThisPixel] != 13520687 - (2*13520687)){
-					 countByColor[colorOfThisPixel] = 1;
-				  }
-			  }
+		for (col in 0...sprite.frameWidth)
+		{
+			for (row in 0...sprite.frameHeight)
+			{
+				var colorOfThisPixel:Int = sprite.pixels.getPixel32(col, row);
+				if (colorOfThisPixel != 0)
+				{
+					if (countByColor.exists(colorOfThisPixel))
+					{
+						countByColor[colorOfThisPixel] = countByColor[colorOfThisPixel] + 1;
+					}
+					else if (countByColor[colorOfThisPixel] != 13520687 - (2 * 13520687))
+					{
+						countByColor[colorOfThisPixel] = 1;
+					}
+				}
 			}
-		 }
+		}
 		var maxCount = 0;
 		var maxKey:Int = 0;
 		countByColor[flixel.util.FlxColor.BLACK] = 0;
-			for(key in countByColor.keys()){
-			if(countByColor[key] >= maxCount){
+		for (key in countByColor.keys())
+		{
+			if (countByColor[key] >= maxCount)
+			{
 				maxCount = countByColor[key];
 				maxKey = key;
 			}
@@ -121,9 +141,9 @@ class CoolUtil
 	}
 
 	/**
-	* @param duration The duration in seconds
-	* @return The duration in the format "MM:SS"
-	*/
+	 * @param duration The duration in seconds
+	 * @return The duration in the format "MM:SS"
+	 */
 	public static function durationToString(duration:Float):String
 	{
 		var seconds = FlxMath.roundDecimal(duration, 0) % 60;
@@ -200,16 +220,63 @@ class CoolUtil
 		#end
 	}
 
-	public static function precacheSound(sound:String, ?library:String = null):Void {
+	// Function to easy work with FlxUIBar
+	public static function createFlxUIBarstyle(filledColors:Array<FlxColor>, emptyColors:Array<FlxColor>, chunkSize:Null<Int>, gradRotation:Null<Int>,
+			filledColor:Null<FlxColor>, emptyColor:Null<FlxColor>, borderColor:Null<FlxColor>, filledImgSrc:String, emptyImgSrc:String):FlxBarStyle
+	{
+		var retVal:FlxBarStyle = {
+			filledColors: filledColors,
+			emptyColors: emptyColors,
+
+			chunkSize: chunkSize,
+			gradRotation: gradRotation,
+			filledColor: filledColor,
+			emptyColor: emptyColor,
+			borderColor: borderColor,
+			filledImgSrc: filledImgSrc,
+			emptyImgSrc: emptyImgSrc
+		};
+		return retVal;
+	}
+
+	public static function precacheSound(sound:String, ?library:String = null):Void
+	{
 		precacheSoundFile(Paths.sound(sound, library));
 	}
 
-	public static function precacheMusic(sound:String, ?library:String = null):Void {
+	public static function precacheMusic(sound:String, ?library:String = null):Void
+	{
 		precacheSoundFile(Paths.music(sound, library));
 	}
 
-	private static function precacheSoundFile(file:Dynamic):Void {
+	public static function fromArray(group:FlxTypedGroup<Dynamic>, array:Array<Dynamic>)
+	{
+		for (obj in array)
+		{
+			try
+			{
+				group.add(obj);
+			}
+			catch (e)
+			{
+				Debug.logError('Can not push object to group');
+				continue;
+			}
+		}
+		return group;
+	}
+
+	private static function precacheSoundFile(file:Dynamic):Void
+	{
 		if (OpenFlAssets.exists(file, SOUND) || OpenFlAssets.exists(file, MUSIC))
 			OpenFlAssets.getSound(file, true);
+	}
+
+	@:functionCode('
+		res = LOWORD(GetKeyboardLayout(0));
+	')
+	public static function getKeyboardLayout(res:Int = 0)
+	{
+		return res;
 	}
 }

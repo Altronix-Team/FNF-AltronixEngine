@@ -2,12 +2,17 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin': Altronix Engine" file="Altronix Engine" packageName="com.altronmaxx.altronixengine" package="com.altronmaxx.altronixengine" main="Main" version="0.2.8" company="AltronMaxX" />
+	<app title="Friday Night Funkin': Altronix Engine" 
+		file="Altronix Engine" 
+		packageName="com.altronmaxx.altronixengine" 
+		package="com.altronmaxx.altronixengine" 
+		main="Main" 
+		version="0.2.8" 
+		company="AltronMaxX" 
+	/>
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
-
-	<haxedef name="LINC_LUA_RELATIVE_DYNAMIC_LIB"/>
 
 	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
 		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->
@@ -52,175 +57,82 @@
 	<set name="BUILD_DIR" value="export/32bit" if="32bit" />
 	
 	<!--I just don't want to clear the game files of my secret stuff :)-->
-	<!--define name="GITHUB_RELEASE"/>
-	<set name="BUILD_DIR" value="export/github-release" if="GITHUB_RELEASE" /-->
+	<set name="BUILD_DIR" value="export/github-release" if="doRelease" />
 
 	<classpath name="source" />
 	
 	<define name="CHECK_FOR_DEFAULT_CHARACTERS"/>
-	<define name="LUA_ALLOWED" if="desktop" />
-	<define name="VIDEOS_ALLOWED" if="web || windows" unless="32bits" />
-	
-	<assets path="assets/preload/videos" rename="assets/videos" include="*mp4" embed='false' />
+	<!--define name="USE_FLIXEL3D"/-->
+	<!--define name="USE_YAML"/-->
+	<define name="VIDEOS_ALLOWED" if="windows || linux || android" unless="32bits"/>
 
-	<assets path="assets/videos" exclude="*.mp3" if="web"/>
-	<assets path="assets/videos" exclude="*.ogg" unless="web"/>
-	
-	<assets path="assets/preload/stages" rename="assets/stages" include="*lua" embed='false' />
-	
-	<assets path="assets/preload/weeks" rename="assets/weeks" include="*json" embed='false' />
-
-	<assets path="assets/preload" rename="assets" exclude="*.ogg" if="web"/>
-	<assets path="assets/preload" rename="assets" exclude="*.mp3" unless="web"/>
+	<haxeflag name="-dce" value="std" />
 	
 	<!-- <define name="PRELOAD_ALL" /> -->
 	<define name="PRELOAD_ALL" unless="web" />
 	<define name="NO_PRELOAD_ALL" unless="PRELOAD_ALL"/>
 	
 	<section if="PRELOAD_ALL">
+		<library name="gameplay"	preload="true"/>
 		<library name="core"	preload="true"/>
-		<library name="songs"    preload="true" />
-		<library name="shared"   preload="true" />
-		<library name="tutorial" preload="true" />
-		<library name="week1"    preload="true" />
-		<library name="week2"    preload="true" />
-		<library name="week3"    preload="true" />
-		<library name="week4"    preload="true" />
-		<library name="week5"    preload="true" />
-		<library name="week6"    preload="true" />
-		<library name="week7"    preload="true" />
-		<library name="custom_events"    preload="true" />
-		<library name="custom_notetypes"    preload="true" />
-		<library name="custom_difficulties"    preload="true" />
-		<library name="art"    preload="true" />
+		<library name="scripts"	preload="true"/>
 	</section>
-	
-	
 	
 	<section if="NO_PRELOAD_ALL">
+		<library name="gameplay"	preload="false"/>
 		<library name="core"	preload="false"/>
-		<library name="songs"    preload="false" />
-		<library name="shared"   preload="false" />
-		<library name="tutorial" preload="false" />
-		<library name="week1"    preload="false" />
-		<library name="week2"    preload="false" />
-		<library name="week3"    preload="false" />
-		<library name="week4"    preload="false" />
-		<library name="week5"    preload="false" />
-		<library name="week6"    preload="false" />
-		<library name="week7"    preload="false" />
-		<library name="custom_events"    preload="false" />
-		<library name="custom_notetypes"    preload="false" />
-		<library name="custom_difficulties"    preload="false" />
-		<library name="art"    preload="false" />
+		<library name="scripts"	preload="false"/>
 	</section>
-	
-	<library name="scripts" preload="true" />
-	
-	<assets path="assets/songs"    library="songs"    exclude="*.ogg" if="web"/>
-	<assets path="assets/songs"    library="songs"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/shared"   library="shared"   exclude="*.ogg" if="web"/>
-	<assets path="assets/shared"   library="shared"   exclude="*.mp3" unless="web"/>
-	<assets path="assets/tutorial" library="tutorial" exclude="*.ogg" if="web"/>
-	<assets path="assets/tutorial" library="tutorial" exclude="*.mp3" unless="web"/>
-	<assets path="assets/week1"    library="week1"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week1"    library="week1"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/week2"    library="week2"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week2"    library="week2"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/week3"    library="week3"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week3"    library="week3"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/week4"    library="week4"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week4"    library="week4"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/week5"    library="week5"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week5"    library="week5"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/week6"    library="week6"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week6"    library="week6"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/week7"    library="week7"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week7"    library="week7"    exclude="*.mp3" unless="web"/>
-	<assets path="assets/stages"   library="stages"   exclude="*.ogg" if="web"/>
-	<assets path="assets/stages"   library="stages"   exclude="*.mp3" unless="web"/>
-	<assets path="assets/custom_events"   library="custom_events"   exclude="*.ogg" if="web"/>
-	<assets path="assets/custom_events"   library="custom_events"   exclude="*.mp3" unless="web"/>
-	<assets path="assets/custom_notetypes"   library="custom_notetypes"   exclude="*.ogg" if="web"/>
-	<assets path="assets/custom_notetypes"   library="custom_notetypes"   exclude="*.mp3" unless="web"/>
-	<assets path="assets/custom_difficulties"   library="custom_notetypes"   exclude="*.ogg" if="web"/>
-	<assets path="assets/custom_difficulties"   library="custom_notetypes"   exclude="*.mp3" unless="web"/>
-	<assets path="assets/art"   library="art"   exclude="*.ogg" if="web"/>
-	<assets path="assets/art"   library="art"   exclude="*.mp3" unless="web"/>
-	
-	<assets path="assets/locales" rename="locales" />
-	<assets path='example_mods' rename='mods' embed='false'/>
-	<assets path='art/readme.txt' rename='do NOT readme.txt' />
-	<assets path='LICENSE' rename='LICENSE.txt' />
-	<assets path="assets/fonts" embed='true'/>
-	
+
 	<section if="embedAssets">
-		<assets path="assets/core"
-						library="core"
-						embed="true" />
+		<assets path="assets/core" library="core" embed="true" exclude="*.md|*.ogg" if="web" />
+		<assets path="assets/core" library="core" embed="true" exclude="*.md|*.mp3" unless="web" />
+
+		<assets path="assets/gameplay" library="gameplay" embed="true" exclude="*.ogg" if="web"/>
+		<assets path="assets/gameplay" library="gameplay" embed="true" exclude="*.mp3" unless="web"/>
 						
-		<assets path="assets/scripts"
-						library="scripts"
-						embed="true"
-						exclude="*.md|*.ogg"
-						if="web" />
-						
-		<assets path="assets/scripts"
-						library="scripts"
-						embed="true"
-						exclude="*.md|*.mp3"
-						unless="web" />
+		<assets path="assets/gameplay/scripts" library="scripts" embed="true" exclude="*.md|*.ogg" if="web" />			
+		<assets path="assets/gameplay/scripts" library="scripts" embed="true" exclude="*.md|*.mp3" unless="web" />
 	</section>
 	
 	<section unless="embedAssets">
-		<assets path="assets/core"
-						library="core"
-						embed="false" />
-		<assets path="assets/scripts"
-						library="scripts"
-						embed="false"
-						exclude="*.md|*.ogg"
-						if="web" />
-		<assets path="assets/scripts"
-						library="scripts"
-						embed="false"
-						exclude="*.md|*.mp3"
-						unless="web" />
+		<assets path="assets/core" library="core" embed="false" exclude="*.md|*.ogg" if="web" />
+		<assets path="assets/core" library="core" embed="false" exclude="*.md|*.mp3" unless="web" />
+
+		<assets path="assets/gameplay" library="gameplay" embed="false" exclude="*.ogg" if="web"/>
+		<assets path="assets/gameplay" library="gameplay" embed="false" exclude="*.mp3" unless="web"/>
+
+		<assets path="assets/gameplay/scripts" library="scripts" embed="false" exclude="*.md|*.ogg" if="web" />
+		<assets path="assets/gameplay/scripts" library="scripts" embed="false" exclude="*.md|*.mp3" unless="web" />
 	</section>
+	
+	<assets path="assets/core/locales" rename="locales" />
+	<assets path='example_mods' rename='mods' embed='false'/>
+	<assets path='art/readme.txt' rename='do NOT readme.txt' />
+	<assets path='LICENSE' rename='LICENSE.txt' />
+	<assets path="assets/core/fonts" embed='true'/>
+	
 	<!-- _______________________________ Libraries ______________________________ -->
 
 	<haxelib name="flixel" />
-	<haxedev set='webgl' />
-
-	<!--In case you want to use the addons package-->
 	<haxelib name="flixel-addons" />
-	<haxelib name="hscript"/>
-	<!--haxelib name="hscript-ex"/-->
-
-	<!--In case you want to use the ui package-->
 	<haxelib name="flixel-ui" />
-	<haxelib name="faxe" if='switch'/>
+	<haxelib name="flxanimate" />
+
+	<haxelib name="away3d" if="USE_FLIXEL3D"/>
+
+	<haxelib name="AE-Script"/>
+	<haxedef name="hscriptPos"/>
+	<haxedef name="openflPos"/>	
+
 	<haxelib name="polymod" if='desktop'/>
 	<haxelib name="discord_rpc" if="desktop"/>
-	<haxelib name="linc_luajit" if="LUA_ALLOWED"/>
 	<haxelib name="hxCodec" if="VIDEOS_ALLOWED"/>
-	<!--Waiting for extension-ffmpeg to replace hxCodec :3-->
-
-	<haxelib name="systools" if="cpp"/>
-	<ndll name="systools" haxelib="systools" if="cpp"/>
-	<haxelib name="tentools" if="desktop"/>
-
+	<haxelib name="yaml" if="USE_YAML"/>
 	<haxelib name="haxe-strings" />
 	<haxelib name="firetongue" />
 	
 	<haxelib name="hxcpp-debug-server" if="debug"/>
-
-	<!-- <haxelib name="markdown" /> -->
-	<!-- <haxelib name="HtmlParser" /> -->
-
-	<!--In case you want to use nape with flixel-->
-	<!--<haxelib name="nape-haxe4" />-->
-
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
 	<!--Enable the Flixel core recording system-->
@@ -250,12 +162,10 @@
 	<!--Disable the Flixel core debugger. Automatically gets set whenever you compile in release mode!-->
 	<haxedef name="FLX_NO_DEBUG" unless="debug" />
 
-	<haxedef name="HXCPP_GC_BIG_BLOCKS"/>
-
 	<!--Enable this for Nape release builds for a serious peformance improvement-->
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
 	
-	<haxedef name="hscriptPos" />
+	<haxedef name="no-deprecation-warnings" unless="debug"/>
 	
 
 	<!-- _________________________________ Custom _______________________________ -->
@@ -271,41 +181,38 @@
 	<icon path="art/icon512.png" size='512'/>
 	<icon path="art/iconOG.png" />
 
-	<haxeflag name="--no-traces" unless="debug" />
-	<haxeflag name="--dce full" if="release" />
+	<!--haxeflag name="no-traces" unless="debug" /-->
 
-  <!-- Use defines to ensure compile-time definitions have readable context. -->
-  <!-- Allowed inputs are mobile,desktop,web,ios,android,windows,mac,linux,switch,html5,cpp,neko,flash,js -->
+	<!-- Use defines to ensure compile-time definitions have readable context. -->
+	<!-- Allowed inputs are mobile,desktop,web,ios,android,windows,mac,linux,switch,html5,cpp,neko,flash,js -->
 
-  <!-- Defines whether the Discord client should be enabled. Only works on desktop. -->
-  <haxedef name="FEATURE_DISCORD" if="desktop" />
-  
-  <!-- Defines whether the file system can be read/written directly. Does not work in browser. -->
-  <haxedef name="FEATURE_FILESYSTEM" if="desktop" />
-
-  <!-- Defines whether Lua Modcharts should be enabled. Only works on Windows. -->
-  <haxedef name="FEATURE_LUAMODCHART" if="windows" />
-
-  <!-- Defines whether the Thread class can be used. -->
-  <haxedef name="FEATURE_MULTITHREADING" if="cpp" />
-
-  <!-- Defines whether the Mods menu will display before launching. -->
-  <haxedef name="FEATURE_MODCORE" if="desktop" />
-  
-  <haxedef name="HXCPP_CHECK_POINTER" if="FEATURE_FILESYSTEM" />
-  <haxedef name="HXCPP_STACK_LINE" if="FEATURE_FILESYSTEM" />
+	<!-- Defines whether the Discord client should be enabled. Only works on desktop. -->
+	<haxedef name="FEATURE_DISCORD" if="desktop" />
 	
-  <!-- Use defines to configure the behavior of Polymod. -->
+	<!-- Defines whether the file system can be read/written directly. Does not work in browser. -->
+	<haxedef name="FEATURE_FILESYSTEM" if="desktop" />
+
+	<!-- Defines whether the Thread class can be used. -->
+	<!--haxedef name="FEATURE_MULTITHREADING" if="cpp" /-->
+
+	<!-- Defines whether the Mods menu will display before launching. -->
+	<haxedef name="FEATURE_MODCORE" if="desktop" />
+	
+	<haxedef name="HXCPP_CHECK_POINTER" if="FEATURE_FILESYSTEM" />
+	<haxedef name="HXCPP_STACK_LINE" if="FEATURE_FILESYSTEM" />
+	<haxedef name="HXCPP_GC_BIG_BLOCKS"/>
+		
+	<!-- Use defines to configure the behavior of Polymod. -->
 	<haxedef name="POLYMOD_SCRIPT_EXT"
-					 value=".hscript" />
+					 value=".hxs"/>
 	<haxedef name="POLYMOD_SCRIPT_CLASS_EXT"
-					 value=".hscript" />
+					 value=".hxc" />  <!--Will use this ext for classes-->
 	<haxedef name="POLYMOD_SCRIPT_LIBRARY"
 					 value="scripts" />
 	<haxedef name="POLYMOD_USE_NAMESPACE"
 					 value="false" />
 	<haxedef name="POLYMOD_ROOT_PATH"
-					 value="assets/scripts/" />
+					 value="assets/gameplay/scripts/" />
 
 	<!-- Remove this to use standart Polymod file names. -->				 
 	<haxedef name="POLYMOD_MOD_PACK_FILE"
@@ -317,5 +224,8 @@
 	<!-- :) -->
 
     <haxedef name="POLYMOD_DEBUG" if="debug" />
+
+	<!-- Remove that if you want to use Haxe versions older than 4.3.0-->
+		<haxeflag name="--macro" value="macros.CheckHaxeVersion.checkHaxeVersion()" />
 
 </project>

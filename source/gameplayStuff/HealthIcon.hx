@@ -2,20 +2,19 @@ package gameplayStuff;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
-import openfl.utils.Assets as OpenFlAssets;
 import flixel.animation.FlxBaseAnimation;
-import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.graphics.FlxGraphic;
+import flixel.graphics.frames.FlxAtlasFrames;
 import haxe.Json;
+import openfl.utils.Assets as OpenFlAssets;
 #if sys
-import sys.io.File;
 import sys.FileSystem;
+import sys.io.File;
 #end
-
-using StringTools;
 
 typedef IconData =
 {
+	var image:String;
 	var defaultAnim:String;
 	var nearToDieAnim:String;
 	var animations:Array<IconAnims>;
@@ -26,6 +25,8 @@ typedef IconAnims =
 	var name:String;
 	var prefix:String;
 }
+
+// TODO Deal with animated icons
 class HealthIcon extends FlxSprite
 {
 	public var character:String = 'bf';
@@ -35,8 +36,8 @@ class HealthIcon extends FlxSprite
 
 	public var sprTracker:FlxSprite;
 
-	public var defaultAnim:String;
-	public var nearToDieAnim:String;
+	public var defaultAnim:String = null;
+	public var nearToDieAnim:String = null;
 
 	public function new(character:String, filename:String, ?isPlayer:Bool = false)
 	{
@@ -47,7 +48,7 @@ class HealthIcon extends FlxSprite
 		this.filename = filename;
 
 		isPlayer = isOldIcon = false;
-			
+
 		changeIcon(character, filename);
 
 		scrollFactor.set();
@@ -59,56 +60,74 @@ class HealthIcon extends FlxSprite
 	}
 
 	private var iconOffsets:Array<Float> = [0, 0];
+
 	public function changeIcon(char:String, filename:String)
 	{
-		/*if (Paths.isAnimated('icons/$char'))
-		{
-			loadIcon(char);
-		}
-		else
-		{*/
-			loadIconLegacy(char, filename);
-		//}
+		Debug.logInfo('Loading icon for ${char}. \n $char icon file is $filename');
+		/*if (char != filename && OpenFlAssets.exists(Paths.json('characters${char != '' ? '/$char' : ''}/$filename', 'gameplay'), TEXT))
+			{
+				loadIcon(char, filename);
+			}
+			else
+			{ */
+		loadIconLegacy(char, filename);
+		// }
 	}
 
-	/*function loadIcon(char:String)
+	/*
+		var tut_byl_ya:String = 'gay';
+		tut_byl_ya ?? gay
+	 */
+	function loadIcon(char:String, filename:String)
 	{
-		if (!OpenFlAssets.exists(Paths.image('icons/' + char)))
+		var data:IconData = cast Paths.loadJSON('characters${(char != '' ? '/$char' : '')}/$filename');
+
+		if (data == null)
 		{
-			loadIconLegacy('face');
+			Debug.logError('Error loading animated icon for ${char}');
+
+			loadIconLegacy('', 'face');
 			return;
 		}
 
-		var data:IconData = Json.parse(OpenFlAssets.getText('assets/images/icons/' + char + '.json').trim());
+		Debug.logTrace(image(char != '' ? '/$char' : '', data.image ?? filename));
+		if (!OpenFlAssets.exists(image(char != '' ? '/$char' : '', data.image ?? filename)))
+		{
+			Debug.logError('Error loading graphic for health icon ${char}');
+
+			loadIconLegacy('', 'face');
+			return;
+		}
 
 		defaultAnim = data.defaultAnim;
 		nearToDieAnim = data.nearToDieAnim;
 
-		frames = FlxAtlasFrames.fromSparrow(FlxGraphic.fromBitmapData(OpenFlAssets.getBitmapData(OpenFlAssets.getPath('assets/images/icons/' + char + '.png'))), OpenFlAssets.getPath('assets/images/icons/' + char + '.xml'));
-	
+		frames = FlxAtlasFrames.fromSparrow(FlxGraphic.fromBitmapData(OpenFlAssets.getBitmapData(image(char != '' ? '/$char' : '', data.image ?? filename))),
+			OpenFlAssets.getPath(Paths.xml('characters${(char != '' ? '/$char' : '')}/${data.image ?? filename /*POG Haxe 4.3 feature!!!!!!!!*/}')));
+
 		for (i in data.animations)
 		{
 			animation.addByPrefix(i.name, i.prefix, 24, true, isPlayer);
 		}
-	
+
 		animation.play(data.defaultAnim);
-	}*/
-	
+	}
+
 	function loadIconLegacy(char:String, filename:String)
 	{
 		var image = image(char != '' ? '/$char' : '', filename);
-		if (image == null)
+		if (!OpenFlAssets.exists(image))
 		{
-			Debug.logError('Error loading graphic for health icon ${char}');
+			Debug.logError('Error loading graphic for health icon ${char} file $filename');
 
 			loadGraphic(loadImage('', 'face'), true, 150, 150);
 
-			antialiasing = FlxG.save.data.antialiasing;
+			antialiasing = Main.save.data.antialiasing;
 			animation.add('face', [0, 1], 0, false, isPlayer);
 			animation.play('face');
 			return;
 		}
-	
+
 		loadGraphic(loadImage(char, filename));
 		if (width <= 150)
 			loadGraphic(loadImage(char, filename), true, Math.floor(width), Math.floor(height));
@@ -122,8 +141,8 @@ class HealthIcon extends FlxSprite
 		if (char.contains('pixel') || char.startsWith('senpai') || char.startsWith('spirit'))
 			antialiasing = false
 		else
-			antialiasing = FlxG.save.data.antialiasing;
-	
+			antialiasing = Main.save.data.antialiasing;
+
 		animation.add(char, [0, 1], 0, false, isPlayer);
 		animation.play(char);
 	}
@@ -143,15 +162,14 @@ class HealthIcon extends FlxSprite
 			setPosition(sprTracker.x + sprTracker.width + 10, sprTracker.y - 30);
 	}
 
-	inline static public function image(character:String = '', key:String, ?library:String)
+	inline static public function image(character:String = '', key:String)
 	{
-		return Paths.getPath('characters$character/$key.png', IMAGE, library);
+		return Paths.getPath('characters$character/$key.png', IMAGE, "gameplay");
 	}
 
-	static public function loadImage(character:String = '', key:String, ?library:String):FlxGraphic
+	static public function loadImage(character:String = '', key:String):FlxGraphic
 	{
-		var path = image(character != '' ? '/$character': '', key, library);
-
+		var path = image(character != '' ? '/$character' : '', key);
 		if (OpenFlAssets.exists(path, IMAGE))
 		{
 			var bitmap = OpenFlAssets.getBitmapData(path);
@@ -159,7 +177,8 @@ class HealthIcon extends FlxSprite
 		}
 		else
 		{
-			return loadImage('', 'face');
+			var bitmap = OpenFlAssets.getBitmapData(image('', 'face'));
+			return FlxGraphic.fromBitmapData(bitmap);
 		}
 	}
 }

@@ -1,33 +1,44 @@
 package gameplayStuff;
 
+import editors.ChartingState;
+import flash.geom.Rectangle;
 import flixel.FlxG;
-import flixel.util.FlxColor;
-import flixel.group.FlxGroup.FlxTypedGroup;
-import gameplayStuff.Section.SwagSection;
-import flixel.addons.display.FlxGridOverlay;
 import flixel.FlxSprite;
+import flixel.addons.display.FlxGridOverlay;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
+import flixel.math.FlxMath;
+import flixel.sound.FlxSound;
+import flixel.util.FlxColor;
+import gameplayStuff.Section.SwagSection;
 
-class SectionRender extends FlxSprite
+class SectionRender extends FlxTypedSpriteGroup<FlxSprite>
 {
 	public var section:SwagSection;
 	public var icon:FlxSprite;
 	public var lastUpdated:Bool;
+	public var sectionSprite:FlxSprite;
 
-	public function new(x:Float, y:Float, GRID_SIZE:Int, ?Height:Int = 16)
+	public var sectionColors:Array<FlxColor> = [0x88e7e6e6, 0x88d9d5d5];
+
+	var GRID_SIZE = 16;
+
+	public function new(x:Float, y:Float, GRID_SIZE:Int, ?vocals:FlxSound, ?section:SwagSection, ?Height:Int = 16)
 	{
-		super(x, y);
+		super();
 
-		makeGraphic(GRID_SIZE * 8, GRID_SIZE * Height, 0xffe7e6e6);
+		sectionSprite = new FlxSprite(x, y);
+		sectionSprite.makeGraphic(GRID_SIZE * 8, GRID_SIZE * Height, 0xffe7e6e6);
+
+		this.GRID_SIZE = GRID_SIZE;
 
 		var h = GRID_SIZE;
 		if (Math.floor(h) != h)
 			h = GRID_SIZE;
 
-		if (FlxG.save.data.editorBG)
-			FlxGridOverlay.overlay(this, GRID_SIZE, Std.int(h), GRID_SIZE * 8, GRID_SIZE * Height);
-	}
+		if (Main.save.data.editorBG)
+			FlxGridOverlay.overlay(sectionSprite, GRID_SIZE, Std.int(h), GRID_SIZE * 8, Std.int(GRID_SIZE * Height), true, sectionColors[0], sectionColors[1]);
 
-	override function update(elapsed)
-	{
+		add(sectionSprite);
 	}
 }

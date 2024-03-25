@@ -1,8 +1,13 @@
 package gameplayStuff;
 
+import sys.thread.Thread;
+import haxe.Constraints.Function;
 import gameplayStuff.Section.SwagSection;
 import gameplayStuff.Song.SongData;
 import flixel.FlxG;
+import openfl.events.Event;
+import openfl.Lib;
+import utils.EngineFPS;
 
 typedef BPMChangeEvent =
 {
@@ -28,16 +33,22 @@ class Conductor
 
 	public static var bpmChangeMap:Array<BPMChangeEvent> = [];
 
-	public static var MusicBeatInterface:IMusicBeat;
-
 	private static var lastBeat:Float = 0;
 	private static var lastStep:Float = 0;
 	private static var lastSection:SwagSection = null;
 
-	private static var curStep:Int = 0;
-	private static var curBeat:Int = 0;
-	private static var curDecimalBeat:Float = 0;
-	private static var curSection:SwagSection = null;
+	public static var curStep:Int = 0;
+	public static var curBeat:Int = 0;
+	public static var curDecimalBeat:Float = 0;
+	public static var curSection:SwagSection = null;
+	public static function setupUpdates()
+	{
+		Lib.current.addEventListener(Event.ENTER_FRAME, function(_)
+		{
+			updateSongPosition();
+			Main.fnfSignals.update.dispatch(FlxG.elapsed);
+		});
+	}
 
 	public function new()
 	{
@@ -45,7 +56,7 @@ class Conductor
 
 	public static function recalculateTimings()
 	{
-		Conductor.safeFrames = FlxG.save.data.frames;
+		Conductor.safeFrames = Main.save.data.frames;
 		Conductor.safeZoneOffset = Math.floor((Conductor.safeFrames / 60) * 1000);
 		Conductor.timeScale = Conductor.safeZoneOffset / 166;
 	}
@@ -77,22 +88,6 @@ class Conductor
 		trace("new BPM map BUDDY " + bpmChangeMap);
 	}
 
-	public static function recalculateTimingStruct(SONG:SongData)
-	{
-		for (i in SONG.eventObjects)
-		{
-			/*TimingStruct.addTiming(beat,bpm,endBeat, Std.parseFloat(OFFSET));
-
-				if (changeEvents.length != 0)
-				{
-					var data = TimingStruct.AllTimings[currentIndex - 1];
-					data.endBeat = beat;
-					data.length = (data.endBeat - data.startBeat) / (data.bpm / 60);
-					TimingStruct.AllTimings[currentIndex].startTime = data.startTime + data.length;
-			}*/
-		}
-	}
-
 	public static function changeBPM(newBpm:Float, ?recalcLength = true)
 	{
 		bpm = newBpm;
@@ -101,8 +96,10 @@ class Conductor
 		stepCrochet = crochet / 4;
 	}
 
-	public static function updateSongPosition(elapsed:Float)
+	public static function updateSongPosition():Void
 	{
+		var elapsed = FlxG.elapsed;
+
 		if (songPosition < 0)
 			curDecimalBeat = 0;
 		else
@@ -121,7 +118,7 @@ class Conductor
 				var startInMS = (data.startTime * 1000);
 
 				curDecimalBeat = data.startBeat + ((((songPosition / 1000)) - data.startTime) * (data.bpm / 60));
-				MusicBeatInterface.curDecimalBeat = curDecimalBeat;
+				Main.fnfSignals.decimalBeatHit.dispatch(curDecimalBeat);
 				var ste:Int = Math.floor(data.startStep + ((songPosition) - startInMS) / step);
 				if (ste >= 0)
 				{
@@ -148,7 +145,7 @@ class Conductor
 			else
 			{
 				curDecimalBeat = (((songPosition / 1000))) * (bpm / 60);
-				MusicBeatInterface.curDecimalBeat = curDecimalBeat;
+				Main.fnfSignals.decimalBeatHit.dispatch(curDecimalBeat);
 				var nextStep:Int = Math.floor((songPosition) / stepCrochet);
 				if (nextStep >= 0)
 				{
@@ -174,6 +171,12 @@ class Conductor
 				crochet = ((60 / bpm) * 1000);
 			}
 		}
+
+		#if debug
+		FPSText.curStep = curStep;
+		FPSText.curBeat = curBeat;
+		FPSText.curDecimalBeat = curDecimalBeat;
+		#end
 	}
 
 	private static function updateSection():Void
@@ -181,7 +184,6 @@ class Conductor
 		curSection = TimingStruct.getSectionByTime(songPosition);
 		if (lastSection != curSection)
 		{
-			MusicBeatInterface.curSection = curSection;
 			sectionHit();
 		}
 	}
@@ -190,25 +192,23 @@ class Conductor
 	{
 		lastBeat = curBeat;
 		curBeat = Math.floor(curStep / 4);
-		MusicBeatInterface.curBeat = curBeat;
 	}
 
 	public static function stepHit():Void
 	{
-		MusicBeatInterface.stepHit();
-		MusicBeatInterface.curStep = curStep;
+		Main.fnfSignals.stepHit.dispatch(curStep);
 		if (curStep % 4 == 0)
 			beatHit();
 	}
 
 	public static function beatHit():Void
 	{
-		MusicBeatInterface.beatHit();
+		Main.fnfSignals.beatHit.dispatch(curBeat);
 	}
 
 	public static function sectionHit():Void
 	{
-		MusicBeatInterface.sectionHit();
+		Main.fnfSignals.sectionHit.dispatch(curSection);
 	}
 }
 

@@ -1,25 +1,22 @@
 package gameplayStuff;
 
-import flixel.util.FlxColor;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.graphics.frames.FlxAtlasFrames;
-import openfl.utils.Assets as OpenFlAssets;
+import flixel.graphics.frames.FlxFramesCollection;
 import flixel.tweens.FlxTween;
-import flixel.util.FlxSort;
-import states.PlayState;
+import flixel.util.FlxColor;
+import flxanimate.FlxAnimate;
+import openfl.utils.Assets as OpenFlAssets;
 
-using StringTools;
-using hx.strings.Strings;
-
-class Character extends FlxSprite
+class Character extends FNFSprite
 {
 	public static var DEFAULT_CHARACTER:String = 'bf';
-	public var animOffsets:Map<String, Array<Dynamic>>;
+
 	public var animInterrupt:Map<String, Bool>;
 	public var animNext:Map<String, String>;
 	public var animDanced:Map<String, Bool>;
 	public var debugMode:Bool = false;
+	public var stunned:Bool = false;
 
 	public var isPlayer:Bool = false;
 	public var curCharacter:String = 'bf';
@@ -45,7 +42,6 @@ class Character extends FlxSprite
 	public var interruptAnim:Bool = true;
 	public var colorTween:FlxTween;
 	public var characterIcon:String = 'face';
-	public var animationNotes:Array<Dynamic> = [];
 	public var specialAnim:Bool = false;
 	public var psychChar:Bool = false;
 
@@ -53,16 +49,16 @@ class Character extends FlxSprite
 
 	var wasAltIdle:Bool = false;
 
+	public var altIdle:Bool = false;
+
+	public var ghost:FlxSprite = null;
+	public var ghostTween:FlxTween = null;
+
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
 		super(x, y);
 
 		barColor = isPlayer ? 0xFF66FF33 : 0xFFFF0000;
-		#if (haxe >= "4.0.0")
-		animOffsets = new Map();
-		#else
-		animOffsets = new Map<String, Array<Dynamic>>();
-		#end
 		animInterrupt = new Map<String, Bool>();
 		animNext = new Map<String, String>();
 		animDanced = new Map<String, Bool>();
@@ -71,10 +67,18 @@ class Character extends FlxSprite
 
 		parseDataFile();
 
-		if (curCharacter == 'picospeaker') 
+		ghost = new FlxSprite(x, y);
+		ghost.frames = frames;
+		ghost.visible = false;
+		ghost.animation.copyFrom(animation);
+		ghost.blend = HARDLIGHT;
+		ghost.alpha = 0.8;
+		ghost.animation.finishCallback = function(name:String)
 		{
-			loadMappedAnims();
+			ghost.visible = false;
 		}
+
+		recalculateDanceIdle();
 
 		if (isPlayer && frames != null)
 		{
@@ -82,21 +86,35 @@ class Character extends FlxSprite
 		}
 
 		healthIcon = new HealthIcon(curCharacter, characterIcon, isPlayer);
+
+		dance();
 	}
 
-	function parseDataFile(){
+	override public function draw()
+	{
+		ghost.x = x;
+		ghost.y = y;
+		ghost.flipX = flipX;
+		ghost.flipY = flipY;
+		if (ghost.visible)
+			ghost.draw();
+		super.draw();
+	}
+
+	function parseDataFile()
+	{
 		Debug.logInfo('Generating character (${curCharacter}) from JSON data...');
 
 		// Load the data from JSON and cast it to a struct we can easily read.
 		var jsonData;
-		if (OpenFlAssets.exists(Paths.json('characters/${curCharacter}/${curCharacter}')))
+		if (OpenFlAssets.exists(Paths.json('characters/${curCharacter}/${curCharacter}', "gameplay")))
 		{
-			jsonData = Paths.loadJSON('characters/${curCharacter}/${curCharacter}');
+			jsonData = Paths.loadJSON('characters/${curCharacter}/${curCharacter}', "gameplay");
 		}
 		else
 		{
 			Debug.logError('There is no character with this name!');
-			jsonData = Paths.loadJSON('characters/dad/dad');
+			jsonData = Paths.loadJSON('characters/dad/dad', "gameplay");
 		}
 		if (jsonData == null)
 		{
@@ -104,21 +122,28 @@ class Character extends FlxSprite
 			return;
 		}
 
-		if (Reflect.field(jsonData, 'name') != null){
-			loadAltronixEngineCharacter(jsonData);}
-		else if (Reflect.field(jsonData, 'no_antialiasing') != null){
+		if (Reflect.field(jsonData, 'name') != null)
+		{
+			loadAltronixEngineCharacter(jsonData);
+		}
+		else if (Reflect.field(jsonData, 'no_antialiasing') != null)
+		{
 			psychChar = true;
 			Debug.logTrace('Looks like Psych engine character');
-			loadPsychEngineCharacter(jsonData);}		
+			loadPsychEngineCharacter(jsonData);
+		}
 	}
 
 	override function update(elapsed:Float)
 	{
-		if(!debugMode && animation.curAnim != null)
+		if (animateAtlas != null)
+			animateAtlas.update(elapsed);
+
+		if (!debugMode && getCurAnim() != null)
 		{
 			if (!isPlayer)
 			{
-				if (animation.curAnim.name.startsWith('sing'))
+				if (getCurAnimName().startsWith('sing'))
 					holdTimer += elapsed;
 
 				if (holdTimer >= Conductor.stepCrochet * holdLength * 0.001)
@@ -127,33 +152,30 @@ class Character extends FlxSprite
 						playAnim('danceLeft'); // overridden by dance correctly later
 					dance(false, wasAltIdle);
 					holdTimer = 0;
+
+					if (color != FlxColor.WHITE)
+						color = FlxColor.WHITE;
 				}
 			}
-		}
 
-		if (PlayState.SONG != null)
-		{
-			if (curCharacter == 'picospeaker') 
-				{
-					if(animationNotes.length > 0 && Conductor.songPosition > animationNotes[0][0])
-						{
-							var noteData:Int = 1;
-							if(animationNotes[0][1] > 2) noteData = 3;
-		
-							noteData += FlxG.random.int(0, 1);
-							playAnim('shoot' + noteData, true);
-							animationNotes.shift();
-						}
-					if(animation.curAnim.finished) playAnim(animation.curAnim.name, false, false, animation.curAnim.frames.length - 3);
-				}
+			if (getCurAnim().finished && specialAnim)
+			{
+				specialAnim = false;
+				dance(false, wasAltIdle);
+			}
 		}
 
 		if (!debugMode)
 		{
-			var nextAnim = animNext.get(animation.curAnim.name);
-			var forceDanced = animDanced.get(animation.curAnim.name);
+			var nextAnim = null;
+			var forceDanced = null;
+			if (getCurAnim() != null)
+			{
+				nextAnim = animNext.get(getCurAnimName());
+				forceDanced = animDanced.get(getCurAnimName());
+			}
 
-			if (nextAnim != null && animation.curAnim.finished)
+			if (nextAnim != null && getCurAnim().finished)
 			{
 				if (isDancing && forceDanced != null)
 					danced = forceDanced;
@@ -161,55 +183,29 @@ class Character extends FlxSprite
 			}
 		}
 
-		if (animation.curAnim != null)
-		{
-			if (animation.curAnim.finished && specialAnim)
-			{
-				specialAnim = false;
-				dance(false, wasAltIdle);
-			}
-		}
-
 		super.update(elapsed);
-	}
-
-	public function loadMappedAnims() {
-		var picoAnims = Song.picospeakerLoad(curCharacter, "stress").notes;
-		for (anim in picoAnims) {
-			for (note in anim.sectionNotes) {
-				animationNotes.push(note);
-			}
-		}
-		TankmenBG.animationNotes = animationNotes;
-		animationNotes.sort(sortAnims);
-	}
-
-	function sortAnims(Obj1:Array<Dynamic>, Obj2:Array<Dynamic>):Int
-	{
-		return FlxSort.byValues(FlxSort.ASCENDING, Obj1[0], Obj2[0]);
 	}
 
 	private var danced:Bool = false;
 
-	/**
-	 * FOR GF DANCING SHIT
-	 */
 	public function dance(forced:Bool = false, altAnim:Bool = false)
 	{
 		if (!debugMode)
 		{
-			var canInterrupt = animInterrupt.get(animation.curAnim.name);
-			
+			var canInterrupt = true;
+			if (getCurAnim() != null)
+				canInterrupt = animInterrupt.get(getCurAnimName());
+
 			if (altAnim != wasAltIdle)
 				wasAltIdle = altAnim;
 
 			if (canInterrupt)
 			{
-				if (animation.exists('danceRight') && animation.exists('danceLeft'))
+				if (animationExists('danceRight') && animationExists('danceLeft'))
 				{
 					danced = !danced;
 
-					if (altAnim && animation.getByName('danceRight-alt') != null && animation.getByName('danceLeft-alt') != null)
+					if (altAnim && animationExists('danceRight-alt') && animationExists('danceLeft-alt'))
 					{
 						if (danced)
 							playAnim('danceRight-alt');
@@ -226,7 +222,7 @@ class Character extends FlxSprite
 				}
 				else
 				{
-					if (altAnim && animation.getByName('idle-alt') != null)
+					if (altAnim && animationExists('idle-alt'))
 						playAnim('idle-alt', forced);
 					else
 						playAnim('idle', forced);
@@ -235,9 +231,9 @@ class Character extends FlxSprite
 		}
 	}
 
-	public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void
+	override public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0, autoEnd:Bool = false):Void
 	{
-		if (AnimName.endsWith('alt') && animation.getByName(AnimName) == null)
+		if (animateAtlas != null && animateAtlas.anim.getByName(AnimName) == null && AnimName.endsWith('alt'))
 		{
 			#if debug
 			FlxG.log.warn(['Such alt animation doesnt exist: ' + AnimName]);
@@ -245,23 +241,15 @@ class Character extends FlxSprite
 			AnimName = AnimName.split('-')[0];
 		}
 
-		if (animation.getByName(AnimName) == null)
+		if (animateAtlas == null && AnimName.endsWith('alt') && animation.getByName(AnimName) == null)
 		{
 			#if debug
-			FlxG.log.warn(['Such animation doesnt exist: ' + AnimName]);
+			FlxG.log.warn(['Such alt animation doesnt exist: ' + AnimName]);
 			#end
-			return;
+			AnimName = AnimName.split('-')[0];
 		}
 
-		animation.play(AnimName, Force, Reversed, Frame);
-
-		var daOffset = animOffsets.get(AnimName);
-		if (animOffsets.exists(AnimName))
-		{
-			offset.set(daOffset[0], daOffset[1]);
-		}
-		else
-			offset.set(0, 0);
+		super.playAnim(AnimName, Force, Reversed, Frame);
 
 		if (curCharacter == 'gf')
 		{
@@ -281,219 +269,84 @@ class Character extends FlxSprite
 		}
 	}
 
-	public function changeCharacter(name:String)
+	override public function beatHit(beat:Int)
 	{
-		curCharacter = name;
-		jsonScale = 1;
-		parseDataFile();
-	}
-
-	public function addOffset(name:String, x:Float = 0, y:Float = 0)
-	{
-		animOffsets[name] = [x, y];
-	}
-
-	public function quickAnimAdd(name:String, anim:String)
-	{
-		animation.addByPrefix(name, anim, 24, false);
-	}
-
-	public static var characterList:Array<String> = [];
-
-	public static var girlfriendList:Array<String> = [];
-
-	static var missingChars:Array<String> = [];
-
-	public static function initDefaultCharacters():Bool {
-		#if CHECK_FOR_DEFAULT_CHARACTERS
-		for (char in EngineConstants.defaultCharacters)
+		if (beat % danceEveryNumBeats == 0)
 		{
-			if (OpenFlAssets.exists(Paths.json('characters/${char}/${char}')))
-				characterList.push(char);
-			else
-				missingChars.push(char);
-		}
-
-		if (missingChars.length == 0)
-			return true;
-		else
-			return false;
-		#else
-			return true;
-		#end
-	}
-
-	public static function initCharacterList()
-	{
-		characterList = [];
-
-		girlfriendList = [];
-
-		var pathcheck = listCharacters();
-
-		if (initDefaultCharacters())
-		{
-			Debug.logInfo('Succesfully loaded all default characters, starting loading mod chars');
-			for (charId in pathcheck)
+			if (getCurAnim() != null)
 			{
-				if (characterList.contains(charId))
-					continue;
-				else{
-					characterList.push(charId);
-
-					var charData:CharacterData = Paths.loadJSON('characters/${charId}/${charId}');
-					if (charData == null)
-					{
-						Debug.logError('Character $charId failed to load.');
-						characterList.remove(charId);
-						continue;
-					}
-				}
-			}
-		}
-		else
-		{
-			var missChars:String = '';
-			if (missingChars.length > 1)
-			{
-				for (char in missingChars)
-				{
-					if (missingChars.indexOf(char) != missingChars.length - 1)
-						missChars += char + ', ';
-					else
-						missChars += char;
-				}
+				if (!getCurAnimName().contains('sing') || getCurAnim().finished)
+					dance(false, altIdle);
 			}
 			else
-				missChars = missingChars[0];
-
-			Debug.logWarn('Missing default characters: ' + missChars);
-
-			for (charId in pathcheck)
-			{
-				if (characterList.contains(charId))
-					continue;
-				else{
-					characterList.push(charId);
-
-					var charData:CharacterData = Paths.loadJSON('characters/${charId}/${charId}');
-					if (charData == null)
-					{
-						Debug.logError('Character $charId failed to load.');
-						characterList.remove(charId);
-						continue;
-					}
-				}
-			}
-		}	
+				dance(false, altIdle);
+		}
 	}
 
-	public static function getCharacterIcon(char:String):String
+	public var danceEveryNumBeats:Int = 2;
+	public var danceIdle:Bool = false;
+
+	public function recalculateDanceIdle()
 	{
-		var jsonData;
-		if (OpenFlAssets.exists(Paths.json('characters/${char}/${char}')))
-		{
-			jsonData = Paths.loadJSON('characters/${char}/${char}');
-		}
-		else
-		{
-			Debug.logError('There is no character with this name!');
-			return 'face';
-		}
-		if (jsonData == null)
-		{
-			Debug.logError('Failed to parse JSON data for character ${char}');
-			return 'face';
-		}
+		danceIdle = (animationExists('danceLeft-alt') && animationExists('danceRight-alt'));
 
-		if (Reflect.field(jsonData, 'name') != null)
-		{
-			var data:CharacterData = cast jsonData;
-			return data.characterIcon;
-		}
-		else if (Reflect.field(jsonData, 'no_antialiasing') != null)
-		{
-			var data:PsychCharacterFile = cast jsonData;
-			return data.healthicon;
-		}
-		else
-			return 'face';
-	}
-
-	public static function getCharacterColor(char:String):Array<Int>
-	{
-		var jsonData;
-		if (OpenFlAssets.exists(Paths.json('characters/${char}/${char}')))
-		{
-			jsonData = Paths.loadJSON('characters/${char}/${char}');
-		}
-		else
-		{
-			Debug.logError('There is no character with this name!');
-			return [0, 0, 0];
-		}
-		if (jsonData == null)
-		{
-			Debug.logError('Failed to parse JSON data for character ${char}');
-			return [0, 0, 0];
-		}
-
-		if (Reflect.field(jsonData, 'name') != null)
-		{
-			var data:CharacterData = cast jsonData;
-			return data.barColorJson;
-		}
-		else if (Reflect.field(jsonData, 'no_antialiasing') != null)
-		{
-			var data:PsychCharacterFile = cast jsonData;
-			return data.healthbar_colors;
-		}
-		else
-			return [0, 0, 0];
+		danceEveryNumBeats = (danceIdle ? 1 : 2);
 	}
 
 	function loadAltronixEngineCharacter(jsonData:Dynamic)
 	{
 		var data:CharacterData = cast jsonData;
-		var tex:FlxAtlasFrames;
+		var tex:FlxFramesCollection = Paths.getCharacterFrames(curCharacter, data.asset.replaceAll('characters/', ''));
 
-		frames = Paths.getCharacterFrames(curCharacter, data.asset.replaceAll('characters/', ''));
+		if (tex != null)
+			frames = tex;
+		else
+		{
+			Debug.logInfo('Looks like character uses texture atlas');
+			animateAtlas = new FlxAnimate(x, y, Paths.getPath('characters/$curCharacter/${data.asset.replaceAll('characters/', '')}', BINARY, 'gameplay'));
+		}
 
-		if (frames != null)
-			for (anim in data.animations)
+		// if (frames != null)
+		for (anim in data.animations)
+		{
+			var frameRate = anim.frameRate;
+			var looped = anim.looped == null ? false : anim.looped;
+			var flipX = anim.flipX == null ? false : anim.flipX;
+			var flipY = anim.flipY == null ? false : anim.flipY;
+
+			if (anim.frameIndices.length > 0)
 			{
-				var frameRate = anim.frameRate;
-				var looped = anim.looped == null ? false : anim.looped;
-				var flipX = anim.flipX == null ? false : anim.flipX;
-				var flipY = anim.flipY == null ? false : anim.flipY;
-
-				if (anim.frameIndices.length > 0)
-				{
-					animation.addByIndices(anim.name, anim.prefix, anim.frameIndices, "", frameRate, looped, flipX, flipY);
-				}
+				if (animateAtlas != null)
+					animateAtlas.anim.addBySymbolIndices(anim.name, anim.prefix, anim.frameIndices, frameRate, looped);
 				else
-				{
+					animation.addByIndices(anim.name, anim.prefix, anim.frameIndices, "", frameRate, looped, flipX, flipY);
+			}
+			else
+			{
+				if (animateAtlas != null)
+					animateAtlas.anim.addBySymbol(anim.name, anim.prefix, frameRate, looped);
+				else
 					animation.addByPrefix(anim.name, anim.prefix, frameRate, looped, flipX, flipY);
-				}
-
-				animOffsets[anim.name] = anim.offsets == null ? [0, 0] : anim.offsets;
-				animInterrupt[anim.name] = anim.interrupt == null ? true : anim.interrupt;
-
-				if (data.isDancing && anim.isDanced != null)
-					animDanced[anim.name] = anim.isDanced;
-
-				if (anim.nextAnim != null)
-					animNext[anim.name] = anim.nextAnim;
 			}
 
-		this.replacesGF = data.replacesGF == null ? false : data.replacesGF;
-		this.hasTrail = data.hasTrail == null ? false : data.hasTrail;
-		this.isDancing = data.isDancing == null ? false : data.isDancing;
-		this.positionArray = data.charPos == null ? [0, 0] : data.charPos;
-		this.camPos = data.camPos == null ? [0, 0] : data.camPos;
-		this.camFollow = data.camFollow == null ? [0, 0] : data.camFollow;
-		this.holdLength = data.holdLength == null ? 4 : data.holdLength;
-		this.characterIcon = data.characterIcon == null ? 'face' : data.characterIcon;
+			animOffsets[anim.name] = anim.offsets == null ? [0, 0] : anim.offsets;
+			animInterrupt[anim.name] = anim.interrupt == null ? true : anim.interrupt;
+
+			if (data.isDancing && anim.isDanced != null)
+				animDanced[anim.name] = anim.isDanced;
+
+			if (anim.nextAnim != null)
+				animNext[anim.name] = anim.nextAnim;
+		}
+
+		replacesGF = data.replacesGF == null ? false : data.replacesGF;
+		hasTrail = data.hasTrail == null ? false : data.hasTrail;
+		isDancing = data.isDancing == null ? false : data.isDancing;
+		positionArray = data.charPos == null ? [0, 0] : data.charPos;
+		camPos = data.camPos == null ? [0, 0] : data.camPos;
+		camFollow = data.camFollow == null ? [0, 0] : data.camFollow;
+		holdLength = data.holdLength == null ? 4 : data.holdLength;
+		characterIcon = data.characterIcon == null ? 'face' : data.characterIcon;
 
 		flipX = data.flipX == null ? false : data.flipX;
 
@@ -519,10 +372,18 @@ class Character extends FlxSprite
 		playAnim(data.startingAnim);
 	}
 
-	function loadPsychEngineCharacter(rawJson:Dynamic) {
+	function loadPsychEngineCharacter(rawJson:Dynamic)
+	{
 		var json:PsychCharacterFile = cast rawJson;
-		
-		frames = Paths.getCharacterFrames(curCharacter, json.image.replaceAll('characters/', ''));
+		var tex:FlxFramesCollection = Paths.getCharacterFrames(curCharacter, json.image.replaceAll('characters/', ''));
+
+		if (tex != null)
+			frames = tex;
+		else
+		{
+			Debug.logInfo('Looks like character uses texture atlas');
+			animateAtlas = new FlxAnimate(x, y, Paths.getPath('characters/$curCharacter/${json.image.replaceAll('characters/', '')}', BINARY, 'gameplay'));
+		}
 
 		if (json.scale != 1)
 		{
@@ -531,14 +392,14 @@ class Character extends FlxSprite
 			updateHitbox();
 		}
 
-		this.positionArray = json.position == null ? [0, 0] : json.position;
-		this.camPos = json.camera_position == null ? [0, 0] : json.camera_position;
-		this.camFollow = json.camera_position == null ? [0, 0] : json.camera_position;
-		this.replacesGF = false;
-		this.hasTrail = false;
-		this.isDancing = false;
-		this.holdLength = json.sing_duration == null ? 4 : json.sing_duration;
-		this.characterIcon = json.healthicon == null ? 'face' : json.healthicon;
+		positionArray = json.position == null ? [0, 0] : json.position;
+		camPos = json.camera_position == null ? [0, 0] : json.camera_position;
+		camFollow = json.camera_position == null ? [0, 0] : json.camera_position;
+		replacesGF = false;
+		hasTrail = false;
+		isDancing = false;
+		holdLength = json.sing_duration == null ? 4 : json.sing_duration;
+		characterIcon = json.healthicon == null ? 'face' : json.healthicon;
 
 		flipX = json.flip_x == null ? false : !!json.flip_x;
 
@@ -550,16 +411,12 @@ class Character extends FlxSprite
 		setGraphicSize(Std.int(width * jsonScale));
 		updateHitbox();
 
-		if (json.no_antialiasing)
-		{
-			antialiasing = false;
-		}
+		charAntialiasing = !json.no_antialiasing;
+
+		antialiasing = !json.no_antialiasing;
 
 		if (json.healthbar_colors != null && json.healthbar_colors.length > 2)
 			healthColorArray = json.healthbar_colors;
-
-		if (!FlxG.save.data.antialiasing)
-			antialiasing = false;
 
 		if (json.animations != null && json.animations.length > 0)
 		{
@@ -572,16 +429,21 @@ class Character extends FlxSprite
 				var animIndices:Array<Int> = anim.indices;
 				if (animIndices != null && animIndices.length > 0)
 				{
-					animation.addByIndices(animAnim, animName, animIndices, "", animFps, animLoop);
+					if (animateAtlas != null)
+						animateAtlas.anim.addBySymbolIndices(animAnim, animName, animIndices, animFps, animLoop);
+					else
+						animation.addByIndices(animAnim, animName, animIndices, "", animFps, animLoop);
 				}
 				else
 				{
-					animation.addByPrefix(animAnim, animName, animFps, animLoop);
+					if (animateAtlas != null)
+						animateAtlas.anim.addBySymbol(animAnim, animName, animFps, animLoop);
+					else
+						animation.addByPrefix(animAnim, animName, animFps, animLoop);
 				}
 
 				animOffsets[animAnim] = anim.offsets == null ? [0, 0] : anim.offsets;
 				animInterrupt[animAnim] = true;
-
 				animNext[animAnim] = 'idle';
 			}
 		}
@@ -594,24 +456,6 @@ class Character extends FlxSprite
 
 		playAnim('idle');
 	}
-
-	static function listCharacters()
-	{
-		var dataAssets = OpenFlAssets.list(TEXT);
-
-		var queryPath = 'assets/characters/';
-
-		var results:Array<String> = [];
-
-		for (data in dataAssets)
-		{
-			if (data.contains(queryPath) && data.endsWith('.json'))
-			{
-				results.push(data.replaceAll('.json', '').replaceAll(queryPath, '').removeBefore('/').replaceAll('/', ''));
-			}
-		}
-		return results;
-	}
 }
 
 typedef CharacterData =
@@ -621,32 +465,20 @@ typedef CharacterData =
 	var startingAnim:String;
 
 	var ?isGF:Bool;
-
 	var ?characterIcon:String;
-
 	var ?charPos:Array<Float>;
 	var ?camPos:Array<Float>;
 	var ?camFollow:Array<Float>;
 	var ?holdLength:Float;
-
 	var barColorJson:Array<Int>;
-
 	var animations:Array<AnimationData>;
-
 	var scale:Int;
-
 	var ?flipX:Bool;
-
 	var antialiasing:Bool;
-
 	var ?usePackerAtlas:Bool;
-
 	var ?useSpriteMap:Bool;
-
 	var ?isDancing:Bool;
-
 	var ?hasTrail:Bool;
-
 	var ?replacesGF:Bool;
 }
 
@@ -657,22 +489,16 @@ typedef AnimationData =
 	var offsets:Array<Int>;
 
 	var ?looped:Bool;
-
 	var ?flipX:Bool;
 	var ?flipY:Bool;
-
 	var frameRate:Int;
-
 	var frameIndices:Array<Int>;
-
 	var ?interrupt:Bool;
-
 	var ?nextAnim:String;
-
 	var ?isDanced:Bool;
 }
 
-//Well-well-well, psych engine characters...
+// Well-well-well, psych engine characters...
 typedef PsychCharacterFile =
 {
 	var animations:Array<PsychAnimArray>;

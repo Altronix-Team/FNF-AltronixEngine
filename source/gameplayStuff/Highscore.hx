@@ -1,8 +1,7 @@
 package gameplayStuff;
 
 import flixel.FlxG;
-
-using StringTools;
+import states.playState.PlayState;
 
 class Highscore
 {
@@ -20,7 +19,7 @@ class Highscore
 	{
 		var daSong:String = formatSong(song, diff);
 
-		if (!FlxG.save.data.botplay)
+		if (!PlayState.instance.addedBotplayOnce)
 		{
 			if (songScores.exists(daSong))
 			{
@@ -39,7 +38,7 @@ class Highscore
 		var daSong:String = formatSong(song, diff);
 		var finalCombo:String = combo.split(')')[0].replace('(', '');
 
-		if (!FlxG.save.data.botplay)
+		if (!PlayState.instance.addedBotplayOnce)
 		{
 			if (songCombos.exists(daSong))
 			{
@@ -53,7 +52,7 @@ class Highscore
 
 	public static function saveWeekScore(week:Int = 1, score:Int = 0, ?diff:Int = 0):Void
 	{
-		if (!FlxG.save.data.botplay)
+		if (!PlayState.instance.addedBotplayOnce)
 		{
 			var daWeek:String = formatSong('week' + week, diff);
 
@@ -70,12 +69,12 @@ class Highscore
 	}
 
 	static function setWeekScore(week:String, score:Int):Void
-		{
-			// Reminder that I don't need to format this song, it should come formatted!
-			weekScores.set(week, score);
-			FlxG.save.data.weekScores = weekScores;
-			FlxG.save.flush();
-		}
+	{
+		// Reminder that I don't need to format this song, it should come formatted!
+		weekScores.set(week, score);
+		Main.save.data.weekScores = weekScores;
+		Main.save.flush();
+	}
 
 	/**
 	 * YOU SHOULD FORMAT SONG WITH formatSong() BEFORE TOSSING IN SONG VARIABLE
@@ -84,16 +83,16 @@ class Highscore
 	{
 		// Reminder that I don't need to format this song, it should come formatted!
 		songScores.set(song, score);
-		FlxG.save.data.songScores = songScores;
-		FlxG.save.flush();
+		Main.save.data.songScores = songScores;
+		Main.save.flush();
 	}
 
 	static function setCombo(song:String, combo:String):Void
 	{
 		// Reminder that I don't need to format this song, it should come formatted!
 		songCombos.set(song, combo);
-		FlxG.save.data.songCombos = songCombos;
-		FlxG.save.flush();
+		Main.save.data.songCombos = songCombos;
+		Main.save.flush();
 	}
 
 	public static function formatSong(song:String, diff:Int):String
@@ -115,21 +114,21 @@ class Highscore
 	}
 
 	public static function floorDecimal(value:Float, decimals:Int):Float
+	{
+		if (decimals < 1)
 		{
-			if(decimals < 1)
-			{
-				return Math.floor(value);
-			}
-	
-			var tempMult:Float = 1;
-			for (i in 0...decimals)
-			{
-				tempMult *= 10;
-			}
-			var newValue:Float = Math.floor(value * tempMult);
-			return newValue / tempMult;
+			return Math.floor(value);
 		}
-		
+
+		var tempMult:Float = 1;
+		for (i in 0...decimals)
+		{
+			tempMult *= 10;
+		}
+		var newValue:Float = Math.floor(value * tempMult);
+		return newValue / tempMult;
+	}
+
 	public static function formatSongDiff(song:String, diff:Int):String
 	{
 		var songDiffEnd:String = song;
@@ -186,19 +185,19 @@ class Highscore
 		var daWeek:String = formatSong(week, diff);
 		if (!weekScores.exists(daWeek))
 			setWeekScore(daWeek, 0);
-		
+
 		return weekScores.get(daWeek);
 	}
 
 	public static function load():Void
 	{
-		if (FlxG.save.data.songScores != null)
+		if (Main.save.data.songScores != null)
 		{
-			songScores = FlxG.save.data.songScores;
+			songScores = Main.save.data.songScores;
 		}
-		if (FlxG.save.data.songCombos != null)
+		if (Main.save.data.songCombos != null)
 		{
-			songCombos = FlxG.save.data.songCombos;
+			songCombos = Main.save.data.songCombos;
 		}
 	}
 }

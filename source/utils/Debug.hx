@@ -12,8 +12,6 @@ import haxe.PosInfos;
 import openfl.system.Capabilities;
 import openfl.events.UncaughtErrorEvent;
 
-using hx.strings.Strings;
-
 /**
  * Hey you, developer!
  * This class contains lots of utility functions for logging and debugging.
@@ -201,8 +199,8 @@ class Debug
 
 		// Start the log file writer.
 		// We have to set it to TRACE for now.
-		//if (Main.save.data.logWriter) //Now we can disable it by option, because of crash handler
-			logFileWriter = new DebugLogWriter("TRACE");
+		// if (Main.save.data.logWriter)
+		logFileWriter = new DebugLogWriter("TRACE");
 
 		logInfo("Debug logging initialized. Hello, developer.");
 
@@ -211,6 +209,7 @@ class Debug
 		#else
 		logInfo("This is a RELEASE build.");
 		#end
+		logInfo('Haxe version: ${Main.haxeVersion}');
 		logInfo('HaxeFlixel version: ${Std.string(FlxG.VERSION)}');
 		logInfo('AltronixEngine version: ${EngineConstants.engineVer}');
 		logInfo('Friday Night Funkin\' version: ${states.MainMenuState.gameVer}');
@@ -220,35 +219,6 @@ class Debug
 		logInfo('  Manufacturer: ${Capabilities.manufacturer}');
 		logInfo('  Language: ${Capabilities.language}');
 		logInfo('  Screen resolution: ${Capabilities.screenResolutionX + "x" + Capabilities.screenResolutionY}');
-
-		openfl.Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtError);
-	}
-
-	static function onUncaughtError(error:UncaughtErrorEvent)
-	{
-		logError('FATAL ERROR: An uncaught error was thrown by OpenFL.');
-
-		var errorCallStack:Array<StackItem> = CallStack.exceptionStack(true);
-
-		for (line in errorCallStack)
-		{
-			switch (line)
-			{
-				case CFunction:
-					logError('  function:');
-				case Module(m):
-					logError('  module:${m}');
-				case FilePos(s, file, line, column):
-					logError('  (${file}#${line},${column})');
-				case Method(className, method):
-					logError('  method:(${className}/${method}');
-				case LocalFunction(v):
-					logError('  localFunction:${v}');
-			}
-		}
-
-		logError('ADDITIONAL INFO:');
-		logError('Type of instigator: ${CoolUtil.getTypeName(error.error)}');
 	}
 
 	/**
@@ -263,17 +233,17 @@ class Debug
 		defineConsoleCommands();
 
 		// Now we can remember the log level.
-		if (FlxG.save.data.debugLogLevel == null)
-			FlxG.save.data.debugLogLevel = "TRACE";
+		if (Main.save.data.debugLogLevel == null)
+			Main.save.data.debugLogLevel = "TRACE";
 
-		logFileWriter.setLogLevel(FlxG.save.data.debugLogLevel);
+		logFileWriter.setLogLevel(Main.save.data.debugLogLevel);
 	}
 
 	static function writeToFlxGLog(data:Array<Dynamic>, logStyle:LogStyle)
 	{
 		if (FlxG != null && FlxG.game != null && FlxG.log != null)
 		{
-			FlxG.log.advanced(data, logStyle);
+			// FlxG.log.advanced(data, logStyle); //A lot of errors, lol
 		}
 	}
 
@@ -473,7 +443,7 @@ class DebugLogWriter
 			return;
 
 		logLevel = levelIndex;
-		FlxG.save.data.debugLogLevel = logLevel;
+		Main.save.data.debugLogLevel = logLevel;
 	}
 
 	/**

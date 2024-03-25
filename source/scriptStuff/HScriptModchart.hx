@@ -1,162 +1,124 @@
 package scriptStuff;
 
-import flixel.FlxSprite;
-import gameplayStuff.PlayStateChangeables;
-import gameplayStuff.DialogueBoxPsych;
-import gameplayStuff.Boyfriend;
-import gameplayStuff.Character;
+import utils.Paths;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
+import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
-import Paths;
-import scriptStuff.HScriptHandler;
-import states.PlayState;
+import gameplayStuff.BGSprite;
+import gameplayStuff.BackgroundDancer;
+import gameplayStuff.BackgroundGirls;
+import gameplayStuff.Boyfriend;
+import gameplayStuff.Character;
+import gameplayStuff.CutsceneHandler;
+import gameplayStuff.DialogueBoxPsych;
+import gameplayStuff.PlayStateChangeables;
+import gameplayStuff.TankmenBG;
 import openfl.utils.Assets;
-import scriptStuff.FunkinLua;
+import scriptStuff.HScriptHandler;
+import states.MusicBeatState;
+import states.playState.PlayState;
+import states.playState.GameData as Data;
 
-@:access(states.PlayState)
 class HScriptModchart extends FlxTypedGroup<FlxBasic>
 {
-	public var scriptHelper:HScriptHandler;
-	var playState:PlayState;
-	
-	var cachedChars:Map<String, Character> = [];
-	var cachedBFs:Map<String, Boyfriend> = [];
+	public var scriptHandler:HScriptHandler;
+
+	var curState:PlayState;
 
 	public function new(path:String, state:PlayState)
 	{
 		super();
-		
-		this.playState = state;
 
-		if (scriptHelper == null)
-			scriptHelper = new HScriptHandler();
+		curState = state;
 
-		if (!scriptHelper.expose.exists("PlayState"))
-			scriptHelper.expose.set("PlayState", playState);
-		
-		if (playState.hscriptStage != null){
-			if (!scriptHelper.expose.exists("stage"))
-				scriptHelper.expose.set("stage", playState.hscriptStage);}
-		
-		if (!scriptHelper.expose.exists("gf") && playState.gf != null)
-			scriptHelper.expose.set("gf", playState.gf);
-		if (!scriptHelper.expose.exists("dad") && playState.dad != null)
-			scriptHelper.expose.set("dad", playState.dad);
-		if (!scriptHelper.expose.exists("boyfriend") && playState.boyfriend != null)
-			scriptHelper.expose.set("boyfriend", playState.boyfriend);
+		scriptHandler = new HScriptHandler(path);
 
-		if (!scriptHelper.expose.exists("gfGroup") && playState.gfGroup != null)
-			scriptHelper.expose.set("gfGroup", playState.gfGroup);
-		if (!scriptHelper.expose.exists("dadGroup") && playState.dadGroup != null)
-			scriptHelper.expose.set("dadGroup", playState.dadGroup);
-		if (!scriptHelper.expose.exists("boyfriendGroup") && playState.boyfriendGroup != null)
-			scriptHelper.expose.set("boyfriendGroup", playState.boyfriendGroup);
+		if (!scriptHandler.exists("PlayState"))
+			scriptHandler.set("PlayState", curState);
 
-		scriptHelper.expose.set("curBeat", 0);
-		scriptHelper.expose.set("curStep", 0);
-		scriptHelper.expose.set("curSectionNumber", 0);
-
-		scriptHelper.expose.set("setOnScripts", ScriptHelper.setOnScripts);
-		scriptHelper.expose.set("callOnScripts", ScriptHelper.callOnScripts);
-
-		scriptHelper.expose.set("camGame", playState.camGame);
-		scriptHelper.expose.set("camHUD", playState.camHUD);
-		scriptHelper.expose.set("cacheCharacter", cacheCharacter);
-		scriptHelper.expose.set("changeCharacter", changeCharacter);
-		scriptHelper.expose.set("PlayStateChangeables", PlayStateChangeables);
-
-		scriptHelper.expose.set("setObjectCam", setObjectCam);
-
-		scriptHelper.expose.set("startDialogue", startDialogue);
-
-		scriptHelper.expose.set('add', add);
-		scriptHelper.expose.set('remove', remove);
-
-		scriptHelper.loadScript(path);
-
-		scriptHelper.call('onCreate', []);
-	}
-
-	override public function update(elapsed:Float) {
-		super.update(elapsed);
-		scriptHelper.call('onUpdate', [elapsed]);
-	}
-
-	override public function add(Object:FlxBasic):FlxBasic
-	{
-		if (!FlxG.save.data.antialiasing && Std.isOfType(Object, FlxSprite))
-			cast(Object, FlxSprite).antialiasing = false;
-		return super.add(Object);
-	}
-
-	public function changeCharacter(tag:String = 'bf', charName:String = 'bf')
-	{
-		if (tag == 'bf')
+		if (curState.hscriptStage != null)
 		{
-			if (cachedBFs.get(charName) != null)
-			{
-				PlayState.instance.changeCharacterToCached(tag, cachedBFs.get(charName));
-			}
-			else
-			{
-				Debug.logError('This character not cached');
-				return;
-			}
+			if (!scriptHandler.exists("stage"))
+				scriptHandler.set("stage", curState.hscriptStage);
 		}
-		else
-		{
-			if (cachedChars.get(charName) != null)
-			{
-				PlayState.instance.changeCharacterToCached(tag, cachedChars.get(charName));
-			}
-			else
-			{
-				Debug.logError('This character not cached');
-				return;
-			}
-		}	
+
+		if (!scriptHandler.exists("gf") && curState.gf != null)
+			scriptHandler.set("gf", curState.gf);
+		if (!scriptHandler.exists("dad") && curState.dad != null)
+			scriptHandler.set("dad", curState.dad);
+		if (!scriptHandler.exists("boyfriend") && curState.boyfriend != null)
+			scriptHandler.set("boyfriend", curState.boyfriend);
+
+		if (!scriptHandler.exists("gfGroup") && curState.gfGroup != null)
+			scriptHandler.set("gfGroup", curState.gfGroup);
+		if (!scriptHandler.exists("dadGroup") && curState.dadGroup != null)
+			scriptHandler.set("dadGroup", curState.dadGroup);
+		if (!scriptHandler.exists("boyfriendGroup") && curState.boyfriendGroup != null)
+			scriptHandler.set("boyfriendGroup", curState.boyfriendGroup);
+
+		scriptHandler.set("curBeat", 0);
+		scriptHandler.set("curStep", 0);
+		scriptHandler.set("curSectionNumber", 0);
+
+		scriptHandler.set("songId", Data.SONG.songId);
+
+		scriptHandler.set("setOnHscript", ScriptHelper.setOnHscript);
+		scriptHandler.set("callOnHscript", ScriptHelper.callOnHscript);
+
+		scriptHandler.set("camGame", curState.camGame);
+		scriptHandler.set("camHUD", curState.camHUD);
+		scriptHandler.set("PlayStateChangeables", PlayStateChangeables);
+		scriptHandler.set('CutsceneHandler', CutsceneHandler);
+		scriptHandler.set('BGSprite', BGSprite);
+		scriptHandler.set('BackgroundGirls', BackgroundGirls);
+		scriptHandler.set('BackgroundDancer', BackgroundDancer);
+		scriptHandler.set('TankmenBG', TankmenBG);
+
+		scriptHandler.set("setObjectCam", setObjectCam);
+
+		scriptHandler.set("startDialogue", startDialogue);
+
+		scriptHandler.set('isStoryMode', Data.isStoryMode);
+
+		scriptHandler.set('add', add);
+		scriptHandler.set('remove', remove);
+
+		scriptHandler.set('destroyScript', destroyScript);
+
+		scriptHandler.call('onCreate', []);
+
+		Debug.logInfo('Successfully loaded new hscript file: ' + path.removeBefore('/'));
 	}
 
-	public function cacheCharacter(x:Float = 0, y:Float = 0, charName:String = 'bf', charType:String = 'bf')
+	private function destroyScript()
 	{
-		if (charType == 'bf')
-		{
-			var newChar:Boyfriend = new Boyfriend(x, y, charName);
-			cachedBFs.set(charName, newChar);
-
-			if (cachedBFs.get(charName) == null)
-			{
-				Debug.logError('Error with character caching $charName');
-				cachedBFs.remove(charName);
-				return;
-			}
-		}
-		else
-		{
-			var newChar:Character = new Character(x, y, charName);
-			cachedChars.set(charName, newChar);
-
-			if (cachedChars.get(charName) == null)
-			{
-				Debug.logError('Error with character caching $charName');
-				cachedChars.remove(charName);
-				return;
-			}
-		}	
+		if (ScriptHelper.hscriptFiles.contains(this))
+			ScriptHelper.hscriptFiles.remove(this);
 	}
 
-	public function startLuaScript(scriptName:String) //In Psych Engine you can start hscript from lua, but in Altronix we have another rules XD
+	public function setObjectCam(object:FlxBasic, camera:String)
 	{
-		if (Assets.exists('assets/scripts/$scriptName.lua'))
+		if (object != null)
 		{
-			ScriptHelper.luaArray.push(new FunkinLua(Assets.getPath('assets/scripts/$scriptName.lua')));
+			object.cameras = [getCameraFromString(camera)];
 		}
 	}
 
+	public function getCameraFromString(camera:String):FlxCamera
+	{
+		switch (camera.toLowerCase())
+		{
+			case 'camhud' | 'hud':
+				return PlayState.instance.camHUD;
+		}
+		return PlayState.instance.camGame;
+	}
+
+	// TODO Redo to work with DialogueBox.hx
 	public function startDialogue(dialogueFile:String, music:String = null)
 	{
-		var path:String = Paths.formatToDialoguePath(PlayState.SONG.songId + '/' + dialogueFile);
+		var path:String = Paths.formatToDialoguePath(Data.SONG.songId + '/' + dialogueFile);
 
 		if (path != null)
 		{
@@ -179,30 +141,15 @@ class HScriptModchart extends FlxTypedGroup<FlxBasic>
 		}
 	}
 
-	public function getCameraFromString(camera:String):FlxCamera{
-		switch (camera.toLowerCase())
-		{
-			case 'camhud' | 'hud':
-				return PlayState.instance.camHUD;
-			case 'camsustains' | 'sustains':
-				return PlayState.instance.camSustains;
-			case 'camnotes' | 'notes':
-				return PlayState.instance.camNotes;
-		}
-		return PlayState.instance.camGame;
-	}
-
-	public function setObjectCam(object:FlxBasic, camera:String)
+	override public function add(Object:FlxBasic):FlxBasic
 	{
-		if (object != null)
+		try
 		{
-			object.cameras = [getCameraFromString(camera)];
+			if (!Main.save.data.antialiasing && Reflect.field(Object, 'antialiasing') != null)
+				Reflect.setField(Object, 'antialiasing', false);
 		}
+		catch (e)
+			Debug.logError(e.details());
+		return super.add(Object);
 	}
-
-	public function get(field:String):Dynamic
-		return scriptHelper.get(field);
-
-	public function set(field:String, value:Dynamic)
-		scriptHelper.set(field, value);
 }

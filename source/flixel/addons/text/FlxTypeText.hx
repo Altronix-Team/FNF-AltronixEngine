@@ -1,13 +1,13 @@
 package flixel.addons.text;
 
+import flash.media.Sound;
 import flixel.FlxG;
 import flixel.input.keyboard.FlxKey;
 import flixel.math.FlxMath;
+import flixel.math.FlxRandom;
+import flixel.sound.FlxSound;
 import flixel.system.FlxAssets;
 import flixel.text.FlxText;
-import flixel.system.FlxSound;
-import flixel.math.FlxRandom;
-import flash.media.Sound;
 
 #if !flash
 @:sound("assets/sounds/type.ogg")
@@ -100,7 +100,7 @@ class FlxTypeText extends FlxText
 	/**
 	 * This function is called when the message typing has skipped.
 	 */
-    public var skipCallback:Void->Void;
+	public var skipCallback:Void->Void;
 
 	/**
 	 * This function is called when the message is done typing.
@@ -468,15 +468,15 @@ class FlxTypeText extends FlxText
 
 				if (sounds != null && !useDefaultSound)
 				{
-                    if (!finishSounds)
-                    {
-                        for (sound in sounds)
-                        {
-                            sound.stop();
-                        }
-                    }
+					if (!finishSounds)
+					{
+						for (sound in sounds)
+						{
+							sound.stop();
+						}
+					}
 
-                    FlxG.random.getObject(sounds).play(!finishSounds);
+					FlxG.random.getObject(sounds).play(!finishSounds);
 				}
 				else if (useDefaultSound)
 				{
@@ -545,7 +545,7 @@ class FlxTypeText extends FlxText
 		}
 
 		if (skipCallback != null)
-            skipCallback();
+			skipCallback();
 	}
 
 	function loadDefaultSound():Void

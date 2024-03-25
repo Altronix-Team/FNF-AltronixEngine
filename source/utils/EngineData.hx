@@ -1,5 +1,7 @@
 package utils;
 
+import gameplayStuff.Ratings;
+import gameplayStuff.PlayStateChangeables;
 import flixel.input.gamepad.FlxGamepad;
 import openfl.Lib;
 import flixel.FlxG;
@@ -8,14 +10,6 @@ import gameplayStuff.Conductor;
 
 class EngineData
 {
-	public var Antialiasing:Bool = false;
-
-	public var Distractions:Bool = false;
-
-	public var Flashing:Bool = false;
-
-	public var Botplay:Bool = false;
-
 	public static function initSave()
 	{
 		if (Main.save.data.weekUnlocked == null)
@@ -35,10 +29,10 @@ class EngineData
 
 		if (Main.save.data.missSounds == null)
 			Main.save.data.missSounds = true;
-		
+
 		if (Main.save.data.toggleLeaderboard == null)
 			Main.save.data.toggleLeaderboard = true;
-		
+
 		if (Main.save.data.dfjk == null)
 			Main.save.data.dfjk = false;
 
@@ -73,9 +67,6 @@ class EngineData
 		if (Main.save.data.scrollSpeed == null)
 			Main.save.data.scrollSpeed = 1;
 
-		if (Main.save.data.npsDisplay == null)
-			Main.save.data.npsDisplay = false;
-
 		if (Main.save.data.frames == null)
 			Main.save.data.frames = 10;
 
@@ -108,7 +99,7 @@ class EngineData
 
 		if (Main.save.data.botplay == null)
 			Main.save.data.botplay = false;
-		
+
 		if (Main.save.data.savedAchievements == null)
 			Main.save.data.savedAchievements = [];
 
@@ -171,9 +162,6 @@ class EngineData
 		if (Main.save.data.notesplashes == null)
 			Main.save.data.notesplashes = true;
 
-		if (Main.save.data.enablePsychInterface == null)
-			Main.save.data.enablePsychInterface = false;
-
 		if (Main.save.data.enableLoadingScreens == null)
 			Main.save.data.enableLoadingScreens = true;
 
@@ -211,7 +199,7 @@ class EngineData
 			Main.save.data.noteskin = 'Arrows';
 
 		if (Main.save.data.menuMusic == null)
-			Main.save.data.menuMusic = 0;
+			Main.save.data.menuMusic = 'freakyMenu';
 
 		if (Main.save.data.memoryCount == null)
 			Main.save.data.memoryCount = true;
@@ -225,18 +213,189 @@ class EngineData
 		Main.memoryCount = Main.save.data.memoryCount;
 		Main.watermarks = Main.save.data.watermark;
 
-		Main.save.data.language = false;
+		PlayStateChangeables.useMiddlescroll = Main.save.data.middleScroll;
+		PlayStateChangeables.useDownscroll = Main.save.data.downscroll;
+		PlayStateChangeables.safeFrames = Main.save.data.frames;
+		PlayStateChangeables.scrollSpeed = Main.save.data.scrollSpeed;
+		PlayStateChangeables.botPlay = Main.save.data.botplay;
+		PlayStateChangeables.Optimize = Main.save.data.optimize;
+		PlayStateChangeables.zoom = Main.save.data.zoom;
 
 		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(Main.save.data.fpsCap);
 	}
 
-	public static function initAfterGame() {
+	public static function initAfterGame()
+	{
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 
-		KeyBinds.gamepad = gamepad != null;
+		Controls.gamepad = gamepad != null;
 
 		Conductor.recalculateTimings();
 		PlayerSettings.player1.controls.loadKeyBinds();
-		KeyBinds.keyCheck();
+		keyCheck();
+	}
+
+	public static function resetBinds():Void
+	{
+		Main.save.data.upBindP2 = "W";
+		Main.save.data.downBindP2 = "S";
+		Main.save.data.leftBindP2 = "A";
+		Main.save.data.rightBindP2 = "D";
+		Main.save.data.upBind = "UP";
+		Main.save.data.downBind = "DOWN";
+		Main.save.data.leftBind = "LEFT";
+		Main.save.data.rightBind = "RIGHT";
+		Main.save.data.muteBind = "ZERO";
+		Main.save.data.volUpBind = "PLUS";
+		Main.save.data.volDownBind = "MINUS";
+		Main.save.data.fullscreenBind = "F";
+		Main.save.data.gpupBind = "DPAD_UP";
+		Main.save.data.gpdownBind = "DPAD_DOWN";
+		Main.save.data.gpleftBind = "DPAD_LEFT";
+		Main.save.data.gprightBind = "DPAD_RIGHT";
+		Main.save.data.pauseBind = "ENTER";
+		Main.save.data.gppauseBind = "START";
+		Main.save.data.resetBind = "R";
+		Main.save.data.gpresetBind = "SELECT";
+
+		FlxG.sound.muteKeys = ["ZERO", "NUMPADZERO"];
+		FlxG.sound.volumeDownKeys = ["MINUS", "NUMPADMINUS"];
+		FlxG.sound.volumeUpKeys = ["PLUS", "NUMPADPLUS"];
+		PlayerSettings.player1.controls.loadKeyBinds();
+	}
+
+	public static function keyCheck():Void
+	{
+		if (Main.save.data.upBindP2 == null)
+		{
+			Main.save.data.upBindP2 = "W";
+			trace("No UP");
+			Main.save.flush();
+		}
+		if (Main.save.data.downBindP2 == null)
+		{
+			Main.save.data.downBindP2 = "S";
+			trace("No DOWN");
+			Main.save.flush();
+		}
+		if (Main.save.data.leftBindP2 == null)
+		{
+			Main.save.data.leftBindP2 = "A";
+			trace("No LEFT");
+			Main.save.flush();
+		}
+		if (Main.save.data.rightBindP2 == null)
+		{
+			Main.save.data.rightBindP2 = "D";
+			trace("No RIGHT");
+			Main.save.flush();
+		}
+
+		if (Main.save.data.upBind == null)
+		{
+			Main.save.data.upBind = "UP";
+			trace("No UP");
+			Main.save.flush();
+		}
+		if (Main.save.data.downBind == null)
+		{
+			Main.save.data.downBind = "DOWN";
+			trace("No DOWN");
+			Main.save.flush();
+		}
+		if (Main.save.data.leftBind == null)
+		{
+			Main.save.data.leftBind = "LEFT";
+			trace("No LEFT");
+			Main.save.flush();
+		}
+		if (Main.save.data.rightBind == null)
+		{
+			Main.save.data.rightBind = "RIGHT";
+			trace("No RIGHT");
+			Main.save.flush();
+		}
+
+		if (Main.save.data.gpupBind == null)
+		{
+			Main.save.data.gpupBind = "DPAD_UP";
+			trace("No GUP");
+			Main.save.flush();
+		}
+		if (Main.save.data.gpdownBind == null)
+		{
+			Main.save.data.gpdownBind = "DPAD_DOWN";
+			trace("No GDOWN");
+			Main.save.flush();
+		}
+		if (Main.save.data.gpleftBind == null)
+		{
+			Main.save.data.gpleftBind = "DPAD_LEFT";
+			trace("No GLEFT");
+			Main.save.flush();
+		}
+		if (Main.save.data.gprightBind == null)
+		{
+			Main.save.data.gprightBind = "DPAD_RIGHT";
+			trace("No GRIGHT");
+			Main.save.flush();
+		}
+		if (Main.save.data.pauseBind == null)
+		{
+			Main.save.data.pauseBind = "ENTER";
+			trace("No ENTER");
+			Main.save.flush();
+		}
+		if (Main.save.data.gppauseBind == null)
+		{
+			Main.save.data.gppauseBind = "START";
+			trace("No ENTER");
+			Main.save.flush();
+		}
+		if (Main.save.data.resetBind == null)
+		{
+			Main.save.data.resetBind = "R";
+			trace("No RESET");
+			Main.save.flush();
+		}
+		if (Main.save.data.gpresetBind == null)
+		{
+			Main.save.data.gpresetBind = "SELECT";
+			trace("No RESET");
+			Main.save.flush();
+		}
+		// VOLUME CONTROLS !!!!
+		if (Main.save.data.muteBind == null)
+		{
+			Main.save.data.muteBind = "ZERO";
+			trace("No MUTE");
+			Main.save.flush();
+		}
+		if (Main.save.data.volUpBind == null)
+		{
+			Main.save.data.volUpBind = "PLUS";
+			trace("No VOLUP");
+			Main.save.flush();
+		}
+		if (Main.save.data.volDownBind == null)
+		{
+			Main.save.data.volDownBind = "MINUS";
+			trace("No VOLDOWN");
+			Main.save.flush();
+		}
+		if (Main.save.data.fullscreenBind == null)
+		{
+			Main.save.data.fullscreenBind = "F";
+			trace("No FULLSCREEN");
+			Main.save.flush();
+		}
+		if (Main.save.data.attackBind == null)
+		{
+			Main.save.data.attackBind = "SHIFT";
+			trace("No ATTACK");
+			Main.save.flush();
+		}
+
+		trace('${Main.save.data.leftBind}-${Main.save.data.downBind}-${Main.save.data.upBind}-${Main.save.data.rightBind}');
 	}
 }

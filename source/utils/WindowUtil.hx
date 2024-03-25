@@ -4,6 +4,7 @@
  * This includes the command to open an external URL, as well as purposefully crash the game,
  * or manipulate the window.
  */
+
 package utils;
 
 import flixel.system.scaleModes.RatioScaleMode;
@@ -13,7 +14,7 @@ import openfl.desktop.ClipboardFormats;
 import flixel.math.FlxPoint;
 import flixel.FlxG;
 import flixel.util.FlxAxes;
-import GameDimensions;
+import data.GameDimensions;
 import lime.app.Application as LimeApplication;
 import lime.math.Rectangle;
 import lime.system.System as LimeSystem;
@@ -29,6 +30,11 @@ class WindowUtil
 	public static function setWindowTitle(value:String):Void
 	{
 		LimeApplication.current.window.title = value;
+	}
+
+	public static function getWindowTitle():String
+	{
+		return LimeApplication.current.window.title;
 	}
 
 	/**
@@ -98,11 +104,6 @@ class WindowUtil
 	 */
 	public static function resizeWindow(width:Int = 1280, height:Int = 720)
 	{
-		Lib.application.window.resizable = !Lib.application.window.resizable;
-		if (FlxG.scaleMode is RatioScaleMode)
-			FlxG.scaleMode = new StageSizeScaleMode();
-		else
-			FlxG.scaleMode = new RatioScaleMode(false);
 		FlxG.resizeGame(width, height);
 		FlxG.resizeWindow(width, height);
 	}
@@ -161,7 +162,9 @@ class WindowUtil
 	 */
 	public static function sleep(milliseconds:Int):Void
 	{
+		#if sys
 		Sys.sleep(milliseconds / 1000);
+		#end
 	}
 
 	/**
@@ -261,6 +264,8 @@ class WindowShakeEvent
 					offset.x = FlxG.random.float(-intensity, intensity);
 				case Y:
 					offset.y = FlxG.random.float(-intensity, intensity);
+				default:
+					// Do nothing
 			}
 		}
 		else

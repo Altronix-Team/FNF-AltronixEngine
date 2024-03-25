@@ -3,4 +3,12 @@ export/
 AltronixEngine.code-workspace
 deleted
 -_.txt
-.gitignore
+source/gamejolt/GJKeys.hx
+dump
+.haxelib
+Project.hxp
+source/flixel/camera/*
+assets/core/images/cameraMover.png
+assets/core/images/discord-logo-png-5.png
+assets/core/images/unnamed.jpg
+.idea

@@ -9,10 +9,12 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import gameplayStuff.Boyfriend;
 import gameplayStuff.Conductor;
+import states.playState.GameData as Data;
 
 class GameOverSubstate extends MusicBeatSubstate
 {
 	public var boyfriend:Boyfriend;
+
 	var camFollow:FlxObject;
 
 	public static var stageSuffix:String = "";
@@ -26,7 +28,7 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	public function new(x:Float, y:Float)
 	{
-		var daStage = PlayState.stageCheck;
+		var daStage = Data.stageCheck;
 
 		super();
 
@@ -52,7 +54,6 @@ class GameOverSubstate extends MusicBeatSubstate
 	var startVibin:Bool = false;
 
 	override function update(elapsed:Float)
-		
 	{
 		super.update(elapsed);
 
@@ -61,7 +62,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			endBullshit();
 		}
 
-		if (FlxG.save.data.InstantRespawn)
+		if (Main.save.data.InstantRespawn)
 		{
 			ScriptHelper.clearAllScripts();
 			LoadingState.loadAndSwitchState(new PlayState());
@@ -71,7 +72,7 @@ class GameOverSubstate extends MusicBeatSubstate
 		{
 			FlxG.sound.music.stop();
 
-			if (PlayState.isStoryMode)
+			if (Data.isStoryMode)
 			{
 				GameplayCustomizeState.freeplayBf = 'bf';
 				GameplayCustomizeState.freeplayDad = 'dad';
@@ -82,27 +83,12 @@ class GameOverSubstate extends MusicBeatSubstate
 				GameplayCustomizeState.freeplayWeek = 1;
 				MusicBeatState.switchState(new StoryMenuState());
 			}
-			/*else if (PlayState.isExtras)
-				MusicBeatState.switchState(new SecretState());
-			else if (PlayState.fromPasswordMenu)
-				MusicBeatState.switchState(new MainMenuState());*/
 			else
 				MusicBeatState.switchState(new FreeplayState());
-			//PlayState.loadRep = false;
-			PlayState.stageTesting = false;
-			PlayState.isStoryMode = false;
-			PlayState.isExtras = false;
-			PlayState.fromPasswordMenu = false;
-			PlayState.isFreeplay = false;
+			Data.stageTesting = false;
+			Data.isStoryMode = false;
+			Data.isFreeplay = false;
 			ScriptHelper.clearAllScripts();
-
-			if (PlayState.SONG.songId == 'thorns')
-			{
-				//WindowUtil.resizeWindow(FlxG.initialWidth, FlxG.initialHeight);
-				//WindowUtil.setBorderlessWindowed(false);
-				if (PlayState.fullscree)
-					WindowUtil.setFullscreen(true);
-			}
 		}
 
 		if (boyfriend.animation.curAnim.name == 'firstDeath' && boyfriend.animation.curAnim.curFrame == 12)
@@ -112,17 +98,20 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		if (boyfriend.animation.curAnim.name == 'firstDeath' && boyfriend.animation.curAnim.finished)
 		{
-			if (PlayState.SONG.stage == 'warzone')
-				{				
-					var exclude:Array<Int> = [];
-	
-					FlxG.sound.play(Paths.sound('jeffGameover/jeffGameover-' + FlxG.random.int(1, 25, exclude)), 1, false, null, true, function() {
-						if(!isEnding)
-						{
-							FlxG.sound.music.fadeIn(0.2, 1, 4);
-						}
-					});
-				}
+			if (Data.SONG.stage == 'warzone')
+			{
+				var exclude:Array<Int> = [];
+
+				FlxG.sound.play(Paths.getPath('weeks/assets/sounds/jeffGameover/jeffGameover-' + FlxG.random.int(1, 25, exclude) + '.${Paths.SOUND_EXT}',
+					SOUND, 'gameplay'),
+					1, false, null, true, function()
+				{
+					if (!isEnding)
+					{
+						FlxG.sound.music.fadeIn(0.2, 1, 4);
+					}
+				});
+			}
 			FlxG.sound.playMusic(Paths.music(loopSoundName + stageSuffix));
 			startVibin = true;
 		}
@@ -150,7 +139,7 @@ class GameOverSubstate extends MusicBeatSubstate
 	{
 		if (!isEnding)
 		{
-			PlayState.startTime = 0;
+			Data.startTime = 0;
 			isEnding = true;
 			boyfriend.playAnim('deathConfirm', true);
 			FlxG.sound.music.stop();
@@ -161,11 +150,12 @@ class GameOverSubstate extends MusicBeatSubstate
 				{
 					ScriptHelper.clearAllScripts();
 					LoadingState.loadAndSwitchState(new PlayState());
-					PlayState.stageTesting = false;
+					Data.stageTesting = false;
 				});
 			});
 		}
 	}
+
 	override function onWindowFocusOut():Void
 	{
 		FlxG.sound.pause();

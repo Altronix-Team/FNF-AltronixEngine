@@ -29,7 +29,7 @@ class GameOverState extends FlxTransitionableState
 		loser.frames = loseTex;
 		loser.animation.addByPrefix('lose', 'lose', 24, false);
 		loser.animation.play('lose');
-		loser.antialiasing = FlxG.save.data.antialiasing;
+		loser.antialiasing = Main.save.data.antialiasing;
 		add(loser);
 
 		var bf:Boyfriend = new Boyfriend(bfX, bfY);
@@ -43,7 +43,7 @@ class GameOverState extends FlxTransitionableState
 		restart.setGraphicSize(Std.int(restart.width * 0.6));
 		restart.updateHitbox();
 		restart.alpha = 0;
-		restart.antialiasing = FlxG.save.data.antialiasing;
+		restart.antialiasing = Main.save.data.antialiasing;
 		add(restart);
 
 		FlxG.sound.music.fadeOut(2, FlxG.sound.music.volume * 0.6);
@@ -62,7 +62,7 @@ class GameOverState extends FlxTransitionableState
 
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
 
-		if (FlxG.save.data.InstantRespawn)
+		if (Main.save.data.InstantRespawn)
 		{
 			fading = true;
 			FlxG.sound.music.fadeOut(0.5, 0, function(twn:FlxTween)

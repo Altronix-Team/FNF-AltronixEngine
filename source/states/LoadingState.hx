@@ -14,6 +14,8 @@ import lime.utils.AssetLibrary;
 import lime.utils.AssetManifest;
 import haxe.io.Path;
 import flixel.text.FlxText;
+import states.playState.PlayState;
+import states.playState.GameData as Data;
 
 class LoadingsState extends FlxSubState
 {
@@ -45,6 +47,7 @@ class LoadingsState extends FlxSubState
 			loadingart.alpha = 1;
 	}
 }
+
 class LoadingState extends MusicBeatState
 {
 	inline static var MIN_TIME = 1.0;
@@ -57,7 +60,6 @@ class LoadingState extends MusicBeatState
 	var gfDance:FlxSprite;
 	var danceLeft = false;
 
-
 	function new(target:FlxState, stopMusic:Bool)
 	{
 		super();
@@ -69,7 +71,7 @@ class LoadingState extends MusicBeatState
 	{
 		logo = new FlxSprite(-150, -100);
 		logo.frames = Paths.getSparrowAtlas('logoBumpin');
-		logo.antialiasing = FlxG.save.data.antialiasing;
+		logo.antialiasing = Main.save.data.antialiasing;
 		logo.animation.addByPrefix('bump', 'logo bumpin', 24);
 		logo.animation.play('bump');
 		logo.updateHitbox();
@@ -80,7 +82,7 @@ class LoadingState extends MusicBeatState
 		gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle');
 		gfDance.animation.addByIndices('danceLeft', 'gfDance', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
 		gfDance.animation.addByIndices('danceRight', 'gfDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
-		gfDance.antialiasing = FlxG.save.data.antialiasing;
+		gfDance.antialiasing = Main.save.data.antialiasing;
 		add(gfDance);
 		add(logo);
 
@@ -89,11 +91,11 @@ class LoadingState extends MusicBeatState
 			callbacks = new MultiCallback(onLoad);
 			var introComplete = callbacks.add("introComplete");
 			checkLoadSong(getSongPath());
-			if (PlayState.SONG.needsVoices)
+			if (Data.SONG.needsVoices)
 				checkLoadSong(getVocalPath());
 			checkLibrary("shared");
-			if (PlayState.storyWeek > 0)
-				checkLibrary("week" + PlayState.storyWeek);
+			if (Data.storyWeek > 0)
+				checkLibrary("week" + Data.storyWeek);
 			else
 				checkLibrary("tutorial");
 
@@ -170,12 +172,12 @@ class LoadingState extends MusicBeatState
 
 	static function getSongPath()
 	{
-		return Paths.inst(PlayState.SONG.songId);
+		return Paths.inst(Data.SONG.songId);
 	}
 
 	static function getVocalPath()
 	{
-		return Paths.voices(PlayState.SONG.songId);
+		return Paths.voices(Data.SONG.songId);
 	}
 
 	inline static public function loadAndSwitchState(target:FlxState, stopMusic = false, ?lscreen)
@@ -185,7 +187,7 @@ class LoadingState extends MusicBeatState
 
 	static function getNextState(target:FlxState, stopMusic = false):FlxState
 	{
-		Paths.setCurrentLevel("week" + PlayState.storyWeek);
+		// Paths.setCurrentLevel("week" + PlayState.storyWeek);
 		#if NO_PRELOAD_ALL
 		var loaded = isSoundLoaded(getSongPath())
 			&& (!PlayState.SONG.needsVoices || isSoundLoaded(getVocalPath()))

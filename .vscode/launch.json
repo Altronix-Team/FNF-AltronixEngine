@@ -1,10 +1,27 @@
 { 
     "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Lime",
-            "type": "lime",
-            "request": "launch"
+    "configurations": [	
+		{
+			"name": "Build + Debug",
+			"type": "lime",
+			"request": "launch"
+		},
+		{
+			"name": "Debug",
+			"type": "lime",
+			"request": "launch",
+			"preLaunchTask": null
+		},
+		{
+			"name": "Macro",
+			"type": "haxe-eval",
+			"request": "launch"
+		},
+		{
+            "name": "HXCPP",
+            "type": "hxcpp",
+            "request": "launch",
+            "program": "${workspaceFolder}/export/debug/windows/bin/Altronix Engine.exe"
         }
-    ]
+	]
 }

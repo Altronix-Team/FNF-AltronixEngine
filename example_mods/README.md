@@ -108,9 +108,3 @@ ModCore will search for, and load, the mods with the IDs `foo`, `bar`, `abc`, an
 ## Scripts
 
 Lua or hscript. 
-
-
-
-
-
-Lua is piece of shit. 

@@ -1,53 +1,48 @@
 package states;
 
+import flash.net.URLRequest;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
-#if !html5
-import sys.thread.Mutex;
-#end
+import flixel.addons.api.FlxGameJolt;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.transition.TransitionData;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.graphics.frames.FlxFrame;
 import flixel.group.FlxGroup;
 import flixel.input.gamepad.FlxGamepad;
+import flixel.input.keyboard.FlxKey;
+import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 import flixel.system.ui.FlxSoundTray;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
-import lime.app.Application;
-import openfl.Assets;
-import flixel.input.keyboard.FlxKey;
-#if desktop
-import GameJolt.GameJoltAPI;
-#end
-import openfl.utils.Assets as OpenFlAssets;
-import flash.net.URLRequest;
-import flixel.graphics.frames.FlxFrame;
-import flixel.math.FlxMath;
 import gameplayStuff.Character;
 import gameplayStuff.Conductor;
 import gameplayStuff.Highscore;
 import gameplayStuff.Song;
-
-#if FEATURE_MODCORE
-import ModCore;
+import haxe.Json;
+import lime.app.Application;
+import openfl.Assets;
+import openfl.utils.Assets as OpenFlAssets;
+import scriptStuff.HscriptStage;
+import states.HscriptableState.PolymodHscriptState;
+import sys.FileSystem;
+import sys.io.File;
+#if !html5
+import sys.thread.Mutex;
 #end
-
 #if desktop
-import DiscordClient;
+import gamejolt.GameJolt.GameJoltAPI;
 #end
-
-using StringTools;
-using hx.strings.Strings;
 
 class TitleState extends MusicBeatState
 {
@@ -73,86 +68,68 @@ class TitleState extends MusicBeatState
 
 	var checkVer:Bool = true;
 
-	var modsToLoad = [];
-	public static var configFound = false;
+	public function new(?reset:Bool = false)
+	{
+		if (initialized)
+			initialized = !reset;
+
+		super();
+	}
 
 	override public function create():Void
-	{
+	{	
 		/*@:privateAccess
-		{
-			Debug.logTrace("We loaded " + openfl.Assets.getLibrary("default").assetsLoaded + " assets into the default library");
+			{
+				Debug.logTrace("We loaded " + openfl.Assets.getLibrary("default").assetsLoaded + " assets into the default library");
 		}*/
 
 		if (!initialized)
 		{
 			FlxG.autoPause = false;
 
-			PlayerSettings.init();	
+			PlayerSettings.init();
 
 			EngineData.initAfterGame();
 
-			if (FlxG.save.data.volDownBind == null)
-				FlxG.save.data.volDownBind = "MINUS";
-			if (FlxG.save.data.volUpBind == null)
-				FlxG.save.data.volUpBind = "PLUS";
+			if (Main.save.data.volDownBind == null)
+				Main.save.data.volDownBind = "MINUS";
+			if (Main.save.data.volUpBind == null)
+				Main.save.data.volUpBind = "PLUS";
 
-			FlxG.sound.muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
-			FlxG.sound.volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];
-			FlxG.sound.volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
+			FlxG.sound.muteKeys = [FlxKey.fromString(Main.save.data.muteBind)];
+			FlxG.sound.volumeDownKeys = [FlxKey.fromString(Main.save.data.volDownBind)];
+			FlxG.sound.volumeUpKeys = [FlxKey.fromString(Main.save.data.volUpBind)];
 
-			muteKeys = [FlxKey.fromString(FlxG.save.data.muteBind)];
-			volumeDownKeys = [FlxKey.fromString(FlxG.save.data.volDownBind)];
-			volumeUpKeys = [FlxKey.fromString(FlxG.save.data.volUpBind)];
+			muteKeys = [FlxKey.fromString(Main.save.data.muteBind)];
+			volumeDownKeys = [FlxKey.fromString(Main.save.data.volDownBind)];
+			volumeUpKeys = [FlxKey.fromString(Main.save.data.volUpBind)];
 
 			FlxG.mouse.visible = false;
 
 			FlxG.worldBounds.set(0, 0);
 
-			FlxGraphic.defaultPersist = FlxG.save.data.cacheImages;
+			FlxGraphic.defaultPersist = Main.save.data.cacheImages;
 
 			MusicBeatState.initSave = true;
 
 			Highscore.load();
 
-			#if FEATURE_MODCORE
-				modsToLoad = ModCore.getConfiguredMods();
-				configFound = (modsToLoad != null && modsToLoad.length > 0);
-				if (configFound)
-					ModCore.loadConfiguredMods();
-			#else
-				configFound = false;	
-			#end
-
-			NoteskinHelpers.updateNoteskins();
-
-			MenuMusicStuff.updateMusic();
-
-			Character.initCharacterList();
-
-			LanguageStuff.initLanguages();
-
 			#if desktop
-			GameJoltAPI.leaderboardToggle = FlxG.save.data.toggleLeaderboard;
+			GameJoltAPI.leaderboardToggle = Main.save.data.toggleLeaderboard;
 
 			GameJoltAPI.connect();
-			GameJoltAPI.authDaUser(FlxG.save.data.gjUser, FlxG.save.data.gjToken);
+			@:privateAccess
+			if (FlxGameJolt.gameInit)
+				GameJoltAPI.authDaUser(Main.save.data.gjUser, Main.save.data.gjToken);
 			#end
 
-			//cacheSongs();
+			if (Main.save.data.volume != null)
+				FlxG.sound.volume = Main.save.data.volume;
 
-			if (FlxG.save.data.volume != null)
-				FlxG.sound.volume = FlxG.save.data.volume;
-
-			/*if (FlxG.save.data.fullscreenOnStart)
+			if (Main.save.data.weekCompleted != null)
 			{
-				FlxG.fullscreen = FlxG.save.data.fullscreenOnStart;
-			}*/
-
-			if (FlxG.save.data.weekCompleted != null)
-			{
-				StoryMenuState.weekCompleted = FlxG.save.data.weekCompleted;
+				StoryMenuState.weekCompleted = Main.save.data.weekCompleted;
 			}
-
 		}
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
@@ -161,13 +138,6 @@ class TitleState extends MusicBeatState
 
 		super.create();
 
-		#if FREEPLAY
-		FlxG.switchState(new FreeplayState());
-		clean();
-		#elseif CHARTING
-		FlxG.switchState(new ChartingState());
-		clean();
-		#else
 		#if !cpp
 		new FlxTimer().start(1, function(tmr:FlxTimer)
 		{
@@ -178,13 +148,13 @@ class TitleState extends MusicBeatState
 		if (!DiscordClient.isInitialized)
 		{
 			DiscordClient.initialize();
-			Application.current.onExit.add (function (exitCode) {
+			Application.current.onExit.add(function(exitCode)
+			{
 				DiscordClient.shutdown();
 			});
 		}
 		#end
 		startIntro();
-		#end
 		#end
 		Debug.logTrace('oh fuck, Altronix Engine is working!');
 	}
@@ -198,8 +168,18 @@ class TitleState extends MusicBeatState
 	{
 		persistentUpdate = true;
 
+		var scriptedStatesList = PolymodHscriptState.listScriptClasses();
+		for (state in scriptedStatesList)
+		{
+			if (state.contains('TitleState'))
+			{
+				var hscriptState = PolymodHscriptState.init(state);
+				FlxG.switchState(hscriptState); // Automatically switches states to hscript variant
+			}
+		}
+
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-		// bg.antialiasing = FlxG.save.data.antialiasing;
+		// bg.antialiasing = Main.save.data.antialiasing;
 		// bg.setGraphicSize(Std.int(bg.width * 0.6));
 		// bg.updateHitbox();
 		add(bg);
@@ -214,7 +194,7 @@ class TitleState extends MusicBeatState
 			logoBl = new FlxSprite(-150, -100);
 			logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
 		}
-		logoBl.antialiasing = FlxG.save.data.antialiasing;
+		logoBl.antialiasing = Main.getSaveByString('antialiasing'); // Main.save.data.antialiasing;
 		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24, false);
 		logoBl.updateHitbox();
 		// logoBl.screenCenter();
@@ -224,7 +204,7 @@ class TitleState extends MusicBeatState
 		gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle');
 		gfDance.animation.addByIndices('danceLeft', 'gfDance', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
 		gfDance.animation.addByIndices('danceRight', 'gfDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
-		gfDance.antialiasing = FlxG.save.data.antialiasing;
+		gfDance.antialiasing = Main.getSaveByString('antialiasing'); // Main.save.data.antialiasing;
 		add(gfDance);
 		add(logoBl);
 
@@ -232,7 +212,7 @@ class TitleState extends MusicBeatState
 		titleText.frames = Paths.getSparrowAtlas('titleEnter');
 		titleText.animation.addByPrefix('idle', "ENTER IDLE", 24);
 		titleText.animation.addByPrefix('press', "ENTER PRESSED", 24);
-		titleText.antialiasing = FlxG.save.data.antialiasing;
+		titleText.antialiasing = Main.getSaveByString('antialiasing');
 		titleText.animation.play('idle');
 		titleText.updateHitbox();
 		// titleText.screenCenter(X);
@@ -240,11 +220,8 @@ class TitleState extends MusicBeatState
 
 		var logo:FlxSprite = new FlxSprite().loadGraphic(Paths.loadImage('logo'));
 		logo.screenCenter();
-		logo.antialiasing = FlxG.save.data.antialiasing;
+		logo.antialiasing = Main.getSaveByString('antialiasing');
 		// add(logo);
-
-		// FlxTween.tween(logoBl, {y: logoBl.y + 50}, 0.6, {ease: FlxEase.quadInOut, type: PINGPONG});
-		// FlxTween.tween(logo, {y: logoBl.y + 50}, 0.6, {ease: FlxEase.quadInOut, type: PINGPONG, startDelay: 0.1});
 
 		credGroup = new FlxGroup();
 		add(credGroup);
@@ -266,7 +243,7 @@ class TitleState extends MusicBeatState
 		ngSpr.setGraphicSize(Std.int(ngSpr.width * 0.8));
 		ngSpr.updateHitbox();
 		ngSpr.screenCenter(X);
-		ngSpr.antialiasing = FlxG.save.data.antialiasing;
+		ngSpr.antialiasing = Main.getSaveByString('antialiasing');
 
 		FlxTween.tween(credTextShit, {y: credTextShit.y + 20}, 2.9, {ease: FlxEase.quadInOut, type: PINGPONG});
 
@@ -275,7 +252,7 @@ class TitleState extends MusicBeatState
 		if (initialized)
 		{
 			if (!FlxG.sound.music.playing)
-				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)), 0);
+				FlxG.sound.playMusic(Paths.music(Main.save.data.menuMusic), 0);
 			skipIntro();
 		}
 		else
@@ -292,11 +269,7 @@ class TitleState extends MusicBeatState
 			transIn = FlxTransitionableState.defaultTransIn;
 			transOut = FlxTransitionableState.defaultTransOut;
 
-			// HAD TO MODIFY SOME BACKEND SHIT
-			// IF THIS PR IS HERE IF ITS ACCEPTED UR GOOD TO GO
-			// https://github.com/HaxeFlixel/flixel-addons/pull/348
-
-			FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)), 0);
+			FlxG.sound.playMusic(Paths.music(Main.save.data.menuMusic), 0);
 
 			FlxG.sound.music.fadeIn(4, 0, 0.7);
 			Conductor.changeBPM(102);
@@ -308,14 +281,14 @@ class TitleState extends MusicBeatState
 
 	function getIntroTextShit():Array<Array<String>>
 	{
-		var fullText:String = Assets.getText(Paths.txt('data/introText'));
+		var fullText:IntroTextFile = cast AssetsUtil.loadAsset('data/introText', JSON);
 
-		var firstArray:Array<String> = fullText.split('\n');
+		var firstArray:Array<IntroText> = fullText.funnyTexts;
 		var swagGoodArray:Array<Array<String>> = [];
 
 		for (i in firstArray)
 		{
-			swagGoodArray.push(i.split('--'));
+			swagGoodArray.push([i.firstText, i.secondText]);
 		}
 
 		return swagGoodArray;
@@ -343,7 +316,8 @@ class TitleState extends MusicBeatState
 		#end
 
 		titleTimer += CoolUtil.boundTo(elapsed, 0, 1);
-		if (titleTimer > 2) titleTimer -= 2;
+		if (titleTimer > 2)
+			titleTimer -= 2;
 
 		if (!pressedEnter && !transitioning && skippedIntro)
 		{
@@ -374,48 +348,9 @@ class TitleState extends MusicBeatState
 
 			new FlxTimer().start(2, function(tmr:FlxTimer)
 			{
-				if (checkVer)
-				{
-					//var shit = new URLRequest('https://raw.githubusercontent.com/AltronMaxX/FNF-AltronixEngine/main/version.downloadMe?token=GHSAT0AAAAAABHIQ6SYP4VDYY65FVGRVZ3EYU5R3BA');
-					//Debug.logTrace(shit.data);
-					FlxG.switchState(new MainMenuState());
-						clean();
-					
-					/*http.onData = function(data:String)
-					{
-						returnedData[0] = data.substring(0, data.indexOf(';'));
-						returnedData[1] = data.substring(data.indexOf('-'), data.length);
-						if (EngineConstants.engineVer != returnedData[0].trim() && !OutdatedSubState.leftState)
-						{
-							trace('outdated lmao! ' + returnedData[0] + ' != ' + EngineConstants.engineVer);
-							OutdatedSubState.needVer = returnedData[0];
-							OutdatedSubState.currChanges = returnedData[1];
-							FlxG.switchState(new OutdatedSubState());
-							clean();
-						}
-						else
-						{
-							FlxG.switchState(new MainMenuState());
-							clean();
-						}
-					}
-
-					http.onError = function(error)
-					{
-						trace('error: $error');
-						FlxG.switchState(new MainMenuState()); // fail but we go anyway
-						clean();
-					}
-
-					http.request();*/
-				}
-				else
-				{
-					FlxG.switchState(new MainMenuState());
-						clean();
-				}
+				FlxG.switchState(new MainMenuState());
+				clean();
 			});
-			// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
 		}
 
 		if (pressedEnter && !skippedIntro && initialized)
@@ -545,40 +480,15 @@ class TitleState extends MusicBeatState
 			skippedIntro = true;
 		}
 	}
+}
 
-	function cacheSongs()
-	{
-		Debug.logInfo('Starting to cache songs');
+typedef IntroTextFile =
+{
+	var funnyTexts:Array<IntroText>;
+}
 
-		var songList:Array<String> = Paths.listSongsToCache();
-		
-		for (i in songList)
-		{
-			var songJsons:Array<SongData> = [];
-			var list = Paths.listJsonInPath('assets/data/songs/' + i + '/');
-			for (j in list)
-			{
-				if (j == '_meta')
-					continue;
-				if (j == 'events')
-					continue;
-
-				var diffName = '';
-
-				if (j != i)
-				{
-					diffName = j.replaceAll(i + '-', '');
-				}
-
-				if (Song.loadFromJson(i, diffName) != null)
-				{
-					songJsons.push(Song.conversionChecks(Song.loadFromJson(i, diffName)));
-				}
-			}
-			if (songJsons.length > 0)
-			{
-				Caching.songJsons.set(i, songJsons);
-			}
-		}
-	}
+typedef IntroText =
+{
+	var firstText:String;
+	var secondText:String;
 }

@@ -7,9 +7,11 @@ import flixel.graphics.frames.FlxAtlasFrames;
 class TankmenBG extends FlxSprite
 {
 	public static var animationNotes:Array<Dynamic> = [];
+
 	private var tankSpeed:Float;
 	private var endingOffset:Float;
 	private var goingRight:Bool;
+
 	public var strumTime:Float;
 
 	public function new(x:Float, y:Float, facingRight:Bool)
@@ -20,12 +22,12 @@ class TankmenBG extends FlxSprite
 		goingRight = facingRight;
 		super(x, y);
 
-		frames = Paths.getSparrowAtlas('tankmanKilled1', 'week7');
+		frames = Paths.getSparrowAtlas('weeks/assets/week7/images/tankmanKilled1', 'gameplay');
 		animation.addByPrefix('run', 'tankman running', 24, true);
 		animation.addByPrefix('shot', 'John Shot ' + FlxG.random.int(1, 2), 24, false);
 		animation.play('run');
 		animation.curAnim.curFrame = FlxG.random.int(0, animation.curAnim.frames.length - 1);
-		antialiasing = FlxG.save.data.antialiasing;
+		antialiasing = Main.save.data.antialiasing;
 
 		updateHitbox();
 		setGraphicSize(Std.int(0.8 * width));
@@ -48,23 +50,23 @@ class TankmenBG extends FlxSprite
 
 		visible = (x > -0.5 * FlxG.width && x < 1.2 * FlxG.width);
 
-		if(animation.curAnim.name == "run")
+		if (animation.curAnim.name == "run")
 		{
 			var speed:Float = (Conductor.songPosition - strumTime) * tankSpeed;
-			if(goingRight)
+			if (goingRight)
 				x = (0.02 * FlxG.width - endingOffset) + speed;
 			else
 				x = (0.74 * FlxG.width + endingOffset) - speed;
 		}
-		else if(animation.curAnim.finished)
+		else if (animation.curAnim.finished)
 		{
 			kill();
 		}
 
-		if(Conductor.songPosition > strumTime)
+		if (Conductor.songPosition > strumTime)
 		{
 			animation.play('shot');
-			if(goingRight)
+			if (goingRight)
 			{
 				offset.x = 300;
 				offset.y = 200;

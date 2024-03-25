@@ -4,8 +4,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.utils.Assets as OpenFlAssets;
-
-using StringTools;
+import states.playState.GameData as Data;
 
 class NoteSplash extends FlxSprite
 {
@@ -14,67 +13,65 @@ class NoteSplash extends FlxSprite
 	private var idleAnim:String;
 	private var textureLoaded:String = null;
 
-    override public function new(x:Float = 0, y:Float = 0, ?note:Int = 0, ?noteType:String = null)
-    {
+	override public function new(x:Float = 0, y:Float = 0)
+	{
 		super(x, y);
 
-		if (OpenFlAssets.exists(Paths.image("notesplashes/" + NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin))))
-			curNoteskinSprite = NoteskinHelpers.getNoteskinByID(FlxG.save.data.noteskin);
-		else if (OpenFlAssets.exists(Paths.image("notesplashes/" + noteType)))
-			curNoteskinSprite = noteType;
+		if (OpenFlAssets.exists(Paths.image("notesplashes/" + NoteskinHelpers.getNoteskinByID(Main.save.data.noteskin))))
+			curNoteskinSprite = NoteskinHelpers.getNoteskinByID(Main.save.data.noteskin);
 		else
 			curNoteskinSprite = 'Default';
 
 		loadAnims(curNoteskinSprite);
-		
-		setupNoteSplash(x, y, note, noteType);
-		antialiasing = FlxG.save.data.antialiasing;
-    }
 
-    public function setupNoteSplash(x:Float, y:Float, note:Int= 0, noteType:String = 'Default Note')
-    {
+		setupNoteSplash(x, y, null);
+		antialiasing = Main.save.data.antialiasing;
+	}
+
+	public function setupNoteSplash(x:Float, y:Float, note:Note)
+	{
 		var texture:String;
-		if (states.PlayState.isPixel)
+		if (Data.isPixel)
 			setPosition(x + 30, (y + Note.swagWidth) / 2);
 		else
 			setPosition(x - Note.swagWidth * 0.95, y - Note.swagWidth);
-    	alpha = 0.6;
+		alpha = 0.6;
 
-		switch (noteType)
+		var noteType = 'Default Note';
+		var data = 0;
+		texture = curNoteskinSprite;
+
+		if (note != null)
 		{
-			case 'Bullet Note':
-				texture = 'BulletNoteSplashes';
-
-			case 'Hurt Note':
-				texture = 'HURTnoteSplashes';
-
-			default:
-				if (OpenFlAssets.exists(Paths.image("notesplashes/" + noteType)))
-					texture = noteType;
-				else
-					texture = curNoteskinSprite;
+			noteType = note.noteType;
+			data = note.noteData;
+			texture = note.noteSplashTexture;
 		}
 
-		if(textureLoaded != texture) {
+		if (!OpenFlAssets.exists(Paths.image("notesplashes/" + texture)))
+			texture = curNoteskinSprite;
+
+		if (textureLoaded != texture)
 			loadAnims(texture);
-		}
+
 		offset.set(10, 10);
 
 		var animNum:Int = FlxG.random.int(1, 2);
-		animation.play('note' + note + '-' + animNum, true);
-		if(animation.curAnim != null)animation.curAnim.frameRate = 24 + FlxG.random.int(-2, 2);
-    }
+		animation.play('note' + data + '-' + animNum, true);
+		if (animation.curAnim != null)
+			animation.curAnim.frameRate = 24 + FlxG.random.int(-2, 2);
+	}
 
 	function loadAnims(skin:String = 'default')
 	{
-		if (states.PlayState.isPixel)
+		if (Data.isPixel)
 		{
 			if (OpenFlAssets.exists(Paths.image('notesplashes/' + skin + '-pixel')))
 			{
-				loadGraphic(Paths.image('notesplashes/' + skin + '-pixel'));
+				loadGraphic(Paths.loadImage('notesplashes/' + skin + '-pixel'));
 				width = width / 8;
 				height = height / 4;
-				loadGraphic(Paths.image('notesplashes/' + skin + '-pixel'), true, Math.floor(width), Math.floor(height));
+				loadGraphic(Paths.loadImage('notesplashes/' + skin + '-pixel'), true, Math.floor(width), Math.floor(height));
 
 				antialiasing = false;
 				setGraphicSize(Std.int(width * CoolUtil.daPixelZoom));
@@ -90,10 +87,10 @@ class NoteSplash extends FlxSprite
 			}
 			else
 			{
-				loadGraphic(Paths.image('notesplashes/Default-pixel'));
+				loadGraphic(Paths.loadImage('notesplashes/Default-pixel'));
 				width = width / 8;
 				height = height / 4;
-				loadGraphic(Paths.image('notesplashes/Default-pixel'), true, Math.floor(width), Math.floor(height));
+				loadGraphic(Paths.loadImage('notesplashes/Default-pixel'), true, Math.floor(width), Math.floor(height));
 
 				antialiasing = false;
 				setGraphicSize(Std.int(width * CoolUtil.daPixelZoom));
@@ -108,20 +105,25 @@ class NoteSplash extends FlxSprite
 				animation.add("note3-2", [28, 29, 30, 31], 12, false);
 			}
 		}
-		else{
-		frames = Paths.getSparrowAtlas("notesplashes/" + skin);
-		for (i in 1...3) {
-			animation.addByPrefix("note1-" + i, "note splash blue " + i, 24, false);
-			animation.addByPrefix("note2-" + i, "note splash green " + i, 24, false);
-			animation.addByPrefix("note0-" + i, "note splash purple " + i, 24, false);
-			animation.addByPrefix("note3-" + i, "note splash red " + i, 24, false);
-		}}
+		else
+		{
+			frames = Paths.getSparrowAtlas("notesplashes/" + skin);
+			for (i in 1...3)
+			{
+				animation.addByPrefix("note1-" + i, "note splash blue " + i, 24, false);
+				animation.addByPrefix("note2-" + i, "note splash green " + i, 24, false);
+				animation.addByPrefix("note0-" + i, "note splash purple " + i, 24, false);
+				animation.addByPrefix("note3-" + i, "note splash red " + i, 24, false);
+			}
+		}
 	}
 
-    override public function update(elapsed:Float)
-    {
-		if(animation.curAnim != null)if(animation.curAnim.finished) kill();
+	override public function update(elapsed:Float)
+	{
+		if (animation.curAnim != null)
+			if (animation.curAnim.finished)
+				kill();
 
 		super.update(elapsed);
-    }
+	}
 }

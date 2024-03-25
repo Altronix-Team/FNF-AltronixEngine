@@ -1,19 +1,19 @@
 package states;
 
-import flixel.system.FlxSound;
-import scriptStuff.ScriptHelper;
-import flixel.FlxCamera;
-import lime.app.Application;
 import flixel.FlxBasic;
+import flixel.FlxCamera;
+import flixel.FlxG;
 import flixel.FlxState;
 import flixel.addons.transition.FlxTransitionableState;
-import openfl.Lib;
-import flixel.FlxG;
-import gameplayStuff.Section;
+import flixel.sound.FlxSound;
 import gameplayStuff.Conductor;
+import gameplayStuff.Section;
 import gameplayStuff.TimingStruct;
+import lime.app.Application;
+import openfl.Lib;
+import scriptStuff.ScriptHelper;
 
-class MusicBeatState extends BaseState implements IMusicBeat
+class MusicBeatState extends BaseState implements gameplayStuff.Conductor.IMusicBeat
 {
 	private var controls(get, never):Controls;
 
@@ -33,6 +33,11 @@ class MusicBeatState extends BaseState implements IMusicBeat
 
 	override function destroy()
 	{
+		Main.fnfSignals.beatHit.remove(_beatHit);
+		Main.fnfSignals.sectionHit.remove(_sectionHit);
+		Main.fnfSignals.stepHit.remove(_stepHit);
+		Main.fnfSignals.decimalBeatHit.remove(_decimalBeatHit);
+
 		Application.current.window.onFocusOut.remove(onWindowFocusOut);
 		Application.current.window.onFocusIn.remove(onWindowFocusIn);
 		super.destroy();
@@ -40,7 +45,7 @@ class MusicBeatState extends BaseState implements IMusicBeat
 
 	override function add(Object:flixel.FlxBasic):flixel.FlxBasic
 	{
-		if (FlxG.save.data.optimize)
+		if (Main.save.data.optimize)
 			assets.push(Object);
 		var result = super.add(Object);
 		return result;
@@ -56,7 +61,7 @@ class MusicBeatState extends BaseState implements IMusicBeat
 
 	public function clean()
 	{
-		if (FlxG.save.data.optimize)
+		if (Main.save.data.optimize)
 		{
 			for (i in assets)
 			{
@@ -67,19 +72,27 @@ class MusicBeatState extends BaseState implements IMusicBeat
 
 	override function create()
 	{
-		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
+		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(Main.save.data.fpsCap);
 		if (initSave)
 		{
-			if (FlxG.save.data.laneTransparency < 0)
-				FlxG.save.data.laneTransparency = 0;
+			if (Main.save.data.laneTransparency < 0)
+				Main.save.data.laneTransparency = 0;
 
-			if (FlxG.save.data.laneTransparency > 1)
-				FlxG.save.data.laneTransparency = 1;
+			if (Main.save.data.laneTransparency > 1)
+				Main.save.data.laneTransparency = 1;
 		}
+
+		Main.fnfSignals.beatHit.add(_beatHit);
+		Main.fnfSignals.sectionHit.add(_sectionHit);
+		Main.fnfSignals.stepHit.add(_stepHit);
+		Main.fnfSignals.decimalBeatHit.add(_decimalBeatHit);
 
 		Application.current.window.onFocusIn.add(onWindowFocusIn);
 		Application.current.window.onFocusOut.add(onWindowFocusOut);
 		TimingStruct.clearTimings();
+
+		if (WindowUtil.getWindowTitle() != Main.defaultWindowTitle)
+			WindowUtil.setWindowTitle(Main.defaultWindowTitle);
 
 		camBeat = FlxG.camera;
 
@@ -90,56 +103,64 @@ class MusicBeatState extends BaseState implements IMusicBeat
 		if (transIn != null)
 			trace('reg ' + transIn.region);
 
-		Conductor.MusicBeatInterface = this;
-
 		super.create();
 	}
 
 	override function update(elapsed:Float)
 	{
-		if (Conductor.MusicBeatInterface == this)
-			Conductor.updateSongPosition(elapsed);
+		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(Main.save.data.fpsCap);
 
-		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
+		#if !GITHUB_RELEASE
+		if (FlxG.keys.justPressed.F10)
+		{
+			EngineFPS.showDebugInfo = !EngineFPS.showDebugInfo;
+		}
+		#end
 
 		super.update(elapsed);
-	}
 
-	public static function switchState(nextState:FlxState) 
+		Main.fnfSignals.update.dispatch(elapsed);
+	};
+
+	public static function switchState(nextState:FlxState)
 	{
-		if(!FlxTransitionableState.skipNextTransIn) {
+		FlxG.switchState(nextState);
+		/*if (!FlxTransitionableState.skipNextTransIn)
+		{
 			var switchState = new TransitionableState();
 			switchState.nextState = nextState;
 
 			FlxG.switchState(switchState);
 		}
-		else {
+		else
+		{
 			FlxTransitionableState.skipNextTransIn = false;
 			FlxG.switchState(nextState);
-		}
+		}*/
 	}
 
-	public static function resetState() {
+	public static function resetState()
+	{
 		MusicBeatState.switchState(FlxG.state);
 	}
 
 	public function stepHit():Void
 	{
 		/*if (curStep % 4 == 0)
-			beatHit();*/
-		ScriptHelper.stepHit();
+			beatHit(); */
+		ScriptHelper.stepHit(curStep);
 	}
 
 	public function beatHit():Void
 	{
-		//beatHit
-		ScriptHelper.beatHit();
+		// beatHit
+		ScriptHelper.beatHit(curBeat);
 	}
 
 	public function sectionHit():Void
 	{
-		//Section Hit
-		ScriptHelper.sectionHit();
+		// Section Hit
+		ScriptHelper.sectionHit(curSection);
 	}
 
 	public function fancyOpenURL(schmancy:String)
@@ -153,15 +174,15 @@ class MusicBeatState extends BaseState implements IMusicBeat
 
 	function volumeHandler(volume:Float)
 	{
-		FlxG.save.data.volume = volume;
+		Main.save.data.volume = volume;
 	}
 
 	function onWindowFocusOut():Void
 	{
 		/*soundList.forEach(function(sound:FlxSound)
-		{
-			if (sound.playing)
-				sound.pause();
+			{
+				if (sound.playing)
+					sound.pause();
 		});*/
 		if (FlxG.sound.music.playing)
 			FlxG.sound.music.pause();
@@ -169,11 +190,34 @@ class MusicBeatState extends BaseState implements IMusicBeat
 
 	function onWindowFocusIn():Void
 	{
-		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
+		(cast(Lib.current.getChildAt(0), Main)).setFPSCap(Main.save.data.fpsCap);
 		/*soundList.forEach(function(sound:FlxSound)
-		{
-			sound.resume();
+			{
+				sound.resume();
 		});*/
 		FlxG.sound.music.resume();
+	}
+
+	private function _stepHit(step:Int):Void
+	{
+		curStep = step;
+		stepHit();
+	}
+
+	private function _beatHit(beat:Int):Void
+	{
+		curBeat = beat;
+		beatHit();
+	}
+
+	private function _sectionHit(section:SwagSection):Void
+	{
+		curSection = section;
+		sectionHit();
+	}
+
+	private function _decimalBeatHit(beat:Float):Void
+	{
+		curDecimalBeat = beat;
 	}
 }

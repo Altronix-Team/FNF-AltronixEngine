@@ -1,40 +1,38 @@
 package states;
 
+import flixel.FlxG;
+import flixel.FlxObject;
+import flixel.FlxSprite;
+import flixel.FlxSubState;
+import flixel.effects.FlxFlicker;
+import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.input.FlxInput;
+import flixel.input.FlxKeyManager;
+import flixel.input.keyboard.FlxKey;
+import flixel.math.FlxMath;
+import flixel.sound.FlxSound;
+import flixel.text.FlxText;
+import flixel.text.FlxText;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+import flixel.util.FlxAxes;
+import flixel.util.FlxColor;
+import gameplayStuff.Conductor;
+import gameplayStuff.Highscore;
+import gameplayStuff.Ratings;
+import gameplayStuff.Section;
 import haxe.Exception;
-#if FEATURE_STEPMANIA
-import smTools.SMFile;
-#end
+import lime.app.Application;
+import openfl.display.BitmapData;
+import openfl.geom.Matrix;
+import options.Options.Option;
+import states.LoadingState.LoadingsState;
+import states.playState.GameData as Data;
 #if FEATURE_FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
 #end
-import openfl.geom.Matrix;
-import openfl.display.BitmapData;
-import flixel.system.FlxSound;
-import flixel.util.FlxAxes;
-import flixel.FlxSubState;
-import Options.Option;
-import flixel.input.FlxInput;
-import flixel.input.keyboard.FlxKey;
-import flixel.FlxG;
-import flixel.FlxObject;
-import flixel.FlxSprite;
-import flixel.effects.FlxFlicker;
-import flixel.graphics.frames.FlxAtlasFrames;
-import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.text.FlxText;
-import flixel.tweens.FlxEase;
-import flixel.tweens.FlxTween;
-import flixel.util.FlxColor;
-import lime.app.Application;
-import flixel.math.FlxMath;
-import flixel.text.FlxText;
-import flixel.input.FlxKeyManager;
-import states.LoadingState.LoadingsState;
-import gameplayStuff.Highscore;
-import gameplayStuff.Conductor;
-
-using StringTools;
 
 class ResultsScreen extends FlxSubState
 {
@@ -47,7 +45,6 @@ class ResultsScreen extends FlxSubState
 
 	public var music:FlxSound;
 
-
 	public var ranking:String;
 	public var accuracy:String;
 
@@ -57,7 +54,7 @@ class ResultsScreen extends FlxSubState
 		background.scrollFactor.set();
 		add(background);
 
-		if (!PlayState.inResults)
+		if (!Data.inResults)
 		{
 			music = new FlxSound().loadEmbedded(Paths.music('breakfast'), true, true);
 			music.volume = 0;
@@ -75,19 +72,19 @@ class ResultsScreen extends FlxSubState
 		add(text);
 
 		var score = PlayState.instance.songScore;
-		if (PlayState.isStoryMode)
+		if (Data.isStoryMode)
 		{
-			score = PlayState.campaignScore;
+			score = Data.campaignScore;
 			text.text = "Week Cleared!";
 		}
 
-		var sicks = PlayState.isStoryMode ? PlayState.campaignSicks : PlayState.sicks;
-		var goods = PlayState.isStoryMode ? PlayState.campaignGoods : PlayState.goods;
-		var bads = PlayState.isStoryMode ? PlayState.campaignBads : PlayState.bads;
-		var shits = PlayState.isStoryMode ? PlayState.campaignShits : PlayState.shits;
+		var sicks = Data.isStoryMode ? Data.campaignSicks : Data.sicks;
+		var goods = Data.isStoryMode ? Data.campaignGoods : Data.goods;
+		var bads = Data.isStoryMode ? Data.campaignBads : Data.bads;
+		var shits = Data.isStoryMode ? Data.campaignShits : Data.shits;
 
 		comboText = new FlxText(20, -75, 0,
-			'Judgements:\nSicks - ${sicks}\nGoods - ${goods}\nBads - ${bads}\n\nCombo Breaks: ${(PlayState.isStoryMode ? PlayState.campaignMisses : PlayState.misses)}\nHighest Combo: ${PlayState.highestCombo + 1}\nScore: ${PlayState.instance.songScore}\nAccuracy: ${CoolUtil.truncateFloat(PlayState.instance.accuracy, 2)}%\n\n${Ratings.GenerateLetterRank(PlayState.instance.accuracy)}\nRate: ${PlayState.songMultiplier}x\n\nF1 - Replay song
+			'Judgements:\nSicks - ${sicks}\nGoods - ${goods}\nBads - ${bads}\n\nCombo Breaks: ${(Data.isStoryMode ? Data.campaignMisses : Data.misses)}\nHighest Combo: ${Data.highestCombo + 1}\nScore: ${PlayState.instance.songScore}\nAccuracy: ${CoolUtil.truncateFloat(PlayState.instance.accuracy, 2)}%\n\n${Ratings.GenerateLetterRank(PlayState.instance.accuracy)}\nRate: ${Data.songMultiplier}x\n\nF1 - Replay song
         ');
 		comboText.size = 28;
 		comboText.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 4, 1);
@@ -95,32 +92,50 @@ class ResultsScreen extends FlxSubState
 		comboText.scrollFactor.set();
 		add(comboText);
 
-		contText = new FlxText(FlxG.width - 475, FlxG.height + 50, 0, 'Press ${KeyBinds.gamepad ? 'A' : 'ENTER'} to continue.');
+		contText = new FlxText(FlxG.width - 475, FlxG.height + 50, 0, 'Press ${Controls.gamepad ? 'A' : 'ENTER'} to continue.');
 		contText.size = 28;
 		contText.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 4, 1);
 		contText.color = FlxColor.WHITE;
 		contText.scrollFactor.set();
 		add(contText);
 
-		var sicks = CoolUtil.truncateFloat(PlayState.sicks / PlayState.goods, 1);
-		var goods = CoolUtil.truncateFloat(PlayState.goods / PlayState.bads, 1);
+		var sicks = CoolUtil.truncateFloat(Data.sicks / Data.goods, 1);
+		var goods = CoolUtil.truncateFloat(Data.goods / Data.bads, 1);
 
 		if (sicks == Math.POSITIVE_INFINITY)
 			sicks = 0;
 		if (goods == Math.POSITIVE_INFINITY)
 			goods = 0;
 
-		var mean:Float = 0;
+		var curNote:Int = 0;
+		for (sect in Data.SONG.notes)
+		{
+			for (note in sect.sectionNotes)
+			{
+				// 0 = time
+				// 1 = length
+				// 2 = type
+				// 3 = diff
+				var obj = note;
+				// judgement
+				var obj2 = Data.songJudgements[curNote];
+
+				var obj3 = obj[0];
+
+				var diff = obj[3];
+				var judge = obj2;
+
+				curNote++;
+			}
+		}
 
 		if (sicks == Math.POSITIVE_INFINITY || sicks == Math.NaN)
 			sicks = 0;
 		if (goods == Math.POSITIVE_INFINITY || goods == Math.NaN)
 			goods = 0;
 
-		mean = CoolUtil.truncateFloat(mean, 2);
-
 		settingsText = new FlxText(20, FlxG.height + 50, 0,
-			'Mean: ${mean}ms (SICK:${Ratings.timingWindows[3]}ms,GOOD:${Ratings.timingWindows[2]}ms,BAD:${Ratings.timingWindows[1]}ms,SHIT:${Ratings.timingWindows[0]}ms)');
+			'(SICK:${Ratings.timingWindows[3]}ms,GOOD:${Ratings.timingWindows[2]}ms,BAD:${Ratings.timingWindows[1]}ms,SHIT:${Ratings.timingWindows[0]}ms)');
 		settingsText.size = 16;
 		settingsText.setBorderStyle(FlxTextBorderStyle.OUTLINE, FlxColor.BLACK, 2, 1);
 		settingsText.color = FlxColor.WHITE;
@@ -153,55 +168,43 @@ class ResultsScreen extends FlxSubState
 			if (music != null)
 				music.fadeOut(0.3);
 
-			PlayState.stageTesting = false;
+			Data.stageTesting = false;
 
 			#if !switch
-			Highscore.saveScore(PlayState.SONG.songId, Math.round(PlayState.instance.songScore), PlayState.storyDifficulty);
-			Highscore.saveCombo(PlayState.SONG.songId, Ratings.GenerateLetterRank(PlayState.instance.accuracy), PlayState.storyDifficulty);
+			Highscore.saveScore(Data.SONG.songId, Math.round(PlayState.instance.songScore), Data.storyDifficulty);
+			Highscore.saveCombo(Data.SONG.songId, Ratings.GenerateLetterRank(PlayState.instance.accuracy), Data.storyDifficulty);
 			#end
 
-			if (PlayState.isStoryMode)
+			if (Data.isStoryMode)
 			{
-				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)));
+				FlxG.sound.playMusic(Paths.music(Main.save.data.menuMusic));
 				Conductor.changeBPM(102);
 				MusicBeatState.switchState(new StoryMenuState());
 			}
-			/*else if (PlayState.isExtras)
-			{
-				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)));
-				MusicBeatState.switchState(new SecretState());
-			}
-			else if (PlayState.fromPasswordMenu)
-			{
-				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)));
-				MusicBeatState.switchState(new MainMenuState());
-			}*/
 			else
 			{
-				FlxG.sound.playMusic(Paths.music(MenuMusicStuff.getMusicByID(FlxG.save.data.menuMusic)));
+				FlxG.sound.playMusic(Paths.music(Main.save.data.menuMusic));
 				MusicBeatState.switchState(new FreeplayState());
 			}
-			PlayState.isStoryMode = false;
-			PlayState.isExtras = false;
-			PlayState.fromPasswordMenu = false;
-			PlayState.isFreeplay = false;
+			Data.isStoryMode = false;
+			Data.isFreeplay = false;
 			PlayState.instance.clean();
 		}
 
 		if (FlxG.keys.justPressed.F1)
 		{
-			PlayState.stageTesting = false;
+			Data.stageTesting = false;
 
 			#if !switch
-			Highscore.saveScore(PlayState.SONG.songId, Math.round(PlayState.instance.songScore), PlayState.storyDifficulty);
-			Highscore.saveCombo(PlayState.SONG.songId, Ratings.GenerateLetterRank(PlayState.instance.accuracy), PlayState.storyDifficulty);
+			Highscore.saveScore(Data.SONG.songId, Math.round(PlayState.instance.songScore), Data.storyDifficulty);
+			Highscore.saveCombo(Data.SONG.songId, Ratings.GenerateLetterRank(PlayState.instance.accuracy), Data.storyDifficulty);
 			#end
 
 			if (music != null)
 				music.fadeOut(0.3);
 
-			PlayState.isStoryMode = false;
-			PlayState.storyDifficulty = PlayState.storyDifficulty;
+			Data.isStoryMode = false;
+			Data.storyDifficulty = Data.storyDifficulty;
 			LoadingState.loadAndSwitchState(new PlayState());
 			PlayState.instance.clean();
 		}

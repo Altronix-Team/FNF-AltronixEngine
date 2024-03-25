@@ -25,7 +25,19 @@ jobs:
           haxelib setup C:/haxelib
           haxelib install hxcpp > /dev/null --quiet
           haxelib install hmm --quiet
-          haxelib run hmm install --quiet
+          haxelib install lime
+          haxelib install openfl
+          haxelib install flixel
+          haxelib install flixel-addons
+          haxelib install flixel-ui
+          haxelib install flixel-tools
+          haxelib install SScript
+          haxelib install hxvlc
+          haxelib install polymod
+          haxelib install haxe-strings
+          haxelib git flxanimate https://github.com/Altronix-Team/flxanimate/
+          haxelib git firetongue https://github.com/larsiusprime/firetongue
+          haxelib git hxdiscord_rpc https://github.com/MAJigsaw77/hxdiscord_rpc
           haxelib run lime build windows
         shell: cmd
         

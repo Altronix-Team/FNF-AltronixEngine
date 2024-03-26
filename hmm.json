@@ -1,36 +1,9 @@
 {
   "dependencies": [
     {
-      "name": "lime",
+      "name": "SScript",
       "type": "haxelib",
       "version": null
-    },
-    {
-      "name": "openfl",
-      "type": "haxelib",
-      "version": null
-    },
-    {
-      "name": "hxcpp-debug-server",
-      "type": "haxelib",
-      "version": null
-    },
-    {
-      "name": "AE-Script",
-      "type": "haxelib",
-      "version": null
-    },
-    {
-      "name": "away3d",
-      "type": "haxelib",
-      "version": null
-    },
-    {
-      "name": "discord_rpc",
-      "type": "git",
-      "dir": null,
-      "ref": "master",
-      "url": "https://github.com/Aidan63/linc_discord-rpc"
     },
     {
       "name": "firetongue",
@@ -41,8 +14,10 @@
     },
     {
       "name": "flixel",
-      "type": "haxelib",
-      "version": null
+      "type": "git",
+      "dir": null,
+      "ref": "master",
+      "url": "https://github.com/HaxeFlixel/flixel"
     },
     {
       "name": "flixel-addons",
@@ -67,6 +42,16 @@
       "url": "https://github.com/Altronix-Team/flxanimate/"
     },
     {
+      "name": "format",
+      "type": "haxelib",
+      "version": null
+    },
+    {
+      "name": "haxe-concurrent",
+      "type": "haxelib",
+      "version": null
+    },
+    {
       "name": "haxe-strings",
       "type": "haxelib",
       "version": "7.0.2"
@@ -77,36 +62,55 @@
       "version": null
     },
     {
-      "name": "hscript",
+      "name": "hxvlc",
+      "type": "haxelib",
+      "version": null
+    },
+    {
+      "name": "hxcpp",
       "type": "git",
       "dir": null,
       "ref": "master",
-      "url": "https://github.com/HaxeFoundation/hscript"
+      "url": "https://github.com/HaxeFoundation/hxcpp.git"
     },
     {
-      "name": "hscript-ex",
+      "name": "hxcpp-debug-server",
       "type": "haxelib",
-      "version": "0.0.0"
+      "version": null
     },
-    {
-      "name": "hxCodec",
-      "type": "git",
-      "dir": null,
-      "ref": "main",
-      "url": "https://github.com/polybiusproxy/hxCodec"
-    }, 
     {
       "name": "polymod",
       "type": "haxelib",
       "version": null
     },
     {
-      "name": "thx.semver",
+      "name": "hxdiscord_rpc",
+      "type": "git",
+      "dir": null,
+      "ref": "master",
+      "url": "https://github.com/MAJigsaw77/hxdiscord_rpc"
+    },
+    {
+      "name": "hxp",
       "type": "haxelib",
       "version": null
     },
     {
-      "name": "yaml",
+      "name": "lime",
+      "type": "git",
+      "dir": null,
+      "ref": "master",
+      "url": "https://github.com/openfl/lime.git"
+    },
+    {
+      "name": "openfl",
+      "type": "git",
+      "dir": null,
+      "ref": "master",
+      "url": "https://github.com/openfl/openfl.git"
+    },
+    {
+      "name": "thx.semver",
       "type": "haxelib",
       "version": null
     }

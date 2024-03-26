@@ -2,15 +2,16 @@
 import haxe.macro.Context;
 import haxe.macro.Expr;
 #else
-import core.*;
-import data.*;
+import altronixengine.core.*;
+import altronixengine.data.*;
 import flixel.FlxG;
-import utils.*;
+import altronixengine.utils.*;
+#if VIDEOS_ALLOWED
+import hxvlc.flixel.*;
+import hxvlc.openfl.*;
 #end
-#if USE_YAML
-import yaml.Yaml;
 #end
 
 using StringTools;
 using hx.strings.Strings;
-using utils.ConvertUtil;
+using altronixengine.utils.ConvertUtil;

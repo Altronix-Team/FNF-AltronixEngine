@@ -1,5 +1,6 @@
 package flixel.system.ui;
 
+import altronixengine.utils.Paths;
 #if FLX_SOUND_SYSTEM
 import flash.Lib;
 import flash.display.Bitmap;

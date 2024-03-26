@@ -6,7 +6,7 @@ name: Latest build release CI
 on:
   push:
     branches:
-      - main
+      - 1.0.0
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -26,37 +26,25 @@ jobs:
       - name: Setting up Haxe
         uses: krdlab/setup-haxe@master
         with:
-          haxe-version: 4.3.2
+          haxe-version: 4.3.4
           
       #Took caching functions from Codename Engine
       - name: Restore existing build cache for faster compilation
         id: cache-restore
         uses: actions/cache/restore@v3
         with:
-          key: cache-build-windows
+          key: cache-dev-build-windows
           path: |
             .haxelib/
-            export/release/windows/haxe/
-            export/release/windows/obj/
             export/debug/windows/haxe/
             export/debug/windows/obj/
             
-      # Runs a set of commands using the runners shell
-      - name: Setup everything and build release version
+      - name: Build debug version
         run: |
           haxelib setup C:/haxelib
           haxelib install hxcpp > /dev/null --quiet
           haxelib install hmm --quiet
           haxelib run hmm install --quiet
-          haxelib run lime build windows
-        shell: cmd
-        
-      - name: Make release zip
-        run: |
-          7z a -tzip "engine.zip" "./export/release/windows/bin/*"
-          
-      - name: Build debug version
-        run: |
           haxelib run lime build windows -debug
         shell: cmd
           
@@ -68,9 +56,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           name: Latest build from action with id ${{github.run_number}}
-          tag_name: Actions_Build_${{github.run_number}}
+          tag_name: Development_build
           files: |
-            engine.zip
             engine-debug.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -100,8 +87,6 @@ jobs:
         with:
           path: |
             .haxelib/
-            export/release/windows/haxe/
-            export/release/windows/obj/
             export/debug/windows/haxe/
             export/debug/windows/obj/
-          key: cache-build-windows
+          key: cache-dev-build-windows

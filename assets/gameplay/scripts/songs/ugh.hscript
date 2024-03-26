@@ -15,8 +15,6 @@ function startCutscene()
 	cutsceneHandler.push(tankman);
 	PlayState.instance.insert(PlayState.instance.members.indexOf(dadGroup) + 1, tankman);
 
-	Main.gjToastManager.visible = false;
-
 	cutsceneHandler.endTime = 12;
 	cutsceneHandler.music = 'weeks/assets/week7/music/DISTORTO';
 	
@@ -28,8 +26,7 @@ function startCutscene()
 		FlxTween.tween(FlxG.camera, {zoom: PlayState.instance.defaultCamZoom}, timeForStuff, {ease: FlxEase.quadInOut});
 		PlayState.instance.moveCamera(true);
 		PlayState.instance.startCountdown();
-		
-		Main.gjToastManager.visible = true;
+
 		camHUD.visible = true;
 		dadGroup.alpha = 1;
 		gfGroup.alpha = 1;

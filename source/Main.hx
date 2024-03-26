@@ -5,47 +5,42 @@ import flixel.FlxGame;
 import flixel.FlxState;
 import flixel.system.scaleModes.StageSizeScaleMode;
 import flixel.util.FlxColor;
-import gamejolt.GameJolt.GJToastManager;
 import haxe.CallStack;
 import haxe.Exception;
 import lime.app.Application;
 import lime.system.ThreadPool;
 import lime.utils.LogLevel;
-import modding.ModUtil;
+import altronixengine.modding.ModUtil;
 import openfl.Assets;
 import openfl.Lib;
 import openfl.display.Sprite;
 import openfl.events.Event;
-import openfl.events.UncaughtErrorEvent;
-import openfl.system.Capabilities;
 import openfl.utils.AssetCache;
 import openfl.utils.AssetLibrary;
-import states.HscriptableState.PolymodHscriptState;
+import altronixengine.states.HscriptableState.PolymodHscriptState;
 import sys.io.Process;
-import utils.Debug.DebugLogWriter;
-import utils.EngineFPS;
-import utils.EngineSave;
-import utils.ThreadUtil;
+import altronixengine.utils.Debug.DebugLogWriter;
+import altronixengine.utils.EngineFPS;
+import altronixengine.utils.EngineSave;
+import altronixengine.utils.ThreadUtil;
+import altronixengine.core.FNFSignals;
+import altronixengine.data.EngineConstants;
+import altronixengine.utils.CoolUtil;
+import altronixengine.utils.EngineData;
+import altronixengine.utils.Debug;
 #if cpp
 import cpp.vm.Gc;
 #end
 #if FEATURE_MODCORE
-import modding.ModCore;
+import altronixengine.modding.ModCore;
 #end
 
-// TODO Altronix Engine start splash
 class Main extends Sprite
 {
-	public static var gjToastManager:GJToastManager;
-
 	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	var gameHeight:Int = 720; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
-	var initialState:Class<FlxState> = states.TitleState; // The FlxState the game starts with.
+	var initialState:Class<FlxState> = altronixengine.states.TitleState; // The FlxState the game starts with.
 
-	#if (flixel < "5.0.0")
-	var zoom:Float = -1; // If -1, zoom is automatically calculated to fit the window dimensions.
-
-	#end
 	var framerate:Int = 120; // How many frames per second the game should run at.
 	var skipSplash:Bool = true; // Whether to skip the flixel splash screen that appears in release mode.
 	var startFullscreen:Bool = false; // Whether to start the game in fullscreen on desktop targets
@@ -79,6 +74,10 @@ class Main extends Sprite
 	public static var configFound = false;
 	public static var hscriptClasses:Array<String> = [];
 
+	#if FEATURE_FILESYSTEM
+	public static var crashHandler:CrashHandler;
+	#end
+
 	public static function main():Void
 	{
 		// quick checks
@@ -93,14 +92,11 @@ class Main extends Sprite
 		super();
 
 		#if FEATURE_FILESYSTEM
-		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onUncaughtError);
-		#if cpp
-		untyped __global__.__hxcpp_set_critical_error_handler(onCriticalErrorEvent);
-		#end
+		crashHandler = new CrashHandler();
 		#end
 
-		compileTime = macros.MacroUtil.buildDateString().toString();
-		haxeVersion = macros.CheckHaxeVersion.checkHaxeVersion().toString();
+		compileTime = altronixengine.macros.MacroUtil.buildDateString().toString();
+		haxeVersion = altronixengine.macros.CheckHaxeVersion.checkHaxeVersion().toString();
 
 		if (stage != null)
 		{
@@ -133,20 +129,6 @@ class Main extends Sprite
 
 		EngineData.keyCheck();
 
-		#if (flixel < "5.0.0")
-		var stageWidth:Int = Lib.current.stage.stageWidth;
-		var stageHeight:Int = Lib.current.stage.stageHeight;
-
-		if (zoom == -1)
-		{
-			var ratioX:Float = stageWidth / gameWidth;
-			var ratioY:Float = stageHeight / gameHeight;
-			zoom = Math.min(ratioX, ratioY);
-			gameWidth = Math.ceil(stageWidth / zoom);
-			gameHeight = Math.ceil(stageHeight / zoom);
-		}
-		#end
-
 		framerate = save.data.fpsCap;
 
 		#if !cpp
@@ -176,209 +158,23 @@ class Main extends Sprite
 
 		hscriptClasses = PolymodHscriptState.listScriptClasses();
 
-		game = new CustomGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash
-			#if (!debug), save.data.fullscreenOnStart #end);
+		game = new CustomGame(gameWidth, gameHeight, initialState, framerate, framerate, skipSplash #if (!debug), save.data.fullscreenOnStart #end);
 		addChild(game);
-
-		// FlxG.scaleMode = new StageSizeScaleMode();
-
-		FlxG.signals.preStateCreate.add(preStateSwitch);
-		FlxG.signals.postStateSwitch.add(postStateSwitch);
 
 		#if !mobile
 		// addChild(fpsCounter);
 		toggleFPS(Main.save.data.fps);
 		#end
 
-		gjToastManager = new GJToastManager();
-		addChild(gjToastManager);
-
 		// Finish up loading debug tools.
 		Debug.onGameStart();
 
 		// setup automatic beat, step and section updates
-		gameplayStuff.Conductor.setupUpdates();
-	}
-
-	static final ERROR_REPORT_URL = "https://github.com/AltronMaxX/FNF-AltronixEngine";
-
-	/**
-	 * Called when OpenFL encounters an uncaught fatal error.
-	 * Note that the default logging system should NOT be used here in case that was the problem.
-	 * @param error The error that was thrown.
-	 */
-	public static function onUncaughtError(error:UncaughtErrorEvent)
-	{
-		#if FEATURE_FILESYSTEM
-		FlxG.resetGame();
-		var errorMsg:String = '';
-
-		var funnyTitle:Array<String> = [
-			'Fatal Error!',
-			'Monika deleted everything!',
-			'Catastrophic Error',
-			'Well-well-well, what have we got here?',
-			'Game over',
-			'Kade Engine moment',
-			'Tester couldn`t find it'
-		];
-
-		errorMsg += '==========FATAL ERROR==========\n';
-		errorMsg += 'An uncaught error was thrown, and the game had to close.\n';
-		errorMsg += 'Please use the link below, create a new issue, and upload this file to report the error.\n';
-		errorMsg += '\n';
-		errorMsg += ERROR_REPORT_URL;
-		errorMsg += '\n';
-
-		errorMsg += '==========SYSTEM INFO==========\n';
-		errorMsg += 'Altronix Engine version: ${EngineConstants.engineVer}\n';
-		errorMsg += '  HaxeFlixel version: ${Std.string(FlxG.VERSION)}\n';
-		errorMsg += '  Friday Night Funkin\' version: ${states.MainMenuState.gameVer}\n';
-		errorMsg += 'System telemetry:\n';
-		errorMsg += '  OS: ${Capabilities.os}\n';
-
-		errorMsg += '\n';
-
-		errorMsg += '==========STACK TRACE==========\n';
-		errorMsg += error.error + '\n';
-
-		var errorCallStack:Array<StackItem> = CallStack.exceptionStack(true);
-
-		for (line in errorCallStack)
-		{
-			switch (line)
-			{
-				case CFunction:
-					errorMsg += '  function:\n';
-				case Module(m):
-					errorMsg += '  module:${m}\n';
-				case FilePos(s, file, line, column):
-					errorMsg += '  (${file}#${line},${column})\n';
-				case Method(className, method):
-					errorMsg += '  method:(${className}/${method}\n';
-				case LocalFunction(v):
-					errorMsg += '  localFunction:${v}\n';
-				default:
-					errorMsg += line;
-			}
-		}
-		errorMsg += '\n';
-
-		var logFolderPath = CoolUtil.createDirectoryIfNotExists('crashes');
-
-		var path:String = '${logFolderPath}/Altronix Engine - ${DebugLogWriter.getDateString()}.txt';
-
-		sys.io.File.saveContent(path, errorMsg + "\n");
-
-		errorMsg += 'An error has occurred and the game is forced to close.\nPlease access the "crash" folder and send the .crash file to the developers:\n'
-			+ ERROR_REPORT_URL
-			+ '\n';
-
-		Application.current.window.alert('An error has occurred and the game is forced to close.\nPlease access the "crash" folder and send the .crash file to the developers:\n'
-			+ ERROR_REPORT_URL,
-			funnyTitle[FlxG.random.int(0, funnyTitle.length - 1)]);
-
-		try
-		{
-			new Process(path);
-		}
-		#else
-		FlxG.resetGame();
-
-		Application.current.window.alert('An error has occurred and the game is forced to close.\nWe cannot write a log file though. Tell the developers:\n'
-			+ ERROR_REPORT_URL,
-			funnyTitle[FlxG.random.int(0, funnyTitle.length - 1)]);
-		#end
-	}
-
-	private function onCriticalErrorEvent(message:String):Void
-	{
-		#if FEATURE_FILESYSTEM
-		FlxG.resetGame();
-		var errorMsg:String = '';
-
-		var funnyTitle:Array<String> = [
-			'Fatal Error!',
-			'Monika deleted everything!',
-			'Catastrophic Error',
-			'Well-well-well, what have we got here?',
-			'Game over',
-			'Kade Engine moment',
-			'Tester couldn`t find it'
-		];
-
-		errorMsg += '==========FATAL ERROR==========\n';
-		errorMsg += 'An uncaught error was thrown, and the game had to close.\n';
-		errorMsg += 'Please use the link below, create a new issue, and upload this file to report the error.\n';
-		errorMsg += '\n';
-		errorMsg += ERROR_REPORT_URL;
-		errorMsg += '\n';
-
-		errorMsg += '==========SYSTEM INFO==========\n';
-		errorMsg += 'Altronix Engine version: ${EngineConstants.engineVer}\n';
-		errorMsg += '  HaxeFlixel version: ${Std.string(FlxG.VERSION)}\n';
-		errorMsg += '  Friday Night Funkin\' version: ${states.MainMenuState.gameVer}\n';
-		errorMsg += 'System telemetry:\n';
-		errorMsg += '  OS: ${Capabilities.os}\n';
-
-		errorMsg += '\n';
-
-		errorMsg += '==========STACK TRACE==========\n';
-		errorMsg += message + '\n';
-
-		var errorCallStack:Array<StackItem> = CallStack.exceptionStack(true);
-
-		for (line in errorCallStack)
-		{
-			switch (line)
-			{
-				case CFunction:
-					errorMsg += '  function:\n';
-				case Module(m):
-					errorMsg += '  module:${m}\n';
-				case FilePos(s, file, line, column):
-					errorMsg += '  (${file}#${line},${column})\n';
-				case Method(className, method):
-					errorMsg += '  method:(${className}/${method}\n';
-				case LocalFunction(v):
-					errorMsg += '  localFunction:${v}\n';
-				default:
-					errorMsg += line;
-			}
-		}
-		errorMsg += '\n';
-
-		var logFolderPath = CoolUtil.createDirectoryIfNotExists('crashes');
-
-		var path:String = '${logFolderPath}/Altronix Engine - ${DebugLogWriter.getDateString()}.txt';
-
-		sys.io.File.saveContent(path, errorMsg + "\n");
-
-		errorMsg += 'An error has occurred and the game is forced to close.\nPlease access the "crash" folder and send the .crash file to the developers:\n'
-			+ ERROR_REPORT_URL
-			+ '\n';
-
-		Application.current.window.alert('An error has occurred and the game is forced to close.\nPlease access the "crash" folder and send the .crash file to the developers:\n'
-			+ ERROR_REPORT_URL,
-			funnyTitle[FlxG.random.int(0, funnyTitle.length - 1)]);
-
-		try
-		{
-			new Process(path);
-		}
-		#else
-		FlxG.resetGame();
-
-		Application.current.window.alert('An error has occurred and the game is forced to close.\nWe cannot write a log file though. Tell the developers:\n'
-			+ ERROR_REPORT_URL,
-			funnyTitle[FlxG.random.int(0, funnyTitle.length - 1)]);
-		#end
+		altronixengine.gameplayStuff.Conductor.setupUpdates();
 	}
 
 	public static var fpsCounter:EngineFPS = null;
 
-	// taken from forever engine, cuz optimization very pog.
-	// thank you shubs :)
 	public static function dumpCache()
 	{
 		@:privateAccess
@@ -455,30 +251,6 @@ class Main extends Sprite
 			Debug.logError('Failed to set save ' + e.details());
 			return false;
 		}
-	}
-
-	private function preStateSwitch(newState:FlxState)
-	{
-		/*var cache = cast(Assets.cache, AssetCache);
-
-		dumpCache();
-
-		cache.clear();
-		#if cpp
-		Gc.run(true);
-		#else
-		openfl.system.System.gc();
-		#end*/
-	}
-
-	private function postStateSwitch()
-	{
-		/*#if cpp
-		Gc.run(true);
-		#else
-		openfl.system.System.gc();
-		#end
-		EngineFPS.fpsText.clearMaxFPS();*/
 	}
 }
 
@@ -558,10 +330,5 @@ class CustomGame extends FlxGame
 		final msg:String = caughtErrors.join('\n');
 
 		Debug.displayAlert('Error!', '$msg\n${e.details()}');
-
-		@:privateAccess {	
-			FlxG.game._requestedState = new states.TitleState(true);
-			FlxG.game.switchState();
-		}
 	}
 }

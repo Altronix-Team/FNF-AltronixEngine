@@ -31,7 +31,7 @@ typedef StagePropGroup = FlxTypedSpriteGroup<StageProp>;
 /**
  * A Stage is a group of objects rendered in the PlayState.
  *
- * A Stage is comprised of one or more props, each of which is a FlxSprite.
+ * A Stage is comprised of one or more props, each of which is an FlxSprite.
  */
 class Stage extends FlxSpriteGroup implements IPlayStateScriptedClass implements IRegistryEntry<StageData>
 {
@@ -256,7 +256,14 @@ class Stage extends FlxSpriteGroup implements IPlayStateScriptedClass implements
       propSprite.scrollFactor.x = dataProp.scroll[0];
       propSprite.scrollFactor.y = dataProp.scroll[1];
 
+      propSprite.angle = dataProp.angle;
+      propSprite.color = FlxColor.fromString(dataProp.color);
+      @:privateAccess if (!isSolidColor) propSprite.blend = BlendMode.fromString(dataProp.blend);
+
       propSprite.zIndex = dataProp.zIndex;
+
+      propSprite.flipX = dataProp.flipX;
+      propSprite.flipY = dataProp.flipY;
 
       switch (dataProp.animType)
       {
@@ -440,17 +447,18 @@ class Stage extends FlxSpriteGroup implements IPlayStateScriptedClass implements
       character.x = stageCharData.position[0] - character.characterOrigin.x;
       character.y = stageCharData.position[1] - character.characterOrigin.y;
 
-      @:privateAccess(funkin.play.stage.Bopper)
-      {
-        // Undo animOffsets before saving original position.
-        character.originalPosition.x = character.x + character.animOffsets[0];
-        character.originalPosition.y = character.y + character.animOffsets[1];
-      }
+      character.originalPosition.set(character.x, character.y);
 
       var finalScale = character.getBaseScale() * stageCharData.scale;
       character.setScale(finalScale); // Don't use scale.set for characters!
       character.cameraFocusPoint.x += stageCharData.cameraOffsets[0];
       character.cameraFocusPoint.y += stageCharData.cameraOffsets[1];
+
+      character.scrollFactor.x = stageCharData.scroll[0];
+      character.scrollFactor.y = stageCharData.scroll[1];
+
+      character.alpha = stageCharData.alpha;
+      character.angle = stageCharData.angle;
 
       #if FEATURE_DEBUG_FUNCTIONS
       // Draw the debug icon at the character's feet.
@@ -463,6 +471,9 @@ class Stage extends FlxSpriteGroup implements IPlayStateScriptedClass implements
       }
       #end
     }
+
+    // Set the characters type
+    character.characterType = charType;
 
     // Add the character to the scene.
     this.add(character);
@@ -896,5 +907,5 @@ class Stage extends FlxSpriteGroup implements IPlayStateScriptedClass implements
 
   public function onSongLoaded(event:SongLoadScriptEvent) {}
 
-  public function onSongRetry(event:ScriptEvent) {}
+  public function onSongRetry(event:SongRetryEvent) {}
 }

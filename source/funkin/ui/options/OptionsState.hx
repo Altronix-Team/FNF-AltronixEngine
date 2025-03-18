@@ -1,6 +1,8 @@
 package funkin.ui.options;
 
 import altronix.ui.options.UIMenu;
+import funkin.ui.transition.LoadingState;
+import funkin.ui.debug.latency.LatencyState;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
 import flixel.addons.transition.FlxTransitionableState;
@@ -190,7 +192,11 @@ class OptionsMenu extends Page
     createItem("UI", function() switchPage(UI));
     createItem("CONTROLS", function() switchPage(Controls));
     createItem("INPUT OFFSETS", function() {
+      #if web
+      LoadingState.transitionToState(() -> new LatencyState());
+      #else
       FlxG.state.openSubState(new LatencyState());
+      #end
     });
 
     #if newgrounds

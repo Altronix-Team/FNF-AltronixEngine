@@ -22,6 +22,7 @@ import funkin.ui.freeplay.charselect.PlayableCharacter;
 import flixel.util.FlxColor;
 import flixel.tweens.FlxEase;
 import funkin.graphics.FunkinCamera;
+import funkin.input.Controls;
 import funkin.ui.freeplay.FreeplayState;
 import flixel.tweens.FlxTween;
 import flixel.addons.display.FlxBackdrop;
@@ -73,6 +74,8 @@ class ResultState extends MusicBeatSubState
     }> = [];
 
   var playerCharacterId:Null<String>;
+
+  var introMusicAudio:Null<FunkinSound>;
 
   var rankBg:FunkinSprite;
   final cameraBG:FunkinCamera;
@@ -276,8 +279,7 @@ class ResultState extends MusicBeatSubState
     songName.shader = maskShaderSongName;
     difficulty.shader = maskShaderDifficulty;
 
-    // maskShaderSongName.swagMaskX = difficulty.x - 15;
-    maskShaderDifficulty.swagMaskX = difficulty.x - 15;
+    maskShaderDifficulty.swagMaskX = difficulty.x - 30;
 
     var blackTopBar:FlxSprite = new FlxSprite().loadGraphic(Paths.image("resultScreen/topBarBlack"));
     blackTopBar.y = -blackTopBar.height;
@@ -413,7 +415,8 @@ class ResultState extends MusicBeatSubState
       if (Assets.exists(introMusic))
       {
         // Play the intro music.
-        FunkinSound.load(introMusic, 1.0, false, true, true, () -> {
+        introMusicAudio = FunkinSound.load(introMusic, 1.0, false, true, true, () -> {
+          introMusicAudio = null;
           FunkinSound.playMusic(getMusicPath(playerCharacter, rank),
             {
               startingVolume: 1.0,
@@ -472,9 +475,12 @@ class ResultState extends MusicBeatSubState
       {
         ease: FlxEase.quartOut,
         onUpdate: _ -> {
+          clearPercentLerp = Math.round(clearPercentLerp);
+          clearPercentCounter.curNumber = Math.round(clearPercentCounter.curNumber);
           // Only play the tick sound if the number increased.
           if (clearPercentLerp != clearPercentCounter.curNumber)
           {
+            trace('$clearPercentLerp and ${clearPercentCounter.curNumber}');
             clearPercentLerp = clearPercentCounter.curNumber;
             FunkinSound.playOnce(Paths.sound('scrollMenu'));
           }
@@ -722,11 +728,40 @@ class ResultState extends MusicBeatSubState
       speedOfTween.x -= 0.1;
     }
 
-    if (controls.PAUSE)
+    if (controls.PAUSE || controls.ACCEPT)
     {
-      if (FlxG.sound.music != null)
+      if (introMusicAudio != null)
       {
-        FlxTween.tween(FlxG.sound.music, {volume: 0}, 0.8);
+        @:nullSafety(Off)
+        introMusicAudio.onComplete = null;
+
+        FlxTween.tween(introMusicAudio, {volume: 0}, 0.8,
+          {
+            onComplete: _ -> {
+              if (introMusicAudio != null)
+              {
+                introMusicAudio.stop();
+                introMusicAudio.destroy();
+                introMusicAudio = null;
+              }
+            }
+          });
+        FlxTween.tween(introMusicAudio, {pitch: 3}, 0.1,
+          {
+            onComplete: _ -> {
+              FlxTween.tween(introMusicAudio, {pitch: 0.5}, 0.4);
+            }
+          });
+      }
+      else if (FlxG.sound.music != null)
+      {
+        FlxTween.tween(FlxG.sound.music, {volume: 0}, 0.8,
+          {
+            onComplete: _ -> {
+              FlxG.sound.music.stop();
+              FlxG.sound.music.destroy();
+            }
+          });
         FlxTween.tween(FlxG.sound.music, {pitch: 3}, 0.1,
           {
             onComplete: _ -> {

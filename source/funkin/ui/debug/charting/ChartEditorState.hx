@@ -79,7 +79,6 @@ import funkin.ui.debug.charting.commands.SetItemSelectionCommand;
 import funkin.ui.debug.charting.components.ChartEditorEventSprite;
 import funkin.ui.debug.charting.components.ChartEditorHoldNoteSprite;
 import funkin.ui.debug.charting.components.ChartEditorMeasureTicks;
-import funkin.ui.debug.charting.components.ChartEditorMeasureTicks;
 import funkin.ui.debug.charting.components.ChartEditorNotePreview;
 import funkin.ui.debug.charting.components.ChartEditorNoteSprite;
 import funkin.ui.debug.charting.components.ChartEditorPlaybarHead;
@@ -95,6 +94,7 @@ import funkin.ui.mainmenu.MainMenuState;
 import funkin.ui.transition.LoadingState;
 import funkin.util.Constants;
 import funkin.util.FileUtil;
+import funkin.util.MathUtil;
 import funkin.util.logging.CrashHandler;
 import funkin.util.SortUtil;
 import funkin.util.WindowUtil;
@@ -245,7 +245,7 @@ class ChartEditorState extends UIState // UIState derives from MusicBeatState
   /**
    * Duration, in seconds, for the scroll easing animation.
    */
-  public static final SCROLL_EASE_DURATION:Float = 0.2;
+  public static final SCROLL_EASE_DURATION:Float = 0.4;
 
   // Other
 
@@ -700,7 +700,7 @@ class ChartEditorState extends UIState // UIState derives from MusicBeatState
 
   function get_isCursorOverHaxeUI():Bool
   {
-    return Screen.instance.hasSolidComponentUnderPoint(FlxG.mouse.screenX, FlxG.mouse.screenY);
+    return Screen.instance.hasSolidComponentUnderPoint(FlxG.mouse.viewX, FlxG.mouse.viewY);
   }
 
   /**
@@ -774,9 +774,8 @@ class ChartEditorState extends UIState // UIState derives from MusicBeatState
 
   /**
    * The current process that is lerping the scroll position.
-   * Used to cancel the previous lerp if the user scrolls again.
    */
-  var currentScrollEase:Null<VarTween>;
+  var currentScrollEase:Null<Float>;
 
   /**
    * The position where the user middle clicked to place a scroll anchor.
@@ -2274,7 +2273,24 @@ class ChartEditorState extends UIState // UIState derives from MusicBeatState
         this.openBackupAvailableDialog(welcomeDialog);
       }
     }
+
+    #if FEATURE_DISCORD_RPC
+    updateDiscordRPC();
+    #end
   }
+
+  #if FEATURE_DISCORD_RPC
+  function updateDiscordRPC():Void
+  {
+    funkin.api.discord.DiscordClient.instance.setPresence(
+      {
+        // TODO: Make this display the song name and update when it changes.
+        // state: '${currentSongName} [${selectedDifficulty}]',
+        state: null,
+        details: 'Chart Editor [Charting]'
+      });
+  }
+  #end
 
   function setupWelcomeMusic()
   {
@@ -2691,6 +2707,7 @@ class ChartEditorState extends UIState // UIState derives from MusicBeatState
     playbarHeadLayout.playbarHead.width = FlxG.width;
     playbarHeadLayout.playbarHead.height = 10;
     playbarHeadLayout.playbarHead.styleString = 'padding-left: 0px; padding-right: 0px; border-left: 0px; border-right: 0px;';
+    playbarHeadLayout.playbarHead.min = 0;
 
     playbarHeadLayout.playbarHead.onDragStart = function(_:DragEvent) {
       playbarHeadDragging = true;
@@ -2707,13 +2724,12 @@ class ChartEditorState extends UIState // UIState derives from MusicBeatState
       }
     }
 
-    playbarHeadLayout.playbarHead.onDrag = function(_:DragEvent) {
+    playbarHeadLayout.playbarHead.onDrag = function(d:DragEvent) {
       if (playbarHeadDragging)
       {
-        // Set the song position to where the playhead was moved to.
-        scrollPositionInPixels = (songLengthInPixels) * playbarHeadLayout.playbarHead.value / 100;
         // Update the conductor and audio tracks to match.
-        moveSongToScrollPosition();
+        currentScrollEase = d.value;
+        easeSongToScrollPosition(currentScrollEase);
       }
     }
 
@@ -2724,8 +2740,9 @@ class ChartEditorState extends UIState // UIState derives from MusicBeatState
       if (playbarHeadDraggingWasPlaying)
       {
         playbarHeadDraggingWasPlaying = false;
+
         // Disabled code to resume song playback on drag.
-        // startAudioPlayback();
+        startAudioPlayback();
       }
     }
 
@@ -3401,10 +3418,14 @@ class ChartEditorState extends UIState // UIState derives from MusicBeatState
           audioInstTrack.time = -Conductor.instance.instrumentalOffset;
         }
       }
+
+      if (!audioInstTrack.isPlaying && currentScrollEase != scrollPositionInPixels) easeSongToScrollPosition(currentScrollEase);
     }
 
     if (audioInstTrack != null && audioInstTrack.isPlaying)
     {
+      currentScrollEase = scrollPositionInPixels;
+
       if (FlxG.keys.pressed.ALT)
       {
         // If middle mouse panning during song playback, we move ONLY the playhead, without scrolling. Neat!
@@ -3840,7 +3861,7 @@ class ChartEditorState extends UIState // UIState derives from MusicBeatState
     // Handle scroll anchor
     if (scrollAnchorScreenPos != null)
     {
-      var currentScreenPos = new FlxPoint(FlxG.mouse.screenX, FlxG.mouse.screenY);
+      var currentScreenPos = new FlxPoint(FlxG.mouse.viewX, FlxG.mouse.viewX);
       var distance = currentScreenPos - scrollAnchorScreenPos;
 
       var verticalDistance = distance.y;
@@ -3853,7 +3874,7 @@ class ChartEditorState extends UIState // UIState derives from MusicBeatState
     }
 
     // Mouse Wheel = Scroll
-    if (FlxG.mouse.wheel != 0 && !FlxG.keys.pressed.CONTROL)
+    if (FlxG.mouse.wheel != 0)
     {
       scrollAmount = -50 * FlxG.mouse.wheel;
       shouldPause = true;
@@ -4041,27 +4062,13 @@ class ChartEditorState extends UIState // UIState derives from MusicBeatState
       shouldPause = true;
     }
 
-    if (Math.abs(scrollAmount) > GRID_SIZE * 8)
-    {
-      shouldEase = true;
-    }
+    shouldEase = true;
+    if (shouldPause) stopAudioPlayback();
 
     // Resync the conductor and audio tracks.
-    if (scrollAmount != 0 || playheadAmount != 0)
-    {
-      this.playheadPositionInPixels += playheadAmount;
-      if (shouldEase)
-      {
-        easeSongToScrollPosition(this.scrollPositionInPixels + scrollAmount);
-      }
-      else
-      {
-        // Apply the scroll amount.
-        this.scrollPositionInPixels += scrollAmount;
-        moveSongToScrollPosition();
-      }
-    }
-    if (shouldPause) stopAudioPlayback();
+    if (playheadAmount != 0) this.playheadPositionInPixels += playheadAmount;
+
+    if (scrollAmount != 0) currentScrollEase += scrollAmount;
   }
 
   /**
@@ -4121,8 +4128,8 @@ class ChartEditorState extends UIState // UIState derives from MusicBeatState
       var overlapsRenderedEvents:Bool = FlxG.mouse.overlaps(renderedEvents);
 
       // Cursor position relative to the grid.
-      var cursorX:Float = FlxG.mouse.screenX - gridTiledSprite.x;
-      var cursorY:Float = FlxG.mouse.screenY - gridTiledSprite.y;
+      var cursorX:Float = FlxG.mouse.viewX - gridTiledSprite.x;
+      var cursorY:Float = FlxG.mouse.viewY - gridTiledSprite.y;
 
       var overlapsSelectionBorder:Bool = overlapsGrid
         && ((cursorX % 40) < (GRID_SELECTION_BORDER_WIDTH / 2)
@@ -4137,7 +4144,7 @@ class ChartEditorState extends UIState // UIState derives from MusicBeatState
       {
         if (scrollAnchorScreenPos == null)
         {
-          scrollAnchorScreenPos = new FlxPoint(FlxG.mouse.screenX, FlxG.mouse.screenY);
+          scrollAnchorScreenPos = new FlxPoint(FlxG.mouse.viewX, FlxG.mouse.viewY);
           selectionBoxStartPos = null;
         }
         else
@@ -4159,11 +4166,11 @@ class ChartEditorState extends UIState // UIState derives from MusicBeatState
         else if (notePreview != null && FlxG.mouse.overlaps(notePreview) && !isCursorOverHaxeUI)
         {
           // Clicked note preview
-          notePreviewScrollAreaStartPos = new FlxPoint(FlxG.mouse.screenX, FlxG.mouse.screenY);
+          notePreviewScrollAreaStartPos = new FlxPoint(FlxG.mouse.viewX, FlxG.mouse.viewY);
         }
         else if (!isCursorOverHaxeUI && (!overlapsGrid || overlapsSelectionBorder))
         {
-          selectionBoxStartPos = new FlxPoint(FlxG.mouse.screenX, FlxG.mouse.screenY);
+          selectionBoxStartPos = new FlxPoint(FlxG.mouse.viewX, FlxG.mouse.viewY);
           // Drawing selection box.
           targetCursorMode = Crosshair;
         }
@@ -4188,7 +4195,7 @@ class ChartEditorState extends UIState // UIState derives from MusicBeatState
       {
         // Clicked on the playhead scroll area.
         // Move the playhead to the cursor position.
-        this.playheadPositionInPixels = FlxG.mouse.screenY - (GRID_INITIAL_Y_POS);
+        this.playheadPositionInPixels = FlxG.mouse.viewY - (GRID_INITIAL_Y_POS);
         moveSongToScrollPosition();
 
         // Cursor should be a grabby hand.
@@ -4251,8 +4258,8 @@ class ChartEditorState extends UIState // UIState derives from MusicBeatState
               }
               else
               {
-                // Minimum of 0.
-                return 0;
+                // Minimum of -1.
+                return -1;
               }
             });
 
@@ -4313,27 +4320,25 @@ class ChartEditorState extends UIState // UIState derives from MusicBeatState
             // Clicking and dragging.
 
             // Scroll the screen if the mouse is above or below the grid.
-            if (FlxG.mouse.screenY < MENU_BAR_HEIGHT)
+            if (FlxG.mouse.viewY < MENU_BAR_HEIGHT)
             {
               // Scroll up.
-              var diff:Float = MENU_BAR_HEIGHT - FlxG.mouse.screenY;
-              scrollPositionInPixels -= diff * 0.5; // Too fast!
-              moveSongToScrollPosition();
+              var diff:Float = MENU_BAR_HEIGHT - FlxG.mouse.viewY;
+              currentScrollEase -= diff * 0.5; // Too fast!
             }
-            else if (FlxG.mouse.screenY > (playbarHeadLayout?.y ?? 0.0))
+            else if (FlxG.mouse.viewY > (playbarHeadLayout?.y ?? 0.0))
             {
               // Scroll down.
-              var diff:Float = FlxG.mouse.screenY - (playbarHeadLayout?.y ?? 0.0);
-              scrollPositionInPixels += diff * 0.5; // Too fast!
-              moveSongToScrollPosition();
+              var diff:Float = FlxG.mouse.viewY - (playbarHeadLayout?.y ?? 0.0);
+              currentScrollEase += (diff * 0.5); // Too fast!
             }
 
             // Render the selection box.
             var selectionRect:FlxRect = new FlxRect();
-            selectionRect.x = Math.min(FlxG.mouse.screenX, selectionBoxStartPos.x);
-            selectionRect.y = Math.min(FlxG.mouse.screenY, selectionBoxStartPos.y);
-            selectionRect.width = Math.abs(FlxG.mouse.screenX - selectionBoxStartPos.x);
-            selectionRect.height = Math.abs(FlxG.mouse.screenY - selectionBoxStartPos.y);
+            selectionRect.x = Math.min(FlxG.mouse.viewX, selectionBoxStartPos.x);
+            selectionRect.y = Math.min(FlxG.mouse.viewY, selectionBoxStartPos.y);
+            selectionRect.width = Math.abs(FlxG.mouse.viewX - selectionBoxStartPos.x);
+            selectionRect.height = Math.abs(FlxG.mouse.viewY - selectionBoxStartPos.y);
             setSelectionBoxBounds(selectionRect);
 
             targetCursorMode = Crosshair;
@@ -4461,11 +4466,11 @@ class ChartEditorState extends UIState // UIState derives from MusicBeatState
         // Player is clicking and holding on note preview to scrub around.
         targetCursorMode = Grabbing;
 
-        var clickedPosInPixels:Float = FlxMath.remapToRange(FlxG.mouse.screenY, (notePreview?.y ?? 0.0),
-          (notePreview?.y ?? 0.0) + (notePreview?.height ?? 0.0), 0, songLengthInPixels);
+        var clickedPosInPixels:Float = FlxMath.remapToRange(FlxG.mouse.viewY, (notePreview?.y ?? 0.0), (notePreview?.y ?? 0.0) + (notePreview?.height ?? 0.0),
+          0, songLengthInPixels);
 
-        scrollPositionInPixels = clickedPosInPixels;
-        moveSongToScrollPosition();
+        currentScrollEase = clickedPosInPixels;
+        easeSongToScrollPosition(currentScrollEase);
       }
       else if (scrollAnchorScreenPos != null)
       {
@@ -4520,19 +4525,17 @@ class ChartEditorState extends UIState // UIState derives from MusicBeatState
           targetCursorMode = Grabbing;
 
           // Scroll the screen if the mouse is above or below the grid.
-          if (FlxG.mouse.screenY < MENU_BAR_HEIGHT)
+          if (FlxG.mouse.viewY < MENU_BAR_HEIGHT)
           {
             // Scroll up.
-            var diff:Float = MENU_BAR_HEIGHT - FlxG.mouse.screenY;
-            scrollPositionInPixels -= diff * 0.5; // Too fast!
-            moveSongToScrollPosition();
+            var diff:Float = MENU_BAR_HEIGHT - FlxG.mouse.viewY;
+            currentScrollEase -= (diff * 0.5);
           }
-          else if (FlxG.mouse.screenY > (playbarHeadLayout?.y ?? 0.0))
+          else if (FlxG.mouse.viewY > (playbarHeadLayout?.y ?? 0.0))
           {
             // Scroll down.
-            var diff:Float = FlxG.mouse.screenY - (playbarHeadLayout?.y ?? 0.0);
-            scrollPositionInPixels += diff * 0.5; // Too fast!
-            moveSongToScrollPosition();
+            var diff:Float = FlxG.mouse.viewY - (playbarHeadLayout?.y ?? 0.0);
+            currentScrollEase += (diff * 0.5);
           }
 
           // Calculate distance between the position dragged to and the original position.
@@ -4811,11 +4814,11 @@ class ChartEditorState extends UIState // UIState derives from MusicBeatState
               // Show the context menu connected to the note.
               if (useSingleNoteContextMenu)
               {
-                this.openNoteContextMenu(FlxG.mouse.screenX, FlxG.mouse.screenY, highlightedNote.noteData);
+                this.openNoteContextMenu(FlxG.mouse.viewX, FlxG.mouse.viewY, highlightedNote.noteData);
               }
               else
               {
-                this.openSelectionContextMenu(FlxG.mouse.screenX, FlxG.mouse.screenY);
+                this.openSelectionContextMenu(FlxG.mouse.viewX, FlxG.mouse.viewY);
               }
             }
             else
@@ -4835,11 +4838,11 @@ class ChartEditorState extends UIState // UIState derives from MusicBeatState
                 || (isHighlightedEventSelected && currentEventSelection.length == 1);
               if (useSingleEventContextMenu)
               {
-                this.openEventContextMenu(FlxG.mouse.screenX, FlxG.mouse.screenY, highlightedEvent.eventData);
+                this.openEventContextMenu(FlxG.mouse.viewX, FlxG.mouse.viewY, highlightedEvent.eventData);
               }
               else
               {
-                this.openSelectionContextMenu(FlxG.mouse.screenX, FlxG.mouse.screenY);
+                this.openSelectionContextMenu(FlxG.mouse.viewX, FlxG.mouse.viewY);
               }
             }
             else
@@ -4860,11 +4863,11 @@ class ChartEditorState extends UIState // UIState derives from MusicBeatState
               // Show the context menu connected to the note.
               if (useSingleNoteContextMenu)
               {
-                this.openHoldNoteContextMenu(FlxG.mouse.screenX, FlxG.mouse.screenY, highlightedHoldNote.noteData);
+                this.openHoldNoteContextMenu(FlxG.mouse.viewX, FlxG.mouse.viewY, highlightedHoldNote.noteData);
               }
               else
               {
-                this.openSelectionContextMenu(FlxG.mouse.screenX, FlxG.mouse.screenY);
+                this.openSelectionContextMenu(FlxG.mouse.viewX, FlxG.mouse.viewY);
               }
             }
             else
@@ -5126,23 +5129,21 @@ class ChartEditorState extends UIState // UIState derives from MusicBeatState
   {
     if (playbarHeadLayout == null) throw "ERROR: Tried to handle playbar, but playbarHeadLayout is null!";
 
+    // Move the playhead to match the song position, if we aren't dragging it.
+    playbarHeadLayout.playbarHead.pos = currentScrollEase;
+
+    playbarHeadLayout.playbarHead.max = songLengthInPixels;
+
     // Make sure the playbar is never nudged out of the correct spot.
     playbarHeadLayout.x = 4;
     playbarHeadLayout.y = FlxG.height - 48 - 8;
 
-    // Move the playhead to match the song position, if we aren't dragging it.
-    if (!playbarHeadDragging)
-    {
-      var songPosPercent = scrollPositionInPixels / (songLengthInPixels) * 100;
-
-      if (playbarHeadLayout.playbarHead.value != songPosPercent) playbarHeadLayout.playbarHead.value = songPosPercent;
-    }
-
     var songPos:Float = Conductor.instance.songPosition + Conductor.instance.instrumentalOffset;
+    var songPosMilliseconds:String = Std.string(Math.floor(Math.abs(songPos) % 1000)).lpad('0', 2).substr(0, 2);
     var songPosSeconds:String = Std.string(Math.floor((Math.abs(songPos) / 1000) % 60)).lpad('0', 2);
     var songPosMinutes:String = Std.string(Math.floor((Math.abs(songPos) / 1000) / 60)).lpad('0', 2);
     if (songPos < 0) songPosMinutes = '-' + songPosMinutes;
-    var songPosString:String = '${songPosMinutes}:${songPosSeconds}';
+    var songPosString:String = '${songPosMinutes}:${songPosSeconds}.${songPosMilliseconds}';
 
     if (playbarSongPos.value != songPosString) playbarSongPos.value = songPosString;
 
@@ -5614,7 +5615,7 @@ class ChartEditorState extends UIState // UIState derives from MusicBeatState
     }
     else
     {
-      trace('Ignoring keybinds for View menu items because we are in live input mode (${currentLiveInputStyle}).');
+      // trace('Ignoring keybinds for View menu items because we are in live input mode (${currentLiveInputStyle}).');
     }
   }
 
@@ -5637,7 +5638,10 @@ class ChartEditorState extends UIState // UIState derives from MusicBeatState
   function handleHelpKeybinds():Void
   {
     // F1 = Open Help
-    if (FlxG.keys.justPressed.F1) this.openUserGuideDialog();
+    if (FlxG.keys.justPressed.F1 && !isHaxeUIDialogOpen)
+    {
+      this.openUserGuideDialog();
+    }
   }
 
   function handleQuickWatch():Void
@@ -6114,41 +6118,10 @@ class ChartEditorState extends UIState // UIState derives from MusicBeatState
    */
   function easeSongToScrollPosition(targetScrollPosition:Float):Void
   {
-    if (currentScrollEase != null) cancelScrollEase(currentScrollEase);
-
-    currentScrollEase = FlxTween.tween(this, {scrollPositionInPixels: targetScrollPosition}, SCROLL_EASE_DURATION,
-      {
-        ease: FlxEase.quintInOut,
-        onUpdate: this.onScrollEaseUpdate,
-        onComplete: this.cancelScrollEase,
-        type: ONESHOT
-      });
-  }
-
-  /**
-   * Callback function executed every frame that the scroll position is being eased.
-   * @param _
-   */
-  function onScrollEaseUpdate(_:FlxTween):Void
-  {
+    currentScrollEase = Math.max(0, targetScrollPosition);
+    currentScrollEase = Math.min(currentScrollEase, songLengthInPixels);
+    scrollPositionInPixels = MathUtil.smoothLerp(scrollPositionInPixels, currentScrollEase, FlxG.elapsed, SCROLL_EASE_DURATION, 1 / 1000);
     moveSongToScrollPosition();
-  }
-
-  /**
-   * Callback function executed when cancelling an existing scroll position ease.
-   * Ensures that the ease is immediately cancelled and the scroll position is set to the target value.
-   */
-  function cancelScrollEase(_:FlxTween):Void
-  {
-    if (currentScrollEase != null)
-    {
-      @:privateAccess
-      var targetScrollPosition:Float = currentScrollEase._properties.scrollPositionInPixels;
-
-      currentScrollEase.cancel();
-      currentScrollEase = null;
-      this.scrollPositionInPixels = targetScrollPosition;
-    }
   }
 
   /**
@@ -6330,6 +6303,8 @@ class ChartEditorState extends UIState // UIState derives from MusicBeatState
   function toggleAudioPlayback():Void
   {
     if (audioInstTrack == null) return;
+
+    currentScrollEase = this.scrollPositionInPixels;
 
     if (audioInstTrack.isPlaying)
     {
@@ -6524,22 +6499,22 @@ class ChartEditorState extends UIState // UIState derives from MusicBeatState
 /**
  * Available input modes for the chart editor state. Numbers/arrows/WASD available for other keybinds.
  */
-enum ChartEditorLiveInputStyle
+enum abstract ChartEditorLiveInputStyle(String)
 {
   /**
    * No hotkeys to place notes at the playbar.
    */
-  None;
+  var None;
 
   /**
    * 1/2/3/4 to place notes on opponent's side, 5/6/7/8 to place notes on player's side.
    */
-  NumberKeys;
+  var NumberKeys;
 
   /**
    * WASD to place notes on opponent's side, Arrow keys to place notes on player's side.
    */
-  WASDKeys;
+  var WASDKeys;
 }
 
 typedef ChartEditorParams =
@@ -6558,15 +6533,15 @@ typedef ChartEditorParams =
 /**
  * Available themes for the chart editor state.
  */
-enum ChartEditorTheme
+enum abstract ChartEditorTheme(String)
 {
   /**
    * The default theme for the chart editor.
    */
-  Light;
+  var Light;
 
   /**
    * A theme which introduces darker colors.
    */
-  Dark;
+  var Dark;
 }

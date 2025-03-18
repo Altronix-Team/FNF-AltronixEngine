@@ -27,11 +27,18 @@ import polymod.Polymod;
 class PolymodHandler
 {
   /**
-   * The API version that mods should comply with.
-   * Indicates which mods are compatible with this version of the game.
+   * The API version for the current version of the game. Since 0.5.0, we've just made this the game version!
    * Minor updates rarely impact mods but major versions often do.
    */
-  static final API_VERSION:String = "0.5.0"; // Constants.VERSION;
+  // static final API_VERSION:String = Constants.VERSION;
+
+  /**
+   * The Semantic Versioning rule
+   * Indicates which mods are compatible with this version of the game.
+   * Using more complex rules allows mods from older compatible versions to stay functioning,
+   * while preventing mods made for future versions from being installed.
+   */
+  static final API_VERSION_RULE:String = ">=0.5.0 <0.6.0";
 
   /**
    * Where relative to the executable that mods are located.
@@ -131,7 +138,7 @@ class PolymodHandler
         // Framework being used to load assets.
         framework: OPENFL,
         // The current version of our API.
-        apiVersionRule: API_VERSION,
+        apiVersionRule: API_VERSION_RULE,
         // Call this function any time an error occurs.
         errorCallback: PolymodErrorHandler.onPolymodError,
         // Enforce semantic version patterns for each mod.
@@ -148,6 +155,8 @@ class PolymodHandler
 
         // Parsing rules for various data formats.
         parseRules: buildParseRules(),
+
+        skipDependencyErrors: true,
 
         // Parse hxc files and register the scripted classes in them.
         useScriptedClasses: true,
@@ -228,6 +237,8 @@ class PolymodHandler
   static function buildImports():Void
   {
     // Add default imports for common classes.
+    Polymod.addDefaultImport(funkin.Assets);
+    Polymod.addDefaultImport(funkin.Paths);
 
     // Add import aliases for certain classes.
     // NOTE: Scripted classes are automatically aliased to their parent class.
@@ -258,7 +269,7 @@ class PolymodHandler
     Polymod.blacklistImport('cpp.Lib');
 
     // `Unserializer`
-    // Unserializerr.DEFAULT_RESOLVER.resolveClass() can access blacklisted packages
+    // Unserializer.DEFAULT_RESOLVER.resolveClass() can access blacklisted packages
     Polymod.blacklistImport('Unserializer');
 
     // `lime.system.CFFI`
@@ -272,6 +283,14 @@ class PolymodHandler
     // `lime.system.System`
     // System.load() can load malicious DLLs
     Polymod.blacklistImport('lime.system.System');
+
+    // `lime.utils.Assets`
+    // Literally just has a private `resolveClass` function for some reason?
+    Polymod.blacklistImport('lime.utils.Assets');
+    Polymod.blacklistImport('openfl.utils.Assets');
+    Polymod.blacklistImport('openfl.Lib');
+    Polymod.blacklistImport('openfl.system.ApplicationDomain');
+    Polymod.blacklistImport('openfl.net.SharedObject');
 
     // `openfl.desktop.NativeProcess`
     // Can load native processes on the host operating system.
@@ -316,8 +335,19 @@ class PolymodHandler
   {
     return {
       assetLibraryPaths: [
-        'default' => 'preload', 'shared' => 'shared', 'songs' => 'songs', 'videos' => 'videos', 'tutorial' => 'tutorial', 'week1' => 'week1',
-        'week2' => 'week2', 'week3' => 'week3', 'week4' => 'week4', 'week5' => 'week5', 'week6' => 'week6', 'week7' => 'week7', 'weekend1' => 'weekend1',
+        'default' => 'preload',
+        'shared' => 'shared',
+        'songs' => 'songs',
+        'videos' => 'videos',
+        'tutorial' => 'tutorial',
+        'week1' => 'week1',
+        'week2' => 'week2',
+        'week3' => 'week3',
+        'week4' => 'week4',
+        'week5' => 'week5',
+        'week6' => 'week6',
+        'week7' => 'week7',
+        'weekend1' => 'weekend1',
       ],
       coreAssetRedirect: CORE_FOLDER,
     }
@@ -336,7 +366,7 @@ class PolymodHandler
     var modMetadata:Array<ModMetadata> = Polymod.scan(
       {
         modRoot: MOD_FOLDER,
-        apiVersionRule: API_VERSION,
+        apiVersionRule: API_VERSION_RULE,
         fileSystem: modFileSystem,
         errorCallback: PolymodErrorHandler.onPolymodError
       });

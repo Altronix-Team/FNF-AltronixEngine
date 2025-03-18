@@ -25,7 +25,7 @@ import funkin.ui.transition.StickerSubState;
 import funkin.util.MathUtil;
 import openfl.utils.Assets;
 #if FEATURE_DISCORD_RPC
-import funkin.api.discord.Discord.DiscordClient;
+import funkin.api.discord.DiscordClient;
 #end
 
 class StoryMenuState extends MusicBeatState
@@ -221,7 +221,7 @@ class StoryMenuState extends MusicBeatState
 
     #if FEATURE_DISCORD_RPC
     // Updating Discord Rich Presence
-    DiscordClient.changePresence('In the Menus', null);
+    DiscordClient.instance.setPresence({state: 'In the Menus', details: null});
     #end
   }
 

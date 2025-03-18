@@ -8,7 +8,36 @@ import funkin.save.Save;
 class Preferences
 {
   /**
-   * Whether some particularly fowl language is displayed.
+   * FPS
+   * @default `60`
+   */
+  public static var framerate(get, set):Int;
+
+  static function get_framerate():Int
+  {
+    #if web
+    return 60;
+    #else
+    return Save?.instance?.options?.framerate ?? 60;
+    #end
+  }
+
+  static function set_framerate(value:Int):Int
+  {
+    #if web
+    return 60;
+    #else
+    var save:Save = Save.instance;
+    save.options.framerate = value;
+    save.flush();
+    FlxG.updateFramerate = value;
+    FlxG.drawFramerate = value;
+    return value;
+    #end
+  }
+
+  /**
+   * Whether some particularly foul language is displayed.
    * @default `true`
    */
   public static var naughtyness(get, set):Bool;
@@ -124,6 +153,25 @@ class Preferences
 
     var save:Save = Save.instance;
     save.options.autoPause = value;
+    save.flush();
+    return value;
+  }
+
+  /**
+   * If enabled, the game will automatically launch in fullscreen on startup.
+   * @default `true`
+   */
+  public static var autoFullscreen(get, set):Bool;
+
+  static function get_autoFullscreen():Bool
+  {
+    return Save?.instance?.options?.autoFullscreen ?? true;
+  }
+
+  static function set_autoFullscreen(value:Bool):Bool
+  {
+    var save:Save = Save.instance;
+    save.options.autoFullscreen = value;
     save.flush();
     return value;
   }
@@ -277,6 +325,8 @@ class Preferences
     #if web
     toggleFramerateCap(Preferences.unlockedFramerate);
     #end
+    // Apply the autoFullscreen setting (launches the game in fullscreen automatically)
+    FlxG.fullscreen = Preferences.autoFullscreen;
   }
 
   static function toggleFramerateCap(unlocked:Bool):Void

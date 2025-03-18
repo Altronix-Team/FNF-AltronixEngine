@@ -28,8 +28,6 @@ import funkin.ui.mainmenu.MainMenuState;
 import openfl.events.MouseEvent;
 import openfl.events.NetStatusEvent;
 import funkin.ui.freeplay.FreeplayState;
-import openfl.media.Video;
-import openfl.net.NetStream;
 import funkin.api.newgrounds.NGio;
 import openfl.display.BlendMode;
 import funkin.save.Save;
@@ -52,10 +50,6 @@ class TitleState extends MusicBeatState
   var lastBeat:Int = 0;
   var swagShader:ColorSwap;
 
-  var video:Video;
-  var netStream:NetStream;
-  var overlay:Sprite;
-
   override public function create():Void
   {
     super.create();
@@ -67,48 +61,11 @@ class TitleState extends MusicBeatState
 
     // DEBUG BULLSHIT
 
-    // netConnection.addEventListener(MouseEvent.MOUSE_DOWN, overlay_onMouseDown);
     if (!initialized) new FlxTimer().start(1, function(tmr:FlxTimer) {
       startIntro();
     });
     else
       startIntro();
-  }
-
-  function client_onMetaData(metaData:Dynamic)
-  {
-    video.attachNetStream(netStream);
-
-    video.width = video.videoWidth;
-    video.height = video.videoHeight;
-    // video.
-  }
-
-  function netStream_onAsyncError(event:AsyncErrorEvent):Void
-  {
-    trace("Error loading video");
-  }
-
-  function netConnection_onNetStatus(event:NetStatusEvent):Void
-  {
-    if (event.info.code == 'NetStream.Play.Complete')
-    {
-      // netStream.dispose();
-      // FlxG.stage.removeChild(video);
-
-      startIntro();
-    }
-
-    trace(event.toString());
-  }
-
-  function overlay_onMouseDown(event:MouseEvent):Void
-  {
-    netStream.soundTransform.volume = 0.2;
-    netStream.soundTransform.pan = -1;
-    // netStream.play(Paths.file('music/kickstarterTrailer.mp4'));
-
-    FlxG.stage.removeChild(overlay);
   }
 
   var logoBl:FlxSprite;
@@ -233,7 +190,9 @@ class TitleState extends MusicBeatState
       {
         startingVolume: 0.0,
         overrideExisting: true,
-        restartTrack: true
+        restartTrack: false,
+        // Continue playing this music between states, until a different music track gets played.
+        persist: true
       });
     // Fade from 0.0 to 1 over 4 seconds
     if (shouldFadeIn) FlxG.sound.music.fadeIn(4.0, 0.0, 1.0);
@@ -270,15 +229,10 @@ class TitleState extends MusicBeatState
     #if desktop
     if (FlxG.keys.justPressed.ESCAPE)
     {
-      Sys.exit(0);
+      openfl.Lib.application.window.close();
     }
     #end
 
-    /*if (Save.instance.charactersSeen.contains("pico")) Whyy?
-      {
-        Save.instance.charactersSeen.remove("pico");
-        Save.instance.oldChar = false;
-    }*/
     Conductor.instance.update();
 
     /* if (FlxG.onMobile)
@@ -328,7 +282,6 @@ class TitleState extends MusicBeatState
     if (pressedEnter && !transitioning && skippedIntro)
     {
       if (FlxG.sound.music != null) FlxG.sound.music.onComplete = null;
-      // netStream.play(Paths.file('music/kickstarterTrailer.mp4'));
       NGio.unlockMedal(60960);
       // If it's Friday according to da clock
       if (Date.now().getDay() == 5) NGio.unlockMedal(61034);
@@ -491,7 +444,12 @@ class TitleState extends MusicBeatState
             case 13:
               addMoreText('Friday');
             case 14:
-              addMoreText('Night');
+              // easter egg for when the game is trending with the wrong spelling
+              // the random intro text would be "trending--only on x"
+
+              if (curWacky[0] == "trending") addMoreText('Nigth');
+              else
+                addMoreText('Night');
             case 15:
               addMoreText('Funkin');
             case 16:

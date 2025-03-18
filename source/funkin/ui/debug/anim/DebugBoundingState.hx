@@ -24,7 +24,6 @@ import haxe.ui.core.Screen;
 import haxe.ui.events.UIEvent;
 import haxe.ui.RuntimeComponentBuilder;
 import lime.utils.Assets as LimeAssets;
-import openfl.Assets;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import openfl.geom.Rectangle;
@@ -110,9 +109,11 @@ class DebugBoundingState extends FlxState
     offsetEditorDialog.cameras = [hudCam];
 
     add(offsetEditorDialog);
+    offsetEditorDialog.showDialog(false);
 
-    // Anchor to the right side by default
-    // offsetEditorDialog.x = FlxG.width - offsetEditorDialog.width;
+    // Anchor to the left side by default
+    offsetEditorDialog.x = 16;
+    offsetEditorDialog.y = 16;
 
     // sets the default camera back to FlxG.camera, since we set it to hudCamera for haxeui stuf
     FlxG.cameras.setDefaultDrawTarget(FlxG.camera, true);
@@ -400,6 +401,11 @@ class DebugBoundingState extends FlxState
     if (FlxG.keys.justPressed.F)
     {
       onionSkinChar.visible = !onionSkinChar.visible;
+    }
+
+    if (FlxG.keys.justPressed.G)
+    {
+      swagChar.flipX = !swagChar.flipX;
     }
 
     // Plays the idle animation

@@ -8,6 +8,7 @@ import funkin.graphics.FunkinSprite;
 import funkin.play.character.CharacterData.CharacterDataParser;
 import funkin.play.character.CharacterData;
 import funkin.util.MathUtil;
+import flixel.util.FlxColor;
 import openfl.utils.Assets;
 
 /**

@@ -1,5 +1,7 @@
 package funkin.play;
 
+import altronix.play.components.ScoreText;
+import altronix.play.components.SongPosBar;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.transition.Transition;
 import flixel.FlxCamera;

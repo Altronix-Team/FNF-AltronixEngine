@@ -13,6 +13,7 @@ import funkin.graphics.FunkinSprite;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import flixel.util.FlxColor;
 import flixel.util.FlxDestroyUtil;
+import flixel.util.FlxDirectionFlags;
 import funkin.graphics.adobeanimate.FlxAtlasSprite;
 import funkin.modding.events.ScriptEvent;
 import funkin.play.character.CharacterData.CharacterRenderType;
@@ -528,10 +529,10 @@ class AnimateAtlasCharacter extends BaseCharacter
     return alpha = value;
   }
 
-  override function set_facing(value:Int):Int
+  override function set_facing(Direction:FlxDirectionFlags):FlxDirectionFlags
   {
-    if (exists && facing != value) transformChildren(facingTransform, value);
-    return facing = value;
+    if (exists && facing != Direction) transformChildren(facingTransform, Direction);
+    return facing = Direction;
   }
 
   override function set_flipX(value:Bool):Bool
